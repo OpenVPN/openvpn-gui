@@ -1,0 +1,243 @@
+/*
+ *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
+ *
+ *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program (see the file COPYING included with this
+ *  distribution); if not, write to the Free Software Foundation, Inc.,
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+/* Icons */
+#define APP_ICON 	     		90
+#define APP_ICON_CONNECTED     		91
+#define APP_ICON_CONNECTING    		92
+#define APP_ICON_DISCONNECTED  		93
+
+/* About Dialog */
+#define	IDD_ABOUTDIALOG			100
+#define	ID_TEXT_OPENVPNGUI		101
+#define TEXT_ABOUT_OPENVPNGUI		102
+
+/* Ask for Passphrase Dialog */
+#define	IDD_PASSPHRASE			150
+#define	EDIT_PASSPHRASE			151
+
+/* Status Dialog */
+#define	IDD_STATUS			160
+#define	TEXT_STATUS			161
+#define	EDIT_LOG			162
+#define	ID_DISCONNECT			163
+#define	ID_RESTART 			164
+#define	ID_HIDE				165
+/* A hidden textbox used to pass the config nr so dialog knows 
+ * which connection to cancel. If anyone knows of another way 
+ * to pass a variable to dialog, please let me know. 
+ */
+#define TEXT_CONFIG			166 
+
+/* Change Passphrase Dialog */
+#define IDD_CHANGEPSW			170
+#define EDIT_PSW_CURRENT		174
+#define EDIT_PSW_NEW			175
+#define EDIT_PSW_NEW2			176
+#define TEXT_KEYFILE			177
+#define TEXT_KEYFORMAT			178
+
+/* Auth Username/Password Dialog */
+#define	IDD_AUTH_PASSWORD		180
+#define	EDIT_AUTH_USERNAME		181
+#define	EDIT_AUTH_PASSWORD		182
+
+/* Proxy Settings Dialog */
+#define IDD_PROXY			200
+#define RB_PROXY_USE_OPENVPN		210
+#define RB_PROXY_USE_IE			211
+#define RB_PROXY_USE_MANUAL		212
+#define RB_PROXY_HTTP			213
+#define EDIT_PROXY_HTTP_ADDRESS		214
+#define EDIT_PROXY_HTTP_PORT		215
+#define TEXT_PROXY_HTTP_ADDRESS		216
+#define TEXT_PROXY_HTTP_PORT		217
+#define CHECKB_PROXY_AUTH		218
+#define RB_PROXY_SOCKS			219
+#define EDIT_PROXY_SOCKS_ADDRESS	220
+#define EDIT_PROXY_SOCKS_PORT		221
+#define TEXT_PROXY_SOCKS_ADDRESS	222
+#define TEXT_PROXY_SOCKS_PORT		223
+
+/* Proxy Auth Dialog */
+#define IDD_PROXY_AUTH			250
+#define EDIT_PROXY_USERNAME		251
+#define EDIT_PROXY_PASSWORD		252
+
+/* Tray - Resources */
+#define MSG_TIP				1001
+#define MSG_TIP_CONNECTED		1002
+#define MSG_TIP_CONNECTING		1003
+#define MSG_TIP_CONNECTED_SINCE		1004
+#define MSG_TIP_ASSIGNED_IP		1005
+#define IDM_TEXT_SERVICE		1006
+#define IDM_TEXT_PROXY			1007
+#define IDM_TEXT_ABOUT			1008
+#define IDM_TEXT_CLOSE			1009
+#define IDM_TEXT_CONNECT		1010
+#define IDM_TEXT_DISCONNECT		1011
+#define IDM_TEXT_STATUS			1012
+#define IDM_TEXT_VIEWLOG		1013
+#define IDM_TEXT_EDITCONFIG		1014
+#define IDM_TEXT_PASSPHRASE		1015
+#define IDM_TEXT_SERVICE_START		1016
+#define IDM_TEXT_SERVICE_STOP		1017
+#define IDM_TEXT_SERVICE_RESTART	1018
+#define IDM_TEXT_SERVICEONLY_START	1019
+#define IDM_TEXT_SERVICEONLY_STOP	1020
+#define IDM_TEXT_SERVICEONLY_RESTART	1021
+#define IDM_TEXT_ASK_STOP_SERVICE	1022
+
+/* LogViewer */
+#define ERR_START_LOG_VIEWER            1101
+#define ERR_START_CONF_EDITOR           1102
+
+/* OpenVpn */
+#define ERR_TO_MANY_CONFIGS		1201
+#define ERR_CANNOT_CONSTRUCT_LOG	1202
+#define ERR_ONLY_ONE_CONN_OLD_VERSION	1203
+#define ERR_STOP_SERV_ON_OLD_VERSION	1204
+#define ERR_CREATE_EVENT		1205
+#define ERR_UNKNOWN_PRIORITY		1206
+#define ERR_LOG_APPEND_BOOL		1207
+#define ERR_GET_IE_PROXY_SETTINGS	1208
+#define ERR_INIT_SEC_DESC		1209
+#define ERR_SET_SEC_DESC_ACL		1210
+#define ERR_CREATE_PIPE_OUTPUT		1211
+#define ERR_DUP_HANDLE_ERR_WRITE	1212
+#define ERR_CREATE_PIPE_INPUT		1213
+#define ERR_DUP_HANDLE_OUTPUT_READ	1214
+#define ERR_DUP_HANDLE_INPUT_WRITE	1215
+#define ERR_CLOSE_HANDLE_TMP		1216
+#define ERR_CREATE_PROCESS		1217
+#define ERR_CLOSE_HANDLE                1218
+#define ERR_CREATE_THREAD_STATUS	1219
+#define INFO_STATE_WAIT_TERM		1220
+#define ERR_OPEN_LOG_WRITE		1221
+#define INFO_STATE_CONNECTED		1222
+#define INFO_NOW_CONNECTED		1223
+#define INFO_ASSIG_IP			1224
+#define ERR_CERT_EXPIRED		1225
+#define ERR_CERT_NOT_YET_VALID		1226
+#define INFO_STATE_RECONNECTING		1227
+#define INFO_STATE_DISCONNECTED		1228
+#define INFO_CONN_TERMINATED		1229
+#define INFO_STATE_FAILED		1230
+#define INFO_CONN_FAILED		1231
+#define INFO_STATE_FAILED_RECONN	1232
+#define INFO_RECONN_FAILED		1233
+#define INFO_STATE_SUSPENDED		1234
+#define ERR_READ_STDOUT_PIPE		1235
+#define ERR_CREATE_RICHED_LOGWINDOW	1236
+#define ERR_SET_SIZE			1237
+#define ERR_AUTOSTART_CONF_NOT_FOUND	1238
+#define ERR_VERSION_CREATE_EVENT	1239
+#define ERR_CREATE_PIPE_INPUT_READ	1240
+#define INFO_STATE_CONNECTING		1241
+#define INFO_CONNECTION_XXX		1242
+#define ERR_CREATE_THREAD_READ_STDOUT	1243
+#define INFO_STATE_CONN_SCRIPT		1244
+#define INFO_STATE_DISCONN_SCRIPT	1245
+#define ERR_RUN_CONN_SCRIPT		1246
+#define ERR_GET_EXIT_CODE		1247
+#define ERR_CONN_SCRIPT_FAILED		1248
+#define ERR_RUN_CONN_SCRIPT_TIMEOUT	1249
+#define ERR_OPTION_LOG_IN_CONFIG	1250
+#define ERR_CONFIG_ALREADY_EXIST	1251
+
+/* main */
+#define ERR_OPEN_DEBUG_FILE		1301
+#define ERR_LOAD_RICHED20		1302
+#define ERR_SHELL_DLL_VERSION		1303
+#define ERR_GUI_ALREADY_RUNNING		1304
+#define INFO_SERVICE_STARTED		1305
+#define INFO_SERVICE_STOPPED		1306
+#define INFO_ACTIVE_CONN_EXIT		1307
+#define INFO_SERVICE_ACTIVE_EXIT	1308
+
+/* options */
+#define INFO_USAGE			1401
+#define INFO_USAGECAPTION		1402
+#define ERR_BAD_PARAMETER		1403
+#define ERR_BAD_OPTION			1404
+
+/* passphrase */
+#define ERR_CREATE_PASS_THREAD		1501
+#define INFO_CHANGE_PWD			1502
+#define ERR_PWD_DONT_MATCH		1503
+#define ERR_PWD_TO_SHORT		1504
+#define INFO_EMPTY_PWD			1505
+#define ERR_UNKNOWN_KEYFILE_FORMAT	1506
+#define ERR_OPEN_PRIVATE_KEY_FILE	1507
+#define ERR_OLD_PWD_INCORRECT		1508
+#define ERR_OPEN_WRITE_KEY		1509
+#define ERR_WRITE_NEW_KEY		1510
+#define INFO_PWD_CHANGED		1511
+#define ERR_READ_PKCS12			1512
+#define ERR_CREATE_PKCS12		1513
+#define ERR_OPEN_CONFIG			1514
+#define ERR_ONLY_ONE_KEY_OPTION		1515
+#define ERR_ONLY_KEY_OR_PKCS12		1516
+#define ERR_ONLY_ONE_PKCS12_OPTION	1517
+#define ERR_MUST_HAVE_KEY_OR_PKCS12	1518
+#define ERR_KEY_FILENAME_TO_LONG	1519
+#define ERR_PASSPHRASE2STDIN		1520
+#define ERR_CR2STDIN			1521
+#define ERR_AUTH_USERNAME2STDIN		1522
+#define ERR_AUTH_PASSWORD2STDIN		1523
+#define ERR_INVALID_CHARS_IN_PSW	1524
+
+
+/* proxy */
+#define ERR_HTTP_PROXY_ADDRESS		1601
+#define ERR_HTTP_PROXY_PORT		1602
+#define ERR_HTTP_PROXY_PORT_RANGE	1603
+#define ERR_SOCKS_PROXY_ADDRESS		1604
+#define ERR_SOCKS_PROXY_PORT		1605
+#define ERR_SOCKS_PROXY_PORT_RANGE	1606
+#define ERR_CREATE_REG_HKCU_KEY		1607
+#define ERR_GET_TEMP_PATH		1608
+#define ERR_CREATE_AUTH_FILE		1609
+
+/* service */
+#define ERR_OPEN_SCMGR_ADMIN		1701
+#define ERR_OPEN_VPN_SERVICE		1702
+#define ERR_START_SERVICE		1703
+#define ERR_QUERY_SERVICE		1704
+#define ERR_SERVICE_START_FAILED	1705
+#define ERR_OPEN_SCMGR			1706
+#define ERR_STOP_SERVICE		1707
+#define INFO_RESTARTED			1708
+
+/* registry */
+#define ERR_GET_WINDOWS_DIR		1801
+#define ERR_GET_PROGRAM_DIR		1802
+#define ERR_OPEN_REGISTRY		1803
+#define ERR_READING_REGISTRY		1804
+#define ERR_PASSPHRASE_ATTEMPTS		1805
+#define ERR_CONN_SCRIPT_TIMEOUT		1806
+#define ERR_DISCONN_SCRIPT_TIMEOUT	1807
+#define ERR_PRECONN_SCRIPT_TIMEOUT	1808
+#define ERR_CREATE_REG_KEY		1809
+#define ERR_OPEN_WRITE_REG		1810
+#define ERR_READ_SET_KEY		1811
+#define ERR_WRITE_REGVALUE		1812
+

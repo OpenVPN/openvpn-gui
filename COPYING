@@ -1,0 +1,14 @@
+OpenVPN GUI -- A Windows GUI for OpenVPN
+
+Copyright (C) 2004-2005 by Mathias Sundman <info@openvpn.se>
+
+
+  OpenVPN GUI is distributed under GPL license. 
+  (see COPYRIGHT.GPL)
+
+  Parts of the source code for OpenVPN GUI is taken from
+  openvpnserv.c included with the OpenVPN [1] distribution.
+
+  [1] OpenVPN is copyrighted by OpenVPN Solutions LLC <info@openvpn.net>,
+      and distributed under GPL license.
+

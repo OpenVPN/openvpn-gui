@@ -1,0 +1,351 @@
+/*
+ *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
+ *
+ *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program (see the file COPYING included with this
+ *  distribution); if not, write to the Free Software Foundation, Inc.,
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+#include "openvpn-gui-res.h"
+#include <windows.h>
+
+/* Application Icons */
+APP_ICON               ICON  DISCARDABLE  "openvpn-gui.ico"
+APP_ICON_CONNECTED     ICON  DISCARDABLE  "connected.ico"
+APP_ICON_CONNECTING    ICON  DISCARDABLE  "connecting.ico"
+APP_ICON_DISCONNECTED  ICON  DISCARDABLE  "disconnected.ico"
+
+/* About Dialog - designed with lcc-win32 resource editor */
+IDD_ABOUTDIALOG DIALOG 0, 0, 260, 135
+STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "About - OpenVPN GUI for Windows"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "OK", IDOK, 99, 115, 63, 14
+    ICON            APP_ICON_CONNECTED, 204, 11, 8, 21, 20
+    LTEXT           "", ID_TEXT_OPENVPNGUI, 40, 5, 215, 8
+    LTEXT           "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>", 102, 40, 15, 215, 8
+    LTEXT           "http://openvpn.se/", 103, 40, 25, 215, 8
+    LTEXT           "OpenVPN - An application to securely tunnel IP networks " \
+                    "over a single UDP port, with support for SSL/TLS-based " \
+                    "session authentication and key exchange, packet " \
+                    "encryption, packet authentication, and packet compression.", 
+                    104, 11, 51, 235, 34
+    LTEXT           "Copyright (C) 2002-2005 OpenVPN Solutions LLC <info@openvpn.net>", 105, 11, 87, 235, 11
+    LTEXT           "http://openvpn.net/", 106, 11, 98, 235, 10
+END
+
+/* Passphrase Dialog */
+IDD_PASSPHRASE DIALOGEX 6, 18, 120, 51
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+EXSTYLE WS_EX_TOPMOST
+CAPTION "OpenVPN"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Enter Password:", 201, 6, 6, 100, 10
+    EDITTEXT        EDIT_PASSPHRASE, 6, 17, 107, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON      "OK", IDOK, 6, 33, 50, 14
+    PUSHBUTTON      "Cancel", IDCANCEL, 64, 33, 50, 14
+END
+
+/* Auth Username/Password Dialog */
+IDD_AUTH_PASSWORD DIALOG 6, 18, 160, 62
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+CAPTION "OpenVPN - User Authentication"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Username:", 0, 6, 9, 50, 10
+    LTEXT           "Password:", 0, 6, 26, 50, 10
+    EDITTEXT        EDIT_AUTH_USERNAME, 60, 6, 94, 12, ES_AUTOHSCROLL
+    EDITTEXT        EDIT_AUTH_PASSWORD, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON      "OK", IDOK, 20, 42, 50, 14
+    PUSHBUTTON      "Cancel", IDCANCEL, 90, 42, 52, 14
+END
+
+/* Status Dialog */
+IDD_STATUS DIALOG 6, 18, 380, 210
+STYLE WS_SIZEBOX | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | DS_CENTER
+CAPTION "OpenVPN"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Connecting...", TEXT_STATUS, 20, 5, 200, 10
+    PUSHBUTTON      "Disconnect", ID_DISCONNECT, 50, 190, 50, 14
+    PUSHBUTTON      "Reconnect", ID_RESTART, 150, 190, 50, 14
+    PUSHBUTTON      "Hide", ID_HIDE, 100, 190, 50, 14
+    LTEXT           "", TEXT_CONFIG, 0, 0, 0, 0 
+END
+
+/* Change Passphrase Dialog */
+IDD_CHANGEPSW DIALOG 6, 18, 193, 82
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "OpenVPN - Change Passphrase"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Old Password:", 171, 6, 9, 85, 10
+    LTEXT           "New Password:", 172, 6, 26, 85, 10
+    LTEXT           "Confirm New Password:", 173, 6, 42, 85, 10
+    EDITTEXT        EDIT_PSW_CURRENT, 95, 6, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT        EDIT_PSW_NEW, 95, 23, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT        EDIT_PSW_NEW2, 95, 39, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON      "OK", IDOK, 40, 59, 50, 14
+    PUSHBUTTON      "Cancel", IDCANCEL, 103, 59, 50, 14
+    LTEXT           "", TEXT_KEYFORMAT, 0, 0, 0, 0 
+    LTEXT           "", TEXT_KEYFILE, 0, 0, 0, 0 
+END
+
+/* Proxy Settings Dialog */
+IDD_PROXY DIALOG 6, 18, 269, 228
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "OpenVPN - Proxy Settings"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "", 201, 13, 62, 243, 137
+    AUTORADIOBUTTON "Use OpenVPN Config-file Settings", RB_PROXY_USE_OPENVPN, \
+                    20, 12, 200, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Use Internet Explorer Settings (manually configured)", \
+                    RB_PROXY_USE_IE, 20, 31, 200, 10
+    AUTORADIOBUTTON "Manual Configuration", RB_PROXY_USE_MANUAL, 20, 50, 200, 10
+    AUTORADIOBUTTON "HTTP Proxy", RB_PROXY_HTTP, 20, 74, 59, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "SOCKS Proxy", RB_PROXY_SOCKS, 20, 147, 67, 10
+    GROUPBOX        "", 202, 20, 86, 225, 43
+    LTEXT           "Address:", TEXT_PROXY_HTTP_ADDRESS, 27, 98, 41, 10
+    LTEXT           "Port:", TEXT_PROXY_HTTP_PORT, 176, 98, 25, 10
+    EDITTEXT        EDIT_PROXY_HTTP_ADDRESS, 70, 96, 92, 12, ES_AUTOHSCROLL
+    EDITTEXT        EDIT_PROXY_HTTP_PORT, 206, 96, 30, 12, ES_AUTOHSCROLL
+    AUTOCHECKBOX    "Prompt for username/password when connecting.", CHECKB_PROXY_AUTH, 27, 112, 183, 10
+    GROUPBOX        "", 203, 20, 158, 225, 33
+    LTEXT           "Address:", TEXT_PROXY_SOCKS_ADDRESS, 27, 172, 41, 10
+    LTEXT           "Port:", TEXT_PROXY_SOCKS_PORT, 176, 172, 20, 10
+    EDITTEXT        EDIT_PROXY_SOCKS_ADDRESS, 70, 170, 98, 12, ES_AUTOHSCROLL
+    EDITTEXT        EDIT_PROXY_SOCKS_PORT, 206, 170, 30, 12, ES_AUTOHSCROLL
+    PUSHBUTTON      "OK", IDOK, 63, 206, 50, 14
+    PUSHBUTTON      "Cancel", IDCANCEL, 159, 206, 50, 14
+END
+
+/* Proxy Authentication Dialog */
+IDD_PROXY_AUTH DIALOG 29, 23, 154, 65
+STYLE DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER
+CAPTION "OpenVPN - Proxy Authentication"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Username:", 201, 9, 8, 38, 10
+    EDITTEXT        EDIT_PROXY_USERNAME, 49, 5, 94, 12, ES_AUTOHSCROLL
+    LTEXT           "Password:", 202, 9, 26, 38, 10
+    EDITTEXT        EDIT_PROXY_PASSWORD, 49, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON      "OK", IDOK, 58, 43, 40, 14
+END
+
+STRINGTABLE
+BEGIN
+   /* About Dialog */
+   TEXT_ABOUT_OPENVPNGUI    "OpenVPN GUI v%s - A Windows GUI for OpenVPN"
+
+   /* Tray - Resources */
+   MSG_TIP                      "OpenVPN GUI "
+   MSG_TIP_CONNECTED            "\nConnected to: "
+   MSG_TIP_CONNECTING           "\nConnecting to: "
+   MSG_TIP_CONNECTED_SINCE      "\nConnected since: "
+   MSG_TIP_ASSIGNED_IP          "\nAssigned IP: %s"
+   IDM_TEXT_SERVICE             "OpenVPN Service"
+   IDM_TEXT_PROXY               "Proxy Settings"
+   IDM_TEXT_ABOUT               "About"
+   IDM_TEXT_CLOSE               "Exit"
+   IDM_TEXT_CONNECT             "Connect"
+   IDM_TEXT_DISCONNECT          "Disconnect"
+   IDM_TEXT_STATUS              "Show Status"
+   IDM_TEXT_VIEWLOG             "View Log"
+   IDM_TEXT_EDITCONFIG          "Edit Config"
+   IDM_TEXT_PASSPHRASE          "Change Password"
+   IDM_TEXT_SERVICE_START       "Start"
+   IDM_TEXT_SERVICE_STOP        "Stop"
+   IDM_TEXT_SERVICE_RESTART     "Restart"
+   IDM_TEXT_SERVICEONLY_START   "Connect"
+   IDM_TEXT_SERVICEONLY_STOP    "Disconnect"
+   IDM_TEXT_SERVICEONLY_RESTART "Reconnect"
+   IDM_TEXT_ASK_STOP_SERVICE    "Do you want to disconnect (Stop the OpenVPN Service)?"
+
+   /* Logviewer - Resources */
+   ERR_START_LOG_VIEWER     "Error starting log-viewer: %s"
+   ERR_START_CONF_EDITOR    "Error starting config-editor: %s"   
+
+   /* OpenVPN */
+   ERR_TO_MANY_CONFIGS      "OpenVPN GUI does not support more than %d configs. Please contact the author if you have the need for more."
+   ERR_CANNOT_CONSTRUCT_LOG "Cannot construct logfile name based on: %s"
+  ERR_ONLY_ONE_CONN_OLD_VERSION "You can only have one connection running at the same time when using an older version on OpenVPN than 2.0-beta6."
+  ERR_STOP_SERV_ON_OLD_VERSION "You cannot use OpenVPN GUI to start a connection while the OpenVPN Service is running (with OpenVPN 1.5/1.6). Stop OpenVPN Service first if you want to use OpenVPN GUI."
+  ERR_CREATE_EVENT          "CreateEvent failed on exit event: %s"
+  ERR_UNKNOWN_PRIORITY      "Unknown priority name: %s"
+  ERR_LOG_APPEND_BOOL       "Log file append flag (given as '%s') must be '0' or '1'"
+  ERR_GET_IE_PROXY_SETTINGS "Unable to get IE proxy settings because:\n%s"
+  ERR_INIT_SEC_DESC         "InitializeSecurityDescriptor failed."
+  ERR_SET_SEC_DESC_ACL      "SetSecurityDescriptorDacl failed."
+  ERR_CREATE_PIPE_OUTPUT    "CreatePipe on hOutputWrite failed."
+  ERR_DUP_HANDLE_ERR_WRITE  "DuplicateHandle on hErrorWrite failed."
+  ERR_CREATE_PIPE_INPUT     "CreatePipe on hInputRead failed."
+  ERR_DUP_HANDLE_OUTPUT_READ "DuplicateHandle on hOutputRead failed."
+  ERR_DUP_HANDLE_INPUT_WRITE "DuplicateHandle on hInputWrite failed."
+  ERR_CLOSE_HANDLE_TMP      "CloseHandle on hOutputReadTmp/hInputWriteTmp failed."
+  ERR_CREATE_PROCESS        "CreateProcess failed, exe='%s' cmdline='%s' dir='%s'"
+  ERR_CLOSE_HANDLE          "CloseHandle failed."
+  ERR_CREATE_THREAD_STATUS  "CreateThread to show Status window Failed."
+  INFO_STATE_WAIT_TERM      "Current State: Waiting for OpenVPN to terminate..."
+  ERR_OPEN_LOG_WRITE        "Error opening logfile for writing: %s. You probably don't have administrator privileges, which are necessary to run OpenVPN."
+  INFO_STATE_CONNECTED      "Current State: Connected"
+  INFO_NOW_CONNECTED        "%s is now connected."
+  INFO_ASSIG_IP             "Assigned IP: %s"
+  ERR_CERT_EXPIRED          "Unable to connect because your certificate has expired or the system time is incorrect."
+  ERR_CERT_NOT_YET_VALID    "Unable to connect because your certificate is not yet valid. Check that your system time is correct."
+  INFO_STATE_RECONNECTING   "Current State: Reconnecting"
+  INFO_STATE_DISCONNECTED   "Current State: Disconnected"
+  INFO_CONN_TERMINATED      "Connection to %s was terminated."
+  INFO_STATE_FAILED         "Current State: Failed to connect"
+  INFO_CONN_FAILED          "Connecting to %s has failed."
+  INFO_STATE_FAILED_RECONN  "Current State: Failed to reconnect"
+  INFO_RECONN_FAILED        "ReConnecting to %s has failed."
+  INFO_STATE_SUSPENDED      "Current State: Suspended"
+  ERR_READ_STDOUT_PIPE      "Error reading from OpenVPN StdOut Pipe."
+  ERR_CREATE_RICHED_LOGWINDOW "Creating RichEdit LogWindow Failed!!"
+  ERR_SET_SIZE              "Set Size failed!"
+  ERR_AUTOSTART_CONF_NOT_FOUND "Cannot find requested config to autostart: %s"
+  ERR_VERSION_CREATE_EVENT  "CreateEvent() failed when checking openvpn version."
+  ERR_CREATE_PIPE_INPUT_READ "CreatePipe on hInputRead failed."
+  INFO_STATE_CONNECTING     "Current State: Connecting"
+  INFO_CONNECTION_XXX       "OpenVPN Connection (%s)"
+  ERR_CREATE_THREAD_READ_STDOUT "CreateThread to read openvpn process stdout failed."
+  INFO_STATE_CONN_SCRIPT    "Current State: Running Connect Script"
+  INFO_STATE_DISCONN_SCRIPT "Current State: Running Disconnect Script"
+  ERR_RUN_CONN_SCRIPT       "Error running Connect Script: %s"
+  ERR_GET_EXIT_CODE         "Failed to get ExitCode of Connect Script (%s)"
+  ERR_CONN_SCRIPT_FAILED    "Connect Script failed. (exitcode=%ld)"
+  ERR_RUN_CONN_SCRIPT_TIMEOUT "Connect Script failed. TimeOut after %d sec."
+  ERR_CONFIG_ALREADY_EXIST  "There already exist a config file named '%s'. You cannot " \
+                            "have multiple config files with the same name, even if " \
+                            "they reside in diffrent folders."
+  /* main - Resources */
+  ERR_OPEN_DEBUG_FILE       "Error opening debug file (%s) for output."
+  ERR_LOAD_RICHED20         "Could not load RICHED20.DLL."
+  ERR_SHELL_DLL_VERSION     "Your shell32.dll version is to low (0x%lx). You need at least version 5.0."
+  ERR_GUI_ALREADY_RUNNING   "OpenVPN GUI is already running."
+  INFO_SERVICE_STARTED      "OpenVPN Service started."
+  INFO_SERVICE_STOPPED      "OpenVPN Service stopped."
+  INFO_ACTIVE_CONN_EXIT     "There are still active connections that will be closed if you exit OpenVPN GUI." \
+                            "\n\nAre you sure you want to exit?"
+  INFO_SERVICE_ACTIVE_EXIT  "You are currently connected (the OpenVPN Service is running). " \
+                            "You will stay connected even if you exit OpenVPN GUI.\n\n" \
+                            "Do you want to proceed and exit OpenVPN GUI?"
+  ERR_OPTION_LOG_IN_CONFIG  "You have ""log"" or ""log-append"" in your OpenVPN config file. These options " \
+                            "should not be used with OpenVPN GUI as they prevents OpenVPN GUI from reading " \
+                            "the log output of OpenVPN which is necessary for correct operation of OpenVPN " \
+                            "GUI. The log is always written to a logfile when OpenVPN GUI is beeing used " \
+                            "anyway, so you should remove this option.\n\nDo you want to proceed connecting " \
+                            "anyway?"
+
+  /* options - Resources */
+  INFO_USAGE	    "--help\t\t\t: Show this message.\n" \
+		    "--connect cnn \t\t: Connect to ""cnn"" at startup. (extension must be included)\n" \
+		    "\t\t\t   Example: openvpn-gui --connect office.ovpn\n" \
+		    "\n" \
+		    "Options to override registry settings:\n" \
+		    "--exe_path\t\t: Path to openvpn.exe.\n" \
+		    "--config_dir\t\t: Path to dir to search for config files in.\n" \
+		    "--ext_string\t\t: Extension on config files.\n" \
+		    "--log_dir\t\t\t: Path to dir where log files will be saved.\n" \
+		    "--priority_string\t\t: Priority string (See install.txt for more info).\n" \
+		    "--append_string\t\t: 1=Append to log file. 0=Truncate logfile when connecting.\n" \
+		    "--log_viewer\t\t: Path to log viewer.\n" \
+		    "--editor\t\t\t: Path to config editor.\n" \
+		    "--allow_edit\t\t: 1=Show Edit Config menu item.\n" \
+		    "--allow_service\t\t: 1=Show Service control menu.\n" \
+		    "--allow_password\t\t: 1=Show Change Password menu item.\n" \
+		    "--allow_proxy\t\t: 1=Show Proxy Settings menu.\n" \
+		    "--show_balloon\t\t: 0=Never, 1=At initial connect, 2=At every re-connect.\n" \
+		    "--service_only\t\t: 1=Enable Service Only mode.\n" \
+		    "--silent_connection\t\t: 1=Do not show the status dialog while connecting.\n" \
+		    "--show_script_window\t: 0=Hide Script execution window, 1=Show it.\n" \
+		    "--passphrase_attempts\t: Number of passphrase attempts to allow.\n" \
+		    "--connectscript_timeout\t: Time to wait for connect script to finish.\n" \
+		    "--disconnectscript_timeout\t: Time to wait for disconnect script to finish.\n" \
+		    "--preconnectscript_timeout\t: Time to wait for preconnect script to finish.\n"
+  
+  INFO_USAGECAPTION         "OpenVPN GUI Usage"
+  ERR_BAD_PARAMETER         "I'm trying to parse ""%s"" as an --option parameter " \
+                            "but I don't see a leading '--'"
+  ERR_BAD_OPTION	    "Options error: Unrecognized option or missing parameter(s): --%s\n" \
+                            "Use openvpn-gui --help for more info."
+
+  /* passphrase - Resources */
+  ERR_CREATE_PASS_THREAD    "CreateThread to show ChangePassphrase dialog failed."
+  INFO_CHANGE_PWD           "Change Password (%s)"
+  ERR_PWD_DONT_MATCH        "The passwords you typed do not match. Try again."
+  ERR_PWD_TO_SHORT          "Your new password must be at least %d characters long."
+  INFO_EMPTY_PWD            "Are you sure you want to set an EMPTY password?" 
+  ERR_UNKNOWN_KEYFILE_FORMAT "Unknown keyfile format."
+  ERR_OPEN_PRIVATE_KEY_FILE "Error opening private key file (%s)."
+  ERR_OLD_PWD_INCORRECT     "The old password is incorrect."
+  ERR_OPEN_WRITE_KEY        "Error opening private key file for writing (%s)."
+  ERR_WRITE_NEW_KEY         "Error writing new private key file (%s)."
+  INFO_PWD_CHANGED          "Your password has been changed."
+  ERR_READ_PKCS12           "Error reading PKCS #12 file (%s)."
+  ERR_CREATE_PKCS12         "Error creating new PKCS #12 object. Change Password has failed."
+  ERR_OPEN_CONFIG           "Could not open config file for reading: (%s)"
+  ERR_ONLY_ONE_KEY_OPTION   "You cannot have more than one ""key"" option in your config."
+  ERR_ONLY_KEY_OR_PKCS12    "You cannot have both ""key"" and ""pkcs12"" options in your config."
+  ERR_ONLY_ONE_PKCS12_OPTION "You cannot have more than one ""pkcs12"" option in your config."
+  ERR_MUST_HAVE_KEY_OR_PKCS12 "Your config file does not contain any ""key"" or ""pkcs12"" option."
+  ERR_KEY_FILENAME_TO_LONG  "Your key filename in the config is too long!"
+  ERR_PASSPHRASE2STDIN      "Error passing passphrase to stdin."
+  ERR_AUTH_USERNAME2STDIN   "Error passing auth username to stdin."
+  ERR_AUTH_PASSWORD2STDIN   "Error passing auth password to stdin."
+  ERR_CR2STDIN              "Error passing CR to stdin."
+  ERR_INVALID_CHARS_IN_PSW  "Your new password contains non-valid characters. " \
+                            "Please choose another one."
+  /* proxy */
+  ERR_HTTP_PROXY_ADDRESS    "You must specify a HTTP proxy address."
+  ERR_HTTP_PROXY_PORT       "You must specify a HTTP proxy port."
+  ERR_HTTP_PROXY_PORT_RANGE "You must specify a HTTP proxy port between 1-65535"
+  ERR_SOCKS_PROXY_ADDRESS   "You must specify a SOCKS proxy address."
+  ERR_SOCKS_PROXY_PORT      "You must specify a SOCKS proxy port."
+  ERR_SOCKS_PROXY_PORT_RANGE "You must specify a SOCKS proxy port between 1-65535"
+  ERR_CREATE_REG_HKCU_KEY   "Error creating ""HKEY_CURRENT_USER\\%s"" key."
+  ERR_GET_TEMP_PATH         "Error determining TempPath with GetTempPath(). Using ""C:\\"" instead."
+  ERR_CREATE_AUTH_FILE      "Error creating AUTH file. (%s)"
+
+  /* service */
+  ERR_OPEN_SCMGR_ADMIN      "OpenSCManager failed. You need Administrator rights to start a service." 
+  ERR_OPEN_VPN_SERVICE      "Failed to open ""OpenVPNService"""
+  ERR_START_SERVICE         "Failed to start ""OpenVPNService"""
+  ERR_QUERY_SERVICE         "Failed to query service status."
+  ERR_SERVICE_START_FAILED  "OpenVPN Service failed to start."
+  ERR_OPEN_SCMGR            "OpenSCManager failed (%d)"
+  ERR_STOP_SERVICE          "Failed to stop OpenVPN Service"
+  INFO_RESTARTED            "OpenVPN Service Restarted."
+
+  /* registry */
+  ERR_GET_WINDOWS_DIR       "Error getting Windows Directory."
+  ERR_GET_PROGRAM_DIR       "Error getting ""Program"" folder name."
+  ERR_OPEN_REGISTRY         "Error opening registry for reading (HKLM\\SOFTWARE\\OpenVPN).\n " \
+			    "OpenVPN is probably not installed"
+  ERR_READING_REGISTRY      "Error reading registry value (HKLM\\SOFTWARE\\OpenVPN)."
+  ERR_PASSPHRASE_ATTEMPTS   "Registry value ""passphrase_attempts"" must be a number between 1 and 9."
+  ERR_CONN_SCRIPT_TIMEOUT   "Registry value ""connectscript_timeout"" must be a number between 0 and 99."
+  ERR_DISCONN_SCRIPT_TIMEOUT "Registry value ""disconnectscript_timeout"" must be a number between 1 and 99."
+  ERR_PRECONN_SCRIPT_TIMEOUT "Registry value ""preconnectscript_timeout"" must be a number between 1 and 99."
+  ERR_CREATE_REG_KEY        "Error creating HKLM\\SOFTWARE\\OpenVPN-GUI key."
+  ERR_OPEN_WRITE_REG        "Failed to open the registry for writing. You need to run this application " \
+			    "once as Administrator to update the registry."
+  ERR_READ_SET_KEY          "Error reading and setting registry key ""%s""." 
+  ERR_WRITE_REGVALUE	    "Error writing registry value ""HKEY_CURRENT_USER\\%s\\%s""."
+END

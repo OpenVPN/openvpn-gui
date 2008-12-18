@@ -1,0 +1,635 @@
+[1.0.3 2005-08-18]
+
+Bug Fixes:
+  There was a bug in the code that expands variables in
+  registry values. If the expanded string was longer than
+  the original string it got incorrectly truncated.
+
+
+[1.0.2 2005-07-27]
+
+  Pass paths read in OpenVPN GUI's registry values through
+  ExpandEnvironmentStrings(). This allows the use of Windows
+  variables like %HOMEPATH% or %PROGRAMFILES%. This allows
+  multiple users on the same system to have their own set
+  of config files and keys in their home dir.
+
+
+[1.0.1 2005-06-10]
+
+Bug Fixes:
+  The Change Password feature did not work correctly when TABs
+  were used in the config file between the key/pkcs12 keyword and
+  the accual path to the key file.
+
+
+[1.0 2005-04-21]
+
+No changes
+
+
+[1.0-rc5 2005-03-29]
+
+Bug Fixes:
+  [Pre/Dis]Connect scripts were not executed when starting or stopping
+  the OpenVPN Service, or using "Service Only" mode.
+
+
+[1.0-rc4 2005-02-17]
+
+  Increased the width of buttons and space between text labels and edit
+  controls on dialogs to ease localization of OpenVPN GUI.
+
+Bug Fixes:
+  Some fixed text strings was introduced in the code in 1.0-rc3. These
+  are moved to the resource file now to allow localization.
+
+  If starting the OpenVPN service failed, OpenVPN GUI would get
+  stuck with a yellow icon.
+
+
+[1.0-rc3 2005-02-14]
+
+New Features:
+  New registry value (show_balloon) to control whether to show the
+  "Connected Balloon" or not. show_ballon can have the following values
+  
+  0=Never show any balloon. 
+  1=Show balloon when the connection establishes (default).
+  2=Show balloon every time OpenVPN has reconnected (old behavior).
+
+  Show "Connected since: XXX" and "Assigned IP: X.X.X.X" in the tray
+  icon tip msg.
+
+  If a batch file named xxx_pre.bat exists in the config folder, where
+  xxx is the same name as an OpenVPN config file, this will be executed
+  before OpenVPN is launced.
+
+  If a batch file named xxx_down.bat exists in the config folder, where
+  xxx is the same name as an OpenVPN config file, this will be executed
+  on disconnect, but before the OpenVPN tunnel is closed.
+
+  Registry value "show_script_window" controls whether _up, _down and
+  _pre scripts should execute in the background or in a visible cmd-line
+  window.
+
+  Registry value "[pre/dis]connectscript_timeout" controls how long to
+  wait for each script to finish.
+
+  Updated information on the about dialog.
+
+Bug Fixes:
+  Removed unused code that tried to determine the path to "Program 
+  Files". This code caused an error in some rare occasions.
+
+
+[1.0-rc2 2005-01-12]
+
+New Features:
+  Support for one level of subdirectories below the config directory.
+  This means that if you have multiple connections, you can now put
+  them in a seperate subdirectory together with their keys and certs.
+
+  "Service Only" mode. This is a mode that makes OpenVPN GUI more
+  friendly to use for non-admin users to control the OpenVPN Service.
+  Enable this mode by setting the registry value "service_only" to "1".
+
+  In this mode the following happends:
+
+    * The normal "Connect", "Disconnect" and "Show Status" is removed.
+
+    * The Service menu items "Start", "Stop" and "Restart" is replaced 
+      by "Connect", "Disconnect" and "Reconnect" directly on the main
+      menu. These now control the OpenVPN Service instead.
+
+    * Dubbleclicking the icon starts the OpenVPN Service.
+
+    * Dubbleclicking the icon when the service is running brings up a
+      dialog asking if you want to disconnect.
+
+    * The Proxy Settings menu item is removed as it can't control the service anyway.
+
+  The "OpenVPN Service started" dialog msg is replaced with a 
+  balloon msg.
+
+  Ask the user if he really wants to exit OpenVPN GUI if the OpenVPN
+  Service is running.
+    
+Bug Fixes:
+  Full rights were required to control the OpenVPN Service. Now only
+  Start/Stop permissions are required, which allows a normal user to
+  control the OpenVPN Service if these rights are granted to the user.
+  (Can be done with subinacl.exe from the resource kit)
+
+  When passwords were retrieved from a user, OpenVPN GUI received them
+  in the default windows codepage (ISO 8859-1 on english XP), and this 
+  was passed on untouched to OpenVPN. When OpenVPN is run from command-
+  line on the other hand, the old DOS CP850 codepage is used. This
+  caused passwords containing non-ASCII (7-bit) chars that worked from
+  cmd-line not to work from OpenVPN GUI. This is now solved by
+  retrieving passwords in unicode and translate them to CP850 before
+  supplying them to OpenVPN.
+
+  Re-scan the config dir for new files when dubble-clicking the tray
+  icon.
+
+
+[1.0-rc1 2005-01-06]
+
+New Features:
+  Show a warning message if "log" or "log-append" is found in the config
+  file.
+
+Bug Fixed:
+  Added a bunch of compiler warnings which revealed a lot of minor
+  programming errors. Mostly cast conversion errors between signed and
+  unsigned intergers. All fixed now.
+
+  Set focus on the log window when the status window is re-opened to make
+  sure the log is scrolled automatically.
+
+  Set focus on the log window when clicking disconnect to allow the log
+  to continue scrolling automatically until OpenVPN is terminated.
+
+
+[1.0-beta26 2004-12-04]
+
+New Features:
+  Show "Connecting to: xxx" msg in tray icon tip message in addition to
+  the previously displayed "Connected to:" msg.
+
+Bug Fixes:
+  Don't ask if you are sure you want to change your password to an EMPTY
+  password if you're not allowed to use passwords shorter than 8 chars.
+
+  Clear password buffers after use to avoid having passwords in memory.
+
+  
+[1.0-beta25 2004-12-01]
+
+  Changed button labels on the status dialog from DisConnect and ReConnect
+  to Disconnect and Reconnect.
+
+  Don't show "Assigned IP:" at all in the connected balloon if no IP
+  address is known, as when a real remote DHCP server is used.
+
+  Stripped out the last hardcoded strings to the resource file.
+
+  Raised maximum number of configs from 20 to 50.
+
+Bug Fixes:
+  If OpenVPN printed a line longer that 1024 chars, OpenVPN GUI would crash.
+  This could happend when using "verb 5" or higher as OpenVPN then prints
+  an "r" or "w" for every packet without any line breaks. A new line will
+  now be inserted when 1024 chars is reached.
+
+  Ask if you want to close active connections when WM_CLOSE is received.
+
+  Handle WM_QUERYENDSESSION and WM_ENDSESSION correctly by closing any
+  active connections and then terminate.
+
+
+[1.0-beta24 2004-11-15]
+
+Bug Fixes:
+  Some openssl #includes were not #ifdef:ed when building a nochangepsw
+  version causing the build to fail if the openssl headers were not
+  available.
+
+  When using OpenVPN 1.5/1.6 and entering a false private key passphrase,
+  OpenVPN GUI would falsely think that the user attempted to start another
+  connection.
+
+
+[1.0-beta23 2004-11-08]
+
+Bug Fixes:
+  Passphrase protected keys stored in MS Certificate Store did not work
+  due to the way the openvpn console window was hidden.
+
+
+[1.0-beta22 2004-11-05]
+
+Bug Fixes:
+  OpenVPN GUI did not pass a CR/LF correctly after supplying OpenVPN
+  with the private key passphrase! OpenVPN 2.0-beta12 and higher which
+  uses a new prompt worked, but not earlier versions of OpenVPN.
+
+  If the Shell (explorer.exe) is restarted, OpenVPN GUI did not
+  re-register the tray icon.
+
+
+[1.0-beta21 2004-10-29]
+
+New Features:
+  Added support for username/password based authentication.
+
+  Support for Localization. Language have to chosen at build time.
+  Available are english, german, czech and swedish.
+
+Bug Fixes:
+  Fixed crash after displaying that too many connections exist.
+
+  Removed duplicate length-check on setting new password.
+
+  Fixed error dialog which had the error message shown in window caption.
+
+  Status windows did not change to yellow icon while ReConnecting.
+
+  DisConnect and ReConnect button was not disabled after a termination.
+  This bug was introduced with beta20.
+
+  The Change Password feature did not parse the key/pkcs12 line in the
+  config file correctly if there was TABs after the filename.
+
+  The Change Password feature did not work if a relative path with
+  subdirectories was used.
+
+
+[1.0-beta20 2004-10-18]
+
+New Features:
+  Accept the new passphrase prompt introduced with OpenVPN 2.0-beta12.
+
+  When the machine is about to enter suspend mode the connection is
+  closed. When the machine is powered up again, the connection is
+  re-established.
+  
+  Registry option "disconnect_on_suspend". Set to zero to disable the
+  above feature. 
+
+  ReConnect button on the status dialog.
+
+  Registry option "allow_proxy" to hide the Proxy Settings menu item.
+
+  Registry option "silent_connection" that suppresses the status
+  dialog from being showed while connecting.
+
+  Command-line option to set the time to wait for the connect script
+  to finish.
+
+  Icon color now reflects the status of the OpenVPN Service.
+
+Bug Fixes:
+  Included shellapi.h with the sourcecode, as the one distributed with
+  the current stable version of MinGW miss some definitions.
+
+  When closing OpenVPN GUI it waits for all connections to close before
+  exiting (Max 5 sec).
+
+  Made the password dialog always be on top of other windows.
+
+  Fixed a bug that occured if opening the log file for writing failed.
+  (which happends if you try to run OpenVPN GUI without admin rights)
+
+  The menuitems on the OpenVPN Service menu was incorrectly enabled/
+  disabled. This bug was introduced with beta19 as a result of the
+  dynamic rescanning for configs on every menu opening.
+
+  Starting OpenVPN GUI with OpenVPN 1.5/1.6 installed and OpenVPN
+  Service running failed with previous versions. (CreateEvent() error)
+
+  The installation package did not remove the OpenVPN-GUI registry key
+  on uninstall.
+
+  Removed dependency on libeay32.dll for the no change password build.
+
+
+[1.0-beta19 2004-09-22]
+
+New Features:
+  The menu is restructured. Previous versions had all "actions" on the
+  main menu, and a submenu with all configs for every action. This version
+  lists all configs on the main menu, and have a submenu with actions.
+
+  If only one config exist, the actions are placed on the main menu.
+
+  If no connection is running, the config dir is re-scanned for configs
+  every time the menu is opened.
+
+  If a file exists in the config folder named xxxx_up.bat, where xxxx
+  is the same name as an existing config file, this batch file will be
+  executed after a connection has been establish. If the batch file
+  fails (return an exitcode other than 0), an error message is displayed.
+
+  Auto-hide status window after a connection is established and show
+  a systray info balloon instead.
+
+  Show assigned IP address in connected balloon.
+
+  Don't allow starting multiple instances of OpenVPN GUI.
+
+  Added a cancel button to the Ask Password dialog.
+
+Bug Fixes:
+  Removed [nopass] parameter on --connect option as the password prompt
+  is only showed if the private key really is passphrase protected.
+
+  Show an error msg if --connect refers to a non existing config file.
+
+  Ignore case of config file extension.
+
+
+[1.0-beta18 2004-09-13]
+
+New Features:
+  New Icons! Supplied by Radek Hladik.
+
+  If only one config file exists, dubble-clicking the systray icon will
+  start that connection.
+
+Bug Fixes:
+
+  A bug in the GetRegKey() function caused OpenVPN GUI sometimes to
+  fail starting with the following error msg:
+  Error creating exit_event when checking openvpn version.
+
+
+[1.0-beta17 2004-09-02]
+
+New Features:
+  A dialog to configure Proxy Settings. You can now set http-proxy or
+  socks-proxy address and port from the GUI. You can also make the GUI
+  ask for proxy username and password, which will then be supplied to
+  OpenVPN via an auth file.
+
+  Use Internet Explorer Proxy Settings (Ewan Bhamrah Harley)
+  
+  A "Hide" button on the status dialog.
+
+  Show an error message if the client certificate has expired or is not
+  yet valid.
+
+Bug Fixes:
+  If OpenVPN was installed in a non default folder, OpenVPN GUI would try
+  to locate openvpn.exe, log-dir and conf-dir in the default openvpn
+  folder anyway. Fixed in this version.
+
+  OpenVPN GUI tried to check the status of the OpenVPN Service even
+  if the service menu was disabled in the registry, which caused an
+  error message to be showed if the service was not installed properly.
+
+  Wait for two seconds when exiting OpenVPN GUI, so running openvpn
+  processes can exit cleanly.
+
+  Disable Disconnect menu item while waiting for an openvpn process
+  to terminate.
+
+
+[1.0-beta16 2004-08-25]
+
+Bug Fixes:
+
+  When only a filename (no full path) was specified in the config file
+  for --key or --pkcs12, OpenVPN GUI did not look for the file in the
+  config dir when changing password. Fixed in this version.
+
+  
+[1.0-beta15 2004-08-25]
+
+  When changing password, require new password to be at least 8 chars.
+
+
+[v1.0-beta14 2004-08-24]
+
+New Features:
+  Change password of the private key. Both PEM and PKCS #12 files
+  are supported.
+
+
+[v1.0-beta13 2004-08-19]
+
+New Features:
+  Shows which connections are connected in the TrayIcon tip msg
+
+Bug Fixes:
+  The "Enter Passphrase" dialog was a bit miss-designed. The textlabel
+  and the editbox was overlapping a few pixels which made it look a
+  little strange in some occasions.
+
+
+[v1.0-beta12 2004-08-16]
+
+New Features:
+  Show a Status Window while connecting that shows the output from
+  OpenVPN in real-time.
+
+  A new menuitem to show the real-time status window.
+
+  If only one connection is running, dubbleclicking the trayicon will
+  show the status window for the running connection.
+
+  Show a yellow TrayIcon while connecting.
+
+  Detect "restarting process" message, and shows "Connecting" status
+  until a new connected msg is received.
+
+
+[v1.0-beta11a 2004-08-15]
+
+Bug Fix:
+  The exit_event handle was not closed after checking the openvpn version
+  which made it impossible to restart connections with OpenVPN versions 
+  lower than 2.0-beta6. You received the following msg when trying to
+  connect a second time:
+
+  "I seem to be running as a service, but my exit event object is telling
+  me to exit immediately"
+ 
+  This bug was introduced with OpenVPN GUI v1.0-beta10.
+
+
+[v1.0-beta11 2004-08-09]
+
+New Features:
+  This version is bundled with a patched version of openvpn that will
+  output a log message AFTER routes have been added to the system. This
+  allows the GUI to report "Connected" after this msg. This patch will
+  be included in next official release of OpenVPN 2.0-beta, so the GUI
+  will continue to work with future official releases of openvpn. Older
+  versions of openvpn will still work with this version of OpenVPN GUI,
+  but "Connected" will then be reported before routes are added as it
+  did with OpenVPN GUI 1.0-beta10.
+
+  If wrong passphrase is entered, openvpn will automatically be restarted
+  a specified nr of times (default 3), which allows the user to re-enter
+  his passphrase.
+
+  Number of passphase attempts to allow can be specified with reg-key 
+  "passphrase_attempts" or cmd-line option with the same name.
+
+Bug Fixes:
+  An empty line was printed in the log when prompting for passphrase.
+
+ 
+[v1.0-beta10 2004-08-08]
+
+  Default registry setting for showing the "Edit Config" menuitem is
+  changed to "1" (Show it). If a previous version of OpenVPN GUI has
+  been used, the registry key will of cource not change without manually
+  changing it.
+
+New Features:
+  Check version of openvpn.exe, so it can support all versions of OpenVPN
+  without a special build of OpenVPN GUI. Tested with 1.5.0, 1.6.0,
+  2.0-beta4, 2.0-beta7 and 2.0-beta10. Older versions than 2.0-beta6 still
+  only support one simultaneous connection though. 
+
+  Redirect StdIn/StdOut/StdErr through OpenVPN GUI, so we can pass the
+  private key passphrase to openvpn without requiring a patched version
+  of OpenVPN. This also allows OpenVPN GUI to prompt for a passphrase only
+  when it's needed.
+
+  If connecting fails, ask the user if he wants to view the log.
+
+  Show a dialog while connecting to allow the user to abort the connection.
+
+Bug Fixes:
+  Disable both "Connect" and "DisConnect" while connecting.
+
+
+[v1.0-beta9 2004-07-23]
+
+The passphrase support added in v1.5-beta1 has been merched into the v1.0
+source so v1.5 does not exist any longer!
+
+New Features:
+   Cmd-line options: 
+   --connect cnn [nopass]: Autoconnect to "cnn" at startup. If "nopass"
+                           is used, no passphrase will be asked for.
+   --help                : Show list of cmd-line options.
+
+   And all registry settings is now available as cmd-line options:
+   --exe_path            : Path to openvpn.exe.\n"
+   --config_dir          : Path to dir to search for config files in.\n"
+   --ext_string          : Extension on config files.\n"
+   --log_dir             : Path to dir where log files will be saved.\n"
+   --priority_string     : Priority string (See install.txt for more info).\n"
+   --append_string       : 1=Append to log file. 0=Truncate logfile.\n"
+   --log_viewer          : Path to log viewer.\n"
+   --editor              : Path to config editor.\n"
+   --allow_edit          : 1=Show Edit Config menu\n"
+   --allow_service       : 1=Show Service control menu\n"
+
+Bug Fixes:
+   If the GUI was started from a cmd prompt and no passphrase was given
+   openvpn.exe would query the user for the passphrase from the console
+   (which is not showed), so the openvpn process got stuck there.
+
+
+[v1.5-beta1 2004-07-16]
+
+This version is based on v1.0-beta8.
+
+v1.5 is just a temporary version in wait for the management interface
+to OpenVPN. When this is available features added in v1.5 will be
+rewritten to use this interface instead in v2.0 of OpenVPN-GUI.
+
+New Features:
+   Support for passphrase protected private keys. OpenVPN-GUI will now
+   always query the user for a passphrase before connecting. The
+   passphrase is then supplied to OpenVPN via the --passphrase option.
+   This requires a patched version of OpenVPN that supports the
+   --passphrase option. A patched version that supports this is included
+   in the OpenVPN-GUI v1.5-betaX installation package.
+
+   The user will always be asked for a passphrase even if the private
+   key is not encrypted. This is because the GUI does not know in advance
+   if the key is encrypted or not. This will be fixed in v2.0 when we
+   have the management interface ready.
+
+
+[v1.0-beta8 2004-07-16]
+New Features:
+   Tray Icon now shows red/green if any connection is established.
+
+Bug Fixes:
+   If something failed before starting openvpn.exe, exit_event and
+   log_handle was not closed correctly which could make it impossible
+   to make any more connections without restarting OpenVPN-GUI.
+
+
+[v1.0-beta7 2004-07-08]
+New Features:
+   A seperate build version supporting OpenVPN v1.5, v1.6 and the
+   2.0 series before beta6. This version only supports having one
+   connection running at the same time.
+
+   Added an About box.
+
+   If there are active connections when "Exit OpenVPN-GUI" is selected,
+   a "Are you sure you want to exit?" box is displayed.
+
+Bug Fixes
+  It was not possible to have cmd-line options on the reg-keys
+  "log_viewer" or "editor". This is now possible.
+
+
+[v1.0-beta6 2004-07-05]
+Bug Fixes:
+   The default values for paths created by beta3, beta4 and beta5 used
+   hardcoded values for "C:\windows..." and "C:\program files...", which
+   did not work on some localized Windows versions that is not using
+   these folders. This is fixed now by getting those pathnames from the
+   system.
+
+   *** If you have installed beta3-beta5 you need to manualy delete the
+   whole HKEY_LM\SOFTWARE\OpenVPN-GUI key in the registry. The correct
+   reg-keys will then be recreated when OpenVPN-GUI is started. ***
+
+
+[v1.0-beta5 2004-07-04]
+New Features:
+   Menu-commands to Start/Stop/Restart the OpenVPN Service. Enable this
+   feature by setting the following reg-key to 1:
+   HKEY_LM\SOFTWARE\OpenVPN-GUI\allow_service
+
+Bug Fixes:
+   v1.0-beta4 always opened the registry with write-access, which made
+   it imposible to start it without administator rights.
+
+
+[v1.0-beta4 2004-07-04]
+New Features:
+   Menu-command to open a config-file for editing. Enable this feature
+   by setting the following reg-key to 1: 
+   HKEY_LM\SOFTWARE\OpenVPN-GUI\allow_edit
+ 
+
+[v1.0-beta3 2004-07-04]
+New Features:
+   Log Viewer. As default OpenVPN-GUI launches Notepad to view the log.
+   The program used to view the log can be changed with this reg-key:
+   HKEY_LM\SOFTWARE\OpenVPN-GUI\log-viewer
+
+   OpenVPN-GUI now uses its own registry-keys, instead of the same as
+   the service wrapper uses. It now stores its values under this key:
+   HKEY_LM\SOFTWARE\OpenVPN-GUI\
+   If this key does not exist, OpenVPN-GUI will create it with the same
+   default values as the service-wrapper uses, so if you want to use the
+   service-wrapper on config-files indepentent of the GUI you should
+   change the "config-dir" key to another folder.
+
+
+[v1.0-beta2 2004-07-03]
+New Features:
+   Connect/Disconnect now shows a sub-menu so each connection can be 
+   brought up/down individually.
+
+   Upon connect OpenVPN-GUI will wait for 3 seconds and then check if
+   the openvpn process is still alive and report "Connection successful"
+   only if this is the case.
+
+   OpenVPN-GUI monitors the openvpn processes it has started, and if a
+   process is terminated before the user has chosen to take it down, this
+   will be reported to the user.
+
+   If no config files is found when OpenVPN-GUI is started, it will
+   notify the user of this and terminate.
+
+
+[v1.0-beta1 2004-07-02] Initial release
+Features:
+   Adds itself as a system tray icon.
+   Menuitem "Connect" - Starts openvpn for all config-files it has found.
+
