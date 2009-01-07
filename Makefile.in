@@ -19,7 +19,7 @@ CFLAGS += -W -Wall -Wfloat-equal -Wundef -Wshadow -Wpointer-arith -Wbad-function
 
 OBJS = main.o tray.o openvpn.o openvpn_monitor_process.o viewlog.o \
        service.o options.o passphrase.o proxy.o ieproxy.o registry.o \
-       openvpn_config.o scripts.o 
+       openvpn_config.o scripts.o openvpn-gui-$(RES_LANG).res
 
 SOURCES = main.c main.h openvpn.c openvpn.h \
           openvpn_monitor_process.c openvpn_monitor_process.h \
@@ -33,7 +33,7 @@ EXTRA = connected.ico connecting.ico disconnected.ico reconnecting.ico openvpn-g
         acinclude.m4 Makefile.in aclocal.m4 config.h.in configure configure.ac \
         OpenVPN\ GUI\ ReadMe.txt changes.txt COPYING COPYRIGHT.GPL
    
-all : ${OBJS} openvpn-gui-$(RES_LANG).res
+all : ${OBJS}
 	${CC} $(CFLAGS) $(LDFLAGS) -o ${EXE} ${OBJS} ${LIBS} 
 
 %.o : %.c %.h
