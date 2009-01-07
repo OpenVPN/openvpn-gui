@@ -26,7 +26,7 @@ SOURCES = main.c main.h openvpn.c openvpn.h \
           tray.c tray.h viewlog.c viewlog.h service.c service.h \
           options.c options.h passphrase.c passphrase.h proxy.c proxy.h \
           ieproxy.c ieproxy.h registry.c registry.h scripts.c scripts.h \
-          openvpn_config.c openvpn_config.h \
+          openvpn_config.c openvpn_config.h openvpn-gui.exe.manifest \
           chartable.h openvpn-gui-res.h openvpn-gui-$(RES_LANG).rc
 
 EXTRA = connected.ico connecting.ico disconnected.ico reconnecting.ico openvpn-gui.ico \
@@ -40,7 +40,7 @@ all : ${OBJS}
 	$(CC) $(CFLAGS) -c $<
 
 openvpn-gui-$(RES_LANG).res : openvpn-gui-$(RES_LANG).rc openvpn-gui-res.h
-	$(WINDRES) -i openvpn-gui-$(RES_LANG).rc -I rc -o openvpn-gui-$(RES_LANG).res -O coff 
+	$(WINDRES) -i openvpn-gui-$(RES_LANG).rc -J rc -o openvpn-gui-$(RES_LANG).res -O coff 
 
 dist:
 	@test -x "$(ZIP)" || { \

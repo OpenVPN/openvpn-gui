@@ -2,6 +2,7 @@
  *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
+ *                2009 Heiko Hund <heikoh@users.sf.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,8 +20,11 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "openvpn-gui-res.h"
 #include <windows.h>
+#include "openvpn-gui-res.h"
+
+/* Manifest for XP visual styles */
+CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "openvpn-gui.exe.manifest" 
 
 /* Application Icons */
 APP_ICON               ICON  DISCARDABLE  "openvpn-gui.ico"
@@ -32,7 +36,7 @@ APP_ICON_DISCONNECTED  ICON  DISCARDABLE  "disconnected.ico"
 IDD_ABOUTDIALOG DIALOG 0, 0, 260, 135
 STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
 CAPTION "About - OpenVPN GUI for Windows"
-FONT 8, "MS Sans Serif"
+FONT 8, "Microsoft Sans Serif"
 BEGIN
     PUSHBUTTON      "OK", IDOK, 99, 115, 63, 14
     ICON            APP_ICON_CONNECTED, 204, 11, 8, 21, 20
@@ -53,7 +57,7 @@ IDD_PASSPHRASE DIALOGEX 6, 18, 120, 51
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
 EXSTYLE WS_EX_TOPMOST
 CAPTION "OpenVPN"
-FONT 8, "MS Sans Serif"
+FONT 8, "Microsoft Sans Serif"
 BEGIN
     LTEXT           "Enter Password:", 201, 6, 6, 100, 10
     EDITTEXT        EDIT_PASSPHRASE, 6, 17, 107, 12, ES_PASSWORD | ES_AUTOHSCROLL
@@ -65,7 +69,7 @@ END
 IDD_AUTH_PASSWORD DIALOG 6, 18, 160, 62
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
 CAPTION "OpenVPN - User Authentication"
-FONT 8, "MS Sans Serif"
+FONT 8, "Microsoft Sans Serif"
 BEGIN
     LTEXT           "Username:", 0, 6, 9, 50, 10
     LTEXT           "Password:", 0, 6, 26, 50, 10
@@ -79,7 +83,7 @@ END
 IDD_STATUS DIALOG 6, 18, 380, 210
 STYLE WS_SIZEBOX | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | DS_CENTER
 CAPTION "OpenVPN"
-FONT 8, "MS Sans Serif"
+FONT 8, "Microsoft Sans Serif"
 BEGIN
     LTEXT           "Connecting...", TEXT_STATUS, 20, 5, 200, 10
     PUSHBUTTON      "Disconnect", ID_DISCONNECT, 50, 190, 50, 14
@@ -92,7 +96,7 @@ END
 IDD_CHANGEPSW DIALOG 6, 18, 193, 82
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
 CAPTION "OpenVPN - Change Passphrase"
-FONT 8, "MS Sans Serif"
+FONT 8, "Microsoft Sans Serif"
 BEGIN
     LTEXT           "Old Password:", 171, 6, 9, 85, 10
     LTEXT           "New Password:", 172, 6, 26, 85, 10
@@ -110,7 +114,7 @@ END
 IDD_PROXY DIALOG 6, 18, 269, 228
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
 CAPTION "OpenVPN - Proxy Settings"
-FONT 8, "MS Sans Serif"
+FONT 8, "Microsoft Sans Serif"
 BEGIN
     GROUPBOX        "", 201, 13, 62, 243, 137
     AUTORADIOBUTTON "Use OpenVPN Config-file Settings", RB_PROXY_USE_OPENVPN, \
@@ -139,7 +143,7 @@ END
 IDD_PROXY_AUTH DIALOG 29, 23, 154, 65
 STYLE DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER
 CAPTION "OpenVPN - Proxy Authentication"
-FONT 8, "MS Sans Serif"
+FONT 8, "Microsoft Sans Serif"
 BEGIN
     LTEXT           "Username:", 201, 9, 8, 38, 10
     EDITTEXT        EDIT_PROXY_USERNAME, 49, 5, 94, 12, ES_AUTOHSCROLL
