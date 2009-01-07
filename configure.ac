@@ -8,7 +8,7 @@ AC_PROG_CC_C99
 # Build Win32 native binaries
 CFLAGS="$CFLAGS -mno-cygwin"
 CPPFLAGS="$CPPFLAGS -mno-cygwin"
-LDFLAGS="$LDFLAGS -mno-cygwin"
+LDFLAGS="$LDFLAGS -mno-cygwin -mwindows"
 
 AC_PATH_PROG([WINDRES], [windres])
 AC_PATH_PROG([ZIP], [zip])
