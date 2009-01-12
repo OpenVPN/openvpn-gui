@@ -1,6 +1,5 @@
-GUI_VERSION = 1.0.3
-RES_LANG = en
-BASENAME = openvpn-gui-$(GUI_VERSION)-$(RES_LANG)
+GUI_VERSION = @PACKAGE_VERSION@
+BASENAME = openvpn-gui-$(GUI_VERSION)
 EXE = $(BASENAME).exe
 
 CC = @CC@
@@ -19,7 +18,7 @@ CFLAGS += -W -Wall -Wfloat-equal -Wundef -Wshadow -Wpointer-arith -Wbad-function
 
 OBJS = main.o tray.o openvpn.o openvpn_monitor_process.o viewlog.o \
        service.o options.o passphrase.o proxy.o ieproxy.o registry.o \
-       openvpn_config.o scripts.o openvpn-gui-$(RES_LANG).res
+       openvpn_config.o scripts.o openvpn-gui-res.o
 
 SOURCES = main.c main.h openvpn.c openvpn.h \
           openvpn_monitor_process.c openvpn_monitor_process.h \
@@ -27,7 +26,7 @@ SOURCES = main.c main.h openvpn.c openvpn.h \
           options.c options.h passphrase.c passphrase.h proxy.c proxy.h \
           ieproxy.c ieproxy.h registry.c registry.h scripts.c scripts.h \
           openvpn_config.c openvpn_config.h openvpn-gui.exe.manifest \
-          chartable.h openvpn-gui-res.h openvpn-gui-$(RES_LANG).rc
+          chartable.h openvpn-gui-res.h openvpn-gui-res*.rc
 
 EXTRA = connected.ico connecting.ico disconnected.ico reconnecting.ico openvpn-gui.ico \
         acinclude.m4 Makefile.in aclocal.m4 config.h.in configure configure.ac \
@@ -39,8 +38,8 @@ all : ${OBJS}
 %.o : %.c %.h
 	$(CC) $(CFLAGS) -c $<
 
-openvpn-gui-$(RES_LANG).res : openvpn-gui-$(RES_LANG).rc openvpn-gui-res.h
-	$(WINDRES) -i openvpn-gui-$(RES_LANG).rc -J rc -o openvpn-gui-$(RES_LANG).res -O coff 
+openvpn-gui-res.o : openvpn-gui-res.rc openvpn-gui-res.h openvpn-gui-res-*.rc
+	$(WINDRES) -i openvpn-gui-res.rc -o openvpn-gui-res.o
 
 dist:
 	@test -x "$(ZIP)" || { \
@@ -55,4 +54,4 @@ dist:
 	rm -rf $(BASENAME)
 
 clean :
-	rm -f *.o *.exe *.res
+	rm -f *.o *.exe
