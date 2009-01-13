@@ -38,7 +38,7 @@ all : ${OBJS}
 %.o : %.c %.h
 	$(CC) $(CFLAGS) -c $<
 
-openvpn-gui-res.o : openvpn-gui-res.rc openvpn-gui-res.h openvpn-gui-res-*.rc
+openvpn-gui-res.o : openvpn-gui-res.h *.rc *.ico *.manifest
 	$(WINDRES) -i openvpn-gui-res.rc -o openvpn-gui-res.o
 
 dist:
