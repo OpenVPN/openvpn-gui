@@ -19,5 +19,6 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-int LoadLangString(HINSTANCE, UINT, LANGID, PTSTR, int);
-HICON LoadLangIcon(HINSTANCE, PTSTR, LANGID);
+int LoadStringLang(HINSTANCE, UINT, LANGID, PTSTR, int);
+HICON LoadIconLang(HINSTANCE, PTSTR, LANGID);
+INT_PTR DialogBoxLang(HINSTANCE, LPCTSTR, LANGID, HWND, DLGPROC);

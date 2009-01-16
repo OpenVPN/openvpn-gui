@@ -25,7 +25,7 @@
 static const LANGID defaultLangId = MAKELANGID(LANG_ENGLISH, SUBLANG_NEUTRAL);
 
 static HRSRC
-FindLangResource(HINSTANCE instance, PTSTR resType, PTSTR resId, LANGID langId)
+FindResourceLang(HINSTANCE instance, PTSTR resType, PTSTR resId, LANGID langId)
 {
     HRSRC res;
 
@@ -45,14 +45,14 @@ FindLangResource(HINSTANCE instance, PTSTR resType, PTSTR resId, LANGID langId)
 
 
 int
-LoadLangString(HINSTANCE instance, UINT stringId, LANGID langId, PTSTR buffer, int bufferSize)
+LoadStringLang(HINSTANCE instance, UINT stringId, LANGID langId, PTSTR buffer, int bufferSize)
 {
     PWCH entry;
     PTSTR resBlockId = MAKEINTRESOURCE(stringId / 16 + 1);
     int resIndex = stringId & 15;
 
     /* find resource block for string */
-    HRSRC res = FindLangResource(instance, RT_STRING, resBlockId, langId);
+    HRSRC res = FindResourceLang(instance, RT_STRING, resBlockId, langId);
     if (res == NULL)
         return 0;
 
@@ -90,10 +90,10 @@ LoadLangString(HINSTANCE instance, UINT stringId, LANGID langId, PTSTR buffer, i
 
 
 HICON
-LoadLangIcon(HINSTANCE instance, PTSTR iconId, LANGID langId)
+LoadIconLang(HINSTANCE instance, PTSTR iconId, LANGID langId)
 {
     /* find group icon resource */
-    HRSRC res = FindLangResource(instance, RT_GROUP_ICON, iconId, langId);
+    HRSRC res = FindResourceLang(instance, RT_GROUP_ICON, iconId, langId);
     if (res == NULL)
         return NULL;
 
@@ -106,7 +106,7 @@ LoadLangIcon(HINSTANCE instance, PTSTR iconId, LANGID langId)
         return NULL;
 
     /* find the actual icon */
-    res = FindLangResource(instance, RT_ICON, MAKEINTRESOURCE(id), langId);
+    res = FindResourceLang(instance, RT_ICON, MAKEINTRESOURCE(id), langId);
     if (res == NULL)
         return NULL;
 
@@ -119,4 +119,19 @@ LoadLangIcon(HINSTANCE instance, PTSTR iconId, LANGID langId)
         return NULL;
 
     return CreateIconFromResource(resInfo, resSize, TRUE, 0x30000);
+}
+
+INT_PTR
+DialogBoxLang(HINSTANCE instance, PTSTR dialogId, LANGID langId, HWND parentWnd, DLGPROC dialogFunc)
+{
+    /* find dialog resource */
+    HRSRC res = FindResourceLang(instance, RT_DIALOG, dialogId, langId);
+    if (res == NULL)
+        return -1;
+
+    HGLOBAL resInfo = LoadResource(instance, res);
+    if (resInfo == NULL)
+        return -1;
+
+    return DialogBoxIndirect(instance, resInfo, parentWnd, dialogFunc);
 }
