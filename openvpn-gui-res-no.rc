@@ -1,0 +1,350 @@
+/*
+ *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
+ *
+ *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program (see the file COPYING included with this
+ *  distribution); if not, write to the Free Software Foundation, Inc.,
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+/*
+ * File translated to Norwegian by Morten Karlsen <mk@taide.net>, Mar 11, 2005.
+ */
+
+/* About Dialog */
+IDD_ABOUTDIALOG DIALOG 0, 0, 260, 135
+STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Om - OpenVPN GUI for Windows"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_NORWEGIAN, SUBLANG_NEUTRAL
+BEGIN
+    PUSHBUTTON "OK", IDOK, 99, 115, 63, 14
+    ICON APP_ICON_CONNECTED, 204, 11, 8, 21, 20
+    LTEXT "", ID_TEXT_OPENVPNGUI, 40, 5, 215, 8
+    LTEXT "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>", 102, 40, 15, 215, 8
+    LTEXT "http://openvpn.se/", 103, 40, 25, 215, 8
+    LTEXT "OpenVPN - En applikasjon for sikker overføring av IP nett " \
+          "over en enkel UDP port, med støtte for SSL/TLS-basert " \
+          "sessjons autentisering og nøkkel håndtering, pakke- " \
+          "kryptering, -autentisering og -komprimering.",
+          104, 11, 51, 235, 34
+    LTEXT "Copyright (C) 2002-2005 OpenVPN Solutions LLC  <info@openvpn.net>", 105, 11, 87, 235, 11
+    LTEXT "http://openvpn.net/", 106, 11, 98, 235, 10
+END
+
+/* Passphrase Dialog */
+IDD_PASSPHRASE DIALOG 6, 18, 120, 51
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+EXSTYLE WS_EX_TOPMOST
+CAPTION "OpenVPN"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_NORWEGIAN, SUBLANG_NEUTRAL
+BEGIN
+    LTEXT "Oppgi passord:", 201, 6, 6, 100, 10
+    EDITTEXT EDIT_PASSPHRASE, 6, 17, 107, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "OK", IDOK, 6, 33, 50, 14
+    PUSHBUTTON "Avbryt", IDCANCEL, 64, 33, 50, 14
+END
+
+/* Auth Username/Password Dialog */
+IDD_AUTH_PASSWORD DIALOG 6, 18, 160, 62
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+CAPTION "OpenVPN - Brukerautentisering"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_NORWEGIAN, SUBLANG_NEUTRAL
+BEGIN
+    LTEXT "Brukernavn:", 0, 6, 9, 50, 10
+    LTEXT "Passord:", 0, 6, 26, 50, 10
+    EDITTEXT EDIT_AUTH_USERNAME, 60, 6, 94, 12, ES_AUTOHSCROLL
+    EDITTEXT EDIT_AUTH_PASSWORD, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "OK", IDOK, 20, 42, 50, 14
+    PUSHBUTTON "Avbryt", IDCANCEL, 90, 42, 52, 14
+END
+
+/* Status Dialog */
+IDD_STATUS DIALOG 6, 18, 380, 210
+STYLE WS_SIZEBOX | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | DS_CENTER
+CAPTION "OpenVPN"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_NORWEGIAN, SUBLANG_NEUTRAL
+BEGIN
+    LTEXT "Kobler til...", TEXT_STATUS, 20, 5, 200, 10
+    PUSHBUTTON "Koble fra", ID_DISCONNECT, 50, 190, 50, 14
+    PUSHBUTTON "Koble til på nytt", ID_RESTART, 150, 190, 40, 14
+    PUSHBUTTON "Skjul", ID_HIDE, 100, 190, 40, 14
+    LTEXT "", TEXT_CONFIG, 0, 0, 0, 0
+END
+
+/* Change Passphrase Dialog */
+IDD_CHANGEPSW DIALOG 6, 18, 193, 82
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "OpenVPN - Ändra Lösenord"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_NORWEGIAN, SUBLANG_NEUTRAL
+BEGIN
+    LTEXT "Nåværende passord:", 171, 6, 9, 85, 10
+    LTEXT "Oppgi nytt passord:", 172, 6, 26, 85, 10
+    LTEXT "Bekreft nytt passord:", 173, 6, 42, 85, 10
+    EDITTEXT EDIT_PSW_CURRENT, 95, 6, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT EDIT_PSW_NEW, 95, 23, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT EDIT_PSW_NEW2, 95, 39, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "OK", IDOK, 40, 59, 50, 14
+    PUSHBUTTON "Avbryt", IDCANCEL, 103, 59, 50, 14
+    LTEXT "", TEXT_KEYFORMAT, 0, 0, 0, 0
+    LTEXT "", TEXT_KEYFILE, 0, 0, 0, 0
+END
+
+/* Proxy Settings Dialog */
+IDD_PROXY DIALOG 6, 18, 269, 228
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "OpenVPN - Proxy Inställningar"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_NORWEGIAN, SUBLANG_NEUTRAL
+BEGIN
+    GROUPBOX "", 201, 13, 62, 243, 137
+    AUTORADIOBUTTON "Bruk innstillinger fra OpenVPNs konfig-fil", RB_PROXY_USE_OPENVPN, \
+                    20, 12, 200, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Bruk innstillinger fra Internet Explorer", \
+                    RB_PROXY_USE_IE, 20, 31, 200, 10
+    AUTORADIOBUTTON "Manuell Konfigurering", RB_PROXY_USE_MANUAL, 20, 50, 200, 10
+    AUTORADIOBUTTON "HTTP Proxy", RB_PROXY_HTTP, 20, 74, 59, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "SOCKS Proxy", RB_PROXY_SOCKS, 20, 147, 67, 10
+    GROUPBOX "", 202, 20, 86, 225, 43
+    LTEXT "Adresse:", TEXT_PROXY_HTTP_ADDRESS, 27, 98, 41, 10
+    LTEXT "Port:", TEXT_PROXY_HTTP_PORT, 176, 98, 25, 10
+    EDITTEXT EDIT_PROXY_HTTP_ADDRESS, 70, 96, 92, 12, ES_AUTOHSCROLL
+    EDITTEXT EDIT_PROXY_HTTP_PORT, 206, 96, 30, 12, ES_AUTOHSCROLL
+    AUTOCHECKBOX "Be om brukernavn ved tilkobling.", CHECKB_PROXY_AUTH, 27, 112, 183, 10
+    GROUPBOX "", 203, 20, 158, 225, 33
+    LTEXT "Adresse:", TEXT_PROXY_SOCKS_ADDRESS, 27, 172, 41, 10
+    LTEXT "Port:", TEXT_PROXY_SOCKS_PORT, 176, 172, 20, 10
+    EDITTEXT EDIT_PROXY_SOCKS_ADDRESS, 70, 170, 98, 12, ES_AUTOHSCROLL
+    EDITTEXT EDIT_PROXY_SOCKS_PORT, 206, 170, 30, 12, ES_AUTOHSCROLL
+    PUSHBUTTON "OK", IDOK, 63, 206, 50, 14
+    PUSHBUTTON "Avbryt", IDCANCEL, 159, 206, 50, 14
+END
+
+/* Proxy Authentication Dialog */
+IDD_PROXY_AUTH DIALOG 29, 23, 170, 65
+STYLE DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER
+CAPTION "OpenVPN - Proxy Autentisering"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_NORWEGIAN, SUBLANG_NEUTRAL
+BEGIN
+    LTEXT "Brukernavn:", 201, 9, 8, 55, 10
+    EDITTEXT EDIT_PROXY_USERNAME, 65, 5, 94, 12, ES_AUTOHSCROLL
+    LTEXT "Passord:", 202, 9, 26, 55, 10
+    EDITTEXT EDIT_PROXY_PASSWORD, 65, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "OK", IDOK, 60, 43, 50, 14
+END
+
+STRINGTABLE
+LANGUAGE LANG_NORWEGIAN, SUBLANG_NEUTRAL
+BEGIN
+    /* About Dialog */
+    TEXT_ABOUT_OPENVPNGUI "OpenVPN GUI v%s - Ett Windows-Grensesnitt mot OpenVPN"
+
+    /* Tray - Resources */
+    MSG_TIP "OpenVPN Brukergrensesnitt"
+    MSG_TIP_CONNECTED "\nTilkoblet: "
+    MSG_TIP_CONNECTING "\nKobler til: "
+    MSG_TIP_CONNECTED_SINCE "\nTilkoblet siden: "
+    MSG_TIP_ASSIGNED_IP "\nTildelt IP: %s"
+    IDM_TEXT_SERVICE "OpenVPN Service"
+    IDM_TEXT_PROXY "Proxy Innstillinger"
+    IDM_TEXT_ABOUT "Om"
+    IDM_TEXT_CLOSE "Avslutte"
+    IDM_TEXT_CONNECT "Koble til"
+    IDM_TEXT_DISCONNECT "Koble fra"
+    IDM_TEXT_STATUS "Vis Status"
+    IDM_TEXT_VIEWLOG "Vis Logg"
+    IDM_TEXT_EDITCONFIG "Editere innstillinger"
+    IDM_TEXT_PASSPHRASE "Endre passord"
+    IDM_TEXT_SERVICE_START "Starte"
+    IDM_TEXT_SERVICE_STOP "Stoppe"
+    IDM_TEXT_SERVICE_RESTART "Starte på nytt"
+    IDM_TEXT_SERVICEONLY_START "Koble til"
+    IDM_TEXT_SERVICEONLY_STOP "Koble fra"
+    IDM_TEXT_SERVICEONLY_RESTART "Koble til på nytt"
+    IDM_TEXT_ASK_STOP_SERVICE "Vil du koble fra? (Stoppe OpenVPN Service)?"
+
+    /* Logviewer - Resources */
+    ERR_START_LOG_VIEWER "Feil under oppstart av log viewer: %s"
+    ERR_START_CONF_EDITOR "Feil under oppstart av konfig editor: %s"
+
+    /* OpenVPN */
+    ERR_TO_MANY_CONFIGS "Du kan ikke ha fler enn %d konfig-filer. Kontakt utvikleren av OpenVPN GUI om du har behov for å håndtere fler."
+    ERR_CANNOT_CONSTRUCT_LOG "Feil under opprettelse av logg filnavn: %s"
+    ERR_ONLY_ONE_CONN_OLD_VERSION "Du kan bara ha en tilkobling igang samtidig med eldre versjoner av OpenVPN enn 2.0-beta6."
+    ERR_STOP_SERV_ON_OLD_VERSION "Du kan ikke koble til med OpenVPN GUI når OpenVPN Service kjører. (kun OpenVPN 1.5/1.6). Stopp tjenesten først om du vil benytte OpenVPN GUI."
+    ERR_CREATE_EVENT "CreateEvent feilet med å opprette event: %s"
+    ERR_UNKNOWN_PRIORITY "Ukjent prioritet: %s"
+    ERR_LOG_APPEND_BOOL "Legg til/Overskriv loggfil flagg (Oppgis som '%s') må være '0' eller '1'"
+    ERR_GET_IE_PROXY_SETTINGS "Kunne ikke hemte innstillinger for HTTP Proxy fra Internet Explorer. (%s)"
+    ERR_INIT_SEC_DESC "InitializeSecurityDescriptor feilet."
+    ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl feilet."
+    ERR_CREATE_PIPE_OUTPUT "CreatePipe på hOutputWrite feilet."
+    ERR_DUP_HANDLE_ERR_WRITE "DuplicateHandle på hErrorWrite feilet."
+    ERR_CREATE_PIPE_INPUT "CreatePipe på hInputRead feilet."
+    ERR_DUP_HANDLE_OUTPUT_READ "DuplicateHandle på hOutputRead feilet."
+    ERR_DUP_HANDLE_INPUT_WRITE "DuplicateHandle på hInputWrite feilet."
+    ERR_CLOSE_HANDLE_TMP "CloseHandle på hOutputReadTmp/hInputWriteTmp feilet."
+    ERR_CREATE_PROCESS "CreateProcess feilet, exe='%s' cmdline='%s' dir='%s'"
+    ERR_CLOSE_HANDLE "CloseHandle feilet."
+    ERR_CREATE_THREAD_STATUS "CreateThread for å vise statusvindu feilet."
+    INFO_STATE_WAIT_TERM "Status: Ventar på OpenVPN avslutning..."
+    ERR_OPEN_LOG_WRITE "Feil under åpning av loggfil for skrivning: %s. Du trenger sannsynligvis administrator-rettigheter for å kjøre OpenVPN."
+    INFO_STATE_CONNECTED "Status: Tilkoblet"
+    INFO_NOW_CONNECTED "%s er tilkoblet."
+    INFO_ASSIG_IP "tildelt IP: %s"
+    ERR_CERT_EXPIRED "Kunne ikke koble til, ditt sertifikat er for gammelt eller klokken i din datamaskin går feil."
+    ERR_CERT_NOT_YET_VALID "Kunne ikke koble til, ditt sertifikat er datert frem i tid eller klokken i din datamaskin går feil."
+    INFO_STATE_RECONNECTING "Status: Kobler til på nytt"
+    INFO_STATE_DISCONNECTED "Status: Koblet fra"
+    INFO_CONN_TERMINATED "Du har blitt frakoblet %s."
+    INFO_STATE_FAILED "Status: Tilkobling feilet."
+    INFO_CONN_FAILED "Tilkobling til %s feilet."
+    INFO_STATE_FAILED_RECONN "Status: Kunne ikke koble til på nytt"
+    INFO_RECONN_FAILED "Tilkobling til %s feilet."
+    INFO_STATE_SUSPENDED "Status: Hvilemodus"
+    ERR_READ_STDOUT_PIPE "Feil under lesning fra OpenVPN StdOut pipe."
+    ERR_CREATE_RICHED_LOGWINDOW "Opprettelse av RichEdit LogWindow feilet!!"
+    ERR_SET_SIZE "Set Size feilet!"
+    ERR_AUTOSTART_CONF_NOT_FOUND "Følgende konfig kunne ikke starte automatisk: %s"
+    ERR_VERSION_CREATE_EVENT "CreateEvent() feilet under sjekk av openvpn version."
+    ERR_CREATE_PIPE_INPUT_READ "CreatePipe på hInputRead feilet."
+    INFO_STATE_CONNECTING "Status: Kobler til"
+    INFO_CONNECTION_XXX "OpenVPN Tilkoblet (%s)"
+    ERR_CREATE_THREAD_READ_STDOUT "En feil oppsto under opprettelse av tråd for å lytte til OpenVPN logg."
+    INFO_STATE_CONN_SCRIPT "Status: Kjører skript for tilkobling"
+    INFO_STATE_DISCONN_SCRIPT "Status: Kjører skript for frakobling"
+    ERR_RUN_CONN_SCRIPT "En feil oppsto under kjøring av skript: %s"
+    ERR_GET_EXIT_CODE "En feil oppsto når avslutningskode fra følgende skript skulle hentes: %s"
+    ERR_CONN_SCRIPT_FAILED "Tilkoblingsskriptet feilet. (avslutningskode=%ld)"
+    ERR_RUN_CONN_SCRIPT_TIMEOUT "Tilkoblingsskriptet fikk TimeOut etter %d sekunder."
+    ERR_CONFIG_ALREADY_EXIST "Det finnes allerede en konfig-fil med navn '%s'. Du kan ikke ha flere " \
+                             "konfigurasjons-filer med samme navn, selv om de ligger i ulike kataloger."
+
+    /* main - Resources */
+    ERR_OPEN_DEBUG_FILE "Feil under åpning av debug fil. (%s)"
+    ERR_LOAD_RICHED20 "Kunne ikke laste RICHED20.DLL."
+    ERR_SHELL_DLL_VERSION "Din shell32.dll versjon er for lav (0x%lx). Du trenger minst versjon 5.0."
+    ERR_GUI_ALREADY_RUNNING "OpenVPN GUI kjører allerede."
+    INFO_SERVICE_STARTED "OpenVPN Service startet."
+    INFO_SERVICE_STOPPED "OpenVPN Service stoppet."
+    INFO_ACTIVE_CONN_EXIT "Aktive tilkoblinger vil bli avbrutt om du avslutter OpenVPN GUI.\n\nVil du avslutte?"
+    INFO_SERVICE_ACTIVE_EXIT "Du er tilkoblet med OpenVPN (OpenVPN tjenesten kjører). " \
+                             "Aktive tilkoblinger vil forbli tilkoblet om du avslutter OpenVPN GUI.\n\n" \
+                             "Vil du avslutte?"
+    ERR_OPTION_LOG_IN_CONFIG "Du har ""log"" eller ""log-append"" i din OpenVPN konfig fil. Du bør ikke benytte " \
+                             "disse innstillingene ved bruk av OpenVPN GUI, ettersom GUI'et da ikke kan ""se"" " \
+                             "logge meldingene fra OpenVPN. Dette er nødvendig for OpenVPN GUI's funksjon.\n\n" \
+                             "Vil du allikevel koble til?"
+
+    /* options - Resources */
+    INFO_USAGE "--help\t\t\t: Vis dene meldingen.\n" \
+               "--connect cnn \t\t: Koble til ""cnn"" ved oppstart. (filtypen må være med)\n" \
+               "\t\t\t   Eksempel: openvpn-gui --connect office.ovpn\n" \
+               "\n" \
+               "Parametre som vil overstyre instillinger gjort i registret:\n" \
+               "--exe_path\t\t: Path til openvpn.exe.\n" \
+               "--config_dir\t\t: Path til OpenVPNs konfig-katalog.\n" \
+               "--ext_string\t\t: Filtype for konfig-filer.\n" \
+               "--log_dir\t\t\t: Path til loggfil-katalog.\n" \
+               "--priority_string\t\t: Prioritet på OpenVPN processer (Se install.txt for detaljer).\n" \
+               "--append_string\t\t: 1=Behold gammel logg. 0=Tøm loggfil ved ny tilkobling.\n" \
+               "--log_viewer\t\t: Path til logg-viewer.\n" \
+               "--editor\t\t\t: Path til konfig-editor.\n" \
+               "--allow_edit\t\t: 1=Vise Editere Konfig i meny.\n" \
+               "--allow_service\t\t: 1=Vise OpenVPN Service i meny.\n" \
+               "--allow_password\t\t: 1=Vise Endre Passord i meny.\n" \
+               "--allow_proxy\t\t: 1=Vise Proxy Innstillinger i meny.\n" \
+               "--show_balloon\t\t: 0=Aldri, 1=under tilkobling, 2=Ved hver ""tilkobling på nytt"".\n" \
+               "--service_only\t\t: 1=Aktivere ""Service Only"" modus.\n" \
+               "--silent_connection\t\t: 1=ikke vis status-vindu ved tilkobling.\n" \
+               "--show_script_window\t: 0=Skjul skript-vindu, 1=Vise skript-vindu.\n" \
+               "--passphrase_attempts\t: Antall tilkoblings-forsøk.\n" \
+               "--connectscript_timeout\t: Max tillatt connect-skript tid.\n" \
+               "--disconnectscript_timeout\t: Max tillat disconnect-skript tid.\n" \
+               "--preconnectscript_timeout\t: Max tillat preconnect-skript tid.\n"
+
+    INFO_USAGECAPTION "OpenVPN GUI bruk"
+    ERR_BAD_PARAMETER "Forsøker tolke ""%s"" som en --option parameter " \
+                      "men kan ikke finne innledende '--'"
+    ERR_BAD_OPTION "Parameter feil: Ukjent parameter eller manglende argument: --%s\n" \
+                   "Kjør openvpn-gui --help for hjelp."
+
+    /* passphrase - Resources */
+    ERR_CREATE_PASS_THREAD "CreateThread for å vise ChangePassphrase dialogen feilet."
+    INFO_CHANGE_PWD "Endre passord (%s)"
+    ERR_PWD_DONT_MATCH "De oppgitte nye passord er forskjellige. Prøv igjen"
+    ERR_PWD_TO_SHORT "Passord må være minst %d tegn."
+    INFO_EMPTY_PWD "Er du sikker på at du vil benytte et BLANKT passord??"
+    ERR_UNKNOWN_KEYFILE_FORMAT "Nøkkelfilen har ukjent format."
+    ERR_OPEN_PRIVATE_KEY_FILE "En feil oppsto under åpning av nøkkel-fil (%s)."
+    ERR_OLD_PWD_INCORRECT "Du har oppgitt feil passord."
+    ERR_OPEN_WRITE_KEY "En feil oppsto under åpning av nøkkel-fil for skrivning (%s)."
+    ERR_WRITE_NEW_KEY "En feil oppsto under opprettelse av ny nøkkel-fil (%s)."
+    INFO_PWD_CHANGED "Dn passord har blitt endret."
+    ERR_READ_PKCS12 "Feil under lesning fra pkcs #12 fil (%s)."
+    ERR_CREATE_PKCS12 "En feil oppsto under opprettelse av pkcs12 objekt."
+    ERR_OPEN_CONFIG "En feil oppsto under åpning av følgende konfig-fil: %s."
+    ERR_ONLY_ONE_KEY_OPTION "Du kan ikke ha mer enn en ""key"" parameter i din konfig-fil."
+    ERR_ONLY_KEY_OR_PKCS12 "Du kan ikke ha både ""key"" og ""pkcs12"" parametetre i din konfig-fil."
+    ERR_ONLY_ONE_PKCS12_OPTION "Du kan ikke ha mer enn en ""pkcs12"" parameter i din konfig-fil."
+    ERR_MUST_HAVE_KEY_OR_PKCS12 "Din konfig-fil mangler ""key"" eller ""pkcs12"" parameter."
+    ERR_KEY_FILENAME_TO_LONG "Den oppgitte path til din nøkkel i konfig-fil er for lang!"
+    ERR_PASSPHRASE2STDIN "En feil oppsto når passordet skulle sendes til OpenVPN via stdin."
+    ERR_AUTH_USERNAME2STDIN "En feil oppsto når brukernavnet skulle sendes til OpenVPN via stdin."
+    ERR_AUTH_PASSWORD2STDIN "En feil oppsto når passordet skulle sendes til OpenVPN via stdin."
+    ERR_CR2STDIN "En feil oppsto når CR skulle sendes til OpenVPN via stdin."
+    ERR_INVALID_CHARS_IN_PSW "Nytt passord inneholder tegn som ikke er tillatt. " \
+                             "Forsøk igjen."
+
+    /* proxy */
+    ERR_HTTP_PROXY_ADDRESS "HTTP proxy addresse må oppgis."
+    ERR_HTTP_PROXY_PORT "HTTP proxy port må oppgis."
+    ERR_HTTP_PROXY_PORT_RANGE "HTTP proxy port må være et tall mellom 1 og 65535"
+    ERR_SOCKS_PROXY_ADDRESS "SOCKS proxy addresse må oppgis."
+    ERR_SOCKS_PROXY_PORT "SOCKS proxy port må oppgis."
+    ERR_SOCKS_PROXY_PORT_RANGE "SOCKS proxy port må være ett tall mellom 1 og 65535"
+    ERR_CREATE_REG_HKCU_KEY "En feil oppsto ved opprettelse av register-nøkkel ""HKEY_CURRENT_USER\\%s"""
+    ERR_GET_TEMP_PATH "En feil oppsto når GetTempPath() ble kalt opp. Alternativ ""C:\\"" vil bi benyttet."
+    ERR_CREATE_AUTH_FILE "En feil oppsto under opprettelse av AUTH fil (%s)"
+
+    /* service */
+    ERR_OPEN_SCMGR_ADMIN "En feil oppsto under åpning av Service Manager. Du har sannsynligvis ikke rettigheter til å starte/stoppe en service."
+    ERR_OPEN_VPN_SERVICE "Kunnne ike åpne ""OpenVPNService"""
+    ERR_START_SERVICE "En feil oppsto under oppstart av OpenVPN Service"
+    ERR_QUERY_SERVICE "En feil oppsto når status på OpenVPN Service skulle kontrolleres."
+    ERR_SERVICE_START_FAILED "OpenVPN Service kunne ikke starte."
+    ERR_OPEN_SCMGR "OpenSCManager feilet (%d)"
+    ERR_STOP_SERVICE "En feil oppsto ved stopp av OpenVPN Service"
+    INFO_RESTARTED "OpenVPN Service omstart utført."
+
+    /* registry */
+    ERR_GET_WINDOWS_DIR "Kunne ikke finne katalog hvor Windows er installert."
+    ERR_GET_PROGRAM_DIR "Kunne ikke finne path til din ""Program"" katalog."
+    ERR_OPEN_REGISTRY "Feil under åpning av register for lesning (HKLM\\SOFTWARE\\OpenVPN).\n OpenVPN er kanskje ikke installert."
+    ERR_READING_REGISTRY "Feil under lesning av register-nøkkel (HKLM\\SOFTWARE\\OpenVPN)."
+    ERR_PASSPHRASE_ATTEMPTS "Register-verdi ""passphrase_attempts"" må være ett tall mellom 1 og 9."
+    ERR_CONN_SCRIPT_TIMEOUT "Register-verdi ""connectscript_timeout"" må være ett tall mellom 0 og 99."
+    ERR_DISCONN_SCRIPT_TIMEOUT "Register-verdi ""disconnectscript_timeout"" må være ett tall mellom 1 og 99."
+    ERR_PRECONN_SCRIPT_TIMEOUT "Register-verdi ""preconnectscript_timeout"" må være ett tall mellom 1 og 99."
+    ERR_CREATE_REG_KEY "Feil under opprettelse av register-nøkkel HKLM\\SOFTWARE\\OpenVPN-GUI."
+    ERR_OPEN_WRITE_REG "Feil under åpning av register for skrivning. Du må starte programmet en gang som administrator for å oppdatere registret."
+    ERR_READ_SET_KEY "Feil under lesning og skrivning av register-verdi ""%s""."
+    ERR_WRITE_REGVALUE "Feil under skrivning av register-verdi ""HKEY_CURRENT_USER\\%s\\%s""."
+END

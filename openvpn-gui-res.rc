@@ -23,7 +23,7 @@
 #include "openvpn-gui-res.h"
 
 /* Manifest for XP visual styles */
-CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "openvpn-gui.exe.manifest" 
+CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "openvpn-gui.exe.manifest"
 
 /* Application Icons */
 APP_ICON               ICON  DISCARDABLE  "openvpn-gui.ico"
@@ -31,4 +31,12 @@ APP_ICON_CONNECTED     ICON  DISCARDABLE  "connected.ico"
 APP_ICON_CONNECTING    ICON  DISCARDABLE  "connecting.ico"
 APP_ICON_DISCONNECTED  ICON  DISCARDABLE  "disconnected.ico"
 
+#include "openvpn-gui-res-de.rc"
 #include "openvpn-gui-res-en.rc"
+#include "openvpn-gui-res-es.rc"
+#include "openvpn-gui-res-fr.rc"
+#include "openvpn-gui-res-it.rc"
+#include "openvpn-gui-res-nl.rc"
+#include "openvpn-gui-res-no.rc"
+#include "openvpn-gui-res-pt.rc"
+#include "openvpn-gui-res-se.rc"
