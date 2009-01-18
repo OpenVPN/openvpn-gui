@@ -39,6 +39,7 @@
 #include "openvpn.h"
 #include "openvpn_config.h"
 #include "openvpn-gui-res.h"
+#include "localization.h"
 
 //POPUP MENU
 HMENU hMenu;
@@ -86,8 +87,7 @@ void OnNotifyTray(LPARAM lParam)
           else if (o.service_running == SERVICE_CONNECTED)
             {
               /* Stop OpenVPN service */
-              myLoadString(IDM_TEXT_ASK_STOP_SERVICE);
-              if (MessageBox(NULL, buf, GUI_NAME, MB_YESNO | MB_SETFOREGROUND) == IDYES)
+              if (MessageBox(NULL, LoadLocalizedString(IDM_TEXT_ASK_STOP_SERVICE), GUI_NAME, MB_YESNO | MB_SETFOREGROUND) == IDYES)
                 {
                   MyStopService();
                 }
@@ -196,57 +196,44 @@ void CreateItemList()
       /* Create Main menu with actions */
       if (o.service_only[0]=='0')
         {
-          myLoadString(IDM_TEXT_CONNECT);
-          AppendMenu(hMenu,MF_STRING, IDM_CONNECTMENU, buf);  
-          myLoadString(IDM_TEXT_DISCONNECT);
-          AppendMenu(hMenu,MF_STRING, IDM_DISCONNECTMENU, buf);
-          myLoadString(IDM_TEXT_STATUS);
-          AppendMenu(hMenu,MF_STRING, IDM_STATUSMENU, buf);  
+          AppendMenu(hMenu,MF_STRING, IDM_CONNECTMENU, LoadLocalizedString(IDM_TEXT_CONNECT));
+          AppendMenu(hMenu,MF_STRING, IDM_DISCONNECTMENU, LoadLocalizedString(IDM_TEXT_DISCONNECT));
+          AppendMenu(hMenu,MF_STRING, IDM_STATUSMENU, LoadLocalizedString(IDM_TEXT_STATUS));
           AppendMenu(hMenu,MF_SEPARATOR,0,0);
         }
       else
         {
-          myLoadString(IDM_TEXT_SERVICEONLY_START);
-          AppendMenu(hMenu,MF_STRING, IDM_SERVICE_START, buf);  
-          myLoadString(IDM_TEXT_SERVICEONLY_STOP);
-          AppendMenu(hMenu,MF_STRING, IDM_SERVICE_STOP, buf);  
-          myLoadString(IDM_TEXT_SERVICEONLY_RESTART);
-          AppendMenu(hMenu,MF_STRING, IDM_SERVICE_RESTART, buf);  
+          AppendMenu(hMenu,MF_STRING, IDM_SERVICE_START, LoadLocalizedString(IDM_TEXT_SERVICEONLY_START));
+          AppendMenu(hMenu,MF_STRING, IDM_SERVICE_STOP, LoadLocalizedString(IDM_TEXT_SERVICEONLY_STOP));
+          AppendMenu(hMenu,MF_STRING, IDM_SERVICE_RESTART, LoadLocalizedString(IDM_TEXT_SERVICEONLY_RESTART));
           AppendMenu(hMenu,MF_SEPARATOR,0,0);
         }
 
-      myLoadString(IDM_TEXT_VIEWLOG);
-      AppendMenu(hMenu,MF_STRING, IDM_VIEWLOGMENU, buf);  
+      AppendMenu(hMenu,MF_STRING, IDM_VIEWLOGMENU, LoadLocalizedString(IDM_TEXT_VIEWLOG));
       if (o.allow_edit[0]=='1')
         {
-          myLoadString(IDM_TEXT_EDITCONFIG);
-          AppendMenu(hMenu,MF_STRING, IDM_EDITMENU, buf);  
+          AppendMenu(hMenu,MF_STRING, IDM_EDITMENU, LoadLocalizedString(IDM_TEXT_EDITCONFIG));
         }
 #ifndef DISABLE_CHANGE_PASSWORD
       if (o.allow_password[0]=='1')
         {
-          myLoadString(IDM_TEXT_PASSPHRASE);
-          AppendMenu(hMenu,MF_STRING, IDM_PASSPHRASEMENU, buf);
+          AppendMenu(hMenu,MF_STRING, IDM_PASSPHRASEMENU, LoadLocalizedString(IDM_TEXT_PASSPHRASE));
         }
 #endif
 
       AppendMenu(hMenu,MF_SEPARATOR,0,0);
       if (o.allow_service[0]=='1' && o.service_only[0]=='0')
         {
-          myLoadString(IDM_TEXT_SERVICE);
-          AppendMenu(hMenu,MF_POPUP,(UINT) hMenuService, buf);
+          AppendMenu(hMenu,MF_POPUP,(UINT) hMenuService, LoadLocalizedString(IDM_TEXT_SERVICE));
           AppendMenu(hMenu,MF_SEPARATOR,0,0);
         }
       if (o.allow_proxy[0]=='1' && o.service_only[0]=='0')
         {
-          myLoadString(IDM_TEXT_PROXY);
-          AppendMenu(hMenu,MF_STRING ,IDM_PROXY, buf);
+          AppendMenu(hMenu,MF_STRING ,IDM_PROXY, LoadLocalizedString(IDM_TEXT_PROXY));
           AppendMenu(hMenu,MF_SEPARATOR,0,0);
         }
-      myLoadString(IDM_TEXT_ABOUT);
-      AppendMenu(hMenu,MF_STRING ,IDM_ABOUT, buf);
-      myLoadString(IDM_TEXT_CLOSE);
-      AppendMenu(hMenu,MF_STRING ,IDM_CLOSE, buf);
+      AppendMenu(hMenu,MF_STRING ,IDM_ABOUT, LoadLocalizedString(IDM_TEXT_ABOUT));
+      AppendMenu(hMenu,MF_STRING ,IDM_CLOSE, LoadLocalizedString(IDM_TEXT_CLOSE));
 
       SetMenuStatus(0, DISCONNECTED); 
 
@@ -260,30 +247,23 @@ void CreateItemList()
         AppendMenu(hMenu,MF_SEPARATOR,0,0);
       if (o.allow_service[0]=='1' && o.service_only[0]=='0')
         {
-          myLoadString(IDM_TEXT_SERVICE);
-          AppendMenu(hMenu,MF_POPUP,(UINT) hMenuService, buf);
+          AppendMenu(hMenu,MF_POPUP,(UINT) hMenuService, LoadLocalizedString(IDM_TEXT_SERVICE));
           AppendMenu(hMenu,MF_SEPARATOR,0,0);
         }
       if (o.service_only[0]=='1')
         {
-          myLoadString(IDM_TEXT_SERVICEONLY_START);
-          AppendMenu(hMenu,MF_STRING, IDM_SERVICE_START, buf);  
-          myLoadString(IDM_TEXT_SERVICEONLY_STOP);
-          AppendMenu(hMenu,MF_STRING, IDM_SERVICE_STOP, buf);  
-          myLoadString(IDM_TEXT_SERVICEONLY_RESTART);
-          AppendMenu(hMenu,MF_STRING, IDM_SERVICE_RESTART, buf);  
+          AppendMenu(hMenu,MF_STRING, IDM_SERVICE_START, LoadLocalizedString(IDM_TEXT_SERVICEONLY_START));
+          AppendMenu(hMenu,MF_STRING, IDM_SERVICE_STOP, LoadLocalizedString(IDM_TEXT_SERVICEONLY_STOP));
+          AppendMenu(hMenu,MF_STRING, IDM_SERVICE_RESTART, LoadLocalizedString(IDM_TEXT_SERVICEONLY_RESTART));
           AppendMenu(hMenu,MF_SEPARATOR,0,0);
         }
       if (o.allow_proxy[0]=='1' && o.service_only[0]=='0')
         {
-          myLoadString(IDM_TEXT_PROXY);
-          AppendMenu(hMenu,MF_STRING ,IDM_PROXY, buf);
+          AppendMenu(hMenu,MF_STRING ,IDM_PROXY, LoadLocalizedString(IDM_TEXT_PROXY));
           AppendMenu(hMenu,MF_SEPARATOR,0,0);
         }
-      myLoadString(IDM_TEXT_ABOUT);
-      AppendMenu(hMenu,MF_STRING ,IDM_ABOUT, buf);
-      myLoadString(IDM_TEXT_CLOSE);
-      AppendMenu(hMenu,MF_STRING ,IDM_CLOSE, buf);
+      AppendMenu(hMenu,MF_STRING ,IDM_ABOUT, LoadLocalizedString(IDM_TEXT_ABOUT));
+      AppendMenu(hMenu,MF_STRING ,IDM_CLOSE, LoadLocalizedString(IDM_TEXT_CLOSE));
  
 
       /* Create PopUp menus for every connection */
@@ -291,25 +271,19 @@ void CreateItemList()
         {
           if (o.service_only[0]=='0')
             {
-              myLoadString(IDM_TEXT_CONNECT);
-              AppendMenu(hMenuConn[i],MF_STRING, (UINT_PTR)IDM_CONNECTMENU+i, buf);  
-              myLoadString(IDM_TEXT_DISCONNECT);
-              AppendMenu(hMenuConn[i],MF_STRING, (UINT_PTR)IDM_DISCONNECTMENU+i, buf);  
-              myLoadString(IDM_TEXT_STATUS);
-              AppendMenu(hMenuConn[i],MF_STRING, (UINT_PTR)IDM_STATUSMENU+i, buf);  
+              AppendMenu(hMenuConn[i],MF_STRING, (UINT_PTR)IDM_CONNECTMENU+i, LoadLocalizedString(IDM_TEXT_CONNECT));
+              AppendMenu(hMenuConn[i],MF_STRING, (UINT_PTR)IDM_DISCONNECTMENU+i, LoadLocalizedString(IDM_TEXT_DISCONNECT));
+              AppendMenu(hMenuConn[i],MF_STRING, (UINT_PTR)IDM_STATUSMENU+i, LoadLocalizedString(IDM_TEXT_STATUS));
               AppendMenu(hMenuConn[i],MF_SEPARATOR,0,0);
             }
-          myLoadString(IDM_TEXT_VIEWLOG);
-          AppendMenu(hMenuConn[i],MF_STRING, (UINT_PTR)IDM_VIEWLOGMENU+i, buf);  
+          AppendMenu(hMenuConn[i], MF_STRING, (UINT_PTR)IDM_VIEWLOGMENU+i, LoadLocalizedString(IDM_TEXT_VIEWLOG));
           if (o.allow_edit[0]=='1') {
-            myLoadString(IDM_TEXT_EDITCONFIG);
-            AppendMenu(hMenuConn[i],MF_STRING, (UINT_PTR)IDM_EDITMENU+i, buf);  
+            AppendMenu(hMenuConn[i], MF_STRING, (UINT_PTR)IDM_EDITMENU+i, LoadLocalizedString(IDM_TEXT_EDITCONFIG));
           }
 #ifndef DISABLE_CHANGE_PASSWORD
           if (o.allow_password[0]=='1')
             {
-              myLoadString(IDM_TEXT_PASSPHRASE);
-              AppendMenu(hMenuConn[i],MF_STRING, (UINT_PTR)IDM_PASSPHRASEMENU+i, buf);  
+              AppendMenu(hMenuConn[i], MF_STRING, (UINT_PTR)IDM_PASSPHRASEMENU+i, LoadLocalizedString(IDM_TEXT_PASSPHRASE));
             }
 #endif
 
@@ -320,12 +294,9 @@ void CreateItemList()
   /* Create Service menu */
   if (o.allow_service[0]=='1' && o.service_only[0]=='0')
     {
-      myLoadString(IDM_TEXT_SERVICE_START);
-      AppendMenu(hMenuService,MF_STRING, IDM_SERVICE_START, buf);  
-      myLoadString(IDM_TEXT_SERVICE_STOP);
-      AppendMenu(hMenuService,MF_STRING, IDM_SERVICE_STOP, buf);  
-      myLoadString(IDM_TEXT_SERVICE_RESTART);
-      AppendMenu(hMenuService,MF_STRING, IDM_SERVICE_RESTART, buf);  
+      AppendMenu(hMenuService,MF_STRING, IDM_SERVICE_START, LoadLocalizedString(IDM_TEXT_SERVICE_START));
+      AppendMenu(hMenuService,MF_STRING, IDM_SERVICE_STOP, LoadLocalizedString(IDM_TEXT_SERVICE_STOP));
+      AppendMenu(hMenuService,MF_STRING, IDM_SERVICE_RESTART, LoadLocalizedString(IDM_TEXT_SERVICE_RESTART));
     }
 
     SetServiceMenuStatus();
@@ -336,8 +307,7 @@ BOOL LoadAppIcon()
 {
 
   // Load icon from resource
-  HICON hIcon = (HICON)LoadImage(GetModuleHandle(NULL), MAKEINTRESOURCE(APP_ICON), 
-                                                IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR);
+  HICON hIcon = LoadLocalizedIcon(APP_ICON);
   if (hIcon) {
     SendMessage(o.hWnd, WM_SETICON, (WPARAM) (ICON_SMALL), (LPARAM) (hIcon));
     SendMessage(o.hWnd, WM_SETICON, (WPARAM) (ICON_BIG), (LPARAM) (hIcon));  //ALT+TAB icon
@@ -353,15 +323,14 @@ void ShowTrayIcon()
 
   ni.cbSize = sizeof(ni);
   ni.uID = 0;
-  myLoadString(MSG_TIP);
-  lstrcpyn(ni.szTip, buf, sizeof(ni.szTip)); 
+  lstrcpyn(ni.szTip, LoadLocalizedString(MSG_TIP), sizeof(ni.szTip)/sizeof(*(ni.szTip))); 
   ni.hWnd = o.hWnd;
   ni.uFlags = NIF_MESSAGE | NIF_TIP | NIF_ICON; // We want to use icon, tip, and callback message
   ni.uCallbackMessage = WM_NOTIFYICONTRAY;      // Our custom callback message (WM_APP + 1)
     
      
   //Load selected icon
-  ni.hIcon = (HICON)LoadIcon(o.hInstance, MAKEINTRESOURCE(APP_ICON_DISCONNECTED));
+  ni.hIcon = LoadLocalizedIcon(APP_ICON_DISCONNECTED);
 
   Shell_NotifyIcon(NIM_ADD, &ni);       
 
@@ -389,14 +358,11 @@ void SetTrayIcon(int connected)
   ni.uFlags = NIF_MESSAGE | NIF_TIP | NIF_ICON; // We want to use icon, tip, and callback message
   ni.uCallbackMessage = WM_NOTIFYICONTRAY;      // Our custom callback message (WM_APP + 1)
    
-  myLoadString(MSG_TIP); 
-  strncpy(msg, buf, sizeof(ni.szTip)); 
+  strncpy(msg, LoadLocalizedString(MSG_TIP), sizeof(ni.szTip));
 
-  myLoadString(MSG_TIP_CONNECTED);
-  strncpy(msg_connected, buf, sizeof(msg_connected)); 
+  strncpy(msg_connected, LoadLocalizedString(MSG_TIP_CONNECTED), sizeof(msg_connected));
 
-  myLoadString(MSG_TIP_CONNECTING);
-  strncpy(msg_connecting, buf, sizeof(msg_connecting)); 
+  strncpy(msg_connecting, LoadLocalizedString(MSG_TIP_CONNECTING), sizeof(msg_connecting));
 
   first_conn=1;
   for (i=0; i < o.num_configs; i++)
@@ -437,14 +403,12 @@ void SetTrayIcon(int connected)
       con_time=time(NULL);
       strftime(connected_since, sizeof(connected_since), "%b %d, %H:%M", 
                localtime(&o.cnn[config].connected_since));
-      myLoadString(MSG_TIP_CONNECTED_SINCE);
-      strncat(msg, buf, sizeof(msg) - strlen(msg) - 1);
+      strncat(msg, LoadLocalizedString(MSG_TIP_CONNECTED_SINCE), sizeof(msg) - strlen(msg) - 1);
       strncat(msg, connected_since, sizeof(msg) - strlen(msg) - 1);
       if (strlen(o.cnn[config].ip) > 0)
         {
           char assigned_ip[100];
-          myLoadString(MSG_TIP_ASSIGNED_IP);
-          mysnprintf(assigned_ip, buf, o.cnn[config].ip);
+          mysnprintf(assigned_ip, LoadLocalizedString(MSG_TIP_ASSIGNED_IP), o.cnn[config].ip);
           strncat(msg, assigned_ip, sizeof(msg) - strlen(msg) - 1);
         }
     }
@@ -453,11 +417,11 @@ void SetTrayIcon(int connected)
      
   //Load selected icon
   if (connected==2) 
-    ni.hIcon = (HICON)LoadIcon(o.hInstance, MAKEINTRESOURCE(APP_ICON_CONNECTED));
+    ni.hIcon = LoadLocalizedIcon(APP_ICON_CONNECTED);
   else if (connected==1)
-    ni.hIcon = (HICON)LoadIcon(o.hInstance, MAKEINTRESOURCE(APP_ICON_CONNECTING)); 
+    ni.hIcon = LoadLocalizedIcon(APP_ICON_CONNECTING); 
   else if (connected==0)
-    ni.hIcon = (HICON)LoadIcon(o.hInstance, MAKEINTRESOURCE(APP_ICON_DISCONNECTED));
+    ni.hIcon = LoadLocalizedIcon(APP_ICON_DISCONNECTED);
 
   Shell_NotifyIcon(NIM_MODIFY, &ni);       
 }

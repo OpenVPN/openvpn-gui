@@ -33,6 +33,7 @@
 #include "proxy.h"
 #include "registry.h"
 #include "openvpn-gui-res.h"
+#include "localization.h"
 
 #ifndef DISABLE_CHANGE_PASSWORD
 #include <openssl/evp.h>
@@ -87,7 +88,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   else
     {
       /* can't load riched20.dll */
-      ShowLocalizedMsg(GUI_NAME, ERR_LOAD_RICHED20, "");
+      ShowLocalizedMsg(GUI_NAME, ERR_LOAD_RICHED20);
       exit(1);
     }
 
@@ -111,7 +112,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   if ((FindWindow (szClassName, NULL)) != NULL)
     {
         /* GUI already running */
-        ShowLocalizedMsg(GUI_NAME, ERR_GUI_ALREADY_RUNNING, "");
+        ShowLocalizedMsg(GUI_NAME, ERR_GUI_ALREADY_RUNNING);
         exit(1);
     }
 
@@ -143,8 +144,8 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   wincl.cbSize = sizeof (WNDCLASSEX);
 
   /* Use default icon and mouse-pointer */
-  wincl.hIcon = LoadIcon (hThisInstance, MAKEINTRESOURCE(APP_ICON));
-  wincl.hIconSm = LoadIcon (hThisInstance, MAKEINTRESOURCE(APP_ICON));
+  wincl.hIcon = LoadLocalizedIcon(APP_ICON);
+  wincl.hIconSm = LoadLocalizedIcon(APP_ICON);
   wincl.hCursor = LoadCursor (NULL, IDC_ARROW);
   wincl.lpszMenuName = NULL;                 /* No menu */
   wincl.cbClsExtra = 0;                      /* No extra bytes after the window class */
@@ -239,7 +240,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         ShowProxySettingsDialog();
       }
       if (LOWORD(wParam) == IDM_ABOUT) {
-        DialogBox(o.hInstance, (LPCTSTR)IDD_ABOUTDIALOG, NULL, (DLGPROC)AboutDialogFunc);
+        LocalizedDialogBox(IDD_ABOUTDIALOG, AboutDialogFunc);
       }
       if (LOWORD(wParam) == IDM_CLOSE) {
         CloseApplication(hwnd);
@@ -323,22 +324,18 @@ BOOL CALLBACK AboutDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPA
 {
   HICON hIcon;
   TCHAR buf[1000];
-  char buf2[1000];
 
   switch (msg) {
 
     case WM_INITDIALOG:
-      hIcon = (HICON)LoadImage(GetModuleHandle(NULL), MAKEINTRESOURCE(APP_ICON), 
-                                                      IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR);
+      hIcon = LoadLocalizedIcon(APP_ICON);
       if (hIcon) {
         SendMessage(hwndDlg, WM_SETICON, (WPARAM) (ICON_SMALL), (LPARAM) (hIcon));
         SendMessage(hwndDlg, WM_SETICON, (WPARAM) (ICON_BIG), (LPARAM) (hIcon));
       }
 
       /* Show version string */
-      myLoadString(TEXT_ABOUT_OPENVPNGUI);
-      mysnprintf(buf2, buf, GUI_VERSION);
-      SetDlgItemText(hwndDlg, ID_TEXT_OPENVPNGUI, buf2);
+      SetDlgItemText(hwndDlg, ID_TEXT_OPENVPNGUI, LoadLocalizedString(TEXT_ABOUT_OPENVPNGUI, GUI_VERSION));
 
       return FALSE;
 
@@ -365,8 +362,7 @@ void CloseApplication(HWND hwnd)
 
   if (o.service_running == SERVICE_CONNECTED)
     {
-      myLoadString(INFO_SERVICE_ACTIVE_EXIT);
-      if (MessageBox(NULL, buf, "Exit OpenVPN", MB_YESNO) == IDNO)
+      if (MessageBox(NULL, LoadLocalizedString(INFO_SERVICE_ACTIVE_EXIT), "Exit OpenVPN", MB_YESNO) == IDNO)
         {
           return;
         }
@@ -380,8 +376,7 @@ void CloseApplication(HWND hwnd)
   }
   if (ask_exit) {
     /* aks for confirmation */
-    myLoadString(INFO_ACTIVE_CONN_EXIT);
-    if (MessageBox(NULL, buf, "Exit OpenVPN", MB_YESNO) == IDNO)
+    if (MessageBox(NULL, LoadLocalizedString(INFO_ACTIVE_CONN_EXIT), "Exit OpenVPN", MB_YESNO) == IDNO)
       {
         return;
       }

@@ -26,13 +26,13 @@
 #include "proxy.h"
 #include "ieproxy.h"
 #include "openvpn-gui-res.h"
+#include "localization.h"
 
 extern struct options o;
 
 void ShowProxySettingsDialog()
 {
-
-  DialogBox(o.hInstance, (LPCTSTR)IDD_PROXY, NULL, (DLGPROC)ProxySettingsDialogFunc);
+  LocalizedDialogBox(IDD_PROXY, ProxySettingsDialogFunc);
 }
 
 BOOL CALLBACK ProxySettingsDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPARAM lParam)
@@ -42,8 +42,7 @@ BOOL CALLBACK ProxySettingsDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UN
   switch (msg) {
 
     case WM_INITDIALOG:
-      hIcon = (HICON)LoadImage(GetModuleHandle(NULL), MAKEINTRESOURCE(APP_ICON), 
-                                                      IMAGE_ICON, 0, 0, LR_DEFAULTCOLOR);
+      hIcon = LoadLocalizedIcon(APP_ICON);
       if (hIcon) {
         SendMessage(hwndDlg, WM_SETICON, (WPARAM) (ICON_SMALL), (LPARAM) (hIcon));
         SendMessage(hwndDlg, WM_SETICON, (WPARAM) (ICON_BIG), (LPARAM) (hIcon));
@@ -192,14 +191,14 @@ int CheckProxySettings(HWND hwndDlg)
           if (strlen(text) == 0)
             {
               /* http_proxy_access not specified */
-              ShowLocalizedMsg(GUI_NAME, ERR_HTTP_PROXY_ADDRESS, "");
+              ShowLocalizedMsg(GUI_NAME, ERR_HTTP_PROXY_ADDRESS);
               return(0);
             }
           GetDlgItemText(hwndDlg, EDIT_PROXY_HTTP_PORT, text, sizeof(text));
           if (strlen(text) == 0)
             {
               /* http_proxy_port not specified */
-              ShowLocalizedMsg(GUI_NAME, ERR_HTTP_PROXY_PORT, "");
+              ShowLocalizedMsg(GUI_NAME, ERR_HTTP_PROXY_PORT);
               return(0);
             }
           else
@@ -208,7 +207,7 @@ int CheckProxySettings(HWND hwndDlg)
               if ((port < 1) || (port > 65535))
                 {
                   /* http_proxy_port range error */
-                  ShowLocalizedMsg(GUI_NAME, ERR_HTTP_PROXY_PORT_RANGE, "");
+                  ShowLocalizedMsg(GUI_NAME, ERR_HTTP_PROXY_PORT_RANGE);
                   return(0);
                 }
             }
@@ -220,14 +219,14 @@ int CheckProxySettings(HWND hwndDlg)
           if (strlen(text) == 0)
             {
               /* socks_proxy_address not specified */
-              ShowLocalizedMsg(GUI_NAME, ERR_SOCKS_PROXY_ADDRESS, "");
+              ShowLocalizedMsg(GUI_NAME, ERR_SOCKS_PROXY_ADDRESS);
               return(0);
             }
           GetDlgItemText(hwndDlg, EDIT_PROXY_SOCKS_PORT, text, sizeof(text));
           if (strlen(text) == 0)
             {
               /* socks_proxy_port not specified */
-              ShowLocalizedMsg(GUI_NAME, ERR_SOCKS_PROXY_PORT, "");
+              ShowLocalizedMsg(GUI_NAME, ERR_SOCKS_PROXY_PORT);
               return(0);
             }
           else
@@ -236,7 +235,7 @@ int CheckProxySettings(HWND hwndDlg)
               if ((port < 1) || (port > 65535))
                 {
                   /* socks_proxy_port range error */
-                  ShowLocalizedMsg(GUI_NAME, ERR_SOCKS_PROXY_PORT_RANGE, "");
+                  ShowLocalizedMsg(GUI_NAME, ERR_SOCKS_PROXY_PORT_RANGE);
                   return(0);
                 }
             }
@@ -384,7 +383,7 @@ void GetProxyRegistrySettings()
   if (!GetTempPath(sizeof(temp_path) - 1, temp_path))
     {
       /* Error getting TempPath - using C:\ */
-      ShowLocalizedMsg(GUI_NAME, ERR_GET_TEMP_PATH, "");
+      ShowLocalizedMsg(GUI_NAME, ERR_GET_TEMP_PATH);
       strcpy(temp_path, "C:\\");
     }
   strncat(temp_path, "openvpn_authfile.txt", 
@@ -492,7 +491,7 @@ void ConstructProxyCmdLine(char *proxy_string_ptr, unsigned int size)
           if (o.proxy_http_auth == PROXY_HTTP_ASK_AUTH)
             {
               /* Ask for Proxy username/password */
-              DialogBox(o.hInstance, (LPCTSTR)IDD_PROXY_AUTH, NULL, (DLGPROC)ProxyAuthDialogFunc);
+              LocalizedDialogBox(IDD_PROXY_AUTH, ProxyAuthDialogFunc);
               mysnprintf(proxy_string, "--http-proxy %s %s %s",
                          o.proxy_http_address,
                          o.proxy_http_port,
@@ -536,7 +535,7 @@ void ConstructProxyCmdLine(char *proxy_string_ptr, unsigned int size)
                   if (o.proxy_http_auth == PROXY_HTTP_ASK_AUTH)
                     {
                       /* Ask for Proxy username/password */
-                      DialogBox(o.hInstance, (LPCTSTR)IDD_PROXY_AUTH, NULL, (DLGPROC)ProxyAuthDialogFunc);
+                      LocalizedDialogBox(IDD_PROXY_AUTH, ProxyAuthDialogFunc);
                       mysnprintf(proxy_string, "--http-proxy %s %s %s", 
                                  ieproxy, pos+1, o.proxy_authfile)
                     }
@@ -551,7 +550,7 @@ void ConstructProxyCmdLine(char *proxy_string_ptr, unsigned int size)
                   if (o.proxy_http_auth == PROXY_HTTP_ASK_AUTH)
                     {
                       /* Ask for Proxy username/password */
-                      DialogBox(o.hInstance, (LPCTSTR)IDD_PROXY_AUTH, NULL, (DLGPROC)ProxyAuthDialogFunc);
+                      LocalizedDialogBox(IDD_PROXY_AUTH, ProxyAuthDialogFunc);
                       mysnprintf(proxy_string, "--http-proxy %s 80 %s", 
                                  ieproxy, o.proxy_authfile)
                     }

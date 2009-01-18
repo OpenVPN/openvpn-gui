@@ -26,6 +26,7 @@
 #include "main.h"
 #include "openvpn-gui-res.h"
 #include "options.h"
+#include "localization.h"
 
 extern struct options o;
 
@@ -62,8 +63,7 @@ void RunConnectScript(int config, int run_as_service)
   if (!run_as_service)
     {
       /* UserInfo: Connect Script running */
-      myLoadString(INFO_STATE_CONN_SCRIPT);
-      SetDlgItemText(o.cnn[config].hwndStatus, TEXT_STATUS, buf); 
+      SetDlgItemText(o.cnn[config].hwndStatus, TEXT_STATUS, LoadLocalizedString(INFO_STATE_CONN_SCRIPT)); 
     }
 
   CLEAR (start_info);
@@ -164,8 +164,7 @@ void RunDisconnectScript(int config, int run_as_service)
   if (!run_as_service)
     {
       /* UserInfo: Disconnect Script running */
-      myLoadString(INFO_STATE_DISCONN_SCRIPT);
-      SetDlgItemText(o.cnn[config].hwndStatus, TEXT_STATUS, buf); 
+      SetDlgItemText(o.cnn[config].hwndStatus, TEXT_STATUS, LoadLocalizedString(INFO_STATE_DISCONN_SCRIPT)); 
     }
 
   CLEAR (start_info);

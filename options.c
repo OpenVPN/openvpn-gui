@@ -27,6 +27,7 @@
 #include <memory.h>
 #include <windows.h>
 #include "openvpn-gui-res.h"
+#include "localization.h"
 
 extern struct options o;
 
@@ -183,9 +184,8 @@ add_option (struct options *options,
       TCHAR usagetext[5000];
       TCHAR usagecaption[200];
       
-      LoadString(o.hInstance, INFO_USAGE, usagetext, sizeof(usagetext) / sizeof(TCHAR));
-      LoadString(o.hInstance, INFO_USAGECAPTION, usagecaption, sizeof(usagetext) / sizeof(TCHAR));
-      MessageBox(NULL, usagetext, usagecaption, MB_OK);
+      LoadLocalizedStringBuf(usagecaption, sizeof(usagecaption)/sizeof(*usagecaption), INFO_USAGECAPTION);
+      MessageBox(NULL, LoadLocalizedString(INFO_USAGE), usagecaption, MB_OK);
       exit(0);
     }
   else if (streq (p[0], "connect") && p[1])

@@ -69,28 +69,6 @@ struct security_attributes
            out [sizeof (out) - 1] = '\0'; \
         }
 
-
-/* Show Message */
-#define ShowMsg(caption, args...) \
-        { \
-           char x_msg[256]; \
-           mysnprintf (x_msg, args); \
-	   MessageBox(NULL, x_msg, caption, MB_OK | MB_SETFOREGROUND); \
-        }
-
-#define ShowLocalizedMsg(caption, id, args...) \
-	{ \
-	   char x_msg[256]; \
-	   TCHAR x_buf[1000]; \
-	   LoadString(o.hInstance, id, x_buf, sizeof(x_buf)/sizeof(TCHAR)); \
-	   mysnprintf(x_msg, x_buf, args); \
-	   MessageBox(NULL, x_msg, caption, MB_OK | MB_SETFOREGROUND); \
-	}
-#define myLoadString(id) \
-	{ \
-	   LoadString(o.hInstance, id, buf, sizeof(buf)/sizeof(TCHAR)); \
-	}
-
 #ifdef DEBUG
 /* Print Debug Message */
 #define PrintDebug(args...) \
