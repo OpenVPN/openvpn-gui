@@ -6,15 +6,10 @@ CC = @CC@
 WINDRES = @WINDRES@
 ZIP = @ZIP@
 
-CFLAGS = @CRYPTO_CPPFLAGS@ @CFLAGS@ @CPPFLAGS@
 LDFLAGS = @CRYPTO_LDFLAGS@ @LDFLAGS@
 LIBS = @CRYPTO_LIBS@ @LIBS@
-
-CFLAGS += -W -Wall -Wfloat-equal -Wundef -Wshadow -Wpointer-arith -Wbad-function-cast \
-          -Wcast-align -Wwrite-strings -Wconversion -Wsign-compare \
-          -Waggregate-return -Wmissing-noreturn -Wmissing-format-attribute \
-          -Wredundant-decls -Winline -Wdisabled-optimization \
-          -Wno-unused-function -Wno-unused-variable
+CFLAGS = @CRYPTO_CPPFLAGS@ @CFLAGS@ @CPPFLAGS@
+CFLAGS += -W -Wall -pedantic
 
 OBJS = main.o tray.o openvpn.o openvpn_monitor_process.o viewlog.o \
        service.o options.o passphrase.o proxy.o ieproxy.o registry.o \
