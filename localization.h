@@ -19,6 +19,15 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-int LoadStringLang(HINSTANCE, UINT, LANGID, PTSTR, int);
-HICON LoadIconLang(HINSTANCE, PTSTR, LANGID);
-INT_PTR DialogBoxLang(HINSTANCE, LPCTSTR, LANGID, HWND, DLGPROC);
+#ifndef LOCALIZATION_H
+#define LOCALIZATION_H
+
+PTSTR LoadLocalizedString(const UINT, ...);
+int LoadLocalizedStringBuf(PTSTR, const int, const UINT, ...);
+void ShowLocalizedMsg(const PTSTR, const UINT, ...);
+HICON LoadLocalizedIcon(const UINT);
+INT_PTR LocalizedDialogBoxParam(const UINT, DLGPROC, const LPARAM);
+INT_PTR LocalizedDialogBox(const UINT, DLGPROC);
+HWND CreateLocalizedDialog(const UINT, DLGPROC);
+
+#endif

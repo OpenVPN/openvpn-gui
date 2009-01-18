@@ -19,8 +19,15 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+/* for GetUserDefaultUILanguage() */
+#include <w32api.h>
+#define WINVER Windows2000
+
 #include <windows.h>
 #include <tchar.h>
+#include <stdio.h>
+#include <stdarg.h>
+#include "registry.h"
 
 static const LANGID defaultLangId = MAKELANGID(LANG_ENGLISH, SUBLANG_NEUTRAL);
 
@@ -44,8 +51,15 @@ FindResourceLang(HINSTANCE instance, PTSTR resType, PTSTR resId, LANGID langId)
 }
 
 
-int
-LoadStringLang(HINSTANCE instance, UINT stringId, LANGID langId, PTSTR buffer, int bufferSize)
+static LANGID
+GetGUILanguage(void)
+{
+    return GetUserDefaultUILanguage();
+}
+
+
+static int
+LoadStringLang(HINSTANCE instance, UINT stringId, LANGID langId, PTSTR buffer, int bufferSize, va_list args)
 {
     PWCH entry;
     PTSTR resBlockId = MAKEINTRESOURCE(stringId / 16 + 1);
@@ -64,36 +78,89 @@ LoadStringLang(HINSTANCE instance, UINT stringId, LANGID langId, PTSTR buffer, i
     /* search for string in block */
     for (int i = 0; i < 16; i++)
     {
-        /* string found, copy it */
-        if (i == resIndex && *entry)
+        /* skip over this entry */
+        if (i != resIndex)
         {
-            int maxLen = (*entry < bufferSize ? *entry : bufferSize);
-#ifdef _UNICODE
-            wcsncpy(buffer, entry + 1, maxLen);
-#else
-            WideCharToMultiByte(CP_ACP, 0, entry + 1, *entry, buffer, maxLen, "?", NULL);
-#endif
-            buffer[bufferSize - 1] = 0;
-            return _tcslen(buffer);
+            entry += ((*entry) + 1);
+            continue;
         }
 
         /* string does not exist */
-        if (i == resIndex)
+        if (i == resIndex && *entry == 0)
             break;
 
-        /* skip over this entry */
-        entry += ((*entry) + 1);
+        /* string found, copy it */
+        PTSTR formatStr = (PTSTR) malloc((*entry + 1) * sizeof(TCHAR));
+        if (formatStr == NULL)
+            break;
+        formatStr[*entry] = 0;
+
+#ifdef _UNICODE
+        wcsncpy(formatStr, entry + 1, *entry);
+#else
+        WideCharToMultiByte(CP_ACP, 0, entry + 1, *entry, formatStr, *entry, "?", NULL);
+#endif
+
+        _vsntprintf(buffer, bufferSize, formatStr, args);
+        buffer[bufferSize - 1] = 0;
+        free(formatStr);
+        return _tcslen(buffer);
     }
 
     return 0;
 }
 
 
-HICON
-LoadIconLang(HINSTANCE instance, PTSTR iconId, LANGID langId)
+static PTSTR
+__LoadLocalizedString(const UINT stringId, va_list args)
 {
+    static TCHAR msg[512];
+    msg[0] = 0;
+    LoadStringLang(GetModuleHandle(NULL), stringId, GetGUILanguage(), msg, sizeof(msg)/sizeof(*msg), args);
+    return msg;
+}
+
+
+PTSTR
+LoadLocalizedString(const UINT stringId, ...)
+{
+    va_list args;
+    va_start(args, stringId);
+    PTSTR str = __LoadLocalizedString(stringId, args);
+    va_end(args);
+    return str;
+}
+
+
+int
+LoadLocalizedStringBuf(PTSTR buffer, int bufferSize, const UINT stringId, ...)
+{
+    va_list args;
+    va_start(args, stringId);
+    int len = LoadStringLang(GetModuleHandle(NULL), stringId, GetGUILanguage(), buffer, bufferSize, args);
+    va_end(args);
+    return len;
+}
+
+
+void
+ShowLocalizedMsg(const PTSTR caption, const UINT stringId, ...)
+{
+    va_list args;
+    va_start(args, stringId);
+    MessageBox(NULL, __LoadLocalizedString(stringId, args), caption, MB_OK | MB_SETFOREGROUND);
+    va_end(args);
+}
+
+
+HICON
+LoadLocalizedIcon(const UINT iconId)
+{
+    HINSTANCE instance = GetModuleHandle(NULL);
+    LANGID langId = GetGUILanguage();
+
     /* find group icon resource */
-    HRSRC res = FindResourceLang(instance, RT_GROUP_ICON, iconId, langId);
+    HRSRC res = FindResourceLang(instance, RT_GROUP_ICON, MAKEINTRESOURCE(iconId), langId);
     if (res == NULL)
         return NULL;
 
@@ -121,11 +188,14 @@ LoadIconLang(HINSTANCE instance, PTSTR iconId, LANGID langId)
     return CreateIconFromResource(resInfo, resSize, TRUE, 0x30000);
 }
 
+
 INT_PTR
-DialogBoxLang(HINSTANCE instance, PTSTR dialogId, LANGID langId, HWND parentWnd, DLGPROC dialogFunc)
+LocalizedDialogBoxParam(const UINT dialogId, DLGPROC dialogFunc, const LPARAM param)
 {
+    HINSTANCE instance = GetModuleHandle(NULL);
+
     /* find dialog resource */
-    HRSRC res = FindResourceLang(instance, RT_DIALOG, dialogId, langId);
+    HRSRC res = FindResourceLang(instance, RT_DIALOG, MAKEINTRESOURCE(dialogId), GetGUILanguage());
     if (res == NULL)
         return -1;
 
@@ -133,5 +203,30 @@ DialogBoxLang(HINSTANCE instance, PTSTR dialogId, LANGID langId, HWND parentWnd,
     if (resInfo == NULL)
         return -1;
 
-    return DialogBoxIndirect(instance, resInfo, parentWnd, dialogFunc);
+    return DialogBoxIndirectParam(instance, resInfo, NULL, dialogFunc, param);
+}
+
+
+INT_PTR
+LocalizedDialogBox(const UINT dialogId, DLGPROC dialogFunc)
+{
+    return LocalizedDialogBoxParam(dialogId, dialogFunc, 0);
+}
+
+
+HWND
+CreateLocalizedDialog(const UINT dialogId, DLGPROC dialogFunc)
+{
+    HINSTANCE instance = GetModuleHandle(NULL);
+
+    /* find dialog resource */
+    HRSRC res = FindResourceLang(instance, RT_DIALOG, MAKEINTRESOURCE(dialogId), GetGUILanguage());
+    if (res == NULL)
+        return NULL;
+
+    HGLOBAL resInfo = LoadResource(instance, res);
+    if (resInfo == NULL)
+        return NULL;
+
+    return CreateDialogIndirect(instance, resInfo, NULL, dialogFunc);
 }
