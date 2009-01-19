@@ -224,7 +224,7 @@ void monitor_openvpnlog_while_connecting(int config, char *line)
       /* Show Tray Balloon msg */
       if (o.show_balloon[0] != '0')
         {
-          LoadLocalizedStringBuf(msg, sizeof(msg)/sizeof(*msg), INFO_NOW_CONNECTED, o.cnn[config].config_name)
+          LoadLocalizedStringBuf(msg, sizeof(msg)/sizeof(*msg), INFO_NOW_CONNECTED, o.cnn[config].config_name);
           if (strlen(o.cnn[config].ip) > 0)
             {
               ShowTrayBalloon(msg, LoadLocalizedString(INFO_ASSIG_IP, o.cnn[config].ip));
@@ -322,7 +322,7 @@ void monitor_openvpnlog_while_reconnecting(int config, char *line)
       /* Show Tray Balloon msg */
       if (o.show_balloon[0] == '2')
         {
-          LoadLocalizedStringBuf(msg, sizeof(msg)/sizeof(*msg), INFO_NOW_CONNECTED, o.cnn[config].config_name)
+          LoadLocalizedStringBuf(msg, sizeof(msg)/sizeof(*msg), INFO_NOW_CONNECTED, o.cnn[config].config_name);
           if (strlen(o.cnn[config].ip) > 0)
             {
               ShowTrayBalloon(msg, LoadLocalizedString(INFO_ASSIG_IP, o.cnn[config].ip));
