@@ -133,5 +133,4 @@ struct options
 void init_options (struct options *o);
 int Createargcargv(struct options* options, char* command_line);
 void parse_argv (struct options* options, int argc, char *argv[]);
-static int add_option (struct options *options, int i, char *p[]);
 int ConfigFileOptionExist(int config, const char *option);

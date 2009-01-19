@@ -24,6 +24,7 @@
 #include "main.h"
 #include "openvpn-gui-res.h"
 #include "options.h"
+#include "localization.h"
 
 #define MATCH_FALSE	0
 #define MATCH_FILE	1
@@ -146,7 +147,6 @@ BuildFileList()
   HANDLE find_handle;
   BOOL more_files;
   char find_string[MAX_PATH];
-  int i;
   char subdir_table[MAX_CONFIG_SUBDIRS][MAX_PATH];
   int subdir=0;
   int subdir_counter=0;

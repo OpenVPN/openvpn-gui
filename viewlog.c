@@ -26,6 +26,7 @@
 #include "main.h"
 #include "options.h"
 #include "openvpn-gui-res.h"
+#include "localization.h"
 
 extern struct options o;
 
@@ -33,14 +34,10 @@ void ViewLog(int config)
 {
   char filename[200];
 
-  extern char log_viewer[MAX_PATH];
-  extern char log_dir[MAX_PATH];
-
   STARTUPINFO start_info;
   PROCESS_INFORMATION proc_info;
   SECURITY_ATTRIBUTES sa;
   SECURITY_DESCRIPTOR sd;
-  char command_line[256];
 
   CLEAR (start_info);
   CLEAR (proc_info);
@@ -79,14 +76,10 @@ void EditConfig(int config)
 {
   char filename[200];
 
-  extern char config_dir[MAX_PATH];
-  extern char editor[MAX_PATH];
-
   STARTUPINFO start_info;
   PROCESS_INFORMATION proc_info;
   SECURITY_ATTRIBUTES sa;
   SECURITY_DESCRIPTOR sd;
-  char command_line[256];
 
   CLEAR (start_info);
   CLEAR (proc_info);

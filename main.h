@@ -63,9 +63,9 @@ struct security_attributes
 #define CLEAR(x) memset(&(x), 0, sizeof(x))
 
 /* snprintf with guaranteed null termination */
-#define mysnprintf(out, args...) \
+#define mysnprintf(out, ...) \
         { \
-           snprintf (out, sizeof(out), args); \
+           snprintf (out, sizeof(out), __VA_ARGS__); \
            out [sizeof (out) - 1] = '\0'; \
         }
 

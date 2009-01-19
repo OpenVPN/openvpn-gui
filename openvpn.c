@@ -143,10 +143,7 @@ int StartOpenVPN(int config)
   SECURITY_DESCRIPTOR sd;
   char command_line[256];
   char proxy_string[100];
-  char msg[200];
   int i, is_connected=0;
-
-  extern HINSTANCE hInstance;
 
   CLEAR (start_info);
   CLEAR (proc_info);
@@ -178,7 +175,6 @@ int StartOpenVPN(int config)
   if ((ConfigFileOptionExist(config, "log ")) ||
       (ConfigFileOptionExist(config, "log-append ")))
     {
-      TCHAR buf[1000];
       if (MessageBox(NULL, LoadLocalizedString(ERR_OPTION_LOG_IN_CONFIG), GUI_NAME, MB_YESNO | MB_DEFBUTTON2 | MB_ICONWARNING) != IDYES)
         return(false);
     }
@@ -392,9 +388,6 @@ failed:
 
 void StopOpenVPN(int config)
 {
-  int i;
-  TCHAR buf[1000];
-
   o.cnn[config].connect_status = DISCONNECTING;
   
   if (o.cnn[config].exit_event) {
@@ -412,9 +405,6 @@ void StopOpenVPN(int config)
 
 void SuspendOpenVPN(int config)
 {
-  int i;
-  TCHAR buf[1000];
-
   o.cnn[config].connect_status = SUSPENDING;
   o.cnn[config].restart = true;
 
@@ -450,7 +440,6 @@ BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
   HWND hwndLogWindow;
   RECT rect;
   CHARFORMAT charformat;
-  HICON hIcon;
   int config;
 
   switch (msg) {
@@ -630,7 +619,6 @@ int CheckVersion()
   HANDLE hInputRead = NULL;
   HANDLE hInputWrite = NULL;
   HANDLE exit_event;
-  HANDLE debug_event;
 
   STARTUPINFO start_info;
   PROCESS_INFORMATION proc_info;
@@ -902,7 +890,6 @@ void ThreadOpenVPNStatus(int config)
   char conn_name[200];
   HANDLE hThread; 
   DWORD IDThread; 
-  char msg[200];
   MSG messages;
 
   /* Cut of extention from config filename. */
@@ -912,7 +899,6 @@ void ThreadOpenVPNStatus(int config)
   if (o.cnn[config].restart)
     {
       /* UserInfo: Connecting */
-      TCHAR buf[1000];
       SetDlgItemText(o.cnn[config].hwndStatus, TEXT_STATUS, LoadLocalizedString(INFO_STATE_CONNECTING)); 
       SetStatusWinIcon(o.cnn[config].hwndStatus, APP_ICON_CONNECTING);
       EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_DISCONNECT), TRUE);
@@ -923,8 +909,6 @@ void ThreadOpenVPNStatus(int config)
   else
     {
       /* Create and Show Status Dialog */  
-      TCHAR buf[1000];
-
       o.cnn[config].hwndStatus = CreateLocalizedDialog(IDD_STATUS, StatusDialogFunc);
       if (!o.cnn[config].hwndStatus)
         ExitThread(1);

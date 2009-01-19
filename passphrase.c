@@ -42,7 +42,6 @@ int ConvertUnicode2Ascii(WCHAR str_unicode[], char str_ascii[], unsigned int str
   unsigned int i;
   unsigned int j;
   int illegal_chars = false;
-  char *str_unicode_ptr = (char *) str_unicode;
   for (i=0; (i < wcslen(str_unicode)) && (i < (str_ascii_size - 1)); i++)
     {
       for (j=0; j <= 256; j++)
@@ -326,10 +325,8 @@ void ChangePassphraseThread(int config)
   HWND hwndChangePSW;
   MSG messages;
   char conn_name[100];
-  char msg[100];
   char keyfilename[MAX_PATH];
   int keyfile_format=0;
-  TCHAR buf[1000];
 
   /* Cut of extention from config filename. */
   strncpy(conn_name, o.cnn[config].config_file, sizeof(conn_name));
@@ -372,7 +369,6 @@ BOOL CALLBACK ChangePassphraseDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam,
   char keyfile[MAX_PATH];
   int keyfile_format;
   BOOL Translated;
-  TCHAR buf[1000];
 
   switch (msg) {
 
@@ -687,7 +683,7 @@ int ChangePasswordPEM(HWND hwndDlg)
       /* Use passphrase */
       if ( !(PEM_write_PrivateKey(fp, privkey, \
                                   EVP_des_ede3_cbc(),  /* Use 3DES encryption */
-                                  newpsw, (int) strlen(newpsw), 0, NULL)))
+                                  (UCHAR*) newpsw, (int) strlen(newpsw), 0, NULL)))
         {
           /* can't write new key */
           ShowLocalizedMsg(GUI_NAME, ERR_WRITE_NEW_KEY, keyfile);
@@ -724,7 +720,6 @@ int ChangePasswordPKCS12(HWND hwndDlg)
   X509 *cert;
   STACK_OF(X509) *ca = NULL;
   PKCS12 *p12;
-  PKCS12 *new_p12;
   char *alias;
 
   /* Get filename, old_psw and new_psw from Dialog */
@@ -769,7 +764,7 @@ int ChangePasswordPKCS12(HWND hwndDlg)
   PKCS12_free(p12);
 
   /* Get FriendlyName of old cert */
-  alias = X509_alias_get0(cert, NULL);
+  alias = (char*) X509_alias_get0(cert, NULL);
 
   /* Create new PKCS12 object */
   p12 = PKCS12_create(newpsw, alias, privkey, cert, ca, 0,0,0,0,0);

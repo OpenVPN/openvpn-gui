@@ -41,8 +41,6 @@ int MyStartService()
   DWORD dwOldCheckPoint; 
   DWORD dwStartTickCount;
   DWORD dwWaitTime;
-  char msg[200];
-  TCHAR buf[1000];
   int i;
 
     /* Set Service Status = Connecting */
@@ -181,9 +179,6 @@ int MyStopService()
   SC_HANDLE schSCManager;
   SC_HANDLE schService;
   SERVICE_STATUS ssStatus; 
-  DWORD dwOldCheckPoint; 
-  DWORD dwStartTickCount;
-  DWORD dwWaitTime;
   int i;
 
     // Open a handle to the SC Manager database. 
@@ -248,9 +243,6 @@ int CheckServiceStatus()
   SC_HANDLE schSCManager;
   SC_HANDLE schService;
   SERVICE_STATUS ssStatus; 
-  DWORD dwOldCheckPoint; 
-  DWORD dwStartTickCount;
-  DWORD dwWaitTime;
 
     // Open a handle to the SC Manager database. 
     schSCManager = OpenSCManager( 

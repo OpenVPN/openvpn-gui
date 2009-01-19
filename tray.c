@@ -55,7 +55,6 @@ void OnNotifyTray(LPARAM lParam)
   POINT pt;				// point structure
   int connected_config;
   int i;
-  TCHAR buf[1000];
 
   // Right click, show the menu
   switch(lParam) {
@@ -185,11 +184,7 @@ void DestroyPopupMenus()
 
 void CreateItemList()
 {
-  extern char ext_string[];
-  extern char allow_edit[2];
-  extern char allow_service[2];
   int i;
-  TCHAR buf[1000];
  
   if (o.num_configs == 1)
     {
@@ -319,8 +314,6 @@ BOOL LoadAppIcon()
 
 void ShowTrayIcon()
 {
-  TCHAR buf[1000];
-
   ni.cbSize = sizeof(ni);
   ni.uID = 0;
   lstrcpyn(ni.szTip, LoadLocalizedString(MSG_TIP), sizeof(ni.szTip)/sizeof(*(ni.szTip))); 
@@ -346,11 +339,9 @@ void SetTrayIcon(int connected)
   char msg[500];
   char msg_connected[100];
   char msg_connecting[100];
-  char conn_name[200];
   char connected_since[50];
   int i, first_conn;
   int config=0;
-  TCHAR buf[1000];
 
   ni.cbSize = sizeof(ni);
   ni.uID = 0;

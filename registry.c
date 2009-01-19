@@ -220,7 +220,7 @@ int GetRegKey(const char name[], char *data, const char default_data[], DWORD le
                        name,
                        0,
                        REG_SZ,
-                       default_data,
+                       (const PBYTE) default_data,
                        strlen(default_data)+1))
         {
           /* cant read / set reg-key */ 
@@ -261,7 +261,7 @@ LONG GetRegistryValue(HKEY regkey, const char *name, char *data, DWORD len)
 int SetRegistryValue(HKEY regkey, const char *name, char *data)
 {
   /* set a registry string */
-  if(RegSetValueEx(regkey, name, 0, REG_SZ, data, strlen(data)+1) != ERROR_SUCCESS)
+  if(RegSetValueEx(regkey, name, 0, REG_SZ, (PBYTE) data, strlen(data)+1) != ERROR_SUCCESS)
     {
       /* Error writing registry value */
       ShowLocalizedMsg(GUI_NAME, ERR_WRITE_REGVALUE, GUI_REGKEY_HKCU, name);

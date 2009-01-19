@@ -45,9 +45,7 @@ int Createargcargv(struct options* options, char* command_line)
 
     char*  arg;
     int    myindex;
-    int    result;
 
-    int	i;
     // count the arguments
 
     argc = 1;
@@ -136,43 +134,6 @@ int Createargcargv(struct options* options, char* command_line)
 
 }
 
-void
-parse_argv (struct options* options,
-	    int argc,
-	    char *argv[])
-{
-  int i, j;
-
-  /* parse command line */
-  for (i = 1; i < argc; ++i)
-    {
-      char *p[MAX_PARMS];
-      CLEAR (p);
-      p[0] = argv[i];
-      if (strncmp(p[0], "--", 2))
-	{
-          /* Missing -- before option. */
-	  ShowLocalizedMsg(GUI_NAME, ERR_BAD_PARAMETER, p[0]);
-	  exit(0);
-        }
-      else
-	p[0] += 2;
-
-      for (j = 1; j < MAX_PARMS; ++j)
-	{
-	  if (i + j < argc)
-	    {
-	      char *arg = argv[i + j];
-	      if (strncmp (arg, "--", 2))
-		p[j] = arg;
-	      else
-		break;
-	    }
-	}
-      i = add_option (options, i, p);
-    }
-}
-
 static int
 add_option (struct options *options,
 	    int i,
@@ -181,7 +142,6 @@ add_option (struct options *options,
 
   if (streq (p[0], "help"))
     {
-      TCHAR usagetext[5000];
       TCHAR usagecaption[200];
       
       LoadLocalizedStringBuf(usagecaption, sizeof(usagecaption)/sizeof(*usagecaption), INFO_USAGECAPTION);
@@ -313,6 +273,43 @@ add_option (struct options *options,
   return i;
 }
 
+void
+parse_argv (struct options* options,
+	    int argc,
+	    char *argv[])
+{
+  int i, j;
+
+  /* parse command line */
+  for (i = 1; i < argc; ++i)
+    {
+      char *p[MAX_PARMS];
+      CLEAR (p);
+      p[0] = argv[i];
+      if (strncmp(p[0], "--", 2))
+	{
+          /* Missing -- before option. */
+	  ShowLocalizedMsg(GUI_NAME, ERR_BAD_PARAMETER, p[0]);
+	  exit(0);
+        }
+      else
+	p[0] += 2;
+
+      for (j = 1; j < MAX_PARMS; ++j)
+	{
+	  if (i + j < argc)
+	    {
+	      char *arg = argv[i + j];
+	      if (strncmp (arg, "--", 2))
+		p[j] = arg;
+	      else
+		break;
+	    }
+	}
+      i = add_option (options, i, p);
+    }
+}
+
 /*
  * Returns TRUE if option exist in config file.
  */
@@ -320,8 +317,6 @@ int ConfigFileOptionExist(int config, const char *option)
 {
   FILE *fp;
   char line[256];
-  int found_key=0;
-  int found_pkcs12=0;
   char configfile_path[MAX_PATH];
 
   strncpy(configfile_path, o.cnn[config].config_dir, sizeof(configfile_path));

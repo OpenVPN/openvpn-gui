@@ -1,4 +1,4 @@
-/*
+    /*
  *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
@@ -42,7 +42,6 @@ void RunConnectScript(int config, int run_as_service)
   char batch_file[100];
   DWORD ExitCode;
   int i, TimeOut;
-  TCHAR buf[1000];
 
   /* Cut of extention from config filename and add "_up.bat". */
   strncpy(batch_file, o.cnn[config].config_file, sizeof(batch_file));
@@ -144,7 +143,6 @@ void RunDisconnectScript(int config, int run_as_service)
   char batch_file[100];
   DWORD ExitCode;
   int i, TimeOut;
-  TCHAR buf[1000];
 
   /* Append "_down.bat" to config name. */
   strncpy(batch_file, o.cnn[config].config_name, sizeof(batch_file));
@@ -225,7 +223,6 @@ void RunPreconnectScript(int config)
   char batch_file[100];
   DWORD ExitCode;
   int i, TimeOut;
-  TCHAR buf[1000];
 
   /* Append "_pre.bat" to config name. */
   strncpy(batch_file, o.cnn[config].config_name, sizeof(batch_file));

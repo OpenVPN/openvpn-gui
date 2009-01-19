@@ -285,7 +285,6 @@ void LoadProxySettings(HWND hwndDlg)
 void SaveProxySettings(HWND hwndDlg)
 {
 
-  LONG status;
   HKEY regkey;
   DWORD dwDispos;
   char proxy_source_string[2]="0";

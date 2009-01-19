@@ -57,11 +57,9 @@ int ReadLineFromStdOut(HANDLE hStdOut, int config, char *line)
       static int charsleft[MAX_CONFIGS];
       char tmpline[MAX_LINELEN];
       DWORD nBytesRead;
-      DWORD nCharsWritten;
       char *p;
       unsigned int len, i;
       static int first_call = 1;
-      extern HINSTANCE hInstance;
 
   if (first_call)
     {
@@ -192,9 +190,7 @@ int ReadLineFromStdOut(HANDLE hStdOut, int config, char *line)
  */
 void monitor_openvpnlog_while_connecting(int config, char *line)
 {
-  TCHAR buf[1000];
   char msg[200];
-  char msg2[200];
   unsigned int i;
   char *linepos;
 
@@ -283,8 +279,6 @@ void monitor_openvpnlog_while_connecting(int config, char *line)
  */
 void monitor_openvpnlog_while_connected(int config, char *line)
 {
-  TCHAR buf[1000];
-
   /* Check for Ping-Restart message */
   if (strstr(line, "process restarting") != NULL)
     {
@@ -303,11 +297,9 @@ void monitor_openvpnlog_while_connected(int config, char *line)
  */
 void monitor_openvpnlog_while_reconnecting(int config, char *line)
 {
-  TCHAR buf[1000];
   char msg[200];
-  char msg2[200];
-  unsigned int i;
   char *linepos;
+  size_t i;
   
   /* Check for Connected message */
   if (strstr(line, o.connect_string) != NULL)
@@ -387,15 +379,9 @@ void WatchOpenVPNProcess(int config)
   int ret;
   char filemode[2] = "w\0";
   FILE *fd;
-  char msg[200];
-  char msg2[200];
-  int i;
-  int iLineCount;
   int LogLines = 0;
   int logpos;
-  char *linepos;
   HWND LogWindow;
-  TCHAR buf[1000];
 
   /* set log file append/truncate filemode */
   if (o.append_string[0] == '1')

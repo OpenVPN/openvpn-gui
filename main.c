@@ -60,7 +60,6 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   HWND hwnd;               /* This is the handle for our window */
   MSG messages;            /* Here messages to the application are saved */
   WNDCLASSEX wincl;        /* Data structure for the windowclass */
-  HWND hwndAbout;
   DWORD shell32_version;
 
 
@@ -323,7 +322,6 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 BOOL CALLBACK AboutDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPARAM lParam)
 {
   HICON hIcon;
-  TCHAR buf[1000];
 
   switch (msg) {
 
@@ -358,7 +356,6 @@ BOOL CALLBACK AboutDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPA
 void CloseApplication(HWND hwnd)
 {
   int i, ask_exit=0;
-  TCHAR buf[1000];
 
   if (o.service_running == SERVICE_CONNECTED)
     {
