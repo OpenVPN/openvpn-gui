@@ -2,6 +2,7 @@
  *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
+ *                2009 Heiko Hund <heikoh@users.sf.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,6 +21,7 @@
  */
 
 #include <windows.h>
+#include <tchar.h>
 #include "main.h"
 #include "options.h"
 #include "registry.h"
@@ -48,9 +50,8 @@ BOOL CALLBACK ProxySettingsDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UN
         SendMessage(hwndDlg, WM_SETICON, (WPARAM) (ICON_BIG), (LPARAM) (hIcon));
       }
 
-      /* Limit Port editboxs to 5 chars. */
-      SendMessage(GetDlgItem(hwndDlg, EDIT_PROXY_HTTP_PORT), EM_SETLIMITTEXT, 5, 0);
-      SendMessage(GetDlgItem(hwndDlg, EDIT_PROXY_SOCKS_PORT), EM_SETLIMITTEXT, 5, 0);
+      /* Limit Port editbox to 5 chars. */
+      SendMessage(GetDlgItem(hwndDlg, EDIT_PROXY_PORT), EM_SETLIMITTEXT, 5, 0);
 
       LoadProxySettings(hwndDlg);
       break;
@@ -76,99 +77,61 @@ BOOL CALLBACK ProxySettingsDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UN
             {
               EnableWindow(GetDlgItem(hwndDlg, RB_PROXY_HTTP), FALSE);
               EnableWindow(GetDlgItem(hwndDlg, RB_PROXY_SOCKS), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_HTTP_ADDRESS), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_HTTP_PORT), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_HTTP_ADDRESS), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_HTTP_PORT), FALSE);
+              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_ADDRESS), FALSE);
+              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_PORT), FALSE);
+              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_ADDRESS), FALSE);
+              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_PORT), FALSE);
               EnableWindow(GetDlgItem(hwndDlg, CHECKB_PROXY_AUTH), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_SOCKS_ADDRESS), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_SOCKS_PORT), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_SOCKS_ADDRESS), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_SOCKS_PORT), FALSE);
-              break;
             }
+          break;
 
         case RB_PROXY_USE_IE:
           if (HIWORD(wParam) == BN_CLICKED)
             {
               EnableWindow(GetDlgItem(hwndDlg, RB_PROXY_HTTP), FALSE);
               EnableWindow(GetDlgItem(hwndDlg, RB_PROXY_SOCKS), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_HTTP_ADDRESS), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_HTTP_PORT), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_HTTP_ADDRESS), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_HTTP_PORT), FALSE);
+              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_ADDRESS), FALSE);
+              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_PORT), FALSE);
+              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_ADDRESS), FALSE);
+              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_PORT), FALSE);
               EnableWindow(GetDlgItem(hwndDlg, CHECKB_PROXY_AUTH), TRUE);
-              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_SOCKS_ADDRESS), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_SOCKS_PORT), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_SOCKS_ADDRESS), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_SOCKS_PORT), FALSE);
-              break;
             }
+          break;
 
         case RB_PROXY_USE_MANUAL:
           if (HIWORD(wParam) == BN_CLICKED)
             {
               EnableWindow(GetDlgItem(hwndDlg, RB_PROXY_HTTP), TRUE);
               EnableWindow(GetDlgItem(hwndDlg, RB_PROXY_SOCKS), TRUE);
-
-              if (IsDlgButtonChecked(hwndDlg, RB_PROXY_HTTP) == BST_CHECKED)
-                {
-                  EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_HTTP_ADDRESS), TRUE);
-                  EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_HTTP_PORT), TRUE);
-                  EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_HTTP_ADDRESS), TRUE);
-                  EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_HTTP_PORT), TRUE);
-                  EnableWindow(GetDlgItem(hwndDlg, CHECKB_PROXY_AUTH), TRUE);
-                  EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_SOCKS_ADDRESS), FALSE);
-                  EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_SOCKS_PORT), FALSE);
-                  EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_SOCKS_ADDRESS), FALSE);
-                  EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_SOCKS_PORT), FALSE);
-                }
-              else
-                {
-                  EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_HTTP_ADDRESS), FALSE);
-                  EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_HTTP_PORT), FALSE);
-                  EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_HTTP_ADDRESS), FALSE);
-                  EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_HTTP_PORT), FALSE);
-                  EnableWindow(GetDlgItem(hwndDlg, CHECKB_PROXY_AUTH), FALSE);
-                  EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_SOCKS_ADDRESS), TRUE);
-                  EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_SOCKS_PORT), TRUE);
-                  EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_SOCKS_ADDRESS), TRUE);
-                  EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_SOCKS_PORT), TRUE);
-                }
-              break;
+              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_ADDRESS), TRUE);
+              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_PORT), TRUE);
+              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_ADDRESS), TRUE);
+              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_PORT), TRUE);
+              EnableWindow(GetDlgItem(hwndDlg, CHECKB_PROXY_AUTH),
+                (IsDlgButtonChecked(hwndDlg, RB_PROXY_HTTP) == BST_CHECKED ? TRUE : FALSE));
             }
+          break;
 
         case RB_PROXY_HTTP:
           if (HIWORD(wParam) == BN_CLICKED)
             {
-              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_HTTP_ADDRESS), TRUE);
-              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_HTTP_PORT), TRUE);
-              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_HTTP_ADDRESS), TRUE);
-              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_HTTP_PORT), TRUE);
               EnableWindow(GetDlgItem(hwndDlg, CHECKB_PROXY_AUTH), TRUE);
-              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_SOCKS_ADDRESS), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_SOCKS_PORT), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_SOCKS_ADDRESS), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_SOCKS_PORT), FALSE);
-              break;
+              SetDlgItemText(hwndDlg, EDIT_PROXY_ADDRESS, o.proxy_http_address);
+              SetDlgItemText(hwndDlg, EDIT_PROXY_PORT, o.proxy_http_port);
             }
+          break;
 
         case RB_PROXY_SOCKS:
           if (HIWORD(wParam) == BN_CLICKED)
             {
-              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_HTTP_ADDRESS), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_HTTP_PORT), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_HTTP_ADDRESS), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_HTTP_PORT), FALSE);
               EnableWindow(GetDlgItem(hwndDlg, CHECKB_PROXY_AUTH), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_SOCKS_ADDRESS), TRUE);
-              EnableWindow(GetDlgItem(hwndDlg, EDIT_PROXY_SOCKS_PORT), TRUE);
-              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_SOCKS_ADDRESS), TRUE);
-              EnableWindow(GetDlgItem(hwndDlg, TEXT_PROXY_SOCKS_PORT), TRUE);
-              break;
+              SetDlgItemText(hwndDlg, EDIT_PROXY_ADDRESS, o.proxy_socks_address);
+              SetDlgItemText(hwndDlg, EDIT_PROXY_PORT, o.proxy_socks_port);
             }
+          break;
       }
       break;
+
     case WM_CLOSE:
       EndDialog(hwndDlg, LOWORD(wParam));
       return TRUE;
@@ -180,91 +143,56 @@ BOOL CALLBACK ProxySettingsDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UN
 /* Check that proxy settings are valid */
 int CheckProxySettings(HWND hwndDlg)
 {
-  char text[100];
-  long port;
-
   if (IsDlgButtonChecked(hwndDlg, RB_PROXY_USE_MANUAL) == BST_CHECKED)
     {
-      if (IsDlgButtonChecked(hwndDlg, RB_PROXY_HTTP) == BST_CHECKED)
+      TCHAR text[100];
+      BOOL http = (IsDlgButtonChecked(hwndDlg, RB_PROXY_HTTP) == BST_CHECKED);
+
+      GetDlgItemText(hwndDlg, EDIT_PROXY_ADDRESS, text, sizeof(text)/sizeof(*text));
+      if (_tcslen(text) == 0)
         {
-          GetDlgItemText(hwndDlg, EDIT_PROXY_HTTP_ADDRESS, text, sizeof(text));
-          if (strlen(text) == 0)
-            {
-              /* http_proxy_access not specified */
-              ShowLocalizedMsg(GUI_NAME, ERR_HTTP_PROXY_ADDRESS);
-              return(0);
-            }
-          GetDlgItemText(hwndDlg, EDIT_PROXY_HTTP_PORT, text, sizeof(text));
-          if (strlen(text) == 0)
-            {
-              /* http_proxy_port not specified */
-              ShowLocalizedMsg(GUI_NAME, ERR_HTTP_PROXY_PORT);
-              return(0);
-            }
-          else
-            {
-              port=strtol(text, NULL, 10);
-              if ((port < 1) || (port > 65535))
-                {
-                  /* http_proxy_port range error */
-                  ShowLocalizedMsg(GUI_NAME, ERR_HTTP_PROXY_PORT_RANGE);
-                  return(0);
-                }
-            }
+          /* proxy address not specified */
+          ShowLocalizedMsg(GUI_NAME, (http ? ERR_HTTP_PROXY_ADDRESS : ERR_SOCKS_PROXY_ADDRESS));
+          return(0);
         }
 
-      if (IsDlgButtonChecked(hwndDlg, RB_PROXY_SOCKS) == BST_CHECKED)
+      GetDlgItemText(hwndDlg, EDIT_PROXY_PORT, text, sizeof(text));
+      if (_tcslen(text) == 0)
         {
-          GetDlgItemText(hwndDlg, EDIT_PROXY_SOCKS_ADDRESS, text, sizeof(text));
-          if (strlen(text) == 0)
-            {
-              /* socks_proxy_address not specified */
-              ShowLocalizedMsg(GUI_NAME, ERR_SOCKS_PROXY_ADDRESS);
-              return(0);
-            }
-          GetDlgItemText(hwndDlg, EDIT_PROXY_SOCKS_PORT, text, sizeof(text));
-          if (strlen(text) == 0)
-            {
-              /* socks_proxy_port not specified */
-              ShowLocalizedMsg(GUI_NAME, ERR_SOCKS_PROXY_PORT);
-              return(0);
-            }
-          else
-            {
-              port=strtol(text, NULL, 10);
-              if ((port < 1) || (port > 65535))
-                {
-                  /* socks_proxy_port range error */
-                  ShowLocalizedMsg(GUI_NAME, ERR_SOCKS_PROXY_PORT_RANGE);
-                  return(0);
-                }
-            }
+          /* proxy port not specified */
+          ShowLocalizedMsg(GUI_NAME, (http ? ERR_HTTP_PROXY_PORT : ERR_SOCKS_PROXY_PORT));
+          return(0);
+        }
+
+      long port = strtol(text, NULL, 10);
+      if ((port < 1) || (port > 65535))
+        {
+          /* proxy port range error */
+          ShowLocalizedMsg(GUI_NAME, (http ? ERR_HTTP_PROXY_PORT_RANGE : ERR_SOCKS_PROXY_PORT_RANGE));
+          return(0);
         }
     }
+
   return(1);
 }
 
 void LoadProxySettings(HWND hwndDlg)
 {
-
-  /* Disable IE Settings untill this is implemented */
-  // EnableWindow(GetDlgItem(hwndDlg, RB_PROXY_USE_IE), FALSE);
-
-  /* Set Proxy Type */
+  /* Set Proxy type, address and port */
   if (o.proxy_type == 0)  /* HTTP Proxy */
     {
-      CheckRadioButton(hwndDlg,
-                       RB_PROXY_HTTP,    /* First button in group */
-                       RB_PROXY_SOCKS,   /* Last button in group */
-                       RB_PROXY_HTTP);   /* Select this button */
+      CheckRadioButton(hwndDlg, RB_PROXY_HTTP, RB_PROXY_SOCKS, RB_PROXY_HTTP);
+      SetDlgItemText(hwndDlg, EDIT_PROXY_ADDRESS, o.proxy_http_address);
+      SetDlgItemText(hwndDlg, EDIT_PROXY_PORT, o.proxy_http_port);
     }
   else			  /* SOCKS Proxy */
     {
-      CheckRadioButton(hwndDlg,
-                       RB_PROXY_HTTP,    /* First button in group */
-                       RB_PROXY_SOCKS,   /* Last button in group */
-                       RB_PROXY_SOCKS);  /* Select this button */
+      CheckRadioButton(hwndDlg, RB_PROXY_HTTP, RB_PROXY_SOCKS, RB_PROXY_SOCKS);
+      SetDlgItemText(hwndDlg, EDIT_PROXY_ADDRESS, o.proxy_socks_address);
+      SetDlgItemText(hwndDlg, EDIT_PROXY_PORT, o.proxy_socks_port);
     }
+
+  if (o.proxy_http_auth) CheckDlgButton(hwndDlg, CHECKB_PROXY_AUTH, BST_CHECKED);
 
   /* Set Proxy Settings Source */
   if (o.proxy_source == 0)
@@ -273,18 +201,10 @@ void LoadProxySettings(HWND hwndDlg)
     SendMessage(GetDlgItem(hwndDlg, RB_PROXY_USE_IE), BM_CLICK, 0, 0);
   if (o.proxy_source == 2)
     SendMessage(GetDlgItem(hwndDlg, RB_PROXY_USE_MANUAL), BM_CLICK, 0, 0);
-
-  /* Set Proxy addresses and ports */
-  SetDlgItemText(hwndDlg, EDIT_PROXY_HTTP_ADDRESS, o.proxy_http_address);
-  SetDlgItemText(hwndDlg, EDIT_PROXY_HTTP_PORT, o.proxy_http_port);
-  SetDlgItemText(hwndDlg, EDIT_PROXY_SOCKS_ADDRESS, o.proxy_socks_address);
-  SetDlgItemText(hwndDlg, EDIT_PROXY_SOCKS_PORT, o.proxy_socks_port);
-  if (o.proxy_http_auth) CheckDlgButton(hwndDlg, CHECKB_PROXY_AUTH, BST_CHECKED);
 }
 
 void SaveProxySettings(HWND hwndDlg)
 {
-
   HKEY regkey;
   DWORD dwDispos;
   char proxy_source_string[2]="0";
@@ -308,36 +228,30 @@ void SaveProxySettings(HWND hwndDlg)
       proxy_source_string[0] = '2';
     }
 
-  /* Save Proxy addresses and ports */
-  GetDlgItemText(hwndDlg, EDIT_PROXY_HTTP_ADDRESS, o.proxy_http_address, 
-                 sizeof(o.proxy_http_address));
-  GetDlgItemText(hwndDlg, EDIT_PROXY_HTTP_PORT, o.proxy_http_port, 
-                 sizeof(o.proxy_http_port));
-  GetDlgItemText(hwndDlg, EDIT_PROXY_SOCKS_ADDRESS, o.proxy_socks_address, 
-                 sizeof(o.proxy_http_address));
-  GetDlgItemText(hwndDlg, EDIT_PROXY_SOCKS_PORT, o.proxy_socks_port, 
-                 sizeof(o.proxy_socks_port));
-  
+  /* Save Proxy type, address and port */
   if (IsDlgButtonChecked(hwndDlg, RB_PROXY_HTTP) == BST_CHECKED)
     {
       o.proxy_type = 0;
       proxy_type_string[0] = '0';
+
+      GetDlgItemText(hwndDlg, EDIT_PROXY_ADDRESS, o.proxy_http_address, 
+                 sizeof(o.proxy_http_address));
+      GetDlgItemText(hwndDlg, EDIT_PROXY_PORT, o.proxy_http_port, 
+                 sizeof(o.proxy_http_port));
+
+      BOOL auth = (IsDlgButtonChecked(hwndDlg, CHECKB_PROXY_AUTH) == BST_CHECKED);
+      o.proxy_http_auth = (auth ? 1 : 0);
+      proxy_http_auth_string[0] = (auth ? '1' : '0');
     }
   else
     {
       o.proxy_type = 1;
       proxy_type_string[0] = '1';
-    }
 
-  if (IsDlgButtonChecked(hwndDlg, CHECKB_PROXY_AUTH) == BST_CHECKED)
-    {
-      o.proxy_http_auth = 1;
-      proxy_http_auth_string[0] = '1';
-    }
-  else
-    {
-      o.proxy_http_auth = 0;
-      proxy_http_auth_string[0] = '0';
+      GetDlgItemText(hwndDlg, EDIT_PROXY_ADDRESS, o.proxy_socks_address, 
+                 sizeof(o.proxy_socks_address));
+      GetDlgItemText(hwndDlg, EDIT_PROXY_PORT, o.proxy_socks_port, 
+                 sizeof(o.proxy_socks_port));
     }
 
   /* Open Registry for writing */
@@ -366,7 +280,6 @@ void SaveProxySettings(HWND hwndDlg)
   SetRegistryValue(regkey, "proxy_socks_port", o.proxy_socks_port);
 
   RegCloseKey(regkey);
- 
 }
 
 void GetProxyRegistrySettings()
@@ -430,7 +343,6 @@ void GetProxyRegistrySettings()
     o.proxy_http_auth=1;
 
   RegCloseKey(regkey);
-  return;  
 }
 
 BOOL CALLBACK ProxyAuthDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPARAM lParam)
