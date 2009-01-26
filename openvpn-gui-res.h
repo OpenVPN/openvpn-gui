@@ -60,6 +60,9 @@
 #define	EDIT_AUTH_USERNAME		181
 #define	EDIT_AUTH_PASSWORD		182
 
+/* Settings Dialog*/
+#define IDS_SETTINGS_CAPTION    190
+
 /* Proxy Settings Dialog */
 #define IDD_PROXY			200
 #define RB_PROXY_USE_OPENVPN		210
@@ -85,7 +88,7 @@
 #define MSG_TIP_CONNECTED_SINCE		1004
 #define MSG_TIP_ASSIGNED_IP		1005
 #define IDM_TEXT_SERVICE		1006
-#define IDM_TEXT_PROXY			1007
+#define IDM_TEXT_SETTINGS		1007
 #define IDM_TEXT_ABOUT			1008
 #define IDM_TEXT_CLOSE			1009
 #define IDM_TEXT_CONNECT		1010

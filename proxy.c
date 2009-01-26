@@ -21,6 +21,7 @@
  */
 
 #include <windows.h>
+#include <prsht.h>
 #include <tchar.h>
 #include "main.h"
 #include "options.h"
@@ -32,14 +33,10 @@
 
 extern struct options o;
 
-void ShowProxySettingsDialog()
-{
-  LocalizedDialogBox(IDD_PROXY, ProxySettingsDialogFunc);
-}
-
-BOOL CALLBACK ProxySettingsDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPARAM lParam)
+bool CALLBACK ProxySettingsDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPARAM lParam)
 {
   HICON hIcon;
+  LPPSHNOTIFY psn;
 
   switch (msg) {
 
@@ -58,19 +55,6 @@ BOOL CALLBACK ProxySettingsDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UN
 
     case WM_COMMAND:
       switch (LOWORD(wParam)) {
-
-        case IDOK:
-          if (CheckProxySettings(hwndDlg))
-            {
-              SaveProxySettings(hwndDlg);
-              EndDialog(hwndDlg, LOWORD(wParam));
-              return TRUE;
-            }
-          return FALSE;
-
-        case IDCANCEL: 
-          EndDialog(hwndDlg, LOWORD(wParam));
-          return TRUE;
 
         case RB_PROXY_USE_OPENVPN:
           if (HIWORD(wParam) == BN_CLICKED)
@@ -130,6 +114,22 @@ BOOL CALLBACK ProxySettingsDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UN
             }
           break;
       }
+      break;
+
+    case WM_NOTIFY:
+      psn = (LPPSHNOTIFY) lParam;
+      if (psn->hdr.code == (UINT) PSN_KILLACTIVE)
+        {
+          SetWindowLong(hwndDlg, DWL_MSGRESULT,
+            ( CheckProxySettings(hwndDlg) ? FALSE : TRUE ));
+          return TRUE;
+        }
+      else if (psn->hdr.code == (UINT) PSN_APPLY)
+        {
+          SaveProxySettings(hwndDlg);
+          SetWindowLong(hwndDlg, DWL_MSGRESULT, PSNRET_NOERROR);
+          return TRUE;
+        }
       break;
 
     case WM_CLOSE:

@@ -108,27 +108,25 @@ BEGIN
 END
 
 /* Proxy Settings Dialog */
-IDD_PROXY DIALOG 6, 18, 255, 143
+IDD_PROXY DIALOG 6, 18, 249, 124
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "OpenVPN - Proxy Inställningar"
+CAPTION "Proxy"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_SWEDISH, SUBLANG_NEUTRAL
 BEGIN
-    GROUPBOX "   ", 201, 13, 42, 228, 67
+    GROUPBOX "   ", 201, 6, 42, 235, 52
     AUTORADIOBUTTON "Använd inställningar från OpenVPNs konfigurations fil", RB_PROXY_USE_OPENVPN, \
-                    20, 12, 200, 10, WS_GROUP | WS_TABSTOP
+                    13, 12, 200, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Använd inställningar från Internet Explorer", \
-                    RB_PROXY_USE_IE, 20, 27, 200, 10
-    AUTORADIOBUTTON "Manuell Konfigurering", RB_PROXY_USE_MANUAL, 20, 42, 81, 10
-    AUTORADIOBUTTON "HTTP Proxy", RB_PROXY_HTTP, 27, 58, 90, 10, WS_GROUP | WS_TABSTOP
+                    RB_PROXY_USE_IE, 13, 27, 200, 10
+    AUTORADIOBUTTON "Manuell Konfigurering", RB_PROXY_USE_MANUAL, 13, 42, 81, 10
+    AUTORADIOBUTTON "HTTP Proxy", RB_PROXY_HTTP, 20, 58, 90, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "SOCKS Proxy", RB_PROXY_SOCKS, 120, 58, 90, 10
-    LTEXT "Adress:", TEXT_PROXY_ADDRESS, 27, 73, 41, 10
+    LTEXT "Adress:", TEXT_PROXY_ADDRESS, 20, 73, 41, 10
     RTEXT "Port:", TEXT_PROXY_PORT, 166, 73, 25, 10
-    EDITTEXT EDIT_PROXY_ADDRESS, 56, 71, 114, 12, ES_AUTOHSCROLL
+    EDITTEXT EDIT_PROXY_ADDRESS, 49, 71, 121, 12, ES_AUTOHSCROLL
     EDITTEXT EDIT_PROXY_PORT, 196, 71, 30, 12, ES_AUTOHSCROLL
-    AUTOCHECKBOX "Fråga efter användarnamn/lösenord vid uppkoppling.", CHECKB_PROXY_AUTH, 27, 88, 183, 10
-    PUSHBUTTON "OK", IDOK, 52, 120, 50, 14
-    PUSHBUTTON "Avbryt", IDCANCEL, 153, 120, 50, 14
+    AUTOCHECKBOX "Fråga efter användarnamn/lösenord vid uppkoppling.", CHECKB_PROXY_AUTH, 13, 103, 183, 10
 END
 
 /* Proxy Authentication Dialog */
@@ -158,7 +156,7 @@ BEGIN
     MSG_TIP_CONNECTED_SINCE "\nAnsluten sedan: "
     MSG_TIP_ASSIGNED_IP "\nTilldelad IP: %s"
     IDM_TEXT_SERVICE "OpenVPN Service"
-    IDM_TEXT_PROXY "Proxy Inställningar"
+    IDM_TEXT_SETTINGS "Inställningar..."
     IDM_TEXT_ABOUT "Om"
     IDM_TEXT_CLOSE "Avsluta"
     IDM_TEXT_CONNECT "Anslut"
@@ -307,6 +305,9 @@ BEGIN
     ERR_CR2STDIN "Ett fel uppstod då CR skulle skickas till OpenVPN via stdin."
     ERR_INVALID_CHARS_IN_PSW "Ditt nya lösenord innehåller otillåtna tecken. " \
                              "Välj ett nytt."
+
+    /* settings */
+    IDS_SETTINGS_CAPTION "OpenVPN - Inställningar"
 
     /* proxy */
     ERR_HTTP_PROXY_ADDRESS "Du måste ange en HTTP proxy adress."

@@ -23,7 +23,7 @@
 
 //Popup Menu items
 
-#define IDM_PROXY			221						
+#define IDM_SETTINGS		221
 #define IDM_ABOUT			222
 
 #define IDM_CLOSE			223						

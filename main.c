@@ -19,6 +19,7 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#define _WIN32_IE 0x0500
 #include <windows.h>
 #include <shlwapi.h>
 #include <Pbt.h>
@@ -43,6 +44,7 @@
 /*  Declare Windows procedure  */
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
 BOOL CALLBACK AboutDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
+static void ShowSettingsDialog();
 void CloseApplication(HWND hwnd);
 
 /*  Class name and window title  */
@@ -235,8 +237,8 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         ShowChangePassphraseDialog(LOWORD(wParam) - IDM_PASSPHRASEMENU);
       }
 #endif
-      if (LOWORD(wParam) == IDM_PROXY) {
-        ShowProxySettingsDialog();
+      if (LOWORD(wParam) == IDM_SETTINGS) {
+        ShowSettingsDialog();
       }
       if (LOWORD(wParam) == IDM_ABOUT) {
         LocalizedDialogBox(IDD_ABOUTDIALOG, AboutDialogFunc);
@@ -352,6 +354,35 @@ BOOL CALLBACK AboutDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPA
   }
   return FALSE;
 }
+
+
+static void
+ShowSettingsDialog()
+{
+  PROPSHEETPAGE psp[1];
+  psp[0].dwSize = sizeof(PROPSHEETPAGE);
+  psp[0].dwFlags = PSP_DLGINDIRECT;
+  psp[0].hInstance = o.hInstance;
+  psp[0].pResource = LocalizedDialogResource(IDD_PROXY);
+  psp[0].pfnDlgProc = ProxySettingsDialogFunc;
+  psp[0].lParam = 0;
+  psp[0].pfnCallback = NULL;
+
+  PROPSHEETHEADER psh;
+  psh.dwSize = sizeof(PROPSHEETHEADER);
+  psh.dwFlags = PSH_USEHICON | PSH_PROPSHEETPAGE | PSH_NOAPPLYNOW | PSH_NOCONTEXTHELP;
+  psh.hwndParent = o.hWnd;
+  psh.hInstance = o.hInstance;
+  psh.hIcon = LoadLocalizedIcon(APP_ICON);
+  psh.pszCaption = LoadLocalizedString(IDS_SETTINGS_CAPTION);
+  psh.nPages = sizeof(psp) / sizeof(PROPSHEETPAGE);
+  psh.nStartPage = 0;
+  psh.ppsp = (LPCPROPSHEETPAGE) &psp;
+  psh.pfnCallback = NULL;
+
+  PropertySheet(&psh);
+}
+
 
 void CloseApplication(HWND hwnd)
 {

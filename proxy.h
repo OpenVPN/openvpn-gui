@@ -27,7 +27,6 @@
 #define PROXY_HTTP_NO_AUTH	0
 #define PROXY_HTTP_ASK_AUTH	1
 
-void ShowProxySettingsDialog();
 BOOL CALLBACK ProxySettingsDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 int CheckProxySettings(HWND hwndDlg);
 void LoadProxySettings(HWND hwndDlg);

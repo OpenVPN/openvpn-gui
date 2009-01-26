@@ -222,11 +222,8 @@ void CreateItemList()
           AppendMenu(hMenu,MF_POPUP,(UINT) hMenuService, LoadLocalizedString(IDM_TEXT_SERVICE));
           AppendMenu(hMenu,MF_SEPARATOR,0,0);
         }
-      if (o.allow_proxy[0]=='1' && o.service_only[0]=='0')
-        {
-          AppendMenu(hMenu,MF_STRING ,IDM_PROXY, LoadLocalizedString(IDM_TEXT_PROXY));
-          AppendMenu(hMenu,MF_SEPARATOR,0,0);
-        }
+//TODO: if (o.allow_proxy[0]=='1' && o.service_only[0]=='0')
+      AppendMenu(hMenu,MF_STRING ,IDM_SETTINGS, LoadLocalizedString(IDM_TEXT_SETTINGS));
       AppendMenu(hMenu,MF_STRING ,IDM_ABOUT, LoadLocalizedString(IDM_TEXT_ABOUT));
       AppendMenu(hMenu,MF_STRING ,IDM_CLOSE, LoadLocalizedString(IDM_TEXT_CLOSE));
 
@@ -252,11 +249,8 @@ void CreateItemList()
           AppendMenu(hMenu,MF_STRING, IDM_SERVICE_RESTART, LoadLocalizedString(IDM_TEXT_SERVICEONLY_RESTART));
           AppendMenu(hMenu,MF_SEPARATOR,0,0);
         }
-      if (o.allow_proxy[0]=='1' && o.service_only[0]=='0')
-        {
-          AppendMenu(hMenu,MF_STRING ,IDM_PROXY, LoadLocalizedString(IDM_TEXT_PROXY));
-          AppendMenu(hMenu,MF_SEPARATOR,0,0);
-        }
+//TODO: if (o.allow_proxy[0]=='1' && o.service_only[0]=='0')
+      AppendMenu(hMenu,MF_STRING ,IDM_SETTINGS, LoadLocalizedString(IDM_TEXT_SETTINGS));
       AppendMenu(hMenu,MF_STRING ,IDM_ABOUT, LoadLocalizedString(IDM_TEXT_ABOUT));
       AppendMenu(hMenu,MF_STRING ,IDM_CLOSE, LoadLocalizedString(IDM_TEXT_CLOSE));
  

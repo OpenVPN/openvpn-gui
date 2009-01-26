@@ -103,27 +103,25 @@ BEGIN
 END
 
 /* Proxy Settings Dialog */
-IDD_PROXY DIALOG 6, 18, 255, 143
+IDD_PROXY DIALOG 6, 18, 249, 124
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "OpenVPN - Configurações de proxy"
+CAPTION "Proxy"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_PORTUGUESE, SUBLANG_NEUTRAL
 BEGIN
-    GROUPBOX "   ", 201, 13, 42, 228, 67
+    GROUPBOX "   ", 201, 6, 42, 235, 52
     AUTORADIOBUTTON "Usar aquivo de configuração do OpenVPN", RB_PROXY_USE_OPENVPN, \
-                    20, 12, 200, 10, WS_GROUP | WS_TABSTOP
+                    13, 12, 200, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Usar configurações do Internet Explorer", \
-                    RB_PROXY_USE_IE, 20, 27, 200, 10
-    AUTORADIOBUTTON "Configuração manual", RB_PROXY_USE_MANUAL, 20, 42, 80, 10
-    AUTORADIOBUTTON "HTTP Proxy", RB_PROXY_HTTP, 27, 58, 90, 10, WS_GROUP | WS_TABSTOP
+                    RB_PROXY_USE_IE, 13, 27, 200, 10
+    AUTORADIOBUTTON "Configuração manual", RB_PROXY_USE_MANUAL, 13, 42, 80, 10
+    AUTORADIOBUTTON "HTTP Proxy", RB_PROXY_HTTP, 20, 58, 90, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "SOCKS Proxy", RB_PROXY_SOCKS, 120, 58, 90, 10
-    LTEXT "Endereço:", TEXT_PROXY_ADDRESS, 27, 73, 41, 10
+    LTEXT "Endereço:", TEXT_PROXY_ADDRESS, 20, 73, 41, 10
     RTEXT "Porta:", TEXT_PROXY_PORT, 166, 73, 25, 10
-    EDITTEXT EDIT_PROXY_ADDRESS, 65, 71, 101, 12, ES_AUTOHSCROLL
+    EDITTEXT EDIT_PROXY_ADDRESS, 58, 71, 108, 12, ES_AUTOHSCROLL
     EDITTEXT EDIT_PROXY_PORT, 196, 71, 30, 12, ES_AUTOHSCROLL
-    AUTOCHECKBOX "Perguntar usuário/senha quando estiver conectando.", CHECKB_PROXY_AUTH, 27, 88, 183, 10
-    PUSHBUTTON "OK", IDOK, 52, 120, 50, 14
-    PUSHBUTTON "Cancelar", IDCANCEL, 153, 120, 50, 14
+    AUTOCHECKBOX "Perguntar usuário/senha quando estiver conectando.", CHECKB_PROXY_AUTH, 13, 103, 183, 10
 END
 
 /* Proxy Authentication Dialog */
@@ -153,7 +151,7 @@ BEGIN
     MSG_TIP_CONNECTED_SINCE "\nConectado desde: "
     MSG_TIP_ASSIGNED_IP "\nIP atribuído: %s"
     IDM_TEXT_SERVICE "Serviço OpenVPN"
-    IDM_TEXT_PROXY "Configurações de Proxy"
+    IDM_TEXT_SETTINGS "Configurações..."
     IDM_TEXT_ABOUT "Sobre"
     IDM_TEXT_CLOSE "Sair"
     IDM_TEXT_CONNECT "Conectar"
@@ -305,6 +303,10 @@ BEGIN
     ERR_CR2STDIN "Erro passando CR to stdin."
     ERR_INVALID_CHARS_IN_PSW "A nova senha contém caracteres inválidos. " \
                              "Por favor escolha outra."
+
+    /* settings */
+    IDS_SETTINGS_CAPTION "OpenVPN - Configurações"
+
     /* proxy */
     ERR_HTTP_PROXY_ADDRESS "Você precisa especificar o endereço de proxy HTTP."
     ERR_HTTP_PROXY_PORT "Você precisa especificar a porta para proxy HTTP."
