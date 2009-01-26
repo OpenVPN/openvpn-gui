@@ -156,7 +156,7 @@ BEGIN
     MSG_TIP_ASSIGNED_IP "\nTildelt IP: %s"
     IDM_TEXT_SERVICE "OpenVPN Service"
     IDM_TEXT_SETTINGS "Innstillinger..."
-    IDM_TEXT_ABOUT "Om"
+    IDM_TEXT_ABOUT "Om..."
     IDM_TEXT_CLOSE "Avslutte"
     IDM_TEXT_CONNECT "Koble til"
     IDM_TEXT_DISCONNECT "Koble fra"

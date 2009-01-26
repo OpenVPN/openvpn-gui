@@ -158,7 +158,7 @@ BEGIN
     MSG_TIP_ASSIGNED_IP "\nZugewiesene IP: %s"
     IDM_TEXT_SERVICE "OpenVPN Dienst"
     IDM_TEXT_SETTINGS "Einstellungen..."
-    IDM_TEXT_ABOUT "Über"
+    IDM_TEXT_ABOUT "Über..."
     IDM_TEXT_CLOSE "Beenden"
     IDM_TEXT_CONNECT "Verbinden"
     IDM_TEXT_DISCONNECT "Trennen"
