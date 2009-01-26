@@ -27,27 +27,30 @@
 #include <tchar.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include "options.h"
 #include "registry.h"
+
+extern struct options o;
 
 static const LANGID defaultLangId = MAKELANGID(LANG_ENGLISH, SUBLANG_NEUTRAL);
 
 static HRSRC
-FindResourceLang(HINSTANCE instance, PTSTR resType, PTSTR resId, LANGID langId)
+FindResourceLang(PTSTR resType, PTSTR resId, LANGID langId)
 {
     HRSRC res;
 
     /* try to find the resource in requested language */
-    res = FindResourceEx(instance, resType, resId, langId);
+    res = FindResourceEx(o.hInstance, resType, resId, langId);
     if (res)
         return res;
 
     /* try to find the resource in the default language */
-    res = FindResourceEx(instance, resType, resId, defaultLangId);
+    res = FindResourceEx(o.hInstance, resType, resId, defaultLangId);
     if (res)
         return res;
 
     /* try to find the resource in any language */
-    return FindResource(instance, resId, resType);
+    return FindResource(o.hInstance, resId, resType);
 }
 
 
@@ -59,19 +62,19 @@ GetGUILanguage(void)
 
 
 static int
-LoadStringLang(HINSTANCE instance, UINT stringId, LANGID langId, PTSTR buffer, int bufferSize, va_list args)
+LoadStringLang(UINT stringId, LANGID langId, PTSTR buffer, int bufferSize, va_list args)
 {
     PWCH entry;
     PTSTR resBlockId = MAKEINTRESOURCE(stringId / 16 + 1);
     int resIndex = stringId & 15;
 
     /* find resource block for string */
-    HRSRC res = FindResourceLang(instance, RT_STRING, resBlockId, langId);
+    HRSRC res = FindResourceLang(RT_STRING, resBlockId, langId);
     if (res == NULL)
         return 0;
 
     /* get pointer to first entry in resource block */
-    entry = (PWCH) LoadResource(instance, res);
+    entry = (PWCH) LoadResource(o.hInstance, res);
     if (entry == NULL)
         return 0;
 
@@ -116,7 +119,7 @@ __LoadLocalizedString(const UINT stringId, va_list args)
 {
     static TCHAR msg[512];
     msg[0] = 0;
-    LoadStringLang(GetModuleHandle(NULL), stringId, GetGUILanguage(), msg, sizeof(msg)/sizeof(*msg), args);
+    LoadStringLang(stringId, GetGUILanguage(), msg, sizeof(msg)/sizeof(*msg), args);
     return msg;
 }
 
@@ -137,7 +140,7 @@ LoadLocalizedStringBuf(PTSTR buffer, int bufferSize, const UINT stringId, ...)
 {
     va_list args;
     va_start(args, stringId);
-    int len = LoadStringLang(GetModuleHandle(NULL), stringId, GetGUILanguage(), buffer, bufferSize, args);
+    int len = LoadStringLang(stringId, GetGUILanguage(), buffer, bufferSize, args);
     va_end(args);
     return len;
 }
@@ -156,15 +159,14 @@ ShowLocalizedMsg(const PTSTR caption, const UINT stringId, ...)
 HICON
 LoadLocalizedIcon(const UINT iconId)
 {
-    HINSTANCE instance = GetModuleHandle(NULL);
     LANGID langId = GetGUILanguage();
 
     /* find group icon resource */
-    HRSRC res = FindResourceLang(instance, RT_GROUP_ICON, MAKEINTRESOURCE(iconId), langId);
+    HRSRC res = FindResourceLang(RT_GROUP_ICON, MAKEINTRESOURCE(iconId), langId);
     if (res == NULL)
         return NULL;
 
-    HGLOBAL resInfo = LoadResource(instance, res);
+    HGLOBAL resInfo = LoadResource(o.hInstance, res);
     if (resInfo == NULL)
         return NULL;
 
@@ -173,15 +175,15 @@ LoadLocalizedIcon(const UINT iconId)
         return NULL;
 
     /* find the actual icon */
-    res = FindResourceLang(instance, RT_ICON, MAKEINTRESOURCE(id), langId);
+    res = FindResourceLang(RT_ICON, MAKEINTRESOURCE(id), langId);
     if (res == NULL)
         return NULL;
 
-    resInfo = LoadResource(instance, res);
+    resInfo = LoadResource(o.hInstance, res);
     if (resInfo == NULL)
         return NULL;
 
-    DWORD resSize = SizeofResource(instance, res);
+    DWORD resSize = SizeofResource(o.hInstance, res);
     if (resSize == 0)
         return NULL;
 
@@ -189,21 +191,26 @@ LoadLocalizedIcon(const UINT iconId)
 }
 
 
+LPCDLGTEMPLATE
+LocalizedDialogResource(const UINT dialogId)
+{
+    /* find dialog resource */
+    HRSRC res = FindResourceLang(RT_DIALOG, MAKEINTRESOURCE(dialogId), GetGUILanguage());
+    if (res == NULL)
+        return NULL;
+
+    return LoadResource(o.hInstance, res);
+}
+
+
 INT_PTR
 LocalizedDialogBoxParam(const UINT dialogId, DLGPROC dialogFunc, const LPARAM param)
 {
-    HINSTANCE instance = GetModuleHandle(NULL);
-
-    /* find dialog resource */
-    HRSRC res = FindResourceLang(instance, RT_DIALOG, MAKEINTRESOURCE(dialogId), GetGUILanguage());
-    if (res == NULL)
-        return -1;
-
-    HGLOBAL resInfo = LoadResource(instance, res);
+    LPCDLGTEMPLATE resInfo = LocalizedDialogResource(dialogId);
     if (resInfo == NULL)
         return -1;
 
-    return DialogBoxIndirectParam(instance, resInfo, NULL, dialogFunc, param);
+    return DialogBoxIndirectParam(o.hInstance, resInfo, NULL, dialogFunc, param);
 }
 
 
@@ -217,16 +224,14 @@ LocalizedDialogBox(const UINT dialogId, DLGPROC dialogFunc)
 HWND
 CreateLocalizedDialog(const UINT dialogId, DLGPROC dialogFunc)
 {
-    HINSTANCE instance = GetModuleHandle(NULL);
-
     /* find dialog resource */
-    HRSRC res = FindResourceLang(instance, RT_DIALOG, MAKEINTRESOURCE(dialogId), GetGUILanguage());
+    HRSRC res = FindResourceLang(RT_DIALOG, MAKEINTRESOURCE(dialogId), GetGUILanguage());
     if (res == NULL)
         return NULL;
 
-    HGLOBAL resInfo = LoadResource(instance, res);
+    HGLOBAL resInfo = LoadResource(o.hInstance, res);
     if (resInfo == NULL)
         return NULL;
 
-    return CreateDialogIndirect(instance, resInfo, NULL, dialogFunc);
+    return CreateDialogIndirect(o.hInstance, resInfo, NULL, dialogFunc);
 }
