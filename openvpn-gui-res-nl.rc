@@ -140,6 +140,8 @@ END
 STRINGTABLE
 LANGUAGE LANG_DUTCH, SUBLANG_NEUTRAL
 BEGIN
+    IDS_LANGUAGE_NAME "Nederlands - Dutch"
+
     /* About Dialog */
     TEXT_ABOUT_OPENVPNGUI "OpenVPN GUI v%s - Een Windows GUI voor OpenVPN"
 

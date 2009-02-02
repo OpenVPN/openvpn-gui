@@ -24,15 +24,20 @@
 #define WINVER Windows2000
 
 #include <windows.h>
+#include <windowsx.h>
 #include <tchar.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include "main.h"
+#include "localization.h"
+#include "openvpn-gui-res.h"
 #include "options.h"
 #include "registry.h"
 
 extern struct options o;
 
-static const LANGID defaultLangId = MAKELANGID(LANG_ENGLISH, SUBLANG_NEUTRAL);
+static const LANGID fallbackLangId = MAKELANGID(LANG_ENGLISH, SUBLANG_NEUTRAL);
+static LANGID gui_language;
 
 static HRSRC
 FindResourceLang(PTSTR resType, PTSTR resId, LANGID langId)
@@ -45,7 +50,7 @@ FindResourceLang(PTSTR resType, PTSTR resId, LANGID langId)
         return res;
 
     /* try to find the resource in the default language */
-    res = FindResourceEx(o.hInstance, resType, resId, defaultLangId);
+    res = FindResourceEx(o.hInstance, resType, resId, fallbackLangId);
     if (res)
         return res;
 
@@ -57,7 +62,33 @@ FindResourceLang(PTSTR resType, PTSTR resId, LANGID langId)
 static LANGID
 GetGUILanguage(void)
 {
-    return GetUserDefaultUILanguage();
+    if (gui_language == 0)
+    {
+        HKEY regkey;
+        DWORD value = 0;
+
+        LONG status = RegOpenKeyEx(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, 0, KEY_READ, &regkey);
+        if (status != ERROR_SUCCESS)
+            ShowLocalizedMsg(GUI_NAME, ERR_CREATE_REG_HKCU_KEY, GUI_REGKEY_HKCU);
+
+        GetRegistryValueNumeric(regkey, "ui_language", &value);
+        gui_language = ( value != 0 ? value : LANGIDFROMLCID(GetThreadLocale()) );
+    }
+
+    return gui_language;
+}
+
+
+static void
+SetGUILanguage(LANGID langId)
+{
+    HKEY regkey;
+    if (RegCreateKeyEx(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, 0, NULL, 0,
+        KEY_WRITE, NULL, &regkey, NULL) != ERROR_SUCCESS )
+        ShowLocalizedMsg(GUI_NAME, ERR_CREATE_REG_HKCU_KEY, GUI_REGKEY_HKCU);
+
+    SetRegistryValueNumeric(regkey, "ui_language", langId);
+    gui_language = langId;
 }
 
 
@@ -234,4 +265,87 @@ CreateLocalizedDialog(const UINT dialogId, DLGPROC dialogFunc)
         return NULL;
 
     return CreateDialogIndirect(o.hInstance, resInfo, NULL, dialogFunc);
+}
+
+
+static PTSTR
+LangListEntry(const UINT stringId, const LANGID langId, ...)
+{
+    static TCHAR str[128];
+    va_list args;
+
+    va_start(args, langId);
+    LoadStringLang(stringId, langId, str, sizeof(str)/sizeof(*str), args);
+    va_end(args);
+    return str;
+}
+
+
+typedef struct {
+    HWND languages;
+    LANGID language;
+} langProcData;
+
+
+static BOOL
+FillLangListProc(HANDLE module, PTSTR type, PTSTR stringId, WORD langId, LONG lParam)
+{
+    langProcData *data = (langProcData*) lParam;
+
+    int index = ComboBox_AddString(data->languages, LangListEntry(IDS_LANGUAGE_NAME, langId));
+    ComboBox_SetItemData(data->languages, index, langId);
+
+    /* Select this item if it is the currently displayed language */
+    if (langId == data->language
+    ||  (PRIMARYLANGID(langId) == PRIMARYLANGID(data->language)
+     && ComboBox_GetCurSel(data->languages) == CB_ERR) )
+        ComboBox_SetCurSel(data->languages, index);
+
+    return TRUE;
+}
+
+
+BOOL CALLBACK
+LanguageSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    LPPSHNOTIFY psn;
+    langProcData langData = {
+        .languages = GetDlgItem(hwndDlg, CB_LANGUAGES),
+        .language = GetGUILanguage()
+    };
+
+    switch(msg) {
+
+    case WM_INITDIALOG:
+        /* Populate UI language selection combo box */
+        EnumResourceLanguages( NULL, RT_STRING, MAKEINTRESOURCE(IDS_LANGUAGE_NAME / 16 + 1),
+            (ENUMRESLANGPROC) FillLangListProc, (LONG) &langData );
+
+        /* If none of the available languages matched, select the fallback */
+        if (ComboBox_GetCurSel(langData.languages) == CB_ERR)
+            ComboBox_SelectString(langData.languages, -1,
+                LangListEntry(IDS_LANGUAGE_NAME, fallbackLangId));
+
+        /* Clear language id data for the selected item */
+        ComboBox_SetItemData(langData.languages, ComboBox_GetCurSel(langData.languages), 0);
+
+        break;
+
+    case WM_NOTIFY:
+        psn = (LPPSHNOTIFY) lParam;
+        if (psn->hdr.code == (UINT) PSN_APPLY)
+        {
+            LANGID langId = (LANGID) ComboBox_GetItemData(langData.languages,
+                ComboBox_GetCurSel(langData.languages));
+
+            if (langId != 0)
+                SetGUILanguage(langId);
+
+            SetWindowLong(hwndDlg, DWL_MSGRESULT, PSNRET_NOERROR);
+            return TRUE;
+        }
+        break;
+    }
+
+    return FALSE;
 }

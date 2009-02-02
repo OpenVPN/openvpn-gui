@@ -146,6 +146,8 @@ END
 STRINGTABLE
 LANGUAGE LANG_SWEDISH, SUBLANG_NEUTRAL
 BEGIN
+    IDS_LANGUAGE_NAME "Svenska - Swedish"
+
     /* About Dialog */
     TEXT_ABOUT_OPENVPNGUI "OpenVPN GUI v%s - Ett Windows GUI för OpenVPN"
 

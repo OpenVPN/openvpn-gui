@@ -359,7 +359,7 @@ BOOL CALLBACK AboutDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPA
 static void
 ShowSettingsDialog()
 {
-  PROPSHEETPAGE psp[1];
+  PROPSHEETPAGE psp[2];
   psp[0].dwSize = sizeof(PROPSHEETPAGE);
   psp[0].dwFlags = PSP_DLGINDIRECT;
   psp[0].hInstance = o.hInstance;
@@ -367,6 +367,13 @@ ShowSettingsDialog()
   psp[0].pfnDlgProc = ProxySettingsDialogFunc;
   psp[0].lParam = 0;
   psp[0].pfnCallback = NULL;
+  psp[1].dwSize = sizeof(PROPSHEETPAGE);
+  psp[1].dwFlags = PSP_DLGINDIRECT;
+  psp[1].hInstance = o.hInstance;
+  psp[1].pResource = LocalizedDialogResource(IDD_LANGUAGE);
+  psp[1].pfnDlgProc = LanguageSettingsDlgProc;
+  psp[1].lParam = 0;
+  psp[1].pfnCallback = NULL;
 
   PROPSHEETHEADER psh;
   psh.dwSize = sizeof(PROPSHEETHEADER);

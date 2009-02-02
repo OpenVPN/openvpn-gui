@@ -76,6 +76,12 @@
 #define TEXT_PROXY_PORT		217
 #define CHECKB_PROXY_AUTH		218
 
+/* Language Settings Dialog */
+#define IDD_LANGUAGE            230
+#define IDS_LANGUAGE_NAME       231
+#define CB_LANGUAGES            232
+#define TEXT_LANGUAGES          233
+
 /* Proxy Auth Dialog */
 #define IDD_PROXY_AUTH			250
 #define EDIT_PROXY_USERNAME		251

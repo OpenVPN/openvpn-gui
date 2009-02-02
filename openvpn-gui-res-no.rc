@@ -145,6 +145,8 @@ END
 STRINGTABLE
 LANGUAGE LANG_NORWEGIAN, SUBLANG_NEUTRAL
 BEGIN
+    IDS_LANGUAGE_NAME "Norsk - Norwegian"
+
     /* About Dialog */
     TEXT_ABOUT_OPENVPNGUI "OpenVPN GUI v%s - Ett Windows-Grensesnitt mot OpenVPN"
 

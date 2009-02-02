@@ -141,6 +141,8 @@ END
 STRINGTABLE
 LANGUAGE LANG_PORTUGUESE, SUBLANG_NEUTRAL
 BEGIN
+    IDS_LANGUAGE_NAME "Português - Portuguese"
+
     /* About Dialog */
     TEXT_ABOUT_OPENVPNGUI "OpenVPN GUI v%s - Uma GUI Windows para OpenVPN"
 
