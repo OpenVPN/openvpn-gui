@@ -1,9 +1,10 @@
 AC_DEFUN([AX_ASSERT_LIB], [
-	AC_CHECK_HEADER([$2], , [AC_MSG_FAILURE([$1 library headers could not be found.])])
+	AC_CHECK_HEADER([$2], , [AC_MSG_FAILURE([$1 library headers could not be found.])], [$5])
 	AC_MSG_CHECKING([if $1 library is available])
 	LIBS="-l$1 $LIBS"
 	AC_TRY_LINK(
-		[#include <$2>], [$3], [AC_MSG_RESULT([yes])],
+		[$5
+		 #include <$2>], [$3], [AC_MSG_RESULT([yes])],
 		[AC_MSG_RESULT([no]); AC_MSG_FAILURE([$4])]
 	)
 ])
