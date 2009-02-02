@@ -258,6 +258,15 @@ LONG GetRegistryValue(HKEY regkey, const char *name, char *data, DWORD len)
 
 }
 
+LONG
+GetRegistryValueNumeric(HKEY regkey, const char *name, DWORD *data)
+{
+  DWORD type;
+  DWORD size = sizeof(data);
+  LONG status= RegQueryValueEx(regkey, name, NULL, &type, (PBYTE) data, &size);
+  return (type == REG_DWORD ? status : ERROR_FILE_NOT_FOUND);
+}
+
 int SetRegistryValue(HKEY regkey, const char *name, char *data)
 {
   /* set a registry string */
@@ -270,4 +279,15 @@ int SetRegistryValue(HKEY regkey, const char *name, char *data)
 
   return(1);
 
+}
+
+int
+SetRegistryValueNumeric(HKEY regkey, const char *name, DWORD data)
+{
+  LONG status = RegSetValueEx(regkey, name, 0, REG_DWORD, (PBYTE) &data, sizeof(data));
+  if (status == ERROR_SUCCESS)
+    return 1;
+
+  ShowLocalizedMsg(GUI_NAME, ERR_WRITE_REGVALUE, GUI_REGKEY_HKCU, name);
+  return 0;
 }

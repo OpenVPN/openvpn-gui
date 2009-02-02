@@ -23,5 +23,7 @@ int GetRegistryKeys();
 //int SetRegistryKeys();
 int GetRegKey(const char name[], char data[], const char default_data[], DWORD len);
 LONG GetRegistryValue(HKEY regkey, const char *name, char *data, DWORD len);
+LONG GetRegistryValueNumeric(HKEY regkey, const char *name, DWORD *data);
 int SetRegistryValue(HKEY regkey, const char *name, char *data);
+int SetRegistryValueNumeric(HKEY regkey, const char *name, DWORD data);
 
