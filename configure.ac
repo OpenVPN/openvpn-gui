@@ -20,6 +20,10 @@ AX_ASSERT_LIB([wininet], [wininet.h],
 	[DWORD s; InternetQueryOption(NULL, INTERNET_OPTION_PROXY, NULL, &s)],
 	[Make sure you have a recent w32api installed.])
 
+AX_ASSERT_LIB([comctl32], [prsht.h],
+	[PROPSHEETHEADER psh; PropertySheet(&psh)],
+	[Make sure you have a recent w32api installed.], [#include <windows.h>])
+
 AX_SEARCH_LIB([crypto], [cryptoeay32 eay32], [-lgdi32],
 	[openssl/pkcs12.h], [EVP_PKEY *k = EVP_PKEY_new()])
 
