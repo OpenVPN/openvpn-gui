@@ -58,6 +58,8 @@ struct security_attributes
   SECURITY_DESCRIPTOR sd;
 };
 
+/* Return the number of elements in an array */
+#define ELEMENTS(x) sizeof(x)/sizeof(*(x))
 
 /* clear an object */
 #define CLEAR(x) memset(&(x), 0, sizeof(x))
