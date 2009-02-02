@@ -9,7 +9,7 @@ ZIP = @ZIP@
 LDFLAGS = @CRYPTO_LDFLAGS@ @LDFLAGS@
 LIBS = @CRYPTO_LIBS@ @LIBS@
 CFLAGS = @CRYPTO_CPPFLAGS@ @CFLAGS@ @CPPFLAGS@
-CFLAGS += -W -Wall -pedantic
+CFLAGS += -W -Wall -Wno-unused-parameter -pedantic
 
 OBJS = main.o tray.o openvpn.o openvpn_monitor_process.o viewlog.o \
        service.o options.o passphrase.o proxy.o ieproxy.o registry.o \
