@@ -68,10 +68,9 @@ GetGUILanguage(void)
         DWORD value = 0;
 
         LONG status = RegOpenKeyEx(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, 0, KEY_READ, &regkey);
-        if (status != ERROR_SUCCESS)
-            ShowLocalizedMsg(GUI_NAME, ERR_CREATE_REG_HKCU_KEY, GUI_REGKEY_HKCU);
+        if (status == ERROR_SUCCESS)
+            GetRegistryValueNumeric(regkey, "ui_language", &value);
 
-        GetRegistryValueNumeric(regkey, "ui_language", &value);
         gui_language = ( value != 0 ? value : LANGIDFROMLCID(GetThreadLocale()) );
     }
 
