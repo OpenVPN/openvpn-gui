@@ -30,8 +30,6 @@
 
 /* About Dialog */
 #define ID_DLG_ABOUT                     100
-#define ID_TXT_OPENVPNGUI                101
-#define ID_TXT_ABOUT                     102
 
 /* Ask for Passphrase Dialog */
 #define ID_DLG_PASSPHRASE                150

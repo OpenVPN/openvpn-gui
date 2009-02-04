@@ -33,7 +33,7 @@ LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
 BEGIN
     PUSHBUTTON "Ok", IDOK, 99, 125, 63, 14
     ICON ID_ICO_CONNECTED, 204, 11, 8, 21, 20
-    LTEXT "", ID_TXT_OPENVPNGUI, 40, 5, 215, 8
+    LTEXT "OpenVPN GUI v" PACKAGE_VERSION " - Eine grafische Oberfläche für OpenVPN", 101, 40, 5, 215, 8
     LTEXT "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>", 102, 40, 15, 215, 8
     LTEXT "http://openvpn.se/", 103, 40, 25, 215, 8
     LTEXT "OpenVPN - Eine Applikation zum sicheren tunneln eines IP " \
@@ -160,9 +160,6 @@ STRINGTABLE
 LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
 BEGIN
     IDS_LANGUAGE_NAME "Deutsch - German"
-
-    /* About Dialog */
-    ID_TXT_ABOUT "OpenVPN GUI v%s - Eine grafische Oberfläche für OpenVPN"
 
     /* Tray - Resources */
     IDS_TIP_DEFAULT "OpenVPN GUI"

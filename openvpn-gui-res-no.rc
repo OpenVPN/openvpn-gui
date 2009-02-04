@@ -32,7 +32,7 @@ LANGUAGE LANG_NORWEGIAN, SUBLANG_NEUTRAL
 BEGIN
     PUSHBUTTON "OK", IDOK, 99, 115, 63, 14
     ICON ID_ICO_CONNECTED, 204, 11, 8, 21, 20
-    LTEXT "", ID_TXT_OPENVPNGUI, 40, 5, 215, 8
+    LTEXT "OpenVPN GUI v" PACKAGE_VERSION " - Ett Windows-Grensesnitt mot OpenVPN", 101, 40, 5, 215, 8
     LTEXT "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>", 102, 40, 15, 215, 8
     LTEXT "http://openvpn.se/", 103, 40, 25, 215, 8
     LTEXT "OpenVPN - En applikasjon for sikker overføring av IP nett " \
@@ -146,9 +146,6 @@ STRINGTABLE
 LANGUAGE LANG_NORWEGIAN, SUBLANG_NEUTRAL
 BEGIN
     IDS_LANGUAGE_NAME "Norsk - Norwegian"
-
-    /* About Dialog */
-    ID_TXT_ABOUT "OpenVPN GUI v%s - Ett Windows-Grensesnitt mot OpenVPN"
 
     /* Tray - Resources */
     IDS_TIP_DEFAULT "OpenVPN Brukergrensesnitt"

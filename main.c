@@ -333,11 +333,7 @@ BOOL CALLBACK AboutDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPA
         SendMessage(hwndDlg, WM_SETICON, (WPARAM) (ICON_SMALL), (LPARAM) (hIcon));
         SendMessage(hwndDlg, WM_SETICON, (WPARAM) (ICON_BIG), (LPARAM) (hIcon));
       }
-
-      /* Show version string */
-      SetDlgItemText(hwndDlg, ID_TXT_OPENVPNGUI, LoadLocalizedString(ID_TXT_ABOUT, GUI_VERSION));
-
-      return FALSE;
+      break;
 
     case WM_COMMAND:
       switch (LOWORD(wParam)) {
@@ -347,6 +343,7 @@ BOOL CALLBACK AboutDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPA
           return TRUE;
       }
       break;
+
     case WM_CLOSE:
       EndDialog(hwndDlg, LOWORD(wParam));
       return TRUE;
