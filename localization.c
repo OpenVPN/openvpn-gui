@@ -21,6 +21,7 @@
 
 #include <windows.h>
 #include <windowsx.h>
+#include <prsht.h>
 #include <tchar.h>
 #include <stdio.h>
 #include <stdarg.h>
