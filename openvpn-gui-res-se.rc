@@ -228,9 +228,9 @@ BEGIN
     IDS_ERR_RUN_CONN_SCRIPT "Ett fel uppstod vid körning av följande skript: %s"
     IDS_ERR_GET_EXIT_CODE "Ett fel uppstod när exitcode från följande skript skulle erhållas: %s"
     IDS_ERR_CONN_SCRIPT_FAILED "Uppkopplingsskriptet misslyckades. (exitcode=%ld)"
-    IDS_ERR_CONN_SCRIPT_TIMEOUT "Uppkopplingsskriptet gjorde TimeOut efter %d sek."
+    IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Uppkopplingsskriptet gjorde TimeOut efter %d sek."
     IDS_ERR_CONFIG_EXIST "Det finns redan en konfig fil vid namn '%s'. Du kan inte ha flera " \
-                             "konfigurations filer med samma namn, även om de ligger i olika kataloger."
+                         "konfigurations filer med samma namn, även om de ligger i olika kataloger."
 
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "Fel vid öppnande av debug fil. (%s)"
@@ -241,45 +241,45 @@ BEGIN
     IDS_NFO_SERVICE_STOPPED "OpenVPN Service stoppad."
     IDS_NFO_ACTIVE_CONN_EXIT "Du har aktiva uppkopplingar i gång som kommer kopplas ner om du avslutar OpenVPN GUI.\n\nÄr du säker på att du vill avsluta?"
     IDS_NFO_SERVICE_ACTIVE_EXIT "Du är uppkopplad med OpenVPN (OpenVPN tjänsten är igång). " \
-                             "Du kommer att förbli uppkopplad även om du avslutar OpenVPN GUI.\n\n" \
-                             "Är du säker på att du vill avsluta OpenVPN GUI?"
+                                "Du kommer att förbli uppkopplad även om du avslutar OpenVPN GUI.\n\n" \
+                                "Är du säker på att du vill avsluta OpenVPN GUI?"
     IDS_ERR_OPTION_LOG_IN_CONFIG "Du har ""log"" eller ""log-append"" in din OpenVPN konfig fil. Du bör inte använda " \
-                             "dessa inställningar när du använder OpenVPN GUI, eftersom GUI:t då inte kan ""se"" " \
-                             "logg meddelandena från OpenVPN, vilka är nödvändiga för OpenVPN GUI's funktion.\n\n" \
-                             "Vill du fortsätta och ansluta ändå?"
+                                 "dessa inställningar när du använder OpenVPN GUI, eftersom GUI:t då inte kan ""se"" " \
+                                 "logg meddelandena från OpenVPN, vilka är nödvändiga för OpenVPN GUI's funktion.\n\n" \
+                                 "Vill du fortsätta och ansluta ändå?"
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Visa detta meddelande.\n" \
-               "--connect cnn \t\t: Anslut till ""cnn"" vid uppstart. (filändelsen måste vara med)\n" \
-               "\t\t\t   Exempel: openvpn-gui --connect office.ovpn\n" \
-               "\n" \
-               "Parametrar som ersätter inställningar gjorda i registret:\n" \
-               "--exe_path\t\t: Path till openvpn.exe.\n" \
-               "--config_dir\t\t: Path till OpenVPNs konfig mapp.\n" \
-               "--ext_string\t\t: Filändelse för konfig filer.\n" \
-               "--log_dir\t\t\t: Path till mappen där loggfiler skall sparas.\n" \
-               "--priority_string\t\t: Prioritet på OpenVPN processer (Se install.txt för mer info).\n" \
-               "--append_string\t\t: 1=Behåll gammal logg. 0=Töm loggfil före anslutning.\n" \
-               "--log_viewer\t\t: Path till logg viewer.\n" \
-               "--editor\t\t\t: Path till konfig editor.\n" \
-               "--allow_edit\t\t: 1=Visa Editera Konfig på menyn.\n" \
-               "--allow_service\t\t: 1=Visa OpenVPN Service menyn.\n" \
-               "--allow_password\t\t: 1=Visa Ändra Lösenord på menyn.\n" \
-               "--allow_proxy\t\t: 1=Visa Proxy Inställningar på menyn.\n" \
-               "--show_balloon\t\t: 0=Aldrig, 1=Vid anslutning, 2=Vid varje återanslutning.\n" \
-               "--service_only\t\t: 1=Aktivera ""Service Only"" läge.\n" \
-               "--silent_connection\t\t: 1=Visa inte status fönstret under anslutning.\n" \
-               "--show_script_window\t: 0=Göm skript fönster, 1=Visa skript fönster.\n" \
-               "--passphrase_attempts\t: Antal lösenordsförsök.\n" \
-               "--connectscript_timeout\t: Tid att vänta på att connect skriptet är klart.\n" \
-               "--disconnectscript_timeout\t: Tid att vänta på att dis-connect skriptet är klart.\n" \
-               "--preconnectscript_timeout\t: Tid att vänta på att pre-connect skriptet är klart.\n"
+                  "--connect cnn \t\t: Anslut till ""cnn"" vid uppstart. (filändelsen måste vara med)\n" \
+                  "\t\t\t   Exempel: openvpn-gui --connect office.ovpn\n" \
+                  "\n" \
+                  "Parametrar som ersätter inställningar gjorda i registret:\n" \
+                  "--exe_path\t\t: Path till openvpn.exe.\n" \
+                  "--config_dir\t\t: Path till OpenVPNs konfig mapp.\n" \
+                  "--ext_string\t\t: Filändelse för konfig filer.\n" \
+                  "--log_dir\t\t\t: Path till mappen där loggfiler skall sparas.\n" \
+                  "--priority_string\t\t: Prioritet på OpenVPN processer (Se install.txt för mer info).\n" \
+                  "--append_string\t\t: 1=Behåll gammal logg. 0=Töm loggfil före anslutning.\n" \
+                  "--log_viewer\t\t: Path till logg viewer.\n" \
+                  "--editor\t\t\t: Path till konfig editor.\n" \
+                  "--allow_edit\t\t: 1=Visa Editera Konfig på menyn.\n" \
+                  "--allow_service\t\t: 1=Visa OpenVPN Service menyn.\n" \
+                  "--allow_password\t\t: 1=Visa Ändra Lösenord på menyn.\n" \
+                  "--allow_proxy\t\t: 1=Visa Proxy Inställningar på menyn.\n" \
+                  "--show_balloon\t\t: 0=Aldrig, 1=Vid anslutning, 2=Vid varje återanslutning.\n" \
+                  "--service_only\t\t: 1=Aktivera ""Service Only"" läge.\n" \
+                  "--silent_connection\t\t: 1=Visa inte status fönstret under anslutning.\n" \
+                  "--show_script_window\t: 0=Göm skript fönster, 1=Visa skript fönster.\n" \
+                  "--passphrase_attempts\t: Antal lösenordsförsök.\n" \
+                  "--connectscript_timeout\t: Tid att vänta på att connect skriptet är klart.\n" \
+                  "--disconnectscript_timeout\t: Tid att vänta på att dis-connect skriptet är klart.\n" \
+                  "--preconnectscript_timeout\t: Tid att vänta på att pre-connect skriptet är klart.\n"
 
     IDS_NFO_USAGECAPTION "OpenVPN GUI Användning"
     IDS_ERR_BAD_PARAMETER "Försöker tolka ""%s"" som en --option parameter " \
-                      "men kan inte hitta några inledande '--'"
+                          "men kan inte hitta några inledande '--'"
     IDS_ERR_BAD_OPTION "Parameter fel: Okänd parameter eller saknat argument: --%s\n" \
-                   "Kör openvpn-gui --help för mer hjälp."
+                       "Kör openvpn-gui --help för mer hjälp."
 
     /* passphrase - Resources */
     IDS_ERR_CREATE_PASS_THREAD "CreateThread för att visa ChangePassphrase dialogen misslyckades."
@@ -306,7 +306,7 @@ BEGIN
     IDS_ERR_AUTH_PASSWORD2STDIN "Ett fel uppstod då lösenordet skulle skickas till OpenVPN via stdin."
     IDS_ERR_CR2STDIN "Ett fel uppstod då CR skulle skickas till OpenVPN via stdin."
     IDS_ERR_INVALID_CHARS_IN_PSW "Ditt nya lösenord innehåller otillåtna tecken. " \
-                             "Välj ett nytt."
+                                 "Välj ett nytt."
 
     /* settings */
     IDS_SETTINGS_CAPTION "OpenVPN - Inställningar"

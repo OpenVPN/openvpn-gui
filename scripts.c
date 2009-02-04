@@ -1,4 +1,4 @@
-    /*
+/*
  *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
@@ -127,7 +127,7 @@ void RunConnectScript(int config, int run_as_service)
     }    
 
   /* UserInfo: Timeout */
-  ShowLocalizedMsg(GUI_NAME, IDS_ERR_CONN_SCRIPT_TIMEOUT, TimeOut);
+  ShowLocalizedMsg(GUI_NAME, IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT, TimeOut);
 
 }
 
