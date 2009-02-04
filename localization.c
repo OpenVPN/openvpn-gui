@@ -19,10 +19,6 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/* for GetUserDefaultUILanguage() */
-#include <w32api.h>
-#define WINVER Windows2000
-
 #include <windows.h>
 #include <windowsx.h>
 #include <tchar.h>
