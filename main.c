@@ -73,7 +73,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   if (!(o.debug_fp = fopen(DEBUG_FILE, "w")))
     {
       /* can't open debug file */
-      ShowLocalizedMsg(GUI_NAME, ERR_OPEN_DEBUG_FILE, DEBUG_FILE);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_OPEN_DEBUG_FILE, DEBUG_FILE);
       exit(1);
     }
   PrintDebug("Starting OpenVPN GUI v%s", GUI_VERSION);
@@ -89,7 +89,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   else
     {
       /* can't load riched20.dll */
-      ShowLocalizedMsg(GUI_NAME, ERR_LOAD_RICHED20);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_LOAD_RICHED20);
       exit(1);
     }
 
@@ -98,7 +98,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   if (shell32_version < PACKVERSION(5,0))
     {
       /* shell32.dll version to low */
-      ShowLocalizedMsg(GUI_NAME, ERR_SHELL_DLL_VERSION, shell32_version); 
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_SHELL_DLL_VERSION, shell32_version); 
       exit(1);
     }
 #ifdef DEBUG
@@ -113,7 +113,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   if ((FindWindow (szClassName, NULL)) != NULL)
     {
         /* GUI already running */
-        ShowLocalizedMsg(GUI_NAME, ERR_GUI_ALREADY_RUNNING);
+        ShowLocalizedMsg(GUI_NAME, IDS_ERR_GUI_ALREADY_RUNNING);
         exit(1);
     }
 
@@ -145,8 +145,8 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   wincl.cbSize = sizeof (WNDCLASSEX);
 
   /* Use default icon and mouse-pointer */
-  wincl.hIcon = LoadLocalizedIcon(APP_ICON);
-  wincl.hIconSm = LoadLocalizedIcon(APP_ICON);
+  wincl.hIcon = LoadLocalizedIcon(ID_ICO_APP);
+  wincl.hIconSm = LoadLocalizedIcon(ID_ICO_APP);
   wincl.hCursor = LoadCursor (NULL, IDC_ARROW);
   wincl.lpszMenuName = NULL;                 /* No menu */
   wincl.cbClsExtra = 0;                      /* No extra bytes after the window class */
@@ -241,7 +241,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         ShowSettingsDialog();
       }
       if (LOWORD(wParam) == IDM_ABOUT) {
-        LocalizedDialogBox(IDD_ABOUTDIALOG, AboutDialogFunc);
+        LocalizedDialogBox(ID_DLG_ABOUT, AboutDialogFunc);
       }
       if (LOWORD(wParam) == IDM_CLOSE) {
         CloseApplication(hwnd);
@@ -328,14 +328,14 @@ BOOL CALLBACK AboutDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPA
   switch (msg) {
 
     case WM_INITDIALOG:
-      hIcon = LoadLocalizedIcon(APP_ICON);
+      hIcon = LoadLocalizedIcon(ID_ICO_APP);
       if (hIcon) {
         SendMessage(hwndDlg, WM_SETICON, (WPARAM) (ICON_SMALL), (LPARAM) (hIcon));
         SendMessage(hwndDlg, WM_SETICON, (WPARAM) (ICON_BIG), (LPARAM) (hIcon));
       }
 
       /* Show version string */
-      SetDlgItemText(hwndDlg, ID_TEXT_OPENVPNGUI, LoadLocalizedString(TEXT_ABOUT_OPENVPNGUI, GUI_VERSION));
+      SetDlgItemText(hwndDlg, ID_TXT_OPENVPNGUI, LoadLocalizedString(ID_TXT_ABOUT, GUI_VERSION));
 
       return FALSE;
 
@@ -363,14 +363,14 @@ ShowSettingsDialog()
   psp[0].dwSize = sizeof(PROPSHEETPAGE);
   psp[0].dwFlags = PSP_DLGINDIRECT;
   psp[0].hInstance = o.hInstance;
-  psp[0].pResource = LocalizedDialogResource(IDD_PROXY);
+  psp[0].pResource = LocalizedDialogResource(ID_DLG_PROXY);
   psp[0].pfnDlgProc = ProxySettingsDialogFunc;
   psp[0].lParam = 0;
   psp[0].pfnCallback = NULL;
   psp[1].dwSize = sizeof(PROPSHEETPAGE);
   psp[1].dwFlags = PSP_DLGINDIRECT;
   psp[1].hInstance = o.hInstance;
-  psp[1].pResource = LocalizedDialogResource(IDD_LANGUAGE);
+  psp[1].pResource = LocalizedDialogResource(ID_DLG_GENERAL);
   psp[1].pfnDlgProc = LanguageSettingsDlgProc;
   psp[1].lParam = 0;
   psp[1].pfnCallback = NULL;
@@ -380,7 +380,7 @@ ShowSettingsDialog()
   psh.dwFlags = PSH_USEHICON | PSH_PROPSHEETPAGE | PSH_NOAPPLYNOW | PSH_NOCONTEXTHELP;
   psh.hwndParent = o.hWnd;
   psh.hInstance = o.hInstance;
-  psh.hIcon = LoadLocalizedIcon(APP_ICON);
+  psh.hIcon = LoadLocalizedIcon(ID_ICO_APP);
   psh.pszCaption = LoadLocalizedString(IDS_SETTINGS_CAPTION);
   psh.nPages = sizeof(psp) / sizeof(PROPSHEETPAGE);
   psh.nStartPage = 0;
@@ -397,7 +397,7 @@ void CloseApplication(HWND hwnd)
 
   if (o.service_running == SERVICE_CONNECTED)
     {
-      if (MessageBox(NULL, LoadLocalizedString(INFO_SERVICE_ACTIVE_EXIT), "Exit OpenVPN", MB_YESNO) == IDNO)
+      if (MessageBox(NULL, LoadLocalizedString(IDS_NFO_SERVICE_ACTIVE_EXIT), "Exit OpenVPN", MB_YESNO) == IDNO)
         {
           return;
         }
@@ -411,7 +411,7 @@ void CloseApplication(HWND hwnd)
   }
   if (ask_exit) {
     /* aks for confirmation */
-    if (MessageBox(NULL, LoadLocalizedString(INFO_ACTIVE_CONN_EXIT), "Exit OpenVPN", MB_YESNO) == IDNO)
+    if (MessageBox(NULL, LoadLocalizedString(IDS_NFO_ACTIVE_CONN_EXIT), "Exit OpenVPN", MB_YESNO) == IDNO)
       {
         return;
       }

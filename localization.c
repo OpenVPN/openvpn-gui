@@ -80,7 +80,7 @@ SetGUILanguage(LANGID langId)
     HKEY regkey;
     if (RegCreateKeyEx(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, 0, NULL, 0,
         KEY_WRITE, NULL, &regkey, NULL) != ERROR_SUCCESS )
-        ShowLocalizedMsg(GUI_NAME, ERR_CREATE_REG_HKCU_KEY, GUI_REGKEY_HKCU);
+        ShowLocalizedMsg(GUI_NAME, IDS_ERR_CREATE_REG_HKCU_KEY, GUI_REGKEY_HKCU);
 
     SetRegistryValueNumeric(regkey, "ui_language", langId);
     gui_language = langId;
@@ -305,7 +305,7 @@ LanguageSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     LPPSHNOTIFY psn;
     langProcData langData = {
-        .languages = GetDlgItem(hwndDlg, CB_LANGUAGES),
+        .languages = GetDlgItem(hwndDlg, ID_CMB_LANGUAGE),
         .language = GetGUILanguage()
     };
 

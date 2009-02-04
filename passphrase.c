@@ -73,7 +73,7 @@ void CheckPrivateKeyPassphrasePrompt (char *line, int config)
   if (strncmp(line, "Enter PEM pass phrase:", 22) == 0) 
     {
       CLEAR(passphrase);  
-      if (LocalizedDialogBox(IDD_PASSPHRASE, PassphraseDialogFunc) == IDCANCEL)
+      if (LocalizedDialogBox(ID_DLG_PASSPHRASE, PassphraseDialogFunc) == IDCANCEL)
         {
           StopOpenVPN(config);
         }
@@ -87,14 +87,14 @@ void CheckPrivateKeyPassphrasePrompt (char *line, int config)
                     strlen(passphrase_ascii), &nCharsWritten, NULL))
             {
               /* PassPhrase -> stdin failed */
-              ShowLocalizedMsg(GUI_NAME, ERR_PASSPHRASE2STDIN);
+              ShowLocalizedMsg(GUI_NAME, IDS_ERR_PASSPHRASE2STDIN);
             }
         }
       if (!WriteFile(o.cnn[config].hStdIn, "\r\n",
                         2, &nCharsWritten, NULL))
         {
           /* CR -> stdin failed */
-          ShowLocalizedMsg(GUI_NAME, ERR_CR2STDIN);
+          ShowLocalizedMsg(GUI_NAME, IDS_ERR_CR2STDIN);
         }
       /* Remove Passphrase prompt from lastline buffer */
       line[0]='\0';
@@ -108,7 +108,7 @@ void CheckPrivateKeyPassphrasePrompt (char *line, int config)
   if (strncmp(line, "Enter Private Key Password:", 27) == 0) 
     {
       CLEAR(passphrase);  
-      if (LocalizedDialogBox(IDD_PASSPHRASE, PassphraseDialogFunc) == IDCANCEL)
+      if (LocalizedDialogBox(ID_DLG_PASSPHRASE, PassphraseDialogFunc) == IDCANCEL)
         {
           StopOpenVPN(config);
         }
@@ -122,7 +122,7 @@ void CheckPrivateKeyPassphrasePrompt (char *line, int config)
                     strlen(passphrase_ascii), &nCharsWritten, NULL))
             {
               /* PassPhrase -> stdin failed */
-              ShowLocalizedMsg(GUI_NAME, ERR_PASSPHRASE2STDIN);
+              ShowLocalizedMsg(GUI_NAME, IDS_ERR_PASSPHRASE2STDIN);
             }
         }
       else
@@ -131,7 +131,7 @@ void CheckPrivateKeyPassphrasePrompt (char *line, int config)
                         1, &nCharsWritten, NULL))
             {
               /* CR -> stdin failed */
-              ShowLocalizedMsg(GUI_NAME, ERR_CR2STDIN);
+              ShowLocalizedMsg(GUI_NAME, IDS_ERR_CR2STDIN);
             }
         }
       /* Remove Passphrase prompt from lastline buffer */
@@ -153,7 +153,7 @@ void CheckAuthUsernamePrompt (char *line, int config)
   if (strncmp(line, "Enter Auth Username:", 20) == 0) 
     {
       CLEAR(user_auth);  
-      if (LocalizedDialogBoxParam(IDD_AUTH_PASSWORD, AuthPasswordDialogFunc,
+      if (LocalizedDialogBoxParam(ID_DLG_AUTH, AuthPasswordDialogFunc,
                                   (LPARAM)&user_auth) == IDCANCEL)
         {
           StopOpenVPN(config);
@@ -164,7 +164,7 @@ void CheckAuthUsernamePrompt (char *line, int config)
           if (!WriteFile(o.cnn[config].hStdIn, user_auth.username,
                     strlen(user_auth.username), &nCharsWritten, NULL))
             {
-              ShowLocalizedMsg(GUI_NAME, ERR_AUTH_USERNAME2STDIN);
+              ShowLocalizedMsg(GUI_NAME, IDS_ERR_AUTH_USERNAME2STDIN);
             }
         }
       else
@@ -172,7 +172,7 @@ void CheckAuthUsernamePrompt (char *line, int config)
           if (!WriteFile(o.cnn[config].hStdIn, "\n",
                         1, &nCharsWritten, NULL))
             {
-              ShowLocalizedMsg(GUI_NAME, ERR_CR2STDIN);
+              ShowLocalizedMsg(GUI_NAME, IDS_ERR_CR2STDIN);
             }
         }
 
@@ -181,7 +181,7 @@ void CheckAuthUsernamePrompt (char *line, int config)
           if (!WriteFile(o.cnn[config].hStdIn, user_auth.password,
                     strlen(user_auth.password), &nCharsWritten, NULL))
             {
-              ShowLocalizedMsg(GUI_NAME, ERR_AUTH_PASSWORD2STDIN);
+              ShowLocalizedMsg(GUI_NAME, IDS_ERR_AUTH_PASSWORD2STDIN);
             }
         }
       else
@@ -189,7 +189,7 @@ void CheckAuthUsernamePrompt (char *line, int config)
           if (!WriteFile(o.cnn[config].hStdIn, "\n",
                         1, &nCharsWritten, NULL))
             {
-              ShowLocalizedMsg(GUI_NAME, ERR_CR2STDIN);
+              ShowLocalizedMsg(GUI_NAME, IDS_ERR_CR2STDIN);
             }
         }
 
@@ -229,10 +229,10 @@ BOOL CALLBACK PassphraseDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSE
       switch (LOWORD(wParam)) {
 
         case IDOK:			// button
-          GetDlgItemTextW(hwndDlg, EDIT_PASSPHRASE, passphrase, sizeof(passphrase)/2 - 1);
+          GetDlgItemTextW(hwndDlg, ID_EDT_PASSPHRASE, passphrase, sizeof(passphrase)/2 - 1);
 
           /* Clear buffer */
-          SetDlgItemText(hwndDlg, EDIT_PASSPHRASE, empty_string);
+          SetDlgItemText(hwndDlg, ID_EDT_PASSPHRASE, empty_string);
 
           EndDialog(hwndDlg, LOWORD(wParam));
           return TRUE;
@@ -268,16 +268,16 @@ BOOL CALLBACK AuthPasswordDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPA
       switch (LOWORD(wParam)) {
 
         case IDOK:			// button
-          GetDlgItemTextW(hwndDlg, EDIT_AUTH_USERNAME, username_unicode, sizeof(username_unicode)/2 - 1);
-          GetDlgItemTextW(hwndDlg, EDIT_AUTH_PASSWORD, password_unicode, sizeof(password_unicode)/2 - 1);
+          GetDlgItemTextW(hwndDlg, ID_EDT_AUTH_USER, username_unicode, sizeof(username_unicode)/2 - 1);
+          GetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password_unicode, sizeof(password_unicode)/2 - 1);
 
           /* Convert username/password from Unicode to Ascii (CP850) */
           ConvertUnicode2Ascii(username_unicode, user_auth->username, sizeof(user_auth->username) - 1);
           ConvertUnicode2Ascii(password_unicode, user_auth->password, sizeof(user_auth->password) - 1);
 
           /* Clear buffers */
-          SetDlgItemText(hwndDlg, EDIT_AUTH_USERNAME, empty_string);
-          SetDlgItemText(hwndDlg, EDIT_AUTH_PASSWORD, empty_string);
+          SetDlgItemText(hwndDlg, ID_EDT_AUTH_USER, empty_string);
+          SetDlgItemText(hwndDlg, ID_EDT_AUTH_PASS, empty_string);
 
           EndDialog(hwndDlg, LOWORD(wParam));
           return TRUE;
@@ -314,7 +314,7 @@ void ShowChangePassphraseDialog(int config)
   if (hThread == NULL) 
     {
     /* error creating thread */
-    ShowLocalizedMsg (GUI_NAME, ERR_CREATE_PASS_THREAD);
+    ShowLocalizedMsg (GUI_NAME, IDS_ERR_CREATE_PASS_THREAD);
     return;
   }
 
@@ -339,13 +339,13 @@ void ChangePassphraseThread(int config)
     }
 
   /* Show ChangePassphrase Dialog */  
-  hwndChangePSW = CreateLocalizedDialog(IDD_CHANGEPSW, ChangePassphraseDialogFunc);
+  hwndChangePSW = CreateLocalizedDialog(ID_DLG_CHGPASS, ChangePassphraseDialogFunc);
   if (!hwndChangePSW)
     return;
-  SetDlgItemText(hwndChangePSW, TEXT_KEYFILE, keyfilename); 
-  SetDlgItemInt(hwndChangePSW, TEXT_KEYFORMAT, (UINT) keyfile_format, FALSE);
+  SetDlgItemText(hwndChangePSW, ID_TXT_KEYFILE, keyfilename); 
+  SetDlgItemInt(hwndChangePSW, ID_TXT_KEYFORMAT, (UINT) keyfile_format, FALSE);
 
-  SetWindowText(hwndChangePSW, LoadLocalizedString(INFO_CHANGE_PWD, conn_name));
+  SetWindowText(hwndChangePSW, LoadLocalizedString(IDS_NFO_CHANGE_PWD, conn_name));
 
   ShowWindow(hwndChangePSW, SW_SHOW);
 
@@ -373,7 +373,7 @@ BOOL CALLBACK ChangePassphraseDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam,
   switch (msg) {
 
     case WM_INITDIALOG:
-      hIcon = LoadLocalizedIcon(APP_ICON);
+      hIcon = LoadLocalizedIcon(ID_ICO_APP);
       if (hIcon) {
         SendMessage(hwndDlg, WM_SETICON, (WPARAM) (ICON_SMALL), (LPARAM) (hIcon));
         SendMessage(hwndDlg, WM_SETICON, (WPARAM) (ICON_BIG), (LPARAM) (hIcon));
@@ -389,26 +389,26 @@ BOOL CALLBACK ChangePassphraseDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam,
           if (!ConfirmNewPassword (hwndDlg))
             {
               /* passwords don't match */
-              ShowLocalizedMsg(GUI_NAME, ERR_PWD_DONT_MATCH);
+              ShowLocalizedMsg(GUI_NAME, IDS_ERR_PWD_DONT_MATCH);
               break;
             }
 
           /* Check minimum length of password */
           if (NewPasswordLengh(hwndDlg) < MIN_PASSWORD_LEN)
             {
-              ShowLocalizedMsg(GUI_NAME, ERR_PWD_TO_SHORT, MIN_PASSWORD_LEN);
+              ShowLocalizedMsg(GUI_NAME, IDS_ERR_PWD_TO_SHORT, MIN_PASSWORD_LEN);
               break;
             }
 
           /* Check if the new password is empty. */
           if (NewPasswordLengh(hwndDlg) == 0)
             {
-              if (MessageBox(NULL, LoadLocalizedString(INFO_EMPTY_PWD), GUI_NAME, MB_YESNO) != IDYES)
+              if (MessageBox(NULL, LoadLocalizedString(IDS_NFO_EMPTY_PWD), GUI_NAME, MB_YESNO) != IDYES)
                 break;
             }
 
-          GetDlgItemText(hwndDlg, TEXT_KEYFILE, keyfile, sizeof(keyfile) - 1);
-          keyfile_format=GetDlgItemInt(hwndDlg, TEXT_KEYFORMAT, &Translated, FALSE);
+          GetDlgItemText(hwndDlg, ID_TXT_KEYFILE, keyfile, sizeof(keyfile) - 1);
+          keyfile_format=GetDlgItemInt(hwndDlg, ID_TXT_KEYFORMAT, &Translated, FALSE);
           if (keyfile_format == KEYFILE_FORMAT_PEM)
             {
               /* Change password of a PEM file */
@@ -424,7 +424,7 @@ BOOL CALLBACK ChangePassphraseDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam,
           else
             {
               /* Unknown key format */
-              ShowLocalizedMsg (GUI_NAME, ERR_UNKNOWN_KEYFILE_FORMAT);
+              ShowLocalizedMsg (GUI_NAME, IDS_ERR_UNKNOWN_KEYFILE_FORMAT);
             }
 
           DestroyWindow(hwndDlg);       
@@ -457,8 +457,8 @@ int ConfirmNewPassword(HWND hwndDlg)
   char newpsw[50];
   char newpsw2[50];
 
-  GetDlgItemText(hwndDlg, EDIT_PSW_NEW, newpsw, sizeof(newpsw) - 1); 
-  GetDlgItemText(hwndDlg, EDIT_PSW_NEW2, newpsw2, sizeof(newpsw2) - 1); 
+  GetDlgItemText(hwndDlg, ID_EDT_PASS_NEW, newpsw, sizeof(newpsw) - 1); 
+  GetDlgItemText(hwndDlg, ID_EDT_PASS_NEW2, newpsw2, sizeof(newpsw2) - 1); 
 
   if (strncmp(newpsw, newpsw2, sizeof(newpsw)) == 0)
     return true;
@@ -471,7 +471,7 @@ int NewPasswordLengh(HWND hwndDlg)
 {
   char newpsw[50];
 
-  GetDlgItemText(hwndDlg, EDIT_PSW_NEW, newpsw, sizeof(newpsw) - 1); 
+  GetDlgItemText(hwndDlg, ID_EDT_PASS_NEW, newpsw, sizeof(newpsw) - 1); 
 
   return (strlen(newpsw));
 }
@@ -582,7 +582,7 @@ int ParseKeyFilenameLine(int config, char *keyfilename, unsigned int keyfilename
       if (j >= (keyfilenamesize - 1))
         {
           /* key filename to long */
-          ShowLocalizedMsg(GUI_NAME, ERR_KEY_FILENAME_TO_LONG);
+          ShowLocalizedMsg(GUI_NAME, IDS_ERR_KEY_FILENAME_TO_LONG);
           return(0);
         }
       i++;
@@ -621,15 +621,15 @@ int ChangePasswordPEM(HWND hwndDlg)
   EVP_PKEY *privkey;
  
   /* Get filename, old_psw and new_psw from Dialog */
-  GetDlgItemText(hwndDlg, TEXT_KEYFILE, keyfile, sizeof(keyfile) - 1); 
-  GetDlgItemTextW(hwndDlg, EDIT_PSW_CURRENT, oldpsw_unicode, sizeof(oldpsw_unicode)/2 - 1); 
-  GetDlgItemTextW(hwndDlg, EDIT_PSW_NEW, newpsw_unicode, sizeof(newpsw_unicode)/2 - 1); 
+  GetDlgItemText(hwndDlg, ID_TXT_KEYFILE, keyfile, sizeof(keyfile) - 1); 
+  GetDlgItemTextW(hwndDlg, ID_EDT_PASS_CUR, oldpsw_unicode, sizeof(oldpsw_unicode)/2 - 1); 
+  GetDlgItemTextW(hwndDlg, ID_EDT_PASS_NEW, newpsw_unicode, sizeof(newpsw_unicode)/2 - 1); 
 
   /* Convert Unicode to ASCII (CP850) */
   ConvertUnicode2Ascii(oldpsw_unicode, oldpsw, sizeof(oldpsw));
   if (!ConvertUnicode2Ascii(newpsw_unicode, newpsw, sizeof(newpsw)))
     {
-      ShowLocalizedMsg(GUI_NAME, ERR_INVALID_CHARS_IN_PSW);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_INVALID_CHARS_IN_PSW);
       return(-1);
     }
 
@@ -639,7 +639,7 @@ int ChangePasswordPEM(HWND hwndDlg)
   if (! (fp = fopen (keyfile, "r")))
     {
       /* can't open key file */
-      ShowLocalizedMsg(GUI_NAME, ERR_OPEN_PRIVATE_KEY_FILE, keyfile);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_OPEN_PRIVATE_KEY_FILE, keyfile);
       return(0);
     }
 
@@ -647,7 +647,7 @@ int ChangePasswordPEM(HWND hwndDlg)
   if (! (privkey = PEM_read_PrivateKey (fp, NULL, NULL, oldpsw)))
     {
       /* wrong password */
-      ShowLocalizedMsg(GUI_NAME, ERR_OLD_PWD_INCORRECT); 
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_OLD_PWD_INCORRECT); 
       fclose(fp);
       return(-1);
     }
@@ -658,7 +658,7 @@ int ChangePasswordPEM(HWND hwndDlg)
   if (! (fp = fopen (keyfile, "w")))
     {
       /* can't open file rw */
-      ShowLocalizedMsg(GUI_NAME, ERR_OPEN_WRITE_KEY, keyfile);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_OPEN_WRITE_KEY, keyfile);
       EVP_PKEY_free(privkey);
       return(0);
     }
@@ -672,7 +672,7 @@ int ChangePasswordPEM(HWND hwndDlg)
                                   0, 0, NULL)))
         {
           /* error writing new key */
-          ShowLocalizedMsg(GUI_NAME, ERR_WRITE_NEW_KEY, keyfile);
+          ShowLocalizedMsg(GUI_NAME, IDS_ERR_WRITE_NEW_KEY, keyfile);
           EVP_PKEY_free(privkey);
           fclose(fp);
           return(0);
@@ -686,7 +686,7 @@ int ChangePasswordPEM(HWND hwndDlg)
                                   (UCHAR*) newpsw, (int) strlen(newpsw), 0, NULL)))
         {
           /* can't write new key */
-          ShowLocalizedMsg(GUI_NAME, ERR_WRITE_NEW_KEY, keyfile);
+          ShowLocalizedMsg(GUI_NAME, IDS_ERR_WRITE_NEW_KEY, keyfile);
           EVP_PKEY_free(privkey);
           fclose(fp);
           return(0);
@@ -697,7 +697,7 @@ int ChangePasswordPEM(HWND hwndDlg)
   fclose(fp);
 
   /* signal success to user */
-  ShowLocalizedMsg(GUI_NAME, INFO_PWD_CHANGED);
+  ShowLocalizedMsg(GUI_NAME, IDS_NFO_PWD_CHANGED);
   return(1);
 }
 
@@ -723,15 +723,15 @@ int ChangePasswordPKCS12(HWND hwndDlg)
   char *alias;
 
   /* Get filename, old_psw and new_psw from Dialog */
-  GetDlgItemText(hwndDlg, TEXT_KEYFILE, keyfile, sizeof(keyfile) - 1); 
-  GetDlgItemTextW(hwndDlg, EDIT_PSW_CURRENT, oldpsw_unicode, sizeof(oldpsw_unicode)/2 - 1); 
-  GetDlgItemTextW(hwndDlg, EDIT_PSW_NEW, newpsw_unicode, sizeof(newpsw_unicode)/2 - 1); 
+  GetDlgItemText(hwndDlg, ID_TXT_KEYFILE, keyfile, sizeof(keyfile) - 1); 
+  GetDlgItemTextW(hwndDlg, ID_EDT_PASS_CUR, oldpsw_unicode, sizeof(oldpsw_unicode)/2 - 1); 
+  GetDlgItemTextW(hwndDlg, ID_EDT_PASS_NEW, newpsw_unicode, sizeof(newpsw_unicode)/2 - 1); 
 
   /* Convert Unicode to ASCII (CP850) */
   ConvertUnicode2Ascii(oldpsw_unicode, oldpsw, sizeof(oldpsw));
   if (!ConvertUnicode2Ascii(newpsw_unicode, newpsw, sizeof(newpsw)))
     {
-      ShowLocalizedMsg(GUI_NAME, ERR_INVALID_CHARS_IN_PSW);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_INVALID_CHARS_IN_PSW);
       return(-1);
     }
 
@@ -739,7 +739,7 @@ int ChangePasswordPKCS12(HWND hwndDlg)
   if (!(fp = fopen(keyfile, "rb")))
     {
       /* error opening file */
-      ShowLocalizedMsg(GUI_NAME, ERR_OPEN_PRIVATE_KEY_FILE, keyfile);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_OPEN_PRIVATE_KEY_FILE, keyfile);
       return(0);
     }
   p12 = d2i_PKCS12_fp(fp, NULL);
@@ -747,7 +747,7 @@ int ChangePasswordPKCS12(HWND hwndDlg)
   if (!p12) 
     {
       /* error reading PKCS #12 */
-      ShowLocalizedMsg(GUI_NAME, ERR_READ_PKCS12, keyfile);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_READ_PKCS12, keyfile);
       return(0);
     }
 
@@ -755,7 +755,7 @@ int ChangePasswordPKCS12(HWND hwndDlg)
   if (!PKCS12_parse(p12, oldpsw, &privkey, &cert, &ca))
     {
       /* old password incorrect */
-      ShowLocalizedMsg(GUI_NAME, ERR_OLD_PWD_INCORRECT); 
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_OLD_PWD_INCORRECT); 
       PKCS12_free(p12);
       return(-1);
     }
@@ -771,7 +771,7 @@ int ChangePasswordPKCS12(HWND hwndDlg)
   if (!p12)
     {
       /* create failed */
-      ShowLocalizedMsg(GUI_NAME, ERR_CREATE_PKCS12);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_CREATE_PKCS12);
       return(0);
     }
 
@@ -783,7 +783,7 @@ int ChangePasswordPKCS12(HWND hwndDlg)
   /* Open keyfile for writing */
   if (!(fp = fopen(keyfile, "wb")))
     {
-      ShowLocalizedMsg(GUI_NAME, ERR_OPEN_WRITE_KEY, keyfile);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_OPEN_WRITE_KEY, keyfile);
       PKCS12_free(p12);
       return(0);
     }
@@ -794,7 +794,7 @@ int ChangePasswordPKCS12(HWND hwndDlg)
   PKCS12_free(p12);
   fclose(fp);
   /* signal success to user */
-  ShowLocalizedMsg(GUI_NAME, INFO_PWD_CHANGED);
+  ShowLocalizedMsg(GUI_NAME, IDS_NFO_PWD_CHANGED);
 
   return(1);
 }
@@ -827,7 +827,7 @@ int GetKeyFilename(int config, char *keyfilename, unsigned int keyfilenamesize, 
   if (!(fp=fopen(configfile_path, "r")))
     {
       /* can't open config file */
-      ShowLocalizedMsg(GUI_NAME, ERR_OPEN_CONFIG, configfile_path);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_OPEN_CONFIG, configfile_path);
       return(0);
     }
 
@@ -838,13 +838,13 @@ int GetKeyFilename(int config, char *keyfilename, unsigned int keyfilenamesize, 
           if (found_key)
             {
               /* only one key option */
-              ShowLocalizedMsg(GUI_NAME, ERR_ONLY_ONE_KEY_OPTION);
+              ShowLocalizedMsg(GUI_NAME, IDS_ERR_ONLY_ONE_KEY_OPTION);
               return(0);
             }
           if (found_pkcs12)
             {
               /* key XOR pkcs12 */
-              ShowLocalizedMsg(GUI_NAME, ERR_ONLY_KEY_OR_PKCS12);
+              ShowLocalizedMsg(GUI_NAME, IDS_ERR_ONLY_KEY_OR_PKCS12);
               return(0);
             }
           found_key=1;
@@ -857,13 +857,13 @@ int GetKeyFilename(int config, char *keyfilename, unsigned int keyfilenamesize, 
           if (found_pkcs12)
             {
               /* only one pkcs12 option */
-              ShowLocalizedMsg(GUI_NAME, ERR_ONLY_ONE_PKCS12_OPTION);
+              ShowLocalizedMsg(GUI_NAME, IDS_ERR_ONLY_ONE_PKCS12_OPTION);
               return(0);
             }
           if (found_key)
             {
               /* only key XOR pkcs12 */
-              ShowLocalizedMsg(GUI_NAME, ERR_ONLY_KEY_OR_PKCS12);
+              ShowLocalizedMsg(GUI_NAME, IDS_ERR_ONLY_KEY_OR_PKCS12);
               return(0);
             }
           found_pkcs12=1;
@@ -876,7 +876,7 @@ int GetKeyFilename(int config, char *keyfilename, unsigned int keyfilenamesize, 
   if ((!found_key) && (!found_pkcs12))
     {
       /* must have key or pkcs12 option */
-      ShowLocalizedMsg(GUI_NAME, ERR_MUST_HAVE_KEY_OR_PKCS12);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_HAVE_KEY_OR_PKCS12);
       return(0);
     }
 

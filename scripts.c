@@ -62,7 +62,7 @@ void RunConnectScript(int config, int run_as_service)
   if (!run_as_service)
     {
       /* UserInfo: Connect Script running */
-      SetDlgItemText(o.cnn[config].hwndStatus, TEXT_STATUS, LoadLocalizedString(INFO_STATE_CONN_SCRIPT)); 
+      SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONN_SCRIPT)); 
     }
 
   CLEAR (start_info);
@@ -91,7 +91,7 @@ void RunConnectScript(int config, int run_as_service)
 		     &proc_info))
     {
       /* Running Script failed */
-      ShowLocalizedMsg(GUI_NAME, ERR_RUN_CONN_SCRIPT, command_line);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_RUN_CONN_SCRIPT, command_line);
       return;
     }
 
@@ -108,7 +108,7 @@ void RunConnectScript(int config, int run_as_service)
       if (!GetExitCodeProcess(proc_info.hProcess, &ExitCode))
         {
           /* failed to get ExitCode */
-          ShowLocalizedMsg(GUI_NAME, ERR_GET_EXIT_CODE, command_line);
+          ShowLocalizedMsg(GUI_NAME, IDS_ERR_GET_EXIT_CODE, command_line);
           return;
         }
 
@@ -117,7 +117,7 @@ void RunConnectScript(int config, int run_as_service)
           if (ExitCode != 0)
             {
               /* ConnectScript failed */
-              ShowLocalizedMsg(GUI_NAME, ERR_CONN_SCRIPT_FAILED, ExitCode);
+              ShowLocalizedMsg(GUI_NAME, IDS_ERR_CONN_SCRIPT_FAILED, ExitCode);
               return;
             }
           return;
@@ -127,7 +127,7 @@ void RunConnectScript(int config, int run_as_service)
     }    
 
   /* UserInfo: Timeout */
-  ShowLocalizedMsg(GUI_NAME, ERR_RUN_CONN_SCRIPT_TIMEOUT, TimeOut);
+  ShowLocalizedMsg(GUI_NAME, IDS_ERR_CONN_SCRIPT_TIMEOUT, TimeOut);
 
 }
 
@@ -162,7 +162,7 @@ void RunDisconnectScript(int config, int run_as_service)
   if (!run_as_service)
     {
       /* UserInfo: Disconnect Script running */
-      SetDlgItemText(o.cnn[config].hwndStatus, TEXT_STATUS, LoadLocalizedString(INFO_STATE_DISCONN_SCRIPT)); 
+      SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_DISCONN_SCRIPT)); 
     }
 
   CLEAR (start_info);

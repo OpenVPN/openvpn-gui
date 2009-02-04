@@ -144,8 +144,8 @@ add_option (struct options *options,
     {
       TCHAR usagecaption[200];
       
-      LoadLocalizedStringBuf(usagecaption, sizeof(usagecaption)/sizeof(*usagecaption), INFO_USAGECAPTION);
-      MessageBox(NULL, LoadLocalizedString(INFO_USAGE), usagecaption, MB_OK);
+      LoadLocalizedStringBuf(usagecaption, sizeof(usagecaption)/sizeof(*usagecaption), IDS_NFO_USAGECAPTION);
+      MessageBox(NULL, LoadLocalizedString(IDS_NFO_USAGE), usagecaption, MB_OK);
       exit(0);
     }
   else if (streq (p[0], "connect") && p[1])
@@ -155,7 +155,7 @@ add_option (struct options *options,
       if (auto_connect_nr == MAX_CONFIGS)
         {
           /* Too many configs */
-          ShowLocalizedMsg(GUI_NAME, ERR_TO_MANY_CONFIGS, MAX_CONFIGS);
+          ShowLocalizedMsg(GUI_NAME, IDS_ERR_MANY_CONFIGS, MAX_CONFIGS);
           exit(1);
         }
 
@@ -267,7 +267,7 @@ add_option (struct options *options,
   else
     {
         /* Unrecognized option or missing parameter */
-	ShowLocalizedMsg(GUI_NAME, ERR_BAD_OPTION, p[0]);
+	ShowLocalizedMsg(GUI_NAME, IDS_ERR_BAD_OPTION, p[0]);
         exit(1);
     }
   return i;
@@ -289,7 +289,7 @@ parse_argv (struct options* options,
       if (strncmp(p[0], "--", 2))
 	{
           /* Missing -- before option. */
-	  ShowLocalizedMsg(GUI_NAME, ERR_BAD_PARAMETER, p[0]);
+	  ShowLocalizedMsg(GUI_NAME, IDS_ERR_BAD_PARAMETER, p[0]);
 	  exit(0);
         }
       else
@@ -328,7 +328,7 @@ int ConfigFileOptionExist(int config, const char *option)
   if (!(fp=fopen(configfile_path, "r")))
     {
       /* can't open config file */
-      ShowLocalizedMsg(GUI_NAME, ERR_OPEN_CONFIG, configfile_path);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_OPEN_CONFIG, configfile_path);
       return(0);
     }
 

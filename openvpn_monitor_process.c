@@ -90,7 +90,7 @@ int ReadLineFromStdOut(HANDLE hStdOut, int config, char *line)
                   else
                     {
                       /* error reading from pipe */
-                      ShowLocalizedMsg(GUI_NAME, ERR_READ_STDOUT_PIPE);
+                      ShowLocalizedMsg(GUI_NAME, IDS_ERR_READ_STDOUT_PIPE);
                       return(-1);
                     } 
                 }
@@ -149,7 +149,7 @@ int ReadLineFromStdOut(HANDLE hStdOut, int config, char *line)
               else
                 {
                   /* error reading from pipe */
-                  ShowLocalizedMsg(GUI_NAME, ERR_READ_STDOUT_PIPE);
+                  ShowLocalizedMsg(GUI_NAME, IDS_ERR_READ_STDOUT_PIPE);
                   return(-1);
                 } 
             }
@@ -214,16 +214,16 @@ void monitor_openvpnlog_while_connecting(int config, char *line)
       o.cnn[config].failed_psw_attempts = 0;
 
       /* UserInfo: Connected */
-      SetDlgItemText(o.cnn[config].hwndStatus, TEXT_STATUS, LoadLocalizedString(INFO_STATE_CONNECTED)); 
-      SetStatusWinIcon(o.cnn[config].hwndStatus, APP_ICON_CONNECTED);
+      SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONNECTED)); 
+      SetStatusWinIcon(o.cnn[config].hwndStatus, ID_ICO_CONNECTED);
 
       /* Show Tray Balloon msg */
       if (o.show_balloon[0] != '0')
         {
-          LoadLocalizedStringBuf(msg, sizeof(msg)/sizeof(*msg), INFO_NOW_CONNECTED, o.cnn[config].config_name);
+          LoadLocalizedStringBuf(msg, sizeof(msg)/sizeof(*msg), IDS_NFO_NOW_CONNECTED, o.cnn[config].config_name);
           if (strlen(o.cnn[config].ip) > 0)
             {
-              ShowTrayBalloon(msg, LoadLocalizedString(INFO_ASSIG_IP, o.cnn[config].ip));
+              ShowTrayBalloon(msg, LoadLocalizedString(IDS_NFO_ASSIGN_IP, o.cnn[config].ip));
             }
           else
             {
@@ -252,7 +252,7 @@ void monitor_openvpnlog_while_connecting(int config, char *line)
     {
       StopOpenVPN(config);
       /* Cert expired... */
-      ShowLocalizedMsg(GUI_NAME, ERR_CERT_EXPIRED);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_CERT_EXPIRED);
     }
 
   /* Check for "certificate is not yet valid" message */
@@ -260,7 +260,7 @@ void monitor_openvpnlog_while_connecting(int config, char *line)
     {
       StopOpenVPN(config);
       /* Cert not yet valid */
-      ShowLocalizedMsg(GUI_NAME, ERR_CERT_NOT_YET_VALID); 
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_CERT_NOT_YET_VALID); 
     }
 
   /* Check for "Notified TAP-Win32 driver to set a DHCP IP" message */
@@ -287,8 +287,8 @@ void monitor_openvpnlog_while_connected(int config, char *line)
       CheckAndSetTrayIcon();
 
       /* Set Status Window Controls "ReConnecting" */
-      SetDlgItemText(o.cnn[config].hwndStatus, TEXT_STATUS, LoadLocalizedString(INFO_STATE_RECONNECTING)); 
-      SetStatusWinIcon(o.cnn[config].hwndStatus, APP_ICON_CONNECTING);
+      SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_RECONNECTING)); 
+      SetStatusWinIcon(o.cnn[config].hwndStatus, ID_ICO_CONNECTING);
     }
 }
 
@@ -308,16 +308,16 @@ void monitor_openvpnlog_while_reconnecting(int config, char *line)
       SetTrayIcon(CONNECTED);
 
       /* Set Status Window Controls "Connected" */
-      SetDlgItemText(o.cnn[config].hwndStatus, TEXT_STATUS, LoadLocalizedString(INFO_STATE_CONNECTED)); 
-      SetStatusWinIcon(o.cnn[config].hwndStatus, APP_ICON_CONNECTED);
+      SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONNECTED)); 
+      SetStatusWinIcon(o.cnn[config].hwndStatus, ID_ICO_CONNECTED);
 
       /* Show Tray Balloon msg */
       if (o.show_balloon[0] == '2')
         {
-          LoadLocalizedStringBuf(msg, sizeof(msg)/sizeof(*msg), INFO_NOW_CONNECTED, o.cnn[config].config_name);
+          LoadLocalizedStringBuf(msg, sizeof(msg)/sizeof(*msg), IDS_NFO_NOW_CONNECTED, o.cnn[config].config_name);
           if (strlen(o.cnn[config].ip) > 0)
             {
-              ShowTrayBalloon(msg, LoadLocalizedString(INFO_ASSIG_IP, o.cnn[config].ip));
+              ShowTrayBalloon(msg, LoadLocalizedString(IDS_NFO_ASSIGN_IP, o.cnn[config].ip));
             }
           else
             {
@@ -343,7 +343,7 @@ void monitor_openvpnlog_while_reconnecting(int config, char *line)
     {
       /* Cert expired */
       StopOpenVPN(config);
-      ShowLocalizedMsg(GUI_NAME, ERR_CERT_EXPIRED);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_CERT_EXPIRED);
     }
 
   /* Check for "certificate is not yet valid" message */
@@ -351,7 +351,7 @@ void monitor_openvpnlog_while_reconnecting(int config, char *line)
     {
       StopOpenVPN(config);
       /* Cert not yet valid */
-      ShowLocalizedMsg(GUI_NAME, ERR_CERT_NOT_YET_VALID);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_CERT_NOT_YET_VALID);
     }
 
   /* Check for "Notified TAP-Win32 driver to set a DHCP IP" message */
@@ -401,9 +401,9 @@ void WatchOpenVPNProcess(int config)
 
   /* Open log file */
   if ((fd=fopen(o.cnn[config].log_path, filemode)) == NULL)
-    ShowLocalizedMsg (GUI_NAME, ERR_OPEN_LOG_WRITE, o.cnn[config].log_path);
+    ShowLocalizedMsg (GUI_NAME, IDS_ERR_OPEN_LOG_WRITE, o.cnn[config].log_path);
 
-  LogWindow = GetDlgItem(o.cnn[config].hwndStatus, EDIT_LOG);
+  LogWindow = GetDlgItem(o.cnn[config].hwndStatus, ID_EDT_LOG);
   while(TRUE)
     {
       if ((ret=ReadLineFromStdOut(o.cnn[config].hStdOut, config, line)) == 1)
@@ -481,13 +481,13 @@ void WatchOpenVPNProcess(int config)
       CheckAndSetTrayIcon();
 
       /* Show Status Window */
-      SetDlgItemText(o.cnn[config].hwndStatus, TEXT_STATUS, LoadLocalizedString(INFO_STATE_DISCONNECTED)); 
-      SetStatusWinIcon(o.cnn[config].hwndStatus, APP_ICON_DISCONNECTED);
+      SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_DISCONNECTED)); 
+      SetStatusWinIcon(o.cnn[config].hwndStatus, ID_ICO_DISCONNECTED);
       EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_DISCONNECT), FALSE);
       EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_RESTART), FALSE);
       SetForegroundWindow(o.cnn[config].hwndStatus);
       ShowWindow(o.cnn[config].hwndStatus, SW_SHOW);
-      ShowLocalizedMsg(GUI_NAME, INFO_CONN_TERMINATED, o.cnn[config].config_name); 
+      ShowLocalizedMsg(GUI_NAME, IDS_NFO_CONN_TERMINATED, o.cnn[config].config_name); 
 
       /* Close Status Window */
       SendMessage(o.cnn[config].hwndStatus, WM_CLOSE, 0, 0);
@@ -512,8 +512,8 @@ void WatchOpenVPNProcess(int config)
       else
         {
           /* Show Status Window */
-          SetDlgItemText(o.cnn[config].hwndStatus, TEXT_STATUS, LoadLocalizedString(INFO_STATE_FAILED)); 
-          SetStatusWinIcon(o.cnn[config].hwndStatus, APP_ICON_DISCONNECTED);
+          SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_FAILED)); 
+          SetStatusWinIcon(o.cnn[config].hwndStatus, ID_ICO_DISCONNECTED);
           EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_DISCONNECT), FALSE);
           EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_RESTART), FALSE);
           SetForegroundWindow(o.cnn[config].hwndStatus);
@@ -522,7 +522,7 @@ void WatchOpenVPNProcess(int config)
           /* Zero psw attempt counter */
           o.cnn[config].failed_psw_attempts = 0;
 
-          ShowLocalizedMsg(GUI_NAME, INFO_CONN_FAILED, o.cnn[config].config_name);
+          ShowLocalizedMsg(GUI_NAME, IDS_NFO_CONN_FAILED, o.cnn[config].config_name);
 
           /* Set connect_status = "Not Connected" */
           o.cnn[config].connect_status=DISCONNECTED;
@@ -555,8 +555,8 @@ void WatchOpenVPNProcess(int config)
       else
         {
           /* Show Status Window */
-          SetDlgItemText(o.cnn[config].hwndStatus, TEXT_STATUS, LoadLocalizedString(INFO_STATE_FAILED_RECONN)); 
-          SetStatusWinIcon(o.cnn[config].hwndStatus, APP_ICON_DISCONNECTED);
+          SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_FAILED_RECONN)); 
+          SetStatusWinIcon(o.cnn[config].hwndStatus, ID_ICO_DISCONNECTED);
           EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_DISCONNECT), FALSE);
           EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_RESTART), FALSE);
           SetForegroundWindow(o.cnn[config].hwndStatus);
@@ -565,7 +565,7 @@ void WatchOpenVPNProcess(int config)
           /* Zero psw attempt counter */
           o.cnn[config].failed_psw_attempts = 0;
 
-          ShowLocalizedMsg(GUI_NAME, INFO_RECONN_FAILED, o.cnn[config].config_name);
+          ShowLocalizedMsg(GUI_NAME, IDS_NFO_RECONN_FAILED, o.cnn[config].config_name);
 
           /* Set connect_status = "Not Connected" */
           o.cnn[config].connect_status=DISCONNECTED;
@@ -610,7 +610,7 @@ void WatchOpenVPNProcess(int config)
 
       /* Set connect_status = "SUSPENDED" */
       o.cnn[config].connect_status=SUSPENDED;
-      SetDlgItemText(o.cnn[config].hwndStatus, TEXT_STATUS, LoadLocalizedString(INFO_STATE_SUSPENDED)); 
+      SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_SUSPENDED)); 
 
       /* Change tray icon if no more connections is running */
       CheckAndSetTrayIcon();

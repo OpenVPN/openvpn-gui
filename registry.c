@@ -41,7 +41,7 @@ GetRegistryKeys()
 
   if (!GetWindowsDirectory(windows_dir, sizeof(windows_dir))) {
     /* can't get windows dir */
-    ShowLocalizedMsg(GUI_NAME, ERR_GET_WINDOWS_DIR);
+    ShowLocalizedMsg(GUI_NAME, IDS_ERR_GET_WINDOWS_DIR);
     return(false);
   }
 
@@ -50,13 +50,13 @@ GetRegistryKeys()
       != ERROR_SUCCESS) 
     {
       /* registry key not found */
-      ShowLocalizedMsg(GUI_NAME, ERR_OPEN_REGISTRY);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_OPEN_REGISTRY);
       return(false);
     }
   if (!GetRegistryValue(regkey, "", openvpn_path, sizeof(openvpn_path)))
     {
       /* error reading registry value */
-      ShowLocalizedMsg(GUI_NAME, ERR_READING_REGISTRY);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_READING_REGISTRY);
       return(false);
     }
   if(openvpn_path[strlen(openvpn_path) - 1] != '\\')
@@ -115,7 +115,7 @@ GetRegistryKeys()
   if ((o.psw_attempts < 1) || (o.psw_attempts > 9))
     {
       /* 0 <= passphrase_attempts <= 9 */
-      ShowLocalizedMsg(GUI_NAME, ERR_PASSPHRASE_ATTEMPTS);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_PASSPHRASE_ATTEMPTS);
       return(false);
     }
 
@@ -125,7 +125,7 @@ GetRegistryKeys()
   if ((o.connectscript_timeout < 0) || (o.connectscript_timeout > 99))
     {
       /* 0 <= connectscript_timeout <= 99 */
-      ShowLocalizedMsg(GUI_NAME, ERR_CONN_SCRIPT_TIMEOUT);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_CONN_SCRIPT_TIMEOUT);
       return(false);
     }
 
@@ -135,7 +135,7 @@ GetRegistryKeys()
   if ((o.disconnectscript_timeout <= 0) || (o.disconnectscript_timeout > 99))
     {
       /* 0 < disconnectscript_timeout <= 99 */
-      ShowLocalizedMsg(GUI_NAME, ERR_DISCONN_SCRIPT_TIMEOUT);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_DISCONN_SCRIPT_TIMEOUT);
       return(false);
     }
 
@@ -145,7 +145,7 @@ GetRegistryKeys()
   if ((o.preconnectscript_timeout <= 0) || (o.preconnectscript_timeout > 99))
     {
       /* 0 < disconnectscript_timeout <= 99 */
-      ShowLocalizedMsg(GUI_NAME, ERR_PRECONN_SCRIPT_TIMEOUT);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_PRECONN_SCRIPT_TIMEOUT);
       return(false);
     }
 
@@ -194,7 +194,7 @@ int GetRegKey(const char name[], char *data, const char default_data[], DWORD le
                         &dwDispos) != ERROR_SUCCESS)
         {
           /* error creating registry key */
-          ShowLocalizedMsg(GUI_NAME, ERR_CREATE_REG_KEY);
+          ShowLocalizedMsg(GUI_NAME, IDS_ERR_CREATE_REG_KEY);
           return(false);
         }  
     }
@@ -213,7 +213,7 @@ int GetRegKey(const char name[], char *data, const char default_data[], DWORD le
 
       if (status != ERROR_SUCCESS) {
          /* can't open registry for writing */
-         ShowLocalizedMsg(GUI_NAME, ERR_OPEN_WRITE_REG);
+         ShowLocalizedMsg(GUI_NAME, IDS_ERR_OPEN_WRITE_REG);
          return(false);
       }    
       if(RegSetValueEx(openvpn_key_write,
@@ -224,7 +224,7 @@ int GetRegKey(const char name[], char *data, const char default_data[], DWORD le
                        strlen(default_data)+1))
         {
           /* cant read / set reg-key */ 
-          ShowLocalizedMsg(GUI_NAME, ERR_READ_SET_KEY, name);
+          ShowLocalizedMsg(GUI_NAME, IDS_ERR_READ_SET_KEY, name);
           return(false);
         }
       strncpy(data, default_data, max_len);
@@ -273,7 +273,7 @@ int SetRegistryValue(HKEY regkey, const char *name, char *data)
   if(RegSetValueEx(regkey, name, 0, REG_SZ, (PBYTE) data, strlen(data)+1) != ERROR_SUCCESS)
     {
       /* Error writing registry value */
-      ShowLocalizedMsg(GUI_NAME, ERR_WRITE_REGVALUE, GUI_REGKEY_HKCU, name);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_WRITE_REGVALUE, GUI_REGKEY_HKCU, name);
       return(0);
     }
 
@@ -288,6 +288,6 @@ SetRegistryValueNumeric(HKEY regkey, const char *name, DWORD data)
   if (status == ERROR_SUCCESS)
     return 1;
 
-  ShowLocalizedMsg(GUI_NAME, ERR_WRITE_REGVALUE, GUI_REGKEY_HKCU, name);
+  ShowLocalizedMsg(GUI_NAME, IDS_ERR_WRITE_REGVALUE, GUI_REGKEY_HKCU, name);
   return 0;
 }

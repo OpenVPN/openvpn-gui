@@ -66,7 +66,7 @@ void ViewLog(int config)
 		     &proc_info))
     {
       /* could not start log viewer */
-      ShowLocalizedMsg(GUI_NAME, ERR_START_LOG_VIEWER, o.log_viewer);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_START_LOG_VIEWER, o.log_viewer);
     }
 
 }
@@ -108,7 +108,7 @@ void EditConfig(int config)
 		     &proc_info))
     {
         /* could not start editor */ 
-	ShowLocalizedMsg(GUI_NAME, ERR_START_CONF_EDITOR, o.editor);
+	ShowLocalizedMsg(GUI_NAME, IDS_ERR_START_CONF_EDITOR, o.editor);
     }
 
 }

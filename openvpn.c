@@ -62,12 +62,12 @@ int CreateExitEvent(int config)
           if (GetLastError() == ERROR_ACCESS_DENIED)
             {
               /* service mustn't be running, while using old version */ 
-              ShowLocalizedMsg(GUI_NAME, ERR_STOP_SERV_ON_OLD_VERSION);
+              ShowLocalizedMsg(GUI_NAME, IDS_ERR_STOP_SERV_OLD_VER);
             }
           else
             {
               /* error creating exit event */ 
-              ShowLocalizedMsg (GUI_NAME, ERR_CREATE_EVENT, o.cnn[config].exit_event_name);
+              ShowLocalizedMsg (GUI_NAME, IDS_ERR_CREATE_EVENT, o.cnn[config].exit_event_name);
             }
           return(false);
         }
@@ -82,7 +82,7 @@ int CreateExitEvent(int config)
       if (o.cnn[config].exit_event == NULL)
         {
           /* error creating exit event */
-          ShowLocalizedMsg (GUI_NAME, ERR_CREATE_EVENT, o.cnn[config].exit_event_name);
+          ShowLocalizedMsg (GUI_NAME, IDS_ERR_CREATE_EVENT, o.cnn[config].exit_event_name);
           return(false);
         }
     }
@@ -112,7 +112,7 @@ int SetProcessPriority(DWORD *priority)
   else
     {
       /* unknown priority */
-      ShowLocalizedMsg (GUI_NAME, ERR_UNKNOWN_PRIORITY, o.priority_string);
+      ShowLocalizedMsg (GUI_NAME, IDS_ERR_UNKNOWN_PRIORITY, o.priority_string);
       return (false);
     }
 
@@ -166,7 +166,7 @@ int StartOpenVPN(int config)
       if (is_connected)
         {
           /* only one simultanious connection on old version */
-          ShowLocalizedMsg(GUI_NAME, ERR_ONLY_ONE_CONN_OLD_VERSION); 
+          ShowLocalizedMsg(GUI_NAME, IDS_ERR_ONE_CONN_OLD_VER); 
           return(false);
         }
     }
@@ -175,7 +175,7 @@ int StartOpenVPN(int config)
   if ((ConfigFileOptionExist(config, "log ")) ||
       (ConfigFileOptionExist(config, "log-append ")))
     {
-      if (MessageBox(NULL, LoadLocalizedString(ERR_OPTION_LOG_IN_CONFIG), GUI_NAME, MB_YESNO | MB_DEFBUTTON2 | MB_ICONWARNING) != IDYES)
+      if (MessageBox(NULL, LoadLocalizedString(IDS_ERR_OPTION_LOG_IN_CONFIG), GUI_NAME, MB_YESNO | MB_DEFBUTTON2 | MB_ICONWARNING) != IDYES)
         return(false);
     }
 
@@ -195,7 +195,7 @@ int StartOpenVPN(int config)
   if ((o.append_string[0] != '0') && (o.append_string[0] != '1'))
     {
       /* append_log must be 0 or 1 */
-      ShowLocalizedMsg (GUI_NAME, ERR_LOG_APPEND_BOOL, o.append_string);
+      ShowLocalizedMsg (GUI_NAME, IDS_ERR_LOG_APPEND_BOOL, o.append_string);
       goto failed;
     }
         
@@ -225,13 +225,13 @@ int StartOpenVPN(int config)
   if (!InitializeSecurityDescriptor (&sd, SECURITY_DESCRIPTOR_REVISION))
     {
       /* Init Sec. Desc. failed */
-      ShowLocalizedMsg (GUI_NAME, ERR_INIT_SEC_DESC);
+      ShowLocalizedMsg (GUI_NAME, IDS_ERR_INIT_SEC_DESC);
       goto failed;
     }
   if (!SetSecurityDescriptorDacl (&sd, TRUE, NULL, FALSE))
     {
       /* set Dacl failed */
-      ShowLocalizedMsg (GUI_NAME, ERR_SET_SEC_DESC_ACL);
+      ShowLocalizedMsg (GUI_NAME, IDS_ERR_SET_SEC_DESC_ACL);
       goto failed;
     }
 
@@ -240,7 +240,7 @@ int StartOpenVPN(int config)
   if (!CreatePipe(&hOutputReadTmp,&hOutputWrite,&sa,0))
     {
       /* CreatePipe failed. */
-      ShowLocalizedMsg(GUI_NAME, ERR_CREATE_PIPE_OUTPUT);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_CREATE_PIPE_OUTPUT);
       goto failed;
     }
 
@@ -252,7 +252,7 @@ int StartOpenVPN(int config)
                        TRUE,DUPLICATE_SAME_ACCESS))
     { 
       /* DuplicateHandle failed. */
-      ShowLocalizedMsg(GUI_NAME, ERR_DUP_HANDLE_ERR_WRITE);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_DUP_HANDLE_ERR_WRITE);
       goto failed;
     }
 
@@ -260,7 +260,7 @@ int StartOpenVPN(int config)
   if (!CreatePipe(&hInputRead,&hInputWriteTmp,&sa,0))
     {
       /* CreatePipe failed. */
-      ShowLocalizedMsg(GUI_NAME, ERR_CREATE_PIPE_INPUT);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_CREATE_PIPE_INPUT);
       goto failed;
     }
 
@@ -275,7 +275,7 @@ int StartOpenVPN(int config)
                        DUPLICATE_SAME_ACCESS))
     {
       /* Duplicate Handle failed. */
-      ShowLocalizedMsg(GUI_NAME, ERR_DUP_HANDLE_OUTPUT_READ);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_DUP_HANDLE_OUT_READ);
       goto failed;
     }
 
@@ -286,7 +286,7 @@ int StartOpenVPN(int config)
                        DUPLICATE_SAME_ACCESS))
     {
       /* DuplicateHandle failed */
-      ShowLocalizedMsg(GUI_NAME, ERR_DUP_HANDLE_INPUT_WRITE);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_DUP_HANDLE_IN_WRITE);
       goto failed;
     }
 
@@ -294,7 +294,7 @@ int StartOpenVPN(int config)
   if (!CloseHandle(hOutputReadTmp) || !CloseHandle(hInputWriteTmp)) 
     {
       /* Close Handle failed */
-      ShowLocalizedMsg(GUI_NAME, ERR_CLOSE_HANDLE_TMP);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_CLOSE_HANDLE_TMP);
       CloseHandle (o.cnn[config].exit_event);
       return(0); 
     }
@@ -325,7 +325,7 @@ int StartOpenVPN(int config)
 		     &proc_info))
     {
       /* CreateProcess failed */
-      ShowLocalizedMsg (GUI_NAME, ERR_CREATE_PROCESS,
+      ShowLocalizedMsg (GUI_NAME, IDS_ERR_CREATE_PROCESS,
           o.exe_path,
           command_line,
           o.cnn[config].config_dir);
@@ -343,7 +343,7 @@ int StartOpenVPN(int config)
      !CloseHandle (hErrorWrite))
     {
       /* CloseHandle failed */
-      ShowLocalizedMsg (GUI_NAME, ERR_CLOSE_HANDLE);
+      ShowLocalizedMsg (GUI_NAME, IDS_ERR_CLOSE_HANDLE);
       CloseHandle (o.cnn[config].exit_event);
       return(false);
     }
@@ -367,7 +367,7 @@ int StartOpenVPN(int config)
   if (hThread == NULL) 
     {
     /* CreateThread failed */
-    ShowLocalizedMsg (GUI_NAME, ERR_CREATE_THREAD_STATUS);
+    ShowLocalizedMsg (GUI_NAME, IDS_ERR_CREATE_THREAD_STATUS);
     goto failed;
   }
 
@@ -398,7 +398,7 @@ void StopOpenVPN(int config)
     EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_RESTART), FALSE);
     SetMenuStatus(config, DISCONNECTING);
     /* UserInfo: waiting for OpenVPN termination... */
-    SetDlgItemText(o.cnn[config].hwndStatus, TEXT_STATUS, LoadLocalizedString(INFO_STATE_WAIT_TERM)); 
+    SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_WAIT_TERM)); 
     SetEvent(o.cnn[config].exit_event);
   }
 }
@@ -412,7 +412,7 @@ void SuspendOpenVPN(int config)
     EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_DISCONNECT), FALSE);
     EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_RESTART), FALSE);
     SetMenuStatus(config, DISCONNECTING);
-    SetDlgItemText(o.cnn[config].hwndStatus, TEXT_STATUS, LoadLocalizedString(INFO_STATE_WAIT_TERM));
+    SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_WAIT_TERM));
     SetEvent(o.cnn[config].exit_event);
   }
 }
@@ -446,7 +446,7 @@ BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
 
     case WM_INITDIALOG:
       /* Set Window Icon "DisConnected" */
-      SetStatusWinIcon(hwndDlg, APP_ICON_CONNECTING);
+      SetStatusWinIcon(hwndDlg, ID_ICO_CONNECTING);
 
       /* Create LogWindow */
       hwndLogWindow = CreateWindowEx (0, RICHEDIT_CLASS, NULL, 
@@ -455,7 +455,7 @@ BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
                                       ES_READONLY | ES_AUTOHSCROLL | ES_AUTOVSCROLL,
                                       20, 25, 350, 160,		// Posision and Size
                                       hwndDlg,			// Parent window handle
-                                      (HMENU) EDIT_LOG,		// hMenu
+                                      (HMENU) ID_EDT_LOG,		// hMenu
                                       o.hInstance,		// hInstance
                                       NULL);			// WM_CREATE lpParam
 
@@ -463,7 +463,7 @@ BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
       if (!hwndLogWindow)
         {
           /* Create RichEd LogWindow Failed */
-          ShowLocalizedMsg(GUI_NAME, ERR_CREATE_RICHED_LOGWINDOW);
+          ShowLocalizedMsg(GUI_NAME, IDS_ERR_CREATE_EDIT_LOGWINDOW);
           return FALSE;
         }
 
@@ -476,13 +476,13 @@ BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
       strcpy(charformat.szFaceName, "MS Sans Serif");
       if ((SendMessage(hwndLogWindow, EM_SETCHARFORMAT, SCF_DEFAULT, (LPARAM) &charformat) && CFM_SIZE) == 0) {
         /* set size failed */
-        ShowLocalizedMsg(GUI_NAME, ERR_SET_SIZE);
+        ShowLocalizedMsg(GUI_NAME, IDS_ERR_SET_SIZE);
       }
 
       /* Set Size and Posision of controls */
       GetClientRect(hwndDlg, &rect);
       MoveWindow (hwndLogWindow, 20, 25, rect.right - 40, rect.bottom - 70, TRUE);
-      MoveWindow (GetDlgItem(hwndDlg, TEXT_STATUS), 20, 5, rect.right - 25, 15, TRUE);
+      MoveWindow (GetDlgItem(hwndDlg, ID_TXT_STATUS), 20, 5, rect.right - 25, 15, TRUE);
       MoveWindow (GetDlgItem(hwndDlg, ID_DISCONNECT), 20, rect.bottom - 30, 90, 23, TRUE);
       MoveWindow (GetDlgItem(hwndDlg, ID_RESTART), 125, rect.bottom - 30, 90, 23, TRUE);
       MoveWindow (GetDlgItem(hwndDlg, ID_HIDE), rect.right - 110, rect.bottom - 30, 90, 23, TRUE);
@@ -493,7 +493,7 @@ BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
       return FALSE;
 
     case WM_SIZE:
-      MoveWindow (GetDlgItem(hwndDlg, EDIT_LOG), 20, 25, LOWORD (lParam) - 40,
+      MoveWindow (GetDlgItem(hwndDlg, ID_EDT_LOG), 20, 25, LOWORD (lParam) - 40,
                   HIWORD (lParam) - 70, TRUE);
       MoveWindow (GetDlgItem(hwndDlg, ID_DISCONNECT), 20,
                   HIWORD (lParam) - 30, 90, 23, TRUE);
@@ -501,21 +501,21 @@ BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
                   HIWORD (lParam) - 30, 90, 23, TRUE);
       MoveWindow (GetDlgItem(hwndDlg, ID_HIDE), LOWORD (lParam) - 110,
                   HIWORD (lParam) - 30, 90, 23, TRUE);
-      MoveWindow (GetDlgItem(hwndDlg, TEXT_STATUS), 20, 5, LOWORD (lParam) - 25, 15, TRUE);
+      MoveWindow (GetDlgItem(hwndDlg, ID_TXT_STATUS), 20, 5, LOWORD (lParam) - 25, 15, TRUE);
       InvalidateRect(hwndDlg, NULL, TRUE);
       return TRUE;
 
     case WM_COMMAND:
-      config=GetDlgItemInt(hwndDlg, TEXT_CONFIG, &Translated, FALSE);
+      config=GetDlgItemInt(hwndDlg, ID_TXT_CONFIG, &Translated, FALSE);
       switch (LOWORD(wParam)) {
 
         case ID_DISCONNECT:
-          SetFocus(GetDlgItem(o.cnn[config].hwndStatus, EDIT_LOG));
+          SetFocus(GetDlgItem(o.cnn[config].hwndStatus, ID_EDT_LOG));
           StopOpenVPN(config);
           return TRUE;
 
         case ID_HIDE:
-          if (o.cnn[GetDlgItemInt(hwndDlg, TEXT_CONFIG, &Translated, FALSE)].connect_status != DISCONNECTED)
+          if (o.cnn[GetDlgItemInt(hwndDlg, ID_TXT_CONFIG, &Translated, FALSE)].connect_status != DISCONNECTED)
             {
               ShowWindow(hwndDlg, SW_HIDE);
             }
@@ -525,7 +525,7 @@ BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
             }
           return TRUE;
         case ID_RESTART:
-          SetFocus(GetDlgItem(o.cnn[config].hwndStatus, EDIT_LOG));
+          SetFocus(GetDlgItem(o.cnn[config].hwndStatus, ID_EDT_LOG));
           o.cnn[config].restart = true;
           StopOpenVPN(config);
           return TRUE; 
@@ -535,14 +535,14 @@ BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
     case WM_SHOWWINDOW:
       if (wParam == TRUE)
         {
-          config=GetDlgItemInt(hwndDlg, TEXT_CONFIG, &Translated, FALSE);
+          config=GetDlgItemInt(hwndDlg, ID_TXT_CONFIG, &Translated, FALSE);
           if (o.cnn[config].hwndStatus)
-            SetFocus(GetDlgItem(o.cnn[config].hwndStatus, EDIT_LOG));
+            SetFocus(GetDlgItem(o.cnn[config].hwndStatus, ID_EDT_LOG));
         }
       return FALSE;
 
     case WM_CLOSE:
-      if (o.cnn[GetDlgItemInt(hwndDlg, TEXT_CONFIG, &Translated, FALSE)].connect_status != DISCONNECTED)
+      if (o.cnn[GetDlgItemInt(hwndDlg, ID_TXT_CONFIG, &Translated, FALSE)].connect_status != DISCONNECTED)
         {
           ShowWindow(hwndDlg, SW_HIDE);
         }
@@ -601,7 +601,7 @@ int VerifyAutoConnections()
       if (match == false)
         {
           /* autostart config not found */
-          ShowLocalizedMsg(GUI_NAME, ERR_AUTOSTART_CONF_NOT_FOUND, o.auto_connect[i]);
+          ShowLocalizedMsg(GUI_NAME, IDS_ERR_AUTOSTART_CONF, o.auto_connect[i]);
           return false;
         }
     }
@@ -651,7 +651,7 @@ int CheckVersion()
       else
         {
           /* CreateEvent failed */
-          ShowLocalizedMsg(GUI_NAME, ERR_VERSION_CREATE_EVENT);
+          ShowLocalizedMsg(GUI_NAME, IDS_ERR_VERSION_CREATE_EVENT);
           return(false);
        }
     }
@@ -677,13 +677,13 @@ int CheckVersion()
   if (!InitializeSecurityDescriptor (&sd, SECURITY_DESCRIPTOR_REVISION))
   {
       /* Init Sec. Desc. failed */
-      ShowLocalizedMsg (GUI_NAME, ERR_INIT_SEC_DESC);
+      ShowLocalizedMsg (GUI_NAME, IDS_ERR_INIT_SEC_DESC);
       return(0);
     }
   if (!SetSecurityDescriptorDacl (&sd, TRUE, NULL, FALSE))
     {
       /* Set Dacl failed */
-      ShowLocalizedMsg (GUI_NAME, ERR_SET_SEC_DESC_ACL);
+      ShowLocalizedMsg (GUI_NAME, IDS_ERR_SET_SEC_DESC_ACL);
       return(0);
     }
 
@@ -691,7 +691,7 @@ int CheckVersion()
   if (!CreatePipe(&hInputRead,&hInputWriteTmp,&sa,0))
     {
       /* create pipe failed */
-      ShowLocalizedMsg(GUI_NAME, ERR_CREATE_PIPE_INPUT_READ);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_CREATE_PIPE_IN_READ);
       return(0);
     }
 
@@ -699,7 +699,7 @@ int CheckVersion()
   if (!CreatePipe(&hOutputReadTmp,&hOutputWrite,&sa,0))
     {
       /* CreatePipe failed */
-      ShowLocalizedMsg(GUI_NAME, ERR_CREATE_PIPE_OUTPUT);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_CREATE_PIPE_OUTPUT);
       return(0);
     }
 
@@ -710,7 +710,7 @@ int CheckVersion()
                        DUPLICATE_SAME_ACCESS))
     {
       /* DuplicateHandle failed */
-      ShowLocalizedMsg(GUI_NAME, ERR_DUP_HANDLE_OUTPUT_READ);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_DUP_HANDLE_OUT_READ);
       return(0);
     }
 
@@ -721,7 +721,7 @@ int CheckVersion()
                        DUPLICATE_SAME_ACCESS))
     {
       /* DuplicateHandle failed */
-      ShowLocalizedMsg(GUI_NAME, ERR_DUP_HANDLE_INPUT_WRITE);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_DUP_HANDLE_IN_WRITE);
       return(0);
     }
 
@@ -730,7 +730,7 @@ int CheckVersion()
   if (!CloseHandle(hOutputReadTmp) || !CloseHandle(hInputWriteTmp)) 
     {
       /* CloseHandle failed */
-      ShowLocalizedMsg(GUI_NAME, ERR_CLOSE_HANDLE_TMP);
+      ShowLocalizedMsg(GUI_NAME, IDS_ERR_CLOSE_HANDLE_TMP);
       return(0); 
     }
 
@@ -756,7 +756,7 @@ int CheckVersion()
 		     &proc_info))
     {
       /* CreateProcess failed */
-      ShowLocalizedMsg (GUI_NAME, ERR_CREATE_PROCESS,
+      ShowLocalizedMsg (GUI_NAME, IDS_ERR_CREATE_PROCESS,
           o.exe_path,
           command_line,
           bin_path);
@@ -839,7 +839,7 @@ int CheckVersion()
      || !CloseHandle (hInputRead) || !CloseHandle(exit_event))
     {
       /* CloseHandle failed */
-      ShowLocalizedMsg (GUI_NAME, ERR_CLOSE_HANDLE);
+      ShowLocalizedMsg (GUI_NAME, IDS_ERR_CLOSE_HANDLE);
       return(0);
     }
 
@@ -899,23 +899,23 @@ void ThreadOpenVPNStatus(int config)
   if (o.cnn[config].restart)
     {
       /* UserInfo: Connecting */
-      SetDlgItemText(o.cnn[config].hwndStatus, TEXT_STATUS, LoadLocalizedString(INFO_STATE_CONNECTING)); 
-      SetStatusWinIcon(o.cnn[config].hwndStatus, APP_ICON_CONNECTING);
+      SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONNECTING)); 
+      SetStatusWinIcon(o.cnn[config].hwndStatus, ID_ICO_CONNECTING);
       EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_DISCONNECT), TRUE);
       EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_RESTART), TRUE);
-      SetFocus(GetDlgItem(o.cnn[config].hwndStatus, EDIT_LOG));
+      SetFocus(GetDlgItem(o.cnn[config].hwndStatus, ID_EDT_LOG));
       o.cnn[config].restart = false;
     }
   else
     {
       /* Create and Show Status Dialog */  
-      o.cnn[config].hwndStatus = CreateLocalizedDialog(IDD_STATUS, StatusDialogFunc);
+      o.cnn[config].hwndStatus = CreateLocalizedDialog(ID_DLG_STATUS, StatusDialogFunc);
       if (!o.cnn[config].hwndStatus)
         ExitThread(1);
       /* UserInfo: Connecting */
-      SetDlgItemText(o.cnn[config].hwndStatus, TEXT_STATUS, LoadLocalizedString(INFO_STATE_CONNECTING)); 
-      SetDlgItemInt(o.cnn[config].hwndStatus, TEXT_CONFIG, (UINT)config, FALSE);
-      SetWindowText(o.cnn[config].hwndStatus, LoadLocalizedString(INFO_CONNECTION_XXX, conn_name));
+      SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONNECTING)); 
+      SetDlgItemInt(o.cnn[config].hwndStatus, ID_TXT_CONFIG, (UINT)config, FALSE);
+      SetWindowText(o.cnn[config].hwndStatus, LoadLocalizedString(IDS_NFO_CONNECTION_XXX, conn_name));
 
       if (o.silent_connection[0]=='0')
         ShowWindow(o.cnn[config].hwndStatus, SW_SHOW);
@@ -930,7 +930,7 @@ void ThreadOpenVPNStatus(int config)
   if (hThread == NULL) 
     {
       /* CreateThread failed */
-      ShowLocalizedMsg (GUI_NAME, ERR_CREATE_THREAD_READ_STDOUT);
+      ShowLocalizedMsg (GUI_NAME, IDS_ERR_THREAD_READ_STDOUT);
       ExitThread(0);
     }
 
