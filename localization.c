@@ -59,18 +59,17 @@ FindResourceLang(PTSTR resType, PTSTR resId, LANGID langId)
 static LANGID
 GetGUILanguage(void)
 {
-    if (gui_language == 0)
-    {
-        HKEY regkey;
-        DWORD value = 0;
+    if (gui_language != 0)
+        return gui_language;
 
-        LONG status = RegOpenKeyEx(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, 0, KEY_READ, &regkey);
-        if (status == ERROR_SUCCESS)
-            GetRegistryValueNumeric(regkey, "ui_language", &value);
+    HKEY regkey;
+    DWORD value = 0;
 
-        gui_language = ( value != 0 ? value : LANGIDFROMLCID(GetThreadLocale()) );
-    }
+    LONG status = RegOpenKeyEx(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, 0, KEY_READ, &regkey);
+    if (status == ERROR_SUCCESS)
+        GetRegistryValueNumeric(regkey, "ui_language", &value);
 
+    gui_language = ( value != 0 ? value : LANGIDFROMLCID(GetThreadLocale()) );
     return gui_language;
 }
 
