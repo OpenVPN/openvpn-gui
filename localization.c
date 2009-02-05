@@ -248,7 +248,7 @@ LocalizedDialogBox(const UINT dialogId, DLGPROC dialogFunc)
 
 
 HWND
-CreateLocalizedDialog(const UINT dialogId, DLGPROC dialogFunc)
+CreateLocalizedDialogParam(const UINT dialogId, DLGPROC dialogFunc, const LPARAM param)
 {
     /* find dialog resource */
     HRSRC res = FindResourceLang(RT_DIALOG, MAKEINTRESOURCE(dialogId), GetGUILanguage());
@@ -259,7 +259,14 @@ CreateLocalizedDialog(const UINT dialogId, DLGPROC dialogFunc)
     if (resInfo == NULL)
         return NULL;
 
-    return CreateDialogIndirect(o.hInstance, resInfo, NULL, dialogFunc);
+    return CreateDialogIndirectParam(o.hInstance, resInfo, NULL, dialogFunc, param);
+}
+
+
+HWND
+CreateLocalizedDialog(const UINT dialogId, DLGPROC dialogFunc)
+{
+    return CreateLocalizedDialogParam(dialogId, dialogFunc, 0);
 }
 
 
