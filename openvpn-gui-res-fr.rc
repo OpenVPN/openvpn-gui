@@ -79,7 +79,6 @@ BEGIN
     PUSHBUTTON "Déconnecter", ID_DISCONNECT, 50, 190, 50, 14
     PUSHBUTTON "Reconnecter", ID_RESTART, 150, 190, 50, 14
     PUSHBUTTON "Fermer", ID_HIDE, 100, 190, 50, 14
-    LTEXT "", ID_TXT_CONFIG, 0, 0, 0, 0
 END
 
 /* Change Passphrase Dialog */

@@ -79,7 +79,6 @@ BEGIN
     PUSHBUTTON "Disconnetti", ID_DISCONNECT, 50, 190, 50, 14
     PUSHBUTTON "Riconnetti", ID_RESTART, 150, 190, 50, 14
     PUSHBUTTON "Nascondi", ID_HIDE, 100, 190, 50, 14
-    LTEXT "", ID_TXT_CONFIG, 0, 0, 0, 0
 END
 
 /* Change Passphrase Dialog */

@@ -85,7 +85,6 @@ BEGIN
     PUSHBUTTON "Koppla ner", ID_DISCONNECT, 50, 190, 50, 14
     PUSHBUTTON "Återanslut", ID_RESTART, 150, 190, 40, 14
     PUSHBUTTON "Göm", ID_HIDE, 100, 190, 40, 14
-    LTEXT "", ID_TXT_CONFIG, 0, 0, 0, 0
 END
 
 /* Change Passphrase Dialog */

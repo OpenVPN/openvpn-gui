@@ -25,6 +25,7 @@
 
 
 #include <windows.h>
+#include <tchar.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <process.h>
@@ -436,17 +437,20 @@ void StopAllOpenVPN()
 
 BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-  BOOL Translated;
+  static const TCHAR cfgProp[] = _T("config");
   HWND hwndLogWindow;
   RECT rect;
   CHARFORMAT charformat;
-  int config;
+  UINT config;
 
   switch (msg) {
 
     case WM_INITDIALOG:
       /* Set Window Icon "DisConnected" */
       SetStatusWinIcon(hwndDlg, ID_ICO_CONNECTING);
+
+      /* Set config number for this dialog */
+      SetProp(hwndDlg, cfgProp, (HANDLE) lParam);
 
       /* Create LogWindow */
       hwndLogWindow = CreateWindowEx (0, RICHEDIT_CLASS, NULL, 
@@ -506,7 +510,7 @@ BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
       return TRUE;
 
     case WM_COMMAND:
-      config=GetDlgItemInt(hwndDlg, ID_TXT_CONFIG, &Translated, FALSE);
+      config = (UINT) GetProp(hwndDlg, cfgProp);
       switch (LOWORD(wParam)) {
 
         case ID_DISCONNECT:
@@ -515,7 +519,7 @@ BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
           return TRUE;
 
         case ID_HIDE:
-          if (o.cnn[GetDlgItemInt(hwndDlg, ID_TXT_CONFIG, &Translated, FALSE)].connect_status != DISCONNECTED)
+          if (o.cnn[config].connect_status != DISCONNECTED)
             {
               ShowWindow(hwndDlg, SW_HIDE);
             }
@@ -524,6 +528,7 @@ BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
               DestroyWindow(hwndDlg);
             }
           return TRUE;
+
         case ID_RESTART:
           SetFocus(GetDlgItem(o.cnn[config].hwndStatus, ID_EDT_LOG));
           o.cnn[config].restart = true;
@@ -535,14 +540,15 @@ BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
     case WM_SHOWWINDOW:
       if (wParam == TRUE)
         {
-          config=GetDlgItemInt(hwndDlg, ID_TXT_CONFIG, &Translated, FALSE);
+          config = (UINT) GetProp(hwndDlg, cfgProp);
           if (o.cnn[config].hwndStatus)
             SetFocus(GetDlgItem(o.cnn[config].hwndStatus, ID_EDT_LOG));
         }
       return FALSE;
 
     case WM_CLOSE:
-      if (o.cnn[GetDlgItemInt(hwndDlg, ID_TXT_CONFIG, &Translated, FALSE)].connect_status != DISCONNECTED)
+      config = (UINT) GetProp(hwndDlg, cfgProp);
+      if (o.cnn[config].connect_status != DISCONNECTED)
         {
           ShowWindow(hwndDlg, SW_HIDE);
         }
@@ -551,6 +557,10 @@ BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
           DestroyWindow(hwndDlg);
         }
       return TRUE;
+
+    case WM_NCDESTROY:
+      RemoveProp(hwndDlg, cfgProp);
+      break;
 
     case WM_DESTROY:
       PostQuitMessage(0);
@@ -909,12 +919,11 @@ void ThreadOpenVPNStatus(int config)
   else
     {
       /* Create and Show Status Dialog */  
-      o.cnn[config].hwndStatus = CreateLocalizedDialog(ID_DLG_STATUS, StatusDialogFunc);
+      o.cnn[config].hwndStatus = CreateLocalizedDialogParam(ID_DLG_STATUS, StatusDialogFunc, config);
       if (!o.cnn[config].hwndStatus)
         ExitThread(1);
       /* UserInfo: Connecting */
       SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONNECTING)); 
-      SetDlgItemInt(o.cnn[config].hwndStatus, ID_TXT_CONFIG, (UINT)config, FALSE);
       SetWindowText(o.cnn[config].hwndStatus, LoadLocalizedString(IDS_NFO_CONNECTION_XXX, conn_name));
 
       if (o.silent_connection[0]=='0')

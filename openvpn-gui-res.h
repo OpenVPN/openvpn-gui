@@ -42,11 +42,6 @@
 #define ID_DISCONNECT                    163
 #define ID_RESTART                       164
 #define ID_HIDE                          165
-/* A hidden textbox used to pass the config nr so dialog knows
- * which connection to cancel. If anyone knows of another way
- * to pass a variable to dialog, please let me know.
- */
-#define ID_TXT_CONFIG                    166
 
 /* Change Passphrase Dialog */
 #define ID_DLG_CHGPASS                   170

@@ -86,7 +86,6 @@ BEGIN
     PUSHBUTTON "Trennen", ID_DISCONNECT, 50, 190, 50, 14
     PUSHBUTTON "Neu Verbinden", ID_RESTART, 150, 190, 50, 14
     PUSHBUTTON "Minimieren", ID_HIDE, 100, 190, 50, 14
-    LTEXT "", ID_TXT_CONFIG, 0, 0, 0, 0
 END
 
 /* Change Passphrase Dialog */
