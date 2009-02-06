@@ -12,14 +12,14 @@ CFLAGS = @CRYPTO_CPPFLAGS@ @CFLAGS@ @CPPFLAGS@
 CFLAGS += -W -Wall -Wno-unused-parameter -pedantic
 
 OBJS = main.o tray.o openvpn.o openvpn_monitor_process.o viewlog.o \
-       service.o options.o passphrase.o proxy.o ieproxy.o registry.o \
+       service.o options.o passphrase.o proxy.o registry.o \
        openvpn_config.o scripts.o localization.o openvpn-gui-res.o
 
 SOURCES = main.c main.h openvpn.c openvpn.h localization.c localization.h \
           openvpn_monitor_process.c openvpn_monitor_process.h \
           tray.c tray.h viewlog.c viewlog.h service.c service.h \
           options.c options.h passphrase.c passphrase.h proxy.c proxy.h \
-          ieproxy.c ieproxy.h registry.c registry.h scripts.c scripts.h \
+          registry.c registry.h scripts.c scripts.h \
           openvpn_config.c openvpn_config.h openvpn-gui.exe.manifest \
           chartable.h openvpn-gui-res.h openvpn-gui-res*.rc
 

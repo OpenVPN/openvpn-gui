@@ -23,11 +23,11 @@
 #include <windows.h>
 #include <prsht.h>
 #include <tchar.h>
+#include <WinInet.h>
 #include "main.h"
 #include "options.h"
 #include "registry.h"
 #include "proxy.h"
-#include "ieproxy.h"
 #include "openvpn-gui-res.h"
 #include "localization.h"
 
@@ -148,7 +148,7 @@ int CheckProxySettings(HWND hwndDlg)
       TCHAR text[100];
       BOOL http = (IsDlgButtonChecked(hwndDlg, ID_RB_PROXY_HTTP) == BST_CHECKED);
 
-      GetDlgItemText(hwndDlg, ID_EDT_PROXY_ADDRESS, text, sizeof(text)/sizeof(*text));
+      GetDlgItemText(hwndDlg, ID_EDT_PROXY_ADDRESS, text, _tsizeof(text));
       if (_tcslen(text) == 0)
         {
           /* proxy address not specified */
@@ -156,7 +156,7 @@ int CheckProxySettings(HWND hwndDlg)
           return(0);
         }
 
-      GetDlgItemText(hwndDlg, ID_EDT_PROXY_PORT, text, sizeof(text));
+      GetDlgItemText(hwndDlg, ID_EDT_PROXY_PORT, text, _tsizeof(text));
       if (_tcslen(text) == 0)
         {
           /* proxy port not specified */
@@ -207,58 +207,58 @@ void SaveProxySettings(HWND hwndDlg)
 {
   HKEY regkey;
   DWORD dwDispos;
-  char proxy_source_string[2]="0";
-  char proxy_type_string[2]="0";
-  char proxy_http_auth_string[2]="0";
+  TCHAR proxy_source_string[2] = _T("0");
+  TCHAR proxy_type_string[2] = _T("0");
+  TCHAR proxy_http_auth_string[2] = _T("0");
 
   /* Save Proxy Settings Source */
   if (IsDlgButtonChecked(hwndDlg, ID_RB_PROXY_OPENVPN) == BST_CHECKED)
     {
       o.proxy_source = 0;
-      proxy_source_string[0] = '0';
+      proxy_source_string[0] = _T('0');
     }
   if (IsDlgButtonChecked(hwndDlg, ID_RB_PROXY_MSIE) == BST_CHECKED)
     {
       o.proxy_source = 1;
-      proxy_source_string[0] = '1';
+      proxy_source_string[0] = _T('1');
     }
   if (IsDlgButtonChecked(hwndDlg, ID_RB_PROXY_MANUAL) == BST_CHECKED)
     {
       o.proxy_source = 2;
-      proxy_source_string[0] = '2';
+      proxy_source_string[0] = _T('2');
     }
 
   /* Save Proxy type, address and port */
   if (IsDlgButtonChecked(hwndDlg, ID_RB_PROXY_HTTP) == BST_CHECKED)
     {
       o.proxy_type = 0;
-      proxy_type_string[0] = '0';
+      proxy_type_string[0] = _T('0');
 
       GetDlgItemText(hwndDlg, ID_EDT_PROXY_ADDRESS, o.proxy_http_address, 
-                 sizeof(o.proxy_http_address));
+                 _tsizeof(o.proxy_http_address));
       GetDlgItemText(hwndDlg, ID_EDT_PROXY_PORT, o.proxy_http_port, 
-                 sizeof(o.proxy_http_port));
+                 _tsizeof(o.proxy_http_port));
 
       BOOL auth = (IsDlgButtonChecked(hwndDlg, ID_CB_PROXY_AUTH) == BST_CHECKED);
       o.proxy_http_auth = (auth ? 1 : 0);
-      proxy_http_auth_string[0] = (auth ? '1' : '0');
+      proxy_http_auth_string[0] = (auth ? _T('1') : _T('0'));
     }
   else
     {
       o.proxy_type = 1;
-      proxy_type_string[0] = '1';
+      proxy_type_string[0] = _T('1');
 
       GetDlgItemText(hwndDlg, ID_EDT_PROXY_ADDRESS, o.proxy_socks_address, 
-                 sizeof(o.proxy_socks_address));
+                 _tsizeof(o.proxy_socks_address));
       GetDlgItemText(hwndDlg, ID_EDT_PROXY_PORT, o.proxy_socks_port, 
-                 sizeof(o.proxy_socks_port));
+                 _tsizeof(o.proxy_socks_port));
     }
 
   /* Open Registry for writing */
   if (RegCreateKeyEx(HKEY_CURRENT_USER,
                     GUI_REGKEY_HKCU,
                     0,
-                    (LPTSTR) "",
+                    _T(""),
                     REG_OPTION_NON_VOLATILE,
                     KEY_WRITE,
                     NULL,
@@ -271,13 +271,13 @@ void SaveProxySettings(HWND hwndDlg)
     }
 
   /* Save Settings to registry */
-  SetRegistryValue(regkey, "proxy_source", proxy_source_string);
-  SetRegistryValue(regkey, "proxy_type", proxy_type_string);
-  SetRegistryValue(regkey, "proxy_http_auth", proxy_http_auth_string);
-  SetRegistryValue(regkey, "proxy_http_address", o.proxy_http_address);
-  SetRegistryValue(regkey, "proxy_http_port", o.proxy_http_port);
-  SetRegistryValue(regkey, "proxy_socks_address", o.proxy_socks_address);
-  SetRegistryValue(regkey, "proxy_socks_port", o.proxy_socks_port);
+  SetRegistryValue(regkey, _T("proxy_source"), proxy_source_string);
+  SetRegistryValue(regkey, _T("proxy_type"), proxy_type_string);
+  SetRegistryValue(regkey, _T("proxy_http_auth"), proxy_http_auth_string);
+  SetRegistryValue(regkey, _T("proxy_http_address"), o.proxy_http_address);
+  SetRegistryValue(regkey, _T("proxy_http_port"), o.proxy_http_port);
+  SetRegistryValue(regkey, _T("proxy_socks_address"), o.proxy_socks_address);
+  SetRegistryValue(regkey, _T("proxy_socks_port"), o.proxy_socks_port);
 
   RegCloseKey(regkey);
 }
@@ -286,21 +286,21 @@ void GetProxyRegistrySettings()
 {
   LONG status;
   HKEY regkey;
-  char proxy_source_string[2]="0";
-  char proxy_type_string[2]="0";
-  char proxy_http_auth_string[2]="0";
-  char temp_path[100];
+  TCHAR proxy_source_string[2] = _T("0");
+  TCHAR proxy_type_string[2] = _T("0");
+  TCHAR proxy_http_auth_string[2] = _T("0");
+  TCHAR temp_path[100];
 
   /* Construct Authfile path */
-  if (!GetTempPath(sizeof(temp_path) - 1, temp_path))
+  if (!GetTempPath(_tsizeof(temp_path) - 1, temp_path))
     {
       /* Error getting TempPath - using C:\ */
       ShowLocalizedMsg(GUI_NAME, IDS_ERR_GET_TEMP_PATH);
-      strcpy(temp_path, "C:\\");
+      _tcscpy(temp_path, _T("C:\\"));
     }
-  strncat(temp_path, "openvpn_authfile.txt", 
-          sizeof(temp_path) - strlen(temp_path) - 1); 
-  strncpy(o.proxy_authfile, temp_path, sizeof(o.proxy_authfile));
+  _tcsncat(temp_path, _T("openvpn_authfile.txt"), 
+          _tsizeof(temp_path) - _tcslen(temp_path) - 1); 
+  _tcsncpy(o.proxy_authfile, temp_path, _tsizeof(o.proxy_authfile));
 
   /* Open Registry for reading */
   status = RegOpenKeyEx(HKEY_CURRENT_USER,
@@ -314,32 +314,32 @@ void GetProxyRegistrySettings()
       
 
   /* get registry settings */
-  GetRegistryValue(regkey, "proxy_http_address", o.proxy_http_address, 
-                   sizeof(o.proxy_http_address));
-  GetRegistryValue(regkey, "proxy_http_port", o.proxy_http_port, 
-                   sizeof(o.proxy_http_port));
-  GetRegistryValue(regkey, "proxy_socks_address", o.proxy_socks_address, 
-                   sizeof(o.proxy_socks_address));
-  GetRegistryValue(regkey, "proxy_socks_port", o.proxy_socks_port, 
-                   sizeof(o.proxy_socks_port));
-  GetRegistryValue(regkey, "proxy_source", proxy_source_string, 
-                   sizeof(proxy_source_string));
-  GetRegistryValue(regkey, "proxy_type", proxy_type_string, 
-                   sizeof(proxy_type_string));
-  GetRegistryValue(regkey, "proxy_http_auth", proxy_http_auth_string, 
-                   sizeof(proxy_http_auth_string));
+  GetRegistryValue(regkey, _T("proxy_http_address"), o.proxy_http_address, 
+                   _tsizeof(o.proxy_http_address));
+  GetRegistryValue(regkey, _T("proxy_http_port"), o.proxy_http_port, 
+                   _tsizeof(o.proxy_http_port));
+  GetRegistryValue(regkey, _T("proxy_socks_address"), o.proxy_socks_address, 
+                   _tsizeof(o.proxy_socks_address));
+  GetRegistryValue(regkey, _T("proxy_socks_port"), o.proxy_socks_port, 
+                   _tsizeof(o.proxy_socks_port));
+  GetRegistryValue(regkey, _T("proxy_source"), proxy_source_string, 
+                   _tsizeof(proxy_source_string));
+  GetRegistryValue(regkey, _T("proxy_type"), proxy_type_string, 
+                   _tsizeof(proxy_type_string));
+  GetRegistryValue(regkey, _T("proxy_http_auth"), proxy_http_auth_string, 
+                   _tsizeof(proxy_http_auth_string));
 
-  if (proxy_source_string[0] == '1')
+  if (proxy_source_string[0] == _T('1'))
     o.proxy_source=1;
-  if (proxy_source_string[0] == '2')
+  if (proxy_source_string[0] == _T('2'))
     o.proxy_source=2;
-  if (proxy_source_string[0] == '3')
+  if (proxy_source_string[0] == _T('3'))
     o.proxy_source=3;
 
-  if (proxy_type_string[0] == '1')
+  if (proxy_type_string[0] == _T('1'))
     o.proxy_type=1;
 
-  if (proxy_http_auth_string[0] == '1')
+  if (proxy_http_auth_string[0] == _T('1'))
     o.proxy_http_auth=1;
 
   RegCloseKey(regkey);
@@ -347,8 +347,8 @@ void GetProxyRegistrySettings()
 
 BOOL CALLBACK ProxyAuthDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPARAM lParam)
 {
-  char username[50];
-  char password[50];
+  TCHAR username[50];
+  TCHAR password[50];
   FILE *fp;
 
   switch (msg) {
@@ -361,18 +361,18 @@ BOOL CALLBACK ProxyAuthDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED
       switch (LOWORD(wParam)) {
 
         case IDOK:
-          GetDlgItemText(hwndDlg, ID_EDT_PROXY_USER, username, sizeof(username) - 1);
-          GetDlgItemText(hwndDlg, ID_EDT_PROXY_PASS, password, sizeof(password) - 1);
-          if (!(fp = fopen(o.proxy_authfile, "w")))
+          GetDlgItemText(hwndDlg, ID_EDT_PROXY_USER, username, _tsizeof(username) - 1);
+          GetDlgItemText(hwndDlg, ID_EDT_PROXY_PASS, password, _tsizeof(password) - 1);
+          if (!(fp = _tfopen(o.proxy_authfile, _T("w"))))
             {
               /* error creating AUTH file */
               ShowLocalizedMsg(GUI_NAME, IDS_ERR_CREATE_AUTH_FILE, o.proxy_authfile);
               EndDialog(hwndDlg, LOWORD(wParam));
             }
-          fputs(username, fp);
-          fputs("\n", fp);
-          fputs(password, fp);
-          fputs("\n", fp);
+          _fputts(username, fp);
+          _fputts("\n", fp);
+          _fputts(password, fp);
+          _fputts("\n", fp);
           fclose(fp);
           EndDialog(hwndDlg, LOWORD(wParam));
           return TRUE;
@@ -387,11 +387,81 @@ BOOL CALLBACK ProxyAuthDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED
 }
 
 /*
+ * GetIeHttpProxy() fetches the current IE proxy settings for HTTP.
+ * Coded by Ewan Bhamrah Harley <code@ewan.info>, but refactored.
+ *
+ * If result string does not contain an '=' sign then there is a
+ * single proxy for all protocols. If multiple proxies are defined
+ * they are space seperated and have the form protocol=host[:port]
+ */
+static BOOL
+GetIeHttpProxy(TCHAR *host, size_t *hostlen, TCHAR *port, size_t *portlen)
+{
+  INTERNET_PROXY_INFO pinfo;
+  DWORD psize = sizeof(pinfo);
+  const TCHAR *start, *colon, *space, *end;
+  const size_t _hostlen = *hostlen;
+  const size_t _portlen = *portlen;
+
+  *hostlen = 0;
+  *portlen = 0;
+
+  if (!InternetQueryOption(NULL, INTERNET_OPTION_PROXY, (LPVOID) &pinfo, &psize))
+  {
+    ShowLocalizedMsg(GUI_NAME, IDS_ERR_GET_MSIE_PROXY);
+    return FALSE;
+  }
+
+  /* Check if a proxy is used */
+  if (pinfo.dwAccessType != INTERNET_OPEN_TYPE_PROXY)
+    return TRUE;
+
+  /* Check if a HTTP proxy is defined */
+  start = _tcsstr(pinfo.lpszProxy, _T("http="));
+  if (start == NULL && _tcschr(pinfo.lpszProxy, _T('=')))
+    return TRUE;
+
+  /* Get the pointers needed for string extraction */
+  start = (start ? start + 5 : pinfo.lpszProxy);
+  colon = _tcschr(start, _T(':'));
+  space = _tcschr(start, _T(' '));
+
+  /* Extract hostname */
+  end = (colon ? colon : space);
+  if (end)
+    *hostlen = end - start;
+  else
+    *hostlen = _tcslen(start);
+
+  if (_hostlen < *hostlen)
+    return FALSE;
+
+  _tcsncpy(host, start, *hostlen);
+
+  if (!colon)
+    return TRUE;
+
+  start = colon + 1;
+  end = space;
+  if (end)
+    *portlen = end - start;
+  else
+    *portlen = _tcslen(start);
+
+  if (_portlen < *portlen)
+    return FALSE;
+
+  _tcsncpy(port, start, *portlen);
+
+  return TRUE;
+}
+
+/*
  * Construct the proxy options to append to the cmd-line.
  */
-void ConstructProxyCmdLine(char *proxy_string_ptr, unsigned int size)
+void ConstructProxyCmdLine(TCHAR *proxy_string_ptr, unsigned int size)
 {
-  char proxy_string[100];
+  TCHAR proxy_string[100];
 
   CLEAR(proxy_string);
 
@@ -403,77 +473,49 @@ void ConstructProxyCmdLine(char *proxy_string_ptr, unsigned int size)
             {
               /* Ask for Proxy username/password */
               LocalizedDialogBox(ID_DLG_PROXY_AUTH, ProxyAuthDialogFunc);
-              mysnprintf(proxy_string, "--http-proxy %s %s %s",
-                         o.proxy_http_address,
-                         o.proxy_http_port,
-                         o.proxy_authfile);
+              _sntprintf_0(proxy_string, _T("--http-proxy %s %s %s"),
+                           o.proxy_http_address,
+                           o.proxy_http_port,
+                           o.proxy_authfile);
             }
           else
             {
-              mysnprintf(proxy_string, "--http-proxy %s %s",
-                         o.proxy_http_address,
-                         o.proxy_http_port);
+              _sntprintf_0(proxy_string, _T("--http-proxy %s %s"),
+                           o.proxy_http_address,
+                           o.proxy_http_port);
             }
         }
       if (o.proxy_type == PROXY_TYPE_SOCKS)
         {
-          mysnprintf(proxy_string, "--socks-proxy %s %s",
-                     o.proxy_socks_address,
-                     o.proxy_socks_port);
+          _sntprintf_0(proxy_string, _T("--socks-proxy %s %s"),
+                       o.proxy_socks_address,
+                       o.proxy_socks_port);
         }
     }
 
-  if (o.proxy_source == PROXY_SOURCE_IE)
+  else if (o.proxy_source == PROXY_SOURCE_IE)
     {
-      LPCTSTR ieproxy;
-      char *pos;
+      TCHAR host[64];
+      TCHAR port[6];
+      size_t hostlen = _tsizeof(host);
+      size_t portlen = _tsizeof(port);
 
-      ieproxy = getIeHttpProxy();
-      if (!ieproxy)
+      if (GetIeHttpProxy(host, &hostlen, port, &portlen) && hostlen != 0)
         {
-          /* can't get ie proxy settings */
-          ShowLocalizedMsg(GUI_NAME, IDS_ERR_GET_MSIE_SETTINGS, getIeHttpProxyError);
-        }
-      else
-        {
-          /* Don't use a proxy if IE proxy string is empty */
-          if (strlen(ieproxy) > 1)
+          if (o.proxy_http_auth == PROXY_HTTP_ASK_AUTH)
             {
-              /* Parse the port number from the IE proxy string */
-              if ((pos = strchr(ieproxy, ':')))
-                {
-                  *pos = '\0';
-                  if (o.proxy_http_auth == PROXY_HTTP_ASK_AUTH)
-                    {
-                      /* Ask for Proxy username/password */
-                      LocalizedDialogBox(ID_DLG_PROXY_AUTH, ProxyAuthDialogFunc);
-                      mysnprintf(proxy_string, "--http-proxy %s %s %s", 
-                                 ieproxy, pos+1, o.proxy_authfile)
-                    }
-                  else
-                    {
-                      mysnprintf(proxy_string, "--http-proxy %s %s", ieproxy, pos+1)
-                    }
-                }
-              /* No port is specified, use 80 as default port */
-              else
-                {
-                  if (o.proxy_http_auth == PROXY_HTTP_ASK_AUTH)
-                    {
-                      /* Ask for Proxy username/password */
-                      LocalizedDialogBox(ID_DLG_PROXY_AUTH, ProxyAuthDialogFunc);
-                      mysnprintf(proxy_string, "--http-proxy %s 80 %s", 
-                                 ieproxy, o.proxy_authfile)
-                    }
-                  else
-                    {
-                      mysnprintf(proxy_string, "--http-proxy %s 80", ieproxy)
-                    }
-                }
+              /* Ask for Proxy username/password */
+              LocalizedDialogBox(ID_DLG_PROXY_AUTH, ProxyAuthDialogFunc);
+              _sntprintf_0(proxy_string, _T("--http-proxy %s %s %s"),
+                           host, (portlen ? port : _T("80")), o.proxy_authfile);
             }
-          //free (ieproxy);
+          else
+            {
+              _sntprintf_0(proxy_string, _T("--http-proxy %s %s"),
+                           host, (portlen ? port : _T("80")));
+            }
         }
     }
 
-  strncpy(proxy_string_ptr, proxy_string, size);
+  _tcsncpy(proxy_string_ptr, proxy_string, size);
 }

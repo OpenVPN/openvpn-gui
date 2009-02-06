@@ -33,4 +33,4 @@ void LoadProxySettings(HWND hwndDlg);
 void SaveProxySettings(HWND hwndDlg);
 void GetProxyRegistrySettings();
 BOOL CALLBACK ProxyAuthDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
-void ConstructProxyCmdLine(char *proxy_string_ptr, unsigned int size);
+void ConstructProxyCmdLine(TCHAR *proxy_string_ptr, unsigned int size);
