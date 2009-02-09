@@ -178,7 +178,7 @@ BEGIN
     IDS_ERR_CREATE_EVENT "CreateEvent fallido con evento de salida: %s"
     IDS_ERR_UNKNOWN_PRIORITY "Nombre de prioridad desconocido: %s"
     IDS_ERR_LOG_APPEND_BOOL "El flag de append para el fichero de log (dado como '%s') debe ser '0' ó '1'"
-    IDS_ERR_GET_MSIE_SETTINGS "Imposible importar la configuración del IE por:\n%s"
+    IDS_ERR_GET_MSIE_PROXY "Imposible importar la configuración del MSIE."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor fallido."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl fallido."
     IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe on hOutputWrite fallido."

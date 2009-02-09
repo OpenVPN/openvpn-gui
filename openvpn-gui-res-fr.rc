@@ -177,7 +177,7 @@ BEGIN
     IDS_ERR_CREATE_EVENT "CreateEvent a échoué avec le code erreur d'évènnement: %s"
     IDS_ERR_UNKNOWN_PRIORITY "Nom de priorité inconnu: %s"
     IDS_ERR_LOG_APPEND_BOOL "L'indicateur de log incrémenté (donné par '%s') doit être '0' ou '1'"
-    IDS_ERR_GET_MSIE_SETTINGS "Impossible d'obtenir la configuration Proxy de IE parce que:\n%s"
+    IDS_ERR_GET_MSIE_PROXY "Impossible d'obtenir la configuration Proxy de MSIE."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor avorté."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl avorté."
     IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe sur hOutputWrite avorté."

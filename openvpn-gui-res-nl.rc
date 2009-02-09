@@ -177,7 +177,7 @@ BEGIN
     IDS_ERR_CREATE_EVENT "CreateEvent mislukt tijdens exit event: %s"
     IDS_ERR_UNKNOWN_PRIORITY "Onbekende prioriteitsnaam: %s"
     IDS_ERR_LOG_APPEND_BOOL "Log bestand append flag (opgegeven als '%s') moet '0' of '1' zijn"
-    IDS_ERR_GET_MSIE_SETTINGS "Kan IE proxy instellingen niet ophalen:\n%s"
+    IDS_ERR_GET_MSIE_PROXY "Kan MSIE proxy instellingen niet ophalen."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor mislukt."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl mislukt."
     IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe on hOutputWrite mislukt."

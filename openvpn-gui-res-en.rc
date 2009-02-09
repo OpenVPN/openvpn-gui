@@ -191,7 +191,7 @@ BEGIN
     IDS_ERR_CREATE_EVENT "CreateEvent failed on exit event: %s"
     IDS_ERR_UNKNOWN_PRIORITY "Unknown priority name: %s"
     IDS_ERR_LOG_APPEND_BOOL "Log file append flag (given as '%s') must be '0' or '1'"
-    IDS_ERR_GET_MSIE_SETTINGS "Unable to get IE proxy settings because:\n%s"
+    IDS_ERR_GET_MSIE_PROXY "Could not to get MSIE proxy settings."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor failed."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl failed."
     IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe on hOutputWrite failed."

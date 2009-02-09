@@ -178,7 +178,7 @@ BEGIN
     IDS_ERR_CREATE_EVENT "CreateEvent falhou no evento de saída: %s"
     IDS_ERR_UNKNOWN_PRIORITY "Nome de prioridade desconhecida: %s"
     IDS_ERR_LOG_APPEND_BOOL "Log file append flag (given as '%s') must be '0' or '1'"
-    IDS_ERR_GET_MSIE_SETTINGS "Impossível carregar configurações de proxy do IE devido a:\n%s"
+    IDS_ERR_GET_MSIE_PROXY "Impossível carregar configurações de proxy do MSIE."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor falhou."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl falhou."
     IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe em hOutputWrite falhou."

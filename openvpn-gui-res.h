@@ -122,7 +122,7 @@
 #define IDS_ERR_CREATE_EVENT            1205
 #define IDS_ERR_UNKNOWN_PRIORITY        1206
 #define IDS_ERR_LOG_APPEND_BOOL         1207
-#define IDS_ERR_GET_MSIE_SETTINGS       1208
+#define IDS_ERR_GET_MSIE_PROXY          1208
 #define IDS_ERR_INIT_SEC_DESC           1209
 #define IDS_ERR_SET_SEC_DESC_ACL        1210
 #define IDS_ERR_CREATE_PIPE_OUTPUT      1211

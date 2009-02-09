@@ -177,7 +177,7 @@ BEGIN
     IDS_ERR_CREATE_EVENT "Il creatore di eventi è fallito all'uscita dell'evento: %s"
     IDS_ERR_UNKNOWN_PRIORITY "Nome di priorità sconosciuto: %s"
     IDS_ERR_LOG_APPEND_BOOL "Il file di Log ha aggiunto un puntatore (dato come '%s') deve essere '0' o '1'"
-    IDS_ERR_GET_MSIE_SETTINGS "Non riesco ad utilizzare la configurazione di IE per il proxy a causa di:\n%s"
+    IDS_ERR_GET_MSIE_PROXY "Non riesco ad utilizzare la configurazione di MSIE per il proxy."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor fallito."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl fallito."
     IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe on hOutputWrite fallito."

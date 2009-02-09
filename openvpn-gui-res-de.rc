@@ -196,7 +196,7 @@ BEGIN
     IDS_ERR_CREATE_EVENT "CreateEvent fehlgeschlagen beim Beenden. Event: %s"
     IDS_ERR_UNKNOWN_PRIORITY "Unbekannter Prioritätsnamen: %s"
     IDS_ERR_LOG_APPEND_BOOL "Log file append flag (given as '%s') must be '0' or '1'"
-    IDS_ERR_GET_MSIE_SETTINGS "Konnte die IE Proxy Einstellungen nicht übernehmen, weil:\n%s"
+    IDS_ERR_GET_MSIE_PROXY "Konnte die MSIE Proxy Einstellungen nicht übernehmen."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor fehlgeschlagen."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl fehlgeschlagen."
     IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe an hOutputWrite fehlgeschlagen."

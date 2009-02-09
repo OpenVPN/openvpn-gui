@@ -183,7 +183,7 @@ BEGIN
     IDS_ERR_CREATE_EVENT "CreateEvent misslyckades med att skapa event: %s"
     IDS_ERR_UNKNOWN_PRIORITY "Okänt prioritets namn: %s"
     IDS_ERR_LOG_APPEND_BOOL "Log file append flag (given as '%s') must be '0' or '1'"
-    IDS_ERR_GET_MSIE_SETTINGS "Kunde inte hämta inställning för HTTP Proxy från Internet Explorer. (%s)"
+    IDS_ERR_GET_MSIE_PROXY "Kunde inte hämta inställning för HTTP Proxy från Internet Explorer."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor misslyckades."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl misslyckades."
     IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe på hOutputWrite misslyckades."

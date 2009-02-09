@@ -182,7 +182,7 @@ BEGIN
     IDS_ERR_CREATE_EVENT "CreateEvent feilet med å opprette event: %s"
     IDS_ERR_UNKNOWN_PRIORITY "Ukjent prioritet: %s"
     IDS_ERR_LOG_APPEND_BOOL "Legg til/Overskriv loggfil flagg (Oppgis som '%s') må være '0' eller '1'"
-    IDS_ERR_GET_MSIE_SETTINGS "Kunne ikke hemte innstillinger for HTTP Proxy fra Internet Explorer. (%s)"
+    IDS_ERR_GET_MSIE_PROXY "Kunne ikke hemte innstillinger for HTTP Proxy fra Internet Explorer."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor feilet."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl feilet."
     IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe på hOutputWrite feilet."
