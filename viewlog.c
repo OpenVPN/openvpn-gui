@@ -44,7 +44,7 @@ void ViewLog(int config)
   CLEAR (sa);
   CLEAR (sd);
 
-  mysnprintf(filename, "%s \"%s\"", o.log_viewer, o.cnn[config].log_path);
+  _sntprintf_0(filename, _T("%s \"%s\""), o.log_viewer, o.cnn[config].log_path);
 
   /* fill in STARTUPINFO struct */
   GetStartupInfo(&start_info);
@@ -86,7 +86,7 @@ void EditConfig(int config)
   CLEAR (sa);
   CLEAR (sd);
 
-  mysnprintf(filename, "%s \"%s\\%s\"", o.editor, o.cnn[config].config_dir, o.cnn[config].config_file);
+  _sntprintf_0(filename, _T("%s \"%s\\%s\""), o.editor, o.cnn[config].config_dir, o.cnn[config].config_file);
 
   /* fill in STARTUPINFO struct */
   GetStartupInfo(&start_info);

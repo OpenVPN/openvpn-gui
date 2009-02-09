@@ -124,7 +124,7 @@ int AddConfigFileToList(int config, char filename[], char config_dir[])
       ShowLocalizedMsg (GUI_NAME, IDS_ERR_LOG_CONSTRUCT, o.cnn[config].config_file);
       return(false);
     }
-  mysnprintf (o.cnn[config].log_path, "%s\\%s", o.log_dir, log_file);
+  _sntprintf_0(o.cnn[config].log_path, _T("%s\\%s"), o.log_dir, log_file);
 
   /* Check if connection should be autostarted */
   for (i=0; (i < MAX_CONFIGS) && o.auto_connect[i]; i++)
@@ -154,7 +154,7 @@ BuildFileList()
   /* Reset config counter */
   o.num_configs=0;
   
-  mysnprintf (find_string, "%s\\*", o.config_dir);
+  _sntprintf_0(find_string, _T("%s\\*"), o.config_dir);
 
   find_handle = FindFirstFile (find_string, &find_obj);
   if (find_handle == INVALID_HANDLE_VALUE)
@@ -190,7 +190,7 @@ BuildFileList()
               (subdir < MAX_CONFIG_SUBDIRS))
             {
               /* Add dir to dir_table */
-              mysnprintf(subdir_table[subdir], "%s\\%s", o.config_dir, find_obj.cFileName);
+              _sntprintf_0(subdir_table[subdir], _T("%s\\%s"), o.config_dir, find_obj.cFileName);
               subdir++;
             }
         }
@@ -208,7 +208,7 @@ BuildFileList()
   for (subdir_counter=0; subdir_counter < subdir; subdir_counter++)
     {
 
-      mysnprintf (find_string, "%s\\*", subdir_table[subdir_counter]);
+      _sntprintf_0(find_string, _T("%s\\*"), subdir_table[subdir_counter]);
 
       find_handle = FindFirstFile (find_string, &find_obj);
       if (find_handle == INVALID_HANDLE_VALUE)

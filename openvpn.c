@@ -53,7 +53,7 @@ int CreateExitEvent(int config)
   o.cnn[config].exit_event = NULL;
   if (o.oldversion == 1)
     {
-      mysnprintf(o.cnn[config].exit_event_name, "openvpn_exit");
+      _sntprintf_0(o.cnn[config].exit_event_name, _T("openvpn_exit"));
       o.cnn[config].exit_event = CreateEvent (NULL,
                                               TRUE, 
                                               FALSE, 
@@ -75,7 +75,7 @@ int CreateExitEvent(int config)
     }
   else
     {
-      mysnprintf(o.cnn[config].exit_event_name, "openvpngui_exit_event_%d",config);
+      _sntprintf_0(o.cnn[config].exit_event_name, _T("openvpngui_exit_event_%d"), config);
       o.cnn[config].exit_event = CreateEvent (NULL,
                                               TRUE, 
                                               FALSE, 
@@ -206,15 +206,15 @@ int StartOpenVPN(int config)
   /* construct command line */
   if (o.oldversion == 1)
     {
-      mysnprintf (command_line, "openvpn --config \"%s\" %s",
-                  o.cnn[config].config_file, proxy_string);
+      _sntprintf_0(command_line, _T("openvpn --config \"%s\" %s"),
+                   o.cnn[config].config_file, proxy_string);
     }
   else
     {
-      mysnprintf (command_line, "openvpn --service %s 0 --config \"%s\" %s",
-                  o.cnn[config].exit_event_name,
-                  o.cnn[config].config_file,
-                  proxy_string);
+      _sntprintf_0(command_line, _T("openvpn --service %s 0 --config \"%s\" %s"),
+                   o.cnn[config].exit_event_name,
+                   o.cnn[config].config_file,
+                   proxy_string);
     }
 
 
@@ -671,7 +671,7 @@ int CheckVersion()
 #endif
 
   /* construct command line */
-  mysnprintf (command_line, "openvpn --version");
+  _sntprintf_0(command_line, _T("openvpn --version"));
 
   /* construct bin path */
   strncpy(bin_path, o.exe_path, sizeof(bin_path));

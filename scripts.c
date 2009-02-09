@@ -47,7 +47,7 @@ void RunConnectScript(int config, int run_as_service)
   strncpy(batch_file, o.cnn[config].config_file, sizeof(batch_file));
   batch_file[strlen(batch_file) - (strlen(o.ext_string)+1)]=0;
   strncat(batch_file, "_up.bat", sizeof(batch_file) - strlen(batch_file) - 1);
-  mysnprintf(command_line, "%s\\%s", o.cnn[config].config_dir, batch_file);
+  _sntprintf_0(command_line, _T("%s\\%s"), o.cnn[config].config_dir, batch_file);
 
   
   /* Return if no script exists */
@@ -147,7 +147,7 @@ void RunDisconnectScript(int config, int run_as_service)
   /* Append "_down.bat" to config name. */
   strncpy(batch_file, o.cnn[config].config_name, sizeof(batch_file));
   strncat(batch_file, "_down.bat", sizeof(batch_file) - strlen(batch_file) - 1);
-  mysnprintf(command_line, "%s\\%s", o.cnn[config].config_dir, batch_file);
+  _sntprintf_0(command_line, _T("%s\\%s"), o.cnn[config].config_dir, batch_file);
 
   
   /* Return if no script exists */
@@ -227,7 +227,7 @@ void RunPreconnectScript(int config)
   /* Append "_pre.bat" to config name. */
   strncpy(batch_file, o.cnn[config].config_name, sizeof(batch_file));
   strncat(batch_file, "_pre.bat", sizeof(batch_file) - strlen(batch_file) - 1);
-  mysnprintf(command_line, "%s\\%s", o.cnn[config].config_dir, batch_file);
+  _sntprintf_0(command_line, _T("%s\\%s"), o.cnn[config].config_dir, batch_file);
 
   
   /* Return if no script exists */
