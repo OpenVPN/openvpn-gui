@@ -22,6 +22,7 @@
 
 
 #include <windows.h>
+#include <tchar.h>
 #include <shlobj.h>
 #include "main.h"
 #include "options.h"
@@ -34,83 +35,83 @@ extern struct options o;
 int
 GetRegistryKeys()
 {
-  char windows_dir[MAX_PATH];
-  char temp_path[MAX_PATH];
-  char openvpn_path[MAX_PATH];
+  TCHAR windows_dir[MAX_PATH];
+  TCHAR temp_path[MAX_PATH];
+  TCHAR openvpn_path[MAX_PATH];
   HKEY regkey;
 
-  if (!GetWindowsDirectory(windows_dir, sizeof(windows_dir))) {
+  if (!GetWindowsDirectory(windows_dir, _tsizeof(windows_dir))) {
     /* can't get windows dir */
     ShowLocalizedMsg(GUI_NAME, IDS_ERR_GET_WINDOWS_DIR);
     return(false);
   }
 
   /* Get path to OpenVPN installation. */
-  if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, "SOFTWARE\\OpenVPN", 0, KEY_READ, &regkey)
+  if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, _T("SOFTWARE\\OpenVPN"), 0, KEY_READ, &regkey)
       != ERROR_SUCCESS) 
     {
       /* registry key not found */
       ShowLocalizedMsg(GUI_NAME, IDS_ERR_OPEN_REGISTRY);
       return(false);
     }
-  if (!GetRegistryValue(regkey, "", openvpn_path, sizeof(openvpn_path)))
+  if (!GetRegistryValue(regkey, _T(""), openvpn_path, _tsizeof(openvpn_path)))
     {
       /* error reading registry value */
       ShowLocalizedMsg(GUI_NAME, IDS_ERR_READING_REGISTRY);
       return(false);
     }
-  if(openvpn_path[strlen(openvpn_path) - 1] != '\\')
-    strcat(openvpn_path, "\\");
+  if (openvpn_path[_tcslen(openvpn_path) - 1] != _T('\\'))
+    _tcscat(openvpn_path, _T("\\"));
 
 
-  mysnprintf(temp_path, "%sconfig", openvpn_path);
-  if (!GetRegKey("config_dir", o.config_dir, 
-      temp_path, sizeof(o.config_dir))) return(false);
+  _sntprintf_0(temp_path, _T("%sconfig"), openvpn_path);
+  if (!GetRegKey(_T("config_dir"), o.config_dir, 
+      temp_path, _tsizeof(o.config_dir))) return(false);
 
-  if (!GetRegKey("config_ext", o.ext_string, "ovpn", sizeof(o.ext_string))) return(false);
+  if (!GetRegKey(_T("config_ext"), o.ext_string, _T("ovpn"), _tsizeof(o.ext_string))) return(false);
 
-  mysnprintf(temp_path, "%sbin\\openvpn.exe", openvpn_path);
-  if (!GetRegKey("exe_path", o.exe_path, 
-      temp_path, sizeof(o.exe_path))) return(false);
+  _sntprintf_0(temp_path, _T("%sbin\\openvpn.exe"), openvpn_path);
+  if (!GetRegKey(_T("exe_path"), o.exe_path, 
+      temp_path, _tsizeof(o.exe_path))) return(false);
 
-  mysnprintf(temp_path, "%slog", openvpn_path);
-  if (!GetRegKey("log_dir", o.log_dir, 
-      temp_path, sizeof(o.log_dir))) return(false);
+  _sntprintf_0(temp_path, _T("%slog"), openvpn_path);
+  if (!GetRegKey(_T("log_dir"), o.log_dir, 
+      temp_path, _tsizeof(o.log_dir))) return(false);
 
-  if (!GetRegKey("log_append", o.append_string, "0", sizeof(o.append_string))) return(false);
+  if (!GetRegKey(_T("log_append"), o.append_string, _T("0"), _tsizeof(o.append_string))) return(false);
 
-  if (!GetRegKey("priority", o.priority_string, 
-      "NORMAL_PRIORITY_CLASS", sizeof(o.priority_string))) return(false);
+  if (!GetRegKey(_T("priority"), o.priority_string, 
+      _T("NORMAL_PRIORITY_CLASS"), _tsizeof(o.priority_string))) return(false);
 
-  mysnprintf(temp_path, "%s\\notepad.exe", windows_dir);
-  if (!GetRegKey("log_viewer", o.log_viewer, 
-      temp_path, sizeof(o.log_viewer))) return(false);
+  _sntprintf_0(temp_path, _T("%s\\notepad.exe"), windows_dir);
+  if (!GetRegKey(_T("log_viewer"), o.log_viewer, 
+      temp_path, _tsizeof(o.log_viewer))) return(false);
 
-  mysnprintf(temp_path, "%s\\notepad.exe", windows_dir);
-  if (!GetRegKey("editor", o.editor, 
-      temp_path, sizeof(o.editor))) return(false);
+  _sntprintf_0(temp_path, _T("%s\\notepad.exe"), windows_dir);
+  if (!GetRegKey(_T("editor"), o.editor, 
+      temp_path, _tsizeof(o.editor))) return(false);
 
-  if (!GetRegKey("allow_edit", o.allow_edit, "1", sizeof(o.allow_edit))) return(false);
+  if (!GetRegKey(_T("allow_edit"), o.allow_edit, _T("1"), _tsizeof(o.allow_edit))) return(false);
   
-  if (!GetRegKey("allow_service", o.allow_service, "0", sizeof(o.allow_service))) return(false);
+  if (!GetRegKey(_T("allow_service"), o.allow_service, _T("0"), _tsizeof(o.allow_service))) return(false);
 
-  if (!GetRegKey("allow_password", o.allow_password, "1", sizeof(o.allow_password))) return(false);
+  if (!GetRegKey(_T("allow_password"), o.allow_password, _T("1"), _tsizeof(o.allow_password))) return(false);
 
-  if (!GetRegKey("allow_proxy", o.allow_proxy, "1", sizeof(o.allow_proxy))) return(false);
+  if (!GetRegKey(_T("allow_proxy"), o.allow_proxy, _T("1"), _tsizeof(o.allow_proxy))) return(false);
 
-  if (!GetRegKey("service_only", o.service_only, "0", sizeof(o.service_only))) return(false);
+  if (!GetRegKey(_T("service_only"), o.service_only, _T("0"), _tsizeof(o.service_only))) return(false);
 
-  if (!GetRegKey("show_balloon", o.show_balloon, "1", sizeof(o.show_balloon))) return(false);
+  if (!GetRegKey(_T("show_balloon"), o.show_balloon, _T("1"), _tsizeof(o.show_balloon))) return(false);
 
-  if (!GetRegKey("silent_connection", o.silent_connection, "0", sizeof(o.silent_connection))) return(false);
+  if (!GetRegKey(_T("silent_connection"), o.silent_connection, _T("0"), _tsizeof(o.silent_connection))) return(false);
 
-  if (!GetRegKey("show_script_window", o.show_script_window, "1", sizeof(o.show_script_window))) return(false);
+  if (!GetRegKey(_T("show_script_window"), o.show_script_window, _T("1"), _tsizeof(o.show_script_window))) return(false);
 
-  if (!GetRegKey("disconnect_on_suspend", o.disconnect_on_suspend, "1", 
-      sizeof(o.disconnect_on_suspend))) return(false);
+  if (!GetRegKey(_T("disconnect_on_suspend"), o.disconnect_on_suspend, _T("1"), 
+      _tsizeof(o.disconnect_on_suspend))) return(false);
 
-  if (!GetRegKey("passphrase_attempts", o.psw_attempts_string, "3", 
-      sizeof(o.psw_attempts_string))) return(false);
+  if (!GetRegKey(_T("passphrase_attempts"), o.psw_attempts_string, _T("3"), 
+      _tsizeof(o.psw_attempts_string))) return(false);
   o.psw_attempts = atoi(o.psw_attempts_string);
   if ((o.psw_attempts < 1) || (o.psw_attempts > 9))
     {
@@ -119,8 +120,8 @@ GetRegistryKeys()
       return(false);
     }
 
-  if (!GetRegKey("connectscript_timeout", o.connectscript_timeout_string, "15", 
-      sizeof(o.connectscript_timeout_string))) return(false);
+  if (!GetRegKey(_T("connectscript_timeout"), o.connectscript_timeout_string, _T("15"), 
+      _tsizeof(o.connectscript_timeout_string))) return(false);
   o.connectscript_timeout = atoi(o.connectscript_timeout_string);
   if ((o.connectscript_timeout < 0) || (o.connectscript_timeout > 99))
     {
@@ -129,8 +130,8 @@ GetRegistryKeys()
       return(false);
     }
 
-  if (!GetRegKey("disconnectscript_timeout", o.disconnectscript_timeout_string, "10", 
-      sizeof(o.disconnectscript_timeout_string))) return(false);
+  if (!GetRegKey(_T("disconnectscript_timeout"), o.disconnectscript_timeout_string, _T("10"), 
+      _tsizeof(o.disconnectscript_timeout_string))) return(false);
   o.disconnectscript_timeout = atoi(o.disconnectscript_timeout_string);
   if ((o.disconnectscript_timeout <= 0) || (o.disconnectscript_timeout > 99))
     {
@@ -139,8 +140,8 @@ GetRegistryKeys()
       return(false);
     }
 
-  if (!GetRegKey("preconnectscript_timeout", o.preconnectscript_timeout_string, "10", 
-      sizeof(o.preconnectscript_timeout_string))) return(false);
+  if (!GetRegKey(_T("preconnectscript_timeout"), o.preconnectscript_timeout_string, _T("10"), 
+      _tsizeof(o.preconnectscript_timeout_string))) return(false);
   o.preconnectscript_timeout = atoi(o.preconnectscript_timeout_string);
   if ((o.preconnectscript_timeout <= 0) || (o.preconnectscript_timeout > 99))
     {
@@ -153,14 +154,14 @@ GetRegistryKeys()
 }
 
 
-int GetRegKey(const char name[], char *data, const char default_data[], DWORD len)
+int GetRegKey(const TCHAR name[], TCHAR *data, const TCHAR default_data[], DWORD len)
 {
   LONG status;
   DWORD type;
   HKEY openvpn_key;
   HKEY openvpn_key_write;
   DWORD dwDispos;
-  char expanded_string[MAX_PATH];
+  TCHAR expanded_string[MAX_PATH];
   DWORD max_len;
 
   /* Save maximum string length */
@@ -170,13 +171,13 @@ int GetRegKey(const char name[], char *data, const char default_data[], DWORD le
   if (data[0] != 0) 
     {
       // Expand environment variables inside the string.
-      ExpandEnvironmentStrings(data, expanded_string, sizeof(expanded_string));
-      strncpy(data, expanded_string, max_len);
+      ExpandEnvironmentStrings(data, expanded_string, _tsizeof(expanded_string));
+      _tcsncpy(data, expanded_string, max_len);
       return(true);
     }
 
   status = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-                       "SOFTWARE\\OpenVPN-GUI",
+                       _T("SOFTWARE\\OpenVPN-GUI"),
                        0,
                        KEY_READ,
                        &openvpn_key);
@@ -184,9 +185,9 @@ int GetRegKey(const char name[], char *data, const char default_data[], DWORD le
   if (status != ERROR_SUCCESS)
     {
       if (RegCreateKeyEx(HKEY_LOCAL_MACHINE,
-                        "Software\\OpenVPN-GUI",
+                        _T("Software\\OpenVPN-GUI"),
                         0,
-                        (LPTSTR) "",
+                        _T(""),
                         REG_OPTION_NON_VOLATILE,
                         KEY_READ | KEY_WRITE,
                         NULL,
@@ -206,7 +207,7 @@ int GetRegKey(const char name[], char *data, const char default_data[], DWORD le
     {
       /* key did not exist - set default value */
       status = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-			  "SOFTWARE\\OpenVPN-GUI",
+			  _T("SOFTWARE\\OpenVPN-GUI"),
 			  0,
 			  KEY_READ | KEY_WRITE,
 			  &openvpn_key_write);
@@ -221,13 +222,13 @@ int GetRegKey(const char name[], char *data, const char default_data[], DWORD le
                        0,
                        REG_SZ,
                        (const PBYTE) default_data,
-                       strlen(default_data)+1))
+                       _tcslen(default_data)+1))
         {
           /* cant read / set reg-key */ 
           ShowLocalizedMsg(GUI_NAME, IDS_ERR_READ_SET_KEY, name);
           return(false);
         }
-      strncpy(data, default_data, max_len);
+      _tcsncpy(data, default_data, max_len);
       RegCloseKey(openvpn_key_write);
 
     }
@@ -235,13 +236,13 @@ int GetRegKey(const char name[], char *data, const char default_data[], DWORD le
   RegCloseKey(openvpn_key);
 
   // Expand environment variables inside the string.
-  ExpandEnvironmentStrings(data, expanded_string, sizeof(expanded_string));
-  strncpy(data, expanded_string, max_len);
+  ExpandEnvironmentStrings(data, expanded_string, _tsizeof(expanded_string));
+  _tcsncpy(data, expanded_string, max_len);
 
   return(true);
 }
 
-LONG GetRegistryValue(HKEY regkey, const char *name, char *data, DWORD len)
+LONG GetRegistryValue(HKEY regkey, const TCHAR *name, TCHAR *data, DWORD len)
 {
   LONG status;
   DWORD type;
@@ -259,18 +260,18 @@ LONG GetRegistryValue(HKEY regkey, const char *name, char *data, DWORD len)
 }
 
 LONG
-GetRegistryValueNumeric(HKEY regkey, const char *name, DWORD *data)
+GetRegistryValueNumeric(HKEY regkey, const TCHAR *name, DWORD *data)
 {
   DWORD type;
-  DWORD size = sizeof(data);
-  LONG status= RegQueryValueEx(regkey, name, NULL, &type, (PBYTE) data, &size);
+  DWORD size = sizeof(*data);
+  LONG status = RegQueryValueEx(regkey, name, NULL, &type, (PBYTE) data, &size);
   return (type == REG_DWORD ? status : ERROR_FILE_NOT_FOUND);
 }
 
-int SetRegistryValue(HKEY regkey, const char *name, char *data)
+int SetRegistryValue(HKEY regkey, const TCHAR *name, TCHAR *data)
 {
   /* set a registry string */
-  if(RegSetValueEx(regkey, name, 0, REG_SZ, (PBYTE) data, strlen(data)+1) != ERROR_SUCCESS)
+  if(RegSetValueEx(regkey, name, 0, REG_SZ, (PBYTE) data, _tcslen(data) + 1) != ERROR_SUCCESS)
     {
       /* Error writing registry value */
       ShowLocalizedMsg(GUI_NAME, IDS_ERR_WRITE_REGVALUE, GUI_REGKEY_HKCU, name);
@@ -282,7 +283,7 @@ int SetRegistryValue(HKEY regkey, const char *name, char *data)
 }
 
 int
-SetRegistryValueNumeric(HKEY regkey, const char *name, DWORD data)
+SetRegistryValueNumeric(HKEY regkey, const TCHAR *name, DWORD data)
 {
   LONG status = RegSetValueEx(regkey, name, 0, REG_DWORD, (PBYTE) &data, sizeof(data));
   if (status == ERROR_SUCCESS)

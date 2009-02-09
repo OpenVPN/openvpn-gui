@@ -19,11 +19,14 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-int GetRegistryKeys();
-//int SetRegistryKeys();
-int GetRegKey(const char name[], char data[], const char default_data[], DWORD len);
-LONG GetRegistryValue(HKEY regkey, const char *name, char *data, DWORD len);
-LONG GetRegistryValueNumeric(HKEY regkey, const char *name, DWORD *data);
-int SetRegistryValue(HKEY regkey, const char *name, char *data);
-int SetRegistryValueNumeric(HKEY regkey, const char *name, DWORD data);
+#ifndef REGISTRY_H
+#define REGISTRY_H
 
+int GetRegistryKeys();
+int GetRegKey(const TCHAR name[], TCHAR data[], const TCHAR default_data[], DWORD len);
+LONG GetRegistryValue(HKEY regkey, const TCHAR *name, TCHAR *data, DWORD len);
+LONG GetRegistryValueNumeric(HKEY regkey, const TCHAR *name, DWORD *data);
+int SetRegistryValue(HKEY regkey, const TCHAR *name, TCHAR *data);
+int SetRegistryValueNumeric(HKEY regkey, const TCHAR *name, DWORD data);
+
+#endif
