@@ -30,6 +30,7 @@
 #define NIIF_ICON_MASK  0x0000000F
 
 #include <windows.h>
+#include <tchar.h>
 #include <time.h>
 #include "tray.h"
 #include "service.h"
@@ -310,7 +311,7 @@ void ShowTrayIcon()
 {
   ni.cbSize = sizeof(ni);
   ni.uID = 0;
-  lstrcpyn(ni.szTip, LoadLocalizedString(IDS_TIP_DEFAULT), sizeof(ni.szTip)/sizeof(*(ni.szTip))); 
+  _tcsncpy(ni.szTip, LoadLocalizedString(IDS_TIP_DEFAULT), _tsizeof(ni.szTip)); 
   ni.hWnd = o.hWnd;
   ni.uFlags = NIF_MESSAGE | NIF_TIP | NIF_ICON; // We want to use icon, tip, and callback message
   ni.uCallbackMessage = WM_NOTIFYICONTRAY;      // Our custom callback message (WM_APP + 1)
@@ -330,10 +331,10 @@ void ShowTrayIcon()
  */
 void SetTrayIcon(int connected)
 {
-  char msg[500];
-  char msg_connected[100];
-  char msg_connecting[100];
-  char connected_since[50];
+  TCHAR msg[500];
+  TCHAR msg_connected[100];
+  TCHAR msg_connecting[100];
+  TCHAR connected_since[50];
   int i, first_conn;
   int config=0;
 
@@ -343,11 +344,9 @@ void SetTrayIcon(int connected)
   ni.uFlags = NIF_MESSAGE | NIF_TIP | NIF_ICON; // We want to use icon, tip, and callback message
   ni.uCallbackMessage = WM_NOTIFYICONTRAY;      // Our custom callback message (WM_APP + 1)
    
-  strncpy(msg, LoadLocalizedString(IDS_TIP_DEFAULT), sizeof(ni.szTip));
-
-  strncpy(msg_connected, LoadLocalizedString(IDS_TIP_CONNECTED), sizeof(msg_connected));
-
-  strncpy(msg_connecting, LoadLocalizedString(IDS_TIP_CONNECTING), sizeof(msg_connecting));
+  _tcsncpy(msg, LoadLocalizedString(IDS_TIP_DEFAULT), _tsizeof(ni.szTip));
+  _tcsncpy(msg_connected, LoadLocalizedString(IDS_TIP_CONNECTED), _tsizeof(msg_connected));
+  _tcsncpy(msg_connecting, LoadLocalizedString(IDS_TIP_CONNECTING), _tsizeof(msg_connecting));
 
   first_conn=1;
   for (i=0; i < o.num_configs; i++)
@@ -356,10 +355,10 @@ void SetTrayIcon(int connected)
         {
           /* Append connection name to Icon Tip Msg */
           if (first_conn)
-            strncat(msg, msg_connected, sizeof(msg) - strlen(msg) - 1);
+            _tcsncat(msg, msg_connected, _tsizeof(msg) - _tcslen(msg) - 1);
           else
-            strncat(msg, ", ", sizeof(msg) - strlen(msg) - 1);
-          strncat(msg, o.cnn[i].config_name, sizeof(msg) - strlen(msg) - 1);
+            _tcsncat(msg, ", ", _tsizeof(msg) - _tcslen(msg) - 1);
+          _tcsncat(msg, o.cnn[i].config_name, _tsizeof(msg) - _tcslen(msg) - 1);
           first_conn=0;
           config=i;
         }
@@ -373,10 +372,10 @@ void SetTrayIcon(int connected)
         {
           /* Append connection name to Icon Tip Msg */
           if (first_conn)
-            strncat(msg, msg_connecting, sizeof(msg) - strlen(msg) - 1);
+            _tcsncat(msg, msg_connecting, _tsizeof(msg) - _tcslen(msg) - 1);
           else
-            strncat(msg, ", ", sizeof(msg) - strlen(msg) - 1);
-          strncat(msg, o.cnn[i].config_name, sizeof(msg) - strlen(msg) - 1);
+            _tcsncat(msg, ", ", _tsizeof(msg) - _tcslen(msg) - 1);
+          _tcsncat(msg, o.cnn[i].config_name, _tsizeof(msg) - _tcslen(msg) - 1);
           first_conn=0;
         }
     }
@@ -386,19 +385,19 @@ void SetTrayIcon(int connected)
       /* Append "Connected Since and Assigned IP msg" */
       time_t con_time;
       con_time=time(NULL);
-      strftime(connected_since, sizeof(connected_since), "%b %d, %H:%M", 
-               localtime(&o.cnn[config].connected_since));
-      strncat(msg, LoadLocalizedString(IDS_TIP_CONNECTED_SINCE), sizeof(msg) - strlen(msg) - 1);
-      strncat(msg, connected_since, sizeof(msg) - strlen(msg) - 1);
-      if (strlen(o.cnn[config].ip) > 0)
+      _tcsftime(connected_since, _tsizeof(connected_since), _T("%b %d, %H:%M"), 
+                localtime(&o.cnn[config].connected_since));
+      _tcsncat(msg, LoadLocalizedString(IDS_TIP_CONNECTED_SINCE), _tsizeof(msg) - _tcslen(msg) - 1);
+      _tcsncat(msg, connected_since, _tsizeof(msg) - _tcslen(msg) - 1);
+      if (_tcslen(o.cnn[config].ip) > 0)
         {
-          char assigned_ip[100];
-          mysnprintf(assigned_ip, LoadLocalizedString(IDS_TIP_ASSIGNED_IP), o.cnn[config].ip);
-          strncat(msg, assigned_ip, sizeof(msg) - strlen(msg) - 1);
+          TCHAR assigned_ip[100];
+          _sntprintf_0(assigned_ip, LoadLocalizedString(IDS_TIP_ASSIGNED_IP), o.cnn[config].ip);
+          _tcsncat(msg, assigned_ip, _tsizeof(msg) - _tcslen(msg) - 1);
         }
     }
 
-  strncpy(ni.szTip, msg, sizeof(ni.szTip)); 
+  _tcsncpy(ni.szTip, msg, _tsizeof(ni.szTip));
      
   //Load selected icon
   if (connected==2) 
@@ -411,7 +410,7 @@ void SetTrayIcon(int connected)
   Shell_NotifyIcon(NIM_MODIFY, &ni);       
 }
 
-void ShowTrayBalloon(char *infotitle_msg, char *info_msg)
+void ShowTrayBalloon(TCHAR *infotitle_msg, TCHAR *info_msg)
 {
   ni.cbSize = sizeof(ni);
   ni.uID = 0;
@@ -419,8 +418,8 @@ void ShowTrayBalloon(char *infotitle_msg, char *info_msg)
   ni.uFlags = NIF_INFO; 			/* We want to show a balloon */
   ni.uTimeout = 5000;
   ni.dwInfoFlags = NIIF_INFO;			/* Show an Info Icon */
-  strncpy(ni.szInfo, info_msg, sizeof(ni.szInfo)); 
-  strncpy(ni.szInfoTitle, infotitle_msg, sizeof(ni.szInfoTitle)); 
+  _tcsncpy(ni.szInfo, info_msg, _tsizeof(ni.szInfo)); 
+  _tcsncpy(ni.szInfoTitle, infotitle_msg, _tsizeof(ni.szInfoTitle)); 
 
   Shell_NotifyIcon(NIM_MODIFY, &ni);       
 }

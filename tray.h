@@ -57,5 +57,5 @@ BOOL  LoadAppIcon();                            //Application icon
 void  CreateItemList();		                //Crate Popup menu
 void  SetMenuStatus (int config, int bCheck);   //Mark connection as connected/disconnected
 void  SetServiceMenuStatus();			//Diabled Service menu items.
-void  ShowTrayBalloon(char *infotitle_msg, char *info_msg);
+void  ShowTrayBalloon(TCHAR *infotitle_msg, TCHAR *info_msg);
 
