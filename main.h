@@ -19,7 +19,12 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#ifndef MAIN_H
+#define MAIN_H
+
 #include <stdio.h>
+#include <stdarg.h>
+#include <tchar.h>
 
 /* Define this to enable DEBUG build */
 //#define DEBUG
@@ -58,31 +63,43 @@ struct security_attributes
   SECURITY_DESCRIPTOR sd;
 };
 
-/* Return the number of elements in an array */
-#define ELEMENTS(x) sizeof(x)/sizeof(*(x))
+/* Return the number of elements in an TCHAR array */
+static inline size_t
+_tsizeof(TCHAR x[])
+{
+    return (sizeof(x) / sizeof(*x));
+}
 
 /* clear an object */
 #define CLEAR(x) memset(&(x), 0, sizeof(x))
 
-/* snprintf with guaranteed null termination */
-#define mysnprintf(out, ...) \
-        { \
-           snprintf (out, sizeof(out), __VA_ARGS__); \
-           out [sizeof (out) - 1] = '\0'; \
-        }
+/* _sntprintf with guaranteed \0 termination */
+static inline int
+_sntprintf_0(TCHAR *buf, TCHAR *format, ...)
+{
+    int i;
+    va_list args;
+    va_start(args, format);
+    i = _vsntprintf(buf, _tsizeof(buf), format, args);
+    buf[_tsizeof(buf) - 1] = _T('\0');
+    va_end(args);
+    return i;
+}
 
 #ifdef DEBUG
 /* Print Debug Message */
-#define PrintDebug(args...) \
+#define PrintDebug(...) \
         { \
-           char x_msg[256]; \
-           mysnprintf (x_msg, args); \
-	   PrintDebugMsg(x_msg); \
+           TCHAR x_msg[256]; \
+           _sntprintf_0(x_msg, __VA_ARGS__); \
+           PrintDebugMsg(x_msg); \
         }
 
-void PrintDebugMsg(char *msg);
-void PrintErrorDebug(char *msg);
+void PrintDebugMsg(TCHAR *msg);
+void PrintErrorDebug(TCHAR *msg);
 bool init_security_attributes_allow_all (struct security_attributes *obj);
 #endif
 
 DWORD GetDllVersion(LPCTSTR lpszDllName);
+
+#endif
