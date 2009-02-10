@@ -33,21 +33,21 @@
 extern struct options o;
 
 static int
-match (const WIN32_FIND_DATA *find, const char *ext)
+match (const WIN32_FIND_DATA *find, const TCHAR *ext)
 {
   int i;
 
   if (find->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
     return MATCH_DIR;
 
-  if (!strlen (ext))
+  if (!_tcslen(ext))
     return MATCH_FILE;
 
-  i = strlen (find->cFileName) - strlen (ext) - 1;
+  i = _tcslen(find->cFileName) - _tcslen(ext) - 1;
   if (i < 1)
     return MATCH_FALSE;
 
-  if (find->cFileName[i] == '.' && !strcasecmp (find->cFileName + i + 1, ext))
+  if (find->cFileName[i] == '.' && !_tcsicmp(find->cFileName + i + 1, ext))
     return MATCH_FILE;
   else
     return MATCH_FALSE;
@@ -57,68 +57,68 @@ match (const WIN32_FIND_DATA *find, const char *ext)
  * Modify the extension on a filename.
  */
 static bool
-modext (char *dest, unsigned int size, const char *src, const char *newext)
+modext (TCHAR *dest, unsigned int size, const TCHAR *src, const TCHAR *newext)
 {
   int i;
 
-  if (size > 0 && (strlen (src) + 1) <= size)
+  if (size > 0 && (_tcslen(src) + 1) <= size)
     {
-      strcpy (dest, src);
-      dest [size - 1] = '\0';
-      i = strlen (dest);
+      _tcscpy(dest, src);
+      dest[size - 1] = _T('\0');
+      i = _tcslen(dest);
       while (--i >= 0)
 	{
-	  if (dest[i] == '\\')
+	  if (dest[i] == _T('\\'))
 	    break;
-	  if (dest[i] == '.')
+	  if (dest[i] == _T('.'))
 	    {
-	      dest[i] = '\0';
+	      dest[i] = _T('\0');
 	      break;
 	    }
 	}
-      if (strlen (dest) + strlen(newext) + 2 <= size)
+      if (_tcslen(dest) + _tcslen(newext) + 2 <= size)
 	{
-	  strcat (dest, ".");
-	  strcat (dest, newext);
+	  _tcscat(dest, _T("."));
+	  _tcscat(dest, newext);
 	  return true;
 	}
-      dest [0] = '\0';
+      dest[0] = _T('\0');
     }
   return false;
 }
 
-int ConfigAlreadyExists(char newconfig[])
+int ConfigAlreadyExists(TCHAR newconfig[])
 {
   int i;
 
   for (i=0; i<o.num_configs; i++)
     {
-      if (strcasecmp(o.cnn[i].config_file, newconfig) == 0)
+      if (_tcsicmp(o.cnn[i].config_file, newconfig) == 0)
         return true;
     }
 
   return false;
 }
 
-int AddConfigFileToList(int config, char filename[], char config_dir[])
+int AddConfigFileToList(int config, TCHAR filename[], TCHAR config_dir[])
 {
-  char log_file[MAX_PATH];
+  TCHAR log_file[MAX_PATH];
   int i;
 
   /* Save config file name */
-  strncpy(o.cnn[config].config_file, filename, sizeof(o.cnn[config].config_file));
+  _tcsncpy(o.cnn[config].config_file, filename, _tsizeof(o.cnn[config].config_file));
 
   /* Save config dir */
-  strncpy(o.cnn[config].config_dir, config_dir, sizeof(o.cnn[config].config_dir));
+  _tcsncpy(o.cnn[config].config_dir, config_dir, _tsizeof(o.cnn[config].config_dir));
 
   /* Save connection name (config_name - extension) */
-  strncpy(o.cnn[config].config_name, o.cnn[config].config_file,
-          sizeof(o.cnn[config].config_name));
-  o.cnn[config].config_name[strlen(o.cnn[config].config_name) - 
-                                   (strlen(o.ext_string)+1)]=0;
+  _tcsncpy(o.cnn[config].config_name, o.cnn[config].config_file,
+          _tsizeof(o.cnn[config].config_name));
+  o.cnn[config].config_name[_tcslen(o.cnn[config].config_name) - 
+                            _tcslen(o.ext_string) + 1] = _T('\0');
 
   /* get log file pathname */
-  if (!modext (log_file, sizeof (log_file), o.cnn[config].config_file, "log"))
+  if (!modext(log_file, _tsizeof(log_file), o.cnn[config].config_file, _T("log")))
     {
       /* cannot construct logfile-name */
       ShowLocalizedMsg (GUI_NAME, IDS_ERR_LOG_CONSTRUCT, o.cnn[config].config_file);
@@ -129,7 +129,7 @@ int AddConfigFileToList(int config, char filename[], char config_dir[])
   /* Check if connection should be autostarted */
   for (i=0; (i < MAX_CONFIGS) && o.auto_connect[i]; i++)
     {
-      if (strcasecmp(o.cnn[config].config_file, o.auto_connect[i]) == 0)
+      if (_tcsicmp(o.cnn[config].config_file, o.auto_connect[i]) == 0)
         {
           o.cnn[config].auto_connect = true;
           break;
@@ -146,8 +146,8 @@ BuildFileList()
   WIN32_FIND_DATA find_obj;
   HANDLE find_handle;
   BOOL more_files;
-  char find_string[MAX_PATH];
-  char subdir_table[MAX_CONFIG_SUBDIRS][MAX_PATH];
+  TCHAR find_string[MAX_PATH];
+  TCHAR subdir_table[MAX_CONFIG_SUBDIRS][MAX_PATH];
   int subdir=0;
   int subdir_counter=0;
 
@@ -185,8 +185,8 @@ BuildFileList()
 
       if (match (&find_obj, o.ext_string) == MATCH_DIR)
         {
-          if ((strncmp(find_obj.cFileName, ".", strlen(find_obj.cFileName)) != 0) &&
-              (strncmp(find_obj.cFileName, "..", strlen(find_obj.cFileName)) != 0) &&
+          if ((_tcsncmp(find_obj.cFileName, _T("."), _tcslen(find_obj.cFileName)) != 0) &&
+              (_tcsncmp(find_obj.cFileName, _T(".."), _tcslen(find_obj.cFileName)) != 0) &&
               (subdir < MAX_CONFIG_SUBDIRS))
             {
               /* Add dir to dir_table */
