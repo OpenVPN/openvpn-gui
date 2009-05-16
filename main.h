@@ -63,12 +63,8 @@ struct security_attributes
   SECURITY_DESCRIPTOR sd;
 };
 
-/* Return the number of elements in an TCHAR array */
-static inline size_t
-_tsizeof(TCHAR x[])
-{
-    return (sizeof(x) / sizeof(*x));
-}
+/* Return the number of elements in a TCHAR array */
+#define _tsizeof(x) (sizeof(x) / sizeof(*x))
 
 /* clear an object */
 #define CLEAR(x) memset(&(x), 0, sizeof(x))
