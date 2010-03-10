@@ -70,14 +70,19 @@ struct security_attributes
 #define CLEAR(x) memset(&(x), 0, sizeof(x))
 
 /* _sntprintf with guaranteed \0 termination */
+#define _sntprintf_0(buf, ...) \
+  do { \
+    __sntprintf_0(buf, _tsizeof(buf), __VA_ARGS__); \
+  } while(0);
+
 static inline int
-_sntprintf_0(TCHAR *buf, TCHAR *format, ...)
+__sntprintf_0(TCHAR *buf, size_t size, TCHAR *format, ...)
 {
     int i;
     va_list args;
     va_start(args, format);
-    i = _vsntprintf(buf, _tsizeof(buf), format, args);
-    buf[_tsizeof(buf) - 1] = _T('\0');
+    i = _vsntprintf(buf, size, format, args);
+    buf[size - 1] = _T('\0');
     va_end(args);
     return i;
 }
