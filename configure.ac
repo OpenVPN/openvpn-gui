@@ -1,7 +1,21 @@
+
+define(MAJOR_VERSION,  1)
+define(MINOR_VERSION,  0)
+define(RELEASE,        3)
+
 AC_PREREQ([2.53])
-AC_INIT([openvpn-gui], [1.0.3], [openvpn-devel@lists.sourceforge.net])
+AC_INIT([OpenVPN GUI], [MAJOR_VERSION.MINOR_VERSION.RELEASE],
+	[openvpn-devel@lists.sourceforge.net], [openvpn-gui],
+	[http://openvpn-gui.sf.net])
 AC_CONFIG_SRCDIR([chartable.h])
 AC_CONFIG_HEADERS([config.h])
+
+AC_DEFINE(PACKAGE_MAJOR_VERSION, [MAJOR_VERSION],
+	[Define to the package major version.])
+AC_DEFINE(PACKAGE_MINOR_VERSION, [MINOR_VERSION],
+	[Define to the package minor version.])
+AC_DEFINE(PACKAGE_RELEASE, [RELEASE],
+	[Define to the package release number.])
 
 AC_PROG_CC_C99
 

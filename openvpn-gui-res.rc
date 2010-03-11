@@ -41,3 +41,29 @@ ID_ICO_DISCONNECTED  ICON  DISCARDABLE  "disconnected.ico"
 #include "openvpn-gui-res-no.rc"
 #include "openvpn-gui-res-pt.rc"
 #include "openvpn-gui-res-se.rc"
+
+/* Version information and such */
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION   PACKAGE_MAJOR_VERSION,PACKAGE_MINOR_VERSION,PACKAGE_RELEASE,0
+FILEOS        VOS_NT
+FILETYPE      VFT_APP
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"  /* en_US, Unicode */
+        BEGIN
+            VALUE "FileDescription",  PACKAGE_NAME " for Windows"
+            VALUE "FileVersion",      PACKAGE_VERSION
+            VALUE "InternalName",     PACKAGE_TARNAME
+            VALUE "OriginalFilename", PACKAGE_TARNAME ".exe"
+            VALUE "ProductName",      PACKAGE_NAME
+            VALUE "ProductVersion",   PACKAGE_VERSION
+            VALUE "Website",          PACKAGE_URL
+            VALUE "LegalCopyright",   "The " PACKAGE_NAME " developers"
+            VALUE "CompanyName",      PACKAGE_NAME " is developed by these individuals:\r\n\r\n" \
+                                      "Mathias Sundman (retired)\r\n\r\n" \
+                                      "Heiko Hund\r\n" \
+                                      "<heikoh@users.sf.net>"
+        END
+    END
+END
