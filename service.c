@@ -20,13 +20,15 @@
  */
 
 #include <windows.h>
+#include <stdio.h>
+
+#include "config.h"
 #include "tray.h"
 #include "service.h"
 #include "openvpn.h"
 #include "options.h"
 #include "scripts.h"
 #include "main.h"
-#include <stdio.h>
 #include "openvpn-gui-res.h"
 #include "localization.h"
 
@@ -56,7 +58,7 @@ int MyStartService()
    
     if (NULL == schSCManager) {
        /* open SC manager failed */
-       ShowLocalizedMsg(GUI_NAME, IDS_ERR_OPEN_SCMGR);
+       ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_OPEN_SCMGR);
        goto failed;
     }
 
@@ -67,7 +69,7 @@ int MyStartService()
  
     if (schService == NULL) {
       /* can't open VPN service */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_OPEN_VPN_SERVICE);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_OPEN_VPN_SERVICE);
       goto failed;
     }
  
@@ -95,7 +97,7 @@ int MyStartService()
             &ssStatus) )  // address of status information structure
     {
       /* query failed */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_QUERY_SERVICE);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_QUERY_SERVICE);
       goto failed;
     }
  
@@ -146,7 +148,7 @@ int MyStartService()
     if (ssStatus.dwCurrentState != SERVICE_RUNNING) 
     { 
         /* service hasn't started */
-        ShowLocalizedMsg(GUI_NAME, IDS_ERR_SERVICE_START_FAILED); 
+        ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_SERVICE_START_FAILED);
         goto failed;
     } 
 
@@ -189,7 +191,7 @@ int MyStopService()
    
     if (NULL == schSCManager) {
        /* can't open SCManager */
-       ShowLocalizedMsg(GUI_NAME, IDS_ERR_OPEN_SCMGR, (int) GetLastError());
+       ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_OPEN_SCMGR, (int) GetLastError());
        return(false);
     }
 
@@ -200,7 +202,7 @@ int MyStopService()
  
     if (schService == NULL) {
       /* can't open vpn service */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_OPEN_VPN_SERVICE);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_OPEN_VPN_SERVICE);
       return(false);
     }
 
@@ -214,7 +216,7 @@ int MyStopService()
             &ssStatus) )  // address of status info 
     {
       /* stop failed */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_STOP_SERVICE);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_STOP_SERVICE);
       return(false);
     }
 
@@ -263,7 +265,7 @@ int CheckServiceStatus()
  
     if (schService == NULL) {
       /* open vpn service failed */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_OPEN_VPN_SERVICE);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_OPEN_VPN_SERVICE);
       o.service_running = SERVICE_NOACCESS;
       SetServiceMenuStatus();
       return(false);
@@ -274,7 +276,7 @@ int CheckServiceStatus()
             &ssStatus) )  // address of status information structure
     {
       /* query failed */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_QUERY_SERVICE);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_QUERY_SERVICE);
       return(false);
     }
  

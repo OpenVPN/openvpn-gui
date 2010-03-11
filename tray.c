@@ -32,6 +32,8 @@
 #include <windows.h>
 #include <tchar.h>
 #include <time.h>
+
+#include "config.h"
 #include "tray.h"
 #include "service.h"
 #include "shellapi.h"
@@ -87,7 +89,7 @@ void OnNotifyTray(LPARAM lParam)
           else if (o.service_running == SERVICE_CONNECTED)
             {
               /* Stop OpenVPN service */
-              if (MessageBox(NULL, LoadLocalizedString(IDS_MENU_ASK_STOP_SERVICE), GUI_NAME, MB_YESNO | MB_SETFOREGROUND) == IDYES)
+              if (MessageBox(NULL, LoadLocalizedString(IDS_MENU_ASK_STOP_SERVICE), PACKAGE_NAME, MB_YESNO | MB_SETFOREGROUND) == IDYES)
                 {
                   MyStopService();
                 }

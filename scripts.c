@@ -20,9 +20,9 @@
  */
 
 #include <windows.h>
-//#include <stdlib.h>
-//#include <stdio.h>
 #include <process.h>
+
+#include "config.h"
 #include "main.h"
 #include "openvpn-gui-res.h"
 #include "options.h"
@@ -91,7 +91,7 @@ void RunConnectScript(int config, int run_as_service)
 		     &proc_info))
     {
       /* Running Script failed */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_RUN_CONN_SCRIPT, command_line);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_RUN_CONN_SCRIPT, command_line);
       return;
     }
 
@@ -108,7 +108,7 @@ void RunConnectScript(int config, int run_as_service)
       if (!GetExitCodeProcess(proc_info.hProcess, &ExitCode))
         {
           /* failed to get ExitCode */
-          ShowLocalizedMsg(GUI_NAME, IDS_ERR_GET_EXIT_CODE, command_line);
+          ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_GET_EXIT_CODE, command_line);
           return;
         }
 
@@ -117,7 +117,7 @@ void RunConnectScript(int config, int run_as_service)
           if (ExitCode != 0)
             {
               /* ConnectScript failed */
-              ShowLocalizedMsg(GUI_NAME, IDS_ERR_CONN_SCRIPT_FAILED, ExitCode);
+              ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_CONN_SCRIPT_FAILED, ExitCode);
               return;
             }
           return;
@@ -127,7 +127,7 @@ void RunConnectScript(int config, int run_as_service)
     }    
 
   /* UserInfo: Timeout */
-  ShowLocalizedMsg(GUI_NAME, IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT, TimeOut);
+  ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT, TimeOut);
 
 }
 

@@ -24,6 +24,8 @@
 #include <windows.h>
 #include <tchar.h>
 #include <shlobj.h>
+
+#include "config.h"
 #include "main.h"
 #include "options.h"
 #include "openvpn-gui-res.h"
@@ -42,7 +44,7 @@ GetRegistryKeys()
 
   if (!GetWindowsDirectory(windows_dir, _tsizeof(windows_dir))) {
     /* can't get windows dir */
-    ShowLocalizedMsg(GUI_NAME, IDS_ERR_GET_WINDOWS_DIR);
+    ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_GET_WINDOWS_DIR);
     return(false);
   }
 
@@ -51,13 +53,13 @@ GetRegistryKeys()
       != ERROR_SUCCESS) 
     {
       /* registry key not found */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_OPEN_REGISTRY);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_OPEN_REGISTRY);
       return(false);
     }
   if (!GetRegistryValue(regkey, _T(""), openvpn_path, _tsizeof(openvpn_path)))
     {
       /* error reading registry value */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_READING_REGISTRY);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_READING_REGISTRY);
       return(false);
     }
   if (openvpn_path[_tcslen(openvpn_path) - 1] != _T('\\'))
@@ -116,7 +118,7 @@ GetRegistryKeys()
   if ((o.psw_attempts < 1) || (o.psw_attempts > 9))
     {
       /* 0 <= passphrase_attempts <= 9 */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_PASSPHRASE_ATTEMPTS);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_PASSPHRASE_ATTEMPTS);
       return(false);
     }
 
@@ -126,7 +128,7 @@ GetRegistryKeys()
   if ((o.connectscript_timeout < 0) || (o.connectscript_timeout > 99))
     {
       /* 0 <= connectscript_timeout <= 99 */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_CONN_SCRIPT_TIMEOUT);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_CONN_SCRIPT_TIMEOUT);
       return(false);
     }
 
@@ -136,7 +138,7 @@ GetRegistryKeys()
   if ((o.disconnectscript_timeout <= 0) || (o.disconnectscript_timeout > 99))
     {
       /* 0 < disconnectscript_timeout <= 99 */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_DISCONN_SCRIPT_TIMEOUT);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_DISCONN_SCRIPT_TIMEOUT);
       return(false);
     }
 
@@ -146,7 +148,7 @@ GetRegistryKeys()
   if ((o.preconnectscript_timeout <= 0) || (o.preconnectscript_timeout > 99))
     {
       /* 0 < disconnectscript_timeout <= 99 */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_PRECONN_SCRIPT_TIMEOUT);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_PRECONN_SCRIPT_TIMEOUT);
       return(false);
     }
 
@@ -195,7 +197,7 @@ int GetRegKey(const TCHAR name[], TCHAR *data, const TCHAR default_data[], DWORD
                         &dwDispos) != ERROR_SUCCESS)
         {
           /* error creating registry key */
-          ShowLocalizedMsg(GUI_NAME, IDS_ERR_CREATE_REG_KEY);
+          ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_CREATE_REG_KEY);
           return(false);
         }  
     }
@@ -214,7 +216,7 @@ int GetRegKey(const TCHAR name[], TCHAR *data, const TCHAR default_data[], DWORD
 
       if (status != ERROR_SUCCESS) {
          /* can't open registry for writing */
-         ShowLocalizedMsg(GUI_NAME, IDS_ERR_OPEN_WRITE_REG);
+         ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_OPEN_WRITE_REG);
          return(false);
       }    
       if(RegSetValueEx(openvpn_key_write,
@@ -225,7 +227,7 @@ int GetRegKey(const TCHAR name[], TCHAR *data, const TCHAR default_data[], DWORD
                        _tcslen(default_data)+1))
         {
           /* cant read / set reg-key */ 
-          ShowLocalizedMsg(GUI_NAME, IDS_ERR_READ_SET_KEY, name);
+          ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_READ_SET_KEY, name);
           return(false);
         }
       _tcsncpy(data, default_data, max_len);
@@ -274,7 +276,7 @@ int SetRegistryValue(HKEY regkey, const TCHAR *name, TCHAR *data)
   if(RegSetValueEx(regkey, name, 0, REG_SZ, (PBYTE) data, _tcslen(data) + 1) != ERROR_SUCCESS)
     {
       /* Error writing registry value */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_WRITE_REGVALUE, GUI_REGKEY_HKCU, name);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_WRITE_REGVALUE, GUI_REGKEY_HKCU, name);
       return(0);
     }
 
@@ -289,6 +291,6 @@ SetRegistryValueNumeric(HKEY regkey, const TCHAR *name, DWORD data)
   if (status == ERROR_SUCCESS)
     return 1;
 
-  ShowLocalizedMsg(GUI_NAME, IDS_ERR_WRITE_REGVALUE, GUI_REGKEY_HKCU, name);
+  ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_WRITE_REGVALUE, GUI_REGKEY_HKCU, name);
   return 0;
 }

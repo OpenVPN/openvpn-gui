@@ -27,6 +27,8 @@
 #include <windows.h>
 #include <stdio.h>
 #include <time.h>
+
+#include "config.h"
 #include "main.h"
 #include "options.h"
 #include "openvpn.h"
@@ -90,7 +92,7 @@ int ReadLineFromStdOut(HANDLE hStdOut, int config, char *line)
                   else
                     {
                       /* error reading from pipe */
-                      ShowLocalizedMsg(GUI_NAME, IDS_ERR_READ_STDOUT_PIPE);
+                      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_READ_STDOUT_PIPE);
                       return(-1);
                     } 
                 }
@@ -149,7 +151,7 @@ int ReadLineFromStdOut(HANDLE hStdOut, int config, char *line)
               else
                 {
                   /* error reading from pipe */
-                  ShowLocalizedMsg(GUI_NAME, IDS_ERR_READ_STDOUT_PIPE);
+                  ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_READ_STDOUT_PIPE);
                   return(-1);
                 } 
             }
@@ -252,7 +254,7 @@ void monitor_openvpnlog_while_connecting(int config, char *line)
     {
       StopOpenVPN(config);
       /* Cert expired... */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_CERT_EXPIRED);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_CERT_EXPIRED);
     }
 
   /* Check for "certificate is not yet valid" message */
@@ -260,7 +262,7 @@ void monitor_openvpnlog_while_connecting(int config, char *line)
     {
       StopOpenVPN(config);
       /* Cert not yet valid */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_CERT_NOT_YET_VALID); 
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_CERT_NOT_YET_VALID);
     }
 
   /* Check for "Notified TAP-Win32 driver to set a DHCP IP" message */
@@ -343,7 +345,7 @@ void monitor_openvpnlog_while_reconnecting(int config, char *line)
     {
       /* Cert expired */
       StopOpenVPN(config);
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_CERT_EXPIRED);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_CERT_EXPIRED);
     }
 
   /* Check for "certificate is not yet valid" message */
@@ -351,7 +353,7 @@ void monitor_openvpnlog_while_reconnecting(int config, char *line)
     {
       StopOpenVPN(config);
       /* Cert not yet valid */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_CERT_NOT_YET_VALID);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_CERT_NOT_YET_VALID);
     }
 
   /* Check for "Notified TAP-Win32 driver to set a DHCP IP" message */
@@ -401,7 +403,7 @@ void WatchOpenVPNProcess(int config)
 
   /* Open log file */
   if ((fd=fopen(o.cnn[config].log_path, filemode)) == NULL)
-    ShowLocalizedMsg (GUI_NAME, IDS_ERR_OPEN_LOG_WRITE, o.cnn[config].log_path);
+    ShowLocalizedMsg (PACKAGE_NAME, IDS_ERR_OPEN_LOG_WRITE, o.cnn[config].log_path);
 
   LogWindow = GetDlgItem(o.cnn[config].hwndStatus, ID_EDT_LOG);
   while(TRUE)
@@ -487,7 +489,7 @@ void WatchOpenVPNProcess(int config)
       EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_RESTART), FALSE);
       SetForegroundWindow(o.cnn[config].hwndStatus);
       ShowWindow(o.cnn[config].hwndStatus, SW_SHOW);
-      ShowLocalizedMsg(GUI_NAME, IDS_NFO_CONN_TERMINATED, o.cnn[config].config_name); 
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_NFO_CONN_TERMINATED, o.cnn[config].config_name);
 
       /* Close Status Window */
       SendMessage(o.cnn[config].hwndStatus, WM_CLOSE, 0, 0);
@@ -522,7 +524,7 @@ void WatchOpenVPNProcess(int config)
           /* Zero psw attempt counter */
           o.cnn[config].failed_psw_attempts = 0;
 
-          ShowLocalizedMsg(GUI_NAME, IDS_NFO_CONN_FAILED, o.cnn[config].config_name);
+          ShowLocalizedMsg(PACKAGE_NAME, IDS_NFO_CONN_FAILED, o.cnn[config].config_name);
 
           /* Set connect_status = "Not Connected" */
           o.cnn[config].connect_status=DISCONNECTED;
@@ -565,7 +567,7 @@ void WatchOpenVPNProcess(int config)
           /* Zero psw attempt counter */
           o.cnn[config].failed_psw_attempts = 0;
 
-          ShowLocalizedMsg(GUI_NAME, IDS_NFO_RECONN_FAILED, o.cnn[config].config_name);
+          ShowLocalizedMsg(PACKAGE_NAME, IDS_NFO_RECONN_FAILED, o.cnn[config].config_name);
 
           /* Set connect_status = "Not Connected" */
           o.cnn[config].connect_status=DISCONNECTED;

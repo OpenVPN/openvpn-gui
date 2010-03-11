@@ -23,6 +23,8 @@
 #include <windows.h>
 #include <shlwapi.h>
 #include <Pbt.h>
+
+#include "config.h"
 #include "tray.h"
 #include "openvpn.h"
 #include "openvpn_config.h"
@@ -73,10 +75,10 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   if (!(o.debug_fp = fopen(DEBUG_FILE, "w")))
     {
       /* can't open debug file */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_OPEN_DEBUG_FILE, DEBUG_FILE);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_OPEN_DEBUG_FILE, DEBUG_FILE);
       exit(1);
     }
-  PrintDebug("Starting OpenVPN GUI v%s", GUI_VERSION);
+  PrintDebug("Starting OpenVPN GUI v%s", PACKAGE_VERSION);
 #endif
 
 
@@ -89,7 +91,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   else
     {
       /* can't load riched20.dll */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_LOAD_RICHED20);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_LOAD_RICHED20);
       exit(1);
     }
 
@@ -98,7 +100,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   if (shell32_version < PACKVERSION(5,0))
     {
       /* shell32.dll version to low */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_SHELL_DLL_VERSION, shell32_version); 
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_SHELL_DLL_VERSION, shell32_version);
       exit(1);
     }
 #ifdef DEBUG
@@ -113,7 +115,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   if ((FindWindow (szClassName, NULL)) != NULL)
     {
         /* GUI already running */
-        ShowLocalizedMsg(GUI_NAME, IDS_ERR_GUI_ALREADY_RUNNING);
+        ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_GUI_ALREADY_RUNNING);
         exit(1);
     }
 

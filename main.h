@@ -33,9 +33,6 @@
 /* Define this to disable Change Password support */
 //#define DISABLE_CHANGE_PASSWORD
 
-#define GUI_NAME	"OpenVPN GUI"
-#define GUI_VERSION	"1.0.3"
-
 /* Registry key for User Settings */
 #define GUI_REGKEY_HKCU	"Software\\Nilings\\OpenVPN-GUI"
 

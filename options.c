@@ -20,12 +20,14 @@
  *
  */
 
-#include "options.h"
-#include "main.h"
 #include <stdlib.h>
 #include <malloc.h>
 #include <memory.h>
 #include <windows.h>
+
+#include "config.h"
+#include "options.h"
+#include "main.h"
 #include "openvpn-gui-res.h"
 #include "localization.h"
 
@@ -155,7 +157,7 @@ add_option (struct options *options,
       if (auto_connect_nr == MAX_CONFIGS)
         {
           /* Too many configs */
-          ShowLocalizedMsg(GUI_NAME, IDS_ERR_MANY_CONFIGS, MAX_CONFIGS);
+          ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_MANY_CONFIGS, MAX_CONFIGS);
           exit(1);
         }
 
@@ -267,7 +269,7 @@ add_option (struct options *options,
   else
     {
         /* Unrecognized option or missing parameter */
-	ShowLocalizedMsg(GUI_NAME, IDS_ERR_BAD_OPTION, p[0]);
+	ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_BAD_OPTION, p[0]);
         exit(1);
     }
   return i;
@@ -289,7 +291,7 @@ parse_argv (struct options* options,
       if (strncmp(p[0], "--", 2))
 	{
           /* Missing -- before option. */
-	  ShowLocalizedMsg(GUI_NAME, IDS_ERR_BAD_PARAMETER, p[0]);
+	  ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_BAD_PARAMETER, p[0]);
 	  exit(0);
         }
       else
@@ -328,7 +330,7 @@ int ConfigFileOptionExist(int config, const char *option)
   if (!(fp=fopen(configfile_path, "r")))
     {
       /* can't open config file */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_OPEN_CONFIG, configfile_path);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_OPEN_CONFIG, configfile_path);
       return(0);
     }
 

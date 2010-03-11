@@ -20,9 +20,11 @@
  */
 
 #include <windows.h>
+#include <stdio.h>
+
+#include "config.h"
 #include "tray.h"
 #include "openvpn.h"
-#include <stdio.h>
 #include "main.h"
 #include "options.h"
 #include "openvpn-gui-res.h"
@@ -66,7 +68,7 @@ void ViewLog(int config)
 		     &proc_info))
     {
       /* could not start log viewer */
-      ShowLocalizedMsg(GUI_NAME, IDS_ERR_START_LOG_VIEWER, o.log_viewer);
+      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_START_LOG_VIEWER, o.log_viewer);
     }
 
 }
@@ -108,7 +110,7 @@ void EditConfig(int config)
 		     &proc_info))
     {
         /* could not start editor */ 
-	ShowLocalizedMsg(GUI_NAME, IDS_ERR_START_CONF_EDITOR, o.editor);
+	ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_START_CONF_EDITOR, o.editor);
     }
 
 }

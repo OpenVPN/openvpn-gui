@@ -25,6 +25,8 @@
 #include <tchar.h>
 #include <stdio.h>
 #include <stdarg.h>
+
+#include "config.h"
 #include "main.h"
 #include "localization.h"
 #include "openvpn-gui-res.h"
@@ -80,7 +82,7 @@ SetGUILanguage(LANGID langId)
     HKEY regkey;
     if (RegCreateKeyEx(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, 0, NULL, 0,
         KEY_WRITE, NULL, &regkey, NULL) != ERROR_SUCCESS )
-        ShowLocalizedMsg(GUI_NAME, IDS_ERR_CREATE_REG_HKCU_KEY, GUI_REGKEY_HKCU);
+        ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_CREATE_REG_HKCU_KEY, GUI_REGKEY_HKCU);
 
     SetRegistryValueNumeric(regkey, "ui_language", langId);
     gui_language = langId;
