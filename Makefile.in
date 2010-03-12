@@ -1,4 +1,6 @@
-BASENAME = @PACKAGE_TARNAME@-@PACKAGE_VERSION@
+ifndef VERSION
+	VERSION = @PACKAGE_VERSION@
+endif
 EXE = @PACKAGE_TARNAME@.exe
 
 CC = @CC@
@@ -41,11 +43,14 @@ dist:
 		echo "please install and run configure again"; \
 		exit 1; \
 	}
-	rm -rf $(BASENAME)
-	mkdir $(BASENAME)
-	cp $(SOURCES) $(EXTRA) $(BASENAME)
-	$(ZIP) -qr $(BASENAME).zip $(BASENAME)
-	rm -rf $(BASENAME)
+	rm -rf @PACKAGE_TARNAME@-*/
+	mkdir @PACKAGE_TARNAME@-$(VERSION)
+	cp $(SOURCES) $(EXTRA) @PACKAGE_TARNAME@-$(VERSION)
+	$(ZIP) -qr @PACKAGE_TARNAME@-$(VERSION).zip @PACKAGE_TARNAME@-$(VERSION)
+	rm -rf @PACKAGE_TARNAME@-$(VERSION)
+
+snapshot:
+	$(MAKE) dist VERSION="$(VERSION).git`git log --format=format:"%h" HEAD -1`"
 
 clean :
 	rm -f *.o *.exe
