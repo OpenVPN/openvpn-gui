@@ -190,7 +190,6 @@ BEGIN
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI unterstützt nicht mehr als %d Konfigurationen. Bitte kontaktieren Sie bei Bedarf den Author."
-    IDS_ERR_LOG_CONSTRUCT "Kann die Logdatei mit Namem: %s nicht erstellen"
     IDS_ERR_ONE_CONN_OLD_VER "Sie können nur eine Verbindung zur gleichen Zeit aufbauen, wenn Sie einen ältere Version als 2.0-beta6 von OpenVPN verwenden."
     IDS_ERR_STOP_SERV_OLD_VER "You cannot use OpenVPN GUI to start a connection while the OpenVPN Service is running (with OpenVPN 1.5/1.6). Stop OpenVPN Service first if you want to use OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "CreateEvent fehlgeschlagen beim Beenden. Event: %s"

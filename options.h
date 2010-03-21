@@ -47,7 +47,7 @@
 #define	SERVICE_CONNECTED	2
 
 /* Connections parameters */
-struct connections
+typedef struct
 {
   TCHAR config_file[MAX_PATH]; 	/* Name of the config file */
   TCHAR config_name[MAX_PATH];	/* Name of the connection */
@@ -68,7 +68,7 @@ struct connections
   HANDLE hStdOut;
   HANDLE hStdIn;
   HWND hwndStatus;		/* Handle to Status Dialog Window */
-};
+} connection_t;
 
 /* All options used within OpenVPN GUI */
 struct options
@@ -77,7 +77,7 @@ struct options
   const TCHAR *auto_connect[MAX_CONFIGS];
 
   /* Connection parameters */
-  struct connections cnn[MAX_CONFIGS];  /* Connection structure */
+  connection_t cnn[MAX_CONFIGS];  /* Connection structure */
   int num_configs;			/* Number of configs */
 
   int oldversion;			/* 1=OpenVPN version below 2.0-beta6 */

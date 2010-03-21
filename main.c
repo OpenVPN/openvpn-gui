@@ -125,9 +125,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   if (!CheckVersion()) {
     exit(1);
   }
-  if (!BuildFileList()) {
-    exit(1);
-  }
+  BuildFileList();
   if (!VerifyAutoConnections()) {
     exit(1);
   }

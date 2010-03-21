@@ -177,7 +177,6 @@ BEGIN
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "Du kan inte ha fler än %d konfig-filer. Kontakta utvecklaren av OpenVPN GUI om du har behov av att hantera fler."
-    IDS_ERR_LOG_CONSTRUCT "Fel vid konstruering av logg filnamn: %s"
     IDS_ERR_ONE_CONN_OLD_VER "Du kan bara ha en uppkoppling igång samtidigt med äldre versioner av OpenVPN än 2.0-beta6."
     IDS_ERR_STOP_SERV_OLD_VER "Du kan inte ansluta med OpenVPN GUI medan OpenVPN Service är igång. (med OpenVPN 1.5/1.6). Stoppa tjänsten först om du vill använda OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "CreateEvent misslyckades med att skapa event: %s"

@@ -22,6 +22,6 @@
 #ifndef OPENVPN_CONFIG_H
 #define OPENVPN_CONFIG_H
 
-int BuildFileList();
+void BuildFileList();
 
 #endif
