@@ -154,7 +154,7 @@ int CheckProxySettings(HWND hwndDlg)
       if (_tcslen(text) == 0)
         {
           /* proxy address not specified */
-          ShowLocalizedMsg(PACKAGE_NAME, (http ? IDS_ERR_HTTP_PROXY_ADDRESS : IDS_ERR_SOCKS_PROXY_ADDRESS));
+          ShowLocalizedMsg((http ? IDS_ERR_HTTP_PROXY_ADDRESS : IDS_ERR_SOCKS_PROXY_ADDRESS));
           return(0);
         }
 
@@ -162,15 +162,15 @@ int CheckProxySettings(HWND hwndDlg)
       if (_tcslen(text) == 0)
         {
           /* proxy port not specified */
-          ShowLocalizedMsg(PACKAGE_NAME, (http ? IDS_ERR_HTTP_PROXY_PORT : IDS_ERR_SOCKS_PROXY_PORT));
+          ShowLocalizedMsg((http ? IDS_ERR_HTTP_PROXY_PORT : IDS_ERR_SOCKS_PROXY_PORT));
           return(0);
         }
 
-      long port = strtol(text, NULL, 10);
+      long port = _tcstol(text, NULL, 10);
       if ((port < 1) || (port > 65535))
         {
           /* proxy port range error */
-          ShowLocalizedMsg(PACKAGE_NAME, (http ? IDS_ERR_HTTP_PROXY_PORT_RANGE : IDS_ERR_SOCKS_PROXY_PORT_RANGE));
+          ShowLocalizedMsg((http ? IDS_ERR_HTTP_PROXY_PORT_RANGE : IDS_ERR_SOCKS_PROXY_PORT_RANGE));
           return(0);
         }
     }
@@ -268,7 +268,7 @@ void SaveProxySettings(HWND hwndDlg)
                     &dwDispos) != ERROR_SUCCESS)
     {
       /* error creating Registry-Key */
-      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_CREATE_REG_HKCU_KEY, GUI_REGKEY_HKCU);
+      ShowLocalizedMsg(IDS_ERR_CREATE_REG_HKCU_KEY, GUI_REGKEY_HKCU);
       return;
     }
 
@@ -297,7 +297,7 @@ void GetProxyRegistrySettings()
   if (!GetTempPath(_tsizeof(temp_path) - 1, temp_path))
     {
       /* Error getting TempPath - using C:\ */
-      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_GET_TEMP_PATH);
+      ShowLocalizedMsg(IDS_ERR_GET_TEMP_PATH);
       _tcscpy(temp_path, _T("C:\\"));
     }
   _tcsncat(temp_path, _T("openvpn_authfile.txt"), 
@@ -368,13 +368,13 @@ BOOL CALLBACK ProxyAuthDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED
           if (!(fp = _tfopen(o.proxy_authfile, _T("w"))))
             {
               /* error creating AUTH file */
-              ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_CREATE_AUTH_FILE, o.proxy_authfile);
+              ShowLocalizedMsg(IDS_ERR_CREATE_AUTH_FILE, o.proxy_authfile);
               EndDialog(hwndDlg, LOWORD(wParam));
             }
           _fputts(username, fp);
-          _fputts("\n", fp);
+          _fputts(_T("\n"), fp);
           _fputts(password, fp);
-          _fputts("\n", fp);
+          _fputts(_T("\n"), fp);
           fclose(fp);
           EndDialog(hwndDlg, LOWORD(wParam));
           return TRUE;
@@ -410,7 +410,7 @@ GetIeHttpProxy(TCHAR *host, size_t *hostlen, TCHAR *port, size_t *portlen)
 
   if (!InternetQueryOption(NULL, INTERNET_OPTION_PROXY, (LPVOID) &pinfo, &psize))
   {
-    ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_GET_MSIE_PROXY);
+    ShowLocalizedMsg(IDS_ERR_GET_MSIE_PROXY);
     return FALSE;
   }
 

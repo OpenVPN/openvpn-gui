@@ -21,6 +21,7 @@
 
 #include <windows.h>
 #include <process.h>
+#include <tchar.h>
 
 #include "config.h"
 #include "main.h"
@@ -38,15 +39,15 @@ void RunConnectScript(int config, int run_as_service)
   PROCESS_INFORMATION proc_info;
   SECURITY_ATTRIBUTES sa;
   SECURITY_DESCRIPTOR sd;
-  char command_line[256];
-  char batch_file[100];
+  TCHAR command_line[256];
+  TCHAR batch_file[100];
   DWORD ExitCode;
   int i, TimeOut;
 
   /* Cut of extention from config filename and add "_up.bat". */
-  strncpy(batch_file, o.cnn[config].config_file, sizeof(batch_file));
-  batch_file[strlen(batch_file) - (strlen(o.ext_string)+1)]=0;
-  strncat(batch_file, "_up.bat", sizeof(batch_file) - strlen(batch_file) - 1);
+  _tcsncpy(batch_file, o.cnn[config].config_file, _tsizeof(batch_file));
+  batch_file[_tcslen(batch_file) - (_tcslen(o.ext_string)+1)]=0;
+  _tcsncat(batch_file, _T("_up.bat"), _tsizeof(batch_file) - _tcslen(batch_file) - 1);
   _sntprintf_0(command_line, _T("%s\\%s"), o.cnn[config].config_dir, batch_file);
 
   
@@ -91,7 +92,7 @@ void RunConnectScript(int config, int run_as_service)
 		     &proc_info))
     {
       /* Running Script failed */
-      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_RUN_CONN_SCRIPT, command_line);
+      ShowLocalizedMsg(IDS_ERR_RUN_CONN_SCRIPT, command_line);
       return;
     }
 
@@ -108,7 +109,7 @@ void RunConnectScript(int config, int run_as_service)
       if (!GetExitCodeProcess(proc_info.hProcess, &ExitCode))
         {
           /* failed to get ExitCode */
-          ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_GET_EXIT_CODE, command_line);
+          ShowLocalizedMsg(IDS_ERR_GET_EXIT_CODE, command_line);
           return;
         }
 
@@ -117,7 +118,7 @@ void RunConnectScript(int config, int run_as_service)
           if (ExitCode != 0)
             {
               /* ConnectScript failed */
-              ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_CONN_SCRIPT_FAILED, ExitCode);
+              ShowLocalizedMsg(IDS_ERR_CONN_SCRIPT_FAILED, ExitCode);
               return;
             }
           return;
@@ -127,7 +128,7 @@ void RunConnectScript(int config, int run_as_service)
     }    
 
   /* UserInfo: Timeout */
-  ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT, TimeOut);
+  ShowLocalizedMsg(IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT, TimeOut);
 
 }
 
@@ -139,14 +140,14 @@ void RunDisconnectScript(int config, int run_as_service)
   PROCESS_INFORMATION proc_info;
   SECURITY_ATTRIBUTES sa;
   SECURITY_DESCRIPTOR sd;
-  char command_line[256];
-  char batch_file[100];
+  TCHAR command_line[256];
+  TCHAR batch_file[100];
   DWORD ExitCode;
   int i, TimeOut;
 
   /* Append "_down.bat" to config name. */
-  strncpy(batch_file, o.cnn[config].config_name, sizeof(batch_file));
-  strncat(batch_file, "_down.bat", sizeof(batch_file) - strlen(batch_file) - 1);
+  _tcsncpy(batch_file, o.cnn[config].config_name, _tsizeof(batch_file));
+  _tcsncat(batch_file, _T("_down.bat"), _tsizeof(batch_file) - _tcslen(batch_file) - 1);
   _sntprintf_0(command_line, _T("%s\\%s"), o.cnn[config].config_dir, batch_file);
 
   
@@ -219,14 +220,14 @@ void RunPreconnectScript(int config)
   PROCESS_INFORMATION proc_info;
   SECURITY_ATTRIBUTES sa;
   SECURITY_DESCRIPTOR sd;
-  char command_line[256];
-  char batch_file[100];
+  TCHAR command_line[256];
+  TCHAR batch_file[100];
   DWORD ExitCode;
   int i, TimeOut;
 
   /* Append "_pre.bat" to config name. */
-  strncpy(batch_file, o.cnn[config].config_name, sizeof(batch_file));
-  strncat(batch_file, "_pre.bat", sizeof(batch_file) - strlen(batch_file) - 1);
+  _tcsncpy(batch_file, o.cnn[config].config_name, _tsizeof(batch_file));
+  _tcsncat(batch_file, _T("_pre.bat"), _tsizeof(batch_file) - _tcslen(batch_file) - 1);
   _sntprintf_0(command_line, _T("%s\\%s"), o.cnn[config].config_dir, batch_file);
 
   

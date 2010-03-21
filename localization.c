@@ -69,7 +69,7 @@ GetGUILanguage(void)
 
     LONG status = RegOpenKeyEx(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, 0, KEY_READ, &regkey);
     if (status == ERROR_SUCCESS)
-        GetRegistryValueNumeric(regkey, "ui_language", &value);
+        GetRegistryValueNumeric(regkey, _T("ui_language"), &value);
 
     gui_language = ( value != 0 ? value : LANGIDFROMLCID(GetThreadLocale()) );
     return gui_language;
@@ -82,9 +82,9 @@ SetGUILanguage(LANGID langId)
     HKEY regkey;
     if (RegCreateKeyEx(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, 0, NULL, 0,
         KEY_WRITE, NULL, &regkey, NULL) != ERROR_SUCCESS )
-        ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_CREATE_REG_HKCU_KEY, GUI_REGKEY_HKCU);
+        ShowLocalizedMsg(IDS_ERR_CREATE_REG_HKCU_KEY, GUI_REGKEY_HKCU);
 
-    SetRegistryValueNumeric(regkey, "ui_language", langId);
+    SetRegistryValueNumeric(regkey, _T("ui_language"), langId);
     gui_language = langId;
 }
 
@@ -175,11 +175,11 @@ LoadLocalizedStringBuf(PTSTR buffer, int bufferSize, const UINT stringId, ...)
 
 
 void
-ShowLocalizedMsg(const PTSTR caption, const UINT stringId, ...)
+ShowLocalizedMsg(const UINT stringId, ...)
 {
     va_list args;
     va_start(args, stringId);
-    MessageBox(NULL, __LoadLocalizedString(stringId, args), caption, MB_OK | MB_SETFOREGROUND);
+    MessageBox(NULL, __LoadLocalizedString(stringId, args), _T(PACKAGE_NAME), MB_OK | MB_SETFOREGROUND);
     va_end(args);
 }
 

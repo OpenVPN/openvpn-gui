@@ -92,7 +92,7 @@ int ReadLineFromStdOut(HANDLE hStdOut, int config, char *line)
                   else
                     {
                       /* error reading from pipe */
-                      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_READ_STDOUT_PIPE);
+                      ShowLocalizedMsg(IDS_ERR_READ_STDOUT_PIPE);
                       return(-1);
                     } 
                 }
@@ -151,7 +151,7 @@ int ReadLineFromStdOut(HANDLE hStdOut, int config, char *line)
               else
                 {
                   /* error reading from pipe */
-                  ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_READ_STDOUT_PIPE);
+                  ShowLocalizedMsg(IDS_ERR_READ_STDOUT_PIPE);
                   return(-1);
                 } 
             }
@@ -192,7 +192,7 @@ int ReadLineFromStdOut(HANDLE hStdOut, int config, char *line)
  */
 void monitor_openvpnlog_while_connecting(int config, char *line)
 {
-  char msg[200];
+  TCHAR msg[200];
   unsigned int i;
   char *linepos;
 
@@ -222,14 +222,14 @@ void monitor_openvpnlog_while_connecting(int config, char *line)
       /* Show Tray Balloon msg */
       if (o.show_balloon[0] != '0')
         {
-          LoadLocalizedStringBuf(msg, sizeof(msg)/sizeof(*msg), IDS_NFO_NOW_CONNECTED, o.cnn[config].config_name);
-          if (strlen(o.cnn[config].ip) > 0)
+          LoadLocalizedStringBuf(msg, _tsizeof(msg), IDS_NFO_NOW_CONNECTED, o.cnn[config].config_name);
+          if (_tcslen(o.cnn[config].ip) > 0)
             {
               ShowTrayBalloon(msg, LoadLocalizedString(IDS_NFO_ASSIGN_IP, o.cnn[config].ip));
             }
           else
             {
-              ShowTrayBalloon(msg, " ");
+              ShowTrayBalloon(msg, _T(""));
             }
         }
 
@@ -254,7 +254,7 @@ void monitor_openvpnlog_while_connecting(int config, char *line)
     {
       StopOpenVPN(config);
       /* Cert expired... */
-      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_CERT_EXPIRED);
+      ShowLocalizedMsg(IDS_ERR_CERT_EXPIRED);
     }
 
   /* Check for "certificate is not yet valid" message */
@@ -262,16 +262,29 @@ void monitor_openvpnlog_while_connecting(int config, char *line)
     {
       StopOpenVPN(config);
       /* Cert not yet valid */
-      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_CERT_NOT_YET_VALID);
+      ShowLocalizedMsg(IDS_ERR_CERT_NOT_YET_VALID);
     }
 
   /* Check for "Notified TAP-Win32 driver to set a DHCP IP" message */
   if (((linepos=strstr(line, "Notified TAP-Win32 driver to set a DHCP IP")) != NULL))
     {
-      strncpy(o.cnn[config].ip, linepos+54, 15); /* Copy IP address */
-      for (i=0; i < strlen(o.cnn[config].ip); i++)
-        if (o.cnn[config].ip[i] == '/' || o.cnn[config].ip[i] == ' ') break;
-      o.cnn[config].ip[i] = '\0';
+      char ip_addr[40];
+
+      strncpy(ip_addr, linepos+54, sizeof(ip_addr)); /* Copy IP address */
+      for (i = 0; i < sizeof(ip_addr) - 1; ++i)
+      {
+        if (ip_addr[i] == '/' || ip_addr[i] == ' ')
+          break;
+      }
+      ip_addr[i] = '\0';
+
+#ifdef _UNICODE
+      /* Convert the IP address to Unicode */
+      o.cnn[config].ip[0] = _T('\0');
+      MultiByteToWideChar(CP_ACP, 0, ip_addr, -1, o.cnn[config].ip, _tsizeof(o.cnn[config].ip));
+#else
+      strncpy(o.cnn[config].ip, ip_addr, sizeof(o.cnn[config].ip));
+#endif
     }
 }
 
@@ -299,7 +312,7 @@ void monitor_openvpnlog_while_connected(int config, char *line)
  */
 void monitor_openvpnlog_while_reconnecting(int config, char *line)
 {
-  char msg[200];
+  TCHAR msg[200];
   char *linepos;
   size_t i;
   
@@ -316,14 +329,14 @@ void monitor_openvpnlog_while_reconnecting(int config, char *line)
       /* Show Tray Balloon msg */
       if (o.show_balloon[0] == '2')
         {
-          LoadLocalizedStringBuf(msg, sizeof(msg)/sizeof(*msg), IDS_NFO_NOW_CONNECTED, o.cnn[config].config_name);
-          if (strlen(o.cnn[config].ip) > 0)
+          LoadLocalizedStringBuf(msg, _tsizeof(msg), IDS_NFO_NOW_CONNECTED, o.cnn[config].config_name);
+          if (_tcslen(o.cnn[config].ip) > 0)
             {
               ShowTrayBalloon(msg, LoadLocalizedString(IDS_NFO_ASSIGN_IP, o.cnn[config].ip));
             }
           else
             {
-              ShowTrayBalloon(msg, " ");
+              ShowTrayBalloon(msg, _T(""));
             }
         }
     }
@@ -345,7 +358,7 @@ void monitor_openvpnlog_while_reconnecting(int config, char *line)
     {
       /* Cert expired */
       StopOpenVPN(config);
-      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_CERT_EXPIRED);
+      ShowLocalizedMsg(IDS_ERR_CERT_EXPIRED);
     }
 
   /* Check for "certificate is not yet valid" message */
@@ -353,16 +366,29 @@ void monitor_openvpnlog_while_reconnecting(int config, char *line)
     {
       StopOpenVPN(config);
       /* Cert not yet valid */
-      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_CERT_NOT_YET_VALID);
+      ShowLocalizedMsg(IDS_ERR_CERT_NOT_YET_VALID);
     }
 
   /* Check for "Notified TAP-Win32 driver to set a DHCP IP" message */
   if (((linepos=strstr(line, "Notified TAP-Win32 driver to set a DHCP IP")) != NULL))
     {
-      strncpy(o.cnn[config].ip, linepos+54, 15); /* Copy IP address */
-      for (i=0; i < strlen(o.cnn[config].ip); i++)
-        if (o.cnn[config].ip[i] == '/' || o.cnn[config].ip[i] == ' ') break;
-      o.cnn[config].ip[i] = '\0';
+      char ip_addr[40];
+
+      strncpy(ip_addr, linepos+54, sizeof(ip_addr)); /* Copy IP address */
+      for (i = 0; i < sizeof(ip_addr) - 1; ++i)
+      {
+        if (ip_addr[i] == '/' || ip_addr[i] == ' ')
+          break;
+      }
+      ip_addr[i] = '\0';
+
+#ifdef _UNICODE
+      /* Convert the IP address to Unicode */
+      o.cnn[config].ip[0] = _T('\0');
+      MultiByteToWideChar(CP_ACP, 0, ip_addr, -1, o.cnn[config].ip, _tsizeof(o.cnn[config].ip));
+#else
+      strncpy(o.cnn[config].ip, ip_addr, sizeof(o.cnn[config].ip));
+#endif
     }
 }
 
@@ -379,7 +405,7 @@ void WatchOpenVPNProcess(int config)
 {
   char line[1024];
   int ret;
-  char filemode[2] = "w\0";
+  TCHAR filemode[] = _T("w");
   FILE *fd;
   int LogLines = 0;
   int logpos;
@@ -387,7 +413,7 @@ void WatchOpenVPNProcess(int config)
 
   /* set log file append/truncate filemode */
   if (o.append_string[0] == '1')
-    filemode[0] = 'a';
+    filemode[0] = _T('a');
 
   /* Set Connect_Status = "Connecting" */
   o.cnn[config].connect_status = CONNECTING;
@@ -402,8 +428,8 @@ void WatchOpenVPNProcess(int config)
   o.cnn[config].failed_psw = 0;
 
   /* Open log file */
-  if ((fd=fopen(o.cnn[config].log_path, filemode)) == NULL)
-    ShowLocalizedMsg (PACKAGE_NAME, IDS_ERR_OPEN_LOG_WRITE, o.cnn[config].log_path);
+  if ((fd=_tfopen(o.cnn[config].log_path, filemode)) == NULL)
+    ShowLocalizedMsg(IDS_ERR_OPEN_LOG_WRITE, o.cnn[config].log_path);
 
   LogWindow = GetDlgItem(o.cnn[config].hwndStatus, ID_EDT_LOG);
   while(TRUE)
@@ -428,14 +454,20 @@ void WatchOpenVPNProcess(int config)
             {
               logpos = SendMessage(LogWindow, EM_LINEINDEX, DEL_LOG_LINES, 0);
               SendMessage(LogWindow, EM_SETSEL, 0, logpos);
-              SendMessage(LogWindow, EM_REPLACESEL, FALSE, (LPARAM) "");
+              SendMessage(LogWindow, EM_REPLACESEL, FALSE, (LPARAM) _T(""));
               LogLines -= DEL_LOG_LINES;
          }
 
           /* Write line to LogWindow */
           strcat(line, "\r\n");
           SendMessage(LogWindow, EM_SETSEL, (WPARAM) -1, (LPARAM) -1);
+#ifdef _UNICODE
+          TCHAR wide_line[1024];
+          MultiByteToWideChar(CP_ACP, 0, line, -1, wide_line, _tsizeof(wide_line));
+          SendMessage(LogWindow, EM_REPLACESEL, FALSE, (LPARAM) wide_line);
+#else
           SendMessage(LogWindow, EM_REPLACESEL, FALSE, (LPARAM) line);
+#endif
 
           if (o.cnn[config].connect_status == CONNECTING) /* Connecting state */
             monitor_openvpnlog_while_connecting(config, line);
@@ -489,7 +521,7 @@ void WatchOpenVPNProcess(int config)
       EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_RESTART), FALSE);
       SetForegroundWindow(o.cnn[config].hwndStatus);
       ShowWindow(o.cnn[config].hwndStatus, SW_SHOW);
-      ShowLocalizedMsg(PACKAGE_NAME, IDS_NFO_CONN_TERMINATED, o.cnn[config].config_name);
+      ShowLocalizedMsg(IDS_NFO_CONN_TERMINATED, o.cnn[config].config_name);
 
       /* Close Status Window */
       SendMessage(o.cnn[config].hwndStatus, WM_CLOSE, 0, 0);
@@ -524,7 +556,7 @@ void WatchOpenVPNProcess(int config)
           /* Zero psw attempt counter */
           o.cnn[config].failed_psw_attempts = 0;
 
-          ShowLocalizedMsg(PACKAGE_NAME, IDS_NFO_CONN_FAILED, o.cnn[config].config_name);
+          ShowLocalizedMsg(IDS_NFO_CONN_FAILED, o.cnn[config].config_name);
 
           /* Set connect_status = "Not Connected" */
           o.cnn[config].connect_status=DISCONNECTED;
@@ -567,7 +599,7 @@ void WatchOpenVPNProcess(int config)
           /* Zero psw attempt counter */
           o.cnn[config].failed_psw_attempts = 0;
 
-          ShowLocalizedMsg(PACKAGE_NAME, IDS_NFO_RECONN_FAILED, o.cnn[config].config_name);
+          ShowLocalizedMsg(IDS_NFO_RECONN_FAILED, o.cnn[config].config_name);
 
           /* Set connect_status = "Not Connected" */
           o.cnn[config].connect_status=DISCONNECTED;

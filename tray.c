@@ -89,7 +89,7 @@ void OnNotifyTray(LPARAM lParam)
           else if (o.service_running == SERVICE_CONNECTED)
             {
               /* Stop OpenVPN service */
-              if (MessageBox(NULL, LoadLocalizedString(IDS_MENU_ASK_STOP_SERVICE), PACKAGE_NAME, MB_YESNO | MB_SETFOREGROUND) == IDYES)
+              if (MessageBox(NULL, LoadLocalizedString(IDS_MENU_ASK_STOP_SERVICE), _T(PACKAGE_NAME), MB_YESNO | MB_SETFOREGROUND) == IDYES)
                 {
                   MyStopService();
                 }
@@ -359,7 +359,7 @@ void SetTrayIcon(int connected)
           if (first_conn)
             _tcsncat(msg, msg_connected, _tsizeof(msg) - _tcslen(msg) - 1);
           else
-            _tcsncat(msg, ", ", _tsizeof(msg) - _tcslen(msg) - 1);
+            _tcsncat(msg, _T(", "), _tsizeof(msg) - _tcslen(msg) - 1);
           _tcsncat(msg, o.cnn[i].config_name, _tsizeof(msg) - _tcslen(msg) - 1);
           first_conn=0;
           config=i;
@@ -376,7 +376,7 @@ void SetTrayIcon(int connected)
           if (first_conn)
             _tcsncat(msg, msg_connecting, _tsizeof(msg) - _tcslen(msg) - 1);
           else
-            _tcsncat(msg, ", ", _tsizeof(msg) - _tcslen(msg) - 1);
+            _tcsncat(msg, _T(", "), _tsizeof(msg) - _tcslen(msg) - 1);
           _tcsncat(msg, o.cnn[i].config_name, _tsizeof(msg) - _tcslen(msg) - 1);
           first_conn=0;
         }

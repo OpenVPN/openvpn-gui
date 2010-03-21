@@ -39,18 +39,18 @@ init_options (struct options *opt)
   CLEAR (*opt);
 }
 
-int Createargcargv(struct options* options, char* command_line)
+int Createargcargv(struct options *options, TCHAR *command_line)
 {
 
-    int    argc;
-    char** argv;
+    int     argc;
+    TCHAR **argv;
 
-    char*  arg;
-    int    myindex;
+    TCHAR*  arg;
+    int     myindex;
 
     // count the arguments
 
-    argc = 1;
+    argc = 0;
     arg  = command_line;
 
     while (arg[0] != 0) {
@@ -78,10 +78,10 @@ int Createargcargv(struct options* options, char* command_line)
     }    
 
     // tokenize the arguments
-    argv = (char**)malloc(argc * sizeof(char*));
+    argv = (TCHAR**) malloc(argc * sizeof(TCHAR*));
 
     arg = command_line;
-    myindex = 1;
+    myindex = 0;
 
     while (arg[0] != 0) {
 
@@ -123,12 +123,6 @@ int Createargcargv(struct options* options, char* command_line)
 
     }    
 
-    // put the program name into argv[0]
-    char filename[_MAX_PATH];
-
-    GetModuleFileName(NULL, filename, _MAX_PATH);
-    argv[0] = filename;
-
     parse_argv(options, argc, argv);
 
     free(argv);
@@ -139,137 +133,137 @@ int Createargcargv(struct options* options, char* command_line)
 static int
 add_option (struct options *options,
 	    int i,
-	    char *p[])
+	    TCHAR *p[])
 {
 
-  if (streq (p[0], "help"))
+  if (streq (p[0], _T("help")))
     {
       TCHAR usagecaption[200];
       
-      LoadLocalizedStringBuf(usagecaption, sizeof(usagecaption)/sizeof(*usagecaption), IDS_NFO_USAGECAPTION);
+      LoadLocalizedStringBuf(usagecaption, _tsizeof(usagecaption), IDS_NFO_USAGECAPTION);
       MessageBox(NULL, LoadLocalizedString(IDS_NFO_USAGE), usagecaption, MB_OK);
       exit(0);
     }
-  else if (streq (p[0], "connect") && p[1])
+  else if (streq (p[0], _T("connect")) && p[1])
     {
       ++i;
       static int auto_connect_nr=0;
       if (auto_connect_nr == MAX_CONFIGS)
         {
           /* Too many configs */
-          ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_MANY_CONFIGS, MAX_CONFIGS);
+          ShowLocalizedMsg(IDS_ERR_MANY_CONFIGS, MAX_CONFIGS);
           exit(1);
         }
 
       options->auto_connect[auto_connect_nr] = p[1];
       auto_connect_nr++;
     }
-  else if (streq (p[0], "exe_path") && p[1])
+  else if (streq (p[0], _T("exe_path")) && p[1])
     {
       ++i;
-      strncpy(options->exe_path, p[1], sizeof(options->exe_path) - 1);
+      _tcsncpy(options->exe_path, p[1], _tsizeof(options->exe_path) - 1);
     }
-  else if (streq (p[0], "config_dir") && p[1])
+  else if (streq (p[0], _T("config_dir")) && p[1])
     {
       ++i;
-      strncpy(options->config_dir, p[1], sizeof(options->config_dir) - 1);
+      _tcsncpy(options->config_dir, p[1], _tsizeof(options->config_dir) - 1);
     }
-  else if (streq (p[0], "ext_string") && p[1])
+  else if (streq (p[0], _T("ext_string")) && p[1])
     {
       ++i;
-      strncpy(options->ext_string, p[1], sizeof(options->ext_string) - 1);
+      _tcsncpy(options->ext_string, p[1], _tsizeof(options->ext_string) - 1);
     }
-  else if (streq (p[0], "log_dir") && p[1])
+  else if (streq (p[0], _T("log_dir")) && p[1])
     {
       ++i;
-      strncpy(options->log_dir, p[1], sizeof(options->log_dir) - 1);
+      _tcsncpy(options->log_dir, p[1], _tsizeof(options->log_dir) - 1);
     }
-  else if (streq (p[0], "priority_string") && p[1])
+  else if (streq (p[0], _T("priority_string")) && p[1])
     {
       ++i;
-      strncpy(options->priority_string, p[1], sizeof(options->priority_string) - 1);
+      _tcsncpy(options->priority_string, p[1], _tsizeof(options->priority_string) - 1);
     }
-  else if (streq (p[0], "append_string") && p[1])
+  else if (streq (p[0], _T("append_string")) && p[1])
     {
       ++i;
-      strncpy(options->append_string, p[1], sizeof(options->append_string) - 1);
+      _tcsncpy(options->append_string, p[1], _tsizeof(options->append_string) - 1);
     }
-  else if (streq (p[0], "log_viewer") && p[1])
+  else if (streq (p[0], _T("log_viewer")) && p[1])
     {
       ++i;
-      strncpy(options->log_viewer, p[1], sizeof(options->log_viewer) - 1);
+      _tcsncpy(options->log_viewer, p[1], _tsizeof(options->log_viewer) - 1);
     }
-  else if (streq (p[0], "editor") && p[1])
+  else if (streq (p[0], _T("editor")) && p[1])
     {
       ++i;
-      strncpy(options->editor, p[1], sizeof(options->editor) - 1);
+      _tcsncpy(options->editor, p[1], _tsizeof(options->editor) - 1);
     }
-  else if (streq (p[0], "allow_edit") && p[1])
+  else if (streq (p[0], _T("allow_edit")) && p[1])
     {
       ++i;
-      strncpy(options->allow_edit, p[1], sizeof(options->allow_edit) - 1);
+      _tcsncpy(options->allow_edit, p[1], _tsizeof(options->allow_edit) - 1);
     }
-  else if (streq (p[0], "allow_service") && p[1])
+  else if (streq (p[0], _T("allow_service")) && p[1])
     {
       ++i;
-      strncpy(options->allow_service, p[1], sizeof(options->allow_service) - 1);
+      _tcsncpy(options->allow_service, p[1], _tsizeof(options->allow_service) - 1);
     }
-  else if (streq (p[0], "allow_password") && p[1])
+  else if (streq (p[0], _T("allow_password")) && p[1])
     {
       ++i;
-      strncpy(options->allow_password, p[1], sizeof(options->allow_password) - 1);
+      _tcsncpy(options->allow_password, p[1], _tsizeof(options->allow_password) - 1);
     }
-  else if (streq (p[0], "allow_proxy") && p[1])
+  else if (streq (p[0], _T("allow_proxy")) && p[1])
     {
       ++i;
-      strncpy(options->allow_proxy, p[1], sizeof(options->allow_proxy) - 1);
+      _tcsncpy(options->allow_proxy, p[1], _tsizeof(options->allow_proxy) - 1);
     }
-  else if (streq (p[0], "show_balloon") && p[1])
+  else if (streq (p[0], _T("show_balloon")) && p[1])
     {
       ++i;
-      strncpy(options->show_balloon, p[1], sizeof(options->show_balloon) - 1);
+      _tcsncpy(options->show_balloon, p[1], _tsizeof(options->show_balloon) - 1);
     }
-  else if (streq (p[0], "service_only") && p[1])
+  else if (streq (p[0], _T("service_only")) && p[1])
     {
       ++i;
-      strncpy(options->service_only, p[1], sizeof(options->service_only) - 1);
+      _tcsncpy(options->service_only, p[1], _tsizeof(options->service_only) - 1);
     }
-  else if (streq (p[0], "show_script_window") && p[1])
+  else if (streq (p[0], _T("show_script_window")) && p[1])
     {
       ++i;
-      strncpy(options->show_script_window, p[1], sizeof(options->show_script_window) - 1);
+      _tcsncpy(options->show_script_window, p[1], _tsizeof(options->show_script_window) - 1);
     }
-  else if (streq (p[0], "silent_connection") && p[1])
+  else if (streq (p[0], _T("silent_connection")) && p[1])
     {
       ++i;
-      strncpy(options->silent_connection, p[1], sizeof(options->silent_connection) - 1);
+      _tcsncpy(options->silent_connection, p[1], _tsizeof(options->silent_connection) - 1);
     }
-  else if (streq (p[0], "passphrase_attempts") && p[1])
+  else if (streq (p[0], _T("passphrase_attempts")) && p[1])
     {
       ++i;
-      strncpy(options->psw_attempts_string, p[1], sizeof(options->psw_attempts_string) - 1);
+      _tcsncpy(options->psw_attempts_string, p[1], _tsizeof(options->psw_attempts_string) - 1);
     }
-  else if (streq (p[0], "connectscript_timeout") && p[1])
+  else if (streq (p[0], _T("connectscript_timeout")) && p[1])
     {
       ++i;
-      strncpy(options->connectscript_timeout_string, p[1], sizeof(options->connectscript_timeout_string) - 1);
+      _tcsncpy(options->connectscript_timeout_string, p[1], _tsizeof(options->connectscript_timeout_string) - 1);
     }
-  else if (streq (p[0], "disconnectscript_timeout") && p[1])
+  else if (streq (p[0], _T("disconnectscript_timeout")) && p[1])
     {
       ++i;
-      strncpy(options->disconnectscript_timeout_string, p[1], 
-              sizeof(options->disconnectscript_timeout_string) - 1);
+      _tcsncpy(options->disconnectscript_timeout_string, p[1], 
+              _tsizeof(options->disconnectscript_timeout_string) - 1);
     }
-  else if (streq (p[0], "preconnectscript_timeout") && p[1])
+  else if (streq (p[0], _T("preconnectscript_timeout")) && p[1])
     {
       ++i;
-      strncpy(options->preconnectscript_timeout_string, p[1], 
-              sizeof(options->preconnectscript_timeout_string) - 1);
+      _tcsncpy(options->preconnectscript_timeout_string, p[1], 
+              _tsizeof(options->preconnectscript_timeout_string) - 1);
     }
   else
     {
         /* Unrecognized option or missing parameter */
-	ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_BAD_OPTION, p[0]);
+	ShowLocalizedMsg(IDS_ERR_BAD_OPTION, p[0]);
         exit(1);
     }
   return i;
@@ -278,20 +272,20 @@ add_option (struct options *options,
 void
 parse_argv (struct options* options,
 	    int argc,
-	    char *argv[])
+	    TCHAR *argv[])
 {
   int i, j;
 
   /* parse command line */
   for (i = 1; i < argc; ++i)
     {
-      char *p[MAX_PARMS];
+      TCHAR *p[MAX_PARMS];
       CLEAR (p);
       p[0] = argv[i];
-      if (strncmp(p[0], "--", 2))
+      if (_tcsncmp(p[0], _T("--"), 2))
 	{
           /* Missing -- before option. */
-	  ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_BAD_PARAMETER, p[0]);
+	  ShowLocalizedMsg(IDS_ERR_BAD_PARAMETER, p[0]);
 	  exit(0);
         }
       else
@@ -301,8 +295,8 @@ parse_argv (struct options* options,
 	{
 	  if (i + j < argc)
 	    {
-	      char *arg = argv[i + j];
-	      if (strncmp (arg, "--", 2))
+	      TCHAR *arg = argv[i + j];
+	      if (_tcsncmp (arg, _T("--"), 2))
 		p[j] = arg;
 	      else
 		break;
@@ -319,18 +313,18 @@ int ConfigFileOptionExist(int config, const char *option)
 {
   FILE *fp;
   char line[256];
-  char configfile_path[MAX_PATH];
+  TCHAR configfile_path[MAX_PATH];
 
-  strncpy(configfile_path, o.cnn[config].config_dir, sizeof(configfile_path));
-  if (!(configfile_path[strlen(configfile_path)-1] == '\\'))
-    strcat(configfile_path, "\\");
-  strncat(configfile_path, o.cnn[config].config_file, 
-          sizeof(configfile_path) - strlen(configfile_path) - 1);
+  _tcsncpy(configfile_path, o.cnn[config].config_dir, _tsizeof(configfile_path));
+  if (configfile_path[_tcslen(configfile_path) - 1] != _T('\\'))
+    _tcscat(configfile_path, _T("\\"));
+  _tcsncat(configfile_path, o.cnn[config].config_file, 
+           _tsizeof(configfile_path) - _tcslen(configfile_path) - 1);
 
-  if (!(fp=fopen(configfile_path, "r")))
+  if (!(fp=_tfopen(configfile_path, _T("r"))))
     {
       /* can't open config file */
-      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_OPEN_CONFIG, configfile_path);
+      ShowLocalizedMsg(IDS_ERR_OPEN_CONFIG, configfile_path);
       return(0);
     }
 

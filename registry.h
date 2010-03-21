@@ -26,7 +26,7 @@ int GetRegistryKeys();
 int GetRegKey(const TCHAR name[], TCHAR data[], const TCHAR default_data[], DWORD len);
 LONG GetRegistryValue(HKEY regkey, const TCHAR *name, TCHAR *data, DWORD len);
 LONG GetRegistryValueNumeric(HKEY regkey, const TCHAR *name, DWORD *data);
-int SetRegistryValue(HKEY regkey, const TCHAR *name, TCHAR *data);
+int SetRegistryValue(HKEY regkey, const TCHAR *name, const TCHAR *data);
 int SetRegistryValueNumeric(HKEY regkey, const TCHAR *name, DWORD data);
 
 #endif

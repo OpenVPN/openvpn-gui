@@ -34,7 +34,7 @@ extern struct options o;
 
 void ViewLog(int config)
 {
-  char filename[200];
+  TCHAR filename[200];
 
   STARTUPINFO start_info;
   PROCESS_INFORMATION proc_info;
@@ -68,7 +68,7 @@ void ViewLog(int config)
 		     &proc_info))
     {
       /* could not start log viewer */
-      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_START_LOG_VIEWER, o.log_viewer);
+      ShowLocalizedMsg(IDS_ERR_START_LOG_VIEWER, o.log_viewer);
     }
 
 }
@@ -76,7 +76,7 @@ void ViewLog(int config)
 
 void EditConfig(int config)
 {
-  char filename[200];
+  TCHAR filename[200];
 
   STARTUPINFO start_info;
   PROCESS_INFORMATION proc_info;
@@ -110,7 +110,7 @@ void EditConfig(int config)
 		     &proc_info))
     {
         /* could not start editor */ 
-	ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_START_CONF_EDITOR, o.editor);
+	ShowLocalizedMsg(IDS_ERR_START_CONF_EDITOR, o.editor);
     }
 
 }

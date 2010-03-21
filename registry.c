@@ -44,7 +44,7 @@ GetRegistryKeys()
 
   if (!GetWindowsDirectory(windows_dir, _tsizeof(windows_dir))) {
     /* can't get windows dir */
-    ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_GET_WINDOWS_DIR);
+    ShowLocalizedMsg(IDS_ERR_GET_WINDOWS_DIR);
     return(false);
   }
 
@@ -53,13 +53,13 @@ GetRegistryKeys()
       != ERROR_SUCCESS) 
     {
       /* registry key not found */
-      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_OPEN_REGISTRY);
+      ShowLocalizedMsg(IDS_ERR_OPEN_REGISTRY);
       return(false);
     }
   if (!GetRegistryValue(regkey, _T(""), openvpn_path, _tsizeof(openvpn_path)))
     {
       /* error reading registry value */
-      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_READING_REGISTRY);
+      ShowLocalizedMsg(IDS_ERR_READING_REGISTRY);
       return(false);
     }
   if (openvpn_path[_tcslen(openvpn_path) - 1] != _T('\\'))
@@ -114,41 +114,41 @@ GetRegistryKeys()
 
   if (!GetRegKey(_T("passphrase_attempts"), o.psw_attempts_string, _T("3"), 
       _tsizeof(o.psw_attempts_string))) return(false);
-  o.psw_attempts = atoi(o.psw_attempts_string);
+  o.psw_attempts = _ttoi(o.psw_attempts_string);
   if ((o.psw_attempts < 1) || (o.psw_attempts > 9))
     {
       /* 0 <= passphrase_attempts <= 9 */
-      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_PASSPHRASE_ATTEMPTS);
+      ShowLocalizedMsg(IDS_ERR_PASSPHRASE_ATTEMPTS);
       return(false);
     }
 
   if (!GetRegKey(_T("connectscript_timeout"), o.connectscript_timeout_string, _T("15"), 
       _tsizeof(o.connectscript_timeout_string))) return(false);
-  o.connectscript_timeout = atoi(o.connectscript_timeout_string);
+  o.connectscript_timeout = _ttoi(o.connectscript_timeout_string);
   if ((o.connectscript_timeout < 0) || (o.connectscript_timeout > 99))
     {
       /* 0 <= connectscript_timeout <= 99 */
-      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_CONN_SCRIPT_TIMEOUT);
+      ShowLocalizedMsg(IDS_ERR_CONN_SCRIPT_TIMEOUT);
       return(false);
     }
 
   if (!GetRegKey(_T("disconnectscript_timeout"), o.disconnectscript_timeout_string, _T("10"), 
       _tsizeof(o.disconnectscript_timeout_string))) return(false);
-  o.disconnectscript_timeout = atoi(o.disconnectscript_timeout_string);
+  o.disconnectscript_timeout = _ttoi(o.disconnectscript_timeout_string);
   if ((o.disconnectscript_timeout <= 0) || (o.disconnectscript_timeout > 99))
     {
       /* 0 < disconnectscript_timeout <= 99 */
-      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_DISCONN_SCRIPT_TIMEOUT);
+      ShowLocalizedMsg(IDS_ERR_DISCONN_SCRIPT_TIMEOUT);
       return(false);
     }
 
   if (!GetRegKey(_T("preconnectscript_timeout"), o.preconnectscript_timeout_string, _T("10"), 
       _tsizeof(o.preconnectscript_timeout_string))) return(false);
-  o.preconnectscript_timeout = atoi(o.preconnectscript_timeout_string);
+  o.preconnectscript_timeout = _ttoi(o.preconnectscript_timeout_string);
   if ((o.preconnectscript_timeout <= 0) || (o.preconnectscript_timeout > 99))
     {
       /* 0 < disconnectscript_timeout <= 99 */
-      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_PRECONN_SCRIPT_TIMEOUT);
+      ShowLocalizedMsg(IDS_ERR_PRECONN_SCRIPT_TIMEOUT);
       return(false);
     }
 
@@ -164,10 +164,8 @@ int GetRegKey(const TCHAR name[], TCHAR *data, const TCHAR default_data[], DWORD
   HKEY openvpn_key_write;
   DWORD dwDispos;
   TCHAR expanded_string[MAX_PATH];
-  DWORD max_len;
-
-  /* Save maximum string length */
-  max_len=len;
+  DWORD size = len * sizeof(*data);
+  DWORD max_len = len - 1;
 
   /* If option is already set via cmd-line, return */
   if (data[0] != 0) 
@@ -197,14 +195,14 @@ int GetRegKey(const TCHAR name[], TCHAR *data, const TCHAR default_data[], DWORD
                         &dwDispos) != ERROR_SUCCESS)
         {
           /* error creating registry key */
-          ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_CREATE_REG_KEY);
+          ShowLocalizedMsg(IDS_ERR_CREATE_REG_KEY);
           return(false);
         }  
     }
 
 
   /* get a registry string */
-  status = RegQueryValueEx(openvpn_key, name, NULL, &type, (byte *) data, &len);
+  status = RegQueryValueEx(openvpn_key, name, NULL, &type, (byte *) data, &size);
   if (status != ERROR_SUCCESS || type != REG_SZ)
     {
       /* key did not exist - set default value */
@@ -216,18 +214,12 @@ int GetRegKey(const TCHAR name[], TCHAR *data, const TCHAR default_data[], DWORD
 
       if (status != ERROR_SUCCESS) {
          /* can't open registry for writing */
-         ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_OPEN_WRITE_REG);
+         ShowLocalizedMsg(IDS_ERR_OPEN_WRITE_REG);
          return(false);
       }    
-      if(RegSetValueEx(openvpn_key_write,
-                       name,
-                       0,
-                       REG_SZ,
-                       (const PBYTE) default_data,
-                       _tcslen(default_data)+1))
+      if(!SetRegistryValue(openvpn_key_write, name, default_data))
         {
           /* cant read / set reg-key */ 
-          ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_READ_SET_KEY, name);
           return(false);
         }
       _tcsncpy(data, default_data, max_len);
@@ -250,14 +242,14 @@ LONG GetRegistryValue(HKEY regkey, const TCHAR *name, TCHAR *data, DWORD len)
   DWORD type;
   DWORD data_len;
 
-  data_len = len;
+  data_len = len * sizeof(*data);
 
   /* get a registry string */
   status = RegQueryValueEx(regkey, name, NULL, &type, (byte *) data, &data_len);
   if (status != ERROR_SUCCESS || type != REG_SZ)
     return(0);
 
-  return(data_len);
+  return(data_len / sizeof(*data));
 
 }
 
@@ -270,13 +262,14 @@ GetRegistryValueNumeric(HKEY regkey, const TCHAR *name, DWORD *data)
   return (type == REG_DWORD ? status : ERROR_FILE_NOT_FOUND);
 }
 
-int SetRegistryValue(HKEY regkey, const TCHAR *name, TCHAR *data)
+int SetRegistryValue(HKEY regkey, const TCHAR *name, const TCHAR *data)
 {
   /* set a registry string */
-  if(RegSetValueEx(regkey, name, 0, REG_SZ, (PBYTE) data, _tcslen(data) + 1) != ERROR_SUCCESS)
+  DWORD size = (_tcslen(data) + 1) * sizeof(*data);
+  if(RegSetValueEx(regkey, name, 0, REG_SZ, (PBYTE) data, size) != ERROR_SUCCESS)
     {
       /* Error writing registry value */
-      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_WRITE_REGVALUE, GUI_REGKEY_HKCU, name);
+      ShowLocalizedMsg(IDS_ERR_WRITE_REGVALUE, GUI_REGKEY_HKCU, name);
       return(0);
     }
 
@@ -291,6 +284,6 @@ SetRegistryValueNumeric(HKEY regkey, const TCHAR *name, DWORD data)
   if (status == ERROR_SUCCESS)
     return 1;
 
-  ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_WRITE_REGVALUE, GUI_REGKEY_HKCU, name);
+  ShowLocalizedMsg(IDS_ERR_WRITE_REGVALUE, GUI_REGKEY_HKCU, name);
   return 0;
 }

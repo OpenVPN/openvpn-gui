@@ -50,15 +50,15 @@ static void ShowSettingsDialog();
 void CloseApplication(HWND hwnd);
 
 /*  Class name and window title  */
-char szClassName[ ] = "OpenVPN-GUI";
-char szTitleText[ ] = "OpenVPN";
+TCHAR szClassName[ ] = _T("OpenVPN-GUI");
+TCHAR szTitleText[ ] = _T("OpenVPN");
 
 /* Options structure */
 struct options o;
 
 int WINAPI WinMain (HINSTANCE hThisInstance,
                     UNUSED HINSTANCE hPrevInstance,
-                    LPSTR lpszArgument,
+                    UNUSED LPSTR lpszArgument,
                     UNUSED int nCmdShow)
 {
   HWND hwnd;               /* This is the handle for our window */
@@ -75,7 +75,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   if (!(o.debug_fp = fopen(DEBUG_FILE, "w")))
     {
       /* can't open debug file */
-      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_OPEN_DEBUG_FILE, DEBUG_FILE);
+      ShowLocalizedMsg(IDS_ERR_OPEN_DEBUG_FILE, DEBUG_FILE);
       exit(1);
     }
   PrintDebug("Starting OpenVPN GUI v%s", PACKAGE_VERSION);
@@ -84,23 +84,23 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
 
   o.hInstance = hThisInstance;
 
-  if(!GetModuleHandle("RICHED20.DLL"))
+  if(!GetModuleHandle(_T("RICHED20.DLL")))
     {
-      LoadLibrary("RICHED20.DLL");
+      LoadLibrary(_T("RICHED20.DLL"));
     }
   else
     {
       /* can't load riched20.dll */
-      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_LOAD_RICHED20);
+      ShowLocalizedMsg(IDS_ERR_LOAD_RICHED20);
       exit(1);
     }
 
   /* Check version of shell32.dll */
-  shell32_version=GetDllVersion("shell32.dll");
+  shell32_version=GetDllVersion(_T("shell32.dll"));
   if (shell32_version < PACKVERSION(5,0))
     {
       /* shell32.dll version to low */
-      ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_SHELL_DLL_VERSION, shell32_version);
+      ShowLocalizedMsg(IDS_ERR_SHELL_DLL_VERSION, shell32_version);
       exit(1);
     }
 #ifdef DEBUG
@@ -109,13 +109,13 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
 
 
   /* Parse command-line options */
-  Createargcargv(&o, lpszArgument);
+  Createargcargv(&o, GetCommandLine());
 
   /* Check if a previous instance is already running. */
   if ((FindWindow (szClassName, NULL)) != NULL)
     {
         /* GUI already running */
-        ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_GUI_ALREADY_RUNNING);
+        ShowLocalizedMsg(IDS_ERR_GUI_ALREADY_RUNNING);
         exit(1);
     }
 
@@ -396,7 +396,7 @@ void CloseApplication(HWND hwnd)
 
   if (o.service_running == SERVICE_CONNECTED)
     {
-      if (MessageBox(NULL, LoadLocalizedString(IDS_NFO_SERVICE_ACTIVE_EXIT), "Exit OpenVPN", MB_YESNO) == IDNO)
+      if (MessageBox(NULL, LoadLocalizedString(IDS_NFO_SERVICE_ACTIVE_EXIT), _T("Exit OpenVPN"), MB_YESNO) == IDNO)
         {
           return;
         }
@@ -410,7 +410,7 @@ void CloseApplication(HWND hwnd)
   }
   if (ask_exit) {
     /* aks for confirmation */
-    if (MessageBox(NULL, LoadLocalizedString(IDS_NFO_ACTIVE_CONN_EXIT), "Exit OpenVPN", MB_YESNO) == IDNO)
+    if (MessageBox(NULL, LoadLocalizedString(IDS_NFO_ACTIVE_CONN_EXIT), _T("Exit OpenVPN"), MB_YESNO) == IDNO)
       {
         return;
       }

@@ -123,7 +123,7 @@ int AddConfigFileToList(int config, TCHAR filename[], TCHAR config_dir[])
   if (!modext(log_file, _tsizeof(log_file), o.cnn[config].config_file, _T("log")))
     {
       /* cannot construct logfile-name */
-      ShowLocalizedMsg (PACKAGE_NAME, IDS_ERR_LOG_CONSTRUCT, o.cnn[config].config_file);
+      ShowLocalizedMsg(IDS_ERR_LOG_CONSTRUCT, o.cnn[config].config_file);
       return(false);
     }
   _sntprintf_0(o.cnn[config].log_path, _T("%s\\%s"), o.log_dir, log_file);
@@ -172,7 +172,7 @@ BuildFileList()
       if (o.num_configs >= MAX_CONFIGS)
         {
           /* too many configs */
-          ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_MANY_CONFIGS, MAX_CONFIGS);
+          ShowLocalizedMsg(IDS_ERR_MANY_CONFIGS, MAX_CONFIGS);
           break;
         }
 
@@ -221,7 +221,7 @@ BuildFileList()
           if (o.num_configs >= MAX_CONFIGS)
             {
               /* too many configs */
-              ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_MANY_CONFIGS, MAX_CONFIGS);
+              ShowLocalizedMsg(IDS_ERR_MANY_CONFIGS, MAX_CONFIGS);
               FindClose (find_handle);
               return(true);
             }
@@ -238,7 +238,7 @@ BuildFileList()
               else
                 {
                   /* Config filename already exists */
-                  ShowLocalizedMsg(PACKAGE_NAME, IDS_ERR_CONFIG_EXIST, find_obj.cFileName);
+                  ShowLocalizedMsg(IDS_ERR_CONFIG_EXIST, find_obj.cFileName);
                 }
             }
 

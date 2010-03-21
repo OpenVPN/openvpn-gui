@@ -39,5 +39,5 @@ int ConfirmNewPassword(HWND hwndDlg);
 int NewPasswordLengh(HWND hwndDlg);
 int ChangePasswordPEM(HWND hwndDlg);
 int ChangePasswordPKCS12(HWND hwndDlg);
-int GetKeyFilename(int config, char *keyfilename, unsigned int keyfilenamesize, int *keyfile_format);
+int GetKeyFilename(int config, TCHAR *keyfilename, size_t keyfilenamesize, int *keyfile_format);
 

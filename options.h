@@ -49,12 +49,12 @@
 /* Connections parameters */
 struct connections
 {
-  char config_file[MAX_PATH]; 	/* Name of the config file */
-  char config_name[MAX_PATH];	/* Name of the connection */
-  char config_dir[MAX_PATH];	/* Path to this configs dir */
-  char log_path[MAX_PATH];	/* Path to Logfile */
-  char ip[16];			/* Assigned IP address for this connection */
-  char exit_event_name[50];	/* Exit Event name for this connection */
+  TCHAR config_file[MAX_PATH]; 	/* Name of the config file */
+  TCHAR config_name[MAX_PATH];	/* Name of the connection */
+  TCHAR config_dir[MAX_PATH];	/* Path to this configs dir */
+  TCHAR log_path[MAX_PATH];	/* Path to Logfile */
+  TCHAR ip[16];			/* Assigned IP address for this connection */
+  TCHAR exit_event_name[50];	/* Exit Event name for this connection */
   int connect_status;		/* 0=Not Connected 1=Connecting 
                                    2=Connected 3=Reconnecting 4=Disconnecting */
   int auto_connect;		/* true=AutoConnect at startup */
@@ -74,7 +74,7 @@ struct connections
 struct options
 {
   /* Array of configs to autostart */
-  const char *auto_connect[MAX_CONFIGS];
+  const TCHAR *auto_connect[MAX_CONFIGS];
 
   /* Connection parameters */
   struct connections cnn[MAX_CONFIGS];  /* Connection structure */
@@ -91,37 +91,37 @@ struct options
   HINSTANCE hInstance;
 
   /* Registry values */
-  char exe_path[MAX_PATH];
-  char config_dir[MAX_PATH];
-  char ext_string[16];
-  char log_dir[MAX_PATH];
-  char priority_string[64];
-  char append_string[2];
-  char log_viewer[MAX_PATH];
-  char editor[MAX_PATH];
-  char allow_edit[2];
-  char allow_service[2];
-  char allow_password[2];
-  char allow_proxy[2];
-  char silent_connection[2];
-  char service_only[2];
-  char show_balloon[2];
-  char show_script_window[2];
-  char psw_attempts_string[2];
-  char disconnect_on_suspend[2];
-  char connectscript_timeout_string[4];
-  char disconnectscript_timeout_string[4];
-  char preconnectscript_timeout_string[4];
+  TCHAR exe_path[MAX_PATH];
+  TCHAR config_dir[MAX_PATH];
+  TCHAR ext_string[16];
+  TCHAR log_dir[MAX_PATH];
+  TCHAR priority_string[64];
+  TCHAR append_string[2];
+  TCHAR log_viewer[MAX_PATH];
+  TCHAR editor[MAX_PATH];
+  TCHAR allow_edit[2];
+  TCHAR allow_service[2];
+  TCHAR allow_password[2];
+  TCHAR allow_proxy[2];
+  TCHAR silent_connection[2];
+  TCHAR service_only[2];
+  TCHAR show_balloon[2];
+  TCHAR show_script_window[2];
+  TCHAR psw_attempts_string[2];
+  TCHAR disconnect_on_suspend[2];
+  TCHAR connectscript_timeout_string[4];
+  TCHAR disconnectscript_timeout_string[4];
+  TCHAR preconnectscript_timeout_string[4];
 
   /* Proxy Settings */
   int proxy_source;			/* 0=OpenVPN config, 1=IE, 2=Manual */
   int proxy_type;			/* 0=HTTP, 1=SOCKS */
   int proxy_http_auth;			/* 0=Auth Disabled, 1=Auth Enabled */
-  char proxy_http_address[100];		/* HTTP Proxy Address */
-  char proxy_http_port[6];		/* HTTP Proxy Port */
-  char proxy_socks_address[100];	/* SOCKS Proxy Address */
-  char proxy_socks_port[6];		/* SOCKS Proxy Address */
-  char proxy_authfile[100];		/* Path to proxy auth file */ 
+  TCHAR proxy_http_address[100];		/* HTTP Proxy Address */
+  TCHAR proxy_http_port[6];		/* HTTP Proxy Port */
+  TCHAR proxy_socks_address[100];	/* SOCKS Proxy Address */
+  TCHAR proxy_socks_port[6];		/* SOCKS Proxy Address */
+  TCHAR proxy_authfile[100];		/* Path to proxy auth file */ 
 
   /* Debug file pointer */
 #ifdef DEBUG
@@ -129,8 +129,8 @@ struct options
 #endif
 };
 
-#define streq(x, y) (!strcmp((x), (y)))
+#define streq(x, y) (!_tcscmp((x), (y)))
 void init_options (struct options *o);
-int Createargcargv(struct options* options, char* command_line);
-void parse_argv (struct options* options, int argc, char *argv[]);
+int Createargcargv(struct options* options, TCHAR* command_line);
+void parse_argv (struct options* options, int argc, TCHAR *argv[]);
 int ConfigFileOptionExist(int config, const char *option);

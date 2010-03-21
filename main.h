@@ -34,10 +34,10 @@
 //#define DISABLE_CHANGE_PASSWORD
 
 /* Registry key for User Settings */
-#define GUI_REGKEY_HKCU	"Software\\Nilings\\OpenVPN-GUI"
+#define GUI_REGKEY_HKCU	_T("Software\\Nilings\\OpenVPN-GUI")
 
 /* Registry key for Global Settings */
-#define GUI_REGKEY_HKLM	"SOFTWARE\\OpenVPN-GUI"
+#define GUI_REGKEY_HKLM	_T("SOFTWARE\\OpenVPN-GUI")
 
 #define MAX_LOG_LINES		500	/* Max number of lines in LogWindow */
 #define DEL_LOG_LINES		10	/* Number of lines to delete from LogWindow */
@@ -80,6 +80,23 @@ __sntprintf_0(TCHAR *buf, size_t size, TCHAR *format, ...)
     va_start(args, format);
     i = _vsntprintf(buf, size, format, args);
     buf[size - 1] = _T('\0');
+    va_end(args);
+    return i;
+}
+
+/* _snprintf with guaranteed \0 termination */
+#define _snprintf_0(buf, ...) \
+  do { \
+    __snprintf_0(buf, sizeof(buf), __VA_ARGS__); \
+  } while(0);
+static inline int
+__snprintf_0(char *buf, size_t size, char *format, ...)
+{
+    int i;
+    va_list args;
+    va_start(args, format);
+    i = _vsnprintf(buf, size, format, args);
+    buf[size - 1] = '\0';
     va_end(args);
     return i;
 }
