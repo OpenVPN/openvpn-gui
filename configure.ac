@@ -19,6 +19,11 @@ AC_DEFINE(PACKAGE_RELEASE, [RELEASE],
 
 AC_PROG_CC_C99
 
+AC_ARG_ENABLE([unicode],
+	AS_HELP_STRING([--disable-unicode],
+		[produce a binary without Unicode support]), [],
+	[CPPFLAGS="$CPPFLAGS -DUNICODE -D_UNICODE"])
+
 # Build Win32 native binaries
 CFLAGS="$CFLAGS -mno-cygwin"
 CPPFLAGS="$CPPFLAGS -mno-cygwin"
