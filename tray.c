@@ -50,7 +50,7 @@ HMENU hMenuConn[MAX_CONFIGS];
 HMENU hMenuService;
 
 NOTIFYICONDATA ni;
-extern struct options o;
+extern options_t o;
 
 // Mouse clicks on tray
 void OnNotifyTray(LPARAM lParam)
@@ -63,7 +63,7 @@ void OnNotifyTray(LPARAM lParam)
   switch(lParam) {
     case WM_RBUTTONDOWN: 
       /* Re-read configs and re-create menus if no connection is running */
-      if (CountConnectedState(DISCONNECTED) == o.num_configs)
+      if (CountConnState(disconnected) == o.num_configs)
         {
           DestroyPopupMenus();
           BuildFileList();
@@ -82,11 +82,11 @@ void OnNotifyTray(LPARAM lParam)
       if (o.service_only[0]=='1')
         {
           /* Start OpenVPN Service */
-          if (o.service_running == SERVICE_DISCONNECTED)
+          if (o.service_state == service_disconnected)
             {
               MyStartService();
             }
-          else if (o.service_running == SERVICE_CONNECTED)
+          else if (o.service_state == service_connected)
             {
               /* Stop OpenVPN service */
               if (MessageBox(NULL, LoadLocalizedString(IDS_MENU_ASK_STOP_SERVICE), _T(PACKAGE_NAME), MB_YESNO | MB_SETFOREGROUND) == IDYES)
@@ -101,7 +101,7 @@ void OnNotifyTray(LPARAM lParam)
           connected_config = -1;
           for (i=0; i < o.num_configs; i++)
             {
-              if(o.cnn[i].connect_status != DISCONNECTED)
+              if(o.conn[i].state != disconnected)
                 {
                   if (connected_config == -1)
                     {
@@ -116,19 +116,19 @@ void OnNotifyTray(LPARAM lParam)
             }
           if (connected_config != -1)
             {
-              ShowWindow(o.cnn[connected_config].hwndStatus, SW_SHOW); 
-              SetForegroundWindow(o.cnn[connected_config].hwndStatus);
+              ShowWindow(o.conn[connected_config].hwndStatus, SW_SHOW);
+              SetForegroundWindow(o.conn[connected_config].hwndStatus);
             }
  
           /* Re-read configs and re-create menus if no connection is running */
-          if (CountConnectedState(DISCONNECTED) == o.num_configs)
+          if (CountConnState(disconnected) == o.num_configs)
             {
               DestroyPopupMenus();
               BuildFileList();
               CreatePopupMenus();
 
               /* Start connection if only one config exist */
-              if ((o.num_configs == 1) && (o.cnn[0].connect_status == DISCONNECTED))
+              if ((o.num_configs == 1) && (o.conn[0].state == disconnected))
                 StartOpenVPN(0);
             }
         }
@@ -152,7 +152,6 @@ void OnDestroyTray()
 void CreatePopupMenus()
 {
   int i;
-  //extern struct options o;
 
   /* Create Main menu */
   hMenu=CreatePopupMenu();
@@ -230,14 +229,14 @@ void CreateItemList()
       AppendMenu(hMenu,MF_STRING ,IDM_ABOUT, LoadLocalizedString(IDS_MENU_ABOUT));
       AppendMenu(hMenu,MF_STRING ,IDM_CLOSE, LoadLocalizedString(IDS_MENU_CLOSE));
 
-      SetMenuStatus(0, DISCONNECTED); 
+      SetMenuStatus(0, disconnected);
 
     }
   else
     {
       /* Create Main menu with all connections */
       for (i=0; i < o.num_configs; i++)
-        AppendMenu(hMenu,MF_POPUP,(UINT) hMenuConn[i],o.cnn[i].config_name); 
+        AppendMenu(hMenu,MF_POPUP,(UINT) hMenuConn[i],o.conn[i].config_name);
       if (o.num_configs > 0)
         AppendMenu(hMenu,MF_SEPARATOR,0,0);
       if (o.allow_service[0]=='1' && o.service_only[0]=='0')
@@ -279,7 +278,7 @@ void CreateItemList()
             }
 #endif
 
-          SetMenuStatus(i, DISCONNECTED); 
+          SetMenuStatus(i, disconnected);
         }
     }
 
@@ -331,7 +330,7 @@ void ShowTrayIcon()
  * connected=1 -> Connecting
  * connected=2 -> Connected
  */
-void SetTrayIcon(int connected)
+void SetTrayIcon(conn_state_t connected)
 {
   TCHAR msg[500];
   TCHAR msg_connected[100];
@@ -353,14 +352,14 @@ void SetTrayIcon(int connected)
   first_conn=1;
   for (i=0; i < o.num_configs; i++)
     {
-      if(o.cnn[i].connect_status == CONNECTED)
+      if(o.conn[i].state == connected)
         {
           /* Append connection name to Icon Tip Msg */
           if (first_conn)
             _tcsncat(msg, msg_connected, _tsizeof(msg) - _tcslen(msg) - 1);
           else
             _tcsncat(msg, _T(", "), _tsizeof(msg) - _tcslen(msg) - 1);
-          _tcsncat(msg, o.cnn[i].config_name, _tsizeof(msg) - _tcslen(msg) - 1);
+          _tcsncat(msg, o.conn[i].config_name, _tsizeof(msg) - _tcslen(msg) - 1);
           first_conn=0;
           config=i;
         }
@@ -369,32 +368,32 @@ void SetTrayIcon(int connected)
   first_conn=1;
   for (i=0; i < o.num_configs; i++)
     {
-      if((o.cnn[i].connect_status == CONNECTING) ||
-         (o.cnn[i].connect_status == RECONNECTING))
+      if((o.conn[i].state == connecting) ||
+         (o.conn[i].state == reconnecting))
         {
           /* Append connection name to Icon Tip Msg */
           if (first_conn)
             _tcsncat(msg, msg_connecting, _tsizeof(msg) - _tcslen(msg) - 1);
           else
             _tcsncat(msg, _T(", "), _tsizeof(msg) - _tcslen(msg) - 1);
-          _tcsncat(msg, o.cnn[i].config_name, _tsizeof(msg) - _tcslen(msg) - 1);
+          _tcsncat(msg, o.conn[i].config_name, _tsizeof(msg) - _tcslen(msg) - 1);
           first_conn=0;
         }
     }
 
-  if (CountConnectedState(CONNECTED) == 1)
+  if (CountConnState(connected) == 1)
     {
       /* Append "Connected Since and Assigned IP msg" */
       time_t con_time;
       con_time=time(NULL);
       _tcsftime(connected_since, _tsizeof(connected_since), _T("%b %d, %H:%M"), 
-                localtime(&o.cnn[config].connected_since));
+                localtime(&o.conn[config].connected_since));
       _tcsncat(msg, LoadLocalizedString(IDS_TIP_CONNECTED_SINCE), _tsizeof(msg) - _tcslen(msg) - 1);
       _tcsncat(msg, connected_since, _tsizeof(msg) - _tcslen(msg) - 1);
-      if (_tcslen(o.cnn[config].ip) > 0)
+      if (_tcslen(o.conn[config].ip) > 0)
         {
           TCHAR assigned_ip[100];
-          _sntprintf_0(assigned_ip, LoadLocalizedString(IDS_TIP_ASSIGNED_IP), o.cnn[config].ip);
+          _sntprintf_0(assigned_ip, LoadLocalizedString(IDS_TIP_ASSIGNED_IP), o.conn[config].ip);
           _tcsncat(msg, assigned_ip, _tsizeof(msg) - _tcslen(msg) - 1);
         }
     }
@@ -427,7 +426,7 @@ void ShowTrayBalloon(TCHAR *infotitle_msg, TCHAR *info_msg)
 }
 
 
-void SetMenuStatus (int config, int bCheck)
+void SetMenuStatus (int config, conn_state_t state)
 {
   /* bCheck values:
    * 0 - Not Connected
@@ -441,25 +440,25 @@ void SetMenuStatus (int config, int bCheck)
 
   if (o.num_configs == 1)
     {
-      if (bCheck == DISCONNECTED)
+      if (state == disconnected)
         {
           EnableMenuItem(hMenu, IDM_CONNECTMENU, MF_ENABLED);
           EnableMenuItem(hMenu, IDM_DISCONNECTMENU, MF_GRAYED);
           EnableMenuItem(hMenu, IDM_STATUSMENU, MF_GRAYED);
         }
-      if (bCheck == CONNECTING)
+      if (state == connecting)
         {
           EnableMenuItem(hMenu, IDM_CONNECTMENU, MF_GRAYED);
           EnableMenuItem(hMenu, IDM_DISCONNECTMENU, MF_ENABLED);
           EnableMenuItem(hMenu, IDM_STATUSMENU, MF_ENABLED);
         }
-      if (bCheck == CONNECTED)
+      if (state == connected)
         {
           EnableMenuItem(hMenu, IDM_CONNECTMENU, MF_GRAYED);
           EnableMenuItem(hMenu, IDM_DISCONNECTMENU, MF_ENABLED);
           EnableMenuItem(hMenu, IDM_STATUSMENU, MF_ENABLED);
         }
-      if (bCheck == DISCONNECTING)
+      if (state == disconnecting)
         {
           EnableMenuItem(hMenu, IDM_CONNECTMENU, MF_GRAYED);
           EnableMenuItem(hMenu, IDM_DISCONNECTMENU, MF_GRAYED);
@@ -468,29 +467,29 @@ void SetMenuStatus (int config, int bCheck)
     }
   else 
     {
-      iState = ((bCheck == CONNECTED) || (bCheck == DISCONNECTING)) ? 
+      iState = ((state == connected) || (state == disconnecting)) ?
                MF_CHECKED : MF_UNCHECKED ;
       CheckMenuItem (hMenu, (UINT) hMenuConn[config], iState) ;
 
-      if (bCheck == DISCONNECTED)
+      if (state == disconnected)
         {
           EnableMenuItem(hMenuConn[config], (UINT_PTR)IDM_CONNECTMENU + config, MF_ENABLED);
           EnableMenuItem(hMenuConn[config], (UINT_PTR)IDM_DISCONNECTMENU + config, MF_GRAYED);
           EnableMenuItem(hMenuConn[config], (UINT_PTR)IDM_STATUSMENU + config, MF_GRAYED);
         }
-      if (bCheck == CONNECTING)
+      if (state == connecting)
         {
           EnableMenuItem(hMenuConn[config], (UINT_PTR)IDM_CONNECTMENU + config, MF_GRAYED);
           EnableMenuItem(hMenuConn[config], (UINT_PTR)IDM_DISCONNECTMENU + config, MF_ENABLED);
           EnableMenuItem(hMenuConn[config], (UINT_PTR)IDM_STATUSMENU + config, MF_ENABLED);
         }
-      if (bCheck == CONNECTED)
+      if (state == connected)
         {
           EnableMenuItem(hMenuConn[config], (UINT_PTR)IDM_CONNECTMENU + config, MF_GRAYED);
           EnableMenuItem(hMenuConn[config], (UINT_PTR)IDM_DISCONNECTMENU + config, MF_ENABLED);
           EnableMenuItem(hMenuConn[config], (UINT_PTR)IDM_STATUSMENU + config, MF_ENABLED);
         }
-      if (bCheck == DISCONNECTING)
+      if (state == disconnecting)
         {
           EnableMenuItem(hMenuConn[config], (UINT_PTR)IDM_CONNECTMENU + config, MF_GRAYED);
           EnableMenuItem(hMenuConn[config], (UINT_PTR)IDM_DISCONNECTMENU + config, MF_GRAYED);
@@ -513,15 +512,15 @@ void SetServiceMenuStatus()
     hMenuHandle = hMenuService;
 
 
-  if ((o.service_running == SERVICE_NOACCESS) ||
-      (o.service_running == SERVICE_CONNECTING))
+  if ((o.service_state == service_noaccess) ||
+      (o.service_state == service_connecting))
     {
       /* Service is disabled */
       EnableMenuItem(hMenuHandle, IDM_SERVICE_START, MF_GRAYED);
       EnableMenuItem(hMenuHandle, IDM_SERVICE_STOP, MF_GRAYED);
       EnableMenuItem(hMenuHandle, IDM_SERVICE_RESTART, MF_GRAYED);
     }
-  else if (o.service_running == SERVICE_CONNECTED)
+  else if (o.service_state == service_connected)
     {
       /* Service is running */
       EnableMenuItem(hMenuHandle, IDM_SERVICE_START, MF_GRAYED);

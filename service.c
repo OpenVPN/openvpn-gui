@@ -32,7 +32,7 @@
 #include "openvpn-gui-res.h"
 #include "localization.h"
 
-extern struct options o;
+extern options_t o;
 
 int MyStartService()
 {
@@ -46,7 +46,7 @@ int MyStartService()
   int i;
 
     /* Set Service Status = Connecting */
-    o.service_running = SERVICE_CONNECTING;
+    o.service_state = service_connecting;
     SetServiceMenuStatus();
     CheckAndSetTrayIcon();
 
@@ -157,7 +157,7 @@ int MyStartService()
       RunConnectScript(i, true);
 
     /* Set Service Status = Connected */
-    o.service_running = SERVICE_CONNECTED;
+    o.service_state = service_connected;
     SetServiceMenuStatus();
     CheckAndSetTrayIcon();
 
@@ -169,7 +169,7 @@ int MyStartService()
 failed:
 
     /* Set Service Status = Disconnecting */
-    o.service_running = SERVICE_DISCONNECTED;
+    o.service_state = service_disconnected;
     SetServiceMenuStatus();
     CheckAndSetTrayIcon();
     return(false);
@@ -220,7 +220,7 @@ int MyStopService()
       return(false);
     }
 
-    o.service_running = SERVICE_DISCONNECTED;
+    o.service_state = service_disconnected;
     SetServiceMenuStatus();
     CheckAndSetTrayIcon();
     return(true);
@@ -253,7 +253,7 @@ int CheckServiceStatus()
       SC_MANAGER_CONNECT);     // Connect rights 
    
     if (NULL == schSCManager) {
-      o.service_running = SERVICE_NOACCESS;
+      o.service_state = service_noaccess;
       SetServiceMenuStatus();
       return(false);
     }
@@ -266,7 +266,7 @@ int CheckServiceStatus()
     if (schService == NULL) {
       /* open vpn service failed */
       ShowLocalizedMsg(IDS_ERR_OPEN_VPN_SERVICE);
-      o.service_running = SERVICE_NOACCESS;
+      o.service_state = service_noaccess;
       SetServiceMenuStatus();
       return(false);
     }
@@ -282,16 +282,16 @@ int CheckServiceStatus()
  
     if (ssStatus.dwCurrentState == SERVICE_RUNNING) 
     {
-        o.service_running = SERVICE_CONNECTED;
+        o.service_state = service_connected;
         SetServiceMenuStatus(); 
-        SetTrayIcon(CONNECTED);
+        SetTrayIcon(connected);
         return(true);
     }
     else 
     { 
-        o.service_running = SERVICE_DISCONNECTED;
+        o.service_state = service_disconnected;
         SetServiceMenuStatus();
-        SetTrayIcon(DISCONNECTED);
+        SetTrayIcon(disconnected);
         return(false);
     } 
 } 

@@ -35,7 +35,7 @@ typedef enum
     match_dir
 } match_t;
 
-extern struct options o;
+extern options_t o;
 
 static match_t
 match(const WIN32_FIND_DATA *find, const TCHAR *ext)
@@ -65,7 +65,7 @@ ConfigAlreadyExists(TCHAR *newconfig)
     int i;
     for (i = 0; i < o.num_configs; ++i)
     {
-        if (_tcsicmp(o.cnn[i].config_file, newconfig) == 0)
+        if (_tcsicmp(o.conn[i].config_file, newconfig) == 0)
             return true;
     }
     return false;
@@ -75,7 +75,7 @@ ConfigAlreadyExists(TCHAR *newconfig)
 static void
 AddConfigFileToList(int config, TCHAR *filename, TCHAR *config_dir)
 {
-    connection_t *conn = &o.cnn[config];
+    connection_t *conn = &o.conn[config];
     int i;
 
     _tcsncpy(conn->config_file, filename, _tsizeof(conn->config_file) - 1);
@@ -176,5 +176,41 @@ BuildFileList()
 
         FindClose(find_handle);
     }
+}
+
+
+/*
+ * Returns TRUE if option exist in config file.
+ */
+bool
+ConfigFileOptionExist(int config, const char *option)
+{
+    FILE *fp;
+    char line[256];
+    TCHAR path[MAX_PATH];
+
+    _tcsncpy(path, o.conn[config].config_dir, _tsizeof(path));
+    if (path[_tcslen(path) - 1] != _T('\\'))
+        _tcscat(path, _T("\\"));
+    _tcsncat(path, o.conn[config].config_file, _tsizeof(path) - _tcslen(path) - 1);
+
+    fp = _tfopen(path, _T("r"));
+    if (fp == NULL)
+    {
+        ShowLocalizedMsg(IDS_ERR_OPEN_CONFIG, path);
+        return false;
+    }
+
+    while (fgets(line, sizeof(line), fp))
+    {
+        if (strncmp(line, option, sizeof(option)) == 0)
+        {
+            fclose(fp);
+            return true;
+        }
+    }
+
+    fclose(fp);
+    return false;
 }
 

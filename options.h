@@ -2,6 +2,7 @@
  *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
+ *                2010 Heiko Hund <heikoh@users.sf.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,6 +21,9 @@
  *
  */
 
+#ifndef OPTIONS_H
+#define OPTIONS_H
+
 #include <windows.h>
 #include <time.h>
 
@@ -27,110 +31,123 @@
  * Maximum number of parameters associated with an option,
  * including the option name itself.
  */
-#define MAX_PARMS 		5
-#define MAX_CONFIGS		50	/* Max number of config-files to read. */
-#define MAX_CONFIG_SUBDIRS	50	/* Max number of subdirs to scan */
+#define MAX_PARMS           5   /* May number of parameters per option */
+#define MAX_CONFIGS         50  /* Max number of config-files to read */
+#define MAX_CONFIG_SUBDIRS  50  /* Max number of subdirs to scan for configs */
 
-/* connect_status STATES */
-#define DISCONNECTED		0
-#define CONNECTING		1
-#define CONNECTED		2
-#define RECONNECTING		3
-#define DISCONNECTING		4
-#define SUSPENDING		5
-#define SUSPENDED		6
 
-/* OpenVPN Service STATES */
-#define SERVICE_NOACCESS       -1
-#define SERVICE_DISCONNECTED	0
-#define SERVICE_CONNECTING	1
-#define	SERVICE_CONNECTED	2
+/* connection states */
+typedef enum {
+    disconnected,
+    connecting,
+    reconnecting,
+    connected,
+    disconnecting,
+    suspending,
+    suspended
+} conn_state_t;
 
 /* Connections parameters */
-typedef struct
-{
-  TCHAR config_file[MAX_PATH]; 	/* Name of the config file */
-  TCHAR config_name[MAX_PATH];	/* Name of the connection */
-  TCHAR config_dir[MAX_PATH];	/* Path to this configs dir */
-  TCHAR log_path[MAX_PATH];	/* Path to Logfile */
-  TCHAR ip[16];			/* Assigned IP address for this connection */
-  TCHAR exit_event_name[50];	/* Exit Event name for this connection */
-  int connect_status;		/* 0=Not Connected 1=Connecting 
-                                   2=Connected 3=Reconnecting 4=Disconnecting */
-  int auto_connect;		/* true=AutoConnect at startup */
-  int failed_psw;		/* 1=OpenVPN failed because of wrong psw */
-  int failed_psw_attempts;	/* # of failed attempts maid to enter psw */
-  int restart;			/* true=Restart connection after termination */
-  time_t connected_since;	/* Time when the connection was established */
+typedef struct {
+    TCHAR config_file[MAX_PATH];    /* Name of the config file */
+    TCHAR config_name[MAX_PATH];    /* Name of the connection */
+    TCHAR config_dir[MAX_PATH];     /* Path to this configs dir */
+    TCHAR log_path[MAX_PATH];       /* Path to Logfile */
+    TCHAR ip[16];                   /* Assigned IP address for this connection */
+    TCHAR exit_event_name[50];      /* Exit Event name for this connection */
+    BOOL auto_connect;              /* AutoConnect at startup id TRUE */
+    BOOL restart;                   /* Restart connection after termination if TRUE*/
+    BOOL failed_psw;                /* TRUE if OpenVPN failed because of wrong psw */
+    conn_state_t state;             /* State the connection currently is in */
+    int failed_psw_attempts;        /* # of failed attempts made to enter psw */
+    time_t connected_since;         /* Time when the connection was established */
 
-  HANDLE exit_event;
-  HANDLE hProcess;
-  HANDLE hStdOut;
-  HANDLE hStdIn;
-  HWND hwndStatus;		/* Handle to Status Dialog Window */
+    HANDLE exit_event;
+    HANDLE hProcess;
+    HANDLE hStdOut;
+    HANDLE hStdIn;
+    HWND hwndStatus;
 } connection_t;
 
+
+typedef enum {
+    service_noaccess     = -1,
+    service_disconnected =  0,
+    service_connecting   =  1,
+    service_connected    =  2
+} service_state_t;
+
+typedef enum {
+    config,
+    browser,
+    manual
+} proxy_source_t;
+
+typedef enum {
+    http,
+    socks
+} proxy_t;
+
 /* All options used within OpenVPN GUI */
-struct options
-{
-  /* Array of configs to autostart */
-  const TCHAR *auto_connect[MAX_CONFIGS];
+typedef struct {
+    /* Array of configs to autostart */
+    const TCHAR *auto_connect[MAX_CONFIGS];
 
-  /* Connection parameters */
-  connection_t cnn[MAX_CONFIGS];  /* Connection structure */
-  int num_configs;			/* Number of configs */
+    /* Connection parameters */
+    connection_t conn[MAX_CONFIGS];   /* Connection structure */
+    int num_configs;                  /* Number of configs */
 
-  int oldversion;			/* 1=OpenVPN version below 2.0-beta6 */
-  char connect_string[100];		/* String to look for to report connected */
-  int psw_attempts;			/* Number of psw attemps to allow */
-  int connectscript_timeout;		/* Connect Script execution timeout (sec) */
-  int disconnectscript_timeout;		/* Disconnect Script execution timeout (sec) */
-  int preconnectscript_timeout;		/* Preconnect Script execution timeout (sec) */
-  int service_running;			/* true if OpenVPN Service is started */
-  HWND hWnd;				/* Main Window Handle */
-  HINSTANCE hInstance;
+    BOOL oldversion;                  /* OpenVPN version below 2.0-beta6 if TRUE */
+    service_state_t service_state;    /* State of the OpenVPN Service */
+    char connect_string[100];         /* String to look for to report connected */
+    int psw_attempts;                 /* Number of psw attemps to allow */
+    int connectscript_timeout;        /* Connect Script execution timeout (sec) */
+    int disconnectscript_timeout;     /* Disconnect Script execution timeout (sec) */
+    int preconnectscript_timeout;     /* Preconnect Script execution timeout (sec) */
 
-  /* Registry values */
-  TCHAR exe_path[MAX_PATH];
-  TCHAR config_dir[MAX_PATH];
-  TCHAR ext_string[16];
-  TCHAR log_dir[MAX_PATH];
-  TCHAR priority_string[64];
-  TCHAR append_string[2];
-  TCHAR log_viewer[MAX_PATH];
-  TCHAR editor[MAX_PATH];
-  TCHAR allow_edit[2];
-  TCHAR allow_service[2];
-  TCHAR allow_password[2];
-  TCHAR allow_proxy[2];
-  TCHAR silent_connection[2];
-  TCHAR service_only[2];
-  TCHAR show_balloon[2];
-  TCHAR show_script_window[2];
-  TCHAR psw_attempts_string[2];
-  TCHAR disconnect_on_suspend[2];
-  TCHAR connectscript_timeout_string[4];
-  TCHAR disconnectscript_timeout_string[4];
-  TCHAR preconnectscript_timeout_string[4];
+    /* Proxy Settings */
+    proxy_source_t proxy_source;      /* Where to get proxy information from */
+    proxy_t proxy_type;               /* The type of proxy to use */
+    BOOL proxy_http_auth;             /* TRUE is proxy authentication is used */
+    TCHAR proxy_http_address[100];    /* HTTP Proxy Address */
+    TCHAR proxy_http_port[6];         /* HTTP Proxy Port */
+    TCHAR proxy_socks_address[100];   /* SOCKS Proxy Address */
+    TCHAR proxy_socks_port[6];        /* SOCKS Proxy Address */
+    TCHAR proxy_authfile[100];        /* Path to proxy auth file */
 
-  /* Proxy Settings */
-  int proxy_source;			/* 0=OpenVPN config, 1=IE, 2=Manual */
-  int proxy_type;			/* 0=HTTP, 1=SOCKS */
-  int proxy_http_auth;			/* 0=Auth Disabled, 1=Auth Enabled */
-  TCHAR proxy_http_address[100];		/* HTTP Proxy Address */
-  TCHAR proxy_http_port[6];		/* HTTP Proxy Port */
-  TCHAR proxy_socks_address[100];	/* SOCKS Proxy Address */
-  TCHAR proxy_socks_port[6];		/* SOCKS Proxy Address */
-  TCHAR proxy_authfile[100];		/* Path to proxy auth file */ 
+    /* Registry values */
+    TCHAR exe_path[MAX_PATH];
+    TCHAR config_dir[MAX_PATH];
+    TCHAR ext_string[16];
+    TCHAR log_dir[MAX_PATH];
+    TCHAR priority_string[64];
+    TCHAR append_string[2];
+    TCHAR log_viewer[MAX_PATH];
+    TCHAR editor[MAX_PATH];
+    TCHAR allow_edit[2];
+    TCHAR allow_service[2];
+    TCHAR allow_password[2];
+    TCHAR allow_proxy[2];
+    TCHAR silent_connection[2];
+    TCHAR service_only[2];
+    TCHAR show_balloon[2];
+    TCHAR show_script_window[2];
+    TCHAR psw_attempts_string[2];
+    TCHAR disconnect_on_suspend[2];
+    TCHAR connectscript_timeout_string[4];
+    TCHAR disconnectscript_timeout_string[4];
+    TCHAR preconnectscript_timeout_string[4];
 
-  /* Debug file pointer */
 #ifdef DEBUG
-  FILE *debug_fp;
+    FILE *debug_fp;
 #endif
-};
 
-#define streq(x, y) (!_tcscmp((x), (y)))
-void init_options (struct options *o);
-int Createargcargv(struct options* options, TCHAR* command_line);
-void parse_argv (struct options* options, int argc, TCHAR *argv[]);
-int ConfigFileOptionExist(int config, const char *option);
+    HWND hWnd;
+    HINSTANCE hInstance;
+} options_t;
+
+void InitOptions(options_t *);
+void ProcessCommandLine(options_t *, TCHAR *);
+int CountConnState(conn_state_t);
+
+#endif

@@ -54,7 +54,7 @@ TCHAR szClassName[ ] = _T("OpenVPN-GUI");
 TCHAR szTitleText[ ] = _T("OpenVPN");
 
 /* Options structure */
-struct options o;
+options_t o;
 
 int WINAPI WinMain (HINSTANCE hThisInstance,
                     UNUSED HINSTANCE hPrevInstance,
@@ -68,7 +68,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
 
 
   /* initialize options to default state */
-  init_options (&o);
+  InitOptions(&o);
 
 #ifdef DEBUG
   /* Open debug file for output */
@@ -109,7 +109,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
 
 
   /* Parse command-line options */
-  Createargcargv(&o, GetCommandLine());
+  ProcessCommandLine(&o, GetCommandLine());
 
   /* Check if a previous instance is already running. */
   if ((FindWindow (szClassName, NULL)) != NULL)
@@ -224,7 +224,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         StopOpenVPN(LOWORD(wParam) - IDM_DISCONNECTMENU);
       }
       if ( (LOWORD(wParam) >= IDM_STATUSMENU) && (LOWORD(wParam) < IDM_STATUSMENU + MAX_CONFIGS) ) {
-        ShowWindow(o.cnn[LOWORD(wParam) - IDM_STATUSMENU].hwndStatus, SW_SHOW);
+        ShowWindow(o.conn[LOWORD(wParam) - IDM_STATUSMENU].hwndStatus, SW_SHOW);
       }
       if ( (LOWORD(wParam) >= IDM_VIEWLOGMENU) && (LOWORD(wParam) < IDM_VIEWLOGMENU + MAX_CONFIGS) ) {
         ViewLog(LOWORD(wParam) - IDM_VIEWLOGMENU);
@@ -281,13 +281,13 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
               /* Suspend running connections */
               for (i=0; i<o.num_configs; i++)
                 {
-                  if (o.cnn[i].connect_status == CONNECTED)
+                  if (o.conn[i].state == connected)
                 SuspendOpenVPN(i);
                 }
 
               /* Wait for all connections to suspend */
               for (i=0; i<10; i++, Sleep(500))
-                if (CountConnectedState(SUSPENDING) == 0) break;
+                if (CountConnState(suspending) == 0) break;
             }
           return FALSE;
 
@@ -296,11 +296,11 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
           for (i=0; i<o.num_configs; i++)
             {
               /* Restart suspend connections */
-              if (o.cnn[i].connect_status == SUSPENDED)
+              if (o.conn[i].state == suspended)
                 StartOpenVPN(i);
 
               /* If some connection never reached SUSPENDED state */
-              if (o.cnn[i].connect_status == SUSPENDING)
+              if (o.conn[i].state == suspending)
                 StopOpenVPN(i);
             }
           return FALSE;
@@ -392,7 +392,7 @@ void CloseApplication(HWND hwnd)
 {
   int i, ask_exit=0;
 
-  if (o.service_running == SERVICE_CONNECTED)
+  if (o.service_state == service_connected)
     {
       if (MessageBox(NULL, LoadLocalizedString(IDS_NFO_SERVICE_ACTIVE_EXIT), _T("Exit OpenVPN"), MB_YESNO) == IDNO)
         {
@@ -401,7 +401,7 @@ void CloseApplication(HWND hwnd)
     }
 
   for (i=0; i < o.num_configs; i++) {
-    if (o.cnn[i].connect_status != 0) {
+    if (o.conn[i].state != disconnected) {
       ask_exit=1;
       break;
     }

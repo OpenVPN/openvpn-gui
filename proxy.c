@@ -33,7 +33,7 @@
 #include "openvpn-gui-res.h"
 #include "localization.h"
 
-extern struct options o;
+extern options_t o;
 
 bool CALLBACK ProxySettingsDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPARAM lParam)
 {
@@ -181,7 +181,7 @@ int CheckProxySettings(HWND hwndDlg)
 void LoadProxySettings(HWND hwndDlg)
 {
   /* Set Proxy type, address and port */
-  if (o.proxy_type == 0)  /* HTTP Proxy */
+  if (o.proxy_type == http)  /* HTTP Proxy */
     {
       CheckRadioButton(hwndDlg, ID_RB_PROXY_HTTP, ID_RB_PROXY_SOCKS, ID_RB_PROXY_HTTP);
       SetDlgItemText(hwndDlg, ID_EDT_PROXY_ADDRESS, o.proxy_http_address);
@@ -197,11 +197,11 @@ void LoadProxySettings(HWND hwndDlg)
   if (o.proxy_http_auth) CheckDlgButton(hwndDlg, ID_CB_PROXY_AUTH, BST_CHECKED);
 
   /* Set Proxy Settings Source */
-  if (o.proxy_source == 0)
+  if (o.proxy_source == config)
     SendMessage(GetDlgItem(hwndDlg, ID_RB_PROXY_OPENVPN), BM_CLICK, 0, 0);
-  if (o.proxy_source == 1)
+  if (o.proxy_source == browser)
     SendMessage(GetDlgItem(hwndDlg, ID_RB_PROXY_MSIE), BM_CLICK, 0, 0);
-  if (o.proxy_source == 2)
+  if (o.proxy_source == manual)
     SendMessage(GetDlgItem(hwndDlg, ID_RB_PROXY_MANUAL), BM_CLICK, 0, 0);
 }
 
@@ -216,24 +216,24 @@ void SaveProxySettings(HWND hwndDlg)
   /* Save Proxy Settings Source */
   if (IsDlgButtonChecked(hwndDlg, ID_RB_PROXY_OPENVPN) == BST_CHECKED)
     {
-      o.proxy_source = 0;
+      o.proxy_source = config;
       proxy_source_string[0] = _T('0');
     }
   if (IsDlgButtonChecked(hwndDlg, ID_RB_PROXY_MSIE) == BST_CHECKED)
     {
-      o.proxy_source = 1;
+      o.proxy_source = browser;
       proxy_source_string[0] = _T('1');
     }
   if (IsDlgButtonChecked(hwndDlg, ID_RB_PROXY_MANUAL) == BST_CHECKED)
     {
-      o.proxy_source = 2;
+      o.proxy_source = manual;
       proxy_source_string[0] = _T('2');
     }
 
   /* Save Proxy type, address and port */
   if (IsDlgButtonChecked(hwndDlg, ID_RB_PROXY_HTTP) == BST_CHECKED)
     {
-      o.proxy_type = 0;
+      o.proxy_type = http;
       proxy_type_string[0] = _T('0');
 
       GetDlgItemText(hwndDlg, ID_EDT_PROXY_ADDRESS, o.proxy_http_address, 
@@ -247,7 +247,7 @@ void SaveProxySettings(HWND hwndDlg)
     }
   else
     {
-      o.proxy_type = 1;
+      o.proxy_type = socks;
       proxy_type_string[0] = _T('1');
 
       GetDlgItemText(hwndDlg, ID_EDT_PROXY_ADDRESS, o.proxy_socks_address, 
@@ -332,17 +332,17 @@ void GetProxyRegistrySettings()
                    _tsizeof(proxy_http_auth_string));
 
   if (proxy_source_string[0] == _T('1'))
-    o.proxy_source=1;
+    o.proxy_source = config;
   if (proxy_source_string[0] == _T('2'))
-    o.proxy_source=2;
+    o.proxy_source = browser;
   if (proxy_source_string[0] == _T('3'))
-    o.proxy_source=3;
+    o.proxy_source = manual;
 
   if (proxy_type_string[0] == _T('1'))
-    o.proxy_type=1;
+    o.proxy_type = socks;
 
   if (proxy_http_auth_string[0] == _T('1'))
-    o.proxy_http_auth=1;
+    o.proxy_http_auth = TRUE;
 
   RegCloseKey(regkey);
 }
@@ -467,11 +467,11 @@ void ConstructProxyCmdLine(TCHAR *proxy_string_ptr, unsigned int size)
 
   CLEAR(proxy_string);
 
-  if (o.proxy_source == PROXY_SOURCE_MANUAL)
+  if (o.proxy_source == manual)
     {
-      if (o.proxy_type == PROXY_TYPE_HTTP)
+      if (o.proxy_type == http)
         {
-          if (o.proxy_http_auth == PROXY_HTTP_ASK_AUTH)
+          if (o.proxy_http_auth)
             {
               /* Ask for Proxy username/password */
               LocalizedDialogBox(ID_DLG_PROXY_AUTH, ProxyAuthDialogFunc);
@@ -487,7 +487,7 @@ void ConstructProxyCmdLine(TCHAR *proxy_string_ptr, unsigned int size)
                            o.proxy_http_port);
             }
         }
-      if (o.proxy_type == PROXY_TYPE_SOCKS)
+      if (o.proxy_type == socks)
         {
           _sntprintf_0(proxy_string, _T("--socks-proxy %s %s"),
                        o.proxy_socks_address,
@@ -495,7 +495,7 @@ void ConstructProxyCmdLine(TCHAR *proxy_string_ptr, unsigned int size)
         }
     }
 
-  else if (o.proxy_source == PROXY_SOURCE_IE)
+  else if (o.proxy_source == browser)
     {
       TCHAR host[64];
       TCHAR port[6];
@@ -504,7 +504,7 @@ void ConstructProxyCmdLine(TCHAR *proxy_string_ptr, unsigned int size)
 
       if (GetIeHttpProxy(host, &hostlen, port, &portlen) && hostlen != 0)
         {
-          if (o.proxy_http_auth == PROXY_HTTP_ASK_AUTH)
+          if (o.proxy_http_auth)
             {
               /* Ask for Proxy username/password */
               LocalizedDialogBox(ID_DLG_PROXY_AUTH, ProxyAuthDialogFunc);

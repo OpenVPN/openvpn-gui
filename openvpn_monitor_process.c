@@ -38,7 +38,7 @@
 #include "tray.h"
 #include "localization.h"
 
-extern struct options o;
+extern options_t o;
 
 /* Wait for a complete line (CR/LF) and return it.
  * Return values:
@@ -203,29 +203,29 @@ void monitor_openvpnlog_while_connecting(int config, char *line)
       RunConnectScript(config, false);
 
       /* Save time when we got connected. */
-      o.cnn[config].connected_since = time(NULL);
+      o.conn[config].connected_since = time(NULL);
 
-      o.cnn[config].connect_status = CONNECTED;
-      SetMenuStatus(config, CONNECTED);
-      SetTrayIcon(CONNECTED);
+      o.conn[config].state = connected;
+      SetMenuStatus(config, connected);
+      SetTrayIcon(connected);
 
       /* Remove Proxy Auth file */
       DeleteFile(o.proxy_authfile);
 
       /* Zero psw attempt counter */
-      o.cnn[config].failed_psw_attempts = 0;
+      o.conn[config].failed_psw_attempts = 0;
 
       /* UserInfo: Connected */
-      SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONNECTED)); 
-      SetStatusWinIcon(o.cnn[config].hwndStatus, ID_ICO_CONNECTED);
+      SetDlgItemText(o.conn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONNECTED));
+      SetStatusWinIcon(o.conn[config].hwndStatus, ID_ICO_CONNECTED);
 
       /* Show Tray Balloon msg */
       if (o.show_balloon[0] != '0')
         {
-          LoadLocalizedStringBuf(msg, _tsizeof(msg), IDS_NFO_NOW_CONNECTED, o.cnn[config].config_name);
-          if (_tcslen(o.cnn[config].ip) > 0)
+          LoadLocalizedStringBuf(msg, _tsizeof(msg), IDS_NFO_NOW_CONNECTED, o.conn[config].config_name);
+          if (_tcslen(o.conn[config].ip) > 0)
             {
-              ShowTrayBalloon(msg, LoadLocalizedString(IDS_NFO_ASSIGN_IP, o.cnn[config].ip));
+              ShowTrayBalloon(msg, LoadLocalizedString(IDS_NFO_ASSIGN_IP, o.conn[config].ip));
             }
           else
             {
@@ -234,7 +234,7 @@ void monitor_openvpnlog_while_connecting(int config, char *line)
         }
 
       /* Hide Status Window */
-      ShowWindow(o.cnn[config].hwndStatus, SW_HIDE);
+      ShowWindow(o.conn[config].hwndStatus, SW_HIDE);
     }
 
   /* Check for failed passphrase log message */
@@ -244,9 +244,9 @@ void monitor_openvpnlog_while_connecting(int config, char *line)
        (strstr(line, "Received AUTH_FAILED control message") != NULL) ||
        (strstr(line, "Auth username is empty") != NULL))
     {
-      o.cnn[config].failed_psw_attempts++;
-      o.cnn[config].failed_psw=1;
-      o.cnn[config].restart=true;
+      o.conn[config].failed_psw_attempts++;
+      o.conn[config].failed_psw=1;
+      o.conn[config].restart=true;
     }
 
   /* Check for "certificate has expired" message */
@@ -280,10 +280,10 @@ void monitor_openvpnlog_while_connecting(int config, char *line)
 
 #ifdef _UNICODE
       /* Convert the IP address to Unicode */
-      o.cnn[config].ip[0] = _T('\0');
-      MultiByteToWideChar(CP_ACP, 0, ip_addr, -1, o.cnn[config].ip, _tsizeof(o.cnn[config].ip));
+      o.conn[config].ip[0] = _T('\0');
+      MultiByteToWideChar(CP_ACP, 0, ip_addr, -1, o.conn[config].ip, _tsizeof(o.conn[config].ip));
 #else
-      strncpy(o.cnn[config].ip, ip_addr, sizeof(o.cnn[config].ip));
+      strncpy(o.conn[config].ip, ip_addr, sizeof(o.conn[config].ip));
 #endif
     }
 }
@@ -298,12 +298,12 @@ void monitor_openvpnlog_while_connected(int config, char *line)
   if (strstr(line, "process restarting") != NULL)
     {
       /* Set connect_status = ReConnecting */
-      o.cnn[config].connect_status = RECONNECTING;
+      o.conn[config].state = reconnecting;
       CheckAndSetTrayIcon();
 
       /* Set Status Window Controls "ReConnecting" */
-      SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_RECONNECTING)); 
-      SetStatusWinIcon(o.cnn[config].hwndStatus, ID_ICO_CONNECTING);
+      SetDlgItemText(o.conn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_RECONNECTING));
+      SetStatusWinIcon(o.conn[config].hwndStatus, ID_ICO_CONNECTING);
     }
 }
 
@@ -319,20 +319,20 @@ void monitor_openvpnlog_while_reconnecting(int config, char *line)
   /* Check for Connected message */
   if (strstr(line, o.connect_string) != NULL)
     {
-      o.cnn[config].connect_status = CONNECTED;
-      SetTrayIcon(CONNECTED);
+      o.conn[config].state = connected;
+      SetTrayIcon(connected);
 
       /* Set Status Window Controls "Connected" */
-      SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONNECTED)); 
-      SetStatusWinIcon(o.cnn[config].hwndStatus, ID_ICO_CONNECTED);
+      SetDlgItemText(o.conn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONNECTED));
+      SetStatusWinIcon(o.conn[config].hwndStatus, ID_ICO_CONNECTED);
 
       /* Show Tray Balloon msg */
       if (o.show_balloon[0] == '2')
         {
-          LoadLocalizedStringBuf(msg, _tsizeof(msg), IDS_NFO_NOW_CONNECTED, o.cnn[config].config_name);
-          if (_tcslen(o.cnn[config].ip) > 0)
+          LoadLocalizedStringBuf(msg, _tsizeof(msg), IDS_NFO_NOW_CONNECTED, o.conn[config].config_name);
+          if (_tcslen(o.conn[config].ip) > 0)
             {
-              ShowTrayBalloon(msg, LoadLocalizedString(IDS_NFO_ASSIGN_IP, o.cnn[config].ip));
+              ShowTrayBalloon(msg, LoadLocalizedString(IDS_NFO_ASSIGN_IP, o.conn[config].ip));
             }
           else
             {
@@ -348,9 +348,9 @@ void monitor_openvpnlog_while_reconnecting(int config, char *line)
        (strstr(line, "Received AUTH_FAILED control message") != NULL) ||
        (strstr(line, "Auth username is empty") != NULL))
     {
-      o.cnn[config].failed_psw_attempts++;
-      o.cnn[config].failed_psw=1;
-      o.cnn[config].restart=true;
+      o.conn[config].failed_psw_attempts++;
+      o.conn[config].failed_psw=1;
+      o.conn[config].restart=true;
     }
 
   /* Check for "certificate has expired" message */
@@ -384,10 +384,10 @@ void monitor_openvpnlog_while_reconnecting(int config, char *line)
 
 #ifdef _UNICODE
       /* Convert the IP address to Unicode */
-      o.cnn[config].ip[0] = _T('\0');
-      MultiByteToWideChar(CP_ACP, 0, ip_addr, -1, o.cnn[config].ip, _tsizeof(o.cnn[config].ip));
+      o.conn[config].ip[0] = _T('\0');
+      MultiByteToWideChar(CP_ACP, 0, ip_addr, -1, o.conn[config].ip, _tsizeof(o.conn[config].ip));
 #else
-      strncpy(o.cnn[config].ip, ip_addr, sizeof(o.cnn[config].ip));
+      strncpy(o.conn[config].ip, ip_addr, sizeof(o.conn[config].ip));
 #endif
     }
 }
@@ -416,25 +416,25 @@ void WatchOpenVPNProcess(int config)
     filemode[0] = _T('a');
 
   /* Set Connect_Status = "Connecting" */
-  o.cnn[config].connect_status = CONNECTING;
+  o.conn[config].state = connecting;
  
   /* Set Tray Icon = "Connecting" if no other connections are running */
   CheckAndSetTrayIcon();
 
   /* Set MenuStatus = "Connecting" */
-  SetMenuStatus(config, CONNECTING);
+  SetMenuStatus(config, connecting);
   
   /* Clear failed_password flag */
-  o.cnn[config].failed_psw = 0;
+  o.conn[config].failed_psw = 0;
 
   /* Open log file */
-  if ((fd=_tfopen(o.cnn[config].log_path, filemode)) == NULL)
-    ShowLocalizedMsg(IDS_ERR_OPEN_LOG_WRITE, o.cnn[config].log_path);
+  if ((fd=_tfopen(o.conn[config].log_path, filemode)) == NULL)
+    ShowLocalizedMsg(IDS_ERR_OPEN_LOG_WRITE, o.conn[config].log_path);
 
-  LogWindow = GetDlgItem(o.cnn[config].hwndStatus, ID_EDT_LOG);
+  LogWindow = GetDlgItem(o.conn[config].hwndStatus, ID_EDT_LOG);
   while(TRUE)
     {
-      if ((ret=ReadLineFromStdOut(o.cnn[config].hStdOut, config, line)) == 1)
+      if ((ret=ReadLineFromStdOut(o.conn[config].hStdOut, config, line)) == 1)
         {
 
           /* Do nothing if line length = 0 */
@@ -469,13 +469,13 @@ void WatchOpenVPNProcess(int config)
           SendMessage(LogWindow, EM_REPLACESEL, FALSE, (LPARAM) line);
 #endif
 
-          if (o.cnn[config].connect_status == CONNECTING) /* Connecting state */
+          if (o.conn[config].state == connecting) /* Connecting state */
             monitor_openvpnlog_while_connecting(config, line);
 
-          if (o.cnn[config].connect_status == CONNECTED) /* Connected state */
+          if (o.conn[config].state == connected) /* Connected state */
             monitor_openvpnlog_while_connected(config, line);
 
-          if (o.cnn[config].connect_status == RECONNECTING) /* ReConnecting state */
+          if (o.conn[config].state == reconnecting) /* ReConnecting state */
             monitor_openvpnlog_while_reconnecting(config, line);
         }
       else break;
@@ -489,56 +489,56 @@ void WatchOpenVPNProcess(int config)
   if (fd != NULL) fclose(fd);
 
   /* Close StdIn/StdOut handles */
-  CloseHandle(o.cnn[config].hStdIn);
-  CloseHandle(o.cnn[config].hStdOut);
+  CloseHandle(o.conn[config].hStdIn);
+  CloseHandle(o.conn[config].hStdOut);
 
   /* Close exitevent handle */
-  CloseHandle(o.cnn[config].exit_event);
-  o.cnn[config].exit_event = NULL;    
+  CloseHandle(o.conn[config].exit_event);
+  o.conn[config].exit_event = NULL;
 
   /* Enable/Disable menuitems for this connections */
-  SetMenuStatus(config, DISCONNECTING);
+  SetMenuStatus(config, disconnecting);
 
   /* Remove Proxy Auth file */
   DeleteFile(o.proxy_authfile);
 
   /* Process died outside our control */
-  if(o.cnn[config].connect_status == CONNECTED)		
+  if(o.conn[config].state == connected)
     {
       /* Zero psw attempt counter */
-      o.cnn[config].failed_psw_attempts = 0;
+      o.conn[config].failed_psw_attempts = 0;
 
       /* Set connect_status = "Not Connected" */
-      o.cnn[config].connect_status=DISCONNECTED;
+      o.conn[config].state=disconnected;
 
       /* Change tray icon if no more connections is running */
       CheckAndSetTrayIcon();
 
       /* Show Status Window */
-      SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_DISCONNECTED)); 
-      SetStatusWinIcon(o.cnn[config].hwndStatus, ID_ICO_DISCONNECTED);
-      EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_DISCONNECT), FALSE);
-      EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_RESTART), FALSE);
-      SetForegroundWindow(o.cnn[config].hwndStatus);
-      ShowWindow(o.cnn[config].hwndStatus, SW_SHOW);
-      ShowLocalizedMsg(IDS_NFO_CONN_TERMINATED, o.cnn[config].config_name);
+      SetDlgItemText(o.conn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_DISCONNECTED));
+      SetStatusWinIcon(o.conn[config].hwndStatus, ID_ICO_DISCONNECTED);
+      EnableWindow(GetDlgItem(o.conn[config].hwndStatus, ID_DISCONNECT), FALSE);
+      EnableWindow(GetDlgItem(o.conn[config].hwndStatus, ID_RESTART), FALSE);
+      SetForegroundWindow(o.conn[config].hwndStatus);
+      ShowWindow(o.conn[config].hwndStatus, SW_SHOW);
+      ShowLocalizedMsg(IDS_NFO_CONN_TERMINATED, o.conn[config].config_name);
 
       /* Close Status Window */
-      SendMessage(o.cnn[config].hwndStatus, WM_CLOSE, 0, 0);
+      SendMessage(o.conn[config].hwndStatus, WM_CLOSE, 0, 0);
     }
 
   /* We have failed to connect */
-  else if(o.cnn[config].connect_status == CONNECTING)	
+  else if(o.conn[config].state == connecting)
     {
 
       /* Set connect_status = "DisConnecting" */
-      o.cnn[config].connect_status=DISCONNECTING;
+      o.conn[config].state=disconnecting;
 
       /* Change tray icon if no more connections is running */
       CheckAndSetTrayIcon();
 
-      if ((o.cnn[config].failed_psw) && 
-          (o.cnn[config].failed_psw_attempts < o.psw_attempts))
+      if ((o.conn[config].failed_psw) &&
+          (o.conn[config].failed_psw_attempts < o.psw_attempts))
         {
           /* Restart OpenVPN to make another attempt to connect */
           PostMessage(o.hWnd, WM_COMMAND, (WPARAM) IDM_CONNECTMENU + config, 0);
@@ -546,42 +546,42 @@ void WatchOpenVPNProcess(int config)
       else
         {
           /* Show Status Window */
-          SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_FAILED)); 
-          SetStatusWinIcon(o.cnn[config].hwndStatus, ID_ICO_DISCONNECTED);
-          EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_DISCONNECT), FALSE);
-          EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_RESTART), FALSE);
-          SetForegroundWindow(o.cnn[config].hwndStatus);
-          ShowWindow(o.cnn[config].hwndStatus, SW_SHOW);
+          SetDlgItemText(o.conn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_FAILED));
+          SetStatusWinIcon(o.conn[config].hwndStatus, ID_ICO_DISCONNECTED);
+          EnableWindow(GetDlgItem(o.conn[config].hwndStatus, ID_DISCONNECT), FALSE);
+          EnableWindow(GetDlgItem(o.conn[config].hwndStatus, ID_RESTART), FALSE);
+          SetForegroundWindow(o.conn[config].hwndStatus);
+          ShowWindow(o.conn[config].hwndStatus, SW_SHOW);
 
           /* Zero psw attempt counter */
-          o.cnn[config].failed_psw_attempts = 0;
+          o.conn[config].failed_psw_attempts = 0;
 
-          ShowLocalizedMsg(IDS_NFO_CONN_FAILED, o.cnn[config].config_name);
+          ShowLocalizedMsg(IDS_NFO_CONN_FAILED, o.conn[config].config_name);
 
           /* Set connect_status = "Not Connected" */
-          o.cnn[config].connect_status=DISCONNECTED;
+          o.conn[config].state=disconnected;
 
           /* Close Status Window */
-          SendMessage(o.cnn[config].hwndStatus, WM_CLOSE, 0, 0);
+          SendMessage(o.conn[config].hwndStatus, WM_CLOSE, 0, 0);
 
           /* Reset restart flag */
-          o.cnn[config].restart=false;
+          o.conn[config].restart=false;
 
         }
     }
 
   /* We have failed to reconnect */
-  else if(o.cnn[config].connect_status == RECONNECTING)	
+  else if(o.conn[config].state == reconnecting)
     {
 
       /* Set connect_status = "DisConnecting" */
-      o.cnn[config].connect_status=DISCONNECTING;
+      o.conn[config].state=disconnecting;
 
       /* Change tray icon if no more connections is running */
       CheckAndSetTrayIcon();
 
-      if ((o.cnn[config].failed_psw) && 
-          (o.cnn[config].failed_psw_attempts < o.psw_attempts))
+      if ((o.conn[config].failed_psw) &&
+          (o.conn[config].failed_psw_attempts < o.psw_attempts))
         {
           /* Restart OpenVPN to make another attempt to connect */
           PostMessage(o.hWnd, WM_COMMAND, (WPARAM) IDM_CONNECTMENU + config, 0);
@@ -589,42 +589,42 @@ void WatchOpenVPNProcess(int config)
       else
         {
           /* Show Status Window */
-          SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_FAILED_RECONN)); 
-          SetStatusWinIcon(o.cnn[config].hwndStatus, ID_ICO_DISCONNECTED);
-          EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_DISCONNECT), FALSE);
-          EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_RESTART), FALSE);
-          SetForegroundWindow(o.cnn[config].hwndStatus);
-          ShowWindow(o.cnn[config].hwndStatus, SW_SHOW);
+          SetDlgItemText(o.conn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_FAILED_RECONN));
+          SetStatusWinIcon(o.conn[config].hwndStatus, ID_ICO_DISCONNECTED);
+          EnableWindow(GetDlgItem(o.conn[config].hwndStatus, ID_DISCONNECT), FALSE);
+          EnableWindow(GetDlgItem(o.conn[config].hwndStatus, ID_RESTART), FALSE);
+          SetForegroundWindow(o.conn[config].hwndStatus);
+          ShowWindow(o.conn[config].hwndStatus, SW_SHOW);
 
           /* Zero psw attempt counter */
-          o.cnn[config].failed_psw_attempts = 0;
+          o.conn[config].failed_psw_attempts = 0;
 
-          ShowLocalizedMsg(IDS_NFO_RECONN_FAILED, o.cnn[config].config_name);
+          ShowLocalizedMsg(IDS_NFO_RECONN_FAILED, o.conn[config].config_name);
 
           /* Set connect_status = "Not Connected" */
-          o.cnn[config].connect_status=DISCONNECTED;
+          o.conn[config].state=disconnected;
 
           /* Close Status Window */
-          SendMessage(o.cnn[config].hwndStatus, WM_CLOSE, 0, 0);
+          SendMessage(o.conn[config].hwndStatus, WM_CLOSE, 0, 0);
 
           /* Reset restart flag */
-          o.cnn[config].restart=false;
+          o.conn[config].restart=false;
         }
     }
 
   /* We have chosed to Disconnect */
-  else if(o.cnn[config].connect_status == DISCONNECTING)						
+  else if(o.conn[config].state == disconnecting)
     {
       /* Zero psw attempt counter */
-      o.cnn[config].failed_psw_attempts = 0;
+      o.conn[config].failed_psw_attempts = 0;
 
       /* Set connect_status = "Not Connected" */
-      o.cnn[config].connect_status=DISCONNECTED;
+      o.conn[config].state=disconnected;
 
       /* Change tray icon if no more connections is running */
       CheckAndSetTrayIcon();
 
-      if (o.cnn[config].restart)
+      if (o.conn[config].restart)
         {
           /* Restart OpenVPN */
           StartOpenVPN(config);
@@ -632,26 +632,26 @@ void WatchOpenVPNProcess(int config)
       else
         {
           /* Close Status Window */
-          SendMessage(o.cnn[config].hwndStatus, WM_CLOSE, 0, 0);
+          SendMessage(o.conn[config].hwndStatus, WM_CLOSE, 0, 0);
         }
     }
 
   /* We have chosed to Suspend */
-  else if(o.cnn[config].connect_status == SUSPENDING)						
+  else if(o.conn[config].state == suspending)
     {
       /* Zero psw attempt counter */
-      o.cnn[config].failed_psw_attempts = 0;
+      o.conn[config].failed_psw_attempts = 0;
 
       /* Set connect_status = "SUSPENDED" */
-      o.cnn[config].connect_status=SUSPENDED;
-      SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_SUSPENDED)); 
+      o.conn[config].state=suspended;
+      SetDlgItemText(o.conn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_SUSPENDED));
 
       /* Change tray icon if no more connections is running */
       CheckAndSetTrayIcon();
     }
 
   /* Enable/Disable menuitems for this connections */
-  SetMenuStatus(config, DISCONNECTED);
+  SetMenuStatus(config, disconnected);
 
 }
 

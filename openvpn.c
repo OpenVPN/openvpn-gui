@@ -36,6 +36,7 @@
 #include "main.h"
 #include "openvpn.h"
 #include "openvpn_monitor_process.h"
+#include "openvpn_config.h"
 #include "openvpn-gui-res.h"
 #include "options.h"
 #include "scripts.h"
@@ -44,7 +45,7 @@
 #include "passphrase.h"
 #include "localization.h"
 
-extern struct options o;
+extern options_t o;
 
 /*
  * Creates a unique exit_event name based on the 
@@ -52,15 +53,15 @@ extern struct options o;
  */
 int CreateExitEvent(int config)
 {
-  o.cnn[config].exit_event = NULL;
+  o.conn[config].exit_event = NULL;
   if (o.oldversion == 1)
     {
-      _sntprintf_0(o.cnn[config].exit_event_name, _T("openvpn_exit"));
-      o.cnn[config].exit_event = CreateEvent (NULL,
+      _sntprintf_0(o.conn[config].exit_event_name, _T("openvpn_exit"));
+      o.conn[config].exit_event = CreateEvent (NULL,
                                               TRUE, 
                                               FALSE, 
-                                              o.cnn[config].exit_event_name);
-      if (o.cnn[config].exit_event == NULL)
+                                              o.conn[config].exit_event_name);
+      if (o.conn[config].exit_event == NULL)
         {
           if (GetLastError() == ERROR_ACCESS_DENIED)
             {
@@ -70,22 +71,22 @@ int CreateExitEvent(int config)
           else
             {
               /* error creating exit event */ 
-              ShowLocalizedMsg(IDS_ERR_CREATE_EVENT, o.cnn[config].exit_event_name);
+              ShowLocalizedMsg(IDS_ERR_CREATE_EVENT, o.conn[config].exit_event_name);
             }
           return(false);
         }
     }
   else
     {
-      _sntprintf_0(o.cnn[config].exit_event_name, _T("openvpngui_exit_event_%d"), config);
-      o.cnn[config].exit_event = CreateEvent (NULL,
+      _sntprintf_0(o.conn[config].exit_event_name, _T("openvpngui_exit_event_%d"), config);
+      o.conn[config].exit_event = CreateEvent (NULL,
                                               TRUE, 
                                               FALSE, 
-                                              o.cnn[config].exit_event_name);
-      if (o.cnn[config].exit_event == NULL)
+                                              o.conn[config].exit_event_name);
+      if (o.conn[config].exit_event == NULL)
         {
           /* error creating exit event */
-          ShowLocalizedMsg(IDS_ERR_CREATE_EVENT, o.cnn[config].exit_event_name);
+          ShowLocalizedMsg(IDS_ERR_CREATE_EVENT, o.conn[config].exit_event_name);
           return(false);
         }
     }
@@ -159,8 +160,8 @@ int StartOpenVPN(int config)
     {
       for (i=0; i < o.num_configs; i++) 
         {
-          if ((o.cnn[i].connect_status != DISCONNECTED) &&
-             (o.cnn[i].connect_status != DISCONNECTING))
+          if ((o.conn[i].state != disconnected) &&
+             (o.conn[i].state != disconnecting))
             {
               is_connected=1;
               break;
@@ -183,8 +184,8 @@ int StartOpenVPN(int config)
     }
 
   /* Clear connection unique vars */
-  o.cnn[config].failed_psw = 0;
-  CLEAR (o.cnn[config].ip);
+  o.conn[config].failed_psw = 0;
+  CLEAR (o.conn[config].ip);
 
   /* Create our exit event */
   if (!CreateExitEvent(config)) 
@@ -209,13 +210,13 @@ int StartOpenVPN(int config)
   if (o.oldversion == 1)
     {
       _sntprintf_0(command_line, _T("openvpn --config \"%s\" %s"),
-                   o.cnn[config].config_file, proxy_string);
+                   o.conn[config].config_file, proxy_string);
     }
   else
     {
       _sntprintf_0(command_line, _T("openvpn --service %s 0 --config \"%s\" %s"),
-                   o.cnn[config].exit_event_name,
-                   o.cnn[config].config_file,
+                   o.conn[config].exit_event_name,
+                   o.conn[config].config_file,
                    proxy_string);
     }
 
@@ -298,7 +299,7 @@ int StartOpenVPN(int config)
     {
       /* Close Handle failed */
       ShowLocalizedMsg(IDS_ERR_CLOSE_HANDLE_TMP);
-      CloseHandle (o.cnn[config].exit_event);
+      CloseHandle (o.conn[config].exit_event);
       return(0); 
     }
   hOutputReadTmp=NULL;
@@ -323,7 +324,7 @@ int StartOpenVPN(int config)
 		     TRUE,
 		     priority | CREATE_NO_WINDOW,
 		     NULL,
-		     o.cnn[config].config_dir,
+		     o.conn[config].config_dir,
 		     &start_info,
 		     &proc_info))
     {
@@ -331,7 +332,7 @@ int StartOpenVPN(int config)
       ShowLocalizedMsg(IDS_ERR_CREATE_PROCESS,
           o.exe_path,
           command_line,
-          o.cnn[config].config_dir);
+          o.conn[config].config_dir);
       goto failed;
     }
 
@@ -347,7 +348,7 @@ int StartOpenVPN(int config)
     {
       /* CloseHandle failed */
       ShowLocalizedMsg(IDS_ERR_CLOSE_HANDLE);
-      CloseHandle (o.cnn[config].exit_event);
+      CloseHandle (o.conn[config].exit_event);
       return(false);
     }
   hOutputWrite = NULL;
@@ -355,11 +356,11 @@ int StartOpenVPN(int config)
   hErrorWrite = NULL;
  
   /* Save StdIn and StdOut handles in our options struct */
-  o.cnn[config].hStdIn = hInputWrite;
-  o.cnn[config].hStdOut = hOutputRead;
+  o.conn[config].hStdIn = hInputWrite;
+  o.conn[config].hStdOut = hOutputRead;
 
   /* Save Process Handle */
-  o.cnn[config].hProcess=proc_info.hProcess;
+  o.conn[config].hProcess=proc_info.hProcess;
 
 
   /* Start Thread to show Status Dialog */
@@ -378,7 +379,7 @@ int StartOpenVPN(int config)
   return(true); 
 
 failed:
-  if (o.cnn[config].exit_event) CloseHandle (o.cnn[config].exit_event);
+  if (o.conn[config].exit_event) CloseHandle (o.conn[config].exit_event);
   if (hOutputWrite) CloseHandle (hOutputWrite);
   if (hOutputRead) CloseHandle (hOutputRead);
   if (hInputWrite) CloseHandle (hInputWrite);
@@ -391,32 +392,32 @@ failed:
 
 void StopOpenVPN(int config)
 {
-  o.cnn[config].connect_status = DISCONNECTING;
+  o.conn[config].state = disconnecting;
   
-  if (o.cnn[config].exit_event) {
+  if (o.conn[config].exit_event) {
     /* Run Disconnect script */
     RunDisconnectScript(config, false);
 
-    EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_DISCONNECT), FALSE);
-    EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_RESTART), FALSE);
-    SetMenuStatus(config, DISCONNECTING);
+    EnableWindow(GetDlgItem(o.conn[config].hwndStatus, ID_DISCONNECT), FALSE);
+    EnableWindow(GetDlgItem(o.conn[config].hwndStatus, ID_RESTART), FALSE);
+    SetMenuStatus(config, disconnecting);
     /* UserInfo: waiting for OpenVPN termination... */
-    SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_WAIT_TERM)); 
-    SetEvent(o.cnn[config].exit_event);
+    SetDlgItemText(o.conn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_WAIT_TERM));
+    SetEvent(o.conn[config].exit_event);
   }
 }
 
 void SuspendOpenVPN(int config)
 {
-  o.cnn[config].connect_status = SUSPENDING;
-  o.cnn[config].restart = true;
+  o.conn[config].state = suspending;
+  o.conn[config].restart = true;
 
-  if (o.cnn[config].exit_event) {
-    EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_DISCONNECT), FALSE);
-    EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_RESTART), FALSE);
-    SetMenuStatus(config, DISCONNECTING);
-    SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_WAIT_TERM));
-    SetEvent(o.cnn[config].exit_event);
+  if (o.conn[config].exit_event) {
+    EnableWindow(GetDlgItem(o.conn[config].hwndStatus, ID_DISCONNECT), FALSE);
+    EnableWindow(GetDlgItem(o.conn[config].hwndStatus, ID_RESTART), FALSE);
+    SetMenuStatus(config, disconnecting);
+    SetDlgItemText(o.conn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_WAIT_TERM));
+    SetEvent(o.conn[config].exit_event);
   }
 }
 
@@ -426,13 +427,13 @@ void StopAllOpenVPN()
   int i;
  
   for(i=0; i < o.num_configs; i++) {
-    if(o.cnn[i].connect_status != DISCONNECTED)
+    if(o.conn[i].state != disconnected)
       StopOpenVPN(i);
   }
 
   /* Wait for all connections to terminate (Max 5 sec) */
   for (i=0; i<20; i++, Sleep(250))
-    if (CountConnectedState(DISCONNECTED) == o.num_configs) break;
+    if (CountConnState(disconnected) == o.num_configs) break;
 
 }
 
@@ -516,12 +517,12 @@ BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
       switch (LOWORD(wParam)) {
 
         case ID_DISCONNECT:
-          SetFocus(GetDlgItem(o.cnn[config].hwndStatus, ID_EDT_LOG));
+          SetFocus(GetDlgItem(o.conn[config].hwndStatus, ID_EDT_LOG));
           StopOpenVPN(config);
           return TRUE;
 
         case ID_HIDE:
-          if (o.cnn[config].connect_status != DISCONNECTED)
+          if (o.conn[config].state != disconnected)
             {
               ShowWindow(hwndDlg, SW_HIDE);
             }
@@ -532,8 +533,8 @@ BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
           return TRUE;
 
         case ID_RESTART:
-          SetFocus(GetDlgItem(o.cnn[config].hwndStatus, ID_EDT_LOG));
-          o.cnn[config].restart = true;
+          SetFocus(GetDlgItem(o.conn[config].hwndStatus, ID_EDT_LOG));
+          o.conn[config].restart = true;
           StopOpenVPN(config);
           return TRUE; 
       }
@@ -543,14 +544,14 @@ BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
       if (wParam == TRUE)
         {
           config = (UINT) GetProp(hwndDlg, cfgProp);
-          if (o.cnn[config].hwndStatus)
-            SetFocus(GetDlgItem(o.cnn[config].hwndStatus, ID_EDT_LOG));
+          if (o.conn[config].hwndStatus)
+            SetFocus(GetDlgItem(o.conn[config].hwndStatus, ID_EDT_LOG));
         }
       return FALSE;
 
     case WM_CLOSE:
       config = (UINT) GetProp(hwndDlg, cfgProp);
-      if (o.cnn[config].connect_status != DISCONNECTED)
+      if (o.conn[config].state != disconnected)
         {
           ShowWindow(hwndDlg, SW_HIDE);
         }
@@ -587,7 +588,7 @@ int AutoStartConnections()
 
   for (i=0; i < o.num_configs; i++)
     {
-      if (o.cnn[i].auto_connect)
+      if (o.conn[i].auto_connect)
         StartOpenVPN(i);
     }
 
@@ -604,7 +605,7 @@ int VerifyAutoConnections()
       match = false;
       for (j=0; j < MAX_CONFIGS; j++)
         {
-          if (_tcsicmp(o.cnn[j].config_file, o.auto_connect[i]) == 0)
+          if (_tcsicmp(o.conn[j].config_file, o.auto_connect[i]) == 0)
             {
               match=true;
               break;
@@ -858,42 +859,27 @@ int CheckVersion()
   return(1); 
 }
 
-/* Return num of connections with Status = CheckVal */
-int CountConnectedState(int CheckVal)
-{
-  int i;
-  int count=0;
-  
-  for (i=0; i < o.num_configs; i++)
-    {
-      if (o.cnn[i].connect_status == CheckVal)
-        count++;
-    }
-
-  return (count);
-}
-
 void CheckAndSetTrayIcon()
 {
 
   /* Show green icon if service is running */
-  if (o.service_running == SERVICE_CONNECTED)
+  if (o.service_state == service_connected)
     {
-      SetTrayIcon(CONNECTED);
+      SetTrayIcon(connected);
       return;
     }
 
   /* Change tray icon if no more connections is running */
-  if (CountConnectedState(CONNECTED) != 0)
-    SetTrayIcon(CONNECTED);
+  if (CountConnState(connected) != 0)
+    SetTrayIcon(connected);
   else
     {
-      if ((CountConnectedState(CONNECTING) != 0) || 
-          (CountConnectedState(RECONNECTING) != 0) ||
-          (o.service_running == SERVICE_CONNECTING))
-        SetTrayIcon(CONNECTING);
+      if ((CountConnState(connecting) != 0) ||
+          (CountConnState(reconnecting) != 0) ||
+          (o.service_state == service_connecting))
+        SetTrayIcon(connecting);
       else
-        SetTrayIcon(DISCONNECTED);
+        SetTrayIcon(disconnected);
     }
 }
 
@@ -905,31 +891,31 @@ void ThreadOpenVPNStatus(int config)
   MSG messages;
 
   /* Cut of extention from config filename. */
-  _tcsncpy(conn_name, o.cnn[config].config_file, _tsizeof(conn_name));
+  _tcsncpy(conn_name, o.conn[config].config_file, _tsizeof(conn_name));
   conn_name[_tcslen(conn_name) - (_tcslen(o.ext_string)+1)]=0;
 
-  if (o.cnn[config].restart)
+  if (o.conn[config].restart)
     {
       /* UserInfo: Connecting */
-      SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONNECTING)); 
-      SetStatusWinIcon(o.cnn[config].hwndStatus, ID_ICO_CONNECTING);
-      EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_DISCONNECT), TRUE);
-      EnableWindow(GetDlgItem(o.cnn[config].hwndStatus, ID_RESTART), TRUE);
-      SetFocus(GetDlgItem(o.cnn[config].hwndStatus, ID_EDT_LOG));
-      o.cnn[config].restart = false;
+      SetDlgItemText(o.conn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONNECTING));
+      SetStatusWinIcon(o.conn[config].hwndStatus, ID_ICO_CONNECTING);
+      EnableWindow(GetDlgItem(o.conn[config].hwndStatus, ID_DISCONNECT), TRUE);
+      EnableWindow(GetDlgItem(o.conn[config].hwndStatus, ID_RESTART), TRUE);
+      SetFocus(GetDlgItem(o.conn[config].hwndStatus, ID_EDT_LOG));
+      o.conn[config].restart = false;
     }
   else
     {
       /* Create and Show Status Dialog */  
-      o.cnn[config].hwndStatus = CreateLocalizedDialogParam(ID_DLG_STATUS, StatusDialogFunc, config);
-      if (!o.cnn[config].hwndStatus)
+      o.conn[config].hwndStatus = CreateLocalizedDialogParam(ID_DLG_STATUS, StatusDialogFunc, config);
+      if (!o.conn[config].hwndStatus)
         ExitThread(1);
       /* UserInfo: Connecting */
-      SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONNECTING)); 
-      SetWindowText(o.cnn[config].hwndStatus, LoadLocalizedString(IDS_NFO_CONNECTION_XXX, conn_name));
+      SetDlgItemText(o.conn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONNECTING));
+      SetWindowText(o.conn[config].hwndStatus, LoadLocalizedString(IDS_NFO_CONNECTION_XXX, conn_name));
 
       if (o.silent_connection[0]=='0')
-        ShowWindow(o.cnn[config].hwndStatus, SW_SHOW);
+        ShowWindow(o.conn[config].hwndStatus, SW_SHOW);
     }
 
 
@@ -948,7 +934,7 @@ void ThreadOpenVPNStatus(int config)
   /* Run the message loop. It will run until GetMessage() returns 0 */
   while (GetMessage (&messages, NULL, 0, 0))
     {
-      if(!IsDialogMessage(o.cnn[config].hwndStatus, &messages))
+      if(!IsDialogMessage(o.conn[config].hwndStatus, &messages))
       {
         TranslateMessage(&messages);
         DispatchMessage(&messages);

@@ -37,7 +37,7 @@
 #endif
 
 WCHAR passphrase[256];
-extern struct options o;
+extern options_t o;
 
 int ConvertUnicode2Ascii(WCHAR str_unicode[], char str_ascii[], unsigned int str_ascii_size)
 {
@@ -85,14 +85,14 @@ void CheckPrivateKeyPassphrasePrompt (char *line, int config)
           CLEAR(passphrase_ascii);
           ConvertUnicode2Ascii(passphrase, passphrase_ascii, sizeof(passphrase_ascii));
 
-          if (!WriteFile(o.cnn[config].hStdIn, passphrase_ascii,
+          if (!WriteFile(o.conn[config].hStdIn, passphrase_ascii,
                     strlen(passphrase_ascii), &nCharsWritten, NULL))
             {
               /* PassPhrase -> stdin failed */
               ShowLocalizedMsg(IDS_ERR_PASSPHRASE2STDIN);
             }
         }
-      if (!WriteFile(o.cnn[config].hStdIn, "\r\n",
+      if (!WriteFile(o.conn[config].hStdIn, "\r\n",
                         2, &nCharsWritten, NULL))
         {
           /* CR -> stdin failed */
@@ -120,7 +120,7 @@ void CheckPrivateKeyPassphrasePrompt (char *line, int config)
           CLEAR(passphrase_ascii);
           ConvertUnicode2Ascii(passphrase, passphrase_ascii, sizeof(passphrase_ascii));
 
-          if (!WriteFile(o.cnn[config].hStdIn, passphrase_ascii,
+          if (!WriteFile(o.conn[config].hStdIn, passphrase_ascii,
                     strlen(passphrase_ascii), &nCharsWritten, NULL))
             {
               /* PassPhrase -> stdin failed */
@@ -129,7 +129,7 @@ void CheckPrivateKeyPassphrasePrompt (char *line, int config)
         }
       else
         {
-          if (!WriteFile(o.cnn[config].hStdIn, "\n",
+          if (!WriteFile(o.conn[config].hStdIn, "\n",
                         1, &nCharsWritten, NULL))
             {
               /* CR -> stdin failed */
@@ -163,7 +163,7 @@ void CheckAuthUsernamePrompt (char *line, int config)
 
       if (strlen(user_auth.username) > 0)
         {
-          if (!WriteFile(o.cnn[config].hStdIn, user_auth.username,
+          if (!WriteFile(o.conn[config].hStdIn, user_auth.username,
                     strlen(user_auth.username), &nCharsWritten, NULL))
             {
               ShowLocalizedMsg(IDS_ERR_AUTH_USERNAME2STDIN);
@@ -171,7 +171,7 @@ void CheckAuthUsernamePrompt (char *line, int config)
         }
       else
         {
-          if (!WriteFile(o.cnn[config].hStdIn, "\n",
+          if (!WriteFile(o.conn[config].hStdIn, "\n",
                         1, &nCharsWritten, NULL))
             {
               ShowLocalizedMsg(IDS_ERR_CR2STDIN);
@@ -180,7 +180,7 @@ void CheckAuthUsernamePrompt (char *line, int config)
 
       if (strlen(user_auth.password) > 0)
         {
-          if (!WriteFile(o.cnn[config].hStdIn, user_auth.password,
+          if (!WriteFile(o.conn[config].hStdIn, user_auth.password,
                     strlen(user_auth.password), &nCharsWritten, NULL))
             {
               ShowLocalizedMsg(IDS_ERR_AUTH_PASSWORD2STDIN);
@@ -188,7 +188,7 @@ void CheckAuthUsernamePrompt (char *line, int config)
         }
       else
         {
-          if (!WriteFile(o.cnn[config].hStdIn, "\n",
+          if (!WriteFile(o.conn[config].hStdIn, "\n",
                         1, &nCharsWritten, NULL))
             {
               ShowLocalizedMsg(IDS_ERR_CR2STDIN);
@@ -331,7 +331,7 @@ void ChangePassphraseThread(int config)
   int keyfile_format=0;
 
   /* Cut of extention from config filename. */
-  _tcsncpy(conn_name, o.cnn[config].config_file, _tsizeof(conn_name));
+  _tcsncpy(conn_name, o.conn[config].config_file, _tsizeof(conn_name));
   conn_name[_tcslen(conn_name) - (_tcslen(o.ext_string)+1)]=0;
 
   /* Get Key filename from config file */
@@ -594,7 +594,7 @@ int ParseKeyFilenameLine(int config, TCHAR *keyfilename, size_t keyfilenamesize,
   /* Prepend filename with configdir path if needed */
   if ((keyfilename[0] != '\\') && (keyfilename[0] != '/') && (keyfilename[1] != ':'))
     {
-      _tcsncpy(temp_filename, o.cnn[config].config_dir, _tsizeof(temp_filename));
+      _tcsncpy(temp_filename, o.conn[config].config_dir, _tsizeof(temp_filename));
       if (temp_filename[_tcslen(temp_filename) - 1] != '\\')
         _tcscat(temp_filename, _T("\\"));
       _tcsncat(temp_filename, keyfilename, 
@@ -820,10 +820,10 @@ int GetKeyFilename(int config, TCHAR *keyfilename, size_t keyfilenamesize, int *
   int found_pkcs12=0;
   TCHAR configfile_path[MAX_PATH];
 
-  _tcsncpy(configfile_path, o.cnn[config].config_dir, _tsizeof(configfile_path));
+  _tcsncpy(configfile_path, o.conn[config].config_dir, _tsizeof(configfile_path));
   if (!(configfile_path[_tcslen(configfile_path)-1] == '\\'))
     _tcscat(configfile_path, _T("\\"));
-  _tcsncat(configfile_path, o.cnn[config].config_file, 
+  _tcsncat(configfile_path, o.conn[config].config_file,
           _tsizeof(configfile_path) - _tcslen(configfile_path) - 1);
 
   if (!(fp=_tfopen(configfile_path, _T("r"))))

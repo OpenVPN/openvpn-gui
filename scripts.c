@@ -29,7 +29,7 @@
 #include "options.h"
 #include "localization.h"
 
-extern struct options o;
+extern options_t o;
 
 void RunConnectScript(int config, int run_as_service)
 {
@@ -45,10 +45,10 @@ void RunConnectScript(int config, int run_as_service)
   int i, TimeOut;
 
   /* Cut of extention from config filename and add "_up.bat". */
-  _tcsncpy(batch_file, o.cnn[config].config_file, _tsizeof(batch_file));
+  _tcsncpy(batch_file, o.conn[config].config_file, _tsizeof(batch_file));
   batch_file[_tcslen(batch_file) - (_tcslen(o.ext_string)+1)]=0;
   _tcsncat(batch_file, _T("_up.bat"), _tsizeof(batch_file) - _tcslen(batch_file) - 1);
-  _sntprintf_0(command_line, _T("%s\\%s"), o.cnn[config].config_dir, batch_file);
+  _sntprintf_0(command_line, _T("%s\\%s"), o.conn[config].config_dir, batch_file);
 
   
   /* Return if no script exists */
@@ -63,7 +63,7 @@ void RunConnectScript(int config, int run_as_service)
   if (!run_as_service)
     {
       /* UserInfo: Connect Script running */
-      SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONN_SCRIPT)); 
+      SetDlgItemText(o.conn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONN_SCRIPT));
     }
 
   CLEAR (start_info);
@@ -87,7 +87,7 @@ void RunConnectScript(int config, int run_as_service)
 		     ((o.show_script_window[0] == '1') ? (DWORD) CREATE_NEW_CONSOLE : 
                                                          (DWORD) CREATE_NO_WINDOW),
 		     NULL,
-		     o.cnn[config].config_dir,	//start-up dir
+		     o.conn[config].config_dir,	//start-up dir
 		     &start_info,
 		     &proc_info))
     {
@@ -146,9 +146,9 @@ void RunDisconnectScript(int config, int run_as_service)
   int i, TimeOut;
 
   /* Append "_down.bat" to config name. */
-  _tcsncpy(batch_file, o.cnn[config].config_name, _tsizeof(batch_file));
+  _tcsncpy(batch_file, o.conn[config].config_name, _tsizeof(batch_file));
   _tcsncat(batch_file, _T("_down.bat"), _tsizeof(batch_file) - _tcslen(batch_file) - 1);
-  _sntprintf_0(command_line, _T("%s\\%s"), o.cnn[config].config_dir, batch_file);
+  _sntprintf_0(command_line, _T("%s\\%s"), o.conn[config].config_dir, batch_file);
 
   
   /* Return if no script exists */
@@ -163,7 +163,7 @@ void RunDisconnectScript(int config, int run_as_service)
   if (!run_as_service)
     {
       /* UserInfo: Disconnect Script running */
-      SetDlgItemText(o.cnn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_DISCONN_SCRIPT)); 
+      SetDlgItemText(o.conn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_DISCONN_SCRIPT));
     }
 
   CLEAR (start_info);
@@ -187,7 +187,7 @@ void RunDisconnectScript(int config, int run_as_service)
 		     ((o.show_script_window[0] == '1') ? (DWORD) CREATE_NEW_CONSOLE : 
                                                          (DWORD) CREATE_NO_WINDOW),
 		     NULL,
-		     o.cnn[config].config_dir,	//start-up dir
+		     o.conn[config].config_dir,	//start-up dir
 		     &start_info,
 		     &proc_info))
     {
@@ -226,9 +226,9 @@ void RunPreconnectScript(int config)
   int i, TimeOut;
 
   /* Append "_pre.bat" to config name. */
-  _tcsncpy(batch_file, o.cnn[config].config_name, _tsizeof(batch_file));
+  _tcsncpy(batch_file, o.conn[config].config_name, _tsizeof(batch_file));
   _tcsncat(batch_file, _T("_pre.bat"), _tsizeof(batch_file) - _tcslen(batch_file) - 1);
-  _sntprintf_0(command_line, _T("%s\\%s"), o.cnn[config].config_dir, batch_file);
+  _sntprintf_0(command_line, _T("%s\\%s"), o.conn[config].config_dir, batch_file);
 
   
   /* Return if no script exists */
@@ -261,7 +261,7 @@ void RunPreconnectScript(int config)
 		     ((o.show_script_window[0] == '1') ? (DWORD) CREATE_NEW_CONSOLE : 
                                                          (DWORD) CREATE_NO_WINDOW),
 		     NULL,
-		     o.cnn[config].config_dir,	//start-up dir
+		     o.conn[config].config_dir,	//start-up dir
 		     &start_info,
 		     &proc_info))
     {

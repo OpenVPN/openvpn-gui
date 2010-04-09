@@ -19,14 +19,6 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#define PROXY_SOURCE_OPENVPN 	0
-#define PROXY_SOURCE_IE		1
-#define PROXY_SOURCE_MANUAL	2
-#define PROXY_TYPE_HTTP		0
-#define PROXY_TYPE_SOCKS	1
-#define PROXY_HTTP_NO_AUTH	0
-#define PROXY_HTTP_ASK_AUTH	1
-
 BOOL CALLBACK ProxySettingsDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 int CheckProxySettings(HWND hwndDlg);
 void LoadProxySettings(HWND hwndDlg);

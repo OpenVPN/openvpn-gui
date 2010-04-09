@@ -19,6 +19,8 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "options.h"
+
 #define WM_NOTIFYICONTRAY (WM_APP + 1)
 
 //Popup Menu items
@@ -52,10 +54,10 @@ void  DestroyPopupMenus();			//Destroy popup menus
 void  OnNotifyTray(LPARAM lParam);		//Tray message (mouse clicks on tray icon)
 void  OnDestroyTray(void);			//WM_DESTROY message 
 void  ShowTrayIcon();				//Put app icon in systray
-void  SetTrayIcon(int connected);		//Change systray icon
+void  SetTrayIcon(conn_state_t connected);		//Change systray icon
 BOOL  LoadAppIcon();                            //Application icon
 void  CreateItemList();		                //Crate Popup menu
-void  SetMenuStatus (int config, int bCheck);   //Mark connection as connected/disconnected
+void  SetMenuStatus (int config, conn_state_t state);   //Mark connection as connected/disconnected
 void  SetServiceMenuStatus();			//Diabled Service menu items.
 void  ShowTrayBalloon(TCHAR *infotitle_msg, TCHAR *info_msg);
 

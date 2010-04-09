@@ -30,7 +30,7 @@
 #include "openvpn-gui-res.h"
 #include "localization.h"
 
-extern struct options o;
+extern options_t o;
 
 void ViewLog(int config)
 {
@@ -46,7 +46,7 @@ void ViewLog(int config)
   CLEAR (sa);
   CLEAR (sd);
 
-  _sntprintf_0(filename, _T("%s \"%s\""), o.log_viewer, o.cnn[config].log_path);
+  _sntprintf_0(filename, _T("%s \"%s\""), o.log_viewer, o.conn[config].log_path);
 
   /* fill in STARTUPINFO struct */
   GetStartupInfo(&start_info);
@@ -88,7 +88,7 @@ void EditConfig(int config)
   CLEAR (sa);
   CLEAR (sd);
 
-  _sntprintf_0(filename, _T("%s \"%s\\%s\""), o.editor, o.cnn[config].config_dir, o.cnn[config].config_file);
+  _sntprintf_0(filename, _T("%s \"%s\\%s\""), o.editor, o.conn[config].config_dir, o.conn[config].config_file);
 
   /* fill in STARTUPINFO struct */
   GetStartupInfo(&start_info);
@@ -105,7 +105,7 @@ void EditConfig(int config)
 		     TRUE,
 		     CREATE_NEW_CONSOLE,
 		     NULL,
-		     o.cnn[config].config_dir,	//start-up dir
+		     o.conn[config].config_dir,	//start-up dir
 		     &start_info,
 		     &proc_info))
     {

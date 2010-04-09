@@ -33,7 +33,7 @@
 #include "options.h"
 #include "registry.h"
 
-extern struct options o;
+extern options_t o;
 
 static const LANGID fallbackLangId = MAKELANGID(LANG_ENGLISH, SUBLANG_NEUTRAL);
 static LANGID gui_language;

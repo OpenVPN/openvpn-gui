@@ -22,6 +22,9 @@
 #ifndef OPENVPN_CONFIG_H
 #define OPENVPN_CONFIG_H
 
+#include "main.h"
+
 void BuildFileList();
+bool ConfigFileOptionExist(int, const char *);
 
 #endif

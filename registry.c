@@ -32,7 +32,7 @@
 #include "registry.h"
 #include "localization.h"
 
-extern struct options o;
+extern options_t o;
 
 int
 GetRegistryKeys()

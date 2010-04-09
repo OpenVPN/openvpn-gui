@@ -33,7 +33,6 @@ BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lP
 int AutoStartConnections();
 int VerifyAutoConnections();
 int CheckVersion();
-int CountConnectedState(int CheckVal);
 void CheckAndSetTrayIcon();
 void SetStatusWinIcon(HWND hwndDlg, int IconID);
 void ThreadOpenVPNStatus(int status) __attribute__ ((noreturn));
