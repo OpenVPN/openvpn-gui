@@ -19,8 +19,11 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#define _WIN32_IE 0x0500
+
 #include <windows.h>
 #include <windowsx.h>
+#include <commctrl.h>
 #include <prsht.h>
 #include <tchar.h>
 #include <stdio.h>
@@ -72,6 +75,7 @@ GetGUILanguage(void)
         GetRegistryValueNumeric(regkey, _T("ui_language"), &value);
 
     gui_language = ( value != 0 ? value : LANGIDFROMLCID(GetSystemDefaultLCID()) );
+    InitMUILanguage(gui_language);
     return gui_language;
 }
 
@@ -85,6 +89,7 @@ SetGUILanguage(LANGID langId)
         ShowLocalizedMsg(IDS_ERR_CREATE_REG_HKCU_KEY, GUI_REGKEY_HKCU);
 
     SetRegistryValueNumeric(regkey, _T("ui_language"), langId);
+    InitMUILanguage(langId);
     gui_language = langId;
 }
 
