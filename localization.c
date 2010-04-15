@@ -71,7 +71,7 @@ GetGUILanguage(void)
     if (status == ERROR_SUCCESS)
         GetRegistryValueNumeric(regkey, _T("ui_language"), &value);
 
-    gui_language = ( value != 0 ? value : LANGIDFROMLCID(GetThreadLocale()) );
+    gui_language = ( value != 0 ? value : LANGIDFROMLCID(GetSystemDefaultLCID()) );
     return gui_language;
 }
 
