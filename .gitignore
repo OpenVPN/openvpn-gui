@@ -5,6 +5,7 @@ config.h*
 config.log
 config.status
 configure
+*.tar.gz
 *.o
 *.exe
 *~

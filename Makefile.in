@@ -1,11 +1,9 @@
-ifndef VERSION
-	VERSION = @PACKAGE_VERSION@
-endif
-EXE = @PACKAGE_TARNAME@.exe
+SNAPSHOT = $(shell test -f SNAPSHOT && cat SNAPSHOT)
+VERSION = @PACKAGE_VERSION@$(SNAPSHOT)
+EXE = @PACKAGE_TARNAME@$(SNAPSHOT).exe
 
 CC = @CC@
 WINDRES = @WINDRES@
-ZIP = @ZIP@
 
 LDFLAGS = @CRYPTO_LDFLAGS@ @LDFLAGS@
 LIBS = @CRYPTO_LIBS@ @LIBS@
@@ -29,7 +27,7 @@ EXTRA = connected.ico connecting.ico disconnected.ico reconnecting.ico openvpn-g
         OpenVPN\ GUI\ ReadMe.txt changes.txt COPYING COPYRIGHT.GPL
 
 all : ${OBJS}
-	${CC} $(CFLAGS) $(LDFLAGS) -o ${EXE} ${OBJS} ${LIBS}
+	${CC} $(CFLAGS) $(LDFLAGS) -o $(EXE) ${OBJS} ${LIBS}
 
 %.o : %.c %.h
 	$(CC) $(CFLAGS) -c $<
@@ -38,19 +36,17 @@ openvpn-gui-res.o : openvpn-gui-res.h *.rc *.ico *.manifest
 	$(WINDRES) -i openvpn-gui-res.rc -o openvpn-gui-res.o
 
 dist:
-	@test -x "$(ZIP)" || { \
-		echo "zip(1) was not found on your system"; \
-		echo "please install and run configure again"; \
-		exit 1; \
-	}
 	rm -rf @PACKAGE_TARNAME@-*/
 	mkdir @PACKAGE_TARNAME@-$(VERSION)
 	cp $(SOURCES) $(EXTRA) @PACKAGE_TARNAME@-$(VERSION)
-	$(ZIP) -qr @PACKAGE_TARNAME@-$(VERSION).zip @PACKAGE_TARNAME@-$(VERSION)
+	test ! -f SNAPSHOT || cp SNAPSHOT openvpn-gui-$(VERSION)
+	tar -czf @PACKAGE_TARNAME@-$(VERSION).tar.gz @PACKAGE_TARNAME@-$(VERSION)
 	rm -rf @PACKAGE_TARNAME@-$(VERSION)
 
 snapshot:
-	$(MAKE) dist VERSION="$(VERSION).git`git log --format=format:"%h" HEAD -1`"
+	echo "-`date +%Y%m%d%H%M%S`" > SNAPSHOT
+	$(MAKE) dist
+	rm -f SNAPSHOT
 
 clean :
 	rm -f *.o *.exe

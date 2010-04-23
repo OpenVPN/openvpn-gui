@@ -30,7 +30,6 @@ CPPFLAGS="$CPPFLAGS -mno-cygwin"
 LDFLAGS="$LDFLAGS -mno-cygwin -mwindows"
 
 AC_PATH_PROG([WINDRES], [windres])
-AC_PATH_PROG([ZIP], [zip])
 
 AC_CHECK_HEADER([windows.h], ,
 	[AC_MSG_FAILURE([Target system must be Win32])])

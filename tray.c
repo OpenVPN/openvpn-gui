@@ -30,7 +30,6 @@
 #include "config.h"
 #include "tray.h"
 #include "service.h"
-#include "shellapi.h"
 #include "main.h"
 #include "options.h"
 #include "openvpn.h"
