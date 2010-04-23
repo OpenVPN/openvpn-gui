@@ -201,8 +201,14 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
       s_uTaskbarRestart = RegisterWindowMessage(TEXT("TaskbarCreated"));
 
+      /* Load application icon */
+      HICON hIcon = LoadLocalizedIcon(ID_ICO_APP);
+      if (hIcon) {
+        SendMessage(hwnd, WM_SETICON, (WPARAM) (ICON_SMALL), (LPARAM) (hIcon));
+        SendMessage(hwnd, WM_SETICON, (WPARAM) (ICON_BIG), (LPARAM) (hIcon));
+      }
+
       CreatePopupMenus();	/* Create popup menus */  
-      LoadAppIcon();		/* Load App Icon */
       ShowTrayIcon();
       if (o.allow_service[0]=='1' || o.service_only[0]=='1')
         CheckServiceStatus();	// Check if service is running or not
@@ -214,7 +220,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
     	
     case WM_NOTIFYICONTRAY:
       OnNotifyTray(lParam); 	// Manages message from tray
-      return TRUE;
+      break;
                  
     case WM_COMMAND:
       if ( (LOWORD(wParam) >= IDM_CONNECTMENU) && (LOWORD(wParam) < IDM_CONNECTMENU + MAX_CONFIGS) ) {
@@ -357,20 +363,29 @@ static void
 ShowSettingsDialog()
 {
   PROPSHEETPAGE psp[2];
-  psp[0].dwSize = sizeof(PROPSHEETPAGE);
-  psp[0].dwFlags = PSP_DLGINDIRECT;
-  psp[0].hInstance = o.hInstance;
-  psp[0].pResource = LocalizedDialogResource(ID_DLG_PROXY);
-  psp[0].pfnDlgProc = ProxySettingsDialogFunc;
-  psp[0].lParam = 0;
-  psp[0].pfnCallback = NULL;
-  psp[1].dwSize = sizeof(PROPSHEETPAGE);
-  psp[1].dwFlags = PSP_DLGINDIRECT;
-  psp[1].hInstance = o.hInstance;
-  psp[1].pResource = LocalizedDialogResource(ID_DLG_GENERAL);
-  psp[1].pfnDlgProc = LanguageSettingsDlgProc;
-  psp[1].lParam = 0;
-  psp[1].pfnCallback = NULL;
+  int page_number = 0;
+
+  /* Proxy tab */
+  if (o.allow_proxy[0] == '1' && o.service_only[0] == '0') {
+    psp[page_number].dwSize = sizeof(PROPSHEETPAGE);
+    psp[page_number].dwFlags = PSP_DLGINDIRECT;
+    psp[page_number].hInstance = o.hInstance;
+    psp[page_number].pResource = LocalizedDialogResource(ID_DLG_PROXY);
+    psp[page_number].pfnDlgProc = ProxySettingsDialogFunc;
+    psp[page_number].lParam = 0;
+    psp[page_number].pfnCallback = NULL;
+    ++page_number;
+  }
+
+  /* General tab */
+  psp[page_number].dwSize = sizeof(PROPSHEETPAGE);
+  psp[page_number].dwFlags = PSP_DLGINDIRECT;
+  psp[page_number].hInstance = o.hInstance;
+  psp[page_number].pResource = LocalizedDialogResource(ID_DLG_GENERAL);
+  psp[page_number].pfnDlgProc = LanguageSettingsDlgProc;
+  psp[page_number].lParam = 0;
+  psp[page_number].pfnCallback = NULL;
+  ++page_number;
 
   PROPSHEETHEADER psh;
   psh.dwSize = sizeof(PROPSHEETHEADER);
@@ -379,7 +394,7 @@ ShowSettingsDialog()
   psh.hInstance = o.hInstance;
   psh.hIcon = LoadLocalizedIcon(ID_ICO_APP);
   psh.pszCaption = LoadLocalizedString(IDS_SETTINGS_CAPTION);
-  psh.nPages = sizeof(psp) / sizeof(PROPSHEETPAGE);
+  psh.nPages = page_number;
   psh.nStartPage = 0;
   psh.ppsp = (LPCPROPSHEETPAGE) &psp;
   psh.pfnCallback = NULL;
