@@ -1,0 +1,2 @@
+kate: backspace-indents false; tab-indents true; replace-tabs true;
+kate: tab-width 4; indent-width 4; remove-trailing-space true;
