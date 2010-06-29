@@ -32,7 +32,7 @@ int ReadLineFromStdOut(HANDLE hStdOut, int config, char line[1024]);
 BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 int AutoStartConnections();
 int VerifyAutoConnections();
-int CheckVersion();
+BOOL CheckVersion();
 void CheckAndSetTrayIcon();
 void SetStatusWinIcon(HWND hwndDlg, int IconID);
 void ThreadOpenVPNStatus(int status) __attribute__ ((noreturn));

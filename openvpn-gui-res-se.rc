@@ -213,7 +213,6 @@ BEGIN
     IDS_ERR_CREATE_EDIT_LOGWINDOW "Skapande av RichEdit LogWindow misslyckades!!"
     IDS_ERR_SET_SIZE "Set Size misslyckades!"
     IDS_ERR_AUTOSTART_CONF "Följande konfig gick inte att automatiskt starta: %s"
-    IDS_ERR_VERSION_CREATE_EVENT "CreateEvent() misslyckades vid kontroll av openvpn version."
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe på hInputRead misslyckades."
     IDS_NFO_STATE_CONNECTING "Status: Ansluter"
     IDS_NFO_CONNECTION_XXX "OpenVPN Anslutning (%s)"

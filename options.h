@@ -97,9 +97,7 @@ typedef struct {
     connection_t conn[MAX_CONFIGS];   /* Connection structure */
     int num_configs;                  /* Number of configs */
 
-    BOOL oldversion;                  /* OpenVPN version below 2.0-beta6 if TRUE */
     service_state_t service_state;    /* State of the OpenVPN Service */
-    char connect_string[100];         /* String to look for to report connected */
     int psw_attempts;                 /* Number of psw attemps to allow */
     int connectscript_timeout;        /* Connect Script execution timeout (sec) */
     int disconnectscript_timeout;     /* Disconnect Script execution timeout (sec) */

@@ -207,7 +207,6 @@ BEGIN
     IDS_ERR_CREATE_EDIT_LOGWINDOW "Creazione RichEdit LogWindow Fallita!!"
     IDS_ERR_SET_SIZE "Set Size fallita!"
     IDS_ERR_AUTOSTART_CONF "Non riesco a trovare una configurazione per partire in automatico: %s"
-    IDS_ERR_VERSION_CREATE_EVENT "CreateEvent() fallito quando ha cercato la versione di openvpn."
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe on hInputRead falito."
     IDS_NFO_STATE_CONNECTING "Stato corrente: Connessione in corso"
     IDS_NFO_CONNECTION_XXX "Connessione OpenVPN (%s)"

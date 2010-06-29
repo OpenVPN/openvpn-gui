@@ -226,7 +226,6 @@ BEGIN
     IDS_ERR_CREATE_EDIT_LOGWINDOW "Erstellen des RichEdit LogWindow fehlgeschlagen!!"
     IDS_ERR_SET_SIZE "Setzen der Grösse ist fehlgeschlagen!"
     IDS_ERR_AUTOSTART_CONF "Kann gewünschte Konfigurationdatei für Autostart nicht finden: %s"
-    IDS_ERR_VERSION_CREATE_EVENT "CreateEvent() beim überprüfen der OpenVPN version fehlgeschlagen."
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe an hInputRead fehlgeschlagen."
     IDS_NFO_STATE_CONNECTING "Aktueller Status: Verbinden"
     IDS_NFO_CONNECTION_XXX "OpenVPN Verbindung (%s)"

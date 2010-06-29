@@ -2,6 +2,7 @@
  *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
+ *                2010 Heiko Hund <heikoh@users.sf.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,7 +23,6 @@
  *  OpenVPN source, with approval from the author, James Yonan
  *  <jim@yonan.net>.
  */
-
 
 #include <windows.h>
 #include <tchar.h>
@@ -48,50 +48,20 @@
 extern options_t o;
 
 /*
- * Creates a unique exit_event name based on the 
+ * Creates a unique exit_event name based on the
  * config file number.
  */
-int CreateExitEvent(int config)
+static BOOL
+CreateExitEvent(int config)
 {
-  o.conn[config].exit_event = NULL;
-  if (o.oldversion == 1)
-    {
-      _sntprintf_0(o.conn[config].exit_event_name, _T("openvpn_exit"));
-      o.conn[config].exit_event = CreateEvent (NULL,
-                                              TRUE, 
-                                              FALSE, 
-                                              o.conn[config].exit_event_name);
-      if (o.conn[config].exit_event == NULL)
-        {
-          if (GetLastError() == ERROR_ACCESS_DENIED)
-            {
-              /* service mustn't be running, while using old version */ 
-              ShowLocalizedMsg(IDS_ERR_STOP_SERV_OLD_VER);
-            }
-          else
-            {
-              /* error creating exit event */ 
-              ShowLocalizedMsg(IDS_ERR_CREATE_EVENT, o.conn[config].exit_event_name);
-            }
-          return(false);
-        }
+    _sntprintf_0(o.conn[config].exit_event_name, _T("openvpngui_exit_event_%d"), config);
+    o.conn[config].exit_event = CreateEvent(NULL, TRUE, FALSE, o.conn[config].exit_event_name);
+    if (o.conn[config].exit_event == NULL) {
+        /* error creating exit event */
+        ShowLocalizedMsg(IDS_ERR_CREATE_EVENT, o.conn[config].exit_event_name);
+        return FALSE;
     }
-  else
-    {
-      _sntprintf_0(o.conn[config].exit_event_name, _T("openvpngui_exit_event_%d"), config);
-      o.conn[config].exit_event = CreateEvent (NULL,
-                                              TRUE, 
-                                              FALSE, 
-                                              o.conn[config].exit_event_name);
-      if (o.conn[config].exit_event == NULL)
-        {
-          /* error creating exit event */
-          ShowLocalizedMsg(IDS_ERR_CREATE_EVENT, o.conn[config].exit_event_name);
-          return(false);
-        }
-    }
-
-  return(true);
+    return TRUE;
 }
 
 
@@ -124,16 +94,69 @@ int SetProcessPriority(DWORD *priority)
 }
 
 
+static BOOL
+GetPipeHandles(PHANDLE phInputRead, PHANDLE phInputWrite,
+               PHANDLE phOutputRead, PHANDLE phOutputWrite)
+{
+    HANDLE hProc = GetCurrentProcess();
+    HANDLE hOutputReadTmp, hInputWriteTmp;
+    SECURITY_DESCRIPTOR sd;
+    SECURITY_ATTRIBUTES sa;
+
+    CLEAR(sa);
+    CLEAR(sd);
+
+    /* Make security attributes for the pipes so they can be inherited */
+    sa.nLength = sizeof(sa);
+    sa.lpSecurityDescriptor = &sd;
+    sa.bInheritHandle = TRUE;
+    if (!InitializeSecurityDescriptor(&sd, SECURITY_DESCRIPTOR_REVISION)) {
+        ShowLocalizedMsg(IDS_ERR_INIT_SEC_DESC);
+        return FALSE;
+    }
+    if (!SetSecurityDescriptorDacl(&sd, TRUE, NULL, FALSE)) {
+        ShowLocalizedMsg(IDS_ERR_SET_SEC_DESC_ACL);
+        return FALSE;
+    }
+
+    /* Create the stdin pipe with uninheritable write end */
+    if (!CreatePipe(phInputRead, &hInputWriteTmp, &sa, 0)) {
+        ShowLocalizedMsg(IDS_ERR_CREATE_PIPE_IN_READ);
+        return FALSE;
+    }
+    if (!DuplicateHandle(hProc, hInputWriteTmp, hProc, phInputWrite, 0, FALSE,
+                         DUPLICATE_CLOSE_SOURCE | DUPLICATE_SAME_ACCESS)) {
+        ShowLocalizedMsg(IDS_ERR_DUP_HANDLE_IN_WRITE);
+        CloseHandle(*phInputRead);
+        return FALSE;
+    }
+
+    /* Create the stdout pipe with uninheritable read end */
+    if (!CreatePipe(&hOutputReadTmp, phOutputWrite, &sa, 0)) {
+        ShowLocalizedMsg(IDS_ERR_CREATE_PIPE_OUTPUT);
+        CloseHandle(*phInputRead);
+        CloseHandle(*phInputWrite);
+        return FALSE;
+    }
+    if (!DuplicateHandle(hProc, hOutputReadTmp, hProc, phOutputRead, 0, FALSE,
+                         DUPLICATE_CLOSE_SOURCE | DUPLICATE_SAME_ACCESS)) {
+        ShowLocalizedMsg(IDS_ERR_DUP_HANDLE_OUT_READ);
+        CloseHandle(*phInputRead);
+        CloseHandle(*phInputWrite);
+        CloseHandle(*phOutputWrite);
+        return FALSE;
+    }
+    return TRUE;
+}
+
+
 /*
  * Launch an OpenVPN process
  */
 int StartOpenVPN(int config)
 {
-
-  HANDLE hOutputReadTmp = NULL;
   HANDLE hOutputRead = NULL;
   HANDLE hOutputWrite = NULL;
-  HANDLE hInputWriteTmp = NULL;
   HANDLE hInputRead = NULL;
   HANDLE hInputWrite = NULL;
   HANDLE hErrorWrite = NULL;
@@ -143,37 +166,11 @@ int StartOpenVPN(int config)
   DWORD priority;
   STARTUPINFO start_info;
   PROCESS_INFORMATION proc_info;
-  SECURITY_ATTRIBUTES sa;
-  SECURITY_DESCRIPTOR sd;
   TCHAR command_line[256];
   TCHAR proxy_string[100];
-  int i, is_connected=0;
 
   CLEAR (start_info);
   CLEAR (proc_info);
-  CLEAR (sa);
-  CLEAR (sd);
-
-
-  /* If oldversion, allow only ONE connection */
-  if (o.oldversion == 1)
-    {
-      for (i=0; i < o.num_configs; i++) 
-        {
-          if ((o.conn[i].state != disconnected) &&
-             (o.conn[i].state != disconnecting))
-            {
-              is_connected=1;
-              break;
-            }
-        }
-      if (is_connected)
-        {
-          /* only one simultanious connection on old version */
-          ShowLocalizedMsg(IDS_ERR_ONE_CONN_OLD_VER);
-          return(false);
-        }
-    }
 
   /* Warn if "log" or "log-append" option is found in config file */
   if ((ConfigFileOptionExist(config, "log ")) ||
@@ -207,46 +204,13 @@ int StartOpenVPN(int config)
   ConstructProxyCmdLine(proxy_string, _tsizeof(proxy_string));
 
   /* construct command line */
-  if (o.oldversion == 1)
-    {
-      _sntprintf_0(command_line, _T("openvpn --config \"%s\" %s"),
-                   o.conn[config].config_file, proxy_string);
-    }
-  else
-    {
-      _sntprintf_0(command_line, _T("openvpn --service %s 0 --config \"%s\" %s"),
-                   o.conn[config].exit_event_name,
-                   o.conn[config].config_file,
-                   proxy_string);
-    }
+  _sntprintf_0(command_line, _T("openvpn --service %s 0 --config \"%s\" %s"),
+              o.conn[config].exit_event_name,
+              o.conn[config].config_file,
+              proxy_string);
 
-
-  /* Make security attributes struct for logfile handle so it can
-     be inherited. */
-  sa.nLength = sizeof (sa);
-  sa.lpSecurityDescriptor = &sd;
-  sa.bInheritHandle = TRUE;
-  if (!InitializeSecurityDescriptor (&sd, SECURITY_DESCRIPTOR_REVISION))
-    {
-      /* Init Sec. Desc. failed */
-      ShowLocalizedMsg(IDS_ERR_INIT_SEC_DESC);
-      goto failed;
-    }
-  if (!SetSecurityDescriptorDacl (&sd, TRUE, NULL, FALSE))
-    {
-      /* set Dacl failed */
-      ShowLocalizedMsg(IDS_ERR_SET_SEC_DESC_ACL);
-      goto failed;
-    }
-
-
-  /* Create the child output pipe. */
-  if (!CreatePipe(&hOutputReadTmp,&hOutputWrite,&sa,0))
-    {
-      /* CreatePipe failed. */
-      ShowLocalizedMsg(IDS_ERR_CREATE_PIPE_OUTPUT);
-      goto failed;
-    }
+  if (!GetPipeHandles(&hInputRead, &hInputWrite, &hOutputRead, &hOutputWrite))
+    return false;
 
   // Create a duplicate of the output write handle for the std error
   // write handle. This is necessary in case the child application
@@ -260,50 +224,6 @@ int StartOpenVPN(int config)
       goto failed;
     }
 
-  // Create the child input pipe.
-  if (!CreatePipe(&hInputRead,&hInputWriteTmp,&sa,0))
-    {
-      /* CreatePipe failed. */
-      ShowLocalizedMsg(IDS_ERR_CREATE_PIPE_INPUT);
-      goto failed;
-    }
-
-  // Create new output read handle and the input write handles. Set
-  // the Properties to FALSE. Otherwise, the child inherits the
-  // properties and, as a result, non-closeable handles to the pipes
-  // are created.
-  if (!DuplicateHandle(GetCurrentProcess(),hOutputReadTmp,
-                       GetCurrentProcess(),
-                       &hOutputRead, // Address of new handle.
-                       0,FALSE, // Make it uninheritable.
-                       DUPLICATE_SAME_ACCESS))
-    {
-      /* Duplicate Handle failed. */
-      ShowLocalizedMsg(IDS_ERR_DUP_HANDLE_OUT_READ);
-      goto failed;
-    }
-
-  if (!DuplicateHandle(GetCurrentProcess(),hInputWriteTmp,
-                       GetCurrentProcess(),
-                       &hInputWrite, // Address of new handle.
-                       0,FALSE, // Make it uninheritable.
-                       DUPLICATE_SAME_ACCESS))
-    {
-      /* DuplicateHandle failed */
-      ShowLocalizedMsg(IDS_ERR_DUP_HANDLE_IN_WRITE);
-      goto failed;
-    }
-
-  /* Close inheritable copies of the handles */
-  if (!CloseHandle(hOutputReadTmp) || !CloseHandle(hInputWriteTmp)) 
-    {
-      /* Close Handle failed */
-      ShowLocalizedMsg(IDS_ERR_CLOSE_HANDLE_TMP);
-      CloseHandle (o.conn[config].exit_event);
-      return(0); 
-    }
-  hOutputReadTmp=NULL;
-  hInputWriteTmp=NULL;
 
   /* fill in STARTUPINFO struct */
   GetStartupInfo(&start_info);
@@ -623,241 +543,66 @@ int VerifyAutoConnections()
 }
 
 
-int CheckVersion()
+BOOL
+CheckVersion()
 {
-  HANDLE hOutputReadTmp = NULL;
-  HANDLE hOutputRead = NULL;
-  HANDLE hOutputWrite = NULL;
-  HANDLE hInputWriteTmp = NULL;
-  HANDLE hInputRead = NULL;
-  HANDLE hInputWrite = NULL;
-  HANDLE exit_event;
+    HANDLE hOutputRead;
+    HANDLE hOutputWrite;
+    HANDLE hInputRead;
+    HANDLE hInputWrite;
 
-  STARTUPINFO start_info;
-  PROCESS_INFORMATION proc_info;
-  SECURITY_ATTRIBUTES sa;
-  SECURITY_DESCRIPTOR sd;
-  TCHAR command_line[256];
-  char line[1024];
-  TCHAR bin_path[MAX_PATH];
-  char *p;
-  int oldversion, i;
+    BOOL retval = FALSE;
+    STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+    TCHAR cmdline[] = _T("openvpn --version");
+    char match_version[] = "OpenVPN 2.";
+    TCHAR pwd[MAX_PATH];
+    char line[1024];
+    TCHAR *p;
 
-  CLEAR (start_info);
-  CLEAR (proc_info);
-  CLEAR (sa);
-  CLEAR (sd);
-   
-  exit_event = CreateEvent (NULL, TRUE, FALSE, _T("openvpn_exit"));
-  if (exit_event == NULL)
-    {
+    CLEAR(si);
+    CLEAR(pi);
+
+    if (!GetPipeHandles(&hInputRead, &hInputWrite, &hOutputRead, &hOutputWrite))
+        return FALSE;
+
+    /* Construct the process' working directory */
+    _tcsncpy(pwd, o.exe_path, _tsizeof(pwd));
+    p = _tcsrchr(pwd, _T('\\'));
+    if (p != NULL)
+        *p = _T('\0');
+
+    /* Fill in STARTUPINFO struct */
+    si.cb = sizeof(si);
+    si.dwFlags = STARTF_USESTDHANDLES;
+    si.hStdInput = hInputRead;
+    si.hStdOutput = hOutputWrite;
+    si.hStdError = hOutputWrite;
+
+    /* Start OpenVPN to check version */
+    if (!CreateProcess(o.exe_path, cmdline, NULL, NULL, TRUE,
+                       CREATE_NO_WINDOW, NULL, pwd, &si, &pi)) {
+        ShowLocalizedMsg(IDS_ERR_CREATE_PROCESS, o.exe_path, cmdline, pwd);
+    }
+    else if (ReadLineFromStdOut(hOutputRead, 0, line)) {
 #ifdef DEBUG
-      PrintErrorDebug("CreateEvent(openvpn_exit) failed.");
+        PrintDebug("VersionString: %s", line);
 #endif
-      if (GetLastError() == ERROR_ACCESS_DENIED)
-        {
-          /* Assume we're running OpenVPN 1.5/1.6 and the service is started. */
-          o.oldversion=1;
-          strncpy(o.connect_string, "Successful ARP Flush", sizeof(o.connect_string));
-          return(true);
-        }
-      else
-        {
-          /* CreateEvent failed */
-          ShowLocalizedMsg(IDS_ERR_VERSION_CREATE_EVENT);
-          return(false);
-       }
+        CloseHandle(pi.hThread);
+        CloseHandle(pi.hProcess);
+
+        /* OpenVPN version 2.x */
+        if (strstr(line, match_version))
+            retval = TRUE;
     }
 
-#ifdef DEBUG
-  PrintErrorDebug("CreateEvent(openvpn_exit) succeded.");
-#endif
+    if (!CloseHandle(hInputRead)  || !CloseHandle(hInputWrite)
+    ||  !CloseHandle(hOutputRead) || !CloseHandle(hOutputWrite))
+        ShowLocalizedMsg(IDS_ERR_CLOSE_HANDLE);
 
-  /* construct command line */
-  _sntprintf_0(command_line, _T("openvpn --version"));
-
-  /* construct bin path */
-  _tcsncpy(bin_path, o.exe_path, _tsizeof(bin_path));
-  for (i=_tcslen(bin_path) - 1; i > 0; i--)
-    if (bin_path[i] == '\\') break;
-  bin_path[i] = '\0';
-
-  /* Make security attributes struct for logfile handle so it can
-     be inherited. */
-  sa.nLength = sizeof (sa);
-  sa.lpSecurityDescriptor = &sd;
-  sa.bInheritHandle = TRUE;
-  if (!InitializeSecurityDescriptor (&sd, SECURITY_DESCRIPTOR_REVISION))
-  {
-      /* Init Sec. Desc. failed */
-      ShowLocalizedMsg(IDS_ERR_INIT_SEC_DESC);
-      return(0);
-    }
-  if (!SetSecurityDescriptorDacl (&sd, TRUE, NULL, FALSE))
-    {
-      /* Set Dacl failed */
-      ShowLocalizedMsg(IDS_ERR_SET_SEC_DESC_ACL);
-      return(0);
-    }
-
-  /* Create the child input pipe. */
-  if (!CreatePipe(&hInputRead,&hInputWriteTmp,&sa,0))
-    {
-      /* create pipe failed */
-      ShowLocalizedMsg(IDS_ERR_CREATE_PIPE_IN_READ);
-      return(0);
-    }
-
-  /* Create the child output pipe. */
-  if (!CreatePipe(&hOutputReadTmp,&hOutputWrite,&sa,0))
-    {
-      /* CreatePipe failed */
-      ShowLocalizedMsg(IDS_ERR_CREATE_PIPE_OUTPUT);
-      return(0);
-    }
-
-  if (!DuplicateHandle(GetCurrentProcess(),hOutputReadTmp,
-                       GetCurrentProcess(),
-                       &hOutputRead, // Address of new handle.
-                       0,FALSE, // Make it uninheritable.
-                       DUPLICATE_SAME_ACCESS))
-    {
-      /* DuplicateHandle failed */
-      ShowLocalizedMsg(IDS_ERR_DUP_HANDLE_OUT_READ);
-      return(0);
-    }
-
-  if (!DuplicateHandle(GetCurrentProcess(),hInputWriteTmp,
-                       GetCurrentProcess(),
-                       &hInputWrite, // Address of new handle.
-                       0,FALSE, // Make it uninheritable.
-                       DUPLICATE_SAME_ACCESS))
-    {
-      /* DuplicateHandle failed */
-      ShowLocalizedMsg(IDS_ERR_DUP_HANDLE_IN_WRITE);
-      return(0);
-    }
-
-
-  /* Close inheritable copies of the handles */
-  if (!CloseHandle(hOutputReadTmp) || !CloseHandle(hInputWriteTmp)) 
-    {
-      /* CloseHandle failed */
-      ShowLocalizedMsg(IDS_ERR_CLOSE_HANDLE_TMP);
-      return(0); 
-    }
-
-  /* fill in STARTUPINFO struct */
-  GetStartupInfo(&start_info);
-  start_info.cb = sizeof(start_info);
-  start_info.dwFlags = STARTF_USESTDHANDLES|STARTF_USESHOWWINDOW;
-  start_info.wShowWindow = SW_HIDE;
-  start_info.hStdInput = hInputRead;
-  start_info.hStdOutput = hOutputWrite;
-  start_info.hStdError = hOutputWrite;
-
-  /* Start OpenVPN to check version */
-  if (!CreateProcess(o.exe_path,
-		     command_line,
-		     NULL,
-		     NULL,
-		     TRUE,
-		     CREATE_NEW_CONSOLE,
-		     NULL,
-		     bin_path,
-		     &start_info,
-		     &proc_info))
-    {
-      /* CreateProcess failed */
-      ShowLocalizedMsg(IDS_ERR_CREATE_PROCESS,
-          o.exe_path,
-          command_line,
-          bin_path);
-      return(0);
-    }
-
-  /* Default value for oldversion */
-  oldversion=0;
-
-  /* Default string to look for to report "Connected". */
-  strncpy(o.connect_string, "Successful ARP Flush", sizeof(o.connect_string));
-
-  if (ReadLineFromStdOut(hOutputRead, 0, line) == 1)
-    {
-#ifdef DEBUG
-      PrintDebug("VersionString: %s", line);
-#endif
-      if (line[8] == '2') /* Majorversion = 2 */
-        {
-          if (line[10] == '0') /* Minorversion = 0 */
-            {
-              p=strstr(line, "beta");
-              if (p != NULL)
-                {
-                  if (p[5] == ' ') /* 2.0-beta1 - 2.0-beta9 */
-                    {
-                      if (p[4] >= '6') /* 2.0-beta6 - 2.0-beta9 */
-                        {
-                          oldversion=0;
-                        }
-                      else /* < 2.0-beta6 */
-                        {
-                          oldversion=1;
-                        }
-                    }
-                  else /* >= 2.0-beta10 */
-                    {
-                      if (strncmp(&p[6], "ms", 2) == 0) /* 2.0-betaXXms */
-                        strncpy(o.connect_string, "Initialization Sequence Completed",
-                                sizeof(o.connect_string));
-                      if ( !((p[4] == 1) && (p[5] == 0)) ) /* >= 2.0-beta11 */
-                        strncpy(o.connect_string, "Initialization Sequence Completed",
-                                sizeof(o.connect_string));
-                        
-                      oldversion=0;
-                    }
-                }
-              else /* 2.0 non-beta */
-                {
-                  strncpy(o.connect_string, "Initialization Sequence Completed",
-                          sizeof(o.connect_string));
-                  oldversion=0;
-                }
-            }
-          else /* > 2.0 */
-            {
-              strncpy(o.connect_string, "Initialization Sequence Completed",
-                      sizeof(o.connect_string));
-              oldversion=0;
-            }
-        }
-      else
-        {
-          if (line[8] == '1') /* Majorversion = 1 */
-            {
-              oldversion=1;
-            }
-          else /* Majorversion != (1 || 2) */
-            {
-              oldversion=0;
-            }
-        }
-    }
-  else return(0);
-
-  o.oldversion = oldversion;
-  
-
-  if(!CloseHandle (proc_info.hThread) || !CloseHandle (hOutputWrite)
-     || !CloseHandle (hInputRead) || !CloseHandle(exit_event))
-    {
-      /* CloseHandle failed */
-      ShowLocalizedMsg(IDS_ERR_CLOSE_HANDLE);
-      return(0);
-    }
-
-  return(1); 
+    return retval;
 }
+
 
 void CheckAndSetTrayIcon()
 {

@@ -207,7 +207,6 @@ BEGIN
     IDS_ERR_CREATE_EDIT_LOGWINDOW "Creatie van RichEdit LogWindow mislukt!"
     IDS_ERR_SET_SIZE "Instellen afmetingen mislukt!"
     IDS_ERR_AUTOSTART_CONF "Kan opgegeven configuratie voor automatische verbinding niet vinden: %s"
-    IDS_ERR_VERSION_CREATE_EVENT "CreateEvent() mislukt tijdens verificatie OpenVPN versie."
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe tijdens hInputRead mislukt."
     IDS_NFO_STATE_CONNECTING "Huidige Status: Verbinden"
     IDS_NFO_CONNECTION_XXX "OpenVPN Verbinding (%s)"

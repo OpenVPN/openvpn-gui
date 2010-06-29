@@ -221,7 +221,6 @@ BEGIN
     IDS_ERR_CREATE_EDIT_LOGWINDOW "RichEdit LogWindowin luonti ep‰onnistui!"
     IDS_ERR_SET_SIZE "Koon m‰‰ritt‰minen ep‰onnistui!"
     IDS_ERR_AUTOSTART_CONF "Ei lˆydetty automaattisesti k‰ynnistett‰v‰‰ asetustiedostoa %s"
-    IDS_ERR_VERSION_CREATE_EVENT "CreateEvent() failed when checking openvpn version."
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe on hInputRead failed."
     IDS_NFO_STATE_CONNECTING "Tila: Yhdistet‰‰n"
     IDS_NFO_CONNECTION_XXX "OpenVPN-yhteys (%s)"

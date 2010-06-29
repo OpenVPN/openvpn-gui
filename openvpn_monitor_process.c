@@ -40,6 +40,8 @@
 
 extern options_t o;
 
+static const char connect_string[] = "Initialization Sequence Completed";
+
 /* Wait for a complete line (CR/LF) and return it.
  * Return values:
  *  1 - Successful. Line is available in *line.
@@ -197,7 +199,7 @@ void monitor_openvpnlog_while_connecting(int config, char *line)
   char *linepos;
 
   /* Check for Connected message */
-  if (strstr(line, o.connect_string) != NULL)
+  if (strstr(line, connect_string) != NULL)
     {
       /* Run Connect Script */
       RunConnectScript(config, false);
@@ -317,7 +319,7 @@ void monitor_openvpnlog_while_reconnecting(int config, char *line)
   size_t i;
   
   /* Check for Connected message */
-  if (strstr(line, o.connect_string) != NULL)
+  if (strstr(line, connect_string) != NULL)
     {
       o.conn[config].state = connected;
       SetTrayIcon(connected);
