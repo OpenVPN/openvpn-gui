@@ -19,7 +19,7 @@ SOURCES = main.c main.h openvpn.c openvpn.h localization.c localization.h \
           tray.c tray.h viewlog.c viewlog.h service.c service.h \
           options.c options.h passphrase.c passphrase.h proxy.c proxy.h \
           registry.c registry.h scripts.c scripts.h \
-          openvpn_config.c openvpn_config.h openvpn-gui.exe.manifest \
+          openvpn_config.c openvpn_config.h openvpn-gui.manifest \
           chartable.h openvpn-gui-res.h openvpn-gui-res*.rc
 
 EXTRA = connected.ico connecting.ico disconnected.ico reconnecting.ico openvpn-gui.ico \

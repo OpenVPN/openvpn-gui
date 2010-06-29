@@ -24,7 +24,7 @@
 #include "openvpn-gui-res.h"
 
 /* Manifest for XP visual styles */
-CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "openvpn-gui.exe.manifest"
+CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "openvpn-gui.manifest"
 
 /* Application Icons */
 ID_ICO_APP           ICON  DISCARDABLE  "openvpn-gui.ico"
