@@ -194,16 +194,12 @@ BEGIN
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor failed."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl failed."
     IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe on hOutputWrite failed."
-    IDS_ERR_DUP_HANDLE_ERR_WRITE "DuplicateHandle on hErrorWrite failed."
     IDS_ERR_CREATE_PIPE_INPUT "CreatePipe on hInputRead failed."
     IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle on hOutputRead failed."
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite failed."
-    IDS_ERR_CLOSE_HANDLE_TMP "CloseHandle on hOutputReadTmp/hInputWriteTmp failed."
     IDS_ERR_CREATE_PROCESS "CreateProcess failed, exe='%s' cmdline='%s' dir='%s'"
-    IDS_ERR_CLOSE_HANDLE "CloseHandle failed."
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread to show Status window Failed."
     IDS_NFO_STATE_WAIT_TERM "Tila: Odotetaan OpenVPN:n sammumista..."
-    IDS_ERR_OPEN_LOG_WRITE "Virhe kirjoitettaessa lokitiedostoon: %s. Varmista, että OpenVPN käynnistetään ylläpitäjän oikeuksin."
     IDS_NFO_STATE_CONNECTED "Tila: Yhdistetty"
     IDS_NFO_NOW_CONNECTED "%s on nyt yhdistetty."
     IDS_NFO_ASSIGN_IP "IP-osoite: %s"
@@ -224,7 +220,6 @@ BEGIN
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe on hInputRead failed."
     IDS_NFO_STATE_CONNECTING "Tila: Yhdistetään"
     IDS_NFO_CONNECTION_XXX "OpenVPN-yhteys (%s)"
-    IDS_ERR_THREAD_READ_STDOUT "CreateThread to read openvpn process stdout failed."
     IDS_NFO_STATE_CONN_SCRIPT "Tila: Suoritetaan yhteydenmuodostamisskripti"
     IDS_NFO_STATE_DISCONN_SCRIPT "Tila: Suoritetaan yhteydenkatkaisemisskripti "
     IDS_ERR_RUN_CONN_SCRIPT "Virhe suoritettaessa yhteydenmuodostamisskriptiä: %s"
@@ -247,11 +242,6 @@ BEGIN
     IDS_NFO_SERVICE_ACTIVE_EXIT "Yhteys on muodostettu OpenVPN-palvelun avulla. " \
                                 "Yhteydet eivät katkea, vaikka OpenVPN GUI suljettaisiinkin.\n\n" \
                                 "Suljetaanko OpenVPN GUI?"
-    IDS_ERR_OPTION_LOG_IN_CONFIG "OpenVPN:n asetustiedostossa on käytössä ""log"" tai ""log-append"". " \
-                                 "Nämä asetukset estävät OpenVPN GUI:ta toimimasta oikein eikä niitä " \
-                                 "tulisi käyttää. Vaikka asetukset eivät olisikaan käytössä, OpenVPN " \
-                                 "GUI kirjoittaa silti lokia." \
-                                 "\n\nHaluatko varmasti jatkaa?"
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Näytä tämä viesti.\n" \

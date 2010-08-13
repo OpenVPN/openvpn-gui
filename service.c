@@ -74,8 +74,8 @@ int MyStartService()
     }
  
     /* Run Pre-connect script */
-    for (i=0; i<o.num_configs; i++)    
-        RunPreconnectScript(i);
+    for (i=0; i<o.num_configs; i++)
+        RunPreconnectScript(&o.conn[i]);
 
     if (!StartService(
             schService,  // handle to service 
@@ -154,7 +154,7 @@ int MyStartService()
 
     /* Run Connect script */
     for (i=0; i<o.num_configs; i++)    
-      RunConnectScript(i, true);
+      RunConnectScript(&o.conn[i], true);
 
     /* Set Service Status = Connected */
     o.service_state = service_connected;
@@ -208,7 +208,7 @@ int MyStopService()
 
     /* Run DisConnect script */
     for (i=0; i<o.num_configs; i++)    
-      RunDisconnectScript(i, true);
+      RunDisconnectScript(&o.conn[i], true);
 
     if (!ControlService( 
             schService,   // handle to service 

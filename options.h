@@ -24,8 +24,13 @@
 #ifndef OPTIONS_H
 #define OPTIONS_H
 
+typedef struct connection connection_t;
+
 #include <windows.h>
+#include <stdio.h>
 #include <time.h>
+
+#include "manage.h"
 
 /*
  * Maximum number of parameters associated with an option,
@@ -48,26 +53,29 @@ typedef enum {
 } conn_state_t;
 
 /* Connections parameters */
-typedef struct {
+struct connection {
     TCHAR config_file[MAX_PATH];    /* Name of the config file */
     TCHAR config_name[MAX_PATH];    /* Name of the connection */
     TCHAR config_dir[MAX_PATH];     /* Path to this configs dir */
     TCHAR log_path[MAX_PATH];       /* Path to Logfile */
     TCHAR ip[16];                   /* Assigned IP address for this connection */
-    TCHAR exit_event_name[50];      /* Exit Event name for this connection */
     BOOL auto_connect;              /* AutoConnect at startup id TRUE */
-    BOOL restart;                   /* Restart connection after termination if TRUE*/
-    BOOL failed_psw;                /* TRUE if OpenVPN failed because of wrong psw */
     conn_state_t state;             /* State the connection currently is in */
-    int failed_psw_attempts;        /* # of failed attempts made to enter psw */
+    int failed_psw_attempts;        /* # of failed attempts entering password(s) */
     time_t connected_since;         /* Time when the connection was established */
 
-    HANDLE exit_event;
+    struct {
+        SOCKET sk;
+        u_short port;
+        char password[16];
+        mgmt_cmd_t *cmd_queue;
+    } manage;
+
     HANDLE hProcess;
-    HANDLE hStdOut;
-    HANDLE hStdIn;
+    HANDLE exit_event;
+    DWORD threadId;
     HWND hwndStatus;
-} connection_t;
+};
 
 
 typedef enum {
@@ -147,5 +155,5 @@ typedef struct {
 void InitOptions(options_t *);
 void ProcessCommandLine(options_t *, TCHAR *);
 int CountConnState(conn_state_t);
-
+connection_t* GetConnByManagement(SOCKET);
 #endif

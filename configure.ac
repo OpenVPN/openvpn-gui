@@ -39,8 +39,12 @@ AX_ASSERT_LIB([wininet], [wininet.h],
 	[Make sure you have a recent w32api installed.])
 
 AX_ASSERT_LIB([comctl32], [prsht.h],
-	[PROPSHEETHEADER psh; PropertySheet(&psh)],
-	[Make sure you have a recent w32api installed.], [#include <windows.h>])
+    [PROPSHEETHEADER psh; PropertySheet(&psh)],
+    [Make sure you have a recent w32api installed.], [#include <windows.h>])
+
+AX_ASSERT_LIB([Ws2_32], [Winsock2.h],
+    [WSADATA wsaData; WSAStartup(MAKEWORD(2, 2), &wsaData)],
+    [Make sure you have a recent w32api installed.], [#include <windows.h>])
 
 AX_SEARCH_LIB([crypto], [cryptoeay32 eay32 crypto], [-lgdi32],
 	[openssl/pkcs12.h], [EVP_PKEY *k = EVP_PKEY_new()])

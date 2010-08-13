@@ -180,16 +180,12 @@ BEGIN
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor mislukt."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl mislukt."
     IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe on hOutputWrite mislukt."
-    IDS_ERR_DUP_HANDLE_ERR_WRITE "DuplicateHandle on hErrorWrite mislukt."
     IDS_ERR_CREATE_PIPE_INPUT "CreatePipe on hInputRead mislukt."
     IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle on hOutputRead mislukt."
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite mislukt."
-    IDS_ERR_CLOSE_HANDLE_TMP "CloseHandle on hOutputReadTmp/hInputWriteTmp mislukt."
     IDS_ERR_CREATE_PROCESS "CreateProcess mislukt, exe='%s' cmdline='%s' dir='%s'"
-    IDS_ERR_CLOSE_HANDLE "CloseHandle mislukt."
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread om om Status venster te tonen mislukt."
     IDS_NFO_STATE_WAIT_TERM "Huidige Status: Wachten tot OpenVPN gestopt is..."
-    IDS_ERR_OPEN_LOG_WRITE "Fout tijdens schrijven naar log-bestand: %s. U heeft waarschijnlijk geen Administrator rechten, deze zijn noodzakelijk om OpenVPN te starten."
     IDS_NFO_STATE_CONNECTED "Hudige status: Verbonden"
     IDS_NFO_NOW_CONNECTED "%s is nu verbonden."
     IDS_NFO_ASSIGN_IP "Toegewezen IP: %s"
@@ -210,7 +206,6 @@ BEGIN
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe tijdens hInputRead mislukt."
     IDS_NFO_STATE_CONNECTING "Huidige Status: Verbinden"
     IDS_NFO_CONNECTION_XXX "OpenVPN Verbinding (%s)"
-    IDS_ERR_THREAD_READ_STDOUT "CreateThread naar OpenVPN stdout lees-proces mislukt.."
     IDS_NFO_STATE_CONN_SCRIPT "Huidige Status: Connect Script Uitvoeren"
     IDS_NFO_STATE_DISCONN_SCRIPT "Hudige Status: Disconnect Script Uitvoeren"
     IDS_ERR_RUN_CONN_SCRIPT "Fout tijdens  uitvoeren Connect Script: %s"
@@ -233,11 +228,6 @@ BEGIN
     IDS_NFO_SERVICE_ACTIVE_EXIT "Er is momenteel een active verbinding (OpenVPN services is gestart). " \
                                 "De verbinding blijft actief ook als OpenVPN GUI afgesloten wordt.\n\n" \
                                 "OpenVPN GUI afsluiten?"
-    IDS_ERR_OPTION_LOG_IN_CONFIG "Er is een ""log"" of ""log-append"" parameter in de OpenVPN configuratie. Deze parameters " \
-                                 "kunnen niet samen met OpenVPN GUI gebruikt worden. " \
-                                 "OpenVPN GUI moet via STDOUT toegang hebben tot de log gegevens om correcte te werken. " \
-                                 "OpenVPN GUI maakt automatisch een log bestand aan, ook als deze parameters niet ingesteld zijn. " \
-                                 "Toch verbinding maken? " \
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Toon dit bericht.\n" \

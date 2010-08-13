@@ -2,6 +2,7 @@
  *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
+ *                2010 Heiko Hund <heikoh@users.sf.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,20 +20,20 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-struct process_info {
-  HANDLE hProcess;
-  int config;
-};
+#ifndef OEPNVPN_H
+#define OPENVPN_H
 
-int StartOpenVPN(int config);
-void StopOpenVPN(int config);
+BOOL StartOpenVPN(connection_t *);
+void StopOpenVPN(connection_t *);
 void SuspendOpenVPN(int config);
-void StopAllOpenVPN();
-int ReadLineFromStdOut(HANDLE hStdOut, int config, char line[1024]);
-BOOL CALLBACK StatusDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
-int AutoStartConnections();
-int VerifyAutoConnections();
 BOOL CheckVersion();
-void CheckAndSetTrayIcon();
 void SetStatusWinIcon(HWND hwndDlg, int IconID);
-void ThreadOpenVPNStatus(int status) __attribute__ ((noreturn));
+
+void OnReady(connection_t *, char *);
+void OnHold(connection_t *, char *);
+void OnLogLine(connection_t *, char *);
+void OnStateChange(connection_t *, char *);
+void OnPassword(connection_t *, char *);
+void OnStop(connection_t *, char *);
+
+#endif

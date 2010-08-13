@@ -2,6 +2,7 @@
  *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
+ *                2010 Heiko Hund <heikoh@users.sf.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,25 +20,13 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#define MIN_PASSWORD_LEN	8
+#ifndef PASSPHRASE_H
+#define PASSPHRASE_H
 
-struct user_auth {
-  char username[50];
-  char password[50];
-};
+BOOL GetRandomPassword(char *, size_t);
 
-void CheckPrivateKeyPassphrasePrompt (char *line, int config);
-void CheckAuthUsernamePrompt (char *line, int config);
-void CheckAuthPasswordPrompt (char *line);
-BOOL CALLBACK PassphraseDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
-BOOL CALLBACK AuthPasswordDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
+#ifndef DISABLE_CHANGE_PASSWORD
+void ShowChangePassphraseDialog(int);
+#endif
 
-void ShowChangePassphraseDialog(int config);
-BOOL CALLBACK ChangePassphraseDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
-void ChangePassphraseThread(int config);
-int ConfirmNewPassword(HWND hwndDlg);
-int NewPasswordLengh(HWND hwndDlg);
-int ChangePasswordPEM(HWND hwndDlg);
-int ChangePasswordPKCS12(HWND hwndDlg);
-int GetKeyFilename(int config, TCHAR *keyfilename, size_t keyfilenamesize, int *keyfile_format);
-
+#endif

@@ -94,7 +94,7 @@ CreatePopupMenus()
         AppendMenu(hMenu, MF_STRING ,IDM_ABOUT, LoadLocalizedString(IDS_MENU_ABOUT));
         AppendMenu(hMenu, MF_STRING ,IDM_CLOSE, LoadLocalizedString(IDS_MENU_CLOSE));
 
-        SetMenuStatus(0, disconnected);
+        SetMenuStatus(&o.conn[0],  o.conn[i].state);
     }
     else {
         /* Create Main menu with all connections */
@@ -140,7 +140,7 @@ CreatePopupMenus()
                 AppendMenu(hMenuConn[i], MF_STRING, (UINT_PTR) IDM_PASSPHRASEMENU + i, LoadLocalizedString(IDS_MENU_PASSPHRASE));
 #endif
 
-            SetMenuStatus(i, disconnected);
+            SetMenuStatus(&o.conn[i], o.conn[i].state);
         }
     }
 
@@ -325,6 +325,30 @@ SetTrayIcon(conn_state_t state)
 
 
 void
+CheckAndSetTrayIcon()
+{
+    if (o.service_state == service_connected)
+    {
+        SetTrayIcon(connected);
+        return;
+    }
+
+    if (CountConnState(connected) != 0)
+    {
+        SetTrayIcon(connected);
+    }
+    else
+    {
+        if (CountConnState(connecting) != 0 || CountConnState(reconnecting) != 0
+        ||  o.service_state == service_connecting)
+            SetTrayIcon(connecting);
+        else
+            SetTrayIcon(disconnected);
+    }
+}
+
+
+void
 ShowTrayBalloon(TCHAR *infotitle_msg, TCHAR *info_msg)
 {
     ni.cbSize = sizeof(ni);
@@ -341,43 +365,58 @@ ShowTrayBalloon(TCHAR *infotitle_msg, TCHAR *info_msg)
 
 
 void
-SetMenuStatus(int config, conn_state_t state)
+SetMenuStatus(connection_t *c, conn_state_t state)
 {
-    if (o.num_configs == 1) {
-        if (state == disconnected) {
+    if (o.num_configs == 1)
+    {
+        if (state == disconnected)
+        {
             EnableMenuItem(hMenu, IDM_CONNECTMENU, MF_ENABLED);
             EnableMenuItem(hMenu, IDM_DISCONNECTMENU, MF_GRAYED);
             EnableMenuItem(hMenu, IDM_STATUSMENU, MF_GRAYED);
         }
-        else if (state == connecting || state == connected) {
+        else if (state == connecting || state == connected)
+        {
             EnableMenuItem(hMenu, IDM_CONNECTMENU, MF_GRAYED);
             EnableMenuItem(hMenu, IDM_DISCONNECTMENU, MF_ENABLED);
             EnableMenuItem(hMenu, IDM_STATUSMENU, MF_ENABLED);
         }
-        else if (state == disconnecting) {
+        else if (state == disconnecting)
+        {
             EnableMenuItem(hMenu, IDM_CONNECTMENU, MF_GRAYED);
             EnableMenuItem(hMenu, IDM_DISCONNECTMENU, MF_GRAYED);
             EnableMenuItem(hMenu, IDM_STATUSMENU, MF_ENABLED);
         }
     }
-    else {
-        UINT iState = (state == connected || state == disconnecting) ? MF_CHECKED : MF_UNCHECKED;
-        CheckMenuItem(hMenu, (UINT) hMenuConn[config], iState);
+    else
+    {
+        int i;
+        for (i = 0; i < o.num_configs; ++i)
+        {
+            if (c == &o.conn[i])
+                break;
+        }
 
-        if (state == disconnected) {
-            EnableMenuItem(hMenuConn[config], (UINT_PTR) IDM_CONNECTMENU + config, MF_ENABLED);
-            EnableMenuItem(hMenuConn[config], (UINT_PTR) IDM_DISCONNECTMENU + config, MF_GRAYED);
-            EnableMenuItem(hMenuConn[config], (UINT_PTR) IDM_STATUSMENU + config, MF_GRAYED);
+        UINT iState = (state == connected || state == disconnecting) ? MF_CHECKED : MF_UNCHECKED;
+        CheckMenuItem(hMenu, (UINT) hMenuConn[i], iState);
+
+        if (state == disconnected)
+        {
+            EnableMenuItem(hMenuConn[i], IDM_CONNECTMENU + i, MF_ENABLED);
+            EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU + i, MF_GRAYED);
+            EnableMenuItem(hMenuConn[i], IDM_STATUSMENU + i, MF_GRAYED);
         }
-        else if (state == connecting || state == connected) {
-            EnableMenuItem(hMenuConn[config], (UINT_PTR) IDM_CONNECTMENU + config, MF_GRAYED);
-            EnableMenuItem(hMenuConn[config], (UINT_PTR) IDM_DISCONNECTMENU + config, MF_ENABLED);
-            EnableMenuItem(hMenuConn[config], (UINT_PTR) IDM_STATUSMENU + config, MF_ENABLED);
+        else if (state == connecting || state == connected)
+        {
+            EnableMenuItem(hMenuConn[i], IDM_CONNECTMENU + i, MF_GRAYED);
+            EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU + i, MF_ENABLED);
+            EnableMenuItem(hMenuConn[i], IDM_STATUSMENU + i, MF_ENABLED);
         }
-        else if (state == disconnecting) {
-            EnableMenuItem(hMenuConn[config], (UINT_PTR) IDM_CONNECTMENU + config, MF_GRAYED);
-            EnableMenuItem(hMenuConn[config], (UINT_PTR) IDM_DISCONNECTMENU + config, MF_GRAYED);
-            EnableMenuItem(hMenuConn[config], (UINT_PTR) IDM_STATUSMENU + config, MF_ENABLED);
+        else if (state == disconnecting)
+        {
+            EnableMenuItem(hMenuConn[i], IDM_CONNECTMENU + i, MF_GRAYED);
+            EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU + i, MF_GRAYED);
+            EnableMenuItem(hMenuConn[i], IDM_STATUSMENU + i, MF_ENABLED);
         }
     }
 }

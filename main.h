@@ -39,6 +39,7 @@
 /* Registry key for Global Settings */
 #define GUI_REGKEY_HKLM	_T("SOFTWARE\\OpenVPN-GUI")
 
+#define MAX_LOG_LENGTH      1024/* Max number of characters per log line */
 #define MAX_LOG_LINES		500	/* Max number of lines in LogWindow */
 #define DEL_LOG_LINES		10	/* Number of lines to delete from LogWindow */
 

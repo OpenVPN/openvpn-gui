@@ -83,6 +83,8 @@ AddConfigFileToList(int config, TCHAR *filename, TCHAR *config_dir)
     _tcsncpy(conn->config_name, conn->config_file, _tsizeof(conn->config_name) - 1);
     conn->config_name[_tcslen(conn->config_name) - _tcslen(o.ext_string) - 1] = _T('\0');
     _sntprintf_0(conn->log_path, _T("%s\\%s.log"), o.log_dir, conn->config_name);
+    conn->manage.sk = INVALID_SOCKET;
+    conn->manage.port = 25340 + config;
 
     /* Check if connection should be autostarted */
     for (i = 0; i < MAX_CONFIGS && o.auto_connect[i]; ++i)

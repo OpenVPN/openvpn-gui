@@ -2,6 +2,7 @@
  *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
+ *                2010 Heiko Hund <heikoh@users.sf.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,6 +23,9 @@
 #include <windows.h>
 #include <process.h>
 #include <tchar.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <errno.h>
 
 #include "config.h"
 #include "main.h"
@@ -31,258 +35,174 @@
 
 extern options_t o;
 
-void RunConnectScript(int config, int run_as_service)
+
+void
+RunPreconnectScript(connection_t *c)
 {
-  WIN32_FIND_DATA FindFileData;
-  HANDLE hFind;
-  STARTUPINFO start_info;
-  PROCESS_INFORMATION proc_info;
-  SECURITY_ATTRIBUTES sa;
-  SECURITY_DESCRIPTOR sd;
-  TCHAR command_line[256];
-  TCHAR batch_file[100];
-  DWORD ExitCode;
-  int i, TimeOut;
+    STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+    TCHAR cmdline[256];
+    DWORD exit_code;
+    struct _stat st;
+    int i;
 
-  /* Cut of extention from config filename and add "_up.bat". */
-  _tcsncpy(batch_file, o.conn[config].config_file, _tsizeof(batch_file));
-  batch_file[_tcslen(batch_file) - (_tcslen(o.ext_string)+1)]=0;
-  _tcsncat(batch_file, _T("_up.bat"), _tsizeof(batch_file) - _tcslen(batch_file) - 1);
-  _sntprintf_0(command_line, _T("%s\\%s"), o.conn[config].config_dir, batch_file);
+    /* Cut off extention from config filename and add "_pre.bat" */
+    int len = _tcslen(c->config_file) - _tcslen(o.ext_string);
+    _sntprintf_0(cmdline, _T("%s\\%.*s_pre.bat"), c->config_dir, len, c->config_file);
 
-  
-  /* Return if no script exists */
-  hFind = FindFirstFile(command_line, &FindFileData);
-  if (hFind == INVALID_HANDLE_VALUE) 
-  {
-    return;
-  }
+    /* Return if no script exists */
+    if (_tstat(cmdline, &st) == -1)
+        return;
 
-  FindClose(hFind);
+    CLEAR(si);
+    CLEAR(pi);
 
-  if (!run_as_service)
+    /* fill in STARTUPINFO struct */
+    GetStartupInfo(&si);
+    si.cb = sizeof(si);
+    si.dwFlags = 0;
+    si.wShowWindow = SW_SHOWDEFAULT;
+    si.hStdInput = NULL;
+    si.hStdOutput = NULL;
+
+    if (!CreateProcess(NULL, cmdline, NULL, NULL, TRUE,
+                       (o.show_script_window[0] == '1' ? CREATE_NEW_CONSOLE : CREATE_NO_WINDOW),
+                       NULL, c->config_dir, &si, &pi))
+        return;
+
+    for (i = 0; i <= o.preconnectscript_timeout; i++)
     {
-      /* UserInfo: Connect Script running */
-      SetDlgItemText(o.conn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONN_SCRIPT));
+        if (!GetExitCodeProcess(pi.hProcess, &exit_code))
+            goto out;
+
+        if (exit_code != STILL_ACTIVE)
+            goto out;
+
+        Sleep(1000);
     }
-
-  CLEAR (start_info);
-  CLEAR (proc_info);
-  CLEAR (sa);
-  CLEAR (sd);
-
-  /* fill in STARTUPINFO struct */
-  GetStartupInfo(&start_info);
-  start_info.cb = sizeof(start_info);
-  start_info.dwFlags = 0;
-  start_info.wShowWindow = SW_SHOWDEFAULT;
-  start_info.hStdInput = NULL;
-  start_info.hStdOutput = NULL;
-
-  if (!CreateProcess(NULL,
-		     command_line, 	//commandline
-		     NULL,
-		     NULL,
-		     TRUE,
-		     ((o.show_script_window[0] == '1') ? (DWORD) CREATE_NEW_CONSOLE : 
-                                                         (DWORD) CREATE_NO_WINDOW),
-		     NULL,
-		     o.conn[config].config_dir,	//start-up dir
-		     &start_info,
-		     &proc_info))
-    {
-      /* Running Script failed */
-      ShowLocalizedMsg(IDS_ERR_RUN_CONN_SCRIPT, command_line);
-      return;
-    }
-
-  TimeOut = o.connectscript_timeout;
-
-  if (TimeOut == 0)
-    {
-      /* Don't check exist status, just return */
-      return;
-    }
-
-  for (i=0; i <= TimeOut; i++)
-    {
-      if (!GetExitCodeProcess(proc_info.hProcess, &ExitCode))
-        {
-          /* failed to get ExitCode */
-          ShowLocalizedMsg(IDS_ERR_GET_EXIT_CODE, command_line);
-          return;
-        }
-
-      if (ExitCode != STILL_ACTIVE)
-        {
-          if (ExitCode != 0)
-            {
-              /* ConnectScript failed */
-              ShowLocalizedMsg(IDS_ERR_CONN_SCRIPT_FAILED, ExitCode);
-              return;
-            }
-          return;
-        }
-    
-      Sleep(1000);
-    }    
-
-  /* UserInfo: Timeout */
-  ShowLocalizedMsg(IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT, TimeOut);
-
+out:
+    CloseHandle(pi.hThread);
+    CloseHandle(pi.hProcess);
 }
 
-void RunDisconnectScript(int config, int run_as_service)
+
+void
+RunConnectScript(connection_t *c, int run_as_service)
 {
-  WIN32_FIND_DATA FindFileData;
-  HANDLE hFind;
-  STARTUPINFO start_info;
-  PROCESS_INFORMATION proc_info;
-  SECURITY_ATTRIBUTES sa;
-  SECURITY_DESCRIPTOR sd;
-  TCHAR command_line[256];
-  TCHAR batch_file[100];
-  DWORD ExitCode;
-  int i, TimeOut;
+    STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+    TCHAR cmdline[256];
+    DWORD exit_code;
+    struct _stat st;
+    int i;
 
-  /* Append "_down.bat" to config name. */
-  _tcsncpy(batch_file, o.conn[config].config_name, _tsizeof(batch_file));
-  _tcsncat(batch_file, _T("_down.bat"), _tsizeof(batch_file) - _tcslen(batch_file) - 1);
-  _sntprintf_0(command_line, _T("%s\\%s"), o.conn[config].config_dir, batch_file);
+    /* Cut off extention from config filename and add "_up.bat" */
+    int len = _tcslen(c->config_file) - _tcslen(o.ext_string);
+    _sntprintf_0(cmdline, _T("%s\\%.*s_up.bat"), c->config_dir, len, c->config_file);
 
-  
-  /* Return if no script exists */
-  hFind = FindFirstFile(command_line, &FindFileData);
-  if (hFind == INVALID_HANDLE_VALUE) 
-  {
-    return;
-  }
+    /* Return if no script exists */
+    if (_tstat(cmdline, &st) == -1)
+        return;
 
-  FindClose(hFind);
+    if (!run_as_service)
+        SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONN_SCRIPT));
 
-  if (!run_as_service)
+    CLEAR(si);
+    CLEAR(pi);
+
+    /* fill in STARTUPINFO struct */
+    GetStartupInfo(&si);
+    si.cb = sizeof(si);
+    si.dwFlags = 0;
+    si.wShowWindow = SW_SHOWDEFAULT;
+    si.hStdInput = NULL;
+    si.hStdOutput = NULL;
+
+    if (!CreateProcess(NULL, cmdline, NULL, NULL, TRUE,
+                       (o.show_script_window[0] == '1' ? CREATE_NEW_CONSOLE : CREATE_NO_WINDOW),
+                       NULL, c->config_dir, &si, &pi))
     {
-      /* UserInfo: Disconnect Script running */
-      SetDlgItemText(o.conn[config].hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_DISCONN_SCRIPT));
+        ShowLocalizedMsg(IDS_ERR_RUN_CONN_SCRIPT, cmdline);
+        return;
     }
 
-  CLEAR (start_info);
-  CLEAR (proc_info);
-  CLEAR (sa);
-  CLEAR (sd);
+    if (o.connectscript_timeout == 0)
+        goto out;
 
-  /* fill in STARTUPINFO struct */
-  GetStartupInfo(&start_info);
-  start_info.cb = sizeof(start_info);
-  start_info.dwFlags = 0;
-  start_info.wShowWindow = SW_SHOWDEFAULT;
-  start_info.hStdInput = NULL;
-  start_info.hStdOutput = NULL;
-
-  if (!CreateProcess(NULL,
-		     command_line, 	//commandline
-		     NULL,
-		     NULL,
-		     TRUE,
-		     ((o.show_script_window[0] == '1') ? (DWORD) CREATE_NEW_CONSOLE : 
-                                                         (DWORD) CREATE_NO_WINDOW),
-		     NULL,
-		     o.conn[config].config_dir,	//start-up dir
-		     &start_info,
-		     &proc_info))
+    for (i = 0; i <= o.connectscript_timeout; i++)
     {
-      return;
+        if (!GetExitCodeProcess(pi.hProcess, &exit_code))
+        {
+            ShowLocalizedMsg(IDS_ERR_GET_EXIT_CODE, cmdline);
+            goto out;
+        }
+
+        if (exit_code != STILL_ACTIVE)
+        {
+            if (exit_code != 0)
+                ShowLocalizedMsg(IDS_ERR_CONN_SCRIPT_FAILED, exit_code);
+            goto out;
+        }
+
+        Sleep(1000);
     }
 
-  TimeOut = o.disconnectscript_timeout;
+    ShowLocalizedMsg(IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT, o.connectscript_timeout);
 
-  for (i=0; i <= TimeOut; i++)
-    {
-      if (!GetExitCodeProcess(proc_info.hProcess, &ExitCode))
-        {
-          return;
-        }
-
-      if (ExitCode != STILL_ACTIVE)
-        {
-          return;
-        }
-    
-      Sleep(1000);
-    }    
+out:
+    CloseHandle(pi.hThread);
+    CloseHandle(pi.hProcess);
 }
 
-void RunPreconnectScript(int config)
+
+void
+RunDisconnectScript(connection_t *c, int run_as_service)
 {
-  WIN32_FIND_DATA FindFileData;
-  HANDLE hFind;
-  STARTUPINFO start_info;
-  PROCESS_INFORMATION proc_info;
-  SECURITY_ATTRIBUTES sa;
-  SECURITY_DESCRIPTOR sd;
-  TCHAR command_line[256];
-  TCHAR batch_file[100];
-  DWORD ExitCode;
-  int i, TimeOut;
+    STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+    TCHAR cmdline[256];
+    DWORD exit_code;
+    struct _stat st;
+    int i;
 
-  /* Append "_pre.bat" to config name. */
-  _tcsncpy(batch_file, o.conn[config].config_name, _tsizeof(batch_file));
-  _tcsncat(batch_file, _T("_pre.bat"), _tsizeof(batch_file) - _tcslen(batch_file) - 1);
-  _sntprintf_0(command_line, _T("%s\\%s"), o.conn[config].config_dir, batch_file);
+    /* Cut off extention from config filename and add "_down.bat" */
+    int len = _tcslen(c->config_file) - _tcslen(o.ext_string);
+    _sntprintf_0(cmdline, _T("%s\\%.*s_down.bat"), c->config_dir, len, c->config_file);
 
-  
-  /* Return if no script exists */
-  hFind = FindFirstFile(command_line, &FindFileData);
-  if (hFind == INVALID_HANDLE_VALUE) 
-  {
-    return;
-  }
+    /* Return if no script exists */
+    if (_tstat(cmdline, &st) == -1)
+        return;
 
-  FindClose(hFind);
+    if (!run_as_service)
+        SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_DISCONN_SCRIPT));
 
-  CLEAR (start_info);
-  CLEAR (proc_info);
-  CLEAR (sa);
-  CLEAR (sd);
+    CLEAR(si);
+    CLEAR(pi);
 
-  /* fill in STARTUPINFO struct */
-  GetStartupInfo(&start_info);
-  start_info.cb = sizeof(start_info);
-  start_info.dwFlags = 0;
-  start_info.wShowWindow = SW_SHOWDEFAULT;
-  start_info.hStdInput = NULL;
-  start_info.hStdOutput = NULL;
+    /* fill in STARTUPINFO struct */
+    GetStartupInfo(&si);
+    si.cb = sizeof(si);
+    si.dwFlags = 0;
+    si.wShowWindow = SW_SHOWDEFAULT;
+    si.hStdInput = NULL;
+    si.hStdOutput = NULL;
 
-  if (!CreateProcess(NULL,
-		     command_line, 	//commandline
-		     NULL,
-		     NULL,
-		     TRUE,
-		     ((o.show_script_window[0] == '1') ? (DWORD) CREATE_NEW_CONSOLE : 
-                                                         (DWORD) CREATE_NO_WINDOW),
-		     NULL,
-		     o.conn[config].config_dir,	//start-up dir
-		     &start_info,
-		     &proc_info))
+    if (!CreateProcess(NULL, cmdline, NULL, NULL, TRUE,
+                       (o.show_script_window[0] == '1' ? CREATE_NEW_CONSOLE : CREATE_NO_WINDOW),
+                       NULL, c->config_dir, &si, &pi))
+        return;
+
+    for (i = 0; i <= o.disconnectscript_timeout; i++)
     {
-      return;
+        if (!GetExitCodeProcess(pi.hProcess, &exit_code))
+            goto out;
+
+        if (exit_code != STILL_ACTIVE)
+            goto out;
+
+        Sleep(1000);
     }
-
-  TimeOut = o.preconnectscript_timeout;
-
-  for (i=0; i <= TimeOut; i++)
-    {
-      if (!GetExitCodeProcess(proc_info.hProcess, &ExitCode))
-        {
-          return;
-        }
-
-      if (ExitCode != STILL_ACTIVE)
-        {
-          return;
-        }
-    
-      Sleep(1000);
-    }    
+out:
+    CloseHandle(pi.hThread);
+    CloseHandle(pi.hProcess);
 }
-

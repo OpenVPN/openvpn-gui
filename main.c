@@ -20,6 +20,7 @@
  */
 
 #define _WIN32_IE 0x0500
+
 #include <windows.h>
 #include <shlwapi.h>
 #include <Pbt.h>
@@ -37,6 +38,7 @@
 #include "registry.h"
 #include "openvpn-gui-res.h"
 #include "localization.h"
+#include "manage.h"
 
 #ifndef DISABLE_CHANGE_PASSWORD
 #include <openssl/evp.h>
@@ -56,6 +58,36 @@ TCHAR szTitleText[ ] = _T("OpenVPN");
 /* Options structure */
 options_t o;
 
+static int
+VerifyAutoConnections()
+{
+    int i;
+    BOOL match;
+
+    for (i = 0; o.auto_connect[i] != 0 && i < MAX_CONFIGS; i++)
+    {
+        int j;
+        match = FALSE;
+        for (j = 0; j < MAX_CONFIGS; j++)
+        {
+            if (_tcsicmp(o.conn[j].config_file, o.auto_connect[i]) == 0)
+            {
+                match = TRUE;
+                break;
+            }
+        }
+        if (match == FALSE)
+        {
+            /* autostart config not found */
+            ShowLocalizedMsg(IDS_ERR_AUTOSTART_CONF, o.auto_connect[i]);
+            return FALSE;
+        }
+    }
+
+    return TRUE;
+}
+
+
 int WINAPI WinMain (HINSTANCE hThisInstance,
                     UNUSED HINSTANCE hPrevInstance,
                     UNUSED LPSTR lpszArgument,
@@ -66,6 +98,17 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   WNDCLASSEX wincl;        /* Data structure for the windowclass */
   DWORD shell32_version;
 
+  /* Initialize handlers for manangement interface notifications */
+  mgmt_rtmsg_handler handler[] = {
+      { ready,    OnReady },
+      { hold,     OnHold },
+      { log,      OnLogLine },
+      { state,    OnStateChange },
+      { password, OnPassword },
+      { stop,     OnStop },
+      { 0,        NULL }
+  };
+  InitManagement(handler);
 
   /* initialize options to default state */
   InitOptions(&o);
@@ -125,6 +168,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   if (!CheckVersion()) {
     exit(1);
   }
+
   BuildFileList();
   if (!VerifyAutoConnections()) {
     exit(1);
@@ -187,6 +231,41 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
 }
 
 
+static void
+StopAllOpenVPN()
+{
+    int i;
+
+    for (i = 0; i < o.num_configs; i++)
+    {
+        if (o.conn[i].state != disconnected)
+            StopOpenVPN(&o.conn[i]);
+    }
+
+    /* Wait for all connections to terminate (Max 5 sec) */
+    for (i = 0; i < 20; i++, Sleep(250))
+    {
+        if (CountConnState(disconnected) == o.num_configs)
+            break;
+    }
+}
+
+
+static int
+AutoStartConnections()
+{
+    int i;
+
+    for (i = 0; i < o.num_configs; i++)
+    {
+        if (o.conn[i].auto_connect)
+            StartOpenVPN(&o.conn[i]);
+    }
+
+    return TRUE;
+}
+
+
 /*  This function is called by the Windows function DispatchMessage()  */
 LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -221,13 +300,13 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
     case WM_NOTIFYICONTRAY:
       OnNotifyTray(lParam); 	// Manages message from tray
       break;
-                 
+
     case WM_COMMAND:
       if ( (LOWORD(wParam) >= IDM_CONNECTMENU) && (LOWORD(wParam) < IDM_CONNECTMENU + MAX_CONFIGS) ) {
-        StartOpenVPN(LOWORD(wParam) - IDM_CONNECTMENU);
+        StartOpenVPN(&o.conn[LOWORD(wParam) - IDM_CONNECTMENU]);
       }
       if ( (LOWORD(wParam) >= IDM_DISCONNECTMENU) && (LOWORD(wParam) < IDM_DISCONNECTMENU + MAX_CONFIGS) ) {
-        StopOpenVPN(LOWORD(wParam) - IDM_DISCONNECTMENU);
+        StopOpenVPN(&o.conn[LOWORD(wParam) - IDM_DISCONNECTMENU]);
       }
       if ( (LOWORD(wParam) >= IDM_STATUSMENU) && (LOWORD(wParam) < IDM_STATUSMENU + MAX_CONFIGS) ) {
         ShowWindow(o.conn[LOWORD(wParam) - IDM_STATUSMENU].hwndStatus, SW_SHOW);
@@ -303,11 +382,11 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             {
               /* Restart suspend connections */
               if (o.conn[i].state == suspended)
-                StartOpenVPN(i);
+                StartOpenVPN(&o.conn[i]);
 
               /* If some connection never reached SUSPENDED state */
               if (o.conn[i].state == suspending)
-                StopOpenVPN(i);
+                StopOpenVPN(&o.conn[i]);
             }
           return FALSE;
       }

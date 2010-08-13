@@ -2,6 +2,7 @@
  *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
+ *                2010 Heiko Hund <heikoh@users.sf.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,6 +20,11 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-void RunConnectScript(int config, int run_as_service);
-void RunDisconnectScript(int config, int run_as_service);
-void RunPreconnectScript(int config);
+#ifndef SCRIPTS_H
+#define SCRIPTS_H
+
+void RunPreconnectScript(connection_t *);
+void RunConnectScript(connection_t *, int run_as_service);
+void RunDisconnectScript(connection_t *, int run_as_service);
+
+#endif

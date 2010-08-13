@@ -199,16 +199,12 @@ BEGIN
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor fehlgeschlagen."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl fehlgeschlagen."
     IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe an hOutputWrite fehlgeschlagen."
-    IDS_ERR_DUP_HANDLE_ERR_WRITE "DuplicateHandle an hErrorWrite fehlgeschlagen."
     IDS_ERR_CREATE_PIPE_INPUT "CreatePipe an hInputRead fehlgeschlagen."
     IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle an hOutputRead fehlgeschlagen."
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle an hInputWrite fehlgeschlagen."
-    IDS_ERR_CLOSE_HANDLE_TMP "CloseHandle an hOutputReadTmp/hInputWriteTmp fehlgeschlagen."
     IDS_ERR_CREATE_PROCESS "CreateProcess fehlgeschlagen, exe='%s' cmdline='%s' dir='%s'"
-    IDS_ERR_CLOSE_HANDLE "CloseHandle fehlgeschlagen."
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread, welcher das Statusfenster zeigt ist fehlgschlagen."
     IDS_NFO_STATE_WAIT_TERM "Aktueller Status: Wartet bis OpenVPN beendet ist..."
-    IDS_ERR_OPEN_LOG_WRITE "Fehler beim Schreiben des Logfiles: %s. Sie haben vermutlich keine Administratorenrechte, welche nötig sind um OpenVPN zu starten."
     IDS_NFO_STATE_CONNECTED "Aktueller Status: Verbunden"
     IDS_NFO_NOW_CONNECTED "%s ist nun verbunden."
     IDS_NFO_ASSIGN_IP "Zugewiesene IP: %s"
@@ -229,7 +225,6 @@ BEGIN
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe an hInputRead fehlgeschlagen."
     IDS_NFO_STATE_CONNECTING "Aktueller Status: Verbinden"
     IDS_NFO_CONNECTION_XXX "OpenVPN Verbindung (%s)"
-    IDS_ERR_THREAD_READ_STDOUT "CreateThread zum Lesen des OpenVPN Prozess stdout fehlgeschlagen."
     IDS_NFO_STATE_CONN_SCRIPT "Aktueller Status: Verbindungsscript läuft"
     IDS_NFO_STATE_DISCONN_SCRIPT "Aktueller Status: Verbindungstrennungsscript läuft"
     IDS_ERR_RUN_CONN_SCRIPT "Fehler beim Ausführen des Verbindungsscript: %s"
@@ -252,11 +247,6 @@ BEGIN
     IDS_NFO_SERVICE_ACTIVE_EXIT "Der OpenVPN Dienst ist gestartet und verbunden. " \
                                 "Die Verbindung besteht solange bis Sie die OpenVPN GUI beenden.\n\n" \
                                 "\n\nSind sie sicher, dass Sie das Programm beenden möchten?"
-    IDS_ERR_OPTION_LOG_IN_CONFIG "Sie haben ""log"" oder ""log-append"" in Ihrer OpenVPN Konfigurationsdatei. Diese Optionen " \
-                                 "sollten nicht mit der OpenVPN GUI verwendet werden, denn es verhindert, dass die Ausgaben " \
-                                 "von OpenVPN lesen kann, welche nötig ist, für den korrekten Betrieb des OpenVPN " \
-                                 "GUI. Die Ausgabe wird immer in ein Logfile geschrieben, wenn OpenVPN GUI verwendet wird. " \
-                                 "Deshalb sollten Sie diese Option entfernen.\n\nMöchten Sie dennoch mit dem Verbinden fortfahren? "
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Zeigt diese Information.\n" \

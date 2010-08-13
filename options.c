@@ -291,3 +291,14 @@ CountConnState(conn_state_t check)
     return count;
 }
 
+connection_t*
+GetConnByManagement(SOCKET sk)
+{
+    int i;
+    for (i = 0; i < o.num_configs; ++i)
+    {
+        if (o.conn[i].manage.sk == sk)
+            return &o.conn[i];
+    }
+    return NULL;
+}
