@@ -33,6 +33,7 @@ ID_ICO_CONNECTING    ICON  DISCARDABLE  "connecting.ico"
 ID_ICO_DISCONNECTED  ICON  DISCARDABLE  "disconnected.ico"
 
 #include "openvpn-gui-res-de.rc"
+#include "openvpn-gui-res-dk.rc"
 #include "openvpn-gui-res-en.rc"
 #include "openvpn-gui-res-es.rc"
 #include "openvpn-gui-res-fi.rc"
