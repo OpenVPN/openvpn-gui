@@ -214,7 +214,7 @@ OnNotifyTray(LPARAM lParam)
 
                 /* Start connection if only one config exist */
                 if (o.num_configs == 1 && o.conn[0].state == disconnected)
-                    StartOpenVPN(0);
+                    StartOpenVPN(&o.conn[0]);
             }
             else if (disconnected_conns == o.num_configs - 1) {
                 /* Show status window if only one connection is running */
