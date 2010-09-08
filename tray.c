@@ -94,7 +94,7 @@ CreatePopupMenus()
         AppendMenu(hMenu, MF_STRING ,IDM_ABOUT, LoadLocalizedString(IDS_MENU_ABOUT));
         AppendMenu(hMenu, MF_STRING ,IDM_CLOSE, LoadLocalizedString(IDS_MENU_CLOSE));
 
-        SetMenuStatus(&o.conn[0],  o.conn[i].state);
+        SetMenuStatus(&o.conn[0],  o.conn[0].state);
     }
     else {
         /* Create Main menu with all connections */
