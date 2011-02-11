@@ -300,8 +300,7 @@ SetTrayIcon(conn_state_t state)
         _tcsncat(msg, connected_since, _tsizeof(msg) - _tcslen(msg) - 1);
 
         if (_tcslen(o.conn[config].ip) > 0) {
-            TCHAR assigned_ip[100];
-            _sntprintf_0(assigned_ip, LoadLocalizedString(IDS_TIP_ASSIGNED_IP), o.conn[config].ip);
+            TCHAR *assigned_ip = LoadLocalizedString(IDS_TIP_ASSIGNED_IP, o.conn[config].ip);
             _tcsncat(msg, assigned_ip, _tsizeof(msg) - _tcslen(msg) - 1);
         }
     }
