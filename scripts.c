@@ -2,7 +2,7 @@
  *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
- *                2010 Heiko Hund <heikoh@users.sf.net>
+ *                2011 Heiko Hund <heikoh@users.sf.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ RunPreconnectScript(connection_t *c)
     int i;
 
     /* Cut off extention from config filename and add "_pre.bat" */
-    int len = _tcslen(c->config_file) - _tcslen(o.ext_string);
+    int len = _tcslen(c->config_file) - _tcslen(o.ext_string) - 1;
     _sntprintf_0(cmdline, _T("%s\\%.*s_pre.bat"), c->config_dir, len, c->config_file);
 
     /* Return if no script exists */
@@ -97,7 +97,7 @@ RunConnectScript(connection_t *c, int run_as_service)
     int i;
 
     /* Cut off extention from config filename and add "_up.bat" */
-    int len = _tcslen(c->config_file) - _tcslen(o.ext_string);
+    int len = _tcslen(c->config_file) - _tcslen(o.ext_string) - 1;
     _sntprintf_0(cmdline, _T("%s\\%.*s_up.bat"), c->config_dir, len, c->config_file);
 
     /* Return if no script exists */
@@ -166,7 +166,7 @@ RunDisconnectScript(connection_t *c, int run_as_service)
     int i;
 
     /* Cut off extention from config filename and add "_down.bat" */
-    int len = _tcslen(c->config_file) - _tcslen(o.ext_string);
+    int len = _tcslen(c->config_file) - _tcslen(o.ext_string) - 1;
     _sntprintf_0(cmdline, _T("%s\\%.*s_down.bat"), c->config_dir, len, c->config_file);
 
     /* Return if no script exists */
