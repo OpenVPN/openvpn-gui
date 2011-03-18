@@ -1,0 +1,348 @@
+/*
+ *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
+ *
+ *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
+ *                2009 Heiko Hund <heikoh@users.sf.net>
+ *                2011 skesicki <skesicki@users.sourceforge.net>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program (see the file COPYING included with this
+ *  distribution); if not, write to the Free Software Foundation, Inc.,
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+#pragma code_page(1250)
+
+/* About Dialog */
+ID_DLG_ABOUT DIALOG 0, 0, 260, 135
+STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "O programie - OpenVPN GUI dla systemu Windows"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_POLISH, SUBLANG_NEUTRAL
+BEGIN
+    PUSHBUTTON "OK", IDOK, 99, 115, 63, 14
+    ICON ID_ICO_CONNECTED, 204, 11, 8, 21, 20
+    LTEXT "OpenVPN GUI v" PACKAGE_VERSION " - Windows GUI dla OpenVPN-a", 101, 40, 5, 215, 8
+    LTEXT "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>", 102, 40, 15, 215, 8
+    LTEXT "http://openvpn.se/", 103, 40, 25, 215, 8
+	LTEXT "OpenVPN - Aplikacja do bezpiecznego tunelowania sieci IP" \
+		  "przy pomocy pojedynczego portu UDP, z autentykacj¹ sesji," \
+	      "wymian¹ klucza, szyfrowaniem, kompresj¹ i autentykacj¹" \
+	      "pakietów opart¹ na protokole SSL/TLS",
+	      104, 11, 51, 235, 34
+    LTEXT "Copyright (C) 2002-2005 OpenVPN Solutions LLC <info@openvpn.net>", 105, 11, 87, 235, 11
+    LTEXT "http://openvpn.net/", 106, 11, 98, 235, 10
+END
+
+/* Passphrase Dialog */
+ID_DLG_PASSPHRASE DIALOGEX 6, 18, 120, 51
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+EXSTYLE WS_EX_TOPMOST
+CAPTION "OpenVPN"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_POLISH, SUBLANG_NEUTRAL
+BEGIN
+    LTEXT "Has³o:", 201, 6, 6, 100, 10
+    EDITTEXT ID_EDT_PASSPHRASE, 6, 17, 107, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "OK", IDOK, 6, 33, 50, 14
+    PUSHBUTTON "Anuluj", IDCANCEL, 64, 33, 50, 14
+END
+
+/* Auth Username/Password Dialog */
+ID_DLG_AUTH DIALOG 6, 18, 160, 62
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+CAPTION "OpenVPN - Autentykacja U¿ytkownika"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_POLISH, SUBLANG_NEUTRAL
+BEGIN
+    LTEXT "U¿ytkownik:", 0, 6, 9, 50, 10
+    LTEXT "Has³o:", 0, 6, 26, 50, 10
+    EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "OK", IDOK, 20, 42, 50, 14
+    PUSHBUTTON "Anuluj", IDCANCEL, 90, 42, 52, 14
+END
+
+/* Status Dialog */
+ID_DLG_STATUS DIALOG 6, 18, 380, 210
+STYLE WS_SIZEBOX | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | DS_CENTER
+CAPTION "OpenVPN"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_POLISH, SUBLANG_NEUTRAL
+BEGIN
+    LTEXT "£¹czenie...", ID_TXT_STATUS, 20, 5, 200, 10
+    PUSHBUTTON "Roz³¹cz", ID_DISCONNECT, 50, 190, 50, 14
+    PUSHBUTTON "Po³. Ponownie", ID_RESTART, 150, 190, 50, 14
+    PUSHBUTTON "Ukryj", ID_HIDE, 100, 190, 50, 14
+END
+
+/* Change Passphrase Dialog */
+ID_DLG_CHGPASS DIALOG 6, 18, 193, 82
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "OpenVPN - Zmiana Has³a"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_POLISH, SUBLANG_NEUTRAL
+BEGIN
+    LTEXT "Stare Has³o:", 171, 6, 9, 85, 10
+    LTEXT "Nowe Has³o:", 172, 6, 26, 85, 10
+    LTEXT "PotwierdŸ Nowe Has³o:", 173, 6, 42, 85, 10
+    EDITTEXT ID_EDT_PASS_CUR, 95, 6, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PASS_NEW, 95, 23, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PASS_NEW2, 95, 39, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "OK", IDOK, 40, 59, 50, 14
+    PUSHBUTTON "Anuluj", IDCANCEL, 103, 59, 50, 14
+    LTEXT "", ID_TXT_KEYFORMAT, 0, 0, 0, 0
+    LTEXT "", ID_TXT_KEYFILE, 0, 0, 0, 0
+END
+
+/* Proxy Settings Dialog */
+ID_DLG_PROXY DIALOG 6, 18, 249, 124
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Proxy"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_POLISH, SUBLANG_NEUTRAL
+BEGIN
+    GROUPBOX "   ", 201, 6, 42, 235, 52
+    AUTORADIOBUTTON "U¿yj ustawieñ z pliku konfiguracyjnego OpenVPN-a", ID_RB_PROXY_OPENVPN, \
+                    13, 12, 200, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "U¿yj ustawieñ programu Internet Explorer", \
+                    ID_RB_PROXY_MSIE, 13, 27, 200, 10
+    AUTORADIOBUTTON "Konfiguracja Rêczna", ID_RB_PROXY_MANUAL, 13, 42, 79, 10
+    AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 58, 90, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "SOCKS Proxy", ID_RB_PROXY_SOCKS, 120, 58, 90, 10
+    LTEXT "Adres:", ID_TXT_PROXY_ADDRESS, 20, 73, 32, 10
+    RTEXT "Port:", ID_TXT_PROXY_PORT, 171, 73, 20, 10
+    EDITTEXT ID_EDT_PROXY_ADDRESS, 53, 71, 117, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PROXY_PORT, 196, 71, 30, 12, ES_AUTOHSCROLL
+    AUTOCHECKBOX "Monituj o u¿ytkownika/has³o podczas ³¹czenia.", ID_CB_PROXY_AUTH, 13, 103, 183, 10
+END
+
+/* General Settings Dialog */
+ID_DLG_GENERAL DIALOGEX 6, 18, 249, 124
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Ogólne"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_POLISH, SUBLANG_NEUTRAL
+BEGIN
+    GROUPBOX "Interfejs U¿ytkownika", 201, 6, 6, 235, 30
+    LTEXT "Jêzyk:", ID_TXT_LANGUAGE, 17, 19, 52, 12
+    COMBOBOX ID_CMB_LANGUAGE, 57, 17, 171, 400, CBS_DROPDOWNLIST | WS_TABSTOP
+END
+
+/* Proxy Authentication Dialog */
+ID_DLG_PROXY_AUTH DIALOG 29, 23, 154, 65
+STYLE DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER
+CAPTION "OpenVPN - Autentykacja Proxy"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_POLISH, SUBLANG_NEUTRAL
+BEGIN
+    LTEXT "U¿ytkownik:", 201, 9, 8, 38, 10
+    EDITTEXT ID_EDT_PROXY_USER, 49, 5, 94, 12, ES_AUTOHSCROLL
+    LTEXT "Has³o:", 202, 9, 26, 38, 10
+    EDITTEXT ID_EDT_PROXY_PASS, 49, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "OK", IDOK, 58, 43, 40, 14
+END
+
+STRINGTABLE
+LANGUAGE LANG_POLISH, SUBLANG_NEUTRAL
+BEGIN
+    IDS_LANGUAGE_NAME "Polski - Polish"
+
+    /* Tray - Resources */
+    IDS_TIP_DEFAULT "OpenVPN GUI "
+    IDS_TIP_CONNECTED "\nPo³¹czony z: "
+    IDS_TIP_CONNECTING "\n£¹czenie z: "
+    IDS_TIP_CONNECTED_SINCE "\nPo³¹czony z: "
+    IDS_TIP_ASSIGNED_IP "\nPrzyznane IP: %s"
+    IDS_MENU_SERVICE "Us³uga OpenVPN"
+    IDS_MENU_SETTINGS "Ustawienia..."
+    IDS_MENU_ABOUT "O Programie..."
+    IDS_MENU_CLOSE "Zakoñcz"
+    IDS_MENU_CONNECT "Po³¹cz"
+    IDS_MENU_DISCONNECT "Roz³¹cz"
+    IDS_MENU_STATUS "Poka¿ Status"
+    IDS_MENU_VIEWLOG "Poka¿ Log"
+    IDS_MENU_EDITCONFIG "Edytuj Konfiguracjê"
+    IDS_MENU_PASSPHRASE "Zmieñ Has³o"
+    IDS_MENU_SERVICE_START "Uruchom"
+    IDS_MENU_SERVICE_STOP "Zatrzymaj"
+    IDS_MENU_SERVICE_RESTART "Uruchom Ponownie"
+    IDS_MENU_SERVICEONLY_START "Po³¹cz"
+    IDS_MENU_SERVICEONLY_STOP "Roz³¹cz"
+    IDS_MENU_SERVICEONLY_RESTART "Po³¹cz Ponownie"
+    IDS_MENU_ASK_STOP_SERVICE "Czy chcesz siê roz³¹czyæ(zatrzymaæ us³ugê OpenVPN)?"
+
+    /* Logviewer - Resources */
+    IDS_ERR_START_LOG_VIEWER "B³¹d podczas uruchamiania przegl¹darki logów: %s"
+    IDS_ERR_START_CONF_EDITOR "B³¹d podczas uruchamiania edytora konfiguracji: %s"
+
+    /* OpenVPN */
+    IDS_ERR_MANY_CONFIGS "OpenVPN GUI nie wspiera iloœci konfiguracji wiêkszej ni¿ %d. Proszê skontaktowaæ siê z autorem w przypadku takiej potrzeby."
+    IDS_ERR_ONE_CONN_OLD_VER "Mo¿esz mieæ jednoczeœnie tylko jedno aktywne po³¹czenie kiedy u¿ywasz OpenVPN-a w wersji starszej ni¿ 2.0-beta6."
+    IDS_ERR_STOP_SERV_OLD_VER "Nie mo¿esz nawi¹zaæ po³¹czenia za pomoc¹ OpenVPN GUI gdy uruchomiona jest us³uga OpenVPN (dla OpenVPN-a 1.5/1.6). Zatrzymaj us³ugê OpenVPN jeœli chcesz u¿yæ OpenVPN GUI."
+    IDS_ERR_CREATE_EVENT "B³¹d podczas tworzenia zdarzenia wyjœcia: %s"
+    IDS_ERR_UNKNOWN_PRIORITY "Nieznana nazwa priorytetu: %s"
+    IDS_ERR_LOG_APPEND_BOOL "Flaga dopisywania zdarzeñ do pliku logów (podana jako '%s') musi mieæ postaæ '0' lub '1'"
+    IDS_ERR_GET_MSIE_PROXY "B³¹d podczas pobierania ustawieñ Proxy programu Internet Explorer."
+    IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor zakoñczone niepowodzeniem."
+    IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl zakoñczone niepowodzeniem."
+    IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe dla hOutputWrite zakoñczone niepowodzeniem."
+    IDS_ERR_CREATE_PIPE_INPUT "CreatePipe dla hInputRead zakoñczone niepowodzeniem."
+    IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle dla hOutputRead zakoñczone niepowodzeniem."
+    IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle dla hInputWrite zakoñczone niepowodzeniem."
+    IDS_ERR_CREATE_PROCESS "Utworzenie procesu zakoñczone niepowodzeniem, exe='%s' cmdline='%s' dir='%s'"
+    IDS_ERR_CREATE_THREAD_STATUS "Utworzenie w¹tku dla okna statusu zakoñczone niepowodzeniem."
+    IDS_NFO_STATE_WAIT_TERM "Stan Obecny: Oczekiwanie na zakoñczenie OpenVPN-a..."
+    IDS_NFO_STATE_CONNECTED "Stan Obecny: Po³¹czony"
+    IDS_NFO_NOW_CONNECTED "%s jest teraz po³¹czony."
+    IDS_NFO_ASSIGN_IP "Przyznane IP: %s"
+    IDS_ERR_CERT_EXPIRED "Po³¹czenie nie jest mo¿liwe z powodu wygaœniêcia certyfikatu lub b³êdnie ustawionego czasu systemowego."
+    IDS_ERR_CERT_NOT_YET_VALID "Po³¹czenie nie jest mo¿liwe poniewa¿ certyfikat jest jeszcze niewa¿ny. SprawdŸ poprawnoœæ ustawienia czasu systemowego."
+    IDS_NFO_STATE_RECONNECTING "Stan Obecny: Ponowne £¹czenie"
+    IDS_NFO_STATE_DISCONNECTED "Stan Obecny: Roz³¹czony"
+    IDS_NFO_CONN_TERMINATED "Po³¹czenie z %s zosta³o zakoñczone."
+    IDS_NFO_STATE_FAILED "Stan Obecny: Po³¹czenie nie powiod³o siê"
+    IDS_NFO_CONN_FAILED "Po³¹czenie z %s nie powiod³o siê."
+    IDS_NFO_STATE_FAILED_RECONN "Stan Obecny: Ponowne po³¹czenie nie powiod³o siê"
+    IDS_NFO_RECONN_FAILED "Ponowne po³¹czenie z %s nie powiod³o siê."
+    IDS_NFO_STATE_SUSPENDED "Stan Obecny: Zawieszone"
+    IDS_ERR_READ_STDOUT_PIPE "B³¹d podczas czytania z OpenVPN StdOut Pipe."
+    IDS_ERR_CREATE_EDIT_LOGWINDOW "B³¹d podczas tworzenia okna logów!!"
+    IDS_ERR_SET_SIZE "Ustawienie rozmiaru nie powiod³o siê!"
+    IDS_ERR_AUTOSTART_CONF "Brak pliku konfiguracyjnego dla ¿¹danego po³¹czenia automatycznego: %s"
+    IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe dla hInputRead zakoñczone niepowodzeniem."
+    IDS_NFO_STATE_CONNECTING "Stan Obecny: £¹czenie"
+    IDS_NFO_CONNECTION_XXX "Po³¹czenie OpenVPN (%s)"
+    IDS_NFO_STATE_CONN_SCRIPT "Stan Obecny: Uruchomiono skrypt po³¹czenia"
+    IDS_NFO_STATE_DISCONN_SCRIPT "Stan Obecny: Uruchomiono skrypt roz³¹czenia"
+    IDS_ERR_RUN_CONN_SCRIPT "B³¹d podczas wykonywania skryptu po³¹czenia: %s"
+    IDS_ERR_GET_EXIT_CODE "B³¹d podczas pobierania kodu wyjœcia skryptu po³¹czenia (%s)"
+    IDS_ERR_CONN_SCRIPT_FAILED "B³¹d skryptu po³¹czenia. (kod wyjœcia=%ld)"
+    IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "B³¹d skryptu po³¹czenia. Brak odpowiedzi przez %d sek."
+    IDS_ERR_CONFIG_EXIST "Plik konfiguracyjny o nazwie '%s' ju¿ istnieje. Nie mo¿na " \
+                         "mieæ kilku plików konfiguracyjnych o tej samej nazwie, nawet jeœli " \
+                         "umieszczone s¹ w innych katalogach."
+    /* main - Resources */
+    IDS_ERR_OPEN_DEBUG_FILE "B³¹d otwarcia pliku debagu (%s)."
+    IDS_ERR_LOAD_RICHED20 "B³¹d ³adowania biblioteki RICHED20.DLL."
+    IDS_ERR_SHELL_DLL_VERSION "Twoja wersja biblioteki shell32.dll jest za stara (0x%lx). Wymagana co najmniej wersja 5.0."
+    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI jest ju¿ uruchomione."
+    IDS_NFO_SERVICE_STARTED "Us³uga OpenVPN uruchomiona."
+    IDS_NFO_SERVICE_STOPPED "Us³uga OpenVPN zatrzymana."
+    IDS_NFO_ACTIVE_CONN_EXIT "Istniej¹ aktywne po³¹czenia, które zostan¹ zakoñczone jeœli zamkniesz OpenVPN GUI." \
+                             "\n\nCzy chcesz kontynuowaæ?"
+    IDS_NFO_SERVICE_ACTIVE_EXIT "Obecnie jesteœ po³¹czony (us³uga OpenVPN jest uruchomiona). " \
+                                "Po³¹czenie zostanie aktywne nawet po zakoñczeniu programu OpenVPN GUI.\n\n" \
+                                "Czy chcesz kontynuowaæ i zakoñczyæ OpenVPN GUI?"
+
+    /* options - Resources */
+    IDS_NFO_USAGE "--help\t\t\t: Poka¿ tê wiadomoœæ.\n" \
+                  "--connect cnn \t\t: Po³¹cz z ""cnn"" na starcie. (rozszerzenie musi zostaæ podane jawnie)\n" \
+                  "\t\t\t   Przyk³ad: openvpn-gui --connect office.ovpn\n" \
+                  "\n" \
+                  "Opcje oddalaj¹ce ustawienia rejestru:\n" \
+                  "--exe_path\t\t: Œcie¿ka do openvpn.exe.\n" \
+                  "--config_dir\t\t: Œcie¿ka do katalogu z plikami konfiguracji do przeszukania.\n" \
+                  "--ext_string\t\t: Rozszerzenie plików konfiguracyjnych.\n" \
+                  "--log_dir\t\t\t: Œcie¿ka do katalogu, w którym zostan¹ zapisane pliki logów.\n" \
+                  "--priority_string\t\t: Deskryptor priorytetów (Wiêcej szczegó³ów w install.txt).\n" \
+                  "--append_string\t\t: 1=dopisz do pliku logów. 0=Nadpisz plik logów przy ³¹czeniu.\n" \
+                  "--log_viewer\t\t: Œcie¿ka do przegl¹darki logów.\n" \
+                  "--editor\t\t\t: Œcie¿ka do edytora konfiguracji.\n" \
+                  "--allow_edit\t\t: 1=Wyœwietl w menu pole Edytuj Konfiguracjê.\n" \
+                  "--allow_service\t\t: 1=Wyœwietl menu us³ugi OpenVPN.\n" \
+                  "--allow_password\t\t: 1=Wyœwietl w menu pole Zmieñ Has³o.\n" \
+                  "--allow_proxy\t\t: 1=Wyœwietl w menu pole Poka¿ Ustawienia Proxy.\n" \
+                  "--show_balloon\t\t: 0=Nigdy, 1=Przy pierwszym po³¹czeniu, 2=Przy ka¿dym po³¹czeniu.\n" \
+                  "--service_only\t\t: 1=Aktywuj tryb Tylko Us³uga (Service Only).\n" \
+                  "--silent_connection\t\t: 1=Nie pokazuj okna statusu podczas ³¹czenia.\n" \
+                  "--show_script_window\t: 0=Ukryj okno wykonywania skryptu, 1=Wyœwietl je.\n" \
+                  "--passphrase_attempts\t: Dopuszczalna iloœæ prób podania has³a.\n" \
+                  "--connectscript_timeout\t: Czas oczekiwania na zakoñczenie skryptu ³¹czenia.\n" \
+                  "--disconnectscript_timeout\t: Czas oczekiwania na zakoñczenie skryptu roz³¹czenia.\n" \
+                  "--preconnectscript_timeout\t: Czas oczekiwania na zakoñczenie skryptu przedpo³¹czeniowego.\n"
+
+    IDS_NFO_USAGECAPTION "OpenVPN GUI sk³adnia"
+    IDS_ERR_BAD_PARAMETER "Próbujê traktowaæ ""%s"" jako opcjê " \
+                      "ale brak poprzedzaj¹cego '--'"
+    IDS_ERR_BAD_OPTION "B³¹d sk³adni: Nieznana opcja lub brak parametru(ów): --%s\n" \
+                   "U¿yj openvpn-gui --help aby uzyskaæ wiêcej informacji."
+
+    /* passphrase - Resources */
+    IDS_ERR_CREATE_PASS_THREAD "Utworzenie w¹tku w celu wyœwietlenia dialogu zmiany has³a nie powiod³o siê."
+    IDS_NFO_CHANGE_PWD "Zmiana Has³a (%s)"
+    IDS_ERR_PWD_DONT_MATCH "Podane has³a s¹ ró¿ne. Spróbuj ponownie."
+    IDS_ERR_PWD_TO_SHORT "Minimalna iloœæ znaków w nowym haœle to: %d."
+    IDS_NFO_EMPTY_PWD "Czy na pewno ustawiæ puste has³o?"
+    IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Nieznany format pliku klucza."
+    IDS_ERR_OPEN_PRIVATE_KEY_FILE "B³¹d podczas otwierania pliku klucza prywatnego (%s)."
+    IDS_ERR_OLD_PWD_INCORRECT "Stare has³o jest niepoprawne."
+    IDS_ERR_OPEN_WRITE_KEY "B³¹d podczas otwierania pliku klucza prywatnego w trybie do zapisu (%s)."
+    IDS_ERR_WRITE_NEW_KEY "B³¹d podczas zapisu nowego pliku klucza prywatnego (%s)."
+    IDS_NFO_PWD_CHANGED "Twoje has³o zosta³o zmienione."
+    IDS_ERR_READ_PKCS12 "B³¹d odczytu pliku PKCS #12(%s)."
+    IDS_ERR_CREATE_PKCS12 "B³¹d podczas tworzenia nowego obiektu PKCS #12. Zmiana has³a nie powiod³a siê."
+    IDS_ERR_OPEN_CONFIG "B³¹d podczas otwierania do odczytu pliku konfiguracyjnego: (%s)"
+    IDS_ERR_ONLY_ONE_KEY_OPTION "Opcja ""key"" w pliku konfiguracyjnym mo¿e byæ zdefiniowana najwy¿ej jeden raz."
+    IDS_ERR_ONLY_KEY_OR_PKCS12 "Opcje ""key"" i ""pkcs12"" nie mog¹ byæ zdefiniowane jednoczeœnie."
+    IDS_ERR_ONLY_ONE_PKCS12_OPTION "Opcja ""pkcs12"" mo¿e byæ zdefiniowana najwy¿ej jeden raz."
+    IDS_ERR_HAVE_KEY_OR_PKCS12 "Plik konfiguracyjny nie zawiera jednej z wymaganych opcji ""key"" lub ""pkcs12""."
+    IDS_ERR_KEY_FILENAME_TO_LONG "Zdefiniowana nazwa pliku klucza jest zbyt d³uga!"
+    IDS_ERR_PASSPHRASE2STDIN "B³¹d przy przekazywaniu tekstu szyfruj¹cego do wejœcia standardowego."
+    IDS_ERR_AUTH_USERNAME2STDIN "B³¹d przy przekazywaniu nazwy u¿ytkownika do wejœcia standardowego."
+    IDS_ERR_AUTH_PASSWORD2STDIN "B³¹d przy przekazywaniu has³a do wejœcia standardowego."
+    IDS_ERR_CR2STDIN "B³¹d przy przekazywaniu CR do wejœcia standardowego."
+    IDS_ERR_INVALID_CHARS_IN_PSW "Twoje nowe has³o zawiera niedozwolone znaki. " \
+                             "Proszê podaæ inne has³o."
+
+    /* settings */
+    IDS_SETTINGS_CAPTION "OpenVPN - Ustawienia"
+
+    /* proxy */
+    IDS_ERR_HTTP_PROXY_ADDRESS "Musisz zdefiniowaæ adres serwera proxy protoko³u HTTP."
+    IDS_ERR_HTTP_PROXY_PORT "Musisz zdefiniowaæ port dla us³ugi proxy protoko³u HTTP."
+    IDS_ERR_HTTP_PROXY_PORT_RANGE "Port dla us³ugi proxy protoko³u HTTP musi zawieraæ siê w przedziale 1-65535"
+    IDS_ERR_SOCKS_PROXY_ADDRESS "Musisz zdefiniowaæ adres serwera proxy protoko³u SOCKS."
+    IDS_ERR_SOCKS_PROXY_PORT "Musisz zdefiniowaæ port dla us³ugi proxy protoko³u SOCKS."
+    IDS_ERR_SOCKS_PROXY_PORT_RANGE "Port dla us³ugi proxy protoko³u SOCKS musi zawieraæ siê w przedziale 1-65535"
+    IDS_ERR_CREATE_REG_HKCU_KEY "B³¹d podczas tworzenia klucza rejestru ""HKEY_CURRENT_USER\\%s""."
+    IDS_ERR_GET_TEMP_PATH "B³¹d przy ustalaniu katalogu tymczasowego przy pomocy funkcji GetTempPath(). U¿yty zostanie katalog ""C:\\""."
+    IDS_ERR_CREATE_AUTH_FILE "B³¹d podczas tworzenia pliku AUTH. (%s)"
+
+    /* service */
+    IDS_ERR_OPEN_SCMGR_ADMIN "B³¹d OpenSCManager'a. Do uruchomienia us³ugi wymagane s¹ uprawnienia administratora."
+    IDS_ERR_OPEN_VPN_SERVICE "B³¹d otwarcia us³ugi ""OpenVPNService"""
+    IDS_ERR_START_SERVICE "Uruchomienie us³ugi ""OpenVPNService"" nie powiod³o siê."
+    IDS_ERR_QUERY_SERVICE "B³¹d przy odczycie statusu us³ugi."
+    IDS_ERR_SERVICE_START_FAILED "Uruchomienie us³ugi OpenVPN zakoñczone niepowodzeniem."
+    IDS_ERR_OPEN_SCMGR "B³¹d OpenSCManager'a(%d)"
+    IDS_ERR_STOP_SERVICE "Nie uda³o siê zatrzymaæ us³ugi OpenVPN."
+    IDS_NFO_RESTARTED "Us³uga OpenVPN uruchomiona ponownie."
+
+    /* registry */
+    IDS_ERR_GET_WINDOWS_DIR "B³¹d przy pobieraniu nazwy katalogu systemowego Windows."
+    IDS_ERR_GET_PROGRAM_DIR "B³¹d przy pobieraniu nazwy katalogu ""Program""."
+    IDS_ERR_OPEN_REGISTRY "B³¹d przy otwieraniu do odczytu rejestru (HKLM\\SOFTWARE\\OpenVPN).\n " \
+                      "Prawdopodobnie OpenVPN nie jest zainstalowany."
+    IDS_ERR_READING_REGISTRY "B³¹d odczytu wartoœci rejestru (HKLM\\SOFTWARE\\OpenVPN)."
+    IDS_ERR_PASSPHRASE_ATTEMPTS "Wartoœæ rejestru ""passphrase_attempts"" musi byæ numerem pomiêdzy 1 a 9."
+    IDS_ERR_CONN_SCRIPT_TIMEOUT "Wartoœæ rejestru ""connectscript_timeout"" musi byæ numerem pomiêdzy 0 a 99."
+    IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Wartoœæ rejestru ""disconnectscript_timeout"" musi byæ numerem pomiêdzy 1 a 99."
+    IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Wartoœæ rejestru ""preconnectscript_timeout"" musi byæ numerem pomiêdzy 1 a 99."
+    IDS_ERR_CREATE_REG_KEY "B³¹d podczas tworzenia klucza rejestru HKLM\\SOFTWARE\\OpenVPN-GUI."
+    IDS_ERR_OPEN_WRITE_REG "B³¹d podczas otwierania rejestru w trybie do zapisu. Musisz chocia¿ raz uruchomiæ program " \
+                       "z prawami administratora aby uaktualniæ rejestr."
+    IDS_ERR_READ_SET_KEY "B³¹d odczytu/zmiany klucza rejestru ""%s""."
+    IDS_ERR_WRITE_REGVALUE "B³¹d zapisu rejestru ""HKEY_CURRENT_USER\\%s\\%s""."
+END
+
