@@ -38,7 +38,13 @@ dist:
 	rm -rf @PACKAGE_TARNAME@-*/
 	mkdir @PACKAGE_TARNAME@-$(VERSION)
 	cp $(SOURCES) $(EXTRA) @PACKAGE_TARNAME@-$(VERSION)
-	test ! -f SNAPSHOT || cp SNAPSHOT openvpn-gui-$(VERSION)
+	test ! -f SNAPSHOT || { \
+		cd openvpn-gui-$(VERSION); \
+		cp ../SNAPSHOT .; \
+		sed -i -e 's/\[MAJOR_VERSION.MINOR_VERSION.RELEASE\]/[$(subst -,,$(SNAPSHOT))]/' configure.ac; \
+		autoconf; \
+		cd -; \
+	}
 	tar -czf @PACKAGE_TARNAME@-$(VERSION).tar.gz @PACKAGE_TARNAME@-$(VERSION)
 	rm -rf @PACKAGE_TARNAME@-$(VERSION)
 
