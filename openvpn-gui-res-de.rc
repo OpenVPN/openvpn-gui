@@ -2,6 +2,7 @@
  *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
+ *                2005 Patrick Steiner <patrick.steiner@gmx.ch>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,12 +20,9 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/*
- * Translated by Patrick Steiner 2005 <patrick.steiner@gmx.ch>
- * Uebersetzt durch Patrick Steiner 2005 <patrick.steiner@gmx.ch>
- */
+#pragma code_page(1252)
 
-/* About Dialog - designed with lcc-win32 resource editor */
+/* About Dialog */
 ID_DLG_ABOUT DIALOG 0, 0, 260, 145
 STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
 CAPTION "Über OpenVPN - Eine GUI für Windows"

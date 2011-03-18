@@ -20,7 +20,9 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/* About Dialog - designed with lcc-win32 resource editor */
+#pragma code_page(1252)
+
+/* About Dialog */
 ID_DLG_ABOUT DIALOG 0, 0, 260, 135
 STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
 CAPTION "About - OpenVPN GUI for Windows"

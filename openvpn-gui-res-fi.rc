@@ -3,6 +3,7 @@
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
  *                2009 Heiko Hund <heikoh@users.sf.net>
+ *                2010 Samuli Seppänen <samuli@openvpn.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,7 +21,9 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/* About Dialog - designed with lcc-win32 resource editor */
+#pragma code_page(1252)
+
+/* About Dialog */
 ID_DLG_ABOUT DIALOG 0, 0, 260, 135
 STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
 CAPTION "Tietoja OpenVPN GUI -sovelluksesta"

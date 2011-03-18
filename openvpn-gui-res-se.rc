@@ -19,10 +19,7 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/*
- * File translated to Swedish by Mathias Sundman <mathias@nilings.se>, Oct 29, 2004.
- * Updated to OpenVPN GUI 1.0-rc4 Mar 7, 2005.
- */
+#pragma code_page(1252)
 
 /* About Dialog */
 ID_DLG_ABOUT DIALOG 0, 0, 260, 135
