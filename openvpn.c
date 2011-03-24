@@ -47,7 +47,7 @@
 
 extern options_t o;
 
-static const TCHAR cfgProp[] = _T("conn");
+const TCHAR *cfgProp = _T("conn");
 
 /*
  * Receive banner on connection to management interface
@@ -176,7 +176,6 @@ OnStateChange(connection_t *c, char *data)
 
         SetMenuStatus(c, connected);
         SetTrayIcon(connected);
-        DeleteFile(o.proxy_authfile);
 
         SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONNECTED));
         SetStatusWinIcon(c->hwndStatus, ID_ICO_CONNECTED);
@@ -339,6 +338,10 @@ OnPassword(connection_t *c, char *msg)
     {
         LocalizedDialogBoxParam(ID_DLG_PASSPHRASE, PrivKeyPassDialogFunc, (LPARAM) c);
     }
+    else if (strstr(msg, "'HTTP Proxy'"))
+    {
+        LocalizedDialogBoxParam(ID_DLG_PROXY_AUTH, ProxyAuthDialogFunc, (LPARAM) c);
+    }
 }
 
 
@@ -350,7 +353,6 @@ OnStop(connection_t *c, char *msg)
 {
     UINT txt_id, msg_id;
     SetMenuStatus(c, disconnected);
-    DeleteFile(o.proxy_authfile);
 
     switch (c->state)
     {

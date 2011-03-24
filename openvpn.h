@@ -36,4 +36,6 @@ void OnStateChange(connection_t *, char *);
 void OnPassword(connection_t *, char *);
 void OnStop(connection_t *, char *);
 
+extern const TCHAR *cfgProp;
+
 #endif

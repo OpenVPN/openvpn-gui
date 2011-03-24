@@ -114,12 +114,10 @@ typedef struct {
     /* Proxy Settings */
     proxy_source_t proxy_source;      /* Where to get proxy information from */
     proxy_t proxy_type;               /* The type of proxy to use */
-    BOOL proxy_http_auth;             /* TRUE is proxy authentication is used */
     TCHAR proxy_http_address[100];    /* HTTP Proxy Address */
     TCHAR proxy_http_port[6];         /* HTTP Proxy Port */
     TCHAR proxy_socks_address[100];   /* SOCKS Proxy Address */
     TCHAR proxy_socks_port[6];        /* SOCKS Proxy Address */
-    TCHAR proxy_authfile[100];        /* Path to proxy auth file */
 
     /* Registry values */
     TCHAR exe_path[MAX_PATH];

@@ -106,37 +106,36 @@ BEGIN
 END
 
 /* Proxy Settings Dialog */
-ID_DLG_PROXY DIALOG 6, 18, 249, 124
+ID_DLG_PROXY DIALOG 6, 18, 249, 104
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
 CAPTION "Proxy"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
 BEGIN
-    GROUPBOX "   ", 201, 6, 42, 235, 52
+    GROUPBOX "   ", 201, 6, 46, 235, 52
     AUTORADIOBUTTON "OpenVPN Konfigurationsdatei verwenden", ID_RB_PROXY_OPENVPN, \
-                    13, 12, 200, 10, WS_GROUP | WS_TABSTOP
+                    13, 16, 200, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Internet Explorer Einstellungen verwenden", \
-                    ID_RB_PROXY_MSIE, 13, 27, 200, 10
-    AUTORADIOBUTTON "Manuelle Konfiguration", ID_RB_PROXY_MANUAL, 13, 42, 85, 10
-    AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 58, 90, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "SOCKS Proxy", ID_RB_PROXY_SOCKS, 120, 58, 90, 10
-    LTEXT "Adresse:", ID_TXT_PROXY_ADDRESS, 20, 73, 32, 10
-    RTEXT "Port:", ID_TXT_PROXY_PORT, 171, 73, 20, 10
-    EDITTEXT ID_EDT_PROXY_ADDRESS, 53, 71, 117, 12, ES_AUTOHSCROLL
-    EDITTEXT ID_EDT_PROXY_PORT, 196, 71, 30, 12, ES_AUTOHSCROLL
-    AUTOCHECKBOX "Beim Verbinden nach Benutzername/Passwort fragen", ID_CB_PROXY_AUTH, 13, 103, 183, 10
+                    ID_RB_PROXY_MSIE, 13, 31, 200, 10
+    AUTORADIOBUTTON "Manuelle Konfiguration", ID_RB_PROXY_MANUAL, 13, 46, 85, 10
+    AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "SOCKS Proxy", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
+    LTEXT "Adresse:", ID_TXT_PROXY_ADDRESS, 20, 77, 32, 10
+    RTEXT "Port:", ID_TXT_PROXY_PORT, 171, 77, 20, 10
+    EDITTEXT ID_EDT_PROXY_ADDRESS, 53, 75, 117, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PROXY_PORT, 196, 75, 30, 12, ES_AUTOHSCROLL
 END
 
 /* General Settings Dialog */
-ID_DLG_GENERAL DIALOGEX 6, 18, 249, 124
+ID_DLG_GENERAL DIALOGEX 6, 18, 249, 104
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
 CAPTION "Allgemein"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_GERMAN, SUBLANG_NEUTRAL
 BEGIN
-    GROUPBOX "Benutzeroberfläche", 201, 6, 6, 235, 30
-    LTEXT "Sprache:", ID_TXT_LANGUAGE, 17, 19, 29, 12
-    COMBOBOX ID_CMB_LANGUAGE, 51, 17, 177, 400, CBS_DROPDOWNLIST | WS_TABSTOP
+    GROUPBOX "Benutzeroberfläche", 201, 6, 12, 235, 30
+    LTEXT "Sprache:", ID_TXT_LANGUAGE, 17, 25, 29, 12
+    COMBOBOX ID_CMB_LANGUAGE, 51, 23, 177, 400, CBS_DROPDOWNLIST | WS_TABSTOP
 END
 
 /* Proxy Authentication Dialog */
@@ -318,7 +317,6 @@ BEGIN
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "Sie müssen einen SOCKS Proxy Port zwischen 1-65535 definieren"
     IDS_ERR_CREATE_REG_HKCU_KEY "Fehler beim Erstellen des ""HKEY_CURRENT_USER\\%s"" Schlüssels."
     IDS_ERR_GET_TEMP_PATH "Fehler beim Erkennen des TempPath mit GetTempPath(). Benutzen Sie stattdessen ""C:\\"""
-    IDS_ERR_CREATE_AUTH_FILE "Fehler beim Erstellen der AUTH Datei. (%s)"
 
     /* service */
     IDS_ERR_OPEN_SCMGR_ADMIN "OpenSCManager Fehler. Sie benötigen Administratorenrechte um diesen Service zu starten."

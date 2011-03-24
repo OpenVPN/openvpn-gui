@@ -2,7 +2,7 @@
  *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
- *                2009 Heiko Hund <heikoh@users.sf.net>
+ *                2011 Heiko Hund <heikoh@users.sf.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#define WINVER 0x0500
+
 #include <windows.h>
 #include <prsht.h>
 #include <tchar.h>
@@ -32,6 +34,8 @@
 #include "proxy.h"
 #include "openvpn-gui-res.h"
 #include "localization.h"
+#include "manage.h"
+#include "openvpn.h"
 
 extern options_t o;
 
@@ -67,7 +71,6 @@ bool CALLBACK ProxySettingsDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UN
               EnableWindow(GetDlgItem(hwndDlg, ID_EDT_PROXY_PORT), FALSE);
               EnableWindow(GetDlgItem(hwndDlg, ID_TXT_PROXY_ADDRESS), FALSE);
               EnableWindow(GetDlgItem(hwndDlg, ID_TXT_PROXY_PORT), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, ID_CB_PROXY_AUTH), FALSE);
             }
           break;
 
@@ -80,7 +83,6 @@ bool CALLBACK ProxySettingsDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UN
               EnableWindow(GetDlgItem(hwndDlg, ID_EDT_PROXY_PORT), FALSE);
               EnableWindow(GetDlgItem(hwndDlg, ID_TXT_PROXY_ADDRESS), FALSE);
               EnableWindow(GetDlgItem(hwndDlg, ID_TXT_PROXY_PORT), FALSE);
-              EnableWindow(GetDlgItem(hwndDlg, ID_CB_PROXY_AUTH), TRUE);
             }
           break;
 
@@ -93,15 +95,12 @@ bool CALLBACK ProxySettingsDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UN
               EnableWindow(GetDlgItem(hwndDlg, ID_EDT_PROXY_PORT), TRUE);
               EnableWindow(GetDlgItem(hwndDlg, ID_TXT_PROXY_ADDRESS), TRUE);
               EnableWindow(GetDlgItem(hwndDlg, ID_TXT_PROXY_PORT), TRUE);
-              EnableWindow(GetDlgItem(hwndDlg, ID_CB_PROXY_AUTH),
-                (IsDlgButtonChecked(hwndDlg, ID_RB_PROXY_HTTP) == BST_CHECKED ? TRUE : FALSE));
             }
           break;
 
         case ID_RB_PROXY_HTTP:
           if (HIWORD(wParam) == BN_CLICKED)
             {
-              EnableWindow(GetDlgItem(hwndDlg, ID_CB_PROXY_AUTH), TRUE);
               SetDlgItemText(hwndDlg, ID_EDT_PROXY_ADDRESS, o.proxy_http_address);
               SetDlgItemText(hwndDlg, ID_EDT_PROXY_PORT, o.proxy_http_port);
             }
@@ -110,7 +109,6 @@ bool CALLBACK ProxySettingsDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UN
         case ID_RB_PROXY_SOCKS:
           if (HIWORD(wParam) == BN_CLICKED)
             {
-              EnableWindow(GetDlgItem(hwndDlg, ID_CB_PROXY_AUTH), FALSE);
               SetDlgItemText(hwndDlg, ID_EDT_PROXY_ADDRESS, o.proxy_socks_address);
               SetDlgItemText(hwndDlg, ID_EDT_PROXY_PORT, o.proxy_socks_port);
             }
@@ -178,32 +176,39 @@ int CheckProxySettings(HWND hwndDlg)
   return(1);
 }
 
-void LoadProxySettings(HWND hwndDlg)
+
+void
+LoadProxySettings(HWND hwndDlg)
 {
-  /* Set Proxy type, address and port */
-  if (o.proxy_type == http)  /* HTTP Proxy */
+    /* Set Proxy type, address and port */
+    if (o.proxy_type == http)
     {
-      CheckRadioButton(hwndDlg, ID_RB_PROXY_HTTP, ID_RB_PROXY_SOCKS, ID_RB_PROXY_HTTP);
-      SetDlgItemText(hwndDlg, ID_EDT_PROXY_ADDRESS, o.proxy_http_address);
-      SetDlgItemText(hwndDlg, ID_EDT_PROXY_PORT, o.proxy_http_port);
+        CheckRadioButton(hwndDlg, ID_RB_PROXY_HTTP, ID_RB_PROXY_SOCKS, ID_RB_PROXY_HTTP);
+        SetDlgItemText(hwndDlg, ID_EDT_PROXY_ADDRESS, o.proxy_http_address);
+        SetDlgItemText(hwndDlg, ID_EDT_PROXY_PORT, o.proxy_http_port);
     }
-  else			  /* SOCKS Proxy */
+    else if (o.proxy_type == socks)
     {
-      CheckRadioButton(hwndDlg, ID_RB_PROXY_HTTP, ID_RB_PROXY_SOCKS, ID_RB_PROXY_SOCKS);
-      SetDlgItemText(hwndDlg, ID_EDT_PROXY_ADDRESS, o.proxy_socks_address);
-      SetDlgItemText(hwndDlg, ID_EDT_PROXY_PORT, o.proxy_socks_port);
+        CheckRadioButton(hwndDlg, ID_RB_PROXY_HTTP, ID_RB_PROXY_SOCKS, ID_RB_PROXY_SOCKS);
+        SetDlgItemText(hwndDlg, ID_EDT_PROXY_ADDRESS, o.proxy_socks_address);
+        SetDlgItemText(hwndDlg, ID_EDT_PROXY_PORT, o.proxy_socks_port);
     }
 
-  if (o.proxy_http_auth) CheckDlgButton(hwndDlg, ID_CB_PROXY_AUTH, BST_CHECKED);
-
-  /* Set Proxy Settings Source */
-  if (o.proxy_source == config)
-    SendMessage(GetDlgItem(hwndDlg, ID_RB_PROXY_OPENVPN), BM_CLICK, 0, 0);
-  if (o.proxy_source == browser)
-    SendMessage(GetDlgItem(hwndDlg, ID_RB_PROXY_MSIE), BM_CLICK, 0, 0);
-  if (o.proxy_source == manual)
-    SendMessage(GetDlgItem(hwndDlg, ID_RB_PROXY_MANUAL), BM_CLICK, 0, 0);
+    /* Set Proxy Settings Source */
+    if (o.proxy_source == config)
+    {
+        SendMessage(GetDlgItem(hwndDlg, ID_RB_PROXY_OPENVPN), BM_CLICK, 0, 0);
+    }
+    else if (o.proxy_source == browser)
+    {
+        SendMessage(GetDlgItem(hwndDlg, ID_RB_PROXY_MSIE), BM_CLICK, 0, 0);
+    }
+    else if (o.proxy_source == manual)
+    {
+        SendMessage(GetDlgItem(hwndDlg, ID_RB_PROXY_MANUAL), BM_CLICK, 0, 0);
+    }
 }
+
 
 void SaveProxySettings(HWND hwndDlg)
 {
@@ -211,7 +216,6 @@ void SaveProxySettings(HWND hwndDlg)
   DWORD dwDispos;
   TCHAR proxy_source_string[2] = _T("0");
   TCHAR proxy_type_string[2] = _T("0");
-  TCHAR proxy_http_auth_string[2] = _T("0");
 
   /* Save Proxy Settings Source */
   if (IsDlgButtonChecked(hwndDlg, ID_RB_PROXY_OPENVPN) == BST_CHECKED)
@@ -240,10 +244,6 @@ void SaveProxySettings(HWND hwndDlg)
                  _tsizeof(o.proxy_http_address));
       GetDlgItemText(hwndDlg, ID_EDT_PROXY_PORT, o.proxy_http_port, 
                  _tsizeof(o.proxy_http_port));
-
-      BOOL auth = (IsDlgButtonChecked(hwndDlg, ID_CB_PROXY_AUTH) == BST_CHECKED);
-      o.proxy_http_auth = (auth ? 1 : 0);
-      proxy_http_auth_string[0] = (auth ? _T('1') : _T('0'));
     }
   else
     {
@@ -275,7 +275,6 @@ void SaveProxySettings(HWND hwndDlg)
   /* Save Settings to registry */
   SetRegistryValue(regkey, _T("proxy_source"), proxy_source_string);
   SetRegistryValue(regkey, _T("proxy_type"), proxy_type_string);
-  SetRegistryValue(regkey, _T("proxy_http_auth"), proxy_http_auth_string);
   SetRegistryValue(regkey, _T("proxy_http_address"), o.proxy_http_address);
   SetRegistryValue(regkey, _T("proxy_http_port"), o.proxy_http_port);
   SetRegistryValue(regkey, _T("proxy_socks_address"), o.proxy_socks_address);
@@ -290,19 +289,6 @@ void GetProxyRegistrySettings()
   HKEY regkey;
   TCHAR proxy_source_string[2] = _T("0");
   TCHAR proxy_type_string[2] = _T("0");
-  TCHAR proxy_http_auth_string[2] = _T("0");
-  TCHAR temp_path[100];
-
-  /* Construct Authfile path */
-  if (!GetTempPath(_tsizeof(temp_path) - 1, temp_path))
-    {
-      /* Error getting TempPath - using C:\ */
-      ShowLocalizedMsg(IDS_ERR_GET_TEMP_PATH);
-      _tcscpy(temp_path, _T("C:\\"));
-    }
-  _tcsncat(temp_path, _T("openvpn_authfile.txt"), 
-          _tsizeof(temp_path) - _tcslen(temp_path) - 1); 
-  _tcsncpy(o.proxy_authfile, temp_path, _tsizeof(o.proxy_authfile));
 
   /* Open Registry for reading */
   status = RegOpenKeyEx(HKEY_CURRENT_USER,
@@ -328,8 +314,6 @@ void GetProxyRegistrySettings()
                    _tsizeof(proxy_source_string));
   GetRegistryValue(regkey, _T("proxy_type"), proxy_type_string, 
                    _tsizeof(proxy_type_string));
-  GetRegistryValue(regkey, _T("proxy_http_auth"), proxy_http_auth_string, 
-                   _tsizeof(proxy_http_auth_string));
 
   if (proxy_source_string[0] == _T('1'))
     o.proxy_source = config;
@@ -341,52 +325,67 @@ void GetProxyRegistrySettings()
   if (proxy_type_string[0] == _T('1'))
     o.proxy_type = socks;
 
-  if (proxy_http_auth_string[0] == _T('1'))
-    o.proxy_http_auth = TRUE;
-
   RegCloseKey(regkey);
 }
 
-BOOL CALLBACK ProxyAuthDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPARAM lParam)
+
+BOOL CALLBACK
+ProxyAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-  TCHAR username[50];
-  TCHAR password[50];
-  FILE *fp;
+    connection_t *c;
+    TCHAR buf[50];
+    char cmd[70] = "username \"HTTP Proxy\" \"";
+    UINT username_len;
+    int length;
 
-  switch (msg) {
-
+    switch (msg)
+    {
     case WM_INITDIALOG:
-      //SetForegroundWindow(hwndDlg);
-      break;
+        /* Set connection for this dialog */
+        SetProp(hwndDlg, cfgProp, (HANDLE) lParam);
+        SetForegroundWindow(hwndDlg);
+        break;
 
     case WM_COMMAND:
-      switch (LOWORD(wParam)) {
-
+        switch (LOWORD(wParam))
+        {
         case IDOK:
-          GetDlgItemText(hwndDlg, ID_EDT_PROXY_USER, username, _tsizeof(username) - 1);
-          GetDlgItemText(hwndDlg, ID_EDT_PROXY_PASS, password, _tsizeof(password) - 1);
-          if (!(fp = _tfopen(o.proxy_authfile, _T("w"))))
-            {
-              /* error creating AUTH file */
-              ShowLocalizedMsg(IDS_ERR_CREATE_AUTH_FILE, o.proxy_authfile);
-              EndDialog(hwndDlg, LOWORD(wParam));
-            }
-          _fputts(username, fp);
-          _fputts(_T("\n"), fp);
-          _fputts(password, fp);
-          _fputts(_T("\n"), fp);
-          fclose(fp);
-          EndDialog(hwndDlg, LOWORD(wParam));
-          return TRUE;
-      }
-      break;
+            c = (connection_t *) GetProp(hwndDlg, cfgProp);
+            username_len = GetDlgItemText(hwndDlg, ID_EDT_PROXY_USER, buf, _tsizeof(buf));
+            if (username_len == 0)
+                return TRUE;
+            length = WideCharToMultiByte(CP_ACP, WC_NO_BEST_FIT_CHARS, buf, -1, cmd + 23, sizeof(cmd) - 23, "_", NULL);
+            memcpy(cmd + length + 22, "\"\0", 2);
+            ManagementCommand(c, cmd, NULL, regular);
+
+            memcpy(cmd, "password", 8);
+            GetDlgItemText(hwndDlg, ID_EDT_PROXY_PASS, buf, _tsizeof(buf));
+            length = WideCharToMultiByte(CP_ACP, WC_NO_BEST_FIT_CHARS, buf, -1, cmd + 23, sizeof(cmd) - 23, "_", NULL);
+            memcpy(cmd + length + 22, "\"\0", 2);
+            ManagementCommand(c, cmd, NULL, regular);
+
+            /* Clear buffers */
+            memset(buf, 'x', sizeof(buf));
+            buf[sizeof(buf) - 1] = _T('\0');
+            SetDlgItemText(hwndDlg, ID_EDT_PROXY_USER, buf);
+            SetDlgItemText(hwndDlg, ID_EDT_PROXY_PASS, buf);
+
+            EndDialog(hwndDlg, LOWORD(wParam));
+            return TRUE;
+        }
+        break;
+
     case WM_CLOSE:
-      EndDialog(hwndDlg, LOWORD(wParam));
-      return TRUE;
-     
-  }
-  return FALSE;
+        EndDialog(hwndDlg, LOWORD(wParam));
+        return TRUE;
+
+    case WM_NCDESTROY:
+        RemoveProp(hwndDlg, cfgProp);
+        break;
+    }
+    return FALSE;
 }
+
 
 /*
  * GetIeHttpProxy() fetches the current IE proxy settings for HTTP.
@@ -458,66 +457,37 @@ GetIeHttpProxy(TCHAR *host, size_t *hostlen, TCHAR *port, size_t *portlen)
   return TRUE;
 }
 
+
 /*
  * Construct the proxy options to append to the cmd-line.
  */
-void ConstructProxyCmdLine(TCHAR *proxy_string_ptr, unsigned int size)
+void ConstructProxyCmdLine(TCHAR *proxy_string, unsigned int size)
 {
-  TCHAR proxy_string[100];
-
-  CLEAR(proxy_string);
-
-  if (o.proxy_source == manual)
+    if (o.proxy_source == manual)
     {
-      if (o.proxy_type == http)
+        if (o.proxy_type == http)
         {
-          if (o.proxy_http_auth)
-            {
-              /* Ask for Proxy username/password */
-              LocalizedDialogBox(ID_DLG_PROXY_AUTH, ProxyAuthDialogFunc);
-              _sntprintf_0(proxy_string, _T("--http-proxy %s %s %s"),
-                           o.proxy_http_address,
-                           o.proxy_http_port,
-                           o.proxy_authfile);
-            }
-          else
-            {
-              _sntprintf_0(proxy_string, _T("--http-proxy %s %s"),
-                           o.proxy_http_address,
-                           o.proxy_http_port);
-            }
+            __sntprintf_0(proxy_string, size, _T(" --http-proxy %s %s auto"),
+                          o.proxy_http_address, o.proxy_http_port);
         }
-      if (o.proxy_type == socks)
+        else if (o.proxy_type == socks)
         {
-          _sntprintf_0(proxy_string, _T("--socks-proxy %s %s"),
-                       o.proxy_socks_address,
-                       o.proxy_socks_port);
+            __sntprintf_0(proxy_string, size, _T(" --socks-proxy %s %s"),
+                          o.proxy_socks_address, o.proxy_socks_port);
         }
     }
-
-  else if (o.proxy_source == browser)
+    else if (o.proxy_source == browser)
     {
-      TCHAR host[64];
-      TCHAR port[6];
-      size_t hostlen = _tsizeof(host);
-      size_t portlen = _tsizeof(port);
+        TCHAR host[64];
+        TCHAR port[6];
+        size_t hostlen = _tsizeof(host);
 
-      if (GetIeHttpProxy(host, &hostlen, port, &portlen) && hostlen != 0)
+        size_t portlen = _tsizeof(port);
+
+        if (GetIeHttpProxy(host, &hostlen, port, &portlen) && hostlen != 0)
         {
-          if (o.proxy_http_auth)
-            {
-              /* Ask for Proxy username/password */
-              LocalizedDialogBox(ID_DLG_PROXY_AUTH, ProxyAuthDialogFunc);
-              _sntprintf_0(proxy_string, _T("--http-proxy %s %s %s"),
-                           host, (portlen ? port : _T("80")), o.proxy_authfile);
-            }
-          else
-            {
-              _sntprintf_0(proxy_string, _T("--http-proxy %s %s"),
-                           host, (portlen ? port : _T("80")));
-            }
+            __sntprintf_0(proxy_string, size, _T(" --http-proxy %s %s auto"),
+                          host, (portlen ? port : _T("8080")));
         }
     }
-
-  _tcsncpy(proxy_string_ptr, proxy_string, size);
 }

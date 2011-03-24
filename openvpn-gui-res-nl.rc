@@ -103,25 +103,24 @@ BEGIN
 END
 
 /* Proxy Settings Dialog */
-ID_DLG_PROXY DIALOG 6, 18, 249, 124
+ID_DLG_PROXY DIALOG 6, 18, 249, 104
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
 CAPTION "Proxy"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_DUTCH, SUBLANG_NEUTRAL
 BEGIN
-    GROUPBOX "   ", 201, 6, 42, 235, 52
+    GROUPBOX "   ", 201, 6, 46, 235, 52
     AUTORADIOBUTTON "Gebruik OpenVPN instellingen", ID_RB_PROXY_OPENVPN, \
-                    13, 12, 200, 10, WS_GROUP | WS_TABSTOP
+                    13, 16, 200, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Gebruik Internet Explorer Instellingen", \
-                    ID_RB_PROXY_MSIE, 13, 27, 200, 10
-    AUTORADIOBUTTON "Handmatige Configuratie", ID_RB_PROXY_MANUAL, 13, 42, 90, 10
-    AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 58, 90, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "SOCKS Proxy", ID_RB_PROXY_SOCKS, 120, 58, 90, 10
-    LTEXT "Adres:", ID_TXT_PROXY_ADDRESS, 20, 73, 24, 10
-    RTEXT "Poort:", ID_TXT_PROXY_PORT, 167, 73, 24, 10
-    EDITTEXT ID_EDT_PROXY_ADDRESS, 45, 71, 121, 12, ES_AUTOHSCROLL
-    EDITTEXT ID_EDT_PROXY_PORT, 196, 71, 30, 12, ES_AUTOHSCROLL
-    AUTOCHECKBOX "Vraag gebruikersnaam/wachtwoord tijdens verbinden.", ID_CB_PROXY_AUTH, 13, 103, 183, 10
+                    ID_RB_PROXY_MSIE, 13, 31, 200, 10
+    AUTORADIOBUTTON "Handmatige Configuratie", ID_RB_PROXY_MANUAL, 13, 46, 90, 10
+    AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "SOCKS Proxy", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
+    LTEXT "Adres:", ID_TXT_PROXY_ADDRESS, 20, 77, 24, 10
+    RTEXT "Poort:", ID_TXT_PROXY_PORT, 167, 77, 24, 10
+    EDITTEXT ID_EDT_PROXY_ADDRESS, 45, 75, 121, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PROXY_PORT, 196, 75, 30, 12, ES_AUTOHSCROLL
 END
 
 /* Proxy Authentication Dialog */
@@ -303,7 +302,6 @@ BEGIN
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "Er moet een SOCKS proxy poort opgegeven worden tussen 1 en 65535."
     IDS_ERR_CREATE_REG_HKCU_KEY "Fout tijdens aanmaken ""HKEY_CURRENT_USER\\%s"" sleutel."
     IDS_ERR_GET_TEMP_PATH "Fout tijdens opvragen TempPath met GetTempPath(). Gebruikt ""C:\\"" als TempPath."
-    IDS_ERR_CREATE_AUTH_FILE "Fout bij aanmaken AUTH bestand. (%s)"
 
     /* service */
     IDS_ERR_OPEN_SCMGR_ADMIN "Starten van OpenSCManager mislukt. Administrator rechten zijn vereist om een service te starten."

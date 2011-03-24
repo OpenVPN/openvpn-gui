@@ -67,7 +67,6 @@
 #define ID_EDT_PROXY_PORT                215
 #define ID_TXT_PROXY_ADDRESS             216
 #define ID_TXT_PROXY_PORT                217
-#define ID_CB_PROXY_AUTH                 218
 
 /* General Settings Dialog */
 #define ID_DLG_GENERAL                   230
@@ -213,7 +212,6 @@
 #define IDS_ERR_SOCKS_PROXY_PORT_RANGE  1606
 #define IDS_ERR_CREATE_REG_HKCU_KEY     1607
 #define IDS_ERR_GET_TEMP_PATH           1608
-#define IDS_ERR_CREATE_AUTH_FILE        1609
 
 /* General Settings Dialog */
 #define IDS_LANGUAGE_NAME               1650

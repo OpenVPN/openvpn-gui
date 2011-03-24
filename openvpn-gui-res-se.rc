@@ -104,25 +104,24 @@ BEGIN
 END
 
 /* Proxy Settings Dialog */
-ID_DLG_PROXY DIALOG 6, 18, 249, 124
+ID_DLG_PROXY DIALOG 6, 18, 249, 104
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
 CAPTION "Proxy"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_SWEDISH, SUBLANG_NEUTRAL
 BEGIN
-    GROUPBOX "   ", 201, 6, 42, 235, 52
+    GROUPBOX "   ", 201, 6, 46, 235, 52
     AUTORADIOBUTTON "Använd inställningar från OpenVPNs konfigurations fil", ID_RB_PROXY_OPENVPN, \
-                    13, 12, 200, 10, WS_GROUP | WS_TABSTOP
+                    13, 16, 200, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Använd inställningar från Internet Explorer", \
-                    ID_RB_PROXY_MSIE, 13, 27, 200, 10
-    AUTORADIOBUTTON "Manuell Konfigurering", ID_RB_PROXY_MANUAL, 13, 42, 81, 10
-    AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 58, 90, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "SOCKS Proxy", ID_RB_PROXY_SOCKS, 120, 58, 90, 10
-    LTEXT "Adress:", ID_TXT_PROXY_ADDRESS, 20, 73, 28, 10
-    RTEXT "Port:", ID_TXT_PROXY_PORT, 171, 73, 20, 10
-    EDITTEXT ID_EDT_PROXY_ADDRESS, 49, 71, 121, 12, ES_AUTOHSCROLL
-    EDITTEXT ID_EDT_PROXY_PORT, 196, 71, 30, 12, ES_AUTOHSCROLL
-    AUTOCHECKBOX "Fråga efter användarnamn/lösenord vid uppkoppling.", ID_CB_PROXY_AUTH, 13, 103, 183, 10
+                    ID_RB_PROXY_MSIE, 13, 31, 200, 10
+    AUTORADIOBUTTON "Manuell Konfigurering", ID_RB_PROXY_MANUAL, 13, 46, 81, 10
+    AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "SOCKS Proxy", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
+    LTEXT "Adress:", ID_TXT_PROXY_ADDRESS, 20, 77, 28, 10
+    RTEXT "Port:", ID_TXT_PROXY_PORT, 171, 77, 20, 10
+    EDITTEXT ID_EDT_PROXY_ADDRESS, 49, 75, 121, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PROXY_PORT, 196, 75, 30, 12, ES_AUTOHSCROLL
 END
 
 /* Proxy Authentication Dialog */
@@ -302,7 +301,6 @@ BEGIN
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "Du måste ange en SOCKS proxy port mellan 1-65535"
     IDS_ERR_CREATE_REG_HKCU_KEY "Ett fel uppstod vid skapande av register nyckel ""HKEY_CURRENT_USER\\%s"""
     IDS_ERR_GET_TEMP_PATH "Ett fel uppstod när GetTempPath() anropades. Använder ""C:\\"" istället."
-    IDS_ERR_CREATE_AUTH_FILE "Ett fel uppstod vid skapande av AUTH fil (%s)"
 
     /* service */
     IDS_ERR_OPEN_SCMGR_ADMIN "Ett fel uppstod vid öppnande av Service Managern. Du saknar förmodligen rättighet att starta/stoppa en service."
