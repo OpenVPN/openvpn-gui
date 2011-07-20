@@ -114,7 +114,7 @@ BEGIN
     GROUPBOX "   ", 201, 6, 46, 235, 52
     AUTORADIOBUTTON "Use OpenVPN Config-file Settings", ID_RB_PROXY_OPENVPN, \
                     13, 16, 200, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Use Internet Explorer Settings", \
+    AUTORADIOBUTTON "Use System Proxy Settings", \
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
     AUTORADIOBUTTON "Manual Configuration", ID_RB_PROXY_MANUAL, 13, 46, 79, 10
     AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP

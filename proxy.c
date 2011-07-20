@@ -201,7 +201,7 @@ LoadProxySettings(HWND hwndDlg)
     {
         SendMessage(GetDlgItem(hwndDlg, ID_RB_PROXY_OPENVPN), BM_CLICK, 0, 0);
     }
-    else if (o.proxy_source == browser)
+    else if (o.proxy_source == system)
     {
         SendMessage(GetDlgItem(hwndDlg, ID_RB_PROXY_MSIE), BM_CLICK, 0, 0);
     }
@@ -228,7 +228,7 @@ SaveProxySettings(HWND hwndDlg)
     }
     else if (IsDlgButtonChecked(hwndDlg, ID_RB_PROXY_MSIE) == BST_CHECKED)
     {
-        o.proxy_source = browser;
+        o.proxy_source = system;
         proxy_source_string[0] = _T('1');
     }
     else if (IsDlgButtonChecked(hwndDlg, ID_RB_PROXY_MANUAL) == BST_CHECKED)
@@ -307,7 +307,7 @@ GetProxyRegistrySettings()
     }
     else if (proxy_source_string[0] == _T('1'))
     {
-        o.proxy_source = browser;
+        o.proxy_source = system;
     }
     else if (proxy_source_string[0] == _T('2'))
     {
@@ -379,77 +379,6 @@ ProxyAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
 
 /*
- * GetIeHttpProxy() fetches the current IE proxy settings for HTTP.
- * Coded by Ewan Bhamrah Harley <code@ewan.info>, but refactored.
- *
- * If result string does not contain an '=' sign then there is a
- * single proxy for all protocols. If multiple proxies are defined
- * they are space seperated and have the form protocol=host[:port]
- */
-static BOOL
-GetIeHttpProxy(TCHAR *host, size_t *hostlen, TCHAR *port, size_t *portlen)
-{
-  INTERNET_PROXY_INFO pinfo;
-  DWORD psize = sizeof(pinfo);
-  const TCHAR *start, *colon, *space, *end;
-  const size_t _hostlen = *hostlen;
-  const size_t _portlen = *portlen;
-
-  *hostlen = 0;
-  *portlen = 0;
-
-  if (!InternetQueryOption(NULL, INTERNET_OPTION_PROXY, (LPVOID) &pinfo, &psize))
-  {
-    ShowLocalizedMsg(IDS_ERR_GET_MSIE_PROXY);
-    return FALSE;
-  }
-
-  /* Check if a proxy is used */
-  if (pinfo.dwAccessType != INTERNET_OPEN_TYPE_PROXY)
-    return TRUE;
-
-  /* Check if a HTTP proxy is defined */
-  start = _tcsstr(pinfo.lpszProxy, _T("http="));
-  if (start == NULL && _tcschr(pinfo.lpszProxy, _T('=')))
-    return TRUE;
-
-  /* Get the pointers needed for string extraction */
-  start = (start ? start + 5 : pinfo.lpszProxy);
-  colon = _tcschr(start, _T(':'));
-  space = _tcschr(start, _T(' '));
-
-  /* Extract hostname */
-  end = (colon ? colon : space);
-  if (end)
-    *hostlen = end - start;
-  else
-    *hostlen = _tcslen(start);
-
-  if (_hostlen < *hostlen)
-    return FALSE;
-
-  _tcsncpy(host, start, *hostlen);
-
-  if (!colon)
-    return TRUE;
-
-  start = colon + 1;
-  end = space;
-  if (end)
-    *portlen = end - start;
-  else
-    *portlen = _tcslen(start);
-
-  if (_portlen < *portlen)
-    return FALSE;
-
-  _tcsncpy(port, start, *portlen);
-
-  return TRUE;
-}
-
-
-/*
  * Construct the proxy options to append to the cmd-line.
  */
 void ConstructProxyCmdLine(TCHAR *proxy_string, unsigned int size)
@@ -467,18 +396,8 @@ void ConstructProxyCmdLine(TCHAR *proxy_string, unsigned int size)
                           o.proxy_socks_address, o.proxy_socks_port);
         }
     }
-    else if (o.proxy_source == browser)
+    else if (o.proxy_source == system)
     {
-        TCHAR host[64];
-        TCHAR port[6];
-        size_t hostlen = _tsizeof(host);
-
-        size_t portlen = _tsizeof(port);
-
-        if (GetIeHttpProxy(host, &hostlen, port, &portlen) && hostlen != 0)
-        {
-            __sntprintf_0(proxy_string, size, _T(" --http-proxy %s %s auto"),
-                          host, (portlen ? port : _T("8080")));
-        }
+        __sntprintf_0(proxy_string, size, _T(" --auto-proxy"));
     }
 }

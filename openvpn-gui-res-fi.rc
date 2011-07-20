@@ -115,7 +115,7 @@ BEGIN
     GROUPBOX "   ", 201, 6, 46, 235, 52
     AUTORADIOBUTTON "K‰yt‰ asetustiedoston asetuksia", ID_RB_PROXY_OPENVPN, \
                     13, 16, 200, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "K‰yt‰ Internet Explorerin asetuksia", \
+    AUTORADIOBUTTON "K‰yt‰ j‰rjestelm‰n v‰lipalvelinasetuksia", \
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
     AUTORADIOBUTTON "M‰‰rit‰ asetukset itse", ID_RB_PROXY_MANUAL, 13, 46, 84, 10
     AUTORADIOBUTTON "HTTP-v‰lipalvelin", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
