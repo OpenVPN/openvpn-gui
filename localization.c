@@ -297,7 +297,7 @@ typedef struct {
 
 
 static BOOL
-FillLangListProc(HANDLE module, PTSTR type, PTSTR stringId, WORD langId, LONG lParam)
+FillLangListProc(HANDLE module, PTSTR type, PTSTR stringId, WORD langId, LONG_PTR lParam)
 {
     langProcData *data = (langProcData*) lParam;
 
@@ -328,7 +328,7 @@ LanguageSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
     case WM_INITDIALOG:
         /* Populate UI language selection combo box */
         EnumResourceLanguages( NULL, RT_STRING, MAKEINTRESOURCE(IDS_LANGUAGE_NAME / 16 + 1),
-            (ENUMRESLANGPROC) FillLangListProc, (LONG) &langData );
+            (ENUMRESLANGPROC) FillLangListProc, (LONG_PTR) &langData );
 
         /* If none of the available languages matched, select the fallback */
         if (ComboBox_GetCurSel(langData.languages) == CB_ERR)
