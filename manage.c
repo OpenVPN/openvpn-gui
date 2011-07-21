@@ -19,7 +19,7 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <Winsock2.h>
+#include <winsock2.h>
 
 #include "options.h"
 #include "main.h"
@@ -76,62 +76,6 @@ OpenManagement(connection_t *c, u_long addr, u_short port)
 
 
 /*
- * Send a command to the OpenVPN management interface
- */
-BOOL
-ManagementCommand(connection_t *c, char *command, mgmt_msg_func handler, mgmt_cmd_type type)
-{
-    int res = 0;
-    int size = strlen(command) + 1;
-
-    mgmt_cmd_t *cmd = calloc(1, sizeof(*cmd));
-    if (cmd == NULL)
-        return FALSE;
-
-    cmd->handler = handler;
-    cmd->type = type;
-
-    if (c->manage.cmd_queue)
-    {
-        cmd->next = c->manage.cmd_queue;
-        cmd->prev = c->manage.cmd_queue->prev;
-        cmd->next->prev = cmd->prev->next = cmd;
-    }
-    else
-    {
-        cmd->next = cmd->prev = cmd;
-        c->manage.cmd_queue = cmd;
-    }
-
-    if (c->manage.cmd_queue == cmd)
-    {
-        *(command + size - 1) = '\n';
-        res = send(c->manage.sk, command, size, 0);
-        *(command + size - 1) = '\0';
-    }
-
-    if (res != size)
-    {
-        if (res == SOCKET_ERROR)
-            res = 0;
-
-        size -= res;
-        cmd->command = malloc(size);
-        if (cmd->command == NULL)
-        {
-            free(cmd);
-            return FALSE;
-        }
-        memcpy(cmd->command, command + res, size);
-        *(cmd->command + size - 1) = '\n';
-        cmd->size = size;
-    }
-
-    return TRUE;
-}
-
-
-/*
  * Try to send a queued management command to OpenVPN
  */
 static void
@@ -151,6 +95,49 @@ SendCommand(connection_t *c)
 
     cmd->size -= res;
 }
+
+
+/*
+ * Send a command to the OpenVPN management interface
+ */
+BOOL
+ManagementCommand(connection_t *c, char *command, mgmt_msg_func handler, mgmt_cmd_type type)
+{
+    mgmt_cmd_t *cmd = calloc(1, sizeof(*cmd));
+    if (cmd == NULL)
+        return FALSE;
+
+    cmd->size = strlen(command) + 1;
+    cmd->command = malloc(cmd->size);
+    if (cmd->command == NULL)
+    {
+        free(cmd);
+        return FALSE;
+    }
+    memcpy(cmd->command, command, cmd->size);
+    *(cmd->command + cmd->size - 1) = '\n';
+
+    cmd->handler = handler;
+    cmd->type = type;
+
+    if (c->manage.cmd_queue)
+    {
+        cmd->next = c->manage.cmd_queue;
+        cmd->prev = c->manage.cmd_queue->prev;
+        cmd->next->prev = cmd->prev->next = cmd;
+    }
+    else
+    {
+        cmd->next = cmd->prev = cmd;
+        c->manage.cmd_queue = cmd;
+    }
+
+    if (c->manage.cmd_queue == cmd)
+        SendCommand(c);
+
+    return TRUE;
+}
+
 
 /*
  * Remove a command from a connection's command queue
@@ -185,6 +172,7 @@ UnqueueCommand(connection_t *c)
 
     return TRUE;
 }
+
 
 /*
  * Handle management socket events asynchronously
