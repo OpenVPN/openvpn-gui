@@ -113,7 +113,7 @@ BEGIN
     GROUPBOX "   ", 201, 6, 46, 235, 52
     AUTORADIOBUTTON "Använd inställningar från OpenVPNs konfigurations fil", ID_RB_PROXY_OPENVPN, \
                     13, 16, 200, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Använd inställningar från Internet Explorer", \
+    AUTORADIOBUTTON "Använd systemets proxyinställningar", \
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
     AUTORADIOBUTTON "Manuell Konfigurering", ID_RB_PROXY_MANUAL, 13, 46, 81, 10
     AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
@@ -122,6 +122,18 @@ BEGIN
     RTEXT "Port:", ID_TXT_PROXY_PORT, 171, 77, 20, 10
     EDITTEXT ID_EDT_PROXY_ADDRESS, 49, 75, 121, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_PROXY_PORT, 196, 75, 30, 12, ES_AUTOHSCROLL
+END
+
+/* General Settings Dialog */
+ID_DLG_GENERAL DIALOGEX 6, 18, 249, 104
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Allmänt"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_SWEDISH, SUBLANG_NEUTRAL
+BEGIN
+    GROUPBOX "Användargränssnitt", 201, 6, 12, 235, 30
+    LTEXT "Språk:", ID_TXT_LANGUAGE, 17, 25, 52, 12
+    COMBOBOX ID_CMB_LANGUAGE, 42, 23, 186, 400, CBS_DROPDOWNLIST | WS_TABSTOP
 END
 
 /* Proxy Authentication Dialog */
