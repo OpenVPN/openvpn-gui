@@ -201,7 +201,7 @@ LoadProxySettings(HWND hwndDlg)
     {
         SendMessage(GetDlgItem(hwndDlg, ID_RB_PROXY_OPENVPN), BM_CLICK, 0, 0);
     }
-    else if (o.proxy_source == system)
+    else if (o.proxy_source == windows)
     {
         SendMessage(GetDlgItem(hwndDlg, ID_RB_PROXY_MSIE), BM_CLICK, 0, 0);
     }
@@ -228,7 +228,7 @@ SaveProxySettings(HWND hwndDlg)
     }
     else if (IsDlgButtonChecked(hwndDlg, ID_RB_PROXY_MSIE) == BST_CHECKED)
     {
-        o.proxy_source = system;
+        o.proxy_source = windows;
         proxy_source_string[0] = _T('1');
     }
     else if (IsDlgButtonChecked(hwndDlg, ID_RB_PROXY_MANUAL) == BST_CHECKED)
@@ -307,7 +307,7 @@ GetProxyRegistrySettings()
     }
     else if (proxy_source_string[0] == _T('1'))
     {
-        o.proxy_source = system;
+        o.proxy_source = windows;
     }
     else if (proxy_source_string[0] == _T('2'))
     {
@@ -396,7 +396,7 @@ void ConstructProxyCmdLine(TCHAR *proxy_string, unsigned int size)
                           o.proxy_socks_address, o.proxy_socks_port);
         }
     }
-    else if (o.proxy_source == system)
+    else if (o.proxy_source == windows)
     {
         __sntprintf_0(proxy_string, size, _T(" --auto-proxy"));
     }

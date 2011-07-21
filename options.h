@@ -87,7 +87,7 @@ typedef enum {
 
 typedef enum {
     config,
-    system,
+    windows,
     manual
 } proxy_source_t;
 
