@@ -240,7 +240,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
             /* Clear buffers */
             memset(buf, 'x', sizeof(buf));
-            buf[sizeof(buf) - 1] = _T('\0');
+            buf[_tsizeof(buf) - 1] = _T('\0');
             SetDlgItemText(hwndDlg, ID_EDT_AUTH_USER, buf);
             SetDlgItemText(hwndDlg, ID_EDT_AUTH_PASS, buf);
 
@@ -297,7 +297,7 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
             /* Clear buffer */
             memset(buf, 'x', sizeof(buf));
-            buf[sizeof(buf) - 1] = _T('\0');
+            buf[_tsizeof(buf) - 1] = _T('\0');
             SetDlgItemText(hwndDlg, ID_EDT_PASSPHRASE, buf);
 
             EndDialog(hwndDlg, LOWORD(wParam));

@@ -357,7 +357,7 @@ ProxyAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
             /* Clear buffers */
             memset(buf, 'x', sizeof(buf));
-            buf[sizeof(buf) - 1] = _T('\0');
+            buf[_tsizeof(buf) - 1] = _T('\0');
             SetDlgItemText(hwndDlg, ID_EDT_PROXY_USER, buf);
             SetDlgItemText(hwndDlg, ID_EDT_PROXY_PASS, buf);
 
