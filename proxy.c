@@ -39,7 +39,7 @@
 
 extern options_t o;
 
-bool CALLBACK
+INT_PTR CALLBACK
 ProxySettingsDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPARAM lParam)
 {
     HICON hIcon;
@@ -320,7 +320,7 @@ GetProxyRegistrySettings()
 }
 
 
-BOOL CALLBACK
+INT_PTR CALLBACK
 ProxyAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     connection_t *c;

@@ -47,7 +47,7 @@
 
 /*  Declare Windows procedure  */
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
-BOOL CALLBACK AboutDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK AboutDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 static void ShowSettingsDialog();
 void CloseApplication(HWND hwnd);
 
@@ -406,7 +406,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 }
 
 
-BOOL CALLBACK AboutDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPARAM lParam)
+INT_PTR CALLBACK AboutDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPARAM lParam)
 {
   HICON hIcon;
 

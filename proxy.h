@@ -19,10 +19,10 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-BOOL CALLBACK ProxySettingsDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK ProxySettingsDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 int CheckProxySettings(HWND hwndDlg);
 void LoadProxySettings(HWND hwndDlg);
 void SaveProxySettings(HWND hwndDlg);
 void GetProxyRegistrySettings();
-BOOL CALLBACK ProxyAuthDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK ProxyAuthDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 void ConstructProxyCmdLine(TCHAR *proxy_string_ptr, unsigned int size);

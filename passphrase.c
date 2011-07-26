@@ -336,7 +336,7 @@ ChangePasswordPKCS12(HWND hwndDlg)
 }
 
 
-static BOOL CALLBACK
+static INT_PTR CALLBACK
 ChangePassphraseDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPARAM lParam)
 {
   HICON hIcon;

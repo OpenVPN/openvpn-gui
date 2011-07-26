@@ -314,7 +314,7 @@ FillLangListProc(HANDLE module, PTSTR type, PTSTR stringId, WORD langId, LONG_PT
 }
 
 
-BOOL CALLBACK
+INT_PTR CALLBACK
 LanguageSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     LPPSHNOTIFY psn;
