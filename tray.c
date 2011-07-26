@@ -86,7 +86,7 @@ CreatePopupMenus()
 
         if (o.allow_service[0] == '1' && o.service_only[0] == '0')
         {
-            AppendMenu(hMenu, MF_POPUP, (UINT) hMenuService, LoadLocalizedString(IDS_MENU_SERVICE));
+            AppendMenu(hMenu, MF_POPUP, (UINT_PTR) hMenuService, LoadLocalizedString(IDS_MENU_SERVICE));
             AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
         }
 
@@ -100,13 +100,13 @@ CreatePopupMenus()
         /* Create Main menu with all connections */
         int i;
         for (i = 0; i < o.num_configs; i++)
-            AppendMenu(hMenu, MF_POPUP, (UINT) hMenuConn[i], o.conn[i].config_name);
+            AppendMenu(hMenu, MF_POPUP, (UINT_PTR) hMenuConn[i], o.conn[i].config_name);
 
         if (o.num_configs > 0)
             AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
 
         if (o.service_only[0] == '0' && o.allow_service[0] == '1') {
-            AppendMenu(hMenu, MF_POPUP, (UINT) hMenuService, LoadLocalizedString(IDS_MENU_SERVICE));
+            AppendMenu(hMenu, MF_POPUP, (UINT_PTR) hMenuService, LoadLocalizedString(IDS_MENU_SERVICE));
             AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
         }
         else if (o.service_only[0] == '1') {
@@ -116,28 +116,28 @@ CreatePopupMenus()
             AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
         }
 
-        AppendMenu(hMenu, MF_STRING ,IDM_SETTINGS, LoadLocalizedString(IDS_MENU_SETTINGS));
-        AppendMenu(hMenu, MF_STRING ,IDM_ABOUT, LoadLocalizedString(IDS_MENU_ABOUT));
-        AppendMenu(hMenu, MF_STRING ,IDM_CLOSE, LoadLocalizedString(IDS_MENU_CLOSE));
+        AppendMenu(hMenu, MF_STRING, IDM_SETTINGS, LoadLocalizedString(IDS_MENU_SETTINGS));
+        AppendMenu(hMenu, MF_STRING, IDM_ABOUT, LoadLocalizedString(IDS_MENU_ABOUT));
+        AppendMenu(hMenu, MF_STRING, IDM_CLOSE, LoadLocalizedString(IDS_MENU_CLOSE));
 
 
         /* Create popup menus for every connection */
         for (i=0; i < o.num_configs; i++) {
             if (o.service_only[0] == '0') {
-                AppendMenu(hMenuConn[i], MF_STRING, (UINT_PTR) IDM_CONNECTMENU + i, LoadLocalizedString(IDS_MENU_CONNECT));
-                AppendMenu(hMenuConn[i], MF_STRING, (UINT_PTR) IDM_DISCONNECTMENU + i, LoadLocalizedString(IDS_MENU_DISCONNECT));
-                AppendMenu(hMenuConn[i], MF_STRING, (UINT_PTR) IDM_STATUSMENU + i, LoadLocalizedString(IDS_MENU_STATUS));
+                AppendMenu(hMenuConn[i], MF_STRING, IDM_CONNECTMENU + i, LoadLocalizedString(IDS_MENU_CONNECT));
+                AppendMenu(hMenuConn[i], MF_STRING, IDM_DISCONNECTMENU + i, LoadLocalizedString(IDS_MENU_DISCONNECT));
+                AppendMenu(hMenuConn[i], MF_STRING, IDM_STATUSMENU + i, LoadLocalizedString(IDS_MENU_STATUS));
                 AppendMenu(hMenuConn[i], MF_SEPARATOR, 0, 0);
             }
 
-            AppendMenu(hMenuConn[i], MF_STRING, (UINT_PTR) IDM_VIEWLOGMENU + i, LoadLocalizedString(IDS_MENU_VIEWLOG));
+            AppendMenu(hMenuConn[i], MF_STRING, IDM_VIEWLOGMENU + i, LoadLocalizedString(IDS_MENU_VIEWLOG));
 
             if (o.allow_edit[0] == '1')
-                AppendMenu(hMenuConn[i], MF_STRING, (UINT_PTR) IDM_EDITMENU + i, LoadLocalizedString(IDS_MENU_EDITCONFIG));
+                AppendMenu(hMenuConn[i], MF_STRING, IDM_EDITMENU + i, LoadLocalizedString(IDS_MENU_EDITCONFIG));
 
 #ifndef DISABLE_CHANGE_PASSWORD
             if (o.allow_password[0] == '1')
-                AppendMenu(hMenuConn[i], MF_STRING, (UINT_PTR) IDM_PASSPHRASEMENU + i, LoadLocalizedString(IDS_MENU_PASSPHRASE));
+                AppendMenu(hMenuConn[i], MF_STRING, IDM_PASSPHRASEMENU + i, LoadLocalizedString(IDS_MENU_PASSPHRASE));
 #endif
 
             SetMenuStatus(&o.conn[i], o.conn[i].state);
@@ -396,8 +396,8 @@ SetMenuStatus(connection_t *c, conn_state_t state)
                 break;
         }
 
-        UINT iState = (state == connected || state == disconnecting) ? MF_CHECKED : MF_UNCHECKED;
-        CheckMenuItem(hMenu, (UINT) hMenuConn[i], iState);
+        BOOL checked = (state == connected || state == disconnecting);
+        CheckMenuItem(hMenu, i, MF_BYPOSITION | (checked ? MF_CHECKED : MF_UNCHECKED));
 
         if (state == disconnected)
         {
