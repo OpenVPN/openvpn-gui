@@ -25,7 +25,7 @@
 #include <windows.h>
 #include <prsht.h>
 #include <tchar.h>
-#include <WinInet.h>
+#include <wininet.h>
 
 #include "config.h"
 #include "main.h"

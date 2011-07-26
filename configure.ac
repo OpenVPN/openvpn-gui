@@ -29,20 +29,20 @@ CFLAGS="$CFLAGS -mno-cygwin"
 CPPFLAGS="$CPPFLAGS -mno-cygwin"
 LDFLAGS="$LDFLAGS -mno-cygwin -mwindows"
 
-AC_PATH_PROG([WINDRES], [windres])
+AC_CHECK_TOOL([WINDRES], [windres])
 
 AC_CHECK_HEADER([windows.h], ,
 	[AC_MSG_FAILURE([Target system must be Win32])])
 
 AX_ASSERT_LIB([wininet], [wininet.h],
 	[DWORD s; InternetQueryOption(NULL, INTERNET_OPTION_PROXY, NULL, &s)],
-	[Make sure you have a recent w32api installed.])
+	[Make sure you have a recent w32api installed.], [#include <windows.h>])
 
 AX_ASSERT_LIB([comctl32], [prsht.h],
     [PROPSHEETHEADER psh; PropertySheet(&psh)],
     [Make sure you have a recent w32api installed.], [#include <windows.h>])
 
-AX_ASSERT_LIB([Ws2_32], [Winsock2.h],
+AX_ASSERT_LIB([ws2_32], [winsock2.h],
     [WSADATA wsaData; WSAStartup(MAKEWORD(2, 2), &wsaData)],
     [Make sure you have a recent w32api installed.], [#include <windows.h>])
 

@@ -23,7 +23,7 @@
 
 #include <windows.h>
 #include <shlwapi.h>
-#include <Pbt.h>
+#include <pbt.h>
 
 #include "config.h"
 #include "tray.h"
