@@ -350,7 +350,7 @@ LanguageSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             if (langId != 0)
                 SetGUILanguage(langId);
 
-            SetWindowLong(hwndDlg, DWL_MSGRESULT, PSNRET_NOERROR);
+            SetWindowLongPtr(hwndDlg, DWLP_MSGRESULT, PSNRET_NOERROR);
             return TRUE;
         }
         break;

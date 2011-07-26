@@ -122,13 +122,13 @@ ProxySettingsDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPARAM lPa
         psn = (LPPSHNOTIFY) lParam;
         if (psn->hdr.code == (UINT) PSN_KILLACTIVE)
         {
-            SetWindowLong(hwndDlg, DWL_MSGRESULT, (CheckProxySettings(hwndDlg) ? FALSE : TRUE));
+            SetWindowLongPtr(hwndDlg, DWLP_MSGRESULT, (CheckProxySettings(hwndDlg) ? FALSE : TRUE));
             return TRUE;
         }
         else if (psn->hdr.code == (UINT) PSN_APPLY)
         {
             SaveProxySettings(hwndDlg);
-            SetWindowLong(hwndDlg, DWL_MSGRESULT, PSNRET_NOERROR);
+            SetWindowLongPtr(hwndDlg, DWLP_MSGRESULT, PSNRET_NOERROR);
             return TRUE;
         }
         break;
