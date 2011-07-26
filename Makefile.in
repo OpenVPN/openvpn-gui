@@ -23,6 +23,7 @@ SOURCES = main.c main.h openvpn.c openvpn.h localization.c localization.h \
 
 EXTRA = connected.ico connecting.ico disconnected.ico reconnecting.ico openvpn-gui.ico \
         acinclude.m4 Makefile.in aclocal.m4 config.h.in configure configure.ac \
+        config.guess config.sub install-sh \
         OpenVPN\ GUI\ ReadMe.txt changes.txt COPYING COPYRIGHT.GPL
 
 all : ${OBJS}
