@@ -319,7 +319,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       }
 #ifndef DISABLE_CHANGE_PASSWORD
       if ( (LOWORD(wParam) >= IDM_PASSPHRASEMENU) && (LOWORD(wParam) < IDM_PASSPHRASEMENU + MAX_CONFIGS) ) {
-        ShowChangePassphraseDialog(LOWORD(wParam) - IDM_PASSPHRASEMENU);
+        ShowChangePassphraseDialog(&o.conn[LOWORD(wParam) - IDM_PASSPHRASEMENU]);
       }
 #endif
       if (LOWORD(wParam) == IDM_SETTINGS) {

@@ -439,7 +439,7 @@ LineBeginsWith(char *line, const char *keyword, const unsigned int len)
 
 
 static int
-ParseKeyFilenameLine(int config, TCHAR *keyfilename, size_t keyfilenamesize, char *line)
+ParseKeyFilenameLine(connection_t *c, TCHAR *keyfilename, size_t keyfilenamesize, char *line)
 {
   const int STATE_INITIAL = 0;
   const int STATE_READING_QUOTED_PARM = 1;
@@ -555,7 +555,7 @@ ParseKeyFilenameLine(int config, TCHAR *keyfilename, size_t keyfilenamesize, cha
   /* Prepend filename with configdir path if needed */
   if ((keyfilename[0] != '\\') && (keyfilename[0] != '/') && (keyfilename[1] != ':'))
     {
-      _tcsncpy(temp_filename, o.conn[config].config_dir, _tsizeof(temp_filename));
+      _tcsncpy(temp_filename, c->config_dir, _tsizeof(temp_filename));
       if (temp_filename[_tcslen(temp_filename) - 1] != '\\')
         _tcscat(temp_filename, _T("\\"));
       _tcsncat(temp_filename, keyfilename,
@@ -568,7 +568,7 @@ ParseKeyFilenameLine(int config, TCHAR *keyfilename, size_t keyfilenamesize, cha
 
 
 static int
-GetKeyFilename(int config, TCHAR *keyfilename, size_t keyfilenamesize, int *keyfile_format)
+GetKeyFilename(connection_t *c, TCHAR *keyfilename, size_t keyfilenamesize, int *keyfile_format)
 {
   FILE *fp;
   char line[256];
@@ -576,10 +576,10 @@ GetKeyFilename(int config, TCHAR *keyfilename, size_t keyfilenamesize, int *keyf
   int found_pkcs12=0;
   TCHAR configfile_path[MAX_PATH];
 
-  _tcsncpy(configfile_path, o.conn[config].config_dir, _tsizeof(configfile_path));
+  _tcsncpy(configfile_path, c->config_dir, _tsizeof(configfile_path));
   if (!(configfile_path[_tcslen(configfile_path)-1] == '\\'))
     _tcscat(configfile_path, _T("\\"));
-  _tcsncat(configfile_path, o.conn[config].config_file,
+  _tcsncat(configfile_path, c->config_file,
           _tsizeof(configfile_path) - _tcslen(configfile_path) - 1);
 
   if (!(fp=_tfopen(configfile_path, _T("r"))))
@@ -607,7 +607,7 @@ GetKeyFilename(int config, TCHAR *keyfilename, size_t keyfilenamesize, int *keyf
             }
           found_key=1;
           *keyfile_format = KEYFILE_FORMAT_PEM;
-          if (!ParseKeyFilenameLine(config, keyfilename, keyfilenamesize, &line[4]))
+          if (!ParseKeyFilenameLine(c, keyfilename, keyfilenamesize, &line[4]))
             return(0);
         }
       if (LineBeginsWith(line, "pkcs12", 6))
@@ -626,7 +626,7 @@ GetKeyFilename(int config, TCHAR *keyfilename, size_t keyfilenamesize, int *keyf
             }
           found_pkcs12=1;
           *keyfile_format = KEYFILE_FORMAT_PKCS12;
-          if (!ParseKeyFilenameLine(config, keyfilename, keyfilenamesize, &line[7]))
+          if (!ParseKeyFilenameLine(c, keyfilename, keyfilenamesize, &line[7]))
             return(0);
         }
     }
@@ -642,21 +642,22 @@ GetKeyFilename(int config, TCHAR *keyfilename, size_t keyfilenamesize, int *keyf
 }
 
 
-static void
-ChangePassphraseThread(int config)
+static DWORD WINAPI
+ChangePassphraseThread(LPVOID data)
 {
   HWND hwndChangePSW;
   MSG messages;
   TCHAR conn_name[100];
   TCHAR keyfilename[MAX_PATH];
   int keyfile_format=0;
+  connection_t *c = data;
 
   /* Cut of extention from config filename. */
-  _tcsncpy(conn_name, o.conn[config].config_file, _tsizeof(conn_name));
+  _tcsncpy(conn_name, c->config_file, _tsizeof(conn_name));
   conn_name[_tcslen(conn_name) - (_tcslen(o.ext_string)+1)]=0;
 
   /* Get Key filename from config file */
-  if (!GetKeyFilename(config, keyfilename, _tsizeof(keyfilename), &keyfile_format))
+  if (!GetKeyFilename(c, keyfilename, _tsizeof(keyfilename), &keyfile_format))
     {
       ExitThread(1);
     }
@@ -664,7 +665,7 @@ ChangePassphraseThread(int config)
   /* Show ChangePassphrase Dialog */  
   hwndChangePSW = CreateLocalizedDialog(ID_DLG_CHGPASS, ChangePassphraseDialogFunc);
   if (!hwndChangePSW)
-    return;
+    ExitThread(1);
   SetDlgItemText(hwndChangePSW, ID_TXT_KEYFILE, keyfilename); 
   SetDlgItemInt(hwndChangePSW, ID_TXT_KEYFORMAT, (UINT) keyfile_format, FALSE);
 
@@ -688,16 +689,13 @@ ChangePassphraseThread(int config)
 
 
 void
-ShowChangePassphraseDialog(int config)
+ShowChangePassphraseDialog(connection_t *c)
 {
   HANDLE hThread;
   DWORD IDThread;
 
   /* Start a new thread to have our own message-loop for this dialog */
-  hThread = CreateThread(NULL, 0,
-            (LPTHREAD_START_ROUTINE) ChangePassphraseThread,
-            (int *) config,  // pass config nr
-            0, &IDThread);
+  hThread = CreateThread(NULL, 0, ChangePassphraseThread, c, 0, &IDThread);
   if (hThread == NULL)
     {
     /* error creating thread */

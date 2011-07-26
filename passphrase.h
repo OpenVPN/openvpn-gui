@@ -23,10 +23,12 @@
 #ifndef PASSPHRASE_H
 #define PASSPHRASE_H
 
+#include "options.h"
+
 BOOL GetRandomPassword(char *, size_t);
 
 #ifndef DISABLE_CHANGE_PASSWORD
-void ShowChangePassphraseDialog(int);
+void ShowChangePassphraseDialog(connection_t *);
 #endif
 
 #endif
