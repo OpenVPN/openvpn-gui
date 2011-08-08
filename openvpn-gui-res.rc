@@ -51,6 +51,23 @@ FILEVERSION   PACKAGE_MAJOR_VERSION,PACKAGE_MINOR_VERSION,PACKAGE_RELEASE,0
 FILEOS        VOS_NT
 FILETYPE      VFT_APP
 BEGIN
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation"
+            , LANG_GERMAN,      1200
+            , LANG_DANISH,      1200
+            , LANG_ENGLISH,     1200
+            , LANG_SPANISH,     1200
+            , LANG_FINNISH,     1200
+            , LANG_FRENCH,      1200
+            , LANG_ITALIAN,     1200
+            , LANG_DUTCH,       1200
+            , LANG_NORWEGIAN,   1200
+            , LANG_POLISH,      1200
+            , LANG_PORTUGUESE,  1200
+            , LANG_SWEDISH,     1200
+    END
+
     BLOCK "StringFileInfo"
     BEGIN
         BLOCK "040904B0"  /* en_US, Unicode */
@@ -63,10 +80,7 @@ BEGIN
             VALUE "ProductVersion",   PACKAGE_VERSION
             VALUE "Website",          PACKAGE_URL
             VALUE "LegalCopyright",   "The " PACKAGE_NAME " developers"
-            VALUE "CompanyName",      PACKAGE_NAME " is developed by these individuals:\r\n\r\n" \
-                                      "Mathias Sundman (retired)\r\n\r\n" \
-                                      "Heiko Hund\r\n" \
-                                      "<heikoh@users.sf.net>"
+            VALUE "CompanyName",      PACKAGE_NAME
         END
     END
 END
