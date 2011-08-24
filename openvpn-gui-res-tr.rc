@@ -1,0 +1,345 @@
+/*
+ *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
+ *
+ *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
+ *                2009 Heiko Hund <heikoh@users.sf.net>
+ *                2011 Hakan Darama <hakandarama@gmail.com>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program (see the file COPYING included with this
+ *  distribution); if not, write to the Free Software Foundation, Inc.,
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+#pragma code_page(1254)
+
+/* About Dialog */
+ID_DLG_ABOUT DIALOG 0, 0, 260, 135
+STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Hakkýnda - Windows için OpenVPN GUI"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_TURKISH, SUBLANG_NEUTRAL
+BEGIN
+    PUSHBUTTON "OK", IDOK, 99, 115, 63, 14
+    ICON ID_ICO_CONNECTED, 204, 11, 8, 21, 20
+    LTEXT "OpenVPN GUI v" PACKAGE_VERSION " - OpenVPN için Windows Arayüzü", 101, 40, 5, 215, 8
+    LTEXT "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>", 102, 40, 15, 215, 8
+    LTEXT "http://openvpn.se/", 103, 40, 25, 215, 8
+    LTEXT "OpenVPN - SSL/TLS tabanlý güvenli oturumlar, anahtar doðrulama " \
+          "paket þifreleme, paket sýkýþtýrma ve paket doðrulama iþlemlerini " \
+          "tek bir UDP portu üzerinden güvenli IP tünelleri oluþturarak " \
+          "yapabilen bir uygulamadýr.",
+          104, 11, 51, 235, 34
+    LTEXT "Copyright (C) 2002-2005 OpenVPN Solutions LLC <info@openvpn.net>", 105, 11, 87, 235, 11
+    LTEXT "http://openvpn.net/", 106, 11, 98, 235, 10
+END
+
+/* Passphrase Dialog */
+ID_DLG_PASSPHRASE DIALOGEX 6, 18, 120, 51
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+EXSTYLE WS_EX_TOPMOST
+CAPTION "OpenVPN"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_TURKISH, SUBLANG_NEUTRAL
+BEGIN
+    LTEXT "Þifreyi Giriniz:", 201, 6, 6, 100, 10
+    EDITTEXT ID_EDT_PASSPHRASE, 6, 17, 107, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "Tamam", IDOK, 6, 33, 50, 14
+    PUSHBUTTON "Çýkýþ", IDCANCEL, 64, 33, 50, 14
+END
+
+/* Auth Username/Password Dialog */
+ID_DLG_AUTH DIALOG 6, 18, 160, 62
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+CAPTION "OpenVPN - Oturum Açma"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_TURKISH, SUBLANG_NEUTRAL
+BEGIN
+    LTEXT "Kullanýcý Adý:", 0, 6, 9, 50, 10
+    LTEXT "Þifre:", 0, 6, 26, 50, 10
+    EDITTEXT ID_EDT_AUTH_USER, 50, 6, 104, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_AUTH_PASS, 50, 23, 104, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "Tamam", IDOK, 20, 42, 50, 14
+    PUSHBUTTON "Çýkýþ", IDCANCEL, 90, 42, 52, 14
+END
+
+/* Status Dialog */
+ID_DLG_STATUS DIALOG 6, 18, 380, 210
+STYLE WS_SIZEBOX | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | DS_CENTER
+CAPTION "OpenVPN"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_TURKISH, SUBLANG_NEUTRAL
+BEGIN
+    LTEXT "Baðlanýyor...", ID_TXT_STATUS, 20, 5, 200, 10
+    PUSHBUTTON "Baðlantýyý Kes", ID_DISCONNECT, 50, 190, 50, 14
+    PUSHBUTTON "Yeniden Baðlan", ID_RESTART, 150, 190, 50, 14
+    PUSHBUTTON "Gizle", ID_HIDE, 100, 190, 50, 14
+END
+
+/* Change Passphrase Dialog */
+ID_DLG_CHGPASS DIALOG 6, 18, 193, 82
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "OpenVPN - Þifreyi deðiþtir"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_TURKISH, SUBLANG_NEUTRAL
+BEGIN
+    LTEXT "Eski Þifre:", 171, 6, 9, 85, 10
+    LTEXT "Yeni Þifre:", 172, 6, 26, 85, 10
+    LTEXT "Tekrar Yeni Þifre:", 173, 6, 42, 85, 10
+    EDITTEXT ID_EDT_PASS_CUR, 65, 6, 120, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PASS_NEW, 65, 23, 120, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PASS_NEW2, 65, 39, 120, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "Tamam", IDOK, 40, 59, 50, 14
+    PUSHBUTTON "Çýkýþ", IDCANCEL, 103, 59, 50, 14
+    LTEXT "", ID_TXT_KEYFORMAT, 0, 0, 0, 0
+    LTEXT "", ID_TXT_KEYFILE, 0, 0, 0, 0
+END
+
+/* Proxy Settings Dialog */
+ID_DLG_PROXY DIALOG 6, 18, 249, 104
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Proxy Ayarlarý"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_TURKISH, SUBLANG_NEUTRAL
+BEGIN
+    GROUPBOX "   ", 201, 6, 46, 235, 52
+    AUTORADIOBUTTON "OpenVPN konfigürasyon dosyasýný kullan", ID_RB_PROXY_OPENVPN, \
+                    13, 16, 200, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Sistem Proxy ayarlarýný kullan", \
+                    ID_RB_PROXY_MSIE, 13, 31, 200, 10
+    AUTORADIOBUTTON "Elle Ayarlama", ID_RB_PROXY_MANUAL, 13, 46, 59, 10
+    AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "SOCKS Proxy", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
+    LTEXT "Adres:", ID_TXT_PROXY_ADDRESS, 20, 77, 32, 10
+    RTEXT "Port:", ID_TXT_PROXY_PORT, 171, 77, 20, 10
+    EDITTEXT ID_EDT_PROXY_ADDRESS, 53, 75, 117, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PROXY_PORT, 196, 75, 30, 12, ES_AUTOHSCROLL
+END
+
+/* General Settings Dialog */
+ID_DLG_GENERAL DIALOGEX 6, 18, 249, 104
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Genel"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_TURKISH, SUBLANG_NEUTRAL
+BEGIN
+    GROUPBOX "Kullanýcý Arayüzü", 201, 6, 12, 235, 30
+    LTEXT "Dil:", ID_TXT_LANGUAGE, 17, 25, 52, 12
+    COMBOBOX ID_CMB_LANGUAGE, 31, 23, 197, 400, CBS_DROPDOWNLIST | WS_TABSTOP
+END
+
+/* Proxy Authentication Dialog */
+ID_DLG_PROXY_AUTH DIALOG 29, 23, 154, 65
+STYLE DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER
+CAPTION "OpenVPN - Proxy Oturumu Açma"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_TURKISH, SUBLANG_NEUTRAL
+BEGIN
+    LTEXT "Kullanýcý Adý:", 201, 9, 8, 42, 10
+    EDITTEXT ID_EDT_PROXY_USER, 53, 5, 90, 12, ES_AUTOHSCROLL
+    LTEXT "Þifre:", 202, 9, 26, 42, 10
+    EDITTEXT ID_EDT_PROXY_PASS, 53, 23, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "Tamam", IDOK, 58, 43, 40, 14
+END
+
+STRINGTABLE
+LANGUAGE LANG_TURKISH, SUBLANG_NEUTRAL
+BEGIN
+    IDS_LANGUAGE_NAME "Türkçe - Turkish"
+
+    /* Tray - Resources */
+    IDS_TIP_DEFAULT "OpenVPN GUI "
+    IDS_TIP_CONNECTED "\nBaðlanýldý: "
+    IDS_TIP_CONNECTING "\nBaðlanýlýyor: "
+    IDS_TIP_CONNECTED_SINCE "\nBaðlanýldý: "
+    IDS_TIP_ASSIGNED_IP "\nBaðlanýlan IP: %s"
+    IDS_MENU_SERVICE "OpenVPN Servisi"
+    IDS_MENU_SETTINGS "Ayarlar..."
+    IDS_MENU_ABOUT "Hakkýnda..."
+    IDS_MENU_CLOSE "Çýkýþ"
+    IDS_MENU_CONNECT "Baðlan"
+    IDS_MENU_DISCONNECT "Baðlantýyý Kes"
+    IDS_MENU_STATUS "Durum"
+    IDS_MENU_VIEWLOG "Günlüðe Bak"
+    IDS_MENU_EDITCONFIG "Ayarlar"
+    IDS_MENU_PASSPHRASE "Þifreyi Deðiþtir"
+    IDS_MENU_SERVICE_START "Baþla"
+    IDS_MENU_SERVICE_STOP "Durdur"
+    IDS_MENU_SERVICE_RESTART "Yeniden Baþlat"
+    IDS_MENU_SERVICEONLY_START "Baðlan"
+    IDS_MENU_SERVICEONLY_STOP "Baðlantýyý Kes"
+    IDS_MENU_SERVICEONLY_RESTART "Yeniden Baðlan"
+    IDS_MENU_ASK_STOP_SERVICE "Baðlantýyý koparmak istediðinize emin misiniz ? (OpenVPN Servisini Durdurur)?"
+
+    /* Logviewer - Resources */
+    IDS_ERR_START_LOG_VIEWER "Olay görüntüleyici baþlarken hata oluþtu: %s"
+    IDS_ERR_START_CONF_EDITOR "Ayar editörü baþlarken hata oluþtu: %s"
+
+    /* OpenVPN */
+    IDS_ERR_MANY_CONFIGS "OpenVPN GUI %d den fazla konfigürasyonu desteklemiyor. Eðer daha fazlasýna ihtiyacýnýz varsa lütfen hak sahibi ile görüþün."
+    IDS_ERR_ONE_CONN_OLD_VER "OpenVPN 2.0-beta6 sürümünden daha eski bir versiyon açýkken, ayný anda sadece bir baðlantý açabilirsiniz!"
+    IDS_ERR_STOP_SERV_OLD_VER "OpenVPN servisi çalýþýrken (OpenVPN ver.1.5/1.6) OpenVPN GUI ile baðlantý yapamazsýnýz. OpenVPN GUI yi kullanacaksanýz, öncelikle OpenVPN servisini durdurmanýz gerekmektedir."
+    IDS_ERR_CREATE_EVENT "Çýkýlýrken hata oluþtu: %s"
+    IDS_ERR_UNKNOWN_PRIORITY "Bilinmeyen öncelik ismi: %s"
+    IDS_ERR_LOG_APPEND_BOOL "Günlük dosyasý ekleme deðeri('%s') olarak verilmiþ.'0' veya '1' olmalýdýr."
+    IDS_ERR_GET_MSIE_PROXY "MSIE (Internet Explorer) proxy ayarlarýna eriþilemiyor."
+    IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor hatasý."
+    IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl hatasý."
+    IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe on hOutputWrite hatasý."
+    IDS_ERR_CREATE_PIPE_INPUT "CreatePipe on hInputRead hatasý."
+    IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle on hOutputRead hatasý."
+    IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite hatasý."
+    IDS_ERR_CREATE_PROCESS "CreateProcess hatasý, exe='%s' cmdline='%s' dir='%s'"
+    IDS_ERR_CREATE_THREAD_STATUS "CreateThread anýnda durum penceresi gösterilemedi hatasý."
+    IDS_NFO_STATE_WAIT_TERM "Geçerli Durum: OpenVPN' in kapanmasý bekleniyor..."
+    IDS_NFO_STATE_CONNECTED "Geçerli Durum: Baðlandý"
+    IDS_NFO_NOW_CONNECTED "%s þu an baðlý."
+    IDS_NFO_ASSIGN_IP "Atanan IP: %s"
+    IDS_ERR_CERT_EXPIRED "Sertifikanýz veya sistem tarih/zaman ayarlarýnýz geçersiz olduðundan baðlantý saðlanamadý."
+    IDS_ERR_CERT_NOT_YET_VALID "Sertifikanýz geçersiz olduðundan baðlantý saðlanamadý. Sistem zamanýnýzýn doðruluðunu kontrol edin."
+    IDS_NFO_STATE_RECONNECTING "Geçerli Durum: Yeniden Baðlanýlýyor"
+    IDS_NFO_STATE_DISCONNECTED "Geçerli Durum: Baðlantý Kesildi"
+    IDS_NFO_CONN_TERMINATED "%s ile olan baðlantý kesildi. "
+    IDS_NFO_STATE_FAILED "Geçerli Durum: Baðlantý saðlanamadý."
+    IDS_NFO_CONN_FAILED "%s ile baðlantý kurulamadý"
+    IDS_NFO_STATE_FAILED_RECONN "Geçerli Durum: Baðlantý saðlanamadý"
+    IDS_NFO_RECONN_FAILED "%s ile yeniden baðlantý saðlanýrken hata oluþtu."
+    IDS_NFO_STATE_SUSPENDED "Geçerli Durum: Beklemede"
+    IDS_ERR_READ_STDOUT_PIPE "OpenVPN StdOut Pipe okunurken hata oluþtu."
+    IDS_ERR_CREATE_EDIT_LOGWINDOW "Günlük dosyasý oluþturulurken hata oluþtu!!"
+    IDS_ERR_SET_SIZE "Boyut ayarlanýrken hata oluþtu!"
+    IDS_ERR_AUTOSTART_CONF "Ýstenilen konfigürasyon dosyasý yeniden baþlatýlýrken hata oluþtu.: %s"
+    IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe on hInputRead baþarýsýz oldu!."
+    IDS_NFO_STATE_CONNECTING "Geçerli Durum: Baðlanýyor!"
+    IDS_NFO_CONNECTION_XXX "OpenVPN Baðlantýsý (%s)"
+    IDS_NFO_STATE_CONN_SCRIPT "Geçerli Durum: Baðlantý betiði çalýþtýrýlýyor"
+    IDS_NFO_STATE_DISCONN_SCRIPT "Geçerli Durum: Baðlantýyý koparmak için betik çalýþtýrýlýyor"
+    IDS_ERR_RUN_CONN_SCRIPT "Baðlantý betiði çalýþtýrma hatasý: %s"
+    IDS_ERR_GET_EXIT_CODE "Baðlantý betiðinde ExitCode çalýþtýrýlamadý: (%s)"
+    IDS_ERR_CONN_SCRIPT_FAILED "Baðlantý betiði baþarýsýz oldu. (exitcode=%ld)"
+    IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Baðlantý betiði baþarýsýz oldu. %d saniyede timeout oldu."
+    IDS_ERR_CONFIG_EXIST "Zaten '%s' ismi ile kayýtlý bir ayar dosyasý mevcut. " \
+                         "Ayrý klasörlerde olmadýðý sürece, ayný isimle ayar dosyasý "\
+				 "kayýt edemezsiniz."
+    /* main - Resources */
+    IDS_ERR_OPEN_DEBUG_FILE "Debug dosyasý açýlýrken hata oluþtu (%s)"
+    IDS_ERR_LOAD_RICHED20 "RICHED20.DLL yüklenemedi."
+    IDS_ERR_SHELL_DLL_VERSION "Sistemde bulunan shell32.dll verdsiyonu eski. (0x%lx). En az 5.0 versiyonuna sahip olmalýsýnýz."
+    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI zaten çalýþýr durumda"
+    IDS_NFO_SERVICE_STARTED "OpenVPN Servisi baþlatýldý."
+    IDS_NFO_SERVICE_STOPPED "OpenVPN Service durduruldu."
+    IDS_NFO_ACTIVE_CONN_EXIT "OpenVPN GUI ' yi kapatýrsanýz, açýk olan baðlantýlarýnýz sonlandýrýlacaktýr." \
+                             "\n\nÇýkmak istediðinize emin misiniz?"
+    IDS_NFO_SERVICE_ACTIVE_EXIT "Þu an baðlýsýnýz(OpenVPN Servisi çalýþýyor). " \
+                                "OpenVPN GUI yi kapatsanýz dahi baðlantý devam edecek.\n\n" \
+                                "OpenVPN GUI den çýkmak istiyor musunuz?"
+
+    /* options - Resources */
+    IDS_NFO_USAGE "--help\t\t\t: Yardým mesajýný gözter.\n" \
+                  "--connect cnn \t\t: Baþlangýçta otomatik olarak ""cnn"" e baðlan. (uzantýlar dahil edilmelidir.)\n" \
+                  "\t\t\t   Örnek: openvpn-gui --connect office.ovpn\n" \
+                  "\n" \
+                  "Registry ayarlarý için:\n" \
+                  "--exe_path\t\t: openvpn.exe yolu.\n" \
+                  "--config_dir\t\t: Ayar dosyalarýnýn bulunduðu dizini belirtmek için.\n" \
+                  "--ext_string\t\t: Config dosyalarýnýn uzantýlarý.\n" \
+                  "--log_dir\t\t\t: Günlük dosyalarýnýn kayýt edileceði dizini belirtmek için.\n" \
+                  "--priority_string\t\t: Öncelik belirleme ifadesi (Daha fazla bilgi için install.txt dosyasýna bakýnýz).\n" \
+                  "--append_string\t\t: 1=Log dosyasýnýn sonuna ekle. 0=Baðlantý sýrasýnda log dosyasýný sil ve üzerine yaz.\n" \
+                  "--log_viewer\t\t: Log görüntüleyicinin yolu.\n" \
+                  "--editor\t\t\t: Ayar editörünün yolu.\n" \
+                  "--allow_edit\t\t: 1=Ayarlar menüsünü göster.\n" \
+                  "--allow_service\t\t: 1=Servis Kontrol menüsünü göster.\n" \
+                  "--allow_password\t\t: 1=Þifre deðiþtirme menü öðesini göster.\n" \
+                  "--allow_proxy\t\t: 1=Proxy Ayarlarý menüsünü gözter.\n" \
+                  "--show_balloon\t\t: 0=Hiç bir zaman, 1=Baðlantý yapýlýrken, 2=Baðlantý her yeniden yapýldýðýnda.\n" \
+                  "--service_only\t\t: 1=Sadece servis çalýþsýn, arayüz gösterilmesin.\n" \
+                  "--silent_connection\t\t: 1=Baðlantý sýrasýnda durum diyaloðu görünmesin.\n" \
+                  "--show_script_window\t: 0=Betik çalýþtýrma penceresi görünmesin, 1=Betik çalýþtýrma penceresi görünsün.\n" \
+                  "--passphrase_attempts\t: Kaç defa þifre giriþ denemesi yapýlabilir.\n" \
+                  "--connectscript_timeout\t: Baðlantý betiðinin çalýþma süresi.\n" \
+                  "--disconnectscript_timeout\t: Baðlantý kesme betiðinin çalýþma süresi.\n" \
+                  "--preconnectscript_timeout\t: Baðlantý hazýrlýk betiðinin çalýþma süresi.\n"
+
+    IDS_NFO_USAGECAPTION "OpenVPN GUI Kullanýmý"
+    IDS_ERR_BAD_PARAMETER " ""%s"" ifadesini --seçenek parametre olarak ayýrmaya çalýþýyorum " \
+                      "fakat þu ifadeleri göremedim '--'"
+    IDS_ERR_BAD_OPTION "Seçenek hatasý: Bilinmeyen bir parametre giriþi yaptýnýz: --%s\n" \
+                   "Daha fazla bilgi için komut satýrýnda openvpn-gui --help ifadesini kullanýn."
+
+    /* passphrase - Resources */
+    IDS_ERR_CREATE_PASS_THREAD "Þifre deðiþtirme diyaloðunu baþlatma olayý baþarýsýz oldu."
+    IDS_NFO_CHANGE_PWD "Þifre Deðiþtir (%s)"
+    IDS_ERR_PWD_DONT_MATCH "Girdiðiniz þifreler eþleþmiyor."
+    IDS_ERR_PWD_TO_SHORT "yeni þifreniz en az %d karakter uzunluðunda olmalýdýr."
+    IDS_NFO_EMPTY_PWD "Boþ bir þifreyi kullanmak istediðinize gerçekten emin misiniz?"
+    IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Bilinmeyen anahtar dosyasý biçimi."
+    IDS_ERR_OPEN_PRIVATE_KEY_FILE "private key açýlýrken hata oluþtu(%s)."
+    IDS_ERR_OLD_PWD_INCORRECT "Yanlýþ þifre girdiniz."
+    IDS_ERR_OPEN_WRITE_KEY "private key dosyasý yazýlýrken hata oluþtu (%s)."
+    IDS_ERR_WRITE_NEW_KEY "Yeni private key dosyasý yazýlýrken hata oluþtu (%s)."
+    IDS_NFO_PWD_CHANGED "Þifreniz deðiþtirildi."
+    IDS_ERR_READ_PKCS12 "PKCS #12 dosyasý okunurken hata oluþtu (%s)."
+    IDS_ERR_CREATE_PKCS12 "Yeni PKCS #12 oluþturulurken hata oluþtu. Yeni þifre dosyasý oluþturulamadý."
+    IDS_ERR_OPEN_CONFIG "Ayar dosyasý okuma için açýlamadý: (%s)"
+    IDS_ERR_ONLY_ONE_KEY_OPTION "Ayar dosyasýnda birden fazla anahtar ""key"" belirtemezsiniz."
+    IDS_ERR_ONLY_KEY_OR_PKCS12 "Ayarlarýnýzda ayný anda anahtar ""key"" ve pkcs12 ""pkcs12"" seçimlerini kullanamazsýnýz."
+    IDS_ERR_ONLY_ONE_PKCS12_OPTION "Ayar dosyanýzda birden fazla pkcs12 ""pkcs12"" seçimi bulunduramazsýnýz."
+    IDS_ERR_HAVE_KEY_OR_PKCS12 "Ayar dosyanýzda herhangi bir ""key"" yada ""pkcs12"" seçeneði bulunamadý."
+    IDS_ERR_KEY_FILENAME_TO_LONG "Ayarlarýnýzda bulunan anahtar dosyasýnýn adý çok uzun!"
+    IDS_ERR_PASSPHRASE2STDIN "Standart giriþten þifreniz okunurken hata oluþtu."
+    IDS_ERR_AUTH_USERNAME2STDIN "Standart giriþten kullanýcý adýnýz okunurken hata oluþtu."
+    IDS_ERR_AUTH_PASSWORD2STDIN "Standart giriþten þifreniz ile giriþ yapýlýrken hata oluþtu."
+    IDS_ERR_CR2STDIN "Error passing CR to stdin."
+    IDS_ERR_INVALID_CHARS_IN_PSW "Yeni þifreniz geçersiz karakterler içeriyor. " \
+                             "Lütfen yeni bir tane seçiniz."
+
+    /* settings */
+    IDS_SETTINGS_CAPTION "OpenVPN - Ayarlar"
+
+    /* proxy */
+    IDS_ERR_HTTP_PROXY_ADDRESS "HTTP proxy adresi girmelisiniz."
+    IDS_ERR_HTTP_PROXY_PORT "HTTP proxy port' u girmelisiniz."
+    IDS_ERR_HTTP_PROXY_PORT_RANGE "1 ila 65535 arasýnda HTTP proxy port numarasý girmelisiniz."
+    IDS_ERR_SOCKS_PROXY_ADDRESS "Bir SOCKS proxy adresi girmelisiniz."
+    IDS_ERR_SOCKS_PROXY_PORT "Bir SOCKS proxy port u girmelisiniz."
+    IDS_ERR_SOCKS_PROXY_PORT_RANGE "1 ila 65535 arasýnda bir SOCKS proxy port numarasý girmelisiniz."
+    IDS_ERR_CREATE_REG_HKCU_KEY """HKEY_CURRENT_USER\\%s"" anahtarý oluþturulurken hata oluþtu."
+    IDS_ERR_GET_TEMP_PATH "GetTempPath() ile TempPath aranýrken hata oluþtu. ""C:\\"" kullanýlacak."
+
+    /* service */
+    IDS_ERR_OPEN_SCMGR_ADMIN "OpenSCManager baþarýsýz oldu. Yeni bir servis çalýþtýrmak için yönetici haklarýna sahip olmanýz gerekmektedir."
+    IDS_ERR_OPEN_VPN_SERVICE """OpenVPNService"" baþlatýmý baþarýsýz oldu."
+    IDS_ERR_START_SERVICE """OpenVPNService"" baþlatýmý baþarýsýz oldu."
+    IDS_ERR_QUERY_SERVICE "Servis durumu sorgulamasý baþarýsýz oldu."
+    IDS_ERR_SERVICE_START_FAILED "OpenVPN Servisi baþlatýmý baþarýsýz oldu."
+    IDS_ERR_OPEN_SCMGR "OpenSCManager baþarýsýz oldu. (%d)"
+    IDS_ERR_STOP_SERVICE "OpenVPN Servisini durdurma giriþimi baþarýsýz oldu."
+    IDS_NFO_RESTARTED "OpenVPN Servisi baþlatýldý."
+
+    /* registry */
+    IDS_ERR_GET_WINDOWS_DIR "Windows dizinine eriþim baþarýsýz oldu."
+    IDS_ERR_GET_PROGRAM_DIR """Program"" dizine eriþim baþarýsýz oldu ."
+    IDS_ERR_OPEN_REGISTRY "Registry açýlamadý(HKLM\\SOFTWARE\\OpenVPN).\n " \
+                      "Muhtemelen OpenVPN yüklü deðil."
+    IDS_ERR_READING_REGISTRY "Registry anahtarý okunurken baþarýsýz oldu (HKLM\\SOFTWARE\\OpenVPN)."
+    IDS_ERR_PASSPHRASE_ATTEMPTS "Registry anahtarý ""passphrase_attempts"" 1 ile 9 arasýnda bir deðer almalý."
+    IDS_ERR_CONN_SCRIPT_TIMEOUT "Registry anahtarý ""connectscript_timeout"" 0 ile 99 arasýnda bir deðer almalý."
+    IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Registry anahtarý ""disconnectscript_timeout"" 1 ile 99 arasýnda bir deðer almalý."
+    IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Registry anahtarý ""preconnectscript_timeout"" 1 ile 99 arasýnda bir deðer almalý."
+    IDS_ERR_CREATE_REG_KEY "HKLM\\SOFTWARE\\OpenVPN-GUI anahtarý oluþturulamadý."
+    IDS_ERR_OPEN_WRITE_REG "Windows Registry açýlmadý. Registry' i açabilmek için " \
+                       "sistem yönetici haklarýna sahip olmanýz gerekmektedir.."
+    IDS_ERR_READ_SET_KEY """%s"" anahtarý ayarlanýrken hata oluþtu."
+    IDS_ERR_WRITE_REGVALUE """HKEY_CURRENT_USER\\%s\\%s"" anahtarý yazýlýrken hata oluþtu."
+END
