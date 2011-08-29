@@ -228,13 +228,13 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             username_len = GetDlgItemText(hwndDlg, ID_EDT_AUTH_USER, buf, _tsizeof(buf));
             if (username_len == 0)
                 return TRUE;
-            length = WideCharToMultiByte(CP_ACP, WC_NO_BEST_FIT_CHARS, buf, -1, cmd + 17, sizeof(cmd) - 17, "_", NULL);
+            length = WideCharToMultiByte(CP_UTF8, 0, buf, -1, cmd + 17, sizeof(cmd) - 17, NULL, NULL);
             memcpy(cmd + length + 16, "\"\0", 2);
             ManagementCommand(c, cmd, NULL, regular);
 
             memcpy(cmd, "password", 8);
             GetDlgItemText(hwndDlg, ID_EDT_AUTH_PASS, buf, _tsizeof(buf));
-            length = WideCharToMultiByte(CP_ACP, WC_NO_BEST_FIT_CHARS, buf, -1, cmd + 17, sizeof(cmd) - 17, "_", NULL);
+            length = WideCharToMultiByte(CP_UTF8, 0, buf, -1, cmd + 17, sizeof(cmd) - 17, NULL, NULL);
             memcpy(cmd + length + 16, "\"\0", 2);
             ManagementCommand(c, cmd, NULL, regular);
 
@@ -291,7 +291,7 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         {
         case IDOK:
             GetDlgItemText(hwndDlg, ID_EDT_PASSPHRASE, buf, _tsizeof(buf));
-            length = WideCharToMultiByte(CP_ACP, WC_NO_BEST_FIT_CHARS, buf, -1, cmd + 24, sizeof(cmd) - 24, "_", NULL);
+            length = WideCharToMultiByte(CP_UTF8, 0, buf, -1, cmd + 24, sizeof(cmd) - 24, NULL, NULL);
             memcpy(cmd + length + 23, "\"\0", 2);
             ManagementCommand(c, cmd, NULL, regular);
 
