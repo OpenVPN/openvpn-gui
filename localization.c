@@ -131,12 +131,7 @@ LoadStringLang(UINT stringId, LANGID langId, PTSTR buffer, int bufferSize, va_li
             break;
         formatStr[*entry] = 0;
 
-#ifdef _UNICODE
         wcsncpy(formatStr, entry + 1, *entry);
-#else
-        WideCharToMultiByte(CP_ACP, 0, entry + 1, *entry, formatStr, *entry, "?", NULL);
-#endif
-
         _vsntprintf(buffer, bufferSize, formatStr, args);
         buffer[bufferSize - 1] = 0;
         free(formatStr);

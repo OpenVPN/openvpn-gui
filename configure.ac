@@ -19,11 +19,6 @@ AC_DEFINE(PACKAGE_RELEASE, [RELEASE],
 
 AC_PROG_CC_C99
 
-AC_ARG_ENABLE([unicode],
-	AS_HELP_STRING([--disable-unicode],
-		[produce a binary without Unicode support]), [],
-	[CPPFLAGS="$CPPFLAGS -DUNICODE -D_UNICODE"])
-
 AC_CANONICAL_HOST
 case $host in
 *-cygwin)

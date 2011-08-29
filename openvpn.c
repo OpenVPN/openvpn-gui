@@ -153,12 +153,8 @@ OnStateChange(connection_t *c, char *data)
         if (pos != NULL)
             *pos = '\0';
 
-#ifdef _UNICODE
         /* Convert the IP address to Unicode */
         MultiByteToWideChar(CP_ACP, 0, local_ip, -1, c->ip, _tsizeof(c->ip));
-#else
-        strncpy(c->ip, local_ip, sizeof(c->ip));
-#endif
 
         /* Show connection tray balloon */
         if ((c->state == connecting   && o.show_balloon[0] != '0')

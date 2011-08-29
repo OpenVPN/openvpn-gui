@@ -7,7 +7,7 @@ WINDRES = @WINDRES@
 
 LDFLAGS = @CRYPTO_LDFLAGS@ @LDFLAGS@
 LIBS = @CRYPTO_LIBS@ @LIBS@
-CFLAGS = @CRYPTO_CPPFLAGS@ @CFLAGS@ @CPPFLAGS@
+CFLAGS = @CRYPTO_CPPFLAGS@ @CFLAGS@ @CPPFLAGS@ -DUNICODE -D_UNICODE
 CFLAGS += -W -Wall -Wno-unused-parameter -pedantic
 
 OBJS = main.o tray.o openvpn.o viewlog.o \
