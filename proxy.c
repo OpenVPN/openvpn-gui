@@ -383,6 +383,8 @@ ProxyAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
  */
 void ConstructProxyCmdLine(TCHAR *proxy_string, unsigned int size)
 {
+    proxy_string[0] = _T('\0');
+
     if (o.proxy_source == manual)
     {
         if (o.proxy_type == http)
