@@ -84,7 +84,7 @@ OnLogLine(connection_t *c, char *line)
     TCHAR *datetime;
     const SETTEXTEX ste = {
         .flags = ST_SELECTION,
-        .codepage = CP_ACP
+        .codepage = CP_UTF8
     };
 
     flags = strchr(line, ',') + 1;
@@ -460,9 +460,9 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         CHARFORMAT cfm = {
             .cbSize = sizeof(CHARFORMAT),
             .dwMask = CFM_SIZE|CFM_FACE|CFM_BOLD,
-            .szFaceName = _T("MS Sans Serif"),
+            .szFaceName = _T("Microsoft Sans Serif"),
             .dwEffects = 0,
-            .yHeight = 100
+            .yHeight = 160
         };
         if (SendMessage(hLogWnd, EM_SETCHARFORMAT, SCF_DEFAULT, (LPARAM) &cfm) == 0)
             ShowLocalizedMsg(IDS_ERR_SET_SIZE);
