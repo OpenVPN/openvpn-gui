@@ -18,12 +18,11 @@ SOURCES = main.c main.h openvpn.c openvpn.h localization.c localization.h \
           tray.c tray.h viewlog.c viewlog.h service.c service.h \
           options.c options.h passphrase.c passphrase.h proxy.c proxy.h \
           registry.c registry.h scripts.c scripts.h manage.c manage.h \
-          openvpn_config.c openvpn_config.h openvpn-gui.manifest \
-          chartable.h openvpn-gui-res.h openvpn-gui-res*.rc
+          openvpn_config.c openvpn_config.h res/openvpn-gui.manifest \
+          chartable.h openvpn-gui-res.h res/openvpn-gui-res*.rc
 
-EXTRA = connected.ico connecting.ico disconnected.ico reconnecting.ico openvpn-gui.ico \
-        acinclude.m4 Makefile.in aclocal.m4 config.h.in configure configure.ac \
-        config.guess config.sub install-sh \
+EXTRA = res/*.ico acinclude.m4 Makefile.in aclocal.m4 config.h.in configure \
+        configure.ac config.guess config.sub install-sh \
         OpenVPN\ GUI\ ReadMe.txt changes.txt COPYING COPYRIGHT.GPL
 
 all : ${OBJS}
@@ -32,13 +31,13 @@ all : ${OBJS}
 %.o : %.c %.h
 	$(CC) $(CFLAGS) -c $<
 
-openvpn-gui-res.o : openvpn-gui-res.h *.rc *.ico *.manifest
-	$(WINDRES) -i openvpn-gui-res.rc -o openvpn-gui-res.o
+openvpn-gui-res.o : openvpn-gui-res.h res/*.rc res/*.ico res/*.manifest
+	$(WINDRES) -I. -i res/openvpn-gui-res.rc -o openvpn-gui-res.o
 
 dist:
 	rm -rf @PACKAGE_TARNAME@-*/
 	mkdir @PACKAGE_TARNAME@-$(VERSION)
-	cp $(SOURCES) $(EXTRA) @PACKAGE_TARNAME@-$(VERSION)
+	cp --parents $(SOURCES) $(EXTRA) @PACKAGE_TARNAME@-$(VERSION)
 	test ! -f SNAPSHOT || { \
 		cd openvpn-gui-$(VERSION); \
 		cp ../SNAPSHOT .; \
