@@ -405,6 +405,12 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 static INT_PTR CALLBACK
 AboutDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+  LPPSHNOTIFY psn;
+  if (msg == WM_NOTIFY) {
+    psn = (LPPSHNOTIFY) lParam;
+    if (psn->hdr.code == (UINT) PSN_APPLY)
+        return TRUE;
+  }
   return FALSE;
 }
 
