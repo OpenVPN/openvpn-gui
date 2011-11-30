@@ -19,8 +19,6 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#pragma code_page(1252)
-
 /* About Dialog */
 ID_DLG_ABOUT DIALOG 0, 0, 260, 135
 STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
@@ -183,11 +181,11 @@ BEGIN
     IDS_ERR_START_CONF_EDITOR "Errore nell'apertura dell'editor di configurazione: %s"
 
     /* OpenVPN */
-    IDS_ERR_MANY_CONFIGS "OpenVPN GUI non supporta più di %d configurazioni. Per favore contatta l'autore se hai bisogno che ne supporti di più."
-    IDS_ERR_ONE_CONN_OLD_VER "Puoi avere una sola connessione alla volta in funzionamento quando usi una versione di OpenVPN più vecchia della 2.0-beta6."
-    IDS_ERR_STOP_SERV_OLD_VER "Non puoi usare OpenVPN GUI per far partire una connessione mentre il servizio di OpenVPN è in funzionamento (con OpenVPN 1.5/1.6). Arresta il servizio di OpenVPN se vuoi usare OpenVPN GUI."
-    IDS_ERR_CREATE_EVENT "Il creatore di eventi è fallito all'uscita dell'evento: %s"
-    IDS_ERR_UNKNOWN_PRIORITY "Nome di priorità sconosciuto: %s"
+    IDS_ERR_MANY_CONFIGS "OpenVPN GUI non supporta piÃ¹ di %d configurazioni. Per favore contatta l'autore se hai bisogno che ne supporti di piÃ¹."
+    IDS_ERR_ONE_CONN_OLD_VER "Puoi avere una sola connessione alla volta in funzionamento quando usi una versione di OpenVPN piÃ¹ vecchia della 2.0-beta6."
+    IDS_ERR_STOP_SERV_OLD_VER "Non puoi usare OpenVPN GUI per far partire una connessione mentre il servizio di OpenVPN Ã¨ in funzionamento (con OpenVPN 1.5/1.6). Arresta il servizio di OpenVPN se vuoi usare OpenVPN GUI."
+    IDS_ERR_CREATE_EVENT "Il creatore di eventi Ã¨ fallito all'uscita dell'evento: %s"
+    IDS_ERR_UNKNOWN_PRIORITY "Nome di prioritÃ  sconosciuto: %s"
     IDS_ERR_LOG_APPEND_BOOL "Il file di Log ha aggiunto un puntatore (dato come '%s') deve essere '0' o '1'"
     IDS_ERR_GET_MSIE_PROXY "Non riesco ad utilizzare la configurazione di MSIE per il proxy."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor fallito."
@@ -200,17 +198,17 @@ BEGIN
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread fallito per visualizzare lo stato."
     IDS_NFO_STATE_WAIT_TERM "Stato corrente: In attesa che OpenVPN termini..."
     IDS_NFO_STATE_CONNECTED "Stato corrente: Connesso"
-    IDS_NFO_NOW_CONNECTED "%s è ora connesso."
+    IDS_NFO_NOW_CONNECTED "%s Ã¨ ora connesso."
     IDS_NFO_ASSIGN_IP "IP asseganto: %s"
-    IDS_ERR_CERT_EXPIRED "Non riesco a connettermi perché il tuo certificato è scaduto o l'orologio di sistema non è corretto."
-    IDS_ERR_CERT_NOT_YET_VALID "Non riesco a connettermi perché il tuo certificato non è ancora valido. Assicurati che l'orologio di sistema sia corretto."
+    IDS_ERR_CERT_EXPIRED "Non riesco a connettermi perchÃ© il tuo certificato Ã¨ scaduto o l'orologio di sistema non Ã¨ corretto."
+    IDS_ERR_CERT_NOT_YET_VALID "Non riesco a connettermi perchÃ© il tuo certificato non Ã¨ ancora valido. Assicurati che l'orologio di sistema sia corretto."
     IDS_NFO_STATE_RECONNECTING "Stato corrente: Riconnessione in corso"
     IDS_NFO_STATE_DISCONNECTED "Stato corrente: Disconnesso"
-    IDS_NFO_CONN_TERMINATED "La connessione a %s è terminata."
+    IDS_NFO_CONN_TERMINATED "La connessione a %s Ã¨ terminata."
     IDS_NFO_STATE_FAILED "Stato corrente: Connessione fallita"
-    IDS_NFO_CONN_FAILED "La connessione a %s è fallita."
+    IDS_NFO_CONN_FAILED "La connessione a %s Ã¨ fallita."
     IDS_NFO_STATE_FAILED_RECONN "Stato corrente: Riconnessione fallita"
-    IDS_NFO_RECONN_FAILED "La riconnessione a %s è fallita."
+    IDS_NFO_RECONN_FAILED "La riconnessione a %s Ã¨ fallita."
     IDS_NFO_STATE_SUSPENDED "Stato corrente: Sospeso"
     IDS_ERR_READ_STDOUT_PIPE "Errore in lettura dalla OpenVPN StdOut Pipe."
     IDS_ERR_CREATE_EDIT_LOGWINDOW "Creazione RichEdit LogWindow Fallita!!"
@@ -225,20 +223,20 @@ BEGIN
     IDS_ERR_GET_EXIT_CODE "Errore nel ExitCode dello script di connessione (%s)"
     IDS_ERR_CONN_SCRIPT_FAILED "Fallito lo script di connessione. (exitcode=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Fallito lo script di connessione. TimeOut dopo %d sec."
-    IDS_ERR_CONFIG_EXIST "Esiste già un file di configurazione chiamato '%s'. Non puoi " \
+    IDS_ERR_CONFIG_EXIST "Esiste giÃ  un file di configurazione chiamato '%s'. Non puoi " \
                          "avere file di configurazioni con lo stesso nome, " \
                          "a meno che non risiedano in cartelle differenti."
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "Errore nell'apertura del file di debug (%s) per l'output."
     IDS_ERR_LOAD_RICHED20 "Non riesco a caricare RICHED20.DLL."
-    IDS_ERR_SHELL_DLL_VERSION "La versione del tuo shell32.dll è troppo bassa (0x%lx). Hai bisogno almeno della versione 5.0."
-    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI è già in funzione."
+    IDS_ERR_SHELL_DLL_VERSION "La versione del tuo shell32.dll Ã¨ troppo bassa (0x%lx). Hai bisogno almeno della versione 5.0."
+    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI Ã¨ giÃ  in funzione."
     IDS_NFO_SERVICE_STARTED "OpenVPN Service iniziato."
     IDS_NFO_SERVICE_STOPPED "OpenVPN Service arrestato."
     IDS_NFO_ACTIVE_CONN_EXIT "Ci sono ancora connessioni attive che verranno chiuse se esci da OpenVPN GUI." \
                              "\n\nSei sicuro di voler uscire?"
-    IDS_NFO_SERVICE_ACTIVE_EXIT "Al momento sei connesso (il servizio di OpenVPN è in funzione). " \
-                                "Rimarrai connesso finché non uscirai da OpenVPN GUI.\n\n" \
+    IDS_NFO_SERVICE_ACTIVE_EXIT "Al momento sei connesso (il servizio di OpenVPN Ã¨ in funzione). " \
+                                "Rimarrai connesso finchÃ© non uscirai da OpenVPN GUI.\n\n" \
                                 "Vuoi continuare e uscire da OpenVPN GUI?"
 
     /* options - Resources */
@@ -251,7 +249,7 @@ BEGIN
                   "--config_dir\t\t: Percorso per la cartella contenente i file di configurazione.\n" \
                   "--ext_string\t\t: Estensione sui file di configurazione.\n" \
                   "--log_dir\t\t\t: Percorso per la cartella dove salvare i file di log.\n" \
-                  "--priority_string\t\t: Riga di priorità (Vedi install.txt per i dettagli).\n" \
+                  "--priority_string\t\t: Riga di prioritÃ  (Vedi install.txt per i dettagli).\n" \
                   "--append_string\t\t: 1=Aggiungi al file di log. 0=Tronca il file di log quando connetti.\n" \
                   "--log_viewer\t\t: Percorso per il visualizzatore di log.\n" \
                   "--editor\t\t\t: Percorso per l'editor di configurazione.\n" \
@@ -260,13 +258,13 @@ BEGIN
                   "--allow_password\t\t: 1=Visualizza l'elemento Cambia Password nel menu.\n" \
                   "--allow_proxy\t\t: 1=Visualizza il menu di configurazione del Proxy.\n" \
                   "--show_balloon\t\t: 0=Mai, 1=Alla connessione iniziale, 2=Ad ogni riconnessione.\n" \
-                  "--service_only\t\t: 1=Abilita la modalità Service Only.\n" \
+                  "--service_only\t\t: 1=Abilita la modalitÃ  Service Only.\n" \
                   "--silent_connection\t\t: 1=Non mostrare la finestra di stato mentre connette.\n" \
                   "--show_script_window\t: 0=Nascondi la finestra di esecuzione dello script, 1=Mostrala.\n" \
                   "--passphrase_attempts\t: Numero di tentativi concessi per la frase di sicurezza.\n" \
-                  "--connectscript_timeout\t: Tempo d'attesa affinché lo script di connessione finisca.\n" \
-                  "--disconnectscript_timeout\t: Tempo d'attesa affinché lo script di disconnessione finisca.\n" \
-                  "--preconnectscript_timeout\t: Tempo d'attesa affinché lo script di preconnessione finisca.\n"
+                  "--connectscript_timeout\t: Tempo d'attesa affinchÃ© lo script di connessione finisca.\n" \
+                  "--disconnectscript_timeout\t: Tempo d'attesa affinchÃ© lo script di disconnessione finisca.\n" \
+                  "--preconnectscript_timeout\t: Tempo d'attesa affinchÃ© lo script di preconnessione finisca.\n"
 
     IDS_NFO_USAGECAPTION "Utilizzo di OpenVPN GUI"
     IDS_ERR_BAD_PARAMETER "Sto tentando di analizzare ""%s"" come un parametro --option " \
@@ -275,25 +273,25 @@ BEGIN
                        "Usa openvpn-gui --help per maggiori informazioni."
 
     /* passphrase - Resources */
-    IDS_ERR_CREATE_PASS_THREAD "CreateThread visualizza la finestra ChangePassphrase è fallito."
+    IDS_ERR_CREATE_PASS_THREAD "CreateThread visualizza la finestra ChangePassphrase Ã¨ fallito."
     IDS_NFO_CHANGE_PWD "Cambia Password (%s)"
     IDS_ERR_PWD_DONT_MATCH "La password che hai digitato non corrisponde. Riprova."
     IDS_ERR_PWD_TO_SHORT "La tua nuova password deve essere lunga almeno %d caratteri."
     IDS_NFO_EMPTY_PWD "Sei sicuro di voler lasciare in bianco la password?"
     IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Formato di chiave sconosciuto."
     IDS_ERR_OPEN_PRIVATE_KEY_FILE "Errore nell'apertura del file di chiave privata (%s)."
-    IDS_ERR_OLD_PWD_INCORRECT "La vecchia password è errata."
+    IDS_ERR_OLD_PWD_INCORRECT "La vecchia password Ã¨ errata."
     IDS_ERR_OPEN_WRITE_KEY "Errore nell'apertura in scrittura del file di chiave privata (%s)."
     IDS_ERR_WRITE_NEW_KEY "Errore nella scrittura del file della nuova chiave privata (%s)."
-    IDS_NFO_PWD_CHANGED "La tua password è stata modificata."
+    IDS_NFO_PWD_CHANGED "La tua password Ã¨ stata modificata."
     IDS_ERR_READ_PKCS12 "Errore nella lettura del PKCS #12 file (%s)."
-    IDS_ERR_CREATE_PKCS12 "Errore nella creazione del nuovo PKCS #12 oggetto. La modifica della password è fallita."
+    IDS_ERR_CREATE_PKCS12 "Errore nella creazione del nuovo PKCS #12 oggetto. La modifica della password Ã¨ fallita."
     IDS_ERR_OPEN_CONFIG "Non posso aprire in lettura il file di configurazione: (%s)"
-    IDS_ERR_ONLY_ONE_KEY_OPTION "Non puoi avere più di una opzione ""key"" nella tua configurazione."
+    IDS_ERR_ONLY_ONE_KEY_OPTION "Non puoi avere piÃ¹ di una opzione ""key"" nella tua configurazione."
     IDS_ERR_ONLY_KEY_OR_PKCS12 "Non puoi avere entrambe le opzioni ""key"" e ""pkcs12"" nella tua configurazione."
-    IDS_ERR_ONLY_ONE_PKCS12_OPTION "Non puoi avere più di una opzione ""pkcs12"" nella tua configurazione."
-    IDS_ERR_HAVE_KEY_OR_PKCS12 "Il tuo file di configurazione non può contenere alcuna opzione ""key"" o ""pkcs12""."
-    IDS_ERR_KEY_FILENAME_TO_LONG "Il tuo nome del file della chiave è troppo lungo!"
+    IDS_ERR_ONLY_ONE_PKCS12_OPTION "Non puoi avere piÃ¹ di una opzione ""pkcs12"" nella tua configurazione."
+    IDS_ERR_HAVE_KEY_OR_PKCS12 "Il tuo file di configurazione non puÃ² contenere alcuna opzione ""key"" o ""pkcs12""."
+    IDS_ERR_KEY_FILENAME_TO_LONG "Il tuo nome del file della chiave Ã¨ troppo lungo!"
     IDS_ERR_PASSPHRASE2STDIN "Errore nel trasmettere la frase di sicurezza a stdin."
     IDS_ERR_AUTH_USERNAME2STDIN "Errore nel trasmettere il nome utente a stdin."
     IDS_ERR_AUTH_PASSWORD2STDIN "Errore nel trasmettere la password a stdin."
@@ -328,7 +326,7 @@ BEGIN
     IDS_ERR_GET_WINDOWS_DIR "Errore nell'ottenere la cartella di Windows."
     IDS_ERR_GET_PROGRAM_DIR "Errore nell'ottenere la cartella ""Program""."
     IDS_ERR_OPEN_REGISTRY "Errore nell'apertura del registro in lettura (HKLM\\SOFTWARE\\OpenVPN).\n " \
-                          "OpenVPN probabilmente non è installato"
+                          "OpenVPN probabilmente non Ã¨ installato"
     IDS_ERR_READING_REGISTRY "Errore nella lettura del valore di registro (HKLM\\SOFTWARE\\OpenVPN)."
     IDS_ERR_PASSPHRASE_ATTEMPTS "Il valore di registro ""passphrase_attempts"" deve essere un numero tra 1 e 9."
     IDS_ERR_CONN_SCRIPT_TIMEOUT "Il valore di registro ""connectscript_timeout""deve essere un numero tra 0 and 99."

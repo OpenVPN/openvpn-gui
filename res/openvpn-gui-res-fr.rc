@@ -19,8 +19,6 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#pragma code_page(1252)
-
 /* About Dialog */
 ID_DLG_ABOUT DIALOG 0, 0, 260, 135
 STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
@@ -33,9 +31,9 @@ BEGIN
     LTEXT "OpenVPN GUI v" PACKAGE_VERSION " - A Windows GUI for OpenVPN", 101, 40, 5, 215, 8
     LTEXT "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>", 102, 40, 15, 215, 8
     LTEXT "http://openvpn.se/", 103, 40, 25, 215, 8
-    LTEXT "OpenVPN - Une application permettant d'ouvrir un tunnel IP sécurisé " \
+    LTEXT "OpenVPN - Une application permettant d'ouvrir un tunnel IP sÃ©curisÃ© " \
           "sur un simple port UDP avec un support SSL/TLS pour l'authentification de " \
-          "session, échange de clés, cryptage de paquets, authentification des " \
+          "session, Ã©change de clÃ©s, cryptage de paquets, authentification des " \
           "paquets, et compression de paquets.", 104, 11, 43, 235, 34
     LTEXT "Copyright (C) 2002-2005 OpenVPN Solutions LLC <info@openvpn.net>", 105, 11, 87, 235, 11
     LTEXT "http://openvpn.net/", 106, 11, 98, 235, 10
@@ -78,7 +76,7 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FRENCH, SUBLANG_NEUTRAL
 BEGIN
     LTEXT "Connexion...", ID_TXT_STATUS, 20, 5, 200, 10
-    PUSHBUTTON "Déconnecter", ID_DISCONNECT, 50, 190, 50, 14
+    PUSHBUTTON "DÃ©connecter", ID_DISCONNECT, 50, 190, 50, 14
     PUSHBUTTON "Reconnecter", ID_RESTART, 150, 190, 50, 14
     PUSHBUTTON "Fermer", ID_HIDE, 100, 190, 50, 14
 END
@@ -126,7 +124,7 @@ END
 /* General Settings Dialog */
 ID_DLG_GENERAL DIALOGEX 6, 18, 249, 104
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "Général"
+CAPTION "GÃ©nÃ©ral"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FRENCH, SUBLANG_NEUTRAL
 BEGIN
@@ -152,191 +150,191 @@ END
 STRINGTABLE
 LANGUAGE LANG_FRENCH, SUBLANG_NEUTRAL
 BEGIN
-    IDS_LANGUAGE_NAME "Français - French"
+    IDS_LANGUAGE_NAME "FranÃ§ais - French"
 
     /* Tray - Resources */
     IDS_TIP_DEFAULT "OpenVPN GUI "
-    IDS_TIP_CONNECTED "\nConnecté à: "
-    IDS_TIP_CONNECTING "\nConnexion à: "
-    IDS_TIP_CONNECTED_SINCE "\nConnecté depuis: "
-    IDS_TIP_ASSIGNED_IP "\nAdresse IP assignée: %s"
+    IDS_TIP_CONNECTED "\nConnectÃ© Ã : "
+    IDS_TIP_CONNECTING "\nConnexion Ã : "
+    IDS_TIP_CONNECTED_SINCE "\nConnectÃ© depuis: "
+    IDS_TIP_ASSIGNED_IP "\nAdresse IP assignÃ©e: %s"
     IDS_MENU_SERVICE "OpenVPN Service"
     IDS_MENU_SETTINGS "Configuration..."
     IDS_MENU_ABOUT "A Propos..."
     IDS_MENU_CLOSE "Quitter"
     IDS_MENU_CONNECT "Connecter"
-    IDS_MENU_DISCONNECT "Déconnecter"
+    IDS_MENU_DISCONNECT "DÃ©connecter"
     IDS_MENU_STATUS "Afficher le statut"
     IDS_MENU_VIEWLOG "Voir le log"
     IDS_MENU_EDITCONFIG "Editer la configuration"
     IDS_MENU_PASSPHRASE "Changer le Mot de passe"
-    IDS_MENU_SERVICE_START "Démarrer"
-    IDS_MENU_SERVICE_STOP "Arrêter"
-    IDS_MENU_SERVICE_RESTART "Redémarrer"
+    IDS_MENU_SERVICE_START "DÃ©marrer"
+    IDS_MENU_SERVICE_STOP "ArrÃªter"
+    IDS_MENU_SERVICE_RESTART "RedÃ©marrer"
     IDS_MENU_SERVICEONLY_START "Connecter"
-    IDS_MENU_SERVICEONLY_STOP "Déconnecter"
+    IDS_MENU_SERVICEONLY_STOP "DÃ©connecter"
     IDS_MENU_SERVICEONLY_RESTART "Reconnecter"
-    IDS_MENU_ASK_STOP_SERVICE "Voulez-vous vous déconnecter (arrêter le service OpenVPN) ?"
+    IDS_MENU_ASK_STOP_SERVICE "Voulez-vous vous dÃ©connecter (arrÃªter le service OpenVPN) ?"
 
     /* Logviewer - Resources */
-    IDS_ERR_START_LOG_VIEWER "Erreur au démarrage de l'afficheur de log: %s"
-    IDS_ERR_START_CONF_EDITOR "Erreur au démarrage de l'éditeur de la configuration: %s"
+    IDS_ERR_START_LOG_VIEWER "Erreur au dÃ©marrage de l'afficheur de log: %s"
+    IDS_ERR_START_CONF_EDITOR "Erreur au dÃ©marrage de l'Ã©diteur de la configuration: %s"
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI ne permet pas plus de %d configurations. Contacter l'auteur si vous en avez besoin de plus."
-    IDS_ERR_ONE_CONN_OLD_VER "Vous ne pouvez avoir qu'une connexion en même temps si vous utilisez une version d'OpenVPN plus ancienne que la 2.0-beta6."
-    IDS_ERR_STOP_SERV_OLD_VER "Vous ne pouvez utiliser OpenVPN GUI pour ouvrir une connexion lorsque que le service OpenVPN est actif (avec OpenVPN 1.5/1.6). Arrêtez le service OpenVPN si vous voulez utiliser OpenVPN GUI."
-    IDS_ERR_CREATE_EVENT "CreateEvent échoué à la terminaison. Code d'événnement: %s"
-    IDS_ERR_UNKNOWN_PRIORITY "Nom de priorité inconnu: %s"
-    IDS_ERR_LOG_APPEND_BOOL "L'indicateur de log incrémenté (donné par '%s') doit être '0' ou '1'"
+    IDS_ERR_ONE_CONN_OLD_VER "Vous ne pouvez avoir qu'une connexion en mÃªme temps si vous utilisez une version d'OpenVPN plus ancienne que la 2.0-beta6."
+    IDS_ERR_STOP_SERV_OLD_VER "Vous ne pouvez utiliser OpenVPN GUI pour ouvrir une connexion lorsque que le service OpenVPN est actif (avec OpenVPN 1.5/1.6). ArrÃªtez le service OpenVPN si vous voulez utiliser OpenVPN GUI."
+    IDS_ERR_CREATE_EVENT "CreateEvent Ã©chouÃ© Ã  la terminaison. Code d'Ã©vÃ©nnement: %s"
+    IDS_ERR_UNKNOWN_PRIORITY "Nom de prioritÃ© inconnu: %s"
+    IDS_ERR_LOG_APPEND_BOOL "L'indicateur de log incrÃ©mentÃ© (donnÃ© par '%s') doit Ãªtre '0' ou '1'"
     IDS_ERR_GET_MSIE_PROXY "Impossible d'obtenir la configuration Proxy d'IE parce que."
-    IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor échoué."
-    IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl échoué."
-    IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe sur hOutputWrite échoué."
-    IDS_ERR_CREATE_PIPE_INPUT "CreatePipe sur hInputRead échoué."
-    IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle sur hOutputRead échoué."
-    IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle sur hInputWrite échoué."
-    IDS_ERR_CREATE_PROCESS "CreateProcess échoué, exe='%s' cmdline='%s' dir='%s'"
-    IDS_ERR_CREATE_THREAD_STATUS "CreateThread échoué pour afficher la fenêtre de statut."
+    IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor Ã©chouÃ©."
+    IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl Ã©chouÃ©."
+    IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe sur hOutputWrite Ã©chouÃ©."
+    IDS_ERR_CREATE_PIPE_INPUT "CreatePipe sur hInputRead Ã©chouÃ©."
+    IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle sur hOutputRead Ã©chouÃ©."
+    IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle sur hInputWrite Ã©chouÃ©."
+    IDS_ERR_CREATE_PROCESS "CreateProcess Ã©chouÃ©, exe='%s' cmdline='%s' dir='%s'"
+    IDS_ERR_CREATE_THREAD_STATUS "CreateThread Ã©chouÃ© pour afficher la fenÃªtre de statut."
     IDS_NFO_STATE_WAIT_TERM "Etat actuel: Attente que OpenVPN se termine..."
-    IDS_NFO_STATE_CONNECTED "Etat actuel: Connecté"
-    IDS_NFO_NOW_CONNECTED "%s est désormais connecté."
-    IDS_NFO_ASSIGN_IP "Adresse IP assignée: %s"
-    IDS_ERR_CERT_EXPIRED "Connexion impossible car votre certificat a expiré ou la date de votre système est incorrecte."
-    IDS_ERR_CERT_NOT_YET_VALID "Connexion impossible car votre certificat n'est plus valide. Véfifiez que la date de votre système est correcte."
+    IDS_NFO_STATE_CONNECTED "Etat actuel: ConnectÃ©"
+    IDS_NFO_NOW_CONNECTED "%s est dÃ©sormais connectÃ©."
+    IDS_NFO_ASSIGN_IP "Adresse IP assignÃ©e: %s"
+    IDS_ERR_CERT_EXPIRED "Connexion impossible car votre certificat a expirÃ© ou la date de votre systÃ¨me est incorrecte."
+    IDS_ERR_CERT_NOT_YET_VALID "Connexion impossible car votre certificat n'est plus valide. VÃ©fifiez que la date de votre systÃ¨me est correcte."
     IDS_NFO_STATE_RECONNECTING "Etat actuel: Reconnexion"
-    IDS_NFO_STATE_DISCONNECTED "Etat actuel: Deconnecté"
-    IDS_NFO_CONN_TERMINATED "La Connexion à %s était terminée."
-    IDS_NFO_STATE_FAILED "Etat actuel: connexion échouée"
-    IDS_NFO_CONN_FAILED "La Connexion à %s a échouée."
-    IDS_NFO_STATE_FAILED_RECONN "Etat actuel: Reconnexion échouée"
-    IDS_NFO_RECONN_FAILED "La Reconnexion à %s a échouée."
+    IDS_NFO_STATE_DISCONNECTED "Etat actuel: DeconnectÃ©"
+    IDS_NFO_CONN_TERMINATED "La Connexion Ã  %s Ã©tait terminÃ©e."
+    IDS_NFO_STATE_FAILED "Etat actuel: connexion Ã©chouÃ©e"
+    IDS_NFO_CONN_FAILED "La Connexion Ã  %s a Ã©chouÃ©e."
+    IDS_NFO_STATE_FAILED_RECONN "Etat actuel: Reconnexion Ã©chouÃ©e"
+    IDS_NFO_RECONN_FAILED "La Reconnexion Ã  %s a Ã©chouÃ©e."
     IDS_NFO_STATE_SUSPENDED "Etat actuel: Suspendu"
     IDS_ERR_READ_STDOUT_PIPE "Erreur lors de la lecture d'OpenVPN StdOut Pipe."
-    IDS_ERR_CREATE_EDIT_LOGWINDOW "Creating RichEdit LogWindow échoué !"
-    IDS_ERR_SET_SIZE "Set Size échoué !"
-    IDS_ERR_AUTOSTART_CONF "Impossible de trouver la configuration pour démarrer automatiquement: %s"
-    IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe sur hInputRead échoué."
+    IDS_ERR_CREATE_EDIT_LOGWINDOW "Creating RichEdit LogWindow Ã©chouÃ© !"
+    IDS_ERR_SET_SIZE "Set Size Ã©chouÃ© !"
+    IDS_ERR_AUTOSTART_CONF "Impossible de trouver la configuration pour dÃ©marrer automatiquement: %s"
+    IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe sur hInputRead Ã©chouÃ©."
     IDS_NFO_STATE_CONNECTING "Etat actuel: En cours de connexion"
     IDS_NFO_CONNECTION_XXX "Connexion OpenVPN (%s)"
-    IDS_NFO_STATE_CONN_SCRIPT "Etat actuel: Exécution du script de connexion"
-    IDS_NFO_STATE_DISCONN_SCRIPT "Etat actuel: Exécution du script de déconnexion"
-    IDS_ERR_RUN_CONN_SCRIPT "Erreur d'exécution du script de connexion: %s"
+    IDS_NFO_STATE_CONN_SCRIPT "Etat actuel: ExÃ©cution du script de connexion"
+    IDS_NFO_STATE_DISCONN_SCRIPT "Etat actuel: ExÃ©cution du script de dÃ©connexion"
+    IDS_ERR_RUN_CONN_SCRIPT "Erreur d'exÃ©cution du script de connexion: %s"
     IDS_ERR_GET_EXIT_CODE "Impossible d'obtenir l'ExitCode du script de connexion (%s)"
-    IDS_ERR_CONN_SCRIPT_FAILED "Le script de connexion à échoué. (code de sortie=%ld)"
-    IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Le script de connexion à échoué. TimeOut après %d sec."
-    IDS_ERR_CONFIG_EXIST "Il éxiste déjà un fichier de configuration nommé '%s'. Vous ne pouvez " \
-                         "pas avoir différentes configurations avec le même nom même s'ils " \
-                         "ont placés dans un répertoire différent."
+    IDS_ERR_CONN_SCRIPT_FAILED "Le script de connexion Ã  Ã©chouÃ©. (code de sortie=%ld)"
+    IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Le script de connexion Ã  Ã©chouÃ©. TimeOut aprÃ¨s %d sec."
+    IDS_ERR_CONFIG_EXIST "Il Ã©xiste dÃ©jÃ  un fichier de configuration nommÃ© '%s'. Vous ne pouvez " \
+                         "pas avoir diffÃ©rentes configurations avec le mÃªme nom mÃªme s'ils " \
+                         "ont placÃ©s dans un rÃ©pertoire diffÃ©rent."
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "Erreur d'ouverture du fichier de debug (%s) pour output."
     IDS_ERR_LOAD_RICHED20 "Impossible de charger RICHED20.DLL."
     IDS_ERR_SHELL_DLL_VERSION "La version de votre shell32.dll est trop basse (0x%lx). Vous devez avoir au moins la version 5.0."
-    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI est déjà ouvert."
-    IDS_NFO_SERVICE_STARTED "Service OpenVPN démarré."
-    IDS_NFO_SERVICE_STOPPED "Service OpenVPN arreté."
+    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI est dÃ©jÃ  ouvert."
+    IDS_NFO_SERVICE_STARTED "Service OpenVPN dÃ©marrÃ©."
+    IDS_NFO_SERVICE_STOPPED "Service OpenVPN arretÃ©."
     IDS_NFO_ACTIVE_CONN_EXIT "Les connexions en cours seront interrompues si vous fermez OpenVPN GUI." \
-                             "\n\nVous êtes sûr de vouloir fermer l'application ?"
-    IDS_NFO_SERVICE_ACTIVE_EXIT "Vous êtes actuellement connecté (Le service OpenVPN est actif). " \
-                                "Vous restez connecté même si vous terminez l'OpenVPN GUI.\n\n" \
+                             "\n\nVous Ãªtes sÃ»r de vouloir fermer l'application ?"
+    IDS_NFO_SERVICE_ACTIVE_EXIT "Vous Ãªtes actuellement connectÃ© (Le service OpenVPN est actif). " \
+                                "Vous restez connectÃ© mÃªme si vous terminez l'OpenVPN GUI.\n\n" \
                                 "Voulez-vous continuer et fermer l'OpenVPN GUI ?"
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Afficher ce message.\n" \
-                  "--connect cnn \t\t: Connecte à ""cnn"" au démarrage. (l'extension doit être incluse)\n" \
+                  "--connect cnn \t\t: Connecte Ã  ""cnn"" au dÃ©marrage. (l'extension doit Ãªtre incluse)\n" \
                   "\t\t\t   Exemple: openvpn-gui --connect office.ovpn\n" \
                   "\n" \
                   "Options pour corriger la configuration de registre:\n" \
                   "--exe_path\t\t: Chemin vers openvpn.exe.\n" \
-                  "--config_dir\t\t: Chemin du répertoire contenant les fichiers de la configuration.\n" \
+                  "--config_dir\t\t: Chemin du rÃ©pertoire contenant les fichiers de la configuration.\n" \
                   "--ext_string\t\t: Extension dans le fichier de la configuration.\n" \
-                  "--log_dir\t\t\t: Chemin du répertoire ou sont sauvegardés les fichiers de log.\n" \
-                  "--priority_string\t\t: Valeur de priorité (Voir install.txt pour plus d'info).\n" \
-                  "--append_string\t\t: 1=Ajouter au fichier de log. 0=Tronquer le fichier de log à la connexion.\n" \
+                  "--log_dir\t\t\t: Chemin du rÃ©pertoire ou sont sauvegardÃ©s les fichiers de log.\n" \
+                  "--priority_string\t\t: Valeur de prioritÃ© (Voir install.txt pour plus d'info).\n" \
+                  "--append_string\t\t: 1=Ajouter au fichier de log. 0=Tronquer le fichier de log Ã  la connexion.\n" \
                   "--log_viewer\t\t: Chemin vers l'afficheur de log.\n" \
-                  "--editor\t\t\t: Chemin vers l'éditeur de la configuration.\n" \
-                  "--allow_edit\t\t: 1=Afficher le menu de la configuration pour l'élément.\n" \
+                  "--editor\t\t\t: Chemin vers l'Ã©diteur de la configuration.\n" \
+                  "--allow_edit\t\t: 1=Afficher le menu de la configuration pour l'Ã©lÃ©ment.\n" \
                   "--allow_service\t\t: 1=Afficher le menu Services.\n" \
                   "--allow_password\t\t: 1=Afficher le menu de Changement de Mot de passe.\n" \
                   "--allow_proxy\t\t: 1=Afficher le menu de la configuration du Proxy.\n" \
                   "--show_balloon\t\t: 0=Jamais, 1=A la connexion initiale, 2=A toutes les reconnexions.\n" \
                   "--service_only\t\t: 1=Activer le mode Service seul Enable.\n" \
-                  "--silent_connection\t\t: 1=Ne pas ouvrir le dialogue de Statut à la connexion.\n" \
-                  "--show_script_window\t: 0=Cacher la fenêtre d'exécution du script, 1=Afficher la fenêtre.\n" \
+                  "--silent_connection\t\t: 1=Ne pas ouvrir le dialogue de Statut Ã  la connexion.\n" \
+                  "--show_script_window\t: 0=Cacher la fenÃªtre d'exÃ©cution du script, 1=Afficher la fenÃªtre.\n" \
                   "--passphrase_attempts\t: Nombre de tentatives de Mot de passe permises.\n" \
                   "--connectscript_timeout\t: Temps d'attente de terminaison du script.\n" \
-                  "--disconnectscript_timeout\t: Temps d'attente de terminaison du script de déconnexion.\n" \
-                  "--preconnectscript_timeout\t: Temps d'attente de terminaison du script de pré-connexion.\n"
+                  "--disconnectscript_timeout\t: Temps d'attente de terminaison du script de dÃ©connexion.\n" \
+                  "--preconnectscript_timeout\t: Temps d'attente de terminaison du script de prÃ©-connexion.\n"
 
     IDS_NFO_USAGECAPTION "Usage OpenVPN GUI"
-    IDS_ERR_BAD_PARAMETER "J'essaie de décoder ""%s"" comme un --option parameter " \
+    IDS_ERR_BAD_PARAMETER "J'essaie de dÃ©coder ""%s"" comme un --option parameter " \
                           "mais je ne vois pas de correspondance '--'"
     IDS_ERR_BAD_OPTION "Erreur d'Options: Option(s) ou paramettre(s) manquant(s): --%s\n" \
                        "Utiliser openvpn-gui --help pour plus d'informations."
 
     /* passphrase - Resources */
-    IDS_ERR_CREATE_PASS_THREAD "CreateThread pour afficher la dialogue ChangePassphrase échoué."
+    IDS_ERR_CREATE_PASS_THREAD "CreateThread pour afficher la dialogue ChangePassphrase Ã©chouÃ©."
     IDS_NFO_CHANGE_PWD "Modification du Mot de passe (%s)"
-    IDS_ERR_PWD_DONT_MATCH "Les Mots de passe que vous avez tappé ne correspondent pas, essayez encore."
-    IDS_ERR_PWD_TO_SHORT "Le Mot de passe que vous avez tappé doit avoir au moins %d caractères."
-    IDS_NFO_EMPTY_PWD "Vous êtes sûr de définir un Mot de passe VIDE ?"
-    IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Format du fichier de clé inconnu."
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Erreur à l'ouverture de la clé privée (%s)."
+    IDS_ERR_PWD_DONT_MATCH "Les Mots de passe que vous avez tappÃ© ne correspondent pas, essayez encore."
+    IDS_ERR_PWD_TO_SHORT "Le Mot de passe que vous avez tappÃ© doit avoir au moins %d caractÃ¨res."
+    IDS_NFO_EMPTY_PWD "Vous Ãªtes sÃ»r de dÃ©finir un Mot de passe VIDE ?"
+    IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Format du fichier de clÃ© inconnu."
+    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Erreur Ã  l'ouverture de la clÃ© privÃ©e (%s)."
     IDS_ERR_OLD_PWD_INCORRECT "L'ancien Mot de passe est incorrect."
-    IDS_ERR_OPEN_WRITE_KEY "Erreur d'ouverture du fichier de clé privé pour écriture (%s)."
-    IDS_ERR_WRITE_NEW_KEY "Erreur d'écriture du fichier de clé privé (%s)."
-    IDS_NFO_PWD_CHANGED "Votre Mot de passe a été modifié."
+    IDS_ERR_OPEN_WRITE_KEY "Erreur d'ouverture du fichier de clÃ© privÃ© pour Ã©criture (%s)."
+    IDS_ERR_WRITE_NEW_KEY "Erreur d'Ã©criture du fichier de clÃ© privÃ© (%s)."
+    IDS_NFO_PWD_CHANGED "Votre Mot de passe a Ã©tÃ© modifiÃ©."
     IDS_ERR_READ_PKCS12 "Erreur de lecture du fichier PKCS #12 X509 (%s)."
-    IDS_ERR_CREATE_PKCS12 "Erreur de création du nouveau fichier PKCS #12 X509. La modification du Mot de passe a échouée."
+    IDS_ERR_CREATE_PKCS12 "Erreur de crÃ©ation du nouveau fichier PKCS #12 X509. La modification du Mot de passe a Ã©chouÃ©e."
     IDS_ERR_OPEN_CONFIG "Impossible d'ouvrir le fichier de la configuration en mode de lecture: (%s)"
     IDS_ERR_ONLY_ONE_KEY_OPTION "Vous ne pouvez pas avoir plus d'une option ""key"" dans votre fichier de configuration."
-    IDS_ERR_ONLY_KEY_OR_PKCS12 "Vous ne pouvez pas avoir à la fois les options ""key"" et ""pkcs12"" dans votre configuration."
+    IDS_ERR_ONLY_KEY_OR_PKCS12 "Vous ne pouvez pas avoir Ã  la fois les options ""key"" et ""pkcs12"" dans votre configuration."
     IDS_ERR_ONLY_ONE_PKCS12_OPTION "Vous ne pouvez pas avoir plus d'une option ""pkcs12"" dans votre configuration."
     IDS_ERR_HAVE_KEY_OR_PKCS12 "Votre fichier de configuration ne contient aucune option ""key"" ou ""pkcs12""."
-    IDS_ERR_KEY_FILENAME_TO_LONG "Le nom de votre fichier clé est trop long !"
+    IDS_ERR_KEY_FILENAME_TO_LONG "Le nom de votre fichier clÃ© est trop long !"
     IDS_ERR_PASSPHRASE2STDIN "Erreur d'envoi du Mot de passe vers stdin."
     IDS_ERR_AUTH_USERNAME2STDIN "Erreur d'envoi d'authentification du nom d'utilisateur vers stdin."
     IDS_ERR_AUTH_PASSWORD2STDIN "Erreur d'envoi d'authentification du Mot de passe vers stdin."
     IDS_ERR_CR2STDIN "Erreur d'envoi du CR vers stdin."
-    IDS_ERR_INVALID_CHARS_IN_PSW "Votre nouveau Mot de passe ne contient des caractères invalides. " \
+    IDS_ERR_INVALID_CHARS_IN_PSW "Votre nouveau Mot de passe ne contient des caractÃ¨res invalides. " \
                                  "Merci de choisir un autre."
 
     /* settings */
     IDS_SETTINGS_CAPTION "OpenVPN - Configuration"
 
     /* proxy */
-    IDS_ERR_HTTP_PROXY_ADDRESS "Vous devez spécifier une adresse Proxy HTTP."
-    IDS_ERR_HTTP_PROXY_PORT "Vous devez spécifier un port Proxy HTTP."
-    IDS_ERR_HTTP_PROXY_PORT_RANGE "Vous devez spécifier un port Proxy HTTP entre 1-65535"
-    IDS_ERR_SOCKS_PROXY_ADDRESS "Vous devez spécifier une adresse Proxy SOCKS."
-    IDS_ERR_SOCKS_PROXY_PORT "Vous devez spécifier un port Proxy SOCKS."
-    IDS_ERR_SOCKS_PROXY_PORT_RANGE "Vous devez spécifier un port SOCKS entre 1-65535"
-    IDS_ERR_CREATE_REG_HKCU_KEY "Erreur de création de la clé ""HKEY_CURRENT_USER\\%s""."
-    IDS_ERR_GET_TEMP_PATH "Erreur de détermination TempPath avec GetTempPath(). Utiliser ""C:\\"" à la place."
+    IDS_ERR_HTTP_PROXY_ADDRESS "Vous devez spÃ©cifier une adresse Proxy HTTP."
+    IDS_ERR_HTTP_PROXY_PORT "Vous devez spÃ©cifier un port Proxy HTTP."
+    IDS_ERR_HTTP_PROXY_PORT_RANGE "Vous devez spÃ©cifier un port Proxy HTTP entre 1-65535"
+    IDS_ERR_SOCKS_PROXY_ADDRESS "Vous devez spÃ©cifier une adresse Proxy SOCKS."
+    IDS_ERR_SOCKS_PROXY_PORT "Vous devez spÃ©cifier un port Proxy SOCKS."
+    IDS_ERR_SOCKS_PROXY_PORT_RANGE "Vous devez spÃ©cifier un port SOCKS entre 1-65535"
+    IDS_ERR_CREATE_REG_HKCU_KEY "Erreur de crÃ©ation de la clÃ© ""HKEY_CURRENT_USER\\%s""."
+    IDS_ERR_GET_TEMP_PATH "Erreur de dÃ©termination TempPath avec GetTempPath(). Utiliser ""C:\\"" Ã  la place."
 
     /* service */
-    IDS_ERR_OPEN_SCMGR_ADMIN "OpenSCManager échoué. Vous devez avoir les droits Administrateur pour démarrer un Service."
+    IDS_ERR_OPEN_SCMGR_ADMIN "OpenSCManager Ã©chouÃ©. Vous devez avoir les droits Administrateur pour dÃ©marrer un Service."
     IDS_ERR_OPEN_VPN_SERVICE "Impossible d'ouvrir ""OpenVPNService"""
-    IDS_ERR_START_SERVICE "Impossible de démarrer ""OpenVPNService"""
-    IDS_ERR_QUERY_SERVICE "Demande du statut de Service échoué."
-    IDS_ERR_SERVICE_START_FAILED "Impossible de démarrer le Service OpenVPN."
-    IDS_ERR_OPEN_SCMGR "OpenSCManager échoué (%d)"
+    IDS_ERR_START_SERVICE "Impossible de dÃ©marrer ""OpenVPNService"""
+    IDS_ERR_QUERY_SERVICE "Demande du statut de Service Ã©chouÃ©."
+    IDS_ERR_SERVICE_START_FAILED "Impossible de dÃ©marrer le Service OpenVPN."
+    IDS_ERR_OPEN_SCMGR "OpenSCManager Ã©chouÃ© (%d)"
     IDS_ERR_STOP_SERVICE "Impossible de terminer le Service OpenVPN"
-    IDS_NFO_RESTARTED "Service OpenVPN redémarré."
+    IDS_NFO_RESTARTED "Service OpenVPN redÃ©marrÃ©."
 
     /* registry */
-    IDS_ERR_GET_WINDOWS_DIR "Impossible d'obtenir le Répertoire Windows."
-    IDS_ERR_GET_PROGRAM_DIR "Impossible d'obtenir le nom du répertoire ""Program""."
+    IDS_ERR_GET_WINDOWS_DIR "Impossible d'obtenir le RÃ©pertoire Windows."
+    IDS_ERR_GET_PROGRAM_DIR "Impossible d'obtenir le nom du rÃ©pertoire ""Program""."
     IDS_ERR_OPEN_REGISTRY "Erreur d'ouverture du registre pour lecture (HKLM\\SOFTWARE\\OpenVPN).\n " \
-                          "OpenVPN n'est probablement pas installé."
+                          "OpenVPN n'est probablement pas installÃ©."
     IDS_ERR_READING_REGISTRY "Erreur de lecture du registre (HKLM\\SOFTWARE\\OpenVPN)."
-    IDS_ERR_PASSPHRASE_ATTEMPTS "La valeur du registre ""passphrase_attempts"" doit être un nombre entre 1 et 9."
-    IDS_ERR_CONN_SCRIPT_TIMEOUT "La valeur du registre ""connectscript_timeout"" doit être un nombre entre 0 et 99."
-    IDS_ERR_DISCONN_SCRIPT_TIMEOUT "La valeur du registre ""disconnectscript_timeout"" doit être un nombre entre 1 et 99."
-    IDS_ERR_PRECONN_SCRIPT_TIMEOUT "La valeur du registre ""preconnectscript_timeout"" doit être un nombre entre 1 et 99."
-    IDS_ERR_CREATE_REG_KEY "Erreur de création de la clé HKLM\\SOFTWARE\\OpenVPN-GUI."
-    IDS_ERR_OPEN_WRITE_REG "Impossible d'ouvrir le registre en mode écriture. Vous devez lancer cette application " \
-                           "en tant qu'Administrator pour mettre à jour la base de registre."
-    IDS_ERR_READ_SET_KEY "Impossible de lire et modifier la clé de registre ""%s""."
-    IDS_ERR_WRITE_REGVALUE "Impossible d'écrire la valeur de registre ""HKEY_CURRENT_USER\\%s\\%s""."
+    IDS_ERR_PASSPHRASE_ATTEMPTS "La valeur du registre ""passphrase_attempts"" doit Ãªtre un nombre entre 1 et 9."
+    IDS_ERR_CONN_SCRIPT_TIMEOUT "La valeur du registre ""connectscript_timeout"" doit Ãªtre un nombre entre 0 et 99."
+    IDS_ERR_DISCONN_SCRIPT_TIMEOUT "La valeur du registre ""disconnectscript_timeout"" doit Ãªtre un nombre entre 1 et 99."
+    IDS_ERR_PRECONN_SCRIPT_TIMEOUT "La valeur du registre ""preconnectscript_timeout"" doit Ãªtre un nombre entre 1 et 99."
+    IDS_ERR_CREATE_REG_KEY "Erreur de crÃ©ation de la clÃ© HKLM\\SOFTWARE\\OpenVPN-GUI."
+    IDS_ERR_OPEN_WRITE_REG "Impossible d'ouvrir le registre en mode Ã©criture. Vous devez lancer cette application " \
+                           "en tant qu'Administrator pour mettre Ã  jour la base de registre."
+    IDS_ERR_READ_SET_KEY "Impossible de lire et modifier la clÃ© de registre ""%s""."
+    IDS_ERR_WRITE_REGVALUE "Impossible d'Ã©crire la valeur de registre ""HKEY_CURRENT_USER\\%s\\%s""."
 END

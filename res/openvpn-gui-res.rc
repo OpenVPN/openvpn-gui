@@ -23,6 +23,9 @@
 #include "config.h"
 #include "openvpn-gui-res.h"
 
+/* Language resource files are UTF-8 encoded */
+#pragma code_page(65001)
+
 /* Manifest for XP visual styles */
 CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "openvpn-gui.manifest"
 

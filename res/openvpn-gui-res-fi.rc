@@ -3,7 +3,7 @@
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
  *                2009 Heiko Hund <heikoh@users.sf.net>
- *                2010 Samuli Sepp‰nen <samuli@openvpn.net>
+ *                2010 Samuli Sepp√§nen <samuli@openvpn.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,8 +21,6 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#pragma code_page(1252)
-
 /* About Dialog */
 ID_DLG_ABOUT DIALOG 0, 0, 260, 135
 STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
@@ -32,13 +30,13 @@ LANGUAGE LANG_FINNISH, SUBLANG_NEUTRAL
 BEGIN
     PUSHBUTTON "OK", IDOK, 99, 115, 63, 14
     ICON ID_ICO_CONNECTED, 204, 11, 8, 21, 20
-    LTEXT "OpenVPN GUI v" PACKAGE_VERSION " - Graafinen Windows-k‰yttˆliittym‰ OpenVPN:lle", 101, 40, 5, 215, 8
+    LTEXT "OpenVPN GUI v" PACKAGE_VERSION " - Graafinen Windows-k√§ytt√∂liittym√§ OpenVPN:lle", 101, 40, 5, 215, 8
     LTEXT "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>", 102, 40, 15, 215, 8
     LTEXT "http://openvpn.se/", 103, 40, 25, 215, 8
-    LTEXT "OpenVPN mahdollistaa IP-verkkojen yhdist‰misen toisiinsa " \
-          "suojatulla UDP-yhteydell‰. Se tukee mm. SSL/TLS" \
+    LTEXT "OpenVPN mahdollistaa IP-verkkojen yhdist√§misen toisiinsa " \
+          "suojatulla UDP-yhteydell√§. Se tukee mm. SSL/TLS" \
           "-pohjaista istuntojen todennusta ja avainten vaihtoa " \
-          "sek‰ pakettien salausta, todennusta ja pakkausta.",
+          "sek√§ pakettien salausta, todennusta ja pakkausta.",
           104, 11, 51, 235, 34
     LTEXT "Copyright (C) 2002-2005 OpenVPN Solutions LLC <info@openvpn.net>", 105, 11, 87, 235, 11
     LTEXT "http://openvpn.net/", 106, 11, 98, 235, 10
@@ -61,11 +59,11 @@ END
 /* Auth Username/Password Dialog */
 ID_DLG_AUTH DIALOG 6, 18, 160, 62
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
-CAPTION "OpenVPN - K‰ytt‰j‰n todennus"
+CAPTION "OpenVPN - K√§ytt√§j√§n todennus"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FINNISH, SUBLANG_NEUTRAL
 BEGIN
-    LTEXT "K‰ytt‰j‰nimi:", 0, 6, 9, 50, 10
+    LTEXT "K√§ytt√§j√§nimi:", 0, 6, 9, 50, 10
     LTEXT "Salasana:", 0, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
@@ -80,9 +78,9 @@ CAPTION "OpenVPN"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FINNISH, SUBLANG_NEUTRAL
 BEGIN
-    LTEXT "Yhdistet‰‰n...", ID_TXT_STATUS, 20, 5, 200, 10
+    LTEXT "Yhdistet√§√§n...", ID_TXT_STATUS, 20, 5, 200, 10
     PUSHBUTTON "Katkaise yhteys", ID_DISCONNECT, 50, 190, 50, 14
-    PUSHBUTTON "Yhdist‰ uudelleen", ID_RESTART, 150, 190, 50, 14
+    PUSHBUTTON "Yhdist√§ uudelleen", ID_RESTART, 150, 190, 50, 14
     PUSHBUTTON "Piilota", ID_HIDE, 100, 190, 50, 14
 END
 
@@ -108,18 +106,18 @@ END
 /* Proxy Settings Dialog */
 ID_DLG_PROXY DIALOG 6, 18, 249, 104
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "V‰lipalvelin"
+CAPTION "V√§lipalvelin"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FINNISH, SUBLANG_NEUTRAL
 BEGIN
     GROUPBOX "   ", 201, 6, 46, 235, 52
-    AUTORADIOBUTTON "K‰yt‰ asetustiedoston asetuksia", ID_RB_PROXY_OPENVPN, \
+    AUTORADIOBUTTON "K√§yt√§ asetustiedoston asetuksia", ID_RB_PROXY_OPENVPN, \
                     13, 16, 200, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "K‰yt‰ j‰rjestelm‰n v‰lipalvelinasetuksia", \
+    AUTORADIOBUTTON "K√§yt√§ j√§rjestelm√§n v√§lipalvelinasetuksia", \
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
-    AUTORADIOBUTTON "M‰‰rit‰ asetukset itse", ID_RB_PROXY_MANUAL, 13, 46, 84, 10
-    AUTORADIOBUTTON "HTTP-v‰lipalvelin", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "SOCKS-v‰lipalvelin", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
+    AUTORADIOBUTTON "M√§√§rit√§ asetukset itse", ID_RB_PROXY_MANUAL, 13, 46, 84, 10
+    AUTORADIOBUTTON "HTTP-v√§lipalvelin", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "SOCKS-v√§lipalvelin", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
     LTEXT "Osoite:", ID_TXT_PROXY_ADDRESS, 20, 77, 25, 10
     RTEXT "Portti:", ID_TXT_PROXY_PORT, 171, 77, 20, 10
     EDITTEXT ID_EDT_PROXY_ADDRESS, 46, 75, 120, 12, ES_AUTOHSCROLL
@@ -133,7 +131,7 @@ CAPTION "Yleiset asetukset"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FINNISH, SUBLANG_NEUTRAL
 BEGIN
-    GROUPBOX "K‰yttˆliittym‰", 201, 6, 12, 235, 30
+    GROUPBOX "K√§ytt√∂liittym√§", 201, 6, 12, 235, 30
     LTEXT "Kieli:", ID_TXT_LANGUAGE, 17, 25, 36, 12
     COMBOBOX ID_CMB_LANGUAGE, 37, 23, 191, 400, CBS_DROPDOWNLIST | WS_TABSTOP
 END
@@ -141,11 +139,11 @@ END
 /* Proxy Authentication Dialog */
 ID_DLG_PROXY_AUTH DIALOG 29, 23, 154, 65
 STYLE DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER
-CAPTION "OpenVPN - V‰lipalvelimen todennusasetukset"
+CAPTION "OpenVPN - V√§lipalvelimen todennusasetukset"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FINNISH, SUBLANG_NEUTRAL
 BEGIN
-    LTEXT "K‰ytt‰j‰nimi:", 201, 9, 8, 42, 10
+    LTEXT "K√§ytt√§j√§nimi:", 201, 9, 8, 42, 10
     EDITTEXT ID_EDT_PROXY_USER, 52, 5, 91, 12, ES_AUTOHSCROLL
     LTEXT "Salasana:", 202, 9, 26, 38, 10
     EDITTEXT ID_EDT_PROXY_PASS, 52, 23, 91, 12, ES_PASSWORD | ES_AUTOHSCROLL
@@ -160,39 +158,39 @@ BEGIN
     /* Tray - Resources */
     IDS_TIP_DEFAULT "OpenVPN GUI"
     IDS_TIP_CONNECTED "\nYhdistetty kohteeseen: "
-    IDS_TIP_CONNECTING "\nYhdistet‰‰n kohteeseen: "
+    IDS_TIP_CONNECTING "\nYhdistet√§√§n kohteeseen: "
     IDS_TIP_CONNECTED_SINCE "\nYhteys luotu: "
     IDS_TIP_ASSIGNED_IP "\nIP-osoite: %s"
     IDS_MENU_SERVICE "OpenVPN-palvelu"
     IDS_MENU_SETTINGS "Asetukset..."
     IDS_MENU_ABOUT "Tietoja..."
     IDS_MENU_CLOSE "Poistu"
-    IDS_MENU_CONNECT "Yhdist‰"
+    IDS_MENU_CONNECT "Yhdist√§"
     IDS_MENU_DISCONNECT "Katkaise yhteys"
-    IDS_MENU_STATUS "N‰yt‰ tila"
-    IDS_MENU_VIEWLOG "N‰yt‰ loki"
+    IDS_MENU_STATUS "N√§yt√§ tila"
+    IDS_MENU_VIEWLOG "N√§yt√§ loki"
     IDS_MENU_EDITCONFIG "Muokkaa asetuksia"
     IDS_MENU_PASSPHRASE "Vaihda salasana"
-    IDS_MENU_SERVICE_START "K‰ynnist‰"
-    IDS_MENU_SERVICE_STOP "Pys‰yt‰"
-    IDS_MENU_SERVICE_RESTART "K‰ynnist‰ uudelleen"
-    IDS_MENU_SERVICEONLY_START "Yhdist‰"
+    IDS_MENU_SERVICE_START "K√§ynnist√§"
+    IDS_MENU_SERVICE_STOP "Pys√§yt√§"
+    IDS_MENU_SERVICE_RESTART "K√§ynnist√§ uudelleen"
+    IDS_MENU_SERVICEONLY_START "Yhdist√§"
     IDS_MENU_SERVICEONLY_STOP "Katkaise yhteys"
-    IDS_MENU_SERVICEONLY_RESTART "Yhdist‰ uudelleen"
-    IDS_MENU_ASK_STOP_SERVICE "Haluatko katkaista yhteyden ja pys‰ytt‰‰ OpenVPN-palvelun?"
+    IDS_MENU_SERVICEONLY_RESTART "Yhdist√§ uudelleen"
+    IDS_MENU_ASK_STOP_SERVICE "Haluatko katkaista yhteyden ja pys√§ytt√§√§ OpenVPN-palvelun?"
 
     /* Logviewer - Resources */
-    IDS_ERR_START_LOG_VIEWER "Lokitiedoston katselimen k‰ynnist‰minen ep‰onnistui: %s"
-    IDS_ERR_START_CONF_EDITOR "Asetusten muokkaimen k‰ynnist‰minen ep‰onnistui: %s"
+    IDS_ERR_START_LOG_VIEWER "Lokitiedoston katselimen k√§ynnist√§minen ep√§onnistui: %s"
+    IDS_ERR_START_CONF_EDITOR "Asetusten muokkaimen k√§ynnist√§minen ep√§onnistui: %s"
 
     /* OpenVPN */
-    IDS_ERR_MANY_CONFIGS "OpenVPN GUI:n asetustiedostoja voi olla k‰ytˆss‰ korkeintaan %d. Ota yhteys t‰m‰n sovelluksen kehitt‰j‰‰n, mik‰ tarvitset useampia."
-    IDS_ERR_ONE_CONN_OLD_VER "Jos k‰ytˆss‰ on OpenVPN 2.0-beta6 tai vanhempi, k‰ytˆss‰ voi olla kerrallaan vain yksi yhteys."
-    IDS_ERR_STOP_SERV_OLD_VER "OpenVPN GUI -sovelluksella ei voi hallita yhteyksi‰, jos OpenVPN (versio 1.5/1.6) on k‰ynnistetty palveluna. Pys‰yt‰ OpenVPN-palvelu ja yrit‰ uudelleen."
-    IDS_ERR_CREATE_EVENT "CreateEvent ep‰onnistui: %s"
+    IDS_ERR_MANY_CONFIGS "OpenVPN GUI:n asetustiedostoja voi olla k√§yt√∂ss√§ korkeintaan %d. Ota yhteys t√§m√§n sovelluksen kehitt√§j√§√§n, mik√§ tarvitset useampia."
+    IDS_ERR_ONE_CONN_OLD_VER "Jos k√§yt√∂ss√§ on OpenVPN 2.0-beta6 tai vanhempi, k√§yt√∂ss√§ voi olla kerrallaan vain yksi yhteys."
+    IDS_ERR_STOP_SERV_OLD_VER "OpenVPN GUI -sovelluksella ei voi hallita yhteyksi√§, jos OpenVPN (versio 1.5/1.6) on k√§ynnistetty palveluna. Pys√§yt√§ OpenVPN-palvelu ja yrit√§ uudelleen."
+    IDS_ERR_CREATE_EVENT "CreateEvent ep√§onnistui: %s"
     IDS_ERR_UNKNOWN_PRIORITY "Tunnistamaton prioriteetti: %s"
-    IDS_ERR_LOG_APPEND_BOOL "Lokitiedostoon lis‰‰misasetuksen ('%s') on oltava '0' tai '1'"
-    IDS_ERR_GET_MSIE_PROXY "Internet Explorerin v‰lipalvelinasetusten nouto ep‰onnistui."
+    IDS_ERR_LOG_APPEND_BOOL "Lokitiedostoon lis√§√§misasetuksen ('%s') on oltava '0' tai '1'"
+    IDS_ERR_GET_MSIE_PROXY "Internet Explorerin v√§lipalvelinasetusten nouto ep√§onnistui."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor failed."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl failed."
     IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe on hOutputWrite failed."
@@ -205,143 +203,143 @@ BEGIN
     IDS_NFO_STATE_CONNECTED "Tila: Yhdistetty"
     IDS_NFO_NOW_CONNECTED "%s on nyt yhdistetty."
     IDS_NFO_ASSIGN_IP "IP-osoite: %s"
-    IDS_ERR_CERT_EXPIRED "Yhdist‰minen ep‰onnistui, koska varmenne on vanhentunut tai tietokoneen kello on v‰‰r‰ss‰ ajassa."
-    IDS_ERR_CERT_NOT_YET_VALID "Yhdist‰minen ep‰onnistui, koska varmenne ei ole viel‰ voimassa. Tarkista, ett‰ tietokoneesi kello on oikeassa ajassa."
-    IDS_NFO_STATE_RECONNECTING "Tila: Yhdistet‰‰n uudelleen"
+    IDS_ERR_CERT_EXPIRED "Yhdist√§minen ep√§onnistui, koska varmenne on vanhentunut tai tietokoneen kello on v√§√§r√§ss√§ ajassa."
+    IDS_ERR_CERT_NOT_YET_VALID "Yhdist√§minen ep√§onnistui, koska varmenne ei ole viel√§ voimassa. Tarkista, ett√§ tietokoneesi kello on oikeassa ajassa."
+    IDS_NFO_STATE_RECONNECTING "Tila: Yhdistet√§√§n uudelleen"
     IDS_NFO_STATE_DISCONNECTED "Tila: Yhteys katkaistu"
     IDS_NFO_CONN_TERMINATED "Yhteys kohteeseen %s katkaistiin."
-    IDS_NFO_STATE_FAILED "Tila: Yhdist‰minen ep‰onnistui"
-    IDS_NFO_CONN_FAILED "Yhdist‰minen kohteeseen %s ep‰onnistui."
-    IDS_NFO_STATE_FAILED_RECONN "Tila: Yhdist‰minen uudelleen ep‰onnistui"
-    IDS_NFO_RECONN_FAILED "Yhdist‰minen uudelleen kohteeseen %s ep‰onnistui."
+    IDS_NFO_STATE_FAILED "Tila: Yhdist√§minen ep√§onnistui"
+    IDS_NFO_CONN_FAILED "Yhdist√§minen kohteeseen %s ep√§onnistui."
+    IDS_NFO_STATE_FAILED_RECONN "Tila: Yhdist√§minen uudelleen ep√§onnistui"
+    IDS_NFO_RECONN_FAILED "Yhdist√§minen uudelleen kohteeseen %s ep√§onnistui."
     IDS_NFO_STATE_SUSPENDED "Tila: Keskeytetty"
-    IDS_ERR_READ_STDOUT_PIPE "Lukeminen oletustulosteesta ep‰onnistui."
-    IDS_ERR_CREATE_EDIT_LOGWINDOW "RichEdit LogWindowin luonti ep‰onnistui!"
-    IDS_ERR_SET_SIZE "Koon m‰‰ritt‰minen ep‰onnistui!"
-    IDS_ERR_AUTOSTART_CONF "Ei lˆydetty automaattisesti k‰ynnistett‰v‰‰ asetustiedostoa %s"
+    IDS_ERR_READ_STDOUT_PIPE "Lukeminen oletustulosteesta ep√§onnistui."
+    IDS_ERR_CREATE_EDIT_LOGWINDOW "RichEdit LogWindowin luonti ep√§onnistui!"
+    IDS_ERR_SET_SIZE "Koon m√§√§ritt√§minen ep√§onnistui!"
+    IDS_ERR_AUTOSTART_CONF "Ei l√∂ydetty automaattisesti k√§ynnistett√§v√§√§ asetustiedostoa %s"
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe on hInputRead failed."
-    IDS_NFO_STATE_CONNECTING "Tila: Yhdistet‰‰n"
+    IDS_NFO_STATE_CONNECTING "Tila: Yhdistet√§√§n"
     IDS_NFO_CONNECTION_XXX "OpenVPN-yhteys (%s)"
     IDS_NFO_STATE_CONN_SCRIPT "Tila: Suoritetaan yhteydenmuodostamisskripti"
     IDS_NFO_STATE_DISCONN_SCRIPT "Tila: Suoritetaan yhteydenkatkaisemisskripti "
-    IDS_ERR_RUN_CONN_SCRIPT "Virhe suoritettaessa yhteydenmuodostamisskripti‰: %s"
+    IDS_ERR_RUN_CONN_SCRIPT "Virhe suoritettaessa yhteydenmuodostamisskripti√§: %s"
     IDS_ERR_GET_EXIT_CODE "Yhteydenmuodostamisskriptin (%s) poistumisarvoa ei saatu "
-    IDS_ERR_CONN_SCRIPT_FAILED "Yhteydenmuodostamisskriptin suorittaminen ep‰onnistui. (poistumisarvo=%ld)"
-    IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Yhteydenmuodostamisskriptin suorittaminen ep‰onnistui. Aikakatkaisu %d sekunnin j‰lkeen."
+    IDS_ERR_CONN_SCRIPT_FAILED "Yhteydenmuodostamisskriptin suorittaminen ep√§onnistui. (poistumisarvo=%ld)"
+    IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Yhteydenmuodostamisskriptin suorittaminen ep√§onnistui. Aikakatkaisu %d sekunnin j√§lkeen."
     IDS_ERR_CONFIG_EXIST "Asetustiedosto '%s' on jo olemassa. Asetustiedostoilla" \
                          "on oltava eri nimi, vaikka ne olisivatkin eri" \
                          "kansiossa."
 
     /* main - Resources */
-    IDS_ERR_OPEN_DEBUG_FILE "Vianj‰ljitystiedostoon (%s) kirjoittaminen ep‰onnistui"
-    IDS_ERR_LOAD_RICHED20 "Kirjaston RICHED20.DLL lataaminen ep‰onnistui."
-    IDS_ERR_SHELL_DLL_VERSION "Kirjasto shell32.dll on liian vanha (0x%lx), tarvitaan v‰hint‰‰n versio 5.0."
-    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI on jo k‰ynniss‰."
-    IDS_NFO_SERVICE_STARTED "OpenVPN-palvelu k‰ynnistetty."
-    IDS_NFO_SERVICE_STOPPED "OpenVPN-palvelu pys‰ytetty."
+    IDS_ERR_OPEN_DEBUG_FILE "Vianj√§ljitystiedostoon (%s) kirjoittaminen ep√§onnistui"
+    IDS_ERR_LOAD_RICHED20 "Kirjaston RICHED20.DLL lataaminen ep√§onnistui."
+    IDS_ERR_SHELL_DLL_VERSION "Kirjasto shell32.dll on liian vanha (0x%lx), tarvitaan v√§hint√§√§n versio 5.0."
+    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI on jo k√§ynniss√§."
+    IDS_NFO_SERVICE_STARTED "OpenVPN-palvelu k√§ynnistetty."
+    IDS_NFO_SERVICE_STOPPED "OpenVPN-palvelu pys√§ytetty."
     IDS_NFO_ACTIVE_CONN_EXIT "Jos OpenVPN GUI suljetaan, aktiiviset yhteydet katkeavat." \
                              "\n\nHaluatko varmasti jatkaa?"
     IDS_NFO_SERVICE_ACTIVE_EXIT "Yhteys on muodostettu OpenVPN-palvelun avulla. " \
-                                "Yhteydet eiv‰t katkea, vaikka OpenVPN GUI suljettaisiinkin.\n\n" \
+                                "Yhteydet eiv√§t katkea, vaikka OpenVPN GUI suljettaisiinkin.\n\n" \
                                 "Suljetaanko OpenVPN GUI?"
 
     /* options - Resources */
-    IDS_NFO_USAGE "--help\t\t\t: N‰yt‰ t‰m‰ viesti.\n" \
-                  "--connect cnn \t\t: Yhdist‰ kohteeseen ""cnn"" k‰ynnistett‰ess‰. Muista liitt‰‰ tiedostop‰‰te.\n" \
+    IDS_NFO_USAGE "--help\t\t\t: N√§yt√§ t√§m√§ viesti.\n" \
+                  "--connect cnn \t\t: Yhdist√§ kohteeseen ""cnn"" k√§ynnistett√§ess√§. Muista liitt√§√§ tiedostop√§√§te.\n" \
                   "\t\t\t   Esim.: openvpn-gui --connect toimisto.ovpn\n" \
                   "\n" \
                   "Rekisterin asetukset kumoavat valinnat:\n" \
                   "--exe_path\t\t: Polku openvpn.exe -tiedostoon.\n" \
                   "--config_dir\t\t: Polku kansioon, jossa asetustiedostot ovat.\n" \
-                  "--ext_string\t\t: Asetustiedostojen tiedostop‰‰te.\n" \
+                  "--ext_string\t\t: Asetustiedostojen tiedostop√§√§te.\n" \
                   "--log_dir\t\t\t: Lokitiedostojen tallennuskansio.\n" \
-                  "--priority_string\t\t: Prioriteetti (lis‰tietoja tiedostossa install.txt).\n" \
-                  "--append_string\t\t: 1=Lis‰‰ lokitiedostoon. 0=Typist‰ lokitiedosto yhdistett‰ess‰.\n" \
+                  "--priority_string\t\t: Prioriteetti (lis√§tietoja tiedostossa install.txt).\n" \
+                  "--append_string\t\t: 1=Lis√§√§ lokitiedostoon. 0=Typist√§ lokitiedosto yhdistett√§ess√§.\n" \
                   "--log_viewer\t\t: Lokikatselimen polku.\n" \
                   "--editor\t\t\t: Asetusten muokkaimen polku.\n" \
-                  "--allow_edit\t\t: 1=N‰yt‰ asetusten muokkaus valikossa.\n" \
-                  "--allow_service\t\t: 1=N‰yt‰ palvelujen hallinta valikossa.\n" \
-                  "--allow_password\t\t: 1=N‰yt‰ salasanan vaihto valikossa.\n" \
-                  "--allow_proxy\t\t: 1=N‰yt‰ v‰lipalvelimen asetukset valikossa.\n" \
-                  "--show_balloon\t\t: 0=Ei koskaan, 1=Ensimm‰isen kerran yhdistett‰ess‰, 2=Joka yhdistyksell‰.\n" \
-                  "--service_only\t\t: 1=K‰ynnist‰ palveluna.\n" \
-                  "--silent_connection\t\t: 1=ƒl‰ n‰yt‰ sovelluksen tilaa yhdistett‰ess‰.\n" \
-                  "--show_script_window\t: 0=Piilota skriptien k‰ynnistysikkuna, 1=ƒl‰ piilota sit‰.\n" \
-                  "--passphrase_attempts\t: Salasanan syˆttˆkertojen maksimim‰‰r‰\n" \
+                  "--allow_edit\t\t: 1=N√§yt√§ asetusten muokkaus valikossa.\n" \
+                  "--allow_service\t\t: 1=N√§yt√§ palvelujen hallinta valikossa.\n" \
+                  "--allow_password\t\t: 1=N√§yt√§ salasanan vaihto valikossa.\n" \
+                  "--allow_proxy\t\t: 1=N√§yt√§ v√§lipalvelimen asetukset valikossa.\n" \
+                  "--show_balloon\t\t: 0=Ei koskaan, 1=Ensimm√§isen kerran yhdistett√§ess√§, 2=Joka yhdistyksell√§.\n" \
+                  "--service_only\t\t: 1=K√§ynnist√§ palveluna.\n" \
+                  "--silent_connection\t\t: 1=√Ñl√§ n√§yt√§ sovelluksen tilaa yhdistett√§ess√§.\n" \
+                  "--show_script_window\t: 0=Piilota skriptien k√§ynnistysikkuna, 1=√Ñl√§ piilota sit√§.\n" \
+                  "--passphrase_attempts\t: Salasanan sy√∂tt√∂kertojen maksimim√§√§r√§\n" \
                   "--connectscript_timeout\t: Yhteydenmuodostamisskriptin aikakatkaisun raja.\n" \
                   "--disconnectscript_timeout\t: Yhteydenkatkaisemisskriptin aikakatkaisun raja.\n" \
-                  "--preconnectscript_timeout\t: Ennen yhdist‰mist‰ ajettavan skriptin aikakatkaisun raja.\n"
+                  "--preconnectscript_timeout\t: Ennen yhdist√§mist√§ ajettavan skriptin aikakatkaisun raja.\n"
 
-    IDS_NFO_USAGECAPTION "OpenVPN GUI:n k‰yttˆ"
-    IDS_ERR_BAD_PARAMETER "Syˆtteen ""%s"" k‰sittely --option-valitsimen " \
-                          "parametrina ep‰onnistui, koska sen alusta puuttui '--'"
+    IDS_NFO_USAGECAPTION "OpenVPN GUI:n k√§ytt√∂"
+    IDS_ERR_BAD_PARAMETER "Sy√∂tteen ""%s"" k√§sittely --option-valitsimen " \
+                          "parametrina ep√§onnistui, koska sen alusta puuttui '--'"
     IDS_ERR_BAD_OPTION "Tuntematon valinta tai parametreja puuttuu: --%s\n" \
-                       "Lis‰tietoja saa komennolla openvpn-gui --help"
+                       "Lis√§tietoja saa komennolla openvpn-gui --help"
 
     /* passphrase - Resources */
     IDS_ERR_CREATE_PASS_THREAD "CreateThread to show ChangePassphrase dialog failed."
-    IDS_NFO_CHANGE_PWD "N‰yt‰ salasana (%s)"
-    IDS_ERR_PWD_DONT_MATCH "Salasanant eiv‰t t‰sm‰‰. Yrit‰ uudelleen"
-    IDS_ERR_PWD_TO_SHORT "Salasanan on oltava v‰hint‰‰n %d merkki‰ pitk‰."
-    IDS_NFO_EMPTY_PWD "Haluatko varmasti m‰‰ritt‰‰ TYHJƒN salasanan?"
+    IDS_NFO_CHANGE_PWD "N√§yt√§ salasana (%s)"
+    IDS_ERR_PWD_DONT_MATCH "Salasanant eiv√§t t√§sm√§√§. Yrit√§ uudelleen"
+    IDS_ERR_PWD_TO_SHORT "Salasanan on oltava v√§hint√§√§n %d merkki√§ pitk√§."
+    IDS_NFO_EMPTY_PWD "Haluatko varmasti m√§√§ritt√§√§ TYHJ√ÑN salasanan?"
     IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Tuntematon avaintiedoston muoto."
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Virhe avattaessa yksityist‰ avaintiedostoa (%s)."
+    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Virhe avattaessa yksityist√§ avaintiedostoa (%s)."
     IDS_ERR_OLD_PWD_INCORRECT "Vanha salasana on virheellinen."
-    IDS_ERR_OPEN_WRITE_KEY "Kirjoittaminen yksityiseen avaintiedostoon (%s) ep‰onnistui."
-    IDS_ERR_WRITE_NEW_KEY "Uuden yksityisen avaintiedoston (%s) luonti ep‰onnistui."
+    IDS_ERR_OPEN_WRITE_KEY "Kirjoittaminen yksityiseen avaintiedostoon (%s) ep√§onnistui."
+    IDS_ERR_WRITE_NEW_KEY "Uuden yksityisen avaintiedoston (%s) luonti ep√§onnistui."
     IDS_NFO_PWD_CHANGED "Salasana vaihdettu."
-    IDS_ERR_READ_PKCS12 "PKCS #12 -tiedoston (%s) lukeminen ep‰onnistui."
-    IDS_ERR_CREATE_PKCS12 "PKCS #12 -tiedoston luonti ja salasanan vaihto ep‰onnistuivat."
-    IDS_ERR_OPEN_CONFIG "Asetustiedoston luku ep‰onnistui: (%s)"
+    IDS_ERR_READ_PKCS12 "PKCS #12 -tiedoston (%s) lukeminen ep√§onnistui."
+    IDS_ERR_CREATE_PKCS12 "PKCS #12 -tiedoston luonti ja salasanan vaihto ep√§onnistuivat."
+    IDS_ERR_OPEN_CONFIG "Asetustiedoston luku ep√§onnistui: (%s)"
     IDS_ERR_ONLY_ONE_KEY_OPTION "Asetustiedostossa voi olla korkeintaan yksi ""key""-valinta."
-    IDS_ERR_ONLY_KEY_OR_PKCS12 "Asetustiedostossa ei voi olla yht‰aikaisesti m‰‰ritettyn‰ sek‰ ""key"" ett‰ ""pkcs12""."
+    IDS_ERR_ONLY_KEY_OR_PKCS12 "Asetustiedostossa ei voi olla yht√§aikaisesti m√§√§ritettyn√§ sek√§ ""key"" ett√§ ""pkcs12""."
     IDS_ERR_ONLY_ONE_PKCS12_OPTION "Asetustiedostossa voi olla korkeintaan yksi ""pkcs12""-valinta."
-    IDS_ERR_HAVE_KEY_OR_PKCS12 "Asetustiedostossa ei ole yht‰‰n ""key""- tai ""pkcs12""-valintaa."
-    IDS_ERR_KEY_FILENAME_TO_LONG "Asetustiedostossa m‰‰ritelty avaintiedoston nimi on liian pitk‰."
-    IDS_ERR_PASSPHRASE2STDIN "Salasanan v‰litt‰minen oletussyˆtteeseen ep‰onnistui."
-    IDS_ERR_AUTH_USERNAME2STDIN "K‰ytt‰j‰nimen v‰litt‰minen oletussyˆtteeseen ep‰onnistui ."
-    IDS_ERR_AUTH_PASSWORD2STDIN "Salasanan v‰litt‰minen oletussyˆtteeseen ep‰onnistui."
-    IDS_ERR_CR2STDIN "CR:n v‰litt‰minen oletussyˆtteeseen ep‰onnistui."
-    IDS_ERR_INVALID_CHARS_IN_PSW "Salasana sis‰lt‰‰ ep‰kelpoja merkkej‰ ja " \
-                                 "sit‰ on muutettava."
+    IDS_ERR_HAVE_KEY_OR_PKCS12 "Asetustiedostossa ei ole yht√§√§n ""key""- tai ""pkcs12""-valintaa."
+    IDS_ERR_KEY_FILENAME_TO_LONG "Asetustiedostossa m√§√§ritelty avaintiedoston nimi on liian pitk√§."
+    IDS_ERR_PASSPHRASE2STDIN "Salasanan v√§litt√§minen oletussy√∂tteeseen ep√§onnistui."
+    IDS_ERR_AUTH_USERNAME2STDIN "K√§ytt√§j√§nimen v√§litt√§minen oletussy√∂tteeseen ep√§onnistui ."
+    IDS_ERR_AUTH_PASSWORD2STDIN "Salasanan v√§litt√§minen oletussy√∂tteeseen ep√§onnistui."
+    IDS_ERR_CR2STDIN "CR:n v√§litt√§minen oletussy√∂tteeseen ep√§onnistui."
+    IDS_ERR_INVALID_CHARS_IN_PSW "Salasana sis√§lt√§√§ ep√§kelpoja merkkej√§ ja " \
+                                 "sit√§ on muutettava."
 
     /* settings */
     IDS_SETTINGS_CAPTION "OpenVPN - Asetukset"
 
     /* proxy */
-    IDS_ERR_HTTP_PROXY_ADDRESS "HTTP-v‰lipalvelimen osoite on m‰‰ritett‰v‰."
-    IDS_ERR_HTTP_PROXY_PORT "HTTP-v‰lipalvelimen porttion m‰‰ritett‰v‰"
-    IDS_ERR_HTTP_PROXY_PORT_RANGE "HTTP-v‰lipalvelimen portti on oltava v‰lilt‰ 1-65535"
-    IDS_ERR_SOCKS_PROXY_ADDRESS "SOCKS-v‰lipalvelimen osoite on m‰‰ritett‰v‰."
-    IDS_ERR_SOCKS_PROXY_PORT "SOCKS-v‰lipalvelimen portti on m‰‰ritett‰v‰."
-    IDS_ERR_SOCKS_PROXY_PORT_RANGE "SOCKS-v‰lipalvelimen portti on oltava v‰lilt‰ 1-65535"
+    IDS_ERR_HTTP_PROXY_ADDRESS "HTTP-v√§lipalvelimen osoite on m√§√§ritett√§v√§."
+    IDS_ERR_HTTP_PROXY_PORT "HTTP-v√§lipalvelimen porttion m√§√§ritett√§v√§"
+    IDS_ERR_HTTP_PROXY_PORT_RANGE "HTTP-v√§lipalvelimen portti on oltava v√§lilt√§ 1-65535"
+    IDS_ERR_SOCKS_PROXY_ADDRESS "SOCKS-v√§lipalvelimen osoite on m√§√§ritett√§v√§."
+    IDS_ERR_SOCKS_PROXY_PORT "SOCKS-v√§lipalvelimen portti on m√§√§ritett√§v√§."
+    IDS_ERR_SOCKS_PROXY_PORT_RANGE "SOCKS-v√§lipalvelimen portti on oltava v√§lilt√§ 1-65535"
     IDS_ERR_CREATE_REG_HKCU_KEY "Virhe luotaessa avainta ""HKEY_CURRENT_USER\\%s""."
-    IDS_ERR_GET_TEMP_PATH "Virhe m‰‰ritett‰ess‰ muuttujaa TempPath funktiolla GetTempPath(). K‰ytet‰‰n polkua ""C:\\""."
+    IDS_ERR_GET_TEMP_PATH "Virhe m√§√§ritett√§ess√§ muuttujaa TempPath funktiolla GetTempPath(). K√§ytet√§√§n polkua ""C:\\""."
 
     /* service */
-    IDS_ERR_OPEN_SCMGR_ADMIN "OpenSCManager kohtasi virheen. Palveluna k‰ynnist‰minen vaatii yll‰pit‰j‰n oikeudet."
-    IDS_ERR_OPEN_VPN_SERVICE "Palvelun ""OpenVPNService"" avaaminen ep‰onnistui"
-    IDS_ERR_START_SERVICE "Palvelun ""OpenVPNService"" k‰ynnist‰minen ep‰onnistui"
-    IDS_ERR_QUERY_SERVICE "Palvelun tilan tarkistaminen ep‰onnistui."
-    IDS_ERR_SERVICE_START_FAILED "OpenVPN-palvelua ei saatu k‰ynnistetty‰."
+    IDS_ERR_OPEN_SCMGR_ADMIN "OpenSCManager kohtasi virheen. Palveluna k√§ynnist√§minen vaatii yll√§pit√§j√§n oikeudet."
+    IDS_ERR_OPEN_VPN_SERVICE "Palvelun ""OpenVPNService"" avaaminen ep√§onnistui"
+    IDS_ERR_START_SERVICE "Palvelun ""OpenVPNService"" k√§ynnist√§minen ep√§onnistui"
+    IDS_ERR_QUERY_SERVICE "Palvelun tilan tarkistaminen ep√§onnistui."
+    IDS_ERR_SERVICE_START_FAILED "OpenVPN-palvelua ei saatu k√§ynnistetty√§."
     IDS_ERR_OPEN_SCMGR "OpenSCManager kohtasi virheen (%d)"
-    IDS_ERR_STOP_SERVICE "OpenVPN-palvelun pys‰ytt‰minen ep‰onnistui"
-    IDS_NFO_RESTARTED "OpenVPN-palvelu k‰ynnistettiin uudelleen."
+    IDS_ERR_STOP_SERVICE "OpenVPN-palvelun pys√§ytt√§minen ep√§onnistui"
+    IDS_NFO_RESTARTED "OpenVPN-palvelu k√§ynnistettiin uudelleen."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Virhe avattaessa Windows-kansiota."
-    IDS_ERR_GET_PROGRAM_DIR "Virhe etsitt‰ess‰ ""Program""-kansion sijaintia."
+    IDS_ERR_GET_PROGRAM_DIR "Virhe etsitt√§ess√§ ""Program""-kansion sijaintia."
     IDS_ERR_OPEN_REGISTRY "Virhe luettaessa rekisteriavainta (HKLM\\SOFTWARE\\OpenVPN).\n " \
-                          "OpenVPN:‰‰ ei todenn‰kˆisesti ole asennettu."
+                          "OpenVPN:√§√§ ei todenn√§k√∂isesti ole asennettu."
     IDS_ERR_READING_REGISTRY "Virhe luetteassa rekisteriavainta (HKLM\\SOFTWARE\\OpenVPN)."
-    IDS_ERR_PASSPHRASE_ATTEMPTS "Rekisterin avaimen ""passphrase_attempts"" arvon on oltava v‰lilt‰ 1 ja 9."
-    IDS_ERR_CONN_SCRIPT_TIMEOUT "Rekisterin avaimen ""connectscript_timeout"" arvon on oltava v‰lilt‰ 1 ja 99"
-    IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Rekisterin avaimen ""disconnectscript_timeout"" arvon on oltava v‰lilt‰ 1 ja 99."
-    IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Rekisterin avaimen ""preconnectscript_timeout"" arvon on oltava v‰lilt‰ 1 ja 99."
+    IDS_ERR_PASSPHRASE_ATTEMPTS "Rekisterin avaimen ""passphrase_attempts"" arvon on oltava v√§lilt√§ 1 ja 9."
+    IDS_ERR_CONN_SCRIPT_TIMEOUT "Rekisterin avaimen ""connectscript_timeout"" arvon on oltava v√§lilt√§ 1 ja 99"
+    IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Rekisterin avaimen ""disconnectscript_timeout"" arvon on oltava v√§lilt√§ 1 ja 99."
+    IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Rekisterin avaimen ""preconnectscript_timeout"" arvon on oltava v√§lilt√§ 1 ja 99."
     IDS_ERR_CREATE_REG_KEY "Virhe luotaessa rekisteriavainta HKLM\\SOFTWARE\\OpenVPN-GUI."
-    IDS_ERR_OPEN_WRITE_REG "Virhe kirjoitettaessa rekisteriin. T‰m‰ sovellus pit‰‰ ensimm‰isell‰ kerralla " \
-                           "ajaa yll‰pit‰j‰n oikeuksin, jotta se saa lis‰tty‰ rekisteriin tietoja."
-    IDS_ERR_READ_SET_KEY "Virhe luettaessa ja m‰‰ritett‰ess‰ rekisteriavainta ""%s""."
+    IDS_ERR_OPEN_WRITE_REG "Virhe kirjoitettaessa rekisteriin. T√§m√§ sovellus pit√§√§ ensimm√§isell√§ kerralla " \
+                           "ajaa yll√§pit√§j√§n oikeuksin, jotta se saa lis√§tty√§ rekisteriin tietoja."
+    IDS_ERR_READ_SET_KEY "Virhe luettaessa ja m√§√§ritett√§ess√§ rekisteriavainta ""%s""."
     IDS_ERR_WRITE_REGVALUE "Virhe kirjoitettaessa rekisterin arvoa HKEY_CURRENT_USER\\%s\\%s""."
 END
 
