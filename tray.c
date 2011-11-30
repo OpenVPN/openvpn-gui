@@ -91,7 +91,6 @@ CreatePopupMenus()
         }
 
         AppendMenu(hMenu, MF_STRING ,IDM_SETTINGS, LoadLocalizedString(IDS_MENU_SETTINGS));
-        AppendMenu(hMenu, MF_STRING ,IDM_ABOUT, LoadLocalizedString(IDS_MENU_ABOUT));
         AppendMenu(hMenu, MF_STRING ,IDM_CLOSE, LoadLocalizedString(IDS_MENU_CLOSE));
 
         SetMenuStatus(&o.conn[0],  o.conn[0].state);
@@ -117,7 +116,6 @@ CreatePopupMenus()
         }
 
         AppendMenu(hMenu, MF_STRING, IDM_SETTINGS, LoadLocalizedString(IDS_MENU_SETTINGS));
-        AppendMenu(hMenu, MF_STRING, IDM_ABOUT, LoadLocalizedString(IDS_MENU_ABOUT));
         AppendMenu(hMenu, MF_STRING, IDM_CLOSE, LoadLocalizedString(IDS_MENU_CLOSE));
 
 

@@ -47,7 +47,6 @@
 
 /*  Declare Windows procedure  */
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK AboutDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 static void ShowSettingsDialog();
 void CloseApplication(HWND hwnd);
 
@@ -325,9 +324,6 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       if (LOWORD(wParam) == IDM_SETTINGS) {
         ShowSettingsDialog();
       }
-      if (LOWORD(wParam) == IDM_ABOUT) {
-        LocalizedDialogBox(ID_DLG_ABOUT, AboutDialogFunc);
-      }
       if (LOWORD(wParam) == IDM_CLOSE) {
         CloseApplication(hwnd);
       }
@@ -406,34 +402,9 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 }
 
 
-INT_PTR CALLBACK AboutDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPARAM lParam)
+static INT_PTR CALLBACK
+AboutDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-  HICON hIcon;
-
-  switch (msg) {
-
-    case WM_INITDIALOG:
-      hIcon = LoadLocalizedIcon(ID_ICO_APP);
-      if (hIcon) {
-        SendMessage(hwndDlg, WM_SETICON, (WPARAM) (ICON_SMALL), (LPARAM) (hIcon));
-        SendMessage(hwndDlg, WM_SETICON, (WPARAM) (ICON_BIG), (LPARAM) (hIcon));
-      }
-      break;
-
-    case WM_COMMAND:
-      switch (LOWORD(wParam)) {
-
-        case IDOK:			// button
-          EndDialog(hwndDlg, LOWORD(wParam));
-          return TRUE;
-      }
-      break;
-
-    case WM_CLOSE:
-      EndDialog(hwndDlg, LOWORD(wParam));
-      return TRUE;
-     
-  }
   return FALSE;
 }
 
@@ -441,7 +412,7 @@ INT_PTR CALLBACK AboutDialogFunc (HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED 
 static void
 ShowSettingsDialog()
 {
-  PROPSHEETPAGE psp[2];
+  PROPSHEETPAGE psp[3];
   int page_number = 0;
 
   /* Proxy tab */
@@ -462,6 +433,16 @@ ShowSettingsDialog()
   psp[page_number].hInstance = o.hInstance;
   psp[page_number].pResource = LocalizedDialogResource(ID_DLG_GENERAL);
   psp[page_number].pfnDlgProc = LanguageSettingsDlgProc;
+  psp[page_number].lParam = 0;
+  psp[page_number].pfnCallback = NULL;
+  ++page_number;
+
+  /* About tab */
+  psp[page_number].dwSize = sizeof(PROPSHEETPAGE);
+  psp[page_number].dwFlags = PSP_DLGINDIRECT;
+  psp[page_number].hInstance = o.hInstance;
+  psp[page_number].pResource = LocalizedDialogResource(ID_DLG_ABOUT);
+  psp[page_number].pfnDlgProc = AboutDialogFunc;
   psp[page_number].lParam = 0;
   psp[page_number].pfnCallback = NULL;
   ++page_number;

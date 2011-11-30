@@ -93,7 +93,6 @@
 /* Tray Icon Context Menu */
 #define IDS_MENU_SERVICE                1006
 #define IDS_MENU_SETTINGS               1007
-#define IDS_MENU_ABOUT                  1008
 #define IDS_MENU_CLOSE                  1009
 #define IDS_MENU_CONNECT                1010
 #define IDS_MENU_DISCONNECT             1011

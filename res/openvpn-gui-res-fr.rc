@@ -19,26 +19,6 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/* About Dialog */
-ID_DLG_ABOUT DIALOG 0, 0, 260, 135
-STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "A Propos - OpenVPN GUI pour Windows"
-FONT 8, "Microsoft Sans Serif"
-LANGUAGE LANG_FRENCH, SUBLANG_NEUTRAL
-BEGIN
-    PUSHBUTTON "OK", IDOK, 99, 115, 63, 14
-    ICON ID_ICO_CONNECTED, 204, 11, 8, 21, 20
-    LTEXT "OpenVPN GUI v" PACKAGE_VERSION " - A Windows GUI for OpenVPN", 101, 40, 5, 215, 8
-    LTEXT "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>", 102, 40, 15, 215, 8
-    LTEXT "http://openvpn.se/", 103, 40, 25, 215, 8
-    LTEXT "OpenVPN - Une application permettant d'ouvrir un tunnel IP sécurisé " \
-          "sur un simple port UDP avec un support SSL/TLS pour l'authentification de " \
-          "session, échange de clés, cryptage de paquets, authentification des " \
-          "paquets, et compression de paquets.", 104, 11, 43, 235, 34
-    LTEXT "Copyright (C) 2002-2005 OpenVPN Solutions LLC <info@openvpn.net>", 105, 11, 87, 235, 11
-    LTEXT "http://openvpn.net/", 106, 11, 98, 235, 10
-END
-
 /* Passphrase Dialog */
 ID_DLG_PASSPHRASE DIALOGEX 6, 18, 120, 51
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
@@ -133,6 +113,26 @@ BEGIN
     COMBOBOX ID_CMB_LANGUAGE, 47, 23, 181, 400, CBS_DROPDOWNLIST | WS_TABSTOP
 END
 
+/* About Dialog */
+ID_DLG_ABOUT DIALOG 6, 18, 249, 104
+STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "A Propos"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_FRENCH, SUBLANG_NEUTRAL
+BEGIN
+    ICON ID_ICO_APP, 0, 8, 16, 21, 20
+    LTEXT "OpenVPN GUI v" PACKAGE_VERSION " - A Windows GUI for OpenVPN\n" \
+          "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n" \
+          "http://openvpn.se/", 0, 36, 15, 206, 26
+    LTEXT "OpenVPN - Une application permettant d'ouvrir un tunnel IP sécurisé " \
+          "sur un simple port UDP avec un support SSL/TLS pour l'authentification de " \
+          "session, échange de clés, cryptage de paquets, authentification des " \
+          "paquets, et compression de paquets.\n" \
+          "\n" \
+          "Copyright (C) 2002-2005 OpenVPN Solutions LLC <info@openvpn.net>\n" \
+          "http://openvpn.net/", 0, 8, 45, 235, 56
+END
+
 /* Proxy Authentication Dialog */
 ID_DLG_PROXY_AUTH DIALOG 29, 23, 154, 65
 STYLE DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER
@@ -160,7 +160,6 @@ BEGIN
     IDS_TIP_ASSIGNED_IP "\nAdresse IP assignée: %s"
     IDS_MENU_SERVICE "OpenVPN Service"
     IDS_MENU_SETTINGS "Configuration..."
-    IDS_MENU_ABOUT "A Propos..."
     IDS_MENU_CLOSE "Quitter"
     IDS_MENU_CONNECT "Connecter"
     IDS_MENU_DISCONNECT "Déconnecter"

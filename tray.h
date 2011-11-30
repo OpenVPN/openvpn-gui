@@ -28,7 +28,6 @@
 #define WM_NOTIFYICONTRAY (WM_APP + 1)
 
 #define IDM_SETTINGS            221
-#define IDM_ABOUT               222
 #define IDM_CLOSE               223
 
 #define IDM_CONNECTMENU         300

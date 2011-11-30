@@ -20,27 +20,6 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/* About Dialog */
-ID_DLG_ABOUT DIALOG 0, 0, 260, 135
-STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "Om - OpenVPN GUI for Windows"
-FONT 8, "Microsoft Sans Serif"
-LANGUAGE LANG_NORWEGIAN, SUBLANG_NEUTRAL
-BEGIN
-    PUSHBUTTON "OK", IDOK, 99, 115, 63, 14
-    ICON ID_ICO_CONNECTED, 204, 11, 8, 21, 20
-    LTEXT "OpenVPN GUI v" PACKAGE_VERSION " - Ett Windows-Grensesnitt mot OpenVPN", 101, 40, 5, 215, 8
-    LTEXT "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>", 102, 40, 15, 215, 8
-    LTEXT "http://openvpn.se/", 103, 40, 25, 215, 8
-    LTEXT "OpenVPN - En applikasjon for sikker overføring av IP nett " \
-          "over en enkel UDP port, med støtte for SSL/TLS-basert " \
-          "sessjons autentisering og nøkkel håndtering, pakke- " \
-          "kryptering, -autentisering og -komprimering.",
-          104, 11, 51, 235, 34
-    LTEXT "Copyright (C) 2002-2005 OpenVPN Solutions LLC  <info@openvpn.net>", 105, 11, 87, 235, 11
-    LTEXT "http://openvpn.net/", 106, 11, 98, 235, 10
-END
-
 /* Passphrase Dialog */
 ID_DLG_PASSPHRASE DIALOG 6, 18, 120, 51
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
@@ -123,6 +102,26 @@ BEGIN
     EDITTEXT ID_EDT_PROXY_PORT, 196, 75, 30, 12, ES_AUTOHSCROLL
 END
 
+/* About Dialog */
+ID_DLG_ABOUT DIALOG 6, 18, 249, 104
+STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Om"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_NORWEGIAN, SUBLANG_NEUTRAL
+BEGIN
+    ICON ID_ICO_APP, 0, 8, 16, 21, 20
+    LTEXT "OpenVPN GUI v" PACKAGE_VERSION " - Ett Windows-Grensesnitt mot OpenVPN\n" \
+          "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n" \
+          "http://openvpn.se/", 0, 36, 15, 206, 26
+    LTEXT "OpenVPN - En applikasjon for sikker overføring av IP nett " \
+          "over en enkel UDP port, med støtte for SSL/TLS-basert " \
+          "sessjons autentisering og nøkkel håndtering, pakkekryptering, " \
+          "-autentisering og -komprimering.\n" \
+          "\n" \
+          "Copyright (C) 2002-2005 OpenVPN Solutions LLC  <info@openvpn.net>\n" \
+          "http://openvpn.net/", 0, 8, 45, 235, 56
+END
+
 /* Proxy Authentication Dialog */
 ID_DLG_PROXY_AUTH DIALOG 29, 23, 170, 65
 STYLE DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER
@@ -150,7 +149,6 @@ BEGIN
     IDS_TIP_ASSIGNED_IP "\nTildelt IP: %s"
     IDS_MENU_SERVICE "OpenVPN Service"
     IDS_MENU_SETTINGS "Innstillinger..."
-    IDS_MENU_ABOUT "Om..."
     IDS_MENU_CLOSE "Avslutte"
     IDS_MENU_CONNECT "Koble til"
     IDS_MENU_DISCONNECT "Koble fra"
