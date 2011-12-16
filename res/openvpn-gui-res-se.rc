@@ -55,7 +55,7 @@ CAPTION "OpenVPN"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_SWEDISH, SUBLANG_NEUTRAL
 BEGIN
-    LTEXT "Ansluter...", ID_TXT_STATUS, 20, 5, 200, 10
+    LTEXT "Ansluter…", ID_TXT_STATUS, 20, 5, 200, 10
     PUSHBUTTON "Koppla ner", ID_DISCONNECT, 50, 190, 50, 14
     PUSHBUTTON "Återanslut", ID_RESTART, 150, 190, 40, 14
     PUSHBUTTON "Göm", ID_HIDE, 100, 190, 40, 14
@@ -159,7 +159,7 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\nAnsluten sedan: "
     IDS_TIP_ASSIGNED_IP "\nTilldelad IP: %s"
     IDS_MENU_SERVICE "OpenVPN Service"
-    IDS_MENU_SETTINGS "Inställningar..."
+    IDS_MENU_SETTINGS "Inställningar…"
     IDS_MENU_CLOSE "Avsluta"
     IDS_MENU_CONNECT "Anslut"
     IDS_MENU_DISCONNECT "Koppla ner"
@@ -195,7 +195,7 @@ BEGIN
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle på hInputWrite misslyckades."
     IDS_ERR_CREATE_PROCESS "CreateProcess misslyckades, exe='%s' cmdline='%s' dir='%s'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread för att visa status fönstret misslyckades."
-    IDS_NFO_STATE_WAIT_TERM "Status: Väntar på att OpenVPN skall avslutas..."
+    IDS_NFO_STATE_WAIT_TERM "Status: Väntar på att OpenVPN skall avslutas…"
     IDS_NFO_STATE_CONNECTED "Status: Ansluten"
     IDS_NFO_NOW_CONNECTED "%s är nu ansluten."
     IDS_NFO_ASSIGN_IP "Tilldelad IP: %s"

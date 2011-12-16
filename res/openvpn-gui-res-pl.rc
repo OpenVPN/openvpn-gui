@@ -57,7 +57,7 @@ CAPTION "OpenVPN"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_POLISH, SUBLANG_NEUTRAL
 BEGIN
-    LTEXT "Łączenie...", ID_TXT_STATUS, 20, 5, 200, 10
+    LTEXT "Łączenie…", ID_TXT_STATUS, 20, 5, 200, 10
     PUSHBUTTON "Rozłącz", ID_DISCONNECT, 50, 190, 50, 14
     PUSHBUTTON "Poł. Ponownie", ID_RESTART, 150, 190, 50, 14
     PUSHBUTTON "Ukryj", ID_HIDE, 100, 190, 50, 14
@@ -161,7 +161,7 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\nPołączony z: "
     IDS_TIP_ASSIGNED_IP "\nPrzyznane IP: %s"
     IDS_MENU_SERVICE "Usługa OpenVPN"
-    IDS_MENU_SETTINGS "Ustawienia..."
+    IDS_MENU_SETTINGS "Ustawienia…"
     IDS_MENU_CLOSE "Zakończ"
     IDS_MENU_CONNECT "Połącz"
     IDS_MENU_DISCONNECT "Rozłącz"
@@ -197,7 +197,7 @@ BEGIN
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle dla hInputWrite zakończone niepowodzeniem."
     IDS_ERR_CREATE_PROCESS "Utworzenie procesu zakończone niepowodzeniem, exe='%s' cmdline='%s' dir='%s'"
     IDS_ERR_CREATE_THREAD_STATUS "Utworzenie wątku dla okna statusu zakończone niepowodzeniem."
-    IDS_NFO_STATE_WAIT_TERM "Stan Obecny: Oczekiwanie na zakończenie OpenVPN-a..."
+    IDS_NFO_STATE_WAIT_TERM "Stan Obecny: Oczekiwanie na zakończenie OpenVPN-a…"
     IDS_NFO_STATE_CONNECTED "Stan Obecny: Połączony"
     IDS_NFO_NOW_CONNECTED "%s jest teraz połączony."
     IDS_NFO_ASSIGN_IP "Przyznane IP: %s"

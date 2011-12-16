@@ -55,7 +55,7 @@ CAPTION "OpenVPN"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FRENCH, SUBLANG_NEUTRAL
 BEGIN
-    LTEXT "Connexion...", ID_TXT_STATUS, 20, 5, 200, 10
+    LTEXT "Connexion…", ID_TXT_STATUS, 20, 5, 200, 10
     PUSHBUTTON "Déconnecter", ID_DISCONNECT, 50, 190, 50, 14
     PUSHBUTTON "Reconnecter", ID_RESTART, 150, 190, 50, 14
     PUSHBUTTON "Fermer", ID_HIDE, 100, 190, 50, 14
@@ -159,7 +159,7 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\nConnecté depuis: "
     IDS_TIP_ASSIGNED_IP "\nAdresse IP assignée: %s"
     IDS_MENU_SERVICE "OpenVPN Service"
-    IDS_MENU_SETTINGS "Configuration..."
+    IDS_MENU_SETTINGS "Configuration…"
     IDS_MENU_CLOSE "Quitter"
     IDS_MENU_CONNECT "Connecter"
     IDS_MENU_DISCONNECT "Déconnecter"
@@ -195,7 +195,7 @@ BEGIN
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle sur hInputWrite échoué."
     IDS_ERR_CREATE_PROCESS "CreateProcess échoué, exe='%s' cmdline='%s' dir='%s'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread échoué pour afficher la fenêtre de statut."
-    IDS_NFO_STATE_WAIT_TERM "Etat actuel: Attente que OpenVPN se termine..."
+    IDS_NFO_STATE_WAIT_TERM "Etat actuel: Attente que OpenVPN se termine…"
     IDS_NFO_STATE_CONNECTED "Etat actuel: Connecté"
     IDS_NFO_NOW_CONNECTED "%s est désormais connecté."
     IDS_NFO_ASSIGN_IP "Adresse IP assignée: %s"

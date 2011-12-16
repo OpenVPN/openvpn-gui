@@ -58,7 +58,7 @@ CAPTION "OpenVPN"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_JAPANESE, SUBLANG_NEUTRAL
 BEGIN
-    LTEXT "接続中...", ID_TXT_STATUS, 20, 5, 200, 10
+    LTEXT "接続中…", ID_TXT_STATUS, 20, 5, 200, 10
     PUSHBUTTON "切断", ID_DISCONNECT, 50, 190, 50, 14
     PUSHBUTTON "再接続", ID_RESTART, 150, 190, 50, 14
     PUSHBUTTON "隠す", ID_HIDE, 100, 190, 50, 14
@@ -162,7 +162,7 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\n接続時間: "
     IDS_TIP_ASSIGNED_IP "\n割り当てられたIP: %s"
     IDS_MENU_SERVICE "OpenVPNサービス"
-    IDS_MENU_SETTINGS "設定..."
+    IDS_MENU_SETTINGS "設定…"
     IDS_MENU_CLOSE "終了"
     IDS_MENU_CONNECT "接続"
     IDS_MENU_DISCONNECT "切断"
@@ -198,7 +198,7 @@ BEGIN
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite failed."
     IDS_ERR_CREATE_PROCESS "CreateProcess failed, exe='%s' cmdline='%s' dir='%s'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread to show Status window Failed."
-    IDS_NFO_STATE_WAIT_TERM "現在の状況: OpenVPNの終了を待機中..."
+    IDS_NFO_STATE_WAIT_TERM "現在の状況: OpenVPNの終了を待機中…"
     IDS_NFO_STATE_CONNECTED "現在の状況: 接続済み"
     IDS_NFO_NOW_CONNECTED "%s に接続しました。"
     IDS_NFO_ASSIGN_IP "割り当てられたIP: %s"

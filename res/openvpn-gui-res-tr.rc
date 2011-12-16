@@ -57,7 +57,7 @@ CAPTION "OpenVPN"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_TURKISH, SUBLANG_NEUTRAL
 BEGIN
-    LTEXT "Bağlanıyor...", ID_TXT_STATUS, 20, 5, 200, 10
+    LTEXT "Bağlanıyor…", ID_TXT_STATUS, 20, 5, 200, 10
     PUSHBUTTON "Bağlantıyı Kes", ID_DISCONNECT, 50, 190, 50, 14
     PUSHBUTTON "Yeniden Bağlan", ID_RESTART, 150, 190, 50, 14
     PUSHBUTTON "Gizle", ID_HIDE, 100, 190, 50, 14
@@ -161,7 +161,7 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\nBağlanıldı: "
     IDS_TIP_ASSIGNED_IP "\nBağlanılan IP: %s"
     IDS_MENU_SERVICE "OpenVPN Servisi"
-    IDS_MENU_SETTINGS "Ayarlar..."
+    IDS_MENU_SETTINGS "Ayarlar…"
     IDS_MENU_CLOSE "Çıkış"
     IDS_MENU_CONNECT "Bağlan"
     IDS_MENU_DISCONNECT "Bağlantıyı Kes"
@@ -197,7 +197,7 @@ BEGIN
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite hatası."
     IDS_ERR_CREATE_PROCESS "CreateProcess hatası, exe='%s' cmdline='%s' dir='%s'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread anında durum penceresi gösterilemedi hatası."
-    IDS_NFO_STATE_WAIT_TERM "Geçerli Durum: OpenVPN' in kapanması bekleniyor..."
+    IDS_NFO_STATE_WAIT_TERM "Geçerli Durum: OpenVPN' in kapanması bekleniyor…"
     IDS_NFO_STATE_CONNECTED "Geçerli Durum: Bağlandı"
     IDS_NFO_NOW_CONNECTED "%s şu an bağlı."
     IDS_NFO_ASSIGN_IP "Atanan IP: %s"

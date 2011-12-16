@@ -56,7 +56,7 @@ CAPTION "OpenVPN"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_NORWEGIAN, SUBLANG_NEUTRAL
 BEGIN
-    LTEXT "Kobler til...", ID_TXT_STATUS, 20, 5, 200, 10
+    LTEXT "Kobler til…", ID_TXT_STATUS, 20, 5, 200, 10
     PUSHBUTTON "Koble fra", ID_DISCONNECT, 50, 190, 50, 14
     PUSHBUTTON "Koble til på nytt", ID_RESTART, 150, 190, 40, 14
     PUSHBUTTON "Skjul", ID_HIDE, 100, 190, 40, 14
@@ -148,7 +148,7 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\nTilkoblet siden: "
     IDS_TIP_ASSIGNED_IP "\nTildelt IP: %s"
     IDS_MENU_SERVICE "OpenVPN Service"
-    IDS_MENU_SETTINGS "Innstillinger..."
+    IDS_MENU_SETTINGS "Innstillinger…"
     IDS_MENU_CLOSE "Avslutte"
     IDS_MENU_CONNECT "Koble til"
     IDS_MENU_DISCONNECT "Koble fra"
@@ -184,7 +184,7 @@ BEGIN
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle på hInputWrite feilet."
     IDS_ERR_CREATE_PROCESS "CreateProcess feilet, exe='%s' cmdline='%s' dir='%s'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread for å vise statusvindu feilet."
-    IDS_NFO_STATE_WAIT_TERM "Status: Ventar på OpenVPN avslutning..."
+    IDS_NFO_STATE_WAIT_TERM "Status: Ventar på OpenVPN avslutning…"
     IDS_NFO_STATE_CONNECTED "Status: Tilkoblet"
     IDS_NFO_NOW_CONNECTED "%s er tilkoblet."
     IDS_NFO_ASSIGN_IP "tildelt IP: %s"

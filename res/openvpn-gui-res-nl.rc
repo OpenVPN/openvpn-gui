@@ -55,7 +55,7 @@ CAPTION "OpenVPN"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_DUTCH, SUBLANG_NEUTRAL
 BEGIN
-    LTEXT "Verbinden...", ID_TXT_STATUS, 20, 5, 200, 10
+    LTEXT "Verbinden…", ID_TXT_STATUS, 20, 5, 200, 10
     PUSHBUTTON "Verbroken", ID_DISCONNECT, 50, 190, 50, 14
     PUSHBUTTON "Opnieuw verbinden", ID_RESTART, 150, 190, 50, 14
     PUSHBUTTON "Verbergen", ID_HIDE, 100, 190, 50, 14
@@ -158,7 +158,7 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\nVerbonden sinds: "
     IDS_TIP_ASSIGNED_IP "\nToegewezen IP: %s"
     IDS_MENU_SERVICE "OpenVPN Service"
-    IDS_MENU_SETTINGS "Instellingen..."
+    IDS_MENU_SETTINGS "Instellingen…"
     IDS_MENU_CLOSE "Afsluiten"
     IDS_MENU_CONNECT "Verbind"
     IDS_MENU_DISCONNECT "Verbreek Verbinding"
@@ -194,7 +194,7 @@ BEGIN
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite mislukt."
     IDS_ERR_CREATE_PROCESS "CreateProcess mislukt, exe='%s' cmdline='%s' dir='%s'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread om om Status venster te tonen mislukt."
-    IDS_NFO_STATE_WAIT_TERM "Huidige Status: Wachten tot OpenVPN gestopt is..."
+    IDS_NFO_STATE_WAIT_TERM "Huidige Status: Wachten tot OpenVPN gestopt is…"
     IDS_NFO_STATE_CONNECTED "Hudige status: Verbonden"
     IDS_NFO_NOW_CONNECTED "%s is nu verbonden."
     IDS_NFO_ASSIGN_IP "Toegewezen IP: %s"

@@ -57,7 +57,7 @@ CAPTION "OpenVPN"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FINNISH, SUBLANG_NEUTRAL
 BEGIN
-    LTEXT "Yhdistetään...", ID_TXT_STATUS, 20, 5, 200, 10
+    LTEXT "Yhdistetään…", ID_TXT_STATUS, 20, 5, 200, 10
     PUSHBUTTON "Katkaise yhteys", ID_DISCONNECT, 50, 190, 50, 14
     PUSHBUTTON "Yhdistä uudelleen", ID_RESTART, 150, 190, 50, 14
     PUSHBUTTON "Piilota", ID_HIDE, 100, 190, 50, 14
@@ -161,7 +161,7 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\nYhteys luotu: "
     IDS_TIP_ASSIGNED_IP "\nIP-osoite: %s"
     IDS_MENU_SERVICE "OpenVPN-palvelu"
-    IDS_MENU_SETTINGS "Asetukset..."
+    IDS_MENU_SETTINGS "Asetukset…"
     IDS_MENU_CLOSE "Poistu"
     IDS_MENU_CONNECT "Yhdistä"
     IDS_MENU_DISCONNECT "Katkaise yhteys"
@@ -197,7 +197,7 @@ BEGIN
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite failed."
     IDS_ERR_CREATE_PROCESS "CreateProcess failed, exe='%s' cmdline='%s' dir='%s'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread to show Status window Failed."
-    IDS_NFO_STATE_WAIT_TERM "Tila: Odotetaan OpenVPN:n sammumista..."
+    IDS_NFO_STATE_WAIT_TERM "Tila: Odotetaan OpenVPN:n sammumista…"
     IDS_NFO_STATE_CONNECTED "Tila: Yhdistetty"
     IDS_NFO_NOW_CONNECTED "%s on nyt yhdistetty."
     IDS_NFO_ASSIGN_IP "IP-osoite: %s"
