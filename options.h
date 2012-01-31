@@ -71,7 +71,6 @@ struct connection {
         mgmt_cmd_t *cmd_queue;
     } manage;
 
-    HANDLE hProcess;
     HANDLE exit_event;
     DWORD threadId;
     HWND hwndStatus;

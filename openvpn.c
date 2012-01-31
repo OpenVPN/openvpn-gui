@@ -645,31 +645,17 @@ BOOL
 StartOpenVPN(connection_t *c)
 {
     TCHAR cmdline[1024];
+    TCHAR *options = cmdline + 8;
     TCHAR proxy_string[100];
     TCHAR exit_event_name[17];
-    HANDLE hStdInRead, hStdInWrite, hNul, hThread;
-    PROCESS_INFORMATION pi;
-    STARTUPINFO si;
-    DWORD priority, written;
+    HANDLE hStdInRead = NULL, hStdInWrite = NULL;
+    HANDLE hNul = NULL, hThread = NULL, service = NULL;
+    DWORD written;
     BOOL retval = FALSE;
 
-    /* Make I/O handles inheritable and accessible by all */
-    SECURITY_DESCRIPTOR sd;
-    SECURITY_ATTRIBUTES sa = {
-        .nLength = sizeof(sa),
-        .lpSecurityDescriptor = &sd,
-        .bInheritHandle = TRUE
-    };
-    if (!InitializeSecurityDescriptor(&sd, SECURITY_DESCRIPTOR_REVISION))
-    {
-        ShowLocalizedMsg(IDS_ERR_INIT_SEC_DESC);
-        return FALSE;
-    }
-    if (!SetSecurityDescriptorDacl(&sd, TRUE, NULL, FALSE))
-    {
-        ShowLocalizedMsg(IDS_ERR_SET_SEC_DESC_ACL);
-        return FALSE;
-    }
+    CLEAR(c->ip);
+
+    RunPreconnectScript(c);
 
     /* Check that log append flag has a valid value */
     if ((o.append_string[0] != '0') && (o.append_string[0] != '1'))
@@ -678,33 +664,12 @@ StartOpenVPN(connection_t *c)
         return FALSE;
     }
 
-    /* Set process priority */
-    if (!SetProcessPriority(&priority))
-        return FALSE;
-
-    /* Get a handle of the NUL device */
-    hNul = CreateFile(_T("NUL"), GENERIC_WRITE, FILE_SHARE_WRITE, &sa, OPEN_EXISTING, 0, NULL);
-    if (hNul == INVALID_HANDLE_VALUE)
-        return FALSE;
-
-    /* Create the pipe for STDIN with only the read end inheritable */
-    if (!CreatePipe(&hStdInRead, &hStdInWrite, &sa, 0))
-    {
-        ShowLocalizedMsg(IDS_ERR_CREATE_PIPE_IN_READ);
-        goto out_nul;
-    }
-    if (!SetHandleInformation(hStdInWrite, HANDLE_FLAG_INHERIT, 0))
-    {
-        ShowLocalizedMsg(IDS_ERR_DUP_HANDLE_IN_WRITE);
-        goto out_pipe;
-    }
-
     /* Create thread to show the connection's status dialog */
     hThread = CreateThread(NULL, 0, ThreadOpenVPNStatus, c, CREATE_SUSPENDED, &c->threadId);
     if (hThread == NULL)
     {
         ShowLocalizedMsg(IDS_ERR_CREATE_THREAD_STATUS);
-        goto out_pipe;
+        goto out;
     }
 
     /* Create an event object to signal OpenVPN to exit */
@@ -713,7 +678,7 @@ StartOpenVPN(connection_t *c)
     if (c->exit_event == NULL)
     {
         ShowLocalizedMsg(IDS_ERR_CREATE_EVENT, exit_event_name);
-        goto out_thread;
+        goto out;
     }
 
     /* Create a management interface password */
@@ -731,45 +696,131 @@ StartOpenVPN(connection_t *c)
         (o.append_string[0] == '1' ? _T("-append") : _T("")),
         c->log_path, c->manage.port);
 
-    CLEAR(c->ip);
-    RunPreconnectScript(c);
+    /* Try to open the service pipe */
+    service = CreateFile(_T("\\\\.\\pipe\\openvpn\\service"),
+                GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
 
-    /* Fill in STARTUPINFO struct */
-    GetStartupInfo(&si);
-    si.cb = sizeof(si);
-    si.dwFlags = STARTF_USESTDHANDLES;
-    si.hStdInput = hStdInRead;
-    si.hStdOutput = hNul;
-    si.hStdError = hNul;
-
-    /* Create an OpenVPN process for the connection */
-    if (!CreateProcess(o.exe_path, cmdline, NULL, NULL, TRUE,
-                       priority | CREATE_NO_WINDOW, NULL, c->config_dir, &si, &pi))
+    if (service != INVALID_HANDLE_VALUE)
     {
-        ShowLocalizedMsg(IDS_ERR_CREATE_PROCESS, o.exe_path, cmdline, c->config_dir);
-        CloseHandle(c->exit_event);
-        goto out_thread;
-    }
+        DWORD size = _tcslen(c->config_dir) + _tcslen(options) + sizeof(c->manage.password) + 3;
+        TCHAR startup_info[1024];
+        DWORD dwMode = PIPE_READMODE_MESSAGE;
+        if (!SetNamedPipeHandleState(service, &dwMode, NULL, NULL))
+        {
+            // TODO: add error message
+            CloseHandle(c->exit_event);
+            goto out;
+        }
 
-    /* Pass management password to OpenVPN process */
-    c->manage.password[sizeof(c->manage.password) - 1] = '\n';
-    WriteFile(hStdInWrite, c->manage.password, sizeof(c->manage.password), &written, NULL);
-    c->manage.password[sizeof(c->manage.password) - 1] = '\0';
-    c->hProcess = pi.hProcess;
+        c->manage.password[sizeof(c->manage.password) - 1] = '\n';
+        _sntprintf_0(startup_info, _T("%s%c%s%c%.*S"), c->config_dir, _T('\0'),
+            options, _T('\0'), sizeof(c->manage.password), c->manage.password);
+        c->manage.password[sizeof(c->manage.password) - 1] = '\0';
+
+        if (!WriteFile(service, startup_info, size * sizeof (TCHAR), &written, NULL))
+        {
+            // TODO: add error message
+            CloseHandle(c->exit_event);
+            goto out;
+        }
+    }
+    else
+    {
+        /* Start OpenVPN directly */
+        DWORD priority;
+        STARTUPINFO si;
+        PROCESS_INFORMATION pi;
+        SECURITY_DESCRIPTOR sd;
+
+        /* Make I/O handles inheritable and accessible by all */
+        SECURITY_ATTRIBUTES sa = {
+            .nLength = sizeof(sa),
+            .lpSecurityDescriptor = &sd,
+            .bInheritHandle = TRUE
+        };
+        if (!InitializeSecurityDescriptor(&sd, SECURITY_DESCRIPTOR_REVISION))
+        {
+            ShowLocalizedMsg(IDS_ERR_INIT_SEC_DESC);
+            CloseHandle(c->exit_event);
+            return FALSE;
+        }
+        if (!SetSecurityDescriptorDacl(&sd, TRUE, NULL, FALSE))
+        {
+            ShowLocalizedMsg(IDS_ERR_SET_SEC_DESC_ACL);
+            CloseHandle(c->exit_event);
+            return FALSE;
+        }
+
+        /* Set process priority */
+        if (!SetProcessPriority(&priority))
+        {
+            CloseHandle(c->exit_event);
+            return FALSE;
+        }
+
+        /* Get a handle of the NUL device */
+        hNul = CreateFile(_T("NUL"), GENERIC_WRITE, FILE_SHARE_WRITE, &sa, OPEN_EXISTING, 0, NULL);
+        if (hNul == INVALID_HANDLE_VALUE)
+        {
+            CloseHandle(c->exit_event);
+            return FALSE;
+        }
+
+        /* Create the pipe for STDIN with only the read end inheritable */
+        if (!CreatePipe(&hStdInRead, &hStdInWrite, &sa, 0))
+        {
+            ShowLocalizedMsg(IDS_ERR_CREATE_PIPE_IN_READ);
+            CloseHandle(c->exit_event);
+            goto out;
+        }
+        if (!SetHandleInformation(hStdInWrite, HANDLE_FLAG_INHERIT, 0))
+        {
+            ShowLocalizedMsg(IDS_ERR_DUP_HANDLE_IN_WRITE);
+            CloseHandle(c->exit_event);
+            goto out;
+        }
+
+        /* Fill in STARTUPINFO struct */
+        GetStartupInfo(&si);
+        si.cb = sizeof(si);
+        si.dwFlags = STARTF_USESTDHANDLES;
+        si.hStdInput = hStdInRead;
+        si.hStdOutput = hNul;
+        si.hStdError = hNul;
+
+        /* Create an OpenVPN process for the connection */
+        if (!CreateProcess(o.exe_path, cmdline, NULL, NULL, TRUE,
+                        priority | CREATE_NO_WINDOW, NULL, c->config_dir, &si, &pi))
+        {
+            ShowLocalizedMsg(IDS_ERR_CREATE_PROCESS, o.exe_path, cmdline, c->config_dir);
+            CloseHandle(c->exit_event);
+            goto out;
+        }
+
+        /* Pass management password to OpenVPN process */
+        c->manage.password[sizeof(c->manage.password) - 1] = '\n';
+        WriteFile(hStdInWrite, c->manage.password, sizeof(c->manage.password), &written, NULL);
+        c->manage.password[sizeof(c->manage.password) - 1] = '\0';
+
+        CloseHandle(pi.hProcess);
+        CloseHandle(pi.hThread);
+    }
 
     /* Start the status dialog thread */
     ResumeThread(hThread);
-
-    CloseHandle(pi.hThread);
     retval = TRUE;
 
-out_thread:
-    CloseHandle(hThread);
-out_pipe:
-    CloseHandle(hStdInWrite);
-    CloseHandle(hStdInRead);
-out_nul:
-    CloseHandle(hNul);
+out:
+    if (service && service != INVALID_HANDLE_VALUE)
+        CloseHandle(service);
+    if (hThread && hThread != INVALID_HANDLE_VALUE)
+        CloseHandle(hThread);
+    if (hStdInWrite && hStdInWrite != INVALID_HANDLE_VALUE)
+        CloseHandle(hStdInWrite);
+    if (hStdInRead && hStdInRead != INVALID_HANDLE_VALUE)
+        CloseHandle(hStdInRead);
+    if (hNul && hNul != INVALID_HANDLE_VALUE)
+        CloseHandle(hNul);
     return retval;
 }
 
