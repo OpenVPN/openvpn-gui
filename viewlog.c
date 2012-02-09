@@ -71,6 +71,8 @@ void ViewLog(int config)
       ShowLocalizedMsg(IDS_ERR_START_LOG_VIEWER, o.log_viewer);
     }
 
+  CloseHandle(proc_info.hThread);
+  CloseHandle(proc_info.hProcess);
 }
 
 
@@ -113,4 +115,6 @@ void EditConfig(int config)
 	ShowLocalizedMsg(IDS_ERR_START_CONF_EDITOR, o.editor);
     }
 
+  CloseHandle(proc_info.hThread);
+  CloseHandle(proc_info.hProcess);
 }
