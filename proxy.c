@@ -26,6 +26,7 @@
 #include <prsht.h>
 #include <tchar.h>
 #include <wininet.h>
+#include <stdlib.h>
 
 #include "config.h"
 #include "main.h"
