@@ -20,6 +20,7 @@
  */
 
 #include <winsock2.h>
+#include <malloc.h>
 
 #include "options.h"
 #include "main.h"

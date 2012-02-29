@@ -28,6 +28,7 @@
 #include <tchar.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <malloc.h>
 
 #include "config.h"
 #include "main.h"
