@@ -965,7 +965,7 @@ CheckVersion()
     else if (ReadLineFromStdOut(hStdOutRead, line, sizeof(line)))
     {
 #ifdef DEBUG
-        PrintDebug("VersionString: %s", line);
+        PrintDebug(_T("VersionString: %S"), line);
 #endif
         CloseHandle(pi.hThread);
         CloseHandle(pi.hProcess);
