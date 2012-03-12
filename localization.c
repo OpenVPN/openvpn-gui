@@ -292,7 +292,7 @@ typedef struct {
 
 
 static BOOL
-FillLangListProc(HANDLE module, PTSTR type, PTSTR stringId, WORD langId, LONG_PTR lParam)
+FillLangListProc(UNUSED HANDLE module, UNUSED PTSTR type, UNUSED PTSTR stringId, WORD langId, LONG_PTR lParam)
 {
     langProcData *data = (langProcData*) lParam;
 
@@ -310,7 +310,7 @@ FillLangListProc(HANDLE module, PTSTR type, PTSTR stringId, WORD langId, LONG_PT
 
 
 INT_PTR CALLBACK
-LanguageSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
+LanguageSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
 {
     LPPSHNOTIFY psn;
     langProcData langData = {

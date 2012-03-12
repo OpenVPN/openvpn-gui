@@ -54,7 +54,7 @@ const TCHAR *cfgProp = _T("conn");
  * Format: <BANNER>
  */
 void
-OnReady(connection_t *c, char *msg)
+OnReady(connection_t *c, UNUSED char *msg)
 {
     ManagementCommand(c, "state on", NULL, regular);
     ManagementCommand(c, "log all on", OnLogLine, combined);
@@ -65,7 +65,7 @@ OnReady(connection_t *c, char *msg)
  * Handle the request to release a hold from the OpenVPN management interface
  */
 void
-OnHold(connection_t *c, char *msg)
+OnHold(connection_t *c, UNUSED char *msg)
 {
     ManagementCommand(c, "hold off", NULL, regular);
     ManagementCommand(c, "hold release", NULL, regular);
@@ -345,7 +345,7 @@ OnPassword(connection_t *c, char *msg)
  * Handle exit of the OpenVPN process
  */
 void
-OnStop(connection_t *c, char *msg)
+OnStop(connection_t *c, UNUSED char *msg)
 {
     UINT txt_id, msg_id;
     SetMenuStatus(c, disconnected);

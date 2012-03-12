@@ -92,7 +92,6 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
                     UNUSED LPSTR lpszArgument,
                     UNUSED int nCmdShow)
 {
-  HWND hwnd;               /* This is the handle for our window */
   MSG messages;            /* Here messages to the application are saved */
   WNDCLASSEX wincl;        /* Data structure for the windowclass */
   DWORD shell32_version;
@@ -202,7 +201,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
     return 1;
 
   /* The class is registered, let's create the program*/
-  hwnd = CreateWindowEx (
+  CreateWindowEx (
            0,                   /* Extended possibilites for variation */
            szClassName,         /* Classname */
            szTitleText,         /* Title Text */
@@ -403,7 +402,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
 
 static INT_PTR CALLBACK
-AboutDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
+AboutDialogFunc(UNUSED HWND hDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
 {
   LPPSHNOTIFY psn;
   if (msg == WM_NOTIFY) {
