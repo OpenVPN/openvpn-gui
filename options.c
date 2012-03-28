@@ -21,12 +21,15 @@
  *
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+#include <windows.h>
 #include <stdlib.h>
 #include <malloc.h>
 #include <memory.h>
-#include <windows.h>
 
-#include "config.h"
 #include "options.h"
 #include "main.h"
 #include "openvpn-gui-res.h"

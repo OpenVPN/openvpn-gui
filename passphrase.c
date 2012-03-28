@@ -20,6 +20,10 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #ifndef DISABLE_CHANGE_PASSWORD
 #include <openssl/pem.h>
 #include <openssl/err.h>
@@ -29,7 +33,6 @@
 #include <windows.h>
 #include <wincrypt.h>
 
-#include "config.h"
 #include "main.h"
 #include "options.h"
 #include "passphrase.h"

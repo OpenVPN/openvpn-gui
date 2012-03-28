@@ -1,54 +1,75 @@
+dnl  OpenVPN-GUI -- A Windows GUI for OpenVPN.
+dnl
+dnl  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
+dnl                2010 Heiko Hund <heikoh@users.sf.net>
+dnl
+dnl  This program is free software; you can redistribute it and/or modify
+dnl  it under the terms of the GNU General Public License as published by
+dnl  the Free Software Foundation; either version 2 of the License, or
+dnl  (at your option) any later version.
+dnl
+dnl  This program is distributed in the hope that it will be useful,
+dnl  but WITHOUT ANY WARRANTY; without even the implied warranty of
+dnl  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+dnl  GNU General Public License for more details.
+dnl
+dnl  You should have received a copy of the GNU General Public License
+dnl  along with this program (see the file COPYING included with this
+dnl  distribution); if not, write to the Free Software Foundation, Inc.,
+dnl  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-define(MAJOR_VERSION,  1)
-define(MINOR_VERSION,  0)
-define(RELEASE,        3)
-
-AC_PREREQ([2.53])
-AC_INIT([OpenVPN GUI], [MAJOR_VERSION.MINOR_VERSION.RELEASE],
-	[openvpn-devel@lists.sourceforge.net], [openvpn-gui],
-	[http://openvpn-gui.sf.net])
-AC_CONFIG_SRCDIR([chartable.h])
-AC_CONFIG_HEADERS([config.h])
-
-AC_DEFINE(PACKAGE_MAJOR_VERSION, [MAJOR_VERSION],
-	[Define to the package major version.])
-AC_DEFINE(PACKAGE_MINOR_VERSION, [MINOR_VERSION],
-	[Define to the package minor version.])
-AC_DEFINE(PACKAGE_RELEASE, [RELEASE],
-	[Define to the package release number.])
-
-AC_PROG_CC_C99
-
+AC_PREREQ(2.59)
+define([VERSION_MAJOR], [1])
+define([VERSION_MINOR], [0])
+define([VERSION_FIX], [3])
+AC_INIT([OpenVPN GUI],[VERSION_MAJOR.VERSION_MINOR.VERSION_FIX],[openvpn-devel@lists.sourceforge.net],[openvpn-gui],[http://openvpn-gui.sf.net])
+AC_DEFINE([PACKAGE_VERSION_RESOURCE], [VERSION_MAJOR,VERSION_MINOR,VERSION_FIX,0], [Version in windows resource format])
+AC_CONFIG_AUX_DIR([.])
+AM_CONFIG_HEADER([config.h])
+AC_CONFIG_SRCDIR([main.h])
+AC_CONFIG_MACRO_DIR([m4])
+AM_INIT_AUTOMAKE
 AC_CANONICAL_HOST
-case $host in
-*-cygwin)
-    # Build a native Windows binary
-    CFLAGS="$CFLAGS -mno-cygwin"
-    CPPFLAGS="$CPPFLAGS -mno-cygwin"
-    LDFLAGS="$LDFLAGS -mno-cygwin"
-    ;;
-esac
-LDFLAGS="$LDFLAGS -mwindows"
-
+AC_USE_SYSTEM_EXTENSIONS
+AC_PROG_CC_C99
 AC_CHECK_TOOL([WINDRES], [windres])
 
-AC_CHECK_HEADER([windows.h], ,
-	[AC_MSG_FAILURE([Target system must be Windows])])
+AC_ARG_ENABLE(
+	[distonly],
+	[AS_HELP_STRING([--enable-distonly], [enable distribute only mode @<:@default=no@:>@])],
+	,
+	[enable_distonly="no"]
+)
 
-AX_ASSERT_LIB([wininet], [wininet.h],
-	[DWORD s; InternetQueryOption(NULL, INTERNET_OPTION_PROXY, NULL, &s)],
-	[Make sure you're building with a recent WIN API.], [#include <windows.h>])
+case "$host" in
+	*-mingw*)
+		CPPFLAGS="${CPPFLAGS} -DWIN32_LEAN_AND_MEAN"
+		CPPFLAGS="${CPPFLAGS} -D_WIN32_WINNT=NTDDI_WINXP"
+		;;
+	*)
+		test "${enable_distonly}" = "no" && AC_MSG_ERROR([This project is supported for windows only.])
+		;;
+esac
 
-AX_ASSERT_LIB([comctl32], [prsht.h],
-    [PROPSHEETHEADER psh; PropertySheet(&psh)],
-    [Make sure you're building with a recent WIN API.], [#include <windows.h>])
+PKG_PROG_PKG_CONFIG
+AC_PROG_CPP
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
 
-AX_ASSERT_LIB([ws2_32], [winsock2.h],
-    [WSADATA wsaData; WSAStartup(MAKEWORD(2, 2), &wsaData)],
-    [Make sure you're building with a recent WIN API.], [#include <windows.h>])
+PKG_CHECK_MODULES(
+	[OPENSSL_CRYPTO],
+	[libcrypto >= 0.9.6],
+	,
+	[AC_CHECK_LIB(
+		[crypto],
+		[RSA_new],
+		[OPENSSL_CRYPTO_LIBS="-lcrypto"],
+		[test "${enable_distonly}" = "no" && AC_MSG_ERROR([Cannot find OpenSSL library])]
+	)]
+)
 
-AX_SEARCH_LIB([crypto], [cryptoeay32 eay32 crypto], [-lgdi32],
-	[openssl/pkcs12.h], [EVP_PKEY *k = EVP_PKEY_new()])
+test "${GCC}" = "yes" && CFLAGS="${CFLAGS} -pedantic -Wall -Wextra"
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

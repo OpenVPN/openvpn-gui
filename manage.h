@@ -22,6 +22,8 @@
 #ifndef MANAGE_H
 #define MANAGE_H
 
+#include <winsock2.h>
+
 #define WM_MANAGEMENT (WM_APP + 2)
 
 typedef enum {

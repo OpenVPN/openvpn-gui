@@ -19,13 +19,15 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#define _WIN32_IE 0x0500
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <windows.h>
 #include <shlwapi.h>
+#include <prsht.h>
 #include <pbt.h>
 
-#include "config.h"
 #include "tray.h"
 #include "openvpn.h"
 #include "openvpn_config.h"
@@ -87,9 +89,9 @@ VerifyAutoConnections()
 }
 
 
-int WINAPI WinMain (HINSTANCE hThisInstance,
+int WINAPI _tWinMain (HINSTANCE hThisInstance,
                     UNUSED HINSTANCE hPrevInstance,
-                    UNUSED LPSTR lpszArgument,
+                    UNUSED LPTSTR lpszArgument,
                     UNUSED int nCmdShow)
 {
   MSG messages;            /* Here messages to the application are saved */

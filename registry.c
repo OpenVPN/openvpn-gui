@@ -20,12 +20,14 @@
  *
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <windows.h>
 #include <tchar.h>
 #include <shlobj.h>
 
-#include "config.h"
 #include "main.h"
 #include "options.h"
 #include "openvpn-gui-res.h"

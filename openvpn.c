@@ -20,7 +20,9 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#define WINVER 0x0500
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <windows.h>
 #include <tchar.h>
@@ -29,7 +31,6 @@
 #include <process.h>
 #include <richedit.h>
 
-#include "config.h"
 #include "tray.h"
 #include "main.h"
 #include "openvpn.h"

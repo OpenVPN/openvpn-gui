@@ -19,7 +19,9 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#define _WIN32_IE 0x0500
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <windows.h>
 #include <windowsx.h>
@@ -30,7 +32,6 @@
 #include <stdarg.h>
 #include <malloc.h>
 
-#include "config.h"
 #include "main.h"
 #include "localization.h"
 #include "openvpn-gui-res.h"

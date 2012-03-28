@@ -20,7 +20,10 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#define WINVER 0x0500
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <windows.h>
 #include <prsht.h>
@@ -28,7 +31,6 @@
 #include <wininet.h>
 #include <stdlib.h>
 
-#include "config.h"
 #include "main.h"
 #include "options.h"
 #include "registry.h"

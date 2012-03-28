@@ -20,6 +20,10 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <windows.h>
 #include <process.h>
 #include <tchar.h>
@@ -27,7 +31,6 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-#include "config.h"
 #include "main.h"
 #include "openvpn-gui-res.h"
 #include "options.h"
