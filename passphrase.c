@@ -86,10 +86,10 @@ ConfirmNewPassword(HWND hwndDlg)
   TCHAR newpsw[50];
   TCHAR newpsw2[50];
 
-  GetDlgItemText(hwndDlg, ID_EDT_PASS_NEW, newpsw, _tsizeof(newpsw) - 1);
-  GetDlgItemText(hwndDlg, ID_EDT_PASS_NEW2, newpsw2, _tsizeof(newpsw2) - 1);
+  GetDlgItemText(hwndDlg, ID_EDT_PASS_NEW, newpsw, _countof(newpsw) - 1);
+  GetDlgItemText(hwndDlg, ID_EDT_PASS_NEW2, newpsw2, _countof(newpsw2) - 1);
 
-  if (_tcsncmp(newpsw, newpsw2, _tsizeof(newpsw)) == 0)
+  if (_tcsncmp(newpsw, newpsw2, _countof(newpsw)) == 0)
     return true;
   else
     return false;
@@ -104,7 +104,7 @@ NewPasswordLengh(HWND hwndDlg)
 {
   TCHAR newpsw[50];
 
-  GetDlgItemText(hwndDlg, ID_EDT_PASS_NEW, newpsw, _tsizeof(newpsw) - 1);
+  GetDlgItemText(hwndDlg, ID_EDT_PASS_NEW, newpsw, _countof(newpsw) - 1);
 
   return (_tcslen(newpsw));
 }
@@ -158,7 +158,7 @@ ChangePasswordPEM(HWND hwndDlg)
   EVP_PKEY *privkey;
 
   /* Get filename, old_psw and new_psw from Dialog */
-  GetDlgItemText(hwndDlg, ID_TXT_KEYFILE, keyfile, _tsizeof(keyfile) - 1);
+  GetDlgItemText(hwndDlg, ID_TXT_KEYFILE, keyfile, _countof(keyfile) - 1);
   GetDlgItemTextW(hwndDlg, ID_EDT_PASS_CUR, oldpsw_unicode, sizeof(oldpsw_unicode)/2 - 1);
   GetDlgItemTextW(hwndDlg, ID_EDT_PASS_NEW, newpsw_unicode, sizeof(newpsw_unicode)/2 - 1);
 
@@ -262,7 +262,7 @@ ChangePasswordPKCS12(HWND hwndDlg)
   char *alias;
 
   /* Get filename, old_psw and new_psw from Dialog */
-  GetDlgItemText(hwndDlg, ID_TXT_KEYFILE, keyfile, _tsizeof(keyfile) - 1);
+  GetDlgItemText(hwndDlg, ID_TXT_KEYFILE, keyfile, _countof(keyfile) - 1);
   GetDlgItemTextW(hwndDlg, ID_EDT_PASS_CUR, oldpsw_unicode, sizeof(oldpsw_unicode)/2 - 1);
   GetDlgItemTextW(hwndDlg, ID_EDT_PASS_NEW, newpsw_unicode, sizeof(newpsw_unicode)/2 - 1);
 
@@ -384,7 +384,7 @@ ChangePassphraseDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPARAM 
                 break;
             }
 
-          GetDlgItemText(hwndDlg, ID_TXT_KEYFILE, keyfile, _tsizeof(keyfile) - 1);
+          GetDlgItemText(hwndDlg, ID_TXT_KEYFILE, keyfile, _countof(keyfile) - 1);
           keyfile_format=GetDlgItemInt(hwndDlg, ID_TXT_KEYFORMAT, &Translated, FALSE);
           if (keyfile_format == KEYFILE_FORMAT_PEM)
             {
@@ -558,11 +558,11 @@ ParseKeyFilenameLine(connection_t *c, TCHAR *keyfilename, size_t keyfilenamesize
   /* Prepend filename with configdir path if needed */
   if ((keyfilename[0] != '\\') && (keyfilename[0] != '/') && (keyfilename[1] != ':'))
     {
-      _tcsncpy(temp_filename, c->config_dir, _tsizeof(temp_filename));
+      _tcsncpy(temp_filename, c->config_dir, _countof(temp_filename));
       if (temp_filename[_tcslen(temp_filename) - 1] != '\\')
         _tcscat(temp_filename, _T("\\"));
       _tcsncat(temp_filename, keyfilename,
-              _tsizeof(temp_filename) - _tcslen(temp_filename) - 1);
+              _countof(temp_filename) - _tcslen(temp_filename) - 1);
       _tcsncpy(keyfilename, temp_filename, keyfilenamesize - 1);
     }
 
@@ -579,11 +579,11 @@ GetKeyFilename(connection_t *c, TCHAR *keyfilename, size_t keyfilenamesize, int 
   int found_pkcs12=0;
   TCHAR configfile_path[MAX_PATH];
 
-  _tcsncpy(configfile_path, c->config_dir, _tsizeof(configfile_path));
+  _tcsncpy(configfile_path, c->config_dir, _countof(configfile_path));
   if (!(configfile_path[_tcslen(configfile_path)-1] == '\\'))
     _tcscat(configfile_path, _T("\\"));
   _tcsncat(configfile_path, c->config_file,
-          _tsizeof(configfile_path) - _tcslen(configfile_path) - 1);
+          _countof(configfile_path) - _tcslen(configfile_path) - 1);
 
   if (!(fp=_tfopen(configfile_path, _T("r"))))
     {
@@ -656,11 +656,11 @@ ChangePassphraseThread(LPVOID data)
   connection_t *c = data;
 
   /* Cut of extention from config filename. */
-  _tcsncpy(conn_name, c->config_file, _tsizeof(conn_name));
+  _tcsncpy(conn_name, c->config_file, _countof(conn_name));
   conn_name[_tcslen(conn_name) - (_tcslen(o.ext_string)+1)]=0;
 
   /* Get Key filename from config file */
-  if (!GetKeyFilename(c, keyfilename, _tsizeof(keyfilename), &keyfile_format))
+  if (!GetKeyFilename(c, keyfilename, _countof(keyfilename), &keyfile_format))
     {
       ExitThread(1);
     }

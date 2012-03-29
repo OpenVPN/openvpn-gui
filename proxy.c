@@ -153,7 +153,7 @@ CheckProxySettings(HWND hwndDlg)
         TCHAR text[100];
         BOOL http = (IsDlgButtonChecked(hwndDlg, ID_RB_PROXY_HTTP) == BST_CHECKED);
 
-        GetDlgItemText(hwndDlg, ID_EDT_PROXY_ADDRESS, text, _tsizeof(text));
+        GetDlgItemText(hwndDlg, ID_EDT_PROXY_ADDRESS, text, _countof(text));
         if (_tcslen(text) == 0)
         {
             /* proxy address not specified */
@@ -161,7 +161,7 @@ CheckProxySettings(HWND hwndDlg)
             return 0;
         }
 
-        GetDlgItemText(hwndDlg, ID_EDT_PROXY_PORT, text, _tsizeof(text));
+        GetDlgItemText(hwndDlg, ID_EDT_PROXY_PORT, text, _countof(text));
         if (_tcslen(text) == 0)
         {
             /* proxy port not specified */
@@ -247,9 +247,9 @@ SaveProxySettings(HWND hwndDlg)
         proxy_type_string[0] = _T('0');
 
         GetDlgItemText(hwndDlg, ID_EDT_PROXY_ADDRESS, o.proxy_http_address,
-                    _tsizeof(o.proxy_http_address));
+                    _countof(o.proxy_http_address));
         GetDlgItemText(hwndDlg, ID_EDT_PROXY_PORT, o.proxy_http_port,
-                    _tsizeof(o.proxy_http_port));
+                    _countof(o.proxy_http_port));
     }
     else
     {
@@ -257,9 +257,9 @@ SaveProxySettings(HWND hwndDlg)
         proxy_type_string[0] = _T('1');
 
         GetDlgItemText(hwndDlg, ID_EDT_PROXY_ADDRESS, o.proxy_socks_address,
-                    _tsizeof(o.proxy_socks_address));
+                    _countof(o.proxy_socks_address));
         GetDlgItemText(hwndDlg, ID_EDT_PROXY_PORT, o.proxy_socks_port,
-                    _tsizeof(o.proxy_socks_port));
+                    _countof(o.proxy_socks_port));
     }
 
     /* Open Registry for writing */
@@ -297,12 +297,12 @@ GetProxyRegistrySettings()
         return;
 
     /* get registry settings */
-    GetRegistryValue(regkey, _T("proxy_http_address"), o.proxy_http_address, _tsizeof(o.proxy_http_address));
-    GetRegistryValue(regkey, _T("proxy_http_port"), o.proxy_http_port, _tsizeof(o.proxy_http_port));
-    GetRegistryValue(regkey, _T("proxy_socks_address"), o.proxy_socks_address, _tsizeof(o.proxy_socks_address));
-    GetRegistryValue(regkey, _T("proxy_socks_port"), o.proxy_socks_port, _tsizeof(o.proxy_socks_port));
-    GetRegistryValue(regkey, _T("proxy_source"), proxy_source_string, _tsizeof(proxy_source_string));
-    GetRegistryValue(regkey, _T("proxy_type"), proxy_type_string, _tsizeof(proxy_type_string));
+    GetRegistryValue(regkey, _T("proxy_http_address"), o.proxy_http_address, _countof(o.proxy_http_address));
+    GetRegistryValue(regkey, _T("proxy_http_port"), o.proxy_http_port, _countof(o.proxy_http_port));
+    GetRegistryValue(regkey, _T("proxy_socks_address"), o.proxy_socks_address, _countof(o.proxy_socks_address));
+    GetRegistryValue(regkey, _T("proxy_socks_port"), o.proxy_socks_port, _countof(o.proxy_socks_port));
+    GetRegistryValue(regkey, _T("proxy_source"), proxy_source_string, _countof(proxy_source_string));
+    GetRegistryValue(regkey, _T("proxy_type"), proxy_type_string, _countof(proxy_type_string));
 
     if (proxy_source_string[0] == _T('0'))
     {
@@ -345,7 +345,7 @@ ProxyAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         {
         case IDOK:
             c = (connection_t *) GetProp(hwndDlg, cfgProp);
-            username_len = GetDlgItemText(hwndDlg, ID_EDT_PROXY_USER, buf, _tsizeof(buf));
+            username_len = GetDlgItemText(hwndDlg, ID_EDT_PROXY_USER, buf, _countof(buf));
             if (username_len == 0)
                 return TRUE;
             length = WideCharToMultiByte(CP_ACP, WC_NO_BEST_FIT_CHARS, buf, -1, cmd + 23, sizeof(cmd) - 23, "_", NULL);
@@ -353,14 +353,14 @@ ProxyAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             ManagementCommand(c, cmd, NULL, regular);
 
             memcpy(cmd, "password", 8);
-            GetDlgItemText(hwndDlg, ID_EDT_PROXY_PASS, buf, _tsizeof(buf));
+            GetDlgItemText(hwndDlg, ID_EDT_PROXY_PASS, buf, _countof(buf));
             length = WideCharToMultiByte(CP_ACP, WC_NO_BEST_FIT_CHARS, buf, -1, cmd + 23, sizeof(cmd) - 23, "_", NULL);
             memcpy(cmd + length + 22, "\"\0", 2);
             ManagementCommand(c, cmd, NULL, regular);
 
             /* Clear buffers */
             memset(buf, 'x', sizeof(buf));
-            buf[_tsizeof(buf) - 1] = _T('\0');
+            buf[_countof(buf) - 1] = _T('\0');
             SetDlgItemText(hwndDlg, ID_EDT_PROXY_USER, buf);
             SetDlgItemText(hwndDlg, ID_EDT_PROXY_PASS, buf);
 

@@ -155,14 +155,14 @@ OnStateChange(connection_t *c, char *data)
             *pos = '\0';
 
         /* Convert the IP address to Unicode */
-        MultiByteToWideChar(CP_ACP, 0, local_ip, -1, c->ip, _tsizeof(c->ip));
+        MultiByteToWideChar(CP_ACP, 0, local_ip, -1, c->ip, _countof(c->ip));
 
         /* Show connection tray balloon */
         if ((c->state == connecting   && o.show_balloon[0] != '0')
         ||  (c->state == reconnecting && o.show_balloon[0] == '2'))
         {
             TCHAR msg[256];
-            LoadLocalizedStringBuf(msg, _tsizeof(msg), IDS_NFO_NOW_CONNECTED, c->config_name);
+            LoadLocalizedStringBuf(msg, _countof(msg), IDS_NFO_NOW_CONNECTED, c->config_name);
             ShowTrayBalloon(msg, (_tcslen(c->ip) ? LoadLocalizedString(IDS_NFO_ASSIGN_IP, c->ip) : _T("")));
         }
 
@@ -222,7 +222,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         switch (LOWORD(wParam))
         {
         case IDOK:
-            username_len = GetDlgItemText(hwndDlg, ID_EDT_AUTH_USER, buf, _tsizeof(buf));
+            username_len = GetDlgItemText(hwndDlg, ID_EDT_AUTH_USER, buf, _countof(buf));
             if (username_len == 0)
                 return TRUE;
             length = WideCharToMultiByte(CP_UTF8, 0, buf, -1, cmd + 17, sizeof(cmd) - 17, NULL, NULL);
@@ -230,14 +230,14 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             ManagementCommand(c, cmd, NULL, regular);
 
             memcpy(cmd, "password", 8);
-            GetDlgItemText(hwndDlg, ID_EDT_AUTH_PASS, buf, _tsizeof(buf));
+            GetDlgItemText(hwndDlg, ID_EDT_AUTH_PASS, buf, _countof(buf));
             length = WideCharToMultiByte(CP_UTF8, 0, buf, -1, cmd + 17, sizeof(cmd) - 17, NULL, NULL);
             memcpy(cmd + length + 16, "\"\0", 2);
             ManagementCommand(c, cmd, NULL, regular);
 
             /* Clear buffers */
             memset(buf, 'x', sizeof(buf));
-            buf[_tsizeof(buf) - 1] = _T('\0');
+            buf[_countof(buf) - 1] = _T('\0');
             SetDlgItemText(hwndDlg, ID_EDT_AUTH_USER, buf);
             SetDlgItemText(hwndDlg, ID_EDT_AUTH_PASS, buf);
 
@@ -287,14 +287,14 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         switch (LOWORD(wParam))
         {
         case IDOK:
-            GetDlgItemText(hwndDlg, ID_EDT_PASSPHRASE, buf, _tsizeof(buf));
+            GetDlgItemText(hwndDlg, ID_EDT_PASSPHRASE, buf, _countof(buf));
             length = WideCharToMultiByte(CP_UTF8, 0, buf, -1, cmd + 24, sizeof(cmd) - 24, NULL, NULL);
             memcpy(cmd + length + 23, "\"\0", 2);
             ManagementCommand(c, cmd, NULL, regular);
 
             /* Clear buffer */
             memset(buf, 'x', sizeof(buf));
-            buf[_tsizeof(buf) - 1] = _T('\0');
+            buf[_countof(buf) - 1] = _T('\0');
             SetDlgItemText(hwndDlg, ID_EDT_PASSPHRASE, buf);
 
             EndDialog(hwndDlg, LOWORD(wParam));
@@ -555,7 +555,7 @@ ThreadOpenVPNStatus(void *p)
     MSG msg;
 
     /* Cut of extention from config filename. */
-    _tcsncpy(conn_name, c->config_file, _tsizeof(conn_name));
+    _tcsncpy(conn_name, c->config_file, _countof(conn_name));
     conn_name[_tcslen(conn_name) - _tcslen(o.ext_string) - 1] = _T('\0');
 
     c->state = connecting;
@@ -686,7 +686,7 @@ StartOpenVPN(connection_t *c)
     GetRandomPassword(c->manage.password, sizeof(c->manage.password) - 1);
 
     /* Construct proxy string to append to command line */
-    ConstructProxyCmdLine(proxy_string, _tsizeof(proxy_string));
+    ConstructProxyCmdLine(proxy_string, _countof(proxy_string));
 
     /* Construct command line */
     _sntprintf_0(cmdline, _T("openvpn "
@@ -945,7 +945,7 @@ CheckVersion()
     }
 
     /* Construct the process' working directory */
-    _tcsncpy(pwd, o.exe_path, _tsizeof(pwd));
+    _tcsncpy(pwd, o.exe_path, _countof(pwd));
     p = _tcsrchr(pwd, _T('\\'));
     if (p != NULL)
         *p = _T('\0');

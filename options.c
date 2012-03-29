@@ -45,7 +45,7 @@ add_option(options_t *options, int i, TCHAR **p)
     if (streq(p[0], _T("help")))
     {
         TCHAR caption[200];
-        LoadLocalizedStringBuf(caption, _tsizeof(caption), IDS_NFO_USAGECAPTION);
+        LoadLocalizedStringBuf(caption, _countof(caption), IDS_NFO_USAGECAPTION);
         MessageBox(NULL, LoadLocalizedString(IDS_NFO_USAGE), caption, MB_OK);
         exit(0);
     }
@@ -64,102 +64,102 @@ add_option(options_t *options, int i, TCHAR **p)
     else if (streq(p[0], _T("exe_path")) && p[1])
     {
         ++i;
-        _tcsncpy(options->exe_path, p[1], _tsizeof(options->exe_path) - 1);
+        _tcsncpy(options->exe_path, p[1], _countof(options->exe_path) - 1);
     }
     else if (streq(p[0], _T("config_dir")) && p[1])
     {
         ++i;
-        _tcsncpy(options->config_dir, p[1], _tsizeof(options->config_dir) - 1);
+        _tcsncpy(options->config_dir, p[1], _countof(options->config_dir) - 1);
     }
     else if (streq(p[0], _T("ext_string")) && p[1])
     {
         ++i;
-        _tcsncpy(options->ext_string, p[1], _tsizeof(options->ext_string) - 1);
+        _tcsncpy(options->ext_string, p[1], _countof(options->ext_string) - 1);
     }
     else if (streq(p[0], _T("log_dir")) && p[1])
     {
         ++i;
-        _tcsncpy(options->log_dir, p[1], _tsizeof(options->log_dir) - 1);
+        _tcsncpy(options->log_dir, p[1], _countof(options->log_dir) - 1);
     }
     else if (streq(p[0], _T("priority_string")) && p[1])
     {
         ++i;
-        _tcsncpy(options->priority_string, p[1], _tsizeof(options->priority_string) - 1);
+        _tcsncpy(options->priority_string, p[1], _countof(options->priority_string) - 1);
     }
     else if (streq(p[0], _T("append_string")) && p[1])
     {
         ++i;
-        _tcsncpy(options->append_string, p[1], _tsizeof(options->append_string) - 1);
+        _tcsncpy(options->append_string, p[1], _countof(options->append_string) - 1);
     }
     else if (streq(p[0], _T("log_viewer")) && p[1])
     {
         ++i;
-        _tcsncpy(options->log_viewer, p[1], _tsizeof(options->log_viewer) - 1);
+        _tcsncpy(options->log_viewer, p[1], _countof(options->log_viewer) - 1);
     }
     else if (streq(p[0], _T("editor")) && p[1])
     {
         ++i;
-        _tcsncpy(options->editor, p[1], _tsizeof(options->editor) - 1);
+        _tcsncpy(options->editor, p[1], _countof(options->editor) - 1);
     }
     else if (streq(p[0], _T("allow_edit")) && p[1])
     {
         ++i;
-        _tcsncpy(options->allow_edit, p[1], _tsizeof(options->allow_edit) - 1);
+        _tcsncpy(options->allow_edit, p[1], _countof(options->allow_edit) - 1);
     }
     else if (streq(p[0], _T("allow_service")) && p[1])
     {
         ++i;
-        _tcsncpy(options->allow_service, p[1], _tsizeof(options->allow_service) - 1);
+        _tcsncpy(options->allow_service, p[1], _countof(options->allow_service) - 1);
     }
     else if (streq(p[0], _T("allow_password")) && p[1])
     {
         ++i;
-        _tcsncpy(options->allow_password, p[1], _tsizeof(options->allow_password) - 1);
+        _tcsncpy(options->allow_password, p[1], _countof(options->allow_password) - 1);
     }
     else if (streq(p[0], _T("allow_proxy")) && p[1])
     {
         ++i;
-        _tcsncpy(options->allow_proxy, p[1], _tsizeof(options->allow_proxy) - 1);
+        _tcsncpy(options->allow_proxy, p[1], _countof(options->allow_proxy) - 1);
     }
     else if (streq(p[0], _T("show_balloon")) && p[1])
     {
         ++i;
-        _tcsncpy(options->show_balloon, p[1], _tsizeof(options->show_balloon) - 1);
+        _tcsncpy(options->show_balloon, p[1], _countof(options->show_balloon) - 1);
     }
     else if (streq(p[0], _T("service_only")) && p[1])
     {
         ++i;
-        _tcsncpy(options->service_only, p[1], _tsizeof(options->service_only) - 1);
+        _tcsncpy(options->service_only, p[1], _countof(options->service_only) - 1);
     }
     else if (streq(p[0], _T("show_script_window")) && p[1])
     {
         ++i;
-        _tcsncpy(options->show_script_window, p[1], _tsizeof(options->show_script_window) - 1);
+        _tcsncpy(options->show_script_window, p[1], _countof(options->show_script_window) - 1);
     }
     else if (streq(p[0], _T("silent_connection")) && p[1])
     {
         ++i;
-        _tcsncpy(options->silent_connection, p[1], _tsizeof(options->silent_connection) - 1);
+        _tcsncpy(options->silent_connection, p[1], _countof(options->silent_connection) - 1);
     }
     else if (streq(p[0], _T("passphrase_attempts")) && p[1])
     {
         ++i;
-        _tcsncpy(options->psw_attempts_string, p[1], _tsizeof(options->psw_attempts_string) - 1);
+        _tcsncpy(options->psw_attempts_string, p[1], _countof(options->psw_attempts_string) - 1);
     }
     else if (streq(p[0], _T("connectscript_timeout")) && p[1])
     {
         ++i;
-        _tcsncpy(options->connectscript_timeout_string, p[1], _tsizeof(options->connectscript_timeout_string) - 1);
+        _tcsncpy(options->connectscript_timeout_string, p[1], _countof(options->connectscript_timeout_string) - 1);
     }
     else if (streq(p[0], _T("disconnectscript_timeout")) && p[1])
     {
         ++i;
-        _tcsncpy(options->disconnectscript_timeout_string, p[1], _tsizeof(options->disconnectscript_timeout_string) - 1);
+        _tcsncpy(options->disconnectscript_timeout_string, p[1], _countof(options->disconnectscript_timeout_string) - 1);
     }
     else if (streq(p[0], _T("preconnectscript_timeout")) && p[1])
     {
         ++i;
-        _tcsncpy(options->preconnectscript_timeout_string, p[1], _tsizeof(options->preconnectscript_timeout_string) - 1);
+        _tcsncpy(options->preconnectscript_timeout_string, p[1], _countof(options->preconnectscript_timeout_string) - 1);
     }
     else
     {

@@ -507,7 +507,7 @@ void PrintDebugMsg(TCHAR *msg)
 
   log_time = time(NULL);
   time_struct = localtime(&log_time);
-  _sntprintf(date, _tsizeof(date), _T("%d-%.2d-%.2d %.2d:%.2d:%.2d"),
+  _sntprintf(date, _countof(date), _T("%d-%.2d-%.2d %.2d:%.2d:%.2d"),
                  time_struct->tm_year + 1900,
                  time_struct->tm_mon + 1,
                  time_struct->tm_mday,

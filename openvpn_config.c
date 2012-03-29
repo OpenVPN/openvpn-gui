@@ -81,9 +81,9 @@ AddConfigFileToList(int config, TCHAR *filename, TCHAR *config_dir)
     connection_t *conn = &o.conn[config];
     int i;
 
-    _tcsncpy(conn->config_file, filename, _tsizeof(conn->config_file) - 1);
-    _tcsncpy(conn->config_dir, config_dir, _tsizeof(conn->config_dir) - 1);
-    _tcsncpy(conn->config_name, conn->config_file, _tsizeof(conn->config_name) - 1);
+    _tcsncpy(conn->config_file, filename, _countof(conn->config_file) - 1);
+    _tcsncpy(conn->config_dir, config_dir, _countof(conn->config_dir) - 1);
+    _tcsncpy(conn->config_name, conn->config_file, _countof(conn->config_name) - 1);
     conn->config_name[_tcslen(conn->config_name) - _tcslen(o.ext_string) - 1] = _T('\0');
     _sntprintf_0(conn->log_path, _T("%s\\%s.log"), o.log_dir, conn->config_name);
     conn->manage.sk = INVALID_SOCKET;
@@ -194,10 +194,10 @@ ConfigFileOptionExist(int config, const char *option)
     char line[256];
     TCHAR path[MAX_PATH];
 
-    _tcsncpy(path, o.conn[config].config_dir, _tsizeof(path));
+    _tcsncpy(path, o.conn[config].config_dir, _countof(path));
     if (path[_tcslen(path) - 1] != _T('\\'))
         _tcscat(path, _T("\\"));
-    _tcsncat(path, o.conn[config].config_file, _tsizeof(path) - _tcslen(path) - 1);
+    _tcsncat(path, o.conn[config].config_file, _countof(path) - _tcslen(path) - 1);
 
     fp = _tfopen(path, _T("r"));
     if (fp == NULL)

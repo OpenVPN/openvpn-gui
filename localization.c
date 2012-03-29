@@ -149,7 +149,7 @@ __LoadLocalizedString(const UINT stringId, va_list args)
 {
     static TCHAR msg[512];
     msg[0] = 0;
-    LoadStringLang(stringId, GetGUILanguage(), msg, _tsizeof(msg), args);
+    LoadStringLang(stringId, GetGUILanguage(), msg, _countof(msg), args);
     return msg;
 }
 
@@ -281,7 +281,7 @@ LangListEntry(const UINT stringId, const LANGID langId, ...)
     va_list args;
 
     va_start(args, langId);
-    LoadStringLang(stringId, langId, str, _tsizeof(str), args);
+    LoadStringLang(stringId, langId, str, _countof(str), args);
     va_end(args);
     return str;
 }

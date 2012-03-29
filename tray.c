@@ -249,7 +249,7 @@ ShowTrayIcon()
   ni.uFlags = NIF_MESSAGE | NIF_TIP | NIF_ICON;
   ni.uCallbackMessage = WM_NOTIFYICONTRAY;
   ni.hIcon = LoadLocalizedIcon(ID_ICO_DISCONNECTED);
-  _tcsncpy(ni.szTip, LoadLocalizedString(IDS_TIP_DEFAULT), _tsizeof(ni.szTip));
+  _tcsncpy(ni.szTip, LoadLocalizedString(IDS_TIP_DEFAULT), _countof(ni.szTip));
 
   Shell_NotifyIcon(NIM_ADD, &ni);
 }
@@ -265,16 +265,16 @@ SetTrayIcon(conn_state_t state)
     BOOL first_conn;
     UINT icon_id;
 
-    _tcsncpy(msg, LoadLocalizedString(IDS_TIP_DEFAULT), _tsizeof(ni.szTip));
-    _tcsncpy(msg_connected, LoadLocalizedString(IDS_TIP_CONNECTED), _tsizeof(msg_connected));
-    _tcsncpy(msg_connecting, LoadLocalizedString(IDS_TIP_CONNECTING), _tsizeof(msg_connecting));
+    _tcsncpy(msg, LoadLocalizedString(IDS_TIP_DEFAULT), _countof(ni.szTip));
+    _tcsncpy(msg_connected, LoadLocalizedString(IDS_TIP_CONNECTED), _countof(msg_connected));
+    _tcsncpy(msg_connecting, LoadLocalizedString(IDS_TIP_CONNECTING), _countof(msg_connecting));
 
     first_conn = TRUE;
     for (i = 0; i < o.num_configs; i++) {
         if (o.conn[i].state == connected) {
             /* Append connection name to Icon Tip Msg */
-            _tcsncat(msg, (first_conn ? msg_connected : _T(", ")), _tsizeof(msg) - _tcslen(msg) - 1);
-            _tcsncat(msg, o.conn[i].config_name, _tsizeof(msg) - _tcslen(msg) - 1);
+            _tcsncat(msg, (first_conn ? msg_connected : _T(", ")), _countof(msg) - _tcslen(msg) - 1);
+            _tcsncat(msg, o.conn[i].config_name, _countof(msg) - _tcslen(msg) - 1);
             first_conn = FALSE;
             config = i;
         }
@@ -284,23 +284,23 @@ SetTrayIcon(conn_state_t state)
     for (i = 0; i < o.num_configs; i++) {
         if (o.conn[i].state == connecting || o.conn[i].state == reconnecting) {
             /* Append connection name to Icon Tip Msg */
-            _tcsncat(msg, (first_conn ? msg_connecting : _T(", ")), _tsizeof(msg) - _tcslen(msg) - 1);
-            _tcsncat(msg, o.conn[i].config_name, _tsizeof(msg) - _tcslen(msg) - 1);
+            _tcsncat(msg, (first_conn ? msg_connecting : _T(", ")), _countof(msg) - _tcslen(msg) - 1);
+            _tcsncat(msg, o.conn[i].config_name, _countof(msg) - _tcslen(msg) - 1);
             first_conn = FALSE;
         }
     }
 
     if (CountConnState(connected) == 1) {
         /* Append "Connected since and assigned IP" to message */
-        _tcsftime(connected_since, _tsizeof(connected_since), _T("%b %d, %H:%M"),
+        _tcsftime(connected_since, _countof(connected_since), _T("%b %d, %H:%M"),
             localtime(&o.conn[config].connected_since));
 
-        _tcsncat(msg, LoadLocalizedString(IDS_TIP_CONNECTED_SINCE), _tsizeof(msg) - _tcslen(msg) - 1);
-        _tcsncat(msg, connected_since, _tsizeof(msg) - _tcslen(msg) - 1);
+        _tcsncat(msg, LoadLocalizedString(IDS_TIP_CONNECTED_SINCE), _countof(msg) - _tcslen(msg) - 1);
+        _tcsncat(msg, connected_since, _countof(msg) - _tcslen(msg) - 1);
 
         if (_tcslen(o.conn[config].ip) > 0) {
             TCHAR *assigned_ip = LoadLocalizedString(IDS_TIP_ASSIGNED_IP, o.conn[config].ip);
-            _tcsncat(msg, assigned_ip, _tsizeof(msg) - _tcslen(msg) - 1);
+            _tcsncat(msg, assigned_ip, _countof(msg) - _tcslen(msg) - 1);
         }
     }
 
@@ -316,7 +316,7 @@ SetTrayIcon(conn_state_t state)
     ni.hIcon = LoadLocalizedIcon(icon_id);
     ni.uFlags = NIF_MESSAGE | NIF_TIP | NIF_ICON;
     ni.uCallbackMessage = WM_NOTIFYICONTRAY;
-    _tcsncpy(ni.szTip, msg, _tsizeof(ni.szTip));
+    _tcsncpy(ni.szTip, msg, _countof(ni.szTip));
 
     Shell_NotifyIcon(NIM_MODIFY, &ni);
 }
@@ -355,8 +355,8 @@ ShowTrayBalloon(TCHAR *infotitle_msg, TCHAR *info_msg)
     ni.uFlags = NIF_INFO;
     ni.uTimeout = 5000;
     ni.dwInfoFlags = NIIF_INFO;
-    _tcsncpy(ni.szInfo, info_msg, _tsizeof(ni.szInfo));
-    _tcsncpy(ni.szInfoTitle, infotitle_msg, _tsizeof(ni.szInfoTitle));
+    _tcsncpy(ni.szInfo, info_msg, _countof(ni.szInfo));
+    _tcsncpy(ni.szInfoTitle, infotitle_msg, _countof(ni.szInfoTitle));
 
     Shell_NotifyIcon(NIM_MODIFY, &ni);
 }

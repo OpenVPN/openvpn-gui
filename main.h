@@ -24,6 +24,7 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdlib.h>
 #include <tchar.h>
 
 /* Define this to enable DEBUG build */
@@ -61,16 +62,13 @@ struct security_attributes
   SECURITY_DESCRIPTOR sd;
 };
 
-/* Return the number of elements in a TCHAR array */
-#define _tsizeof(x) (sizeof(x) / sizeof(*x))
-
 /* clear an object */
 #define CLEAR(x) memset(&(x), 0, sizeof(x))
 
 /* _sntprintf with guaranteed \0 termination */
 #define _sntprintf_0(buf, ...) \
   do { \
-    __sntprintf_0(buf, _tsizeof(buf), __VA_ARGS__); \
+    __sntprintf_0(buf, _countof(buf), __VA_ARGS__); \
   } while(0);
 
 static inline int
