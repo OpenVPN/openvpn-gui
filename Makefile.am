@@ -79,6 +79,7 @@ openvpn_gui_SOURCES = \
 	registry.c registry.h \
 	scripts.c scripts.h \
 	manage.c manage.h \
+	misc.c misc.h \
 	openvpn_config.c \
 	openvpn_config.h \
 	chartable.h \

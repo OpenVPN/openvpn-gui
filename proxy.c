@@ -39,6 +39,7 @@
 #include "localization.h"
 #include "manage.h"
 #include "openvpn.h"
+#include "misc.h"
 
 extern options_t o;
 
@@ -327,10 +328,6 @@ INT_PTR CALLBACK
 ProxyAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     connection_t *c;
-    TCHAR buf[50];
-    char cmd[70] = "username \"HTTP Proxy\" \"";
-    UINT username_len;
-    int length;
 
     switch (msg)
     {
@@ -345,25 +342,8 @@ ProxyAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         {
         case IDOK:
             c = (connection_t *) GetProp(hwndDlg, cfgProp);
-            username_len = GetDlgItemText(hwndDlg, ID_EDT_PROXY_USER, buf, _countof(buf));
-            if (username_len == 0)
-                return TRUE;
-            length = WideCharToMultiByte(CP_ACP, WC_NO_BEST_FIT_CHARS, buf, -1, cmd + 23, sizeof(cmd) - 23, "_", NULL);
-            memcpy(cmd + length + 22, "\"\0", 2);
-            ManagementCommand(c, cmd, NULL, regular);
-
-            memcpy(cmd, "password", 8);
-            GetDlgItemText(hwndDlg, ID_EDT_PROXY_PASS, buf, _countof(buf));
-            length = WideCharToMultiByte(CP_ACP, WC_NO_BEST_FIT_CHARS, buf, -1, cmd + 23, sizeof(cmd) - 23, "_", NULL);
-            memcpy(cmd + length + 22, "\"\0", 2);
-            ManagementCommand(c, cmd, NULL, regular);
-
-            /* Clear buffers */
-            memset(buf, 'x', sizeof(buf));
-            buf[_countof(buf) - 1] = _T('\0');
-            SetDlgItemText(hwndDlg, ID_EDT_PROXY_USER, buf);
-            SetDlgItemText(hwndDlg, ID_EDT_PROXY_PASS, buf);
-
+            ManagementCommandFromInput(c, "username \"HTTP Proxy\" \"%s\"", hwndDlg, ID_EDT_PROXY_USER);
+            ManagementCommandFromInput(c, "password \"HTTP Proxy\" \"%s\"", hwndDlg, ID_EDT_PROXY_PASS);
             EndDialog(hwndDlg, LOWORD(wParam));
             return TRUE;
         }

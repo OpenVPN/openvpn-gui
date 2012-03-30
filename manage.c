@@ -28,8 +28,9 @@
 #include <malloc.h>
 
 #include "options.h"
-#include "main.h"
 #include "manage.h"
+#include "main.h"
+#include "misc.h"
 
 extern options_t o;
 
@@ -154,6 +155,9 @@ UnqueueCommand(connection_t *c)
     mgmt_cmd_t *cmd = c->manage.cmd_queue;
     if (!cmd)
         return FALSE;
+
+    /* Wipe command as it may contain passwords */
+    memset(cmd->command, 'x', cmd->size);
 
     if (cmd->type == combined)
     {

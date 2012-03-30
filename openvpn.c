@@ -42,6 +42,7 @@
 #include "proxy.h"
 #include "passphrase.h"
 #include "localization.h"
+#include "misc.h"
 
 #define WM_OVPN_STOP    (WM_APP + 10)
 #define WM_OVPN_SUSPEND (WM_APP + 11)
@@ -204,10 +205,6 @@ static INT_PTR CALLBACK
 UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     connection_t *c;
-    TCHAR buf[50];
-    char cmd[70] = "username \"Auth\" \"";
-    UINT username_len;
-    int length;
 
     switch (msg)
     {
@@ -222,25 +219,8 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         switch (LOWORD(wParam))
         {
         case IDOK:
-            username_len = GetDlgItemText(hwndDlg, ID_EDT_AUTH_USER, buf, _countof(buf));
-            if (username_len == 0)
-                return TRUE;
-            length = WideCharToMultiByte(CP_UTF8, 0, buf, -1, cmd + 17, sizeof(cmd) - 17, NULL, NULL);
-            memcpy(cmd + length + 16, "\"\0", 2);
-            ManagementCommand(c, cmd, NULL, regular);
-
-            memcpy(cmd, "password", 8);
-            GetDlgItemText(hwndDlg, ID_EDT_AUTH_PASS, buf, _countof(buf));
-            length = WideCharToMultiByte(CP_UTF8, 0, buf, -1, cmd + 17, sizeof(cmd) - 17, NULL, NULL);
-            memcpy(cmd + length + 16, "\"\0", 2);
-            ManagementCommand(c, cmd, NULL, regular);
-
-            /* Clear buffers */
-            memset(buf, 'x', sizeof(buf));
-            buf[_countof(buf) - 1] = _T('\0');
-            SetDlgItemText(hwndDlg, ID_EDT_AUTH_USER, buf);
-            SetDlgItemText(hwndDlg, ID_EDT_AUTH_PASS, buf);
-
+            ManagementCommandFromInput(c, "username \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_USER);
+            ManagementCommandFromInput(c, "password \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_PASS);
             EndDialog(hwndDlg, LOWORD(wParam));
             return TRUE;
 
@@ -271,9 +251,6 @@ static INT_PTR CALLBACK
 PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     connection_t *c;
-    TCHAR buf[50];
-    char cmd[80] = "password \"Private Key\" \"";
-    UINT length;
 
     switch (msg)
     {
@@ -287,16 +264,7 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         switch (LOWORD(wParam))
         {
         case IDOK:
-            GetDlgItemText(hwndDlg, ID_EDT_PASSPHRASE, buf, _countof(buf));
-            length = WideCharToMultiByte(CP_UTF8, 0, buf, -1, cmd + 24, sizeof(cmd) - 24, NULL, NULL);
-            memcpy(cmd + length + 23, "\"\0", 2);
-            ManagementCommand(c, cmd, NULL, regular);
-
-            /* Clear buffer */
-            memset(buf, 'x', sizeof(buf));
-            buf[_countof(buf) - 1] = _T('\0');
-            SetDlgItemText(hwndDlg, ID_EDT_PASSPHRASE, buf);
-
+            ManagementCommandFromInput(c, "password \"Private Key\" \"%s\"", hwndDlg, ID_EDT_PASSPHRASE);
             EndDialog(hwndDlg, LOWORD(wParam));
             return TRUE;
 
