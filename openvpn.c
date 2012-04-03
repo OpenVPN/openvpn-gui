@@ -190,6 +190,7 @@ OnStateChange(connection_t *c, char *data)
         if (c->failed_psw_attempts >= o.psw_attempts - 1)
             ManagementCommand(c, "auth-retry none", NULL, regular);
 
+        c->state = reconnecting;
         CheckAndSetTrayIcon();
 
         SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_RECONNECTING));
