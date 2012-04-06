@@ -58,8 +58,8 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_DANISH, SUBLANG_NEUTRAL
 BEGIN
     LTEXT "Forbinder til…", ID_TXT_STATUS, 20, 5, 200, 10
-    PUSHBUTTON "Afbryde", ID_DISCONNECT, 50, 190, 50, 14
-    PUSHBUTTON "Tilslutte igen", ID_RESTART, 150, 190, 40, 14
+    PUSHBUTTON "Afbryd", ID_DISCONNECT, 50, 190, 50, 14
+    PUSHBUTTON "Tilslut igen", ID_RESTART, 150, 190, 40, 14
     PUSHBUTTON "Skjul", ID_HIDE, 100, 190, 40, 14
 END
 
@@ -94,7 +94,7 @@ BEGIN
                     13, 16, 200, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Brug indstillinger fra Internet Explorer", \
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
-    AUTORADIOBUTTON "Manuel Konfigurering", ID_RB_PROXY_MANUAL, 13, 46, 81, 10
+    AUTORADIOBUTTON "Manuel konfiguration", ID_RB_PROXY_MANUAL, 13, 46, 81, 10
     AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "SOCKS Proxy", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
     LTEXT "Adresse:", ID_TXT_PROXY_ADDRESS, 20, 77, 32, 10
@@ -164,17 +164,17 @@ BEGIN
     IDS_MENU_SETTINGS "Indstillinger…"
     IDS_MENU_CLOSE "Afslut"
     IDS_MENU_CONNECT "Tilslut"
-    IDS_MENU_DISCONNECT "Afbryde"
-    IDS_MENU_STATUS "Vis Status"
-    IDS_MENU_VIEWLOG "Vis Log"
+    IDS_MENU_DISCONNECT "Afbryd"
+    IDS_MENU_STATUS "Vis status"
+    IDS_MENU_VIEWLOG "Vis log"
     IDS_MENU_EDITCONFIG "Rette konfiguration"
     IDS_MENU_PASSPHRASE "Ændre password"
-    IDS_MENU_SERVICE_START "Starte"
-    IDS_MENU_SERVICE_STOP "Stoppe"
-    IDS_MENU_SERVICE_RESTART "Genstarte"
-    IDS_MENU_SERVICEONLY_START "Tilslutte"
-    IDS_MENU_SERVICEONLY_STOP "Afbryde"
-    IDS_MENU_SERVICEONLY_RESTART "Tilslutte igen"
+    IDS_MENU_SERVICE_START "Start"
+    IDS_MENU_SERVICE_STOP "Stop"
+    IDS_MENU_SERVICE_RESTART "Genstart"
+    IDS_MENU_SERVICEONLY_START "Tilslut"
+    IDS_MENU_SERVICEONLY_STOP "Afbryd"
+    IDS_MENU_SERVICEONLY_RESTART "Tilslut igen"
     IDS_MENU_ASK_STOP_SERVICE "Vil du afbryde? (Stoppe OpenVPN Service)?"
 
     /* Logviewer - Resources */
@@ -217,7 +217,7 @@ BEGIN
     IDS_ERR_AUTOSTART_CONF "Følgende config kunne ikke starte automatisk: %s"
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe på hInputRead fejlramt."
     IDS_NFO_STATE_CONNECTING "Status: Tilslutter"
-    IDS_NFO_CONNECTION_XXX "OpenVPN Tilsluttet (%s)"
+    IDS_NFO_CONNECTION_XXX "OpenVPN tilsluttet (%s)"
     IDS_NFO_STATE_CONN_SCRIPT "Status: Kører tilslutnings-script"
     IDS_NFO_STATE_DISCONN_SCRIPT "Status: Kører afbrydelses-script"
     IDS_ERR_RUN_CONN_SCRIPT "En fejl opstod under kørsel af script: %s"
