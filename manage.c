@@ -36,6 +36,10 @@ extern options_t o;
 
 static mgmt_msg_func rtmsg_handler[mgmt_rtmsg_type_max];
 
+/*
+ * Number of seconds to try connecting to management interface
+ */
+static const time_t max_connect_time = 15;
 
 /*
  * Initialize the real-time notification handlers
@@ -56,15 +60,9 @@ InitManagement(const mgmt_rtmsg_handler *handler)
  * asynchronous socket event notification for it
  */
 BOOL
-OpenManagement(connection_t *c, u_long addr, u_short port)
+OpenManagement(connection_t *c)
 {
     WSADATA wsaData;
-    SOCKADDR_IN skaddr = {
-        .sin_family = AF_INET,
-        .sin_addr.s_addr = addr,
-        .sin_port = htons(port)
-    };
-
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
         return FALSE;
 
@@ -76,7 +74,8 @@ OpenManagement(connection_t *c, u_long addr, u_short port)
         FD_CONNECT|FD_READ|FD_WRITE|FD_CLOSE) != 0)
         return FALSE;
 
-    connect(c->manage.sk, (SOCKADDR *)&skaddr, sizeof(skaddr));
+    connect(c->manage.sk, (SOCKADDR *)&c->manage.skaddr, sizeof(c->manage.skaddr));
+    c->manage.timeout = time(NULL) + max_connect_time;
 
     return TRUE;
 }
@@ -200,8 +199,12 @@ OnManagement(SOCKET sk, LPARAM lParam)
     switch (WSAGETSELECTEVENT(lParam))
     {
     case FD_CONNECT:
-        if (WSAGETSELECTERROR(lParam))
-            SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
+        if (WSAGETSELECTERROR(lParam)) {
+            if (time(NULL) < c->manage.timeout)
+                connect(c->manage.sk, (SOCKADDR *)&c->manage.skaddr, sizeof(c->manage.skaddr));
+            else
+                SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
+        }
         break;
 
     case FD_READ:

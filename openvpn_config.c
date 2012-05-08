@@ -78,23 +78,26 @@ ConfigAlreadyExists(TCHAR *newconfig)
 static void
 AddConfigFileToList(int config, TCHAR *filename, TCHAR *config_dir)
 {
-    connection_t *conn = &o.conn[config];
+    connection_t *c = &o.conn[config];
     int i;
 
-    _tcsncpy(conn->config_file, filename, _countof(conn->config_file) - 1);
-    _tcsncpy(conn->config_dir, config_dir, _countof(conn->config_dir) - 1);
-    _tcsncpy(conn->config_name, conn->config_file, _countof(conn->config_name) - 1);
-    conn->config_name[_tcslen(conn->config_name) - _tcslen(o.ext_string) - 1] = _T('\0');
-    _sntprintf_0(conn->log_path, _T("%s\\%s.log"), o.log_dir, conn->config_name);
-    conn->manage.sk = INVALID_SOCKET;
-    conn->manage.port = 25340 + config;
+    _tcsncpy(c->config_file, filename, _countof(c->config_file) - 1);
+    _tcsncpy(c->config_dir, config_dir, _countof(c->config_dir) - 1);
+    _tcsncpy(c->config_name, c->config_file, _countof(c->config_name) - 1);
+    c->config_name[_tcslen(c->config_name) - _tcslen(o.ext_string) - 1] = _T('\0');
+    _sntprintf_0(c->log_path, _T("%s\\%s.log"), o.log_dir, c->config_name);
+
+    c->manage.sk = INVALID_SOCKET;
+    c->manage.skaddr.sin_family = AF_INET;
+    c->manage.skaddr.sin_addr.s_addr = inet_addr("127.0.0.10");
+    c->manage.skaddr.sin_port = htons(25340 + config);
 
     /* Check if connection should be autostarted */
     for (i = 0; i < MAX_CONFIGS && o.auto_connect[i]; ++i)
     {
-        if (_tcsicmp(conn->config_file, o.auto_connect[i]) == 0)
+        if (_tcsicmp(c->config_file, o.auto_connect[i]) == 0)
         {
-            conn->auto_connect = true;
+            c->auto_connect = true;
             break;
         }
     }

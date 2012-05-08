@@ -66,7 +66,8 @@ struct connection {
 
     struct {
         SOCKET sk;
-        u_short port;
+        SOCKADDR_IN skaddr;
+        time_t timeout;
         char password[16];
         mgmt_cmd_t *cmd_queue;
     } manage;

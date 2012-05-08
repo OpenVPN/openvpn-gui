@@ -539,7 +539,7 @@ ThreadOpenVPNStatus(void *p)
     SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONNECTING));
     SetWindowText(c->hwndStatus, LoadLocalizedString(IDS_NFO_CONNECTION_XXX, conn_name));
 
-    if (!OpenManagement(c, inet_addr("127.0.0.10"), c->manage.port))
+    if (!OpenManagement(c))
         PostMessage(c->hwndStatus, WM_CLOSE, 0, 0);
 
     if (o.silent_connection[0] == '0')
@@ -660,11 +660,12 @@ StartOpenVPN(connection_t *c)
     /* Construct command line */
     _sntprintf_0(cmdline, _T("openvpn "
         "--config \"%s\" %s --service %s 0 --log%s \"%s\" "
-        "--management 127.0.0.10 %hd stdin --auth-retry interact "
+        "--management %S %hd stdin --auth-retry interact "
         "--management-hold --management-query-passwords --tls-exit"),
         c->config_file, proxy_string, exit_event_name,
         (o.append_string[0] == '1' ? _T("-append") : _T("")),
-        c->log_path, c->manage.port);
+        c->log_path, inet_ntoa(c->manage.skaddr.sin_addr),
+        ntohs(c->manage.skaddr.sin_port));
 
     /* Try to open the service pipe */
     service = CreateFile(_T("\\\\.\\pipe\\openvpn\\service"),

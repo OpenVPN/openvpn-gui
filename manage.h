@@ -63,7 +63,7 @@ typedef struct mgmt_cmd {
 
 
 void InitManagement(const mgmt_rtmsg_handler *handler);
-BOOL OpenManagement(connection_t *, u_long, u_short);
+BOOL OpenManagement(connection_t *);
 BOOL ManagementCommand(connection_t *, char *, mgmt_msg_func, mgmt_cmd_type);
 
 void OnManagement(SOCKET, LPARAM);
