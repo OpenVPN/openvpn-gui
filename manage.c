@@ -203,7 +203,7 @@ OnManagement(SOCKET sk, LPARAM lParam)
             if (time(NULL) < c->manage.timeout)
                 connect(c->manage.sk, (SOCKADDR *)&c->manage.skaddr, sizeof(c->manage.skaddr));
             else
-                SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
+                rtmsg_handler[stop](c, "");
         }
         break;
 
