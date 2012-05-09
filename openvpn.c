@@ -331,8 +331,11 @@ OnStop(connection_t *c, UNUSED char *msg)
         SetStatusWinIcon(c->hwndStatus, ID_ICO_DISCONNECTED);
         EnableWindow(GetDlgItem(c->hwndStatus, ID_DISCONNECT), FALSE);
         EnableWindow(GetDlgItem(c->hwndStatus, ID_RESTART), FALSE);
-        SetForegroundWindow(c->hwndStatus);
-        ShowWindow(c->hwndStatus, SW_SHOW);
+        if (o.silent_connection[0] == '0')
+        {
+            SetForegroundWindow(c->hwndStatus);
+            ShowWindow(c->hwndStatus, SW_SHOW);
+        }
         ShowLocalizedMsg(IDS_NFO_CONN_TERMINATED, c->config_name);
         SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
         break;
@@ -349,9 +352,12 @@ OnStop(connection_t *c, UNUSED char *msg)
         EnableWindow(GetDlgItem(c->hwndStatus, ID_DISCONNECT), FALSE);
         EnableWindow(GetDlgItem(c->hwndStatus, ID_RESTART), FALSE);
         SetStatusWinIcon(c->hwndStatus, ID_ICO_DISCONNECTED);
-        SetForegroundWindow(c->hwndStatus);
         SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(txt_id));
-        ShowWindow(c->hwndStatus, SW_SHOW);
+        if (o.silent_connection[0] == '0')
+        {
+            SetForegroundWindow(c->hwndStatus);
+            ShowWindow(c->hwndStatus, SW_SHOW);
+        }
         ShowLocalizedMsg(msg_id, c->config_name);
         SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
         break;
@@ -465,7 +471,6 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         {
         case ID_DISCONNECT:
             SetFocus(GetDlgItem(c->hwndStatus, ID_EDT_LOG));
-            c->state = disconnecting;
             StopOpenVPN(c);
             return TRUE;
 
