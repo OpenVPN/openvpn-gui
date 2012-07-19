@@ -34,6 +34,7 @@ typedef enum {
     hold,
     log,
     password,
+    proxy,
     state,
     needok,
     needstr,

@@ -102,3 +102,24 @@ ManagementCommandFromInput(connection_t *c, LPSTR fmt, HWND hDlg, int id)
     return retval;
 }
 
+
+/*
+ * Various string helper functions
+ */
+BOOL
+streq(LPCSTR str1, LPCSTR str2)
+{
+    return (strcmp(str1, str2) == 0);
+}
+
+BOOL
+wcsbegins(LPCWSTR str, LPCWSTR begin)
+{
+    return (wcsncmp(str, begin, wcslen(begin)) == 0);
+}
+
+BOOL
+wcseq(LPCWSTR str1, LPCWSTR str2)
+{
+    return (wcscmp(str1, str2) == 0);
+}

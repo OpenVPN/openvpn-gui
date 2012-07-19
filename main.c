@@ -105,6 +105,7 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
       { log,      OnLogLine },
       { state,    OnStateChange },
       { password, OnPassword },
+      { proxy,    OnProxy },
       { stop,     OnStop },
       { 0,        NULL }
   };

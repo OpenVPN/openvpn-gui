@@ -621,7 +621,6 @@ StartOpenVPN(connection_t *c)
 {
     TCHAR cmdline[1024];
     TCHAR *options = cmdline + 8;
-    TCHAR proxy_string[100];
     TCHAR exit_event_name[17];
     HANDLE hStdInRead = NULL, hStdInWrite = NULL;
     HANDLE hNul = NULL, hThread = NULL, service = NULL;
@@ -659,18 +658,14 @@ StartOpenVPN(connection_t *c)
     /* Create a management interface password */
     GetRandomPassword(c->manage.password, sizeof(c->manage.password) - 1);
 
-    /* Construct proxy string to append to command line */
-    ConstructProxyCmdLine(proxy_string, _countof(proxy_string));
-
     /* Construct command line */
     _sntprintf_0(cmdline, _T("openvpn "
-        "--config \"%s\" %s --service %s 0 --log%s \"%s\" "
-        "--management %S %hd stdin --auth-retry interact "
-        "--management-hold --management-query-passwords --tls-exit"),
-        c->config_file, proxy_string, exit_event_name,
-        (o.append_string[0] == '1' ? _T("-append") : _T("")),
-        c->log_path, inet_ntoa(c->manage.skaddr.sin_addr),
-        ntohs(c->manage.skaddr.sin_port));
+        "--config \"%s\" --service %s 0 --log%s \"%s\" --auth-retry interact "
+        "--management %S %hd stdin --management-query-passwords %s"
+        "--management-hold --tls-exit"), c->config_file, exit_event_name,
+        (o.append_string[0] == '1' ? _T("-append") : _T("")), c->log_path,
+        inet_ntoa(c->manage.skaddr.sin_addr), ntohs(c->manage.skaddr.sin_port),
+        (o.proxy_source != config ? _T("--management-query-proxy ") : _T("")));
 
     /* Try to open the service pipe */
     service = CreateFile(_T("\\\\.\\pipe\\openvpn\\service"),

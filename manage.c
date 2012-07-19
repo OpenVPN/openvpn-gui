@@ -256,6 +256,11 @@ OnManagement(SOCKET sk, LPARAM lParam)
                 if (rtmsg_handler[password])
                     rtmsg_handler[password](c, pos + 9);
             }
+            else if (strncmp(pos, "PROXY:", 6) == 0)
+            {
+                if (rtmsg_handler[proxy])
+                    rtmsg_handler[proxy](c, pos + 6);
+            }
             else if (strncmp(pos, "INFO:", 5) == 0)
             {
                 /* delay until management interface accepts input */

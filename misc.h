@@ -24,4 +24,8 @@
 
 BOOL ManagementCommandFromInput(connection_t *, LPSTR, HWND, int);
 
+BOOL streq(LPCSTR, LPCSTR);
+BOOL wcsbegins(LPCWSTR, LPCWSTR);
+BOOL wcseq(LPCWSTR, LPCWSTR);
+
 #endif
