@@ -306,7 +306,11 @@ OnPassword(connection_t *c, char *msg)
     }
     else if (strstr(msg, "'HTTP Proxy'"))
     {
-        LocalizedDialogBoxParam(ID_DLG_PROXY_AUTH, ProxyAuthDialogFunc, (LPARAM) c);
+        QueryProxyAuth(c, http);
+    }
+    else if (strstr(msg, "'SOCKS Proxy'"))
+    {
+        QueryProxyAuth(c, socks);
     }
 }
 

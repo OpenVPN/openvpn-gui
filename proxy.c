@@ -324,10 +324,12 @@ GetProxyRegistrySettings()
 }
 
 
-INT_PTR CALLBACK
+static INT_PTR CALLBACK
 ProxyAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+    LPCSTR proxy_type;
     connection_t *c;
+    char fmt[32];
 
     switch (msg)
     {
@@ -342,8 +344,14 @@ ProxyAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         {
         case IDOK:
             c = (connection_t *) GetProp(hwndDlg, cfgProp);
-            ManagementCommandFromInput(c, "username \"HTTP Proxy\" \"%s\"", hwndDlg, ID_EDT_PROXY_USER);
-            ManagementCommandFromInput(c, "password \"HTTP Proxy\" \"%s\"", hwndDlg, ID_EDT_PROXY_PASS);
+            proxy_type = (c->proxy_type == http ? "HTTP" : "SOCKS");
+
+            snprintf(fmt, sizeof(fmt), "username \"%s Proxy\" \"%%s\"", proxy_type);
+            ManagementCommandFromInput(c, fmt, hwndDlg, ID_EDT_PROXY_USER);
+
+            snprintf(fmt, sizeof(fmt), "password \"%s Proxy\" \"%%s\"", proxy_type);
+            ManagementCommandFromInput(c, fmt, hwndDlg, ID_EDT_PROXY_PASS);
+
             EndDialog(hwndDlg, LOWORD(wParam));
             return TRUE;
         }
@@ -358,6 +366,14 @@ ProxyAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         break;
     }
     return FALSE;
+}
+
+
+void
+QueryProxyAuth(connection_t *c, proxy_t type)
+{
+    c->proxy_type = type;
+    LocalizedDialogBoxParam(ID_DLG_PROXY_AUTH, ProxyAuthDialogFunc, (LPARAM) c);
 }
 
 

@@ -41,6 +41,24 @@ typedef struct connection connection_t;
 #define MAX_CONFIG_SUBDIRS  50  /* Max number of subdirs to scan for configs */
 
 
+typedef enum {
+    service_noaccess     = -1,
+    service_disconnected =  0,
+    service_connecting   =  1,
+    service_connected    =  2
+} service_state_t;
+
+typedef enum {
+    config,
+    windows,
+    manual
+} proxy_source_t;
+
+typedef enum {
+    http,
+    socks
+} proxy_t;
+
 /* connection states */
 typedef enum {
     disconnected,
@@ -63,6 +81,7 @@ struct connection {
     conn_state_t state;             /* State the connection currently is in */
     int failed_psw_attempts;        /* # of failed attempts entering password(s) */
     time_t connected_since;         /* Time when the connection was established */
+    proxy_t proxy_type;             /* Set during querying proxy credentials */
 
     struct {
         SOCKET sk;
@@ -76,25 +95,6 @@ struct connection {
     DWORD threadId;
     HWND hwndStatus;
 };
-
-
-typedef enum {
-    service_noaccess     = -1,
-    service_disconnected =  0,
-    service_connecting   =  1,
-    service_connected    =  2
-} service_state_t;
-
-typedef enum {
-    config,
-    windows,
-    manual
-} proxy_source_t;
-
-typedef enum {
-    http,
-    socks
-} proxy_t;
 
 /* All options used within OpenVPN GUI */
 typedef struct {

@@ -23,7 +23,7 @@
 #define PROXY_H
 
 INT_PTR CALLBACK ProxySettingsDialogFunc(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK ProxyAuthDialogFunc(HWND, UINT, WPARAM, LPARAM);
+void QueryProxyAuth(connection_t *, proxy_t);
 
 void OnProxy(connection_t *, char *);
 
