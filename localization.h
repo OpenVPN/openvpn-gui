@@ -25,6 +25,7 @@
 PTSTR LoadLocalizedString(const UINT, ...);
 int LoadLocalizedStringBuf(PTSTR, const int, const UINT, ...);
 void ShowLocalizedMsg(const UINT, ...);
+int ShowLocalizedMsgEx(const UINT, LPCTSTR, const UINT, ...);
 HICON LoadLocalizedIcon(const UINT);
 LPCDLGTEMPLATE LocalizedDialogResource(const UINT);
 INT_PTR LocalizedDialogBoxParam(const UINT, DLGPROC, const LPARAM);

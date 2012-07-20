@@ -40,7 +40,7 @@
 
 extern options_t o;
 
-static const LANGID fallbackLangId = MAKELANGID(LANG_ENGLISH, SUBLANG_NEUTRAL);
+static const LANGID fallbackLangId = MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT);
 static LANGID gui_language;
 
 static HRSRC
@@ -176,12 +176,30 @@ LoadLocalizedStringBuf(PTSTR buffer, int bufferSize, const UINT stringId, ...)
 }
 
 
+static int
+__ShowLocalizedMsgEx(const UINT type, LPCTSTR caption, const UINT stringId, va_list args)
+{
+    return MessageBoxEx(NULL, __LoadLocalizedString(stringId, args), caption,
+        type | MB_SETFOREGROUND, GetGUILanguage());
+}
+
+
+int
+ShowLocalizedMsgEx(const UINT type, LPCTSTR caption, const UINT stringId, ...)
+{
+    va_list args;
+    va_start(args, stringId);
+    return __ShowLocalizedMsgEx(type, caption, stringId, args);
+    va_end(args);
+}
+
+
 void
 ShowLocalizedMsg(const UINT stringId, ...)
 {
     va_list args;
     va_start(args, stringId);
-    MessageBox(NULL, __LoadLocalizedString(stringId, args), _T(PACKAGE_NAME), MB_OK | MB_SETFOREGROUND);
+    __ShowLocalizedMsgEx(MB_OK, _T(PACKAGE_NAME), stringId, args);
     va_end(args);
 }
 

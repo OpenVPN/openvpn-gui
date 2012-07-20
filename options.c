@@ -46,7 +46,7 @@ add_option(options_t *options, int i, TCHAR **p)
     {
         TCHAR caption[200];
         LoadLocalizedStringBuf(caption, _countof(caption), IDS_NFO_USAGECAPTION);
-        MessageBox(NULL, LoadLocalizedString(IDS_NFO_USAGE), caption, MB_OK);
+        ShowLocalizedMsgEx(MB_OK, caption, IDS_NFO_USAGE);
         exit(0);
     }
     else if (streq(p[0], _T("connect")) && p[1])

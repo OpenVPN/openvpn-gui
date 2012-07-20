@@ -471,32 +471,26 @@ ShowSettingsDialog()
 }
 
 
-void CloseApplication(HWND hwnd)
+void
+CloseApplication(HWND hwnd)
 {
-  int i, ask_exit=0;
+    int i;
 
-  if (o.service_state == service_connected)
+    if (o.service_state == service_connected
+    && ShowLocalizedMsgEx(MB_YESNO, _T("Exit OpenVPN"), IDS_NFO_SERVICE_ACTIVE_EXIT) == IDNO)
+            return;
+
+    for (i = 0; i < o.num_configs; i++)
     {
-      if (MessageBox(NULL, LoadLocalizedString(IDS_NFO_SERVICE_ACTIVE_EXIT), _T("Exit OpenVPN"), MB_YESNO) == IDNO)
-        {
-          return;
-        }
+        if (o.conn[i].state == disconnected)
+            continue;
+
+        /* Ask for confirmation if still connected */
+        if (ShowLocalizedMsgEx(MB_YESNO, _T("Exit OpenVPN"), IDS_NFO_ACTIVE_CONN_EXIT) == IDNO)
+            return;
     }
 
-  for (i=0; i < o.num_configs; i++) {
-    if (o.conn[i].state != disconnected) {
-      ask_exit=1;
-      break;
-    }
-  }
-  if (ask_exit) {
-    /* aks for confirmation */
-    if (MessageBox(NULL, LoadLocalizedString(IDS_NFO_ACTIVE_CONN_EXIT), _T("Exit OpenVPN"), MB_YESNO) == IDNO)
-      {
-        return;
-      }
-  }
-  DestroyWindow(hwnd);  
+    DestroyWindow(hwnd);
 }
 
 #ifdef DEBUG
