@@ -25,6 +25,7 @@
 #endif
 
 #include <windows.h>
+#include <windowsx.h>
 #include <tchar.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -219,6 +220,14 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         c = (connection_t *) GetProp(hwndDlg, cfgProp);
         switch (LOWORD(wParam))
         {
+        case ID_EDT_AUTH_USER:
+            if (HIWORD(wParam) == EN_UPDATE)
+            {
+                int len = Edit_GetTextLength((HWND) lParam);
+                EnableWindow(GetDlgItem(hwndDlg, IDOK), (len ? TRUE : FALSE));
+            }
+            break;
+
         case IDOK:
             ManagementCommandFromInput(c, "username \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_USER);
             ManagementCommandFromInput(c, "password \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_PASS);

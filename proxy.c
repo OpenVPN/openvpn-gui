@@ -26,6 +26,7 @@
 #endif
 
 #include <windows.h>
+#include <windowsx.h>
 #include <prsht.h>
 #include <tchar.h>
 #include <winhttp.h>
@@ -342,6 +343,14 @@ ProxyAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
     case WM_COMMAND:
         switch (LOWORD(wParam))
         {
+        case ID_EDT_PROXY_USER:
+            if (HIWORD(wParam) == EN_UPDATE)
+            {
+                int len = Edit_GetTextLength((HWND) lParam);
+                EnableWindow(GetDlgItem(hwndDlg, IDOK), (len ? TRUE : FALSE));
+            }
+            break;
+
         case IDOK:
             c = (connection_t *) GetProp(hwndDlg, cfgProp);
             proxy_type = (c->proxy_type == http ? "HTTP" : "SOCKS");
