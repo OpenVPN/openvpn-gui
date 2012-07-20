@@ -47,7 +47,7 @@ GetDlgItemTextUtf8(HWND hDlg, int id, LPSTR *str, int *len)
     *len = 0;
 
     ucs2_len = GetWindowTextLength(GetDlgItem(hDlg, id)) + 1;
-    if (ucs2_len == 0)
+    if (ucs2_len == 1)
         goto out;
 
     ucs2_str = malloc(ucs2_len * sizeof(*ucs2_str));
@@ -77,7 +77,7 @@ out:
  * Generate a management command from user input and send it
  */
 BOOL
-ManagementCommandFromInput(connection_t *c, LPSTR fmt, HWND hDlg, int id)
+ManagementCommandFromInput(connection_t *c, LPCSTR fmt, HWND hDlg, int id)
 {
     BOOL retval = FALSE;
     LPSTR input, cmd;
@@ -95,9 +95,12 @@ ManagementCommandFromInput(connection_t *c, LPSTR fmt, HWND hDlg, int id)
     }
 
     /* Clear buffers with potentially secret content */
-    memset(input, 'x', input_len - 1);
-    SetDlgItemTextA(hDlg, id, input);
-    free(input);
+    if (input_len)
+    {
+        memset(input, 'x', input_len - 1);
+        SetDlgItemTextA(hDlg, id, input);
+        free(input);
+    }
 
     return retval;
 }

@@ -22,7 +22,7 @@
 #ifndef MISC_H
 #define MISC_H
 
-BOOL ManagementCommandFromInput(connection_t *, LPSTR, HWND, int);
+BOOL ManagementCommandFromInput(connection_t *, LPCSTR, HWND, int);
 
 BOOL streq(LPCSTR, LPCSTR);
 BOOL wcsbegins(LPCWSTR, LPCWSTR);
