@@ -228,6 +228,7 @@ BEGIN
                          "they reside in diffrent folders."
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "Error opening debug file (%s) for output."
+    IDS_ERR_CREATE_PATH "Could not create %s path:\n%s"
     IDS_ERR_LOAD_RICHED20 "Could not load RICHED20.DLL."
     IDS_ERR_SHELL_DLL_VERSION "Your shell32.dll version is to low (0x%lx). You need at least version 5.0."
     IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI is already running."

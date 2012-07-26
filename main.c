@@ -41,6 +41,7 @@
 #include "openvpn-gui-res.h"
 #include "localization.h"
 #include "manage.h"
+#include "misc.h"
 
 #ifndef DISABLE_CHANGE_PASSWORD
 #include <openssl/evp.h>
@@ -167,6 +168,12 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
     exit(1);
   }
   if (!CheckVersion()) {
+    exit(1);
+  }
+
+  if (!EnsureDirExists(o.log_dir))
+  {
+    ShowLocalizedMsg(IDS_ERR_CREATE_PATH, _T("log_dir"), o.log_dir);
     exit(1);
   }
 

@@ -24,6 +24,8 @@
 #endif
 
 #include <windows.h>
+#include <tchar.h>
+#include <string.h>
 #include <stdlib.h>
 #include <malloc.h>
 
@@ -103,6 +105,42 @@ ManagementCommandFromInput(connection_t *c, LPCSTR fmt, HWND hDlg, int id)
     }
 
     return retval;
+}
+
+
+/*
+ * Ensures the given directory exists, by checking for and
+ * creating missing parts of the path.
+ * If the path does not exist and cannot be created return FALSE.
+ */
+BOOL
+EnsureDirExists(LPTSTR dir)
+{
+    DWORD attr = GetFileAttributes(dir);
+    if (attr == INVALID_FILE_ATTRIBUTES)
+    {
+        DWORD error = GetLastError();
+        if (error == ERROR_PATH_NOT_FOUND)
+        {
+            LPTSTR pos = _tcsrchr(dir, '\\');
+            if (pos == NULL)
+                return FALSE;
+
+            *pos = '\0';
+            BOOL ret = EnsureDirExists(dir);
+            *pos = '\\';
+            if (ret == FALSE)
+                return FALSE;
+        }
+        else if (error != ERROR_FILE_NOT_FOUND)
+            return FALSE;
+
+        /* No error if directory already exists */
+        return (CreateDirectory(dir, NULL) == TRUE
+            ||  GetLastError() == ERROR_ALREADY_EXISTS);
+    }
+
+    return (attr & FILE_ATTRIBUTE_DIRECTORY ? TRUE : FALSE);
 }
 
 

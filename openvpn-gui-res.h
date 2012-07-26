@@ -166,6 +166,7 @@
 #define IDS_NFO_SERVICE_STOPPED         1306
 #define IDS_NFO_ACTIVE_CONN_EXIT        1307
 #define IDS_NFO_SERVICE_ACTIVE_EXIT     1308
+#define IDS_ERR_CREATE_PATH             1309
 
 /* Program Options Related */
 #define IDS_NFO_USAGE                   1401
