@@ -106,12 +106,12 @@ LoadStringLang(UINT stringId, LANGID langId, PTSTR buffer, int bufferSize, va_li
     /* find resource block for string */
     HRSRC res = FindResourceLang(RT_STRING, resBlockId, langId);
     if (res == NULL)
-        return 0;
+        goto err;
 
     /* get pointer to first entry in resource block */
     entry = (PWCH) LoadResource(o.hInstance, res);
     if (entry == NULL)
-        return 0;
+        goto err;
 
     /* search for string in block */
     for (int i = 0; i < 16; i++)
@@ -139,6 +139,11 @@ LoadStringLang(UINT stringId, LANGID langId, PTSTR buffer, int bufferSize, va_li
         free(formatStr);
         return _tcslen(buffer);
     }
+
+err:
+    /* not found, try again with the default language */
+    if (langId != fallbackLangId)
+        return LoadStringLang(stringId, fallbackLangId, buffer, bufferSize, args);
 
     return 0;
 }
