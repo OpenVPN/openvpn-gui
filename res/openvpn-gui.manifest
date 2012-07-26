@@ -5,7 +5,7 @@ manifestVersion="1.0">
     name="OpenVPN.GUI.Manifest"
     version="1.0.0.0"
     type="win32"/>
-<description>Windows Shell</description>
+<description>OpenVPN GUI for Windows</description>
 <dependency>
     <dependentAssembly>
         <assemblyIdentity
