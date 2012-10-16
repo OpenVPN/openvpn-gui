@@ -83,9 +83,25 @@ ManagementCommandFromInput(connection_t *c, LPCSTR fmt, HWND hDlg, int id)
 {
     BOOL retval = FALSE;
     LPSTR input, cmd;
-    int input_len, cmd_len;
+    int input_len, cmd_len, pos;
 
     GetDlgItemTextUtf8(hDlg, id, &input, &input_len);
+
+    /* Escape input if needed */
+    for (pos = 0; pos < input_len; ++pos)
+    {
+        if (input[pos] == '\\' || input[pos] == '"')
+        {
+            LPSTR buf = realloc(input, ++input_len + 1);
+            if (buf == NULL)
+                goto out;
+
+            input = buf;
+            memmove(input + pos + 1, input + pos, input_len - pos + 1);
+            input[pos] = '\\';
+            pos += 1;
+        }
+    }
 
     cmd_len = input_len + strlen(fmt);
     cmd = malloc(cmd_len);
@@ -96,10 +112,11 @@ ManagementCommandFromInput(connection_t *c, LPCSTR fmt, HWND hDlg, int id)
         free(cmd);
     }
 
+out:
     /* Clear buffers with potentially secret content */
     if (input_len)
     {
-        memset(input, 'x', input_len - 1);
+        memset(input, 'x', input_len);
         SetDlgItemTextA(hDlg, id, input);
         free(input);
     }
