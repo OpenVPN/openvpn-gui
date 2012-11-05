@@ -1,0 +1,342 @@
+/*
+ *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
+ *
+ *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
+ *                2009 Heiko Hund <heikoh@users.sf.net>
+ *                2012 Roman Azarenko <x12ozmouse@ya.ru>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program (see the file COPYING included with this
+ *  distribution); if not, write to the Free Software Foundation, Inc.,
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+/* Passphrase Dialog */
+ID_DLG_PASSPHRASE DIALOGEX 6, 18, 120, 51
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+EXSTYLE WS_EX_TOPMOST
+CAPTION "OpenVPN"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Введите пароль:", 201, 6, 6, 100, 10
+    EDITTEXT ID_EDT_PASSPHRASE, 6, 17, 107, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "OK", IDOK, 6, 33, 50, 14
+    PUSHBUTTON "Отмена", IDCANCEL, 64, 33, 50, 14
+END
+
+/* Auth Username/Password Dialog */
+ID_DLG_AUTH DIALOG 6, 18, 180, 62
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+CAPTION "OpenVPN - Аутентификация пользователя"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Имя пользователя:", 0, 6, 9, 70, 10
+    LTEXT "Пароль:", 0, 6, 26, 70, 10
+    EDITTEXT ID_EDT_AUTH_USER, 80, 6, 94, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_AUTH_PASS, 80, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "OK", IDOK, 30, 42, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "Отмена", IDCANCEL, 100, 42, 52, 14
+END
+
+/* Status Dialog */
+ID_DLG_STATUS DIALOG 6, 18, 380, 210
+STYLE WS_SIZEBOX | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | DS_CENTER
+CAPTION "OpenVPN"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Подключение…", ID_TXT_STATUS, 20, 5, 200, 10
+    PUSHBUTTON "Отключиться", ID_DISCONNECT, 50, 190, 50, 14
+    PUSHBUTTON "Переподключиться", ID_RESTART, 150, 190, 70, 14
+    PUSHBUTTON "Скрыть", ID_HIDE, 100, 190, 50, 14
+END
+
+/* Change Passphrase Dialog */
+ID_DLG_CHGPASS DIALOG 6, 18, 193, 82
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "OpenVPN - Смена пароля"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Старый пароль:", 171, 6, 9, 85, 10
+    LTEXT "Новый пароль:", 172, 6, 26, 85, 10
+    LTEXT "Подтверждение пароля:", 173, 6, 42, 85, 10
+    EDITTEXT ID_EDT_PASS_CUR, 95, 6, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PASS_NEW, 95, 23, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PASS_NEW2, 95, 39, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "OK", IDOK, 40, 59, 50, 14
+    PUSHBUTTON "Отмена", IDCANCEL, 103, 59, 50, 14
+    LTEXT "", ID_TXT_KEYFORMAT, 0, 0, 0, 0
+    LTEXT "", ID_TXT_KEYFILE, 0, 0, 0, 0
+END
+
+/* Proxy Settings Dialog */
+ID_DLG_PROXY DIALOG 6, 18, 249, 104
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Прокси-сервер"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+BEGIN
+    GROUPBOX "   ", 201, 6, 46, 235, 52
+    AUTORADIOBUTTON "Использовать настройки файла конфигурации OpenVPN", ID_RB_PROXY_OPENVPN, \
+                    13, 16, 210, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Использовать системные настройки прокси-сервера", \
+                    ID_RB_PROXY_MSIE, 13, 31, 200, 10
+    AUTORADIOBUTTON "Ручная настройка", ID_RB_PROXY_MANUAL, 13, 46, 79, 10
+    AUTORADIOBUTTON "HTTP-прокси", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "SOCKS-прокси", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
+    LTEXT "Адрес:", ID_TXT_PROXY_ADDRESS, 20, 77, 25, 10
+    RTEXT "Порт:", ID_TXT_PROXY_PORT, 171, 77, 20, 10
+    EDITTEXT ID_EDT_PROXY_ADDRESS, 47, 75, 118, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PROXY_PORT, 196, 75, 30, 12, ES_AUTOHSCROLL
+END
+
+/* General Settings Dialog */
+ID_DLG_GENERAL DIALOGEX 6, 18, 249, 104
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Общие"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+BEGIN
+    GROUPBOX "Интерфейс пользователя", 201, 6, 12, 235, 30
+    LTEXT "Язык:", ID_TXT_LANGUAGE, 17, 25, 23, 12
+    COMBOBOX ID_CMB_LANGUAGE, 42, 23, 186, 400, CBS_DROPDOWNLIST | WS_TABSTOP
+END
+
+/* About Dialog */
+ID_DLG_ABOUT DIALOG 6, 18, 249, 104
+STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "О программе"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+BEGIN
+    ICON ID_ICO_APP, 0, 8, 16, 21, 20
+    LTEXT "OpenVPN GUI v" PACKAGE_VERSION " - графичсекий интерфейс Windows для OpenVPN\n" \
+          "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n" \
+          "http://openvpn.se/", 0, 36, 15, 206, 26
+    LTEXT "OpenVPN - приложение для безопасного туннелирования IP-сетей " \
+          "через единственный UDP-порт с поддержкой аутентификации сессий " \
+          "и обмена ключами на основе SSL/TLS, шифрования, аутенцификации " \
+          "и сжатия пакетов.\n" \
+          "\n" \
+          "Copyright (C) 2002-2005 OpenVPN Solutions LLC <info@openvpn.net>\n" \
+          "http://openvpn.net/", 0, 8, 45, 235, 56
+END
+
+/* Proxy Authentication Dialog */
+ID_DLG_PROXY_AUTH DIALOG 29, 23, 181, 63
+STYLE DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER
+CAPTION "OpenVPN - Аутентификация прокси-сервера"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+BEGIN
+    RTEXT "Имя пользователя:", 201, 8, 8, 66, 10
+    EDITTEXT ID_EDT_PROXY_USER, 78, 7, 94, 12, ES_AUTOHSCROLL
+    RTEXT "Пароль:", 202, 8, 24, 66, 10
+    EDITTEXT ID_EDT_PROXY_PASS, 78, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "OK", IDOK, 78, 43, 40, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+END
+
+STRINGTABLE
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+BEGIN
+    IDS_LANGUAGE_NAME "Русский - Russian"
+
+    /* Tray - Resources */
+    IDS_TIP_DEFAULT "OpenVPN GUI "
+    IDS_TIP_CONNECTED "\nПодключен к: "
+    IDS_TIP_CONNECTING "\nПодключение к: "
+    IDS_TIP_CONNECTED_SINCE "\nПодключен с: "
+    IDS_TIP_ASSIGNED_IP "\nНазначенный IP: %s"
+    IDS_MENU_SERVICE "Служба OpenVPN"
+    IDS_MENU_SETTINGS "Настройки…"
+    IDS_MENU_CLOSE "Выход"
+    IDS_MENU_CONNECT "Подключиться"
+    IDS_MENU_DISCONNECT "Отключится"
+    IDS_MENU_STATUS "Отобразить состояние"
+    IDS_MENU_VIEWLOG "Показать журнал"
+    IDS_MENU_EDITCONFIG "Редактировать конфигурацию"
+    IDS_MENU_PASSPHRASE "Сменить пароль"
+    IDS_MENU_SERVICE_START "Запустить"
+    IDS_MENU_SERVICE_STOP "Остановить"
+    IDS_MENU_SERVICE_RESTART "Перезапустить"
+    IDS_MENU_SERVICEONLY_START "Подключиться"
+    IDS_MENU_SERVICEONLY_STOP "Отключиться"
+    IDS_MENU_SERVICEONLY_RESTART "Переподключиться"
+    IDS_MENU_ASK_STOP_SERVICE "Вы хотите отключиться (остановить службу OpenVPN)?"
+
+    /* Logviewer - Resources */
+    IDS_ERR_START_LOG_VIEWER "Ощибка запуска просмотровщика журнала: %s"
+    IDS_ERR_START_CONF_EDITOR "Ошибка запуска редактора конфигурации: %s"
+
+    /* OpenVPN */
+    IDS_ERR_MANY_CONFIGS "OpenVPN GUI не поддерживает более %d конфигураций. Пожалуйста свяжитесь с автором, если вам нужно больше."
+    IDS_ERR_ONE_CONN_OLD_VER "Одновременно вы можете использовать только одно соединение, если вы используете OpenVPN версии старее 2.0-beta6."
+    IDS_ERR_STOP_SERV_OLD_VER "Вы не можете использовать OpenVPN GUI для запуска подключения, пока запущена служба OpenVPN (с OpenVPN 1.5/1.6). Сначала остановите службу OpenVPN, если хотите использовать OpenVPN GUI."
+    IDS_ERR_CREATE_EVENT "Ошибка выполнения CreateEvent при выходе: %s"
+    IDS_ERR_UNKNOWN_PRIORITY "Неизвестное название приоритета: %s"
+    IDS_ERR_LOG_APPEND_BOOL "Флаг добавления к файлу журнала (данный как'%s') должен быть '0' или '1'"
+    IDS_ERR_GET_MSIE_PROXY "Не удалось получить настройки прокси Internet Explorer."
+    IDS_ERR_INIT_SEC_DESC "Ошибка выполнения InitializeSecurityDescriptor."
+    IDS_ERR_SET_SEC_DESC_ACL "Ошибка выполнения SetSecurityDescriptorDacl."
+    IDS_ERR_CREATE_PIPE_OUTPUT "Ошибка выполнения CreatePipe при hOutputWrite."
+    IDS_ERR_CREATE_PIPE_INPUT "Ошибка выполнения CreatePipe при hInputRead."
+    IDS_ERR_DUP_HANDLE_OUT_READ "Ошибка выполнения DuplicateHandle при hOutputRead."
+    IDS_ERR_DUP_HANDLE_IN_WRITE "Ошибка выполнения DuplicateHandle при hInputWrite."
+    IDS_ERR_CREATE_PROCESS "Ошибка выполнения CreateProcess, exe='%s' cmdline='%s' dir='%s'"
+    IDS_ERR_CREATE_THREAD_STATUS "Ошибка выполнения CreateThread при отображении окна состояния."
+    IDS_NFO_STATE_WAIT_TERM "Текущее состояние: ожидание завершения работы OpenVPN…"
+    IDS_NFO_STATE_CONNECTED "Текущее состояние: подключено"
+    IDS_NFO_NOW_CONNECTED "%s сейчас подключено."
+    IDS_NFO_ASSIGN_IP "Назначенный IP: %s"
+    IDS_ERR_CERT_EXPIRED "Невозможно подключиться, так как срок действия вашего сертификата истёк или системное время некорректно."
+    IDS_ERR_CERT_NOT_YET_VALID "Невозможно подключиться, так как ваш сертификат ещё не действителен. Проверьте правильность установки системного времени."
+    IDS_NFO_STATE_RECONNECTING "Текущее состояние: переподключение"
+    IDS_NFO_STATE_DISCONNECTED "Текущее состояние: отключено"
+    IDS_NFO_CONN_TERMINATED "Соединение с %s было прервано."
+    IDS_NFO_STATE_FAILED "Текущее состояние: ошибка подключения"
+    IDS_NFO_CONN_FAILED "Не удалось подключиться к %s."
+    IDS_NFO_STATE_FAILED_RECONN "Текущее состояние: ошибка переподключения"
+    IDS_NFO_RECONN_FAILED "Не удалось переподключиться к %s."
+    IDS_NFO_STATE_SUSPENDED "Текущее состояние: приостановлено"
+    IDS_ERR_READ_STDOUT_PIPE "Ошибка чтения из стандартного ввода OpenVPN."
+    IDS_ERR_CREATE_EDIT_LOGWINDOW "Не удалось создать RichEdit LogWindow!"
+    IDS_ERR_SET_SIZE "Не удалось установить размер!"
+    IDS_ERR_AUTOSTART_CONF "Не удалось найти запрошенный файл конфигурации для автозапуска: %s"
+    IDS_ERR_CREATE_PIPE_IN_READ "Не удалось выполнить CreatePipe при hInputRead."
+    IDS_NFO_STATE_CONNECTING "Текущее состояние: подключение"
+    IDS_NFO_CONNECTION_XXX "Соединение OpenVPN (%s)"
+    IDS_NFO_STATE_CONN_SCRIPT "Текущее состояние: запуск скрипта подключения"
+    IDS_NFO_STATE_DISCONN_SCRIPT "Текущее состояние: запуск скрипта отключения"
+    IDS_ERR_RUN_CONN_SCRIPT "Ошибка запуска скрипта подключения: %s"
+    IDS_ERR_GET_EXIT_CODE "Ошибка получения кода выхода (ExitCode) скрипта подключения (%s)"
+    IDS_ERR_CONN_SCRIPT_FAILED "Ошибка выполнения скрипта подключения. (exitcode=%ld)"
+    IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Ошибка выполнения скрипта подключения. Истекло время ожидания после %d сек."
+    IDS_ERR_CONFIG_EXIST "Уже существует файл конфигурации с названием '%s'. Вы не можете " \
+                         "иметь несколько файлов конфигурации с одним именем, даже если " \
+                         "они находятся в разных папках."
+    /* main - Resources */
+    IDS_ERR_OPEN_DEBUG_FILE "Ошибка открытия файла отладки (%s) для вывода."
+    IDS_ERR_CREATE_PATH "Невозможно создать %s путь:\n%s"
+    IDS_ERR_LOAD_RICHED20 "Не удалось загрузить RICHED20.DLL."
+    IDS_ERR_SHELL_DLL_VERSION "Ваша версия shell32.dll слишком старая (0x%lx). Вам необходима как минимум версия 5.0."
+    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI уже запущен."
+    IDS_NFO_SERVICE_STARTED "Служба OpenVPN запущена."
+    IDS_NFO_SERVICE_STOPPED "Служба OpenVPN остановлена."
+    IDS_NFO_ACTIVE_CONN_EXIT "Ещё присутствуют активные соединения, которые будут закрыты, если вы выйдите из OpenVPN GUI." \
+                             "\n\nВы уверены, что хотите выйти?"
+    IDS_NFO_SERVICE_ACTIVE_EXIT "Вы в данный момент подключены (служба OpenVPN запущена). " \
+                                "Вы останетесь подключенными, даже если вы выйдете из OpenVPN GUI.\n\n" \
+                                "Вы хотите продолжить и выйти из OpenVPN GUI?"
+
+    /* options - Resources */
+    IDS_NFO_USAGE "--help\t\t\t: Отобразить это сообщение.\n" \
+                  "--connect cnn \t\t: Подключиться к ""cnn"" при запуске. (включая расширение)\n" \
+                  "\t\t\t   Пример: openvpn-gui --connect office.ovpn\n" \
+                  "\n" \
+                  "Опции для переназначения настроек реестра:\n" \
+                  "--exe_path\t\t: Путь к openvpn.exe.\n" \
+                  "--config_dir\t\t: Путь к папке с файлами конфигурации.\n" \
+                  "--ext_string\t\t: Расширение файлов конфигурации.\n" \
+                  "--log_dir\t\t\t: Путь к папке с файлами журнала.\n" \
+                  "--priority_string\t\t: Строка приоритета (См. install.txt для доп. информации).\n" \
+                  "--append_string\t\t: 1=Присоединять к файлу журнала. 0=Очищать файл журнала при соединении.\n" \
+                  "--log_viewer\t\t: Путь к просмотровщику журналаr.\n" \
+                  "--editor\t\t\t: Путь к редактору конфигурации.\n" \
+                  "--allow_edit\t\t: 1=Показать пункт меню Редактировать конфигурацию.\n" \
+                  "--allow_service\t\t: 1=Показать меню Служба OpenVPN.\n" \
+                  "--allow_password\t\t: 1=Показать пункт меню Сменить пароль.\n" \
+                  "--allow_proxy\t\t: 1=Показать меню Настройки прокси-сервера.\n" \
+                  "--show_balloon\t\t: 0=Никогда, 1=При первом подключении, 2=При каждом переподключении.\n" \
+                  "--service_only\t\t: 1=Включить режим только службы.\n" \
+                  "--silent_connection\t\t: 1=Не показывать диалог состояния при подключении.\n" \
+                  "--show_script_window\t: 0=Скрыть окно выполнения скрипта, 1=Показать его.\n" \
+                  "--passphrase_attempts\t: Количество разрешённых попыток ввода пароля.\n" \
+                  "--connectscript_timeout\t: Время ожидания завершения скрипта подключения.\n" \
+                  "--disconnectscript_timeout\t: Время ожидания завершения скрипта отключения.\n" \
+                  "--preconnectscript_timeout\t: Время ожидания завершения скрипта перед подключением.\n"
+
+    IDS_NFO_USAGECAPTION "Использование OpenVPN GUI"
+    IDS_ERR_BAD_PARAMETER "Попытка обработать ""%s"" как --опция параметр, " \
+                      "но нет начальных '--'"
+    IDS_ERR_BAD_OPTION "Ошибка опций: нераспознанная опция или отсутствующий параметр(ы): --%s\n" \
+                   "Используйте openvpn-gui --help для доп. информации."
+
+    /* passphrase - Resources */
+    IDS_ERR_CREATE_PASS_THREAD "Не удалось выполнить CreateThread для отображения диалога ChangePassphrase."
+    IDS_NFO_CHANGE_PWD "Смена пароля (%s)"
+    IDS_ERR_PWD_DONT_MATCH "Введённые вами пароли не совпадают. Попробуйте снова."
+    IDS_ERR_PWD_TO_SHORT "Ваш новый пароль должен быть длиной как минимум %d символов."
+    IDS_NFO_EMPTY_PWD "Вы уверены, что хотите установить ПУСТОЙ пароль?"
+    IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Неизвестный формат файла ключа."
+    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Ошибка открытия файла личного ключа (%s)."
+    IDS_ERR_OLD_PWD_INCORRECT "Старый пароль неверен."
+    IDS_ERR_OPEN_WRITE_KEY "Ошибка открытия файла личного ключа для записи (%s)."
+    IDS_ERR_WRITE_NEW_KEY "Ошибка записи файла нового личного ключа (%s)."
+    IDS_NFO_PWD_CHANGED "Ваш пароль был изменён."
+    IDS_ERR_READ_PKCS12 "Ошибка чтения файла PKCS #12 (%s)."
+    IDS_ERR_CREATE_PKCS12 "Ошибка создания нового объекта PKCS #12. Пароль сменить не удалось."
+    IDS_ERR_OPEN_CONFIG "Не удалось открыть файл конфигурации для чтения: (%s)"
+    IDS_ERR_ONLY_ONE_KEY_OPTION "В вашей конфигурации не может быть более одной опции ""key""."
+    IDS_ERR_ONLY_KEY_OR_PKCS12 "В вашей конфигурации не могут одновременно находиться опции ""key"" и ""pkcs12""."
+    IDS_ERR_ONLY_ONE_PKCS12_OPTION "В вашей конфигурации не может быть более одной опции ""pkcs12""."
+    IDS_ERR_HAVE_KEY_OR_PKCS12 "В вашей конфигурации нет ни опции ""key"", ни опции ""pkcs12""."
+    IDS_ERR_KEY_FILENAME_TO_LONG "Ваше имя файла ключа в файле конфигурации слишком длинное!"
+    IDS_ERR_PASSPHRASE2STDIN "Ошибка передачи пароля в стандартный ввод."
+    IDS_ERR_AUTH_USERNAME2STDIN "Ошибка передачи имени пользователя для авторизации в стандартный ввод."
+    IDS_ERR_AUTH_PASSWORD2STDIN "Ошибка передачи пароля для авторизации в стандартный ввод."
+    IDS_ERR_CR2STDIN "Ошибка передачи CR в стандартный ввод."
+    IDS_ERR_INVALID_CHARS_IN_PSW "Ваш новый пароль содержит недопустимые символы. " \
+                             "Пожалуйста выберите другой."
+
+    /* settings */
+    IDS_SETTINGS_CAPTION "OpenVPN - Настройки"
+
+    /* proxy */
+    IDS_ERR_HTTP_PROXY_ADDRESS "Вы должны указать адрес HTTP-прокси."
+    IDS_ERR_HTTP_PROXY_PORT "Вы должны указать порт HTTP-прокси."
+    IDS_ERR_HTTP_PROXY_PORT_RANGE "Вы должны указать порт HTTP-прокси в диапазоне 1-65535"
+    IDS_ERR_SOCKS_PROXY_ADDRESS "Вы должны указать адрес SOCKS-прокси."
+    IDS_ERR_SOCKS_PROXY_PORT "Вы должны указать порт SOCKS-прокси."
+    IDS_ERR_SOCKS_PROXY_PORT_RANGE "Вы должны указать порт SOCKS-прокси в диапазоне 1-65535"
+    IDS_ERR_CREATE_REG_HKCU_KEY "Ошибка создания ключа ""HKEY_CURRENT_USER\\%s""."
+    IDS_ERR_GET_TEMP_PATH "Ошибка определения TempPath с помощью GetTempPath(). Вместо этого использую ""C:\\""."
+
+    /* service */
+    IDS_ERR_OPEN_SCMGR_ADMIN "Не удалось выполнить OpenSCManager. Для запуска службы вам необходимы права администратора."
+    IDS_ERR_OPEN_VPN_SERVICE "Не удалось открыть ""OpenVPNService"""
+    IDS_ERR_START_SERVICE "Не удалось запустить ""OpenVPNService"""
+    IDS_ERR_QUERY_SERVICE "Не удалось запросить статус службы."
+    IDS_ERR_SERVICE_START_FAILED "Не удалось запустить службу OpenVPN."
+    IDS_ERR_OPEN_SCMGR "Не удалось выполнить OpenSCManager (%d)"
+    IDS_ERR_STOP_SERVICE "Не удалось остановить службу OpenVPN"
+    IDS_NFO_RESTARTED "Служба OpenVPN перезапущена."
+
+    /* registry */
+    IDS_ERR_GET_WINDOWS_DIR "Ошибка получения пути к папке ""Windows""."
+    IDS_ERR_GET_PROGRAM_DIR "Ошибка получения пути к папке ""Program Files""."
+    IDS_ERR_OPEN_REGISTRY "Ошибка открытия реестра для чтения (HKLM\\SOFTWARE\\OpenVPN).\n " \
+                      "OpenVPN, возможно, не установлен."
+    IDS_ERR_READING_REGISTRY "Ошибка чтения значения из реестра (HKLM\\SOFTWARE\\OpenVPN)."
+    IDS_ERR_PASSPHRASE_ATTEMPTS "Значение реестра ""passphrase_attempts"" должно быть числом в диапазоне от 1 до 9."
+    IDS_ERR_CONN_SCRIPT_TIMEOUT "Значение реестра ""connectscript_timeout"" должно быть числом в диапазоне от 0 до 99."
+    IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Значение реестра ""disconnectscript_timeout"" должно быть числом в диапазоне от 1 до 99."
+    IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Значение реестра ""preconnectscript_timeout"" должно быть числом в диапазоне от 1 до 99."
+    IDS_ERR_CREATE_REG_KEY "Ошибка создания ключа HKLM\\SOFTWARE\\OpenVPN-GUI."
+    IDS_ERR_OPEN_WRITE_REG "Не удалось открыть реестр для записи. Вам необходимо запустить это приложение " \
+                       "однократно с правами администратора, чтобы обновить реестр."
+    IDS_ERR_READ_SET_KEY "Ошибка чтения и установки значения ключа ""%s""."
+    IDS_ERR_WRITE_REGVALUE "Ошибка записи значения реестра ""HKEY_CURRENT_USER\\%s\\%s""."
+END
