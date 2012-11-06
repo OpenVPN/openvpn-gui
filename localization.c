@@ -99,10 +99,12 @@ int
 LocalizedTime(const time_t t, LPTSTR buf, size_t size)
 {
     /* Convert Unix timestamp to Win32 SYSTEMTIME */
+    FILETIME lft;
     SYSTEMTIME st;
     LONGLONG tmp = Int32x32To64(t, 10000000) + 116444736000000000;
     FILETIME ft = { .dwLowDateTime = (DWORD) tmp, .dwHighDateTime = tmp >> 32};
-    FileTimeToSystemTime(&ft, &st);
+    FileTimeToLocalFileTime(&ft, &lft);
+    FileTimeToSystemTime(&lft, &st);
 
     int date_size = 0, time_size = 0;
     LCID locale = MAKELCID(GetGUILanguage(), SORT_DEFAULT);
