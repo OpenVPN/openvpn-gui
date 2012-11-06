@@ -22,6 +22,7 @@
 #ifndef LOCALIZATION_H
 #define LOCALIZATION_H
 
+int LocalizedTime(const time_t, LPTSTR, size_t);
 PTSTR LoadLocalizedString(const UINT, ...);
 int LoadLocalizedStringBuf(PTSTR, const int, const UINT, ...);
 void ShowLocalizedMsg(const UINT, ...);

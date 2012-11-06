@@ -95,6 +95,31 @@ SetGUILanguage(LANGID langId)
     gui_language = langId;
 }
 
+int
+LocalizedTime(const time_t t, LPTSTR buf, size_t size)
+{
+    /* Convert Unix timestamp to Win32 SYSTEMTIME */
+    SYSTEMTIME st;
+    LONGLONG tmp = Int32x32To64(t, 10000000) + 116444736000000000;
+    FILETIME ft = { .dwLowDateTime = (DWORD) tmp, .dwHighDateTime = tmp >> 32};
+    FileTimeToSystemTime(&ft, &st);
+
+    int date_size = 0, time_size = 0;
+    LCID locale = MAKELCID(GetGUILanguage(), SORT_DEFAULT);
+
+    if (size > 0) {
+        date_size = GetDateFormat(locale, DATE_SHORTDATE, &st, NULL,
+                                  buf, size);
+        if (date_size)
+            buf[date_size - 1] = ' ';
+    }
+    if (size - date_size > 0) {
+        time_size = GetTimeFormat(locale, TIME_NOSECONDS, &st, NULL,
+                                  buf + date_size, size - date_size);
+    }
+    return date_size + time_size;
+}
+
 
 static int
 LoadStringLang(UINT stringId, LANGID langId, PTSTR buffer, int bufferSize, va_list args)

@@ -259,7 +259,6 @@ SetTrayIcon(conn_state_t state)
     TCHAR msg[500];
     TCHAR msg_connected[100];
     TCHAR msg_connecting[100];
-    TCHAR connected_since[50];
     int i, config = 0;
     BOOL first_conn;
     UINT icon_id;
@@ -291,11 +290,11 @@ SetTrayIcon(conn_state_t state)
 
     if (CountConnState(connected) == 1) {
         /* Append "Connected since and assigned IP" to message */
-        _tcsftime(connected_since, _countof(connected_since), _T("%b %d, %H:%M"),
-            localtime(&o.conn[config].connected_since));
+        TCHAR time[50];
 
+        LocalizedTime(o.conn[config].connected_since, time, _countof(time));
         _tcsncat(msg, LoadLocalizedString(IDS_TIP_CONNECTED_SINCE), _countof(msg) - _tcslen(msg) - 1);
-        _tcsncat(msg, connected_since, _countof(msg) - _tcslen(msg) - 1);
+        _tcsncat(msg, time, _countof(msg) - _tcslen(msg) - 1);
 
         if (_tcslen(o.conn[config].ip) > 0) {
             TCHAR *assigned_ip = LoadLocalizedString(IDS_TIP_ASSIGNED_IP, o.conn[config].ip);
