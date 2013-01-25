@@ -331,7 +331,7 @@ BEGIN
     IDS_ERR_CONN_SCRIPT_TIMEOUT "Registersleutel ""connectscript_timeout"" moet een waarde tussen 0 en 99 bevatten."
     IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Registersleutel ""disconnectscript_timeout"" moet een waarde tussen 1 en 99 bevatten."
     IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Registersleutel ""preconnectscript_timeout"" moet een waarde tussen 1 en 99 bevatten."
-    IDS_ERR_CREATE_REG_KEY "Fout tijdens aamaken van HKLM\\SOFTWARE\\OpenVPN-GUI sleutel."
+    IDS_ERR_CREATE_REG_KEY "Fout tijdens aanmaken van HKLM\\SOFTWARE\\OpenVPN-GUI sleutel."
     IDS_ERR_OPEN_WRITE_REG "Fout tijdens het schrijven naar het register. Voer deze applicatie 1 maal uit als Administrator " \
                            "om de register instellingen te updaten."
     IDS_ERR_READ_SET_KEY "Fout tijdens lezen en instellen van registersleutel ""%s""."
