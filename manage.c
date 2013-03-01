@@ -245,10 +245,10 @@ OnManagement(SOCKET sk, LPARAM lParam)
             pos = memchr(line, (*c->manage.password ? ':' : '\n'), line_size);
             if (pos == NULL)
             {
-                c->manage.saved_data = malloc(data_size);
+                c->manage.saved_data = malloc(line_size);
                 if (c->manage.saved_data)
                 {
-                    c->manage.saved_size = data_size;
+                    c->manage.saved_size = line_size;
                     memcpy(c->manage.saved_data, line, c->manage.saved_size);
                 }
                 break;
