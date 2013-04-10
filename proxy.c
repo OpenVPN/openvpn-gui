@@ -463,6 +463,9 @@ static VOID
 ParseProxyString(LPWSTR proxy_str, url_scheme scheme,
                  LPCSTR *type, LPCWSTR *host, LPCWSTR *port)
 {
+    if (proxy_str == NULL)
+        return;
+
     LPCWSTR delim = L"; ";
     LPWSTR token = wcstok(proxy_str, delim);
 
