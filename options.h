@@ -37,7 +37,6 @@ typedef struct connection connection_t;
  * including the option name itself.
  */
 #define MAX_PARMS           5   /* May number of parameters per option */
-#define MAX_CONFIGS         50  /* Max number of config-files to read */
 #define MAX_CONFIG_SUBDIRS  50  /* Max number of subdirs to scan for configs */
 
 
