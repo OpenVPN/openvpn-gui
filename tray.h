@@ -27,20 +27,19 @@
 
 #define WM_NOTIFYICONTRAY (WM_APP + 1)
 
+#define IDM_SERVICE_START       100
+#define IDM_SERVICE_STOP        101
+#define IDM_SERVICE_RESTART     102
+
 #define IDM_SETTINGS            221
 #define IDM_CLOSE               223
 
 #define IDM_CONNECTMENU         300
-#define IDM_DISCONNECTMENU      400
-#define IDM_STATUSMENU          500
-#define IDM_VIEWLOGMENU         600
-#define IDM_EDITMENU            700
-#define IDM_PASSPHRASEMENU      800
-
-#define IDM_SERVICEMENU         900
-#define IDM_SERVICE_START       901
-#define IDM_SERVICE_STOP        902
-#define IDM_SERVICE_RESTART     903
+#define IDM_DISCONNECTMENU      (MAX_CONFIGS + IDM_CONNECTMENU)
+#define IDM_STATUSMENU          (MAX_CONFIGS + IDM_DISCONNECTMENU)
+#define IDM_VIEWLOGMENU         (MAX_CONFIGS + IDM_STATUSMENU)
+#define IDM_EDITMENU            (MAX_CONFIGS + IDM_VIEWLOGMENU)
+#define IDM_PASSPHRASEMENU      (MAX_CONFIGS + IDM_EDITMENU)
 
 void CreatePopupMenus();
 void OnNotifyTray(LPARAM);
