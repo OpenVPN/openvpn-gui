@@ -25,6 +25,7 @@
 
 #include <windows.h>
 #include <shlwapi.h>
+#include <wtsapi32.h>
 #include <prsht.h>
 #include <pbt.h>
 
@@ -274,6 +275,22 @@ AutoStartConnections()
 }
 
 
+static void
+ResumeConnections()
+{
+    int i;
+    for (i = 0; i < o.num_configs; i++) {
+        /* Restart suspend connections */
+        if (o.conn[i].state == suspended)
+            StartOpenVPN(&o.conn[i]);
+
+        /* If some connection never reached SUSPENDED state */
+        if (o.conn[i].state == suspending)
+            StopOpenVPN(&o.conn[i]);
+    }
+}
+
+
 /*  This function is called by the Windows function DispatchMessage()  */
 LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -287,6 +304,8 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       o.hWnd = hwnd;
 
       s_uTaskbarRestart = RegisterWindowMessage(TEXT("TaskbarCreated"));
+
+      WTSRegisterSessionNotification(hwnd, NOTIFY_FOR_THIS_SESSION);
 
       /* Load application icon */
       HICON hIcon = LoadLocalizedIcon(ID_ICO_APP);
@@ -350,6 +369,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       break;
 
     case WM_DESTROY:
+      WTSUnRegisterSessionNotification(hwnd);
       StopAllOpenVPN();	
       OnDestroyTray();          /* Remove Tray Icon and destroy menus */
       PostQuitMessage (0);	/* Send a WM_QUIT to the message queue */
@@ -362,6 +382,18 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       StopAllOpenVPN();
       OnDestroyTray();
       break;
+
+    case WM_WTSSESSION_CHANGE:
+      switch (wParam) {
+        case WTS_SESSION_LOCK:
+          o.session_locked = TRUE;
+          break;
+        case WTS_SESSION_UNLOCK:
+          o.session_locked = FALSE;
+          if (CountConnState(suspended) != 0)
+            ResumeConnections();
+          break;
+      }
 
     case WM_POWERBROADCAST:
       switch (wParam) {
@@ -383,16 +415,8 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
         case PBT_APMRESUMESUSPEND:
         case PBT_APMRESUMECRITICAL:
-          for (i=0; i<o.num_configs; i++)
-            {
-              /* Restart suspend connections */
-              if (o.conn[i].state == suspended)
-                StartOpenVPN(&o.conn[i]);
-
-              /* If some connection never reached SUSPENDED state */
-              if (o.conn[i].state == suspending)
-                StopOpenVPN(&o.conn[i]);
-            }
+          if (CountConnState(suspended) != 0 && !o.session_locked)
+            ResumeConnections();
           return FALSE;
       }
 

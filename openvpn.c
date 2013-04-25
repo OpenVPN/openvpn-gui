@@ -147,7 +147,7 @@ OnStateChange(connection_t *c, char *data)
     if (strcmp(state, "CONNECTED") == 0)
     {
         /* Run Connect Script */
-        if (c->state == connecting)
+        if (c->state == connecting || c->state == resuming)
             RunConnectScript(c, false);
 
         /* Save the local IP address if available */
@@ -161,6 +161,7 @@ OnStateChange(connection_t *c, char *data)
 
         /* Show connection tray balloon */
         if ((c->state == connecting   && o.show_balloon[0] != '0')
+        ||  (c->state == resuming     && o.show_balloon[0] != '0')
         ||  (c->state == reconnecting && o.show_balloon[0] == '2'))
         {
             TCHAR msg[256];
@@ -211,9 +212,13 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
     switch (msg)
     {
     case WM_INITDIALOG:
-        /* Set connection for this dialog */
-        SetProp(hwndDlg, cfgProp, (HANDLE) lParam);
-        SetForegroundWindow(hwndDlg);
+        /* Set connection for this dialog and show it */
+        c = (connection_t *) lParam;
+        SetProp(hwndDlg, cfgProp, (HANDLE) c);
+        if (c->state == resuming)
+            ForceForegroundWindow(hwndDlg);
+        else
+            SetForegroundWindow(hwndDlg);
         break;
 
     case WM_COMMAND:
@@ -265,9 +270,14 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
     switch (msg)
     {
     case WM_INITDIALOG:
-        /* Set connection for this dialog */
-        SetProp(hwndDlg, cfgProp, (HANDLE) lParam);
-        SetForegroundWindow(hwndDlg);
+        /* Set connection for this dialog and show it */
+        c = (connection_t *) lParam;
+        SetProp(hwndDlg, cfgProp, (HANDLE) c);
+        if (c->state == resuming)
+            ForceForegroundWindow(hwndDlg);
+        else
+            SetForegroundWindow(hwndDlg);
+        break;
 
     case WM_COMMAND:
         c = (connection_t *) GetProp(hwndDlg, cfgProp);
@@ -353,11 +363,12 @@ OnStop(connection_t *c, UNUSED char *msg)
         SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
         break;
 
+    case resuming:
     case connecting:
     case reconnecting:
         /* We have failed to (re)connect */
-        txt_id = c->state == connecting ? IDS_NFO_STATE_FAILED : IDS_NFO_STATE_FAILED_RECONN;
-        msg_id = c->state == connecting ? IDS_NFO_CONN_FAILED  : IDS_NFO_RECONN_FAILED;
+        txt_id = c->state == reconnecting ? IDS_NFO_STATE_FAILED_RECONN : IDS_NFO_STATE_FAILED;
+        msg_id = c->state == reconnecting ? IDS_NFO_RECONN_FAILED : IDS_NFO_CONN_FAILED;
 
         c->state = disconnecting;
         CheckAndSetTrayIcon();
@@ -545,7 +556,7 @@ ThreadOpenVPNStatus(void *p)
     _tcsncpy(conn_name, c->config_file, _countof(conn_name));
     conn_name[_tcslen(conn_name) - _tcslen(o.ext_string) - 1] = _T('\0');
 
-    c->state = connecting;
+    c->state = (c->state == suspended ? resuming : connecting);
 
     /* Create and Show Status Dialog */
     c->hwndStatus = CreateLocalizedDialogParam(ID_DLG_STATUS, StatusDialogFunc, (LPARAM) c);

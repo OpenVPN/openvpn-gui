@@ -66,7 +66,8 @@ typedef enum {
     connected,
     disconnecting,
     suspending,
-    suspended
+    suspended,
+    resuming
 } conn_state_t;
 
 /* Connections parameters */
@@ -149,6 +150,7 @@ typedef struct {
 
     HWND hWnd;
     HINSTANCE hInstance;
+    BOOL session_locked;
 } options_t;
 
 void InitOptions(options_t *);

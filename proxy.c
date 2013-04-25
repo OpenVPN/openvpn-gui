@@ -335,9 +335,13 @@ ProxyAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
     switch (msg)
     {
     case WM_INITDIALOG:
-        /* Set connection for this dialog */
-        SetProp(hwndDlg, cfgProp, (HANDLE) lParam);
-        SetForegroundWindow(hwndDlg);
+        /* Set connection for this dialog and show it */
+        c = (connection_t *) lParam;
+        SetProp(hwndDlg, cfgProp, (HANDLE) c);
+        if (c->state == resuming)
+            ForceForegroundWindow(hwndDlg);
+        else
+            SetForegroundWindow(hwndDlg);
         break;
 
     case WM_COMMAND:

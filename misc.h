@@ -1,7 +1,7 @@
 /*
  *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
  *
- *  Copyright (C) 2012 Heiko Hund <heikoh@users.sf.net>
+ *  Copyright (C) 2013 Heiko Hund <heikoh@users.sf.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -30,4 +30,5 @@ BOOL streq(LPCSTR, LPCSTR);
 BOOL wcsbegins(LPCWSTR, LPCWSTR);
 BOOL wcseq(LPCWSTR, LPCWSTR);
 
+BOOL ForceForegroundWindow(HWND);
 #endif

@@ -93,7 +93,8 @@ openvpn_gui_LDADD = \
 	$(OPENSSL_CRYPTO_LIBS) \
 	-lws2_32 \
 	-lcomctl32 \
-	-lwinhttp
+	-lwinhttp \
+	-lwtsapi32
 
 openvpn-gui-res.o: $(openvpn_gui_RESOURCES) $(srcdir)/openvpn-gui-res.h
 	$(RCCOMPILE) -i $< -o $@

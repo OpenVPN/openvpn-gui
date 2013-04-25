@@ -280,7 +280,7 @@ SetTrayIcon(conn_state_t state)
 
     first_conn = TRUE;
     for (i = 0; i < o.num_configs; i++) {
-        if (o.conn[i].state == connecting || o.conn[i].state == reconnecting) {
+        if (o.conn[i].state == connecting || o.conn[i].state == resuming || o.conn[i].state == reconnecting) {
             /* Append connection name to Icon Tip Msg */
             _tcsncat(msg, (first_conn ? msg_connecting : _T(", ")), _countof(msg) - _tcslen(msg) - 1);
             _tcsncat(msg, o.conn[i].config_name, _countof(msg) - _tcslen(msg) - 1);
@@ -336,7 +336,7 @@ CheckAndSetTrayIcon()
     else
     {
         if (CountConnState(connecting) != 0 || CountConnState(reconnecting) != 0
-        ||  o.service_state == service_connecting)
+        ||  CountConnState(resuming) != 0 || o.service_state == service_connecting)
             SetTrayIcon(connecting);
         else
             SetTrayIcon(disconnected);
@@ -371,7 +371,7 @@ SetMenuStatus(connection_t *c, conn_state_t state)
             EnableMenuItem(hMenu, IDM_DISCONNECTMENU, MF_GRAYED);
             EnableMenuItem(hMenu, IDM_STATUSMENU, MF_GRAYED);
         }
-        else if (state == connecting || state == connected)
+        else if (state == connecting || state == resuming || state == connected)
         {
             EnableMenuItem(hMenu, IDM_CONNECTMENU, MF_GRAYED);
             EnableMenuItem(hMenu, IDM_DISCONNECTMENU, MF_ENABLED);
@@ -402,7 +402,7 @@ SetMenuStatus(connection_t *c, conn_state_t state)
             EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU + i, MF_GRAYED);
             EnableMenuItem(hMenuConn[i], IDM_STATUSMENU + i, MF_GRAYED);
         }
-        else if (state == connecting || state == connected)
+        else if (state == connecting || state == resuming || state == connected)
         {
             EnableMenuItem(hMenuConn[i], IDM_CONNECTMENU + i, MF_GRAYED);
             EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU + i, MF_ENABLED);

@@ -1,7 +1,7 @@
 /*
  *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
  *
- *  Copyright (C) 2012 Heiko Hund <heikoh@users.sf.net>
+ *  Copyright (C) 2013 Heiko Hund <heikoh@users.sf.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -180,4 +180,24 @@ BOOL
 wcseq(LPCWSTR str1, LPCWSTR str2)
 {
     return (wcscmp(str1, str2) == 0);
+}
+
+
+/*
+ * Force setting window as foreground window by simulating an ALT keypress
+ */
+BOOL
+ForceForegroundWindow(HWND hWnd)
+{
+    BOOL ret = FALSE;
+
+    if ((GetKeyState(VK_MENU) & 0x8000) == 0)
+        keybd_event(VK_MENU, 0, 0, 0);
+
+    ret = SetForegroundWindow(hWnd);
+
+    if (GetKeyState(VK_MENU) & 0x8000)
+        keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0);
+
+    return ret;
 }
