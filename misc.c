@@ -191,13 +191,9 @@ ForceForegroundWindow(HWND hWnd)
 {
     BOOL ret = FALSE;
 
-    if ((GetKeyState(VK_MENU) & 0x8000) == 0)
-        keybd_event(VK_MENU, 0, 0, 0);
-
+    keybd_event(VK_MENU, 0, 0, 0);
     ret = SetForegroundWindow(hWnd);
-
-    if (GetKeyState(VK_MENU) & 0x8000)
-        keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0);
+    keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0);
 
     return ret;
 }
