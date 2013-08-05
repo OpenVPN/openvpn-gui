@@ -394,6 +394,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             ResumeConnections();
           break;
       }
+      break;
 
     case WM_POWERBROADCAST:
       switch (wParam) {
