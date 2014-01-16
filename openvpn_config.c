@@ -211,7 +211,7 @@ ConfigFileOptionExist(int config, const char *option)
 
     while (fgets(line, sizeof(line), fp))
     {
-        if (strncmp(line, option, sizeof(option)) == 0)
+        if (strncmp(line, option, strlen(option)) == 0)
         {
             fclose(fp);
             return true;
