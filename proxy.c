@@ -325,7 +325,7 @@ GetProxyRegistrySettings()
 }
 
 
-static INT_PTR CALLBACK
+INT_PTR CALLBACK
 ProxyAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     LPCSTR proxy_type;

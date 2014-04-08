@@ -204,7 +204,7 @@ OnStateChange(connection_t *c, char *data)
 /*
  * DialogProc for OpenVPN username/password auth dialog windows
  */
-static INT_PTR CALLBACK
+INT_PTR CALLBACK
 UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     connection_t *c;
@@ -262,7 +262,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 /*
  * DialogProc for OpenVPN private key password dialog windows
  */
-static INT_PTR CALLBACK
+INT_PTR CALLBACK
 PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     connection_t *c;
@@ -424,7 +424,7 @@ OnStop(connection_t *c, UNUSED char *msg)
 /*
  * DialogProc for OpenVPN status dialog windows
  */
-static INT_PTR CALLBACK
+INT_PTR CALLBACK
 StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     connection_t *c;
