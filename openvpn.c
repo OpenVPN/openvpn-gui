@@ -683,10 +683,10 @@ StartOpenVPN(connection_t *c)
     GetRandomPassword(c->manage.password, sizeof(c->manage.password) - 1);
 
     /* Construct command line */
-    _sntprintf_0(cmdline, _T("openvpn "
-        "--config \"%s\" --service %s 0 --log%s \"%s\" --auth-retry interact "
+    _sntprintf_0(cmdline, _T("openvpn --config \"%s\" "
+        "--setenv IV_GUI_VER \"%s\" --service %s 0 --log%s \"%s\" --auth-retry interact "
         "--management %S %hd stdin --management-query-passwords %s"
-        "--management-hold"), c->config_file, exit_event_name,
+        "--management-hold"), c->config_file, PACKAGE_STRING, exit_event_name,
         (o.append_string[0] == '1' ? _T("-append") : _T("")), c->log_path,
         inet_ntoa(c->manage.skaddr.sin_addr), ntohs(c->manage.skaddr.sin_port),
         (o.proxy_source != config ? _T("--management-query-proxy ") : _T("")));
