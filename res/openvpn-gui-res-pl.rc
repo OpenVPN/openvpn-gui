@@ -158,7 +158,7 @@ BEGIN
     IDS_TIP_DEFAULT "OpenVPN GUI "
     IDS_TIP_CONNECTED "\nPołączony z: "
     IDS_TIP_CONNECTING "\nŁączenie z: "
-    IDS_TIP_CONNECTED_SINCE "\nPołączony z: "
+    IDS_TIP_CONNECTED_SINCE "\nPołączony od: "
     IDS_TIP_ASSIGNED_IP "\nPrzyznane IP: %s"
     IDS_MENU_SERVICE "Usługa OpenVPN"
     IDS_MENU_SETTINGS "Ustawienia…"
