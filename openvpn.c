@@ -684,7 +684,7 @@ StartOpenVPN(connection_t *c)
 
     /* Construct command line */
     _sntprintf_0(cmdline, _T("openvpn --config \"%s\" "
-        "--setenv IV_GUI_VER \"%s\" --service %s 0 --log%s \"%s\" --auth-retry interact "
+        "--setenv IV_GUI_VER \"%S\" --service %s 0 --log%s \"%s\" --auth-retry interact "
         "--management %S %hd stdin --management-query-passwords %s"
         "--management-hold"), c->config_file, PACKAGE_STRING, exit_event_name,
         (o.append_string[0] == '1' ? _T("-append") : _T("")), c->log_path,
