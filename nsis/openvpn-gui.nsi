@@ -1,5 +1,5 @@
 ; ****************************************************************************
-; * Copyright (C) 2013 OpenVPN Technologies, Inc.                            *
+; * Copyright (C) 2013-2015 OpenVPN Technologies, Inc.                       *
 ; *  This program is free software; you can redistribute it and/or modify    *
 ; *  it under the terms of the GNU General Public License version 2          *
 ; *  as published by the Free Software Foundation.                           *
@@ -12,10 +12,15 @@ SetCompressor lzma
 !include "MultiUser.nsh"
 !include "MUI2.nsh"
 
+; WinMessages.nsh is needed to send WM_CLOSE to the GUI if it is still running
+!include "WinMessages.nsh"
+
 ; Defines
 !define MULTIUSER_EXECUTIONLEVEL Admin
 !define PACKAGE_NAME "OpenVPN-GUI"
 !define REG_KEY "HKLM Software\OpenVPN-GUI"
+!define MUI_FINISHPAGE_RUN_TEXT "Start OpenVPN GUI"
+!define MUI_FINISHPAGE_RUN "$INSTDIR\bin\openvpn-gui.exe"
 
 ; Basic configuration
 Name "OpenVPN-GUI ${VERSION}"
@@ -32,13 +37,40 @@ InstallDir "$PROGRAMFILES\${PACKAGE_NAME}"
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
+!define MUI_PAGE_CUSTOMFUNCTION_SHOW StartGUI.show
+!insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller pages
 !insertmacro MUI_UNPAGE_COMPONENTS
 !insertmacro MUI_UNPAGE_INSTFILES
 
-Function .onInit
+Var /Global strGuiKilled ; Track if GUI was killed so we can tick the checkbox to start it upon installer finish
 
+;--------------------------------
+; Macros
+
+!macro SelectByParameter SECT PARAMETER DEFAULT
+    ${GetOptions} $R0 "/${PARAMETER}=" $0
+    ${If} ${DEFAULT} == 0
+        ${If} $0 == 1
+            !insertmacro SelectSection ${SECT}
+        ${EndIf}
+    ${Else}
+        ${If} $0 != 0
+            !insertmacro SelectSection ${SECT}
+        ${EndIf}
+    ${EndIf}
+!macroend
+
+;--------------------
+; Functions
+
+Function .onInit
+    ${GetParameters} $R0
+    ClearErrors
+
+    !insertmacro SelectByParameter ${SecOverwriteConfiguration} SELECT_OVERWRITE_CONFIGURATION 1
+ 
     SetShellVarContext all
 
     ; Check if we're running on 64-bit Windows
@@ -63,12 +95,53 @@ Function un.onInit
     ${EndIf}
 FunctionEnd
 
+Function StartGUI.show
+    SendMessage $mui.FinishPage.Run ${BM_SETCHECK} ${BST_CHECKED} 0
+    ShowWindow $mui.FinishPage.Run 0
+
+    ; if we killed the GUI to do the install/upgrade, automatically tick the "Start OpenVPN GUI" option
+    ${If} $strGuiKilled == "1"
+        SendMessage $mui.FinishPage.Run ${BM_SETCHECK} ${BST_CHECKED} 1
+    ${EndIf}
+FunctionEnd
+
+;--------------------
+; Sections
+
+Section -pre
+    Push $0 ; for FindWindow
+    FindWindow $0 "OpenVPN-GUI"
+    StrCmp $0 0 guiNotRunning
+
+    MessageBox MB_YESNO|MB_ICONEXCLAMATION "To perform the specified operation, OpenVPN-GUI needs to be closed. Shall I close it?" /SD IDYES IDNO guiEndNo
+    DetailPrint "Closing OpenVPN-GUI..."
+    Goto guiEndYes
+
+    guiEndNo:
+        Quit
+
+    guiEndYes:
+        ; user wants to close GUI as part of install/upgrade
+        FindWindow $0 "OpenVPN-GUI"
+        IntCmp $0 0 guiClosed
+        SendMessage $0 ${WM_CLOSE} 0 0
+        Sleep 100
+        Goto guiEndYes
+
+    guiClosed:
+        ; Keep track that we closed the GUI so we can offer to auto (re)start it later
+        StrCpy $strGuiKilled "1"
+
+    guiNotRunning:
+        ; openvpn-gui not running/closed successfully, carry on with install/upgrade
+
+SectionEnd
+
 ; This empty section allows selecting whether to reset OpenVPN-GUI registry key
 ; values to the default. OpenVPN-specific part of the configuration gets
 ; auto-detected and overwritten regardless of this setting.
 Section /o "$(NAME_SecOverwriteConfiguration)" SecOverwriteConfiguration
 SectionEnd
-
 
 Section "-Add registry keys" SecAddRegistryKeys
 
@@ -178,7 +251,7 @@ SectionEnd
 
 Section "-post"
 
-    ; Create uninstall
+    ; Create uninstaller
     WriteUninstaller "$INSTDIR\Uninstall.exe"
 
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${PACKAGE_NAME}" "DisplayName" "${PACKAGE_NAME} ${VERSION}"
@@ -195,6 +268,19 @@ Section /o "un.$(NAME_DeleteAllRegistryKeys)" SecDeleteAllRegistryKeys
 SectionEnd
 
 Section "-un.Uninstall" SecUninstall
+
+    ; Stop OpenVPN-GUI if currently running
+    DetailPrint "Stopping OpenVPN-GUI..."
+
+    StopGUI:
+
+        FindWindow $0 "OpenVPN-GUI"
+        IntCmp $0 0 guiClosed
+        SendMessage $0 ${WM_CLOSE} 0 0
+        Sleep 100
+        Goto StopGUI
+
+    guiClosed:
 
         ; We'll always delete registry keys related to OpenVPN. These will be
         ; recreated automatically when OpenVPN-GUI is installed again.
@@ -221,7 +307,9 @@ Section "-un.Uninstall" SecUninstall
 SectionEnd
 
 
+;--------------------
 ; Language settings
+
 !include "english.nsh"
 
 !insertmacro MUI_LANGUAGE "English"
