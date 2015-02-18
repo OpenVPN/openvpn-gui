@@ -15,6 +15,9 @@ SetCompressor lzma
 ; WinMessages.nsh is needed to send WM_CLOSE to the GUI if it is still running
 !include "WinMessages.nsh"
 
+; EnvVarUpdate.nsh is needed to update the PATH environment variable
+!include "EnvVarUpdate.nsh"
+
 ; Defines
 !define MULTIUSER_EXECUTIONLEVEL Admin
 !define PACKAGE_NAME "OpenVPN-GUI"
@@ -214,6 +217,13 @@ Section "-Add registry keys" SecAddRegistryKeys
             WriteRegStr ${REG_KEY} "config_ext" "ovpn"
             WriteRegStr ${REG_KEY} "exe_path" "$OPENVPN_INSTALL_DIR\bin\openvpn.exe"
             WriteRegStr ${REG_KEY} "log_dir" "$OPENVPN_INSTALL_DIR\log"
+
+SectionEnd
+
+Section "Add ${PACKAGE_NAME} to PATH" SecAddPath
+
+    ; append our bin directory to end of current user path
+    ${EnvVarUpdate} $R0 "PATH" "A" "HKLM" "$INSTDIR\bin"
 
 SectionEnd
 
