@@ -22,8 +22,6 @@ SetCompressor lzma
 !define MULTIUSER_EXECUTIONLEVEL Admin
 !define PACKAGE_NAME "OpenVPN-GUI"
 !define REG_KEY "HKLM Software\OpenVPN-GUI"
-!define MUI_FINISHPAGE_RUN_TEXT "Start OpenVPN GUI"
-!define MUI_FINISHPAGE_RUN "$INSTDIR\bin\openvpn-gui.exe"
 
 ; Basic configuration
 Name "OpenVPN-GUI ${VERSION}"
@@ -40,14 +38,11 @@ InstallDir "$PROGRAMFILES\${PACKAGE_NAME}"
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
-!define MUI_PAGE_CUSTOMFUNCTION_SHOW StartGUI.show
 !insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller pages
 !insertmacro MUI_UNPAGE_COMPONENTS
 !insertmacro MUI_UNPAGE_INSTFILES
-
-Var /Global strGuiKilled ; Track if GUI was killed so we can tick the checkbox to start it upon installer finish
 
 ;--------------------------------
 ; Macros
@@ -98,16 +93,6 @@ Function un.onInit
     ${EndIf}
 FunctionEnd
 
-Function StartGUI.show
-    SendMessage $mui.FinishPage.Run ${BM_SETCHECK} ${BST_CHECKED} 0
-    ShowWindow $mui.FinishPage.Run 0
-
-    ; if we killed the GUI to do the install/upgrade, automatically tick the "Start OpenVPN GUI" option
-    ${If} $strGuiKilled == "1"
-        SendMessage $mui.FinishPage.Run ${BM_SETCHECK} ${BST_CHECKED} 1
-    ${EndIf}
-FunctionEnd
-
 ;--------------------
 ; Sections
 
@@ -116,6 +101,7 @@ Section -pre
     FindWindow $0 "OpenVPN-GUI"
     StrCmp $0 0 guiNotRunning
 
+    ; In silent mode always kill the GUI
     MessageBox MB_YESNO|MB_ICONEXCLAMATION "To perform the specified operation, OpenVPN-GUI needs to be closed. Shall I close it?" /SD IDYES IDNO guiEndNo
     DetailPrint "Closing OpenVPN-GUI..."
     Goto guiEndYes
@@ -126,14 +112,10 @@ Section -pre
     guiEndYes:
         ; user wants to close GUI as part of install/upgrade
         FindWindow $0 "OpenVPN-GUI"
-        IntCmp $0 0 guiClosed
+        IntCmp $0 0 guiNotRunning
         SendMessage $0 ${WM_CLOSE} 0 0
         Sleep 100
         Goto guiEndYes
-
-    guiClosed:
-        ; Keep track that we closed the GUI so we can offer to auto (re)start it later
-        StrCpy $strGuiKilled "1"
 
     guiNotRunning:
         ; openvpn-gui not running/closed successfully, carry on with install/upgrade
