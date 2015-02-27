@@ -9,6 +9,7 @@
 *.vcproj.*
 *.log
 *.tar.gz
+*.bak
 
 .deps
 Makefile
