@@ -19,7 +19,7 @@ dnl  distribution); if not, write to the Free Software Foundation, Inc.,
 dnl  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 AC_PREREQ(2.59)
-define([_GUI_VERSION], [5])
+define([_GUI_VERSION], [7])
 AC_INIT([OpenVPN GUI],[_GUI_VERSION],[openvpn-devel@lists.sourceforge.net],[openvpn-gui],[http://openvpn-gui.sf.net])
 AC_DEFINE([PACKAGE_VERSION_RESOURCE], [_GUI_VERSION,0,0,0], [Version in windows resource format])
 AC_CONFIG_AUX_DIR([.])
