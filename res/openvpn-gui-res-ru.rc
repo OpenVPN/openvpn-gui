@@ -123,13 +123,13 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, 0, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v" PACKAGE_VERSION " - графичсекий интерфейс Windows для OpenVPN\n" \
+    LTEXT "OpenVPN GUI v" PACKAGE_VERSION " - графический интерфейс Windows для OpenVPN\n" \
           "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n" \
           "http://openvpn.se/", 0, 36, 15, 206, 26
     LTEXT "OpenVPN - приложение для безопасного туннелирования IP-сетей " \
           "через единственный UDP-порт с поддержкой аутентификации сессий " \
-          "и обмена ключами на основе SSL/TLS, шифрования, аутенцификации " \
-          "и сжатия пакетов.\n" \
+	  "и обмена ключами на основе SSL/TLS, шифрования, аутентификации " \
+	  "и сжатия пакетов.\n" \
           "\n" \
           "Copyright (C) 2002-2005 OpenVPN Solutions LLC <info@openvpn.net>\n" \
           "http://openvpn.net/", 0, 8, 45, 235, 56
@@ -164,7 +164,7 @@ BEGIN
     IDS_MENU_SETTINGS "Настройки…"
     IDS_MENU_CLOSE "Выход"
     IDS_MENU_CONNECT "Подключиться"
-    IDS_MENU_DISCONNECT "Отключится"
+    IDS_MENU_DISCONNECT "Отключиться"
     IDS_MENU_STATUS "Отобразить состояние"
     IDS_MENU_VIEWLOG "Показать журнал"
     IDS_MENU_EDITCONFIG "Редактировать конфигурацию"
@@ -178,11 +178,11 @@ BEGIN
     IDS_MENU_ASK_STOP_SERVICE "Вы хотите отключиться (остановить службу OpenVPN)?"
 
     /* Logviewer - Resources */
-    IDS_ERR_START_LOG_VIEWER "Ощибка запуска просмотровщика журнала: %s"
+    IDS_ERR_START_LOG_VIEWER "Ошибка запуска просмотрщика журнала: %s"
     IDS_ERR_START_CONF_EDITOR "Ошибка запуска редактора конфигурации: %s"
 
     /* OpenVPN */
-    IDS_ERR_MANY_CONFIGS "OpenVPN GUI не поддерживает более %d конфигураций. Пожалуйста свяжитесь с автором, если вам нужно больше."
+    IDS_ERR_MANY_CONFIGS "OpenVPN GUI не поддерживает более %d конфигураций. Пожалуйста, свяжитесь с автором, если вам нужно больше."
     IDS_ERR_ONE_CONN_OLD_VER "Одновременно вы можете использовать только одно соединение, если вы используете OpenVPN версии старее 2.0-beta6."
     IDS_ERR_STOP_SERV_OLD_VER "Вы не можете использовать OpenVPN GUI для запуска подключения, пока запущена служба OpenVPN (с OpenVPN 1.5/1.6). Сначала остановите службу OpenVPN, если хотите использовать OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "Ошибка выполнения CreateEvent при выходе: %s"
@@ -253,7 +253,7 @@ BEGIN
                   "--log_dir\t\t\t: Путь к папке с файлами журнала.\n" \
                   "--priority_string\t\t: Строка приоритета (См. install.txt для доп. информации).\n" \
                   "--append_string\t\t: 1=Присоединять к файлу журнала. 0=Очищать файл журнала при соединении.\n" \
-                  "--log_viewer\t\t: Путь к просмотровщику журналаr.\n" \
+                  "--log_viewer\t\t: Путь к просмотрщику журнала.\n" \
                   "--editor\t\t\t: Путь к редактору конфигурации.\n" \
                   "--allow_edit\t\t: 1=Показать пункт меню Редактировать конфигурацию.\n" \
                   "--allow_service\t\t: 1=Показать меню Служба OpenVPN.\n" \
@@ -299,7 +299,7 @@ BEGIN
     IDS_ERR_AUTH_PASSWORD2STDIN "Ошибка передачи пароля для авторизации в стандартный ввод."
     IDS_ERR_CR2STDIN "Ошибка передачи CR в стандартный ввод."
     IDS_ERR_INVALID_CHARS_IN_PSW "Ваш новый пароль содержит недопустимые символы. " \
-                             "Пожалуйста выберите другой."
+                             "Пожалуйста, выберите другой."
 
     /* settings */
     IDS_SETTINGS_CAPTION "OpenVPN - Настройки"
