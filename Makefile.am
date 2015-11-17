@@ -57,6 +57,7 @@ openvpn_gui_RESOURCES = \
 	res/openvpn-gui-res-ru.rc \
 	res/openvpn-gui-res-se.rc \
 	res/openvpn-gui-res-tr.rc \
+	res/openvpn-gui-res-ua.rc \
 	res/openvpn-gui-res-zh-hant.rc \
 	res/connected.ico \
 	res/connecting.ico \
