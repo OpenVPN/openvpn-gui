@@ -111,7 +111,7 @@ GetRegistryKeys()
 
   if (!GetRegKey(_T("show_script_window"), o.show_script_window, _T("1"), _countof(o.show_script_window))) return(false);
 
-  if (!GetRegKey(_T("disconnect_on_suspend"), o.disconnect_on_suspend, _T("1"), 
+  if (!GetRegKey(_T("disconnect_on_suspend"), o.disconnect_on_suspend, _T("0"),
       _countof(o.disconnect_on_suspend))) return(false);
 
   if (!GetRegKey(_T("passphrase_attempts"), o.psw_attempts_string, _T("3"), 
