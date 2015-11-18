@@ -116,7 +116,7 @@ BEGIN
 END
 
 /* About Dialog */
-ID_DLG_ABOUT DIALOG 6, 18, 249, 104
+ID_DLG_ABOUT DIALOG 6, 18, 273, 104
 STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
 CAPTION "О программе"
 FONT 8, "Microsoft Sans Serif"
@@ -125,14 +125,14 @@ BEGIN
     ICON ID_ICO_APP, 0, 8, 16, 21, 20
     LTEXT "OpenVPN GUI v" PACKAGE_VERSION " - графический интерфейс Windows для OpenVPN\n" \
           "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n" \
-          "http://openvpn.se/", 0, 36, 15, 206, 26
+          "http://openvpn.se/", 0, 36, 15, 230, 26
     LTEXT "OpenVPN - приложение для безопасного туннелирования IP-сетей " \
           "через единственный UDP-порт с поддержкой аутентификации сессий " \
 	  "и обмена ключами на основе SSL/TLS, шифрования, аутентификации " \
 	  "и сжатия пакетов.\n" \
           "\n" \
           "Copyright (C) 2002-2005 OpenVPN Solutions LLC <info@openvpn.net>\n" \
-          "http://openvpn.net/", 0, 8, 45, 235, 56
+          "http://openvpn.net/", 0, 8, 45, 259, 56
 END
 
 /* Proxy Authentication Dialog */
