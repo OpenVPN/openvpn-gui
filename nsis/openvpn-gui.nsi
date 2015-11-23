@@ -174,7 +174,7 @@ Section "-Add registry keys" SecAddRegistryKeys
             WriteRegStr ${REG_KEY} "allow_proxy" "1"
             WriteRegStr ${REG_KEY} "allow_service" "0"
             WriteRegStr ${REG_KEY} "connectscript_timeout" "15"
-            WriteRegStr ${REG_KEY} "disconnect_on_suspend" "1"
+            WriteRegStr ${REG_KEY} "disconnect_on_suspend" "0"
             WriteRegStr ${REG_KEY} "disconnectscript_timeout" "10"
             WriteRegStr ${REG_KEY} "preconnectscript_timeout" "10"
             WriteRegStr ${REG_KEY} "editor" "C:\Windows\notepad.exe"
