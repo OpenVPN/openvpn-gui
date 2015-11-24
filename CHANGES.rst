@@ -1,3 +1,74 @@
+Version 7 (2015-02-27)
+======================
+
+Bug fixes
+---------
+
+* Fixed some typo's and spelling errors in Dutch translation.
+* Fixed typo in tray tooltip (polish language)
+
+New features
+------------
+
+* Update program graphics, thanks to Evgheni Dereveanchin
+* Add NSIS installer files Samuli Seppänen
+
+Version 5 (2013-08-05)
+======================
+
+Bug fixes
+---------
+
+* Fix disconnect happening when closing RDP client
+
+Version 4 (2013-06-03)
+======================
+
+Bug fixes
+---------
+
+* Fix NULL pointer dereference, closes issue #28
+* Don't let menu IDs overlap when MAX_CONFIGS > 100, closes issue #30
+* Use UI language set by user for l10n, closes #27
+* Make auth popups show when returning from suspend
+
+Version 3 (2013-03-07)
+======================
+
+Bug fixes
+---------
+
+* Fix spelling, closes community ticket #254
+* Fix crash on 64 bit Windows, closes trac bug #247
+
+Version 2 (2012-12-13)
+======================
+
+New features
+------------
+
+* Added XP theme support to GUI
+* Localization support
+* Moved proxy settings into a general settings dialog tab
+* Support starting OpenVPN via interactive service
+* Add Finnish localization by Samuli Seppaenen
+* Add Danish localization by Morten Christensen
+* Update Swedish localization
+* Add Turkish localization by Hakan Darama
+* Add Japanese localization by Taro Yamazaki
+* Add Chinese (trad.) localization by Yi-Wen Cheng
+* Add Russian localization by Roman Azarenko
+
+Bug fixes
+---------
+
+* Fix starting a connection with double click on icon
+* Fix connection status if only one config exists
+* Fix IP address display in tooltip, closes #3176526
+* Fix connect script name, closes bug #3213131
+* Fix loading of the proxy source from registry
+* Make management interface work with Windows 8
+
 Version 1.0.3 (2005-08-18)
 ==========================
 
