@@ -221,8 +221,9 @@ ShowLocalizedMsgEx(const UINT type, LPCTSTR caption, const UINT stringId, ...)
 {
     va_list args;
     va_start(args, stringId);
-    return __ShowLocalizedMsgEx(type, caption, stringId, args);
+    int result = __ShowLocalizedMsgEx(type, caption, stringId, args);
     va_end(args);
+    return result;
 }
 
 
