@@ -176,13 +176,6 @@ wcsbegins(LPCWSTR str, LPCWSTR begin)
     return (wcsncmp(str, begin, wcslen(begin)) == 0);
 }
 
-BOOL
-wcseq(LPCWSTR str1, LPCWSTR str2)
-{
-    return (wcscmp(str1, str2) == 0);
-}
-
-
 /*
  * Force setting window as foreground window by simulating an ALT keypress
  */

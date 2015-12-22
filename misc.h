@@ -28,7 +28,6 @@ BOOL EnsureDirExists(LPTSTR);
 
 BOOL streq(LPCSTR, LPCSTR);
 BOOL wcsbegins(LPCWSTR, LPCWSTR);
-BOOL wcseq(LPCWSTR, LPCWSTR);
 
 BOOL ForceForegroundWindow(HWND);
 #endif
