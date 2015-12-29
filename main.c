@@ -545,54 +545,7 @@ void PrintDebugMsg(TCHAR *msg)
   _ftprintf(o.debug_fp, _T("%s %s\n"), date, msg);
   fflush(o.debug_fp);
 }
-
-void PrintErrorDebug(TCHAR *msg)
-{
-  LPVOID lpMsgBuf;
-  TCHAR *buf;
-
-  /* Get last error message */
-  if (!FormatMessage( 
-          FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-          FORMAT_MESSAGE_FROM_SYSTEM | 
-          FORMAT_MESSAGE_IGNORE_INSERTS,
-          NULL,
-          GetLastError(),
-          MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-          (LPTSTR) &lpMsgBuf,
-          0,
-          NULL ))
-    {
-      /* FormatMessage failed! */
-      PrintDebug(_T("FormatMessage() failed. %s "), msg);
-      return;
-    }
-
-  /* Cut of CR/LFs */
-  buf = (TCHAR *)lpMsgBuf;
-  buf[_tcslen(buf) - 3] = '\0';
-
-  PrintDebug(_T("%s %s"), msg, (LPCTSTR)lpMsgBuf);
-
-  LocalFree(lpMsgBuf);
-
-}
 #endif
-
-bool
-init_security_attributes_allow_all (struct security_attributes *obj)
-{
-  CLEAR (*obj);
-
-  obj->sa.nLength = sizeof (SECURITY_ATTRIBUTES);
-  obj->sa.lpSecurityDescriptor = &obj->sd;
-  obj->sa.bInheritHandle = FALSE;
-  if (!InitializeSecurityDescriptor (&obj->sd, SECURITY_DESCRIPTOR_REVISION))
-    return false;
-  if (!SetSecurityDescriptorDacl (&obj->sd, TRUE, NULL, FALSE))
-    return false;
-  return true;
-}
 
 #define PACKVERSION(major,minor) MAKELONG(minor,major)
 DWORD GetDllVersion(LPCTSTR lpszDllName)

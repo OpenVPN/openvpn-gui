@@ -110,8 +110,6 @@ __snprintf_0(char *buf, size_t size, char *format, ...)
         }
 
 void PrintDebugMsg(TCHAR *msg);
-void PrintErrorDebug(TCHAR *msg);
-bool init_security_attributes_allow_all (struct security_attributes *obj);
 #endif
 
 DWORD GetDllVersion(LPCTSTR lpszDllName);

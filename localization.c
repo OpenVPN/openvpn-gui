@@ -295,13 +295,6 @@ LocalizedDialogBoxParam(const UINT dialogId, DLGPROC dialogFunc, const LPARAM pa
 }
 
 
-INT_PTR
-LocalizedDialogBox(const UINT dialogId, DLGPROC dialogFunc)
-{
-    return LocalizedDialogBoxParam(dialogId, dialogFunc, 0);
-}
-
-
 HWND
 CreateLocalizedDialogParam(const UINT dialogId, DLGPROC dialogFunc, const LPARAM param)
 {
