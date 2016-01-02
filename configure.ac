@@ -20,7 +20,7 @@ dnl  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 AC_PREREQ(2.59)
 define([_GUI_VERSION], [9])
-AC_INIT([OpenVPN GUI],[_GUI_VERSION],[openvpn-devel@lists.sourceforge.net],[openvpn-gui],[http://openvpn-gui.sf.net])
+AC_INIT([OpenVPN GUI],[_GUI_VERSION],[openvpn-devel@lists.sourceforge.net],[openvpn-gui],[https://github.com/openvpn/openvpn-gui/])
 AC_DEFINE([PACKAGE_VERSION_RESOURCE], [_GUI_VERSION,0,0,0], [Version in windows resource format])
 AC_CONFIG_AUX_DIR([.])
 AM_CONFIG_HEADER([config.h])
