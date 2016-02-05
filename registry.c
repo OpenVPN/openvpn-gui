@@ -87,11 +87,11 @@ GetRegistryKeys()
   if (!GetRegKey(_T("priority"), o.priority_string, 
       _T("NORMAL_PRIORITY_CLASS"), _countof(o.priority_string))) return(false);
 
-  _sntprintf_0(temp_path, _T("%s\\notepad.exe"), windows_dir);
+  _sntprintf_0(temp_path, _T("%s\\system32\\notepad.exe"), windows_dir);
   if (!GetRegKey(_T("log_viewer"), o.log_viewer, 
       temp_path, _countof(o.log_viewer))) return(false);
 
-  _sntprintf_0(temp_path, _T("%s\\notepad.exe"), windows_dir);
+  _sntprintf_0(temp_path, _T("%s\\system32\\notepad.exe"), windows_dir);
   if (!GetRegKey(_T("editor"), o.editor, 
       temp_path, _countof(o.editor))) return(false);
 
