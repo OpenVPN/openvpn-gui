@@ -692,10 +692,11 @@ StartOpenVPN(connection_t *c)
         (o.proxy_source != config ? _T("--management-query-proxy ") : _T("")));
 
     /* Try to open the service pipe */
-    service = CreateFile(_T("\\\\.\\pipe\\openvpn\\service"),
+    if (!IsUserAdmin())
+      service = CreateFile(_T("\\\\.\\pipe\\openvpn\\service"),
                 GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
 
-    if (service != INVALID_HANDLE_VALUE)
+    if (service && service != INVALID_HANDLE_VALUE)
     {
         DWORD size = _tcslen(c->config_dir) + _tcslen(options) + sizeof(c->manage.password) + 3;
         TCHAR startup_info[1024];
