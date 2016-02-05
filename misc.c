@@ -190,3 +190,28 @@ ForceForegroundWindow(HWND hWnd)
 
     return ret;
 }
+
+/*
+ * Check user has admin rights
+ * Taken from https://msdn.microsoft.com/en-us/library/windows/desktop/aa376389(v=vs.85).aspx
+ * Returns true if the calling process token has the local Administrators group enabled
+ * in its SID.  Assumes the caller is not impersonating and has access to open its own 
+ * process token.
+ */
+BOOL IsUserAdmin(VOID)
+{
+    BOOL b;
+    SID_IDENTIFIER_AUTHORITY NtAuthority = {SECURITY_NT_AUTHORITY};
+    PSID AdministratorsGroup;
+
+    b = AllocateAndInitializeSid (&NtAuthority, 2, SECURITY_BUILTIN_DOMAIN_RID,
+                                  DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0, 0, 0,
+                                  &AdministratorsGroup);
+    if(b)
+    {
+        CheckTokenMembership(NULL, AdministratorsGroup, &b);
+        FreeSid(AdministratorsGroup);
+    }
+
+    return(b);
+}
