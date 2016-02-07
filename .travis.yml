@@ -9,9 +9,9 @@ matrix:
   fast_finish: true
   include:
     - compiler: ": Win32"
-      env: CHOST=i686-w64-mingw32 CBUILD=x86_64-pc-linux-gnu m=mingw
+      env: CHOST=i686-w64-mingw32 m=mingw
     - compiler: ": Win64"
-      env: CHOST=x86_64-w64-mingw32 CBUILD=x86_64-pc-linux-gnu m=mingw64
+      env: CHOST=x86_64-w64-mingw32 m=mingw64
   exclude:
     - compiler: gcc
 
@@ -31,4 +31,4 @@ script:
     - cd .. && autoreconf -i -v
     - export OPENSSL_CRYPTO_CFLAGS="-I${HOME}/image/include"
     - export OPENSSL_CRYPTO_LIBS="-L${HOME}/image/lib -lcrypto"
-    - ./configure --prefix=/ --libdir=/lib --host=$CHOST --build=$CBUILD --program-prefix='' && make
+    - ./configure --prefix=/ --libdir=/lib --host=$CHOST --build=x86_64-pc-linux-gnu --program-prefix='' && make
