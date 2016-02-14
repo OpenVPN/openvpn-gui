@@ -182,6 +182,7 @@ BEGIN
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI does not support more than %d configs. Please contact the author if you have the need for more."
+    IDS_NFO_NO_CONFIGS "No readable connection profiles (config files) found at %s"
     IDS_ERR_ONE_CONN_OLD_VER "You can only have one connection running at the same time when using an older version on OpenVPN than 2.0-beta6."
     IDS_ERR_STOP_SERV_OLD_VER "You cannot use OpenVPN GUI to start a connection while the OpenVPN Service is running (with OpenVPN 1.5/1.6). Stop OpenVPN Service first if you want to use OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "CreateEvent failed on exit event: %s"
@@ -226,6 +227,8 @@ BEGIN
     IDS_ERR_CONFIG_EXIST "There already exist a config file named '%s'. You cannot " \
                          "have multiple config files with the same name, even if " \
                          "they reside in diffrent folders."
+    IDS_NFO_CONN_TIMEOUT "Connecting to management interface failed.\n" \
+                         "View log file (%s) for more details."
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "Error opening debug file (%s) for output."
     IDS_ERR_CREATE_PATH "Could not create %s path:\n%s"
@@ -322,6 +325,8 @@ BEGIN
     IDS_ERR_OPEN_SCMGR "OpenSCManager failed (%d)"
     IDS_ERR_STOP_SERVICE "Failed to stop OpenVPN Service"
     IDS_NFO_RESTARTED "OpenVPN Service Restarted."
+    IDS_ERR_ACCESS_SERVICE_PIPE "Access to service pipe failed."
+    IDS_ERR_WRITE_SERVICE_PIPE "Writing to service pipe failed."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Error getting Windows Directory."

@@ -61,6 +61,22 @@ match(const WIN32_FIND_DATA *find, const TCHAR *ext)
     return match_false;
 }
 
+static bool
+CheckReadAccess (const TCHAR *path)
+{
+    HANDLE h;
+    bool ret = FALSE;
+
+    h = CreateFile (path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
+                   FILE_ATTRIBUTE_NORMAL, NULL);
+    if ( h != INVALID_HANDLE_VALUE )
+    {
+        ret = TRUE;
+        CloseHandle (h);
+    }
+
+    return ret;
+}
 
 static int
 ConfigAlreadyExists(TCHAR *newconfig)
@@ -111,6 +127,8 @@ BuildFileList()
     HANDLE find_handle;
     TCHAR find_string[MAX_PATH];
     TCHAR subdir_table[MAX_CONFIG_SUBDIRS][MAX_PATH];
+    TCHAR fullpath[MAX_PATH];
+    static int warn_no_configs = 1;
     int subdirs = 0;
     int i;
 
@@ -134,7 +152,9 @@ BuildFileList()
         match_t match_type = match(&find_obj, o.ext_string);
         if (match_type == match_file)
         {
-            AddConfigFileToList(o.num_configs++, find_obj.cFileName, o.config_dir);
+            _sntprintf_0(fullpath, _T("%s\\%s"), o.config_dir, find_obj.cFileName);
+            if (CheckReadAccess (fullpath))
+                AddConfigFileToList(o.num_configs++, find_obj.cFileName, o.config_dir);
         }
         else if (match_type == match_dir)
         {
@@ -183,5 +203,10 @@ BuildFileList()
         } while (FindNextFile(find_handle, &find_obj));
 
         FindClose(find_handle);
+    }
+    if (o.num_configs == 0 && warn_no_configs)
+    {
+        ShowLocalizedMsg(IDS_NFO_NO_CONFIGS, o.config_dir);
+        warn_no_configs = 0;
     }
 }

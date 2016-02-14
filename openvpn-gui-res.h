@@ -156,6 +156,8 @@
 #define IDS_ERR_CONN_SCRIPT_FAILED      1248
 #define IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT 1249
 #define IDS_ERR_CONFIG_EXIST            1251
+#define IDS_NFO_CONN_TIMEOUT            1252
+#define IDS_NFO_NO_CONFIGS              1253
 
 /* Program Startup Related */
 #define IDS_ERR_OPEN_DEBUG_FILE         1301
@@ -225,6 +227,8 @@
 #define IDS_ERR_OPEN_SCMGR              1706
 #define IDS_ERR_STOP_SERVICE            1707
 #define IDS_NFO_RESTARTED               1708
+#define IDS_ERR_ACCESS_SERVICE_PIPE     1709
+#define IDS_ERR_WRITE_SERVICE_PIPE      1710
 
 /* Registry Related */
 #define IDS_ERR_GET_WINDOWS_DIR         1801
