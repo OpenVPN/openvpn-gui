@@ -42,11 +42,17 @@ GetRegistryKeys()
   TCHAR windows_dir[MAX_PATH];
   TCHAR temp_path[MAX_PATH];
   TCHAR openvpn_path[MAX_PATH];
+  TCHAR profile_dir[MAX_PATH];
   HKEY regkey;
 
   if (!GetWindowsDirectory(windows_dir, _countof(windows_dir))) {
     /* can't get windows dir */
     ShowLocalizedMsg(IDS_ERR_GET_WINDOWS_DIR);
+    return(false);
+  }
+
+  if (SHGetFolderPath(NULL, CSIDL_PROFILE, NULL, SHGFP_TYPE_CURRENT, profile_dir) != S_OK) {
+    ShowLocalizedMsg(IDS_ERR_GET_PROFILE_DIR);
     return(false);
   }
 
@@ -78,7 +84,7 @@ GetRegistryKeys()
   if (!GetRegKey(_T("exe_path"), o.exe_path, 
       temp_path, _countof(o.exe_path))) return(false);
 
-  _sntprintf_0(temp_path, _T("%slog"), openvpn_path);
+  _sntprintf_0(temp_path, _T("%s\\OpenVPN\\log"), profile_dir);
   if (!GetRegKey(_T("log_dir"), o.log_dir, 
       temp_path, _countof(o.log_dir))) return(false);
 
@@ -87,11 +93,11 @@ GetRegistryKeys()
   if (!GetRegKey(_T("priority"), o.priority_string, 
       _T("NORMAL_PRIORITY_CLASS"), _countof(o.priority_string))) return(false);
 
-  _sntprintf_0(temp_path, _T("%s\\notepad.exe"), windows_dir);
+  _sntprintf_0(temp_path, _T("%s\\system32\\notepad.exe"), windows_dir);
   if (!GetRegKey(_T("log_viewer"), o.log_viewer, 
       temp_path, _countof(o.log_viewer))) return(false);
 
-  _sntprintf_0(temp_path, _T("%s\\notepad.exe"), windows_dir);
+  _sntprintf_0(temp_path, _T("%s\\system32\\notepad.exe"), windows_dir);
   if (!GetRegKey(_T("editor"), o.editor, 
       temp_path, _countof(o.editor))) return(false);
 
@@ -178,7 +184,7 @@ int GetRegKey(const TCHAR name[], TCHAR *data, const TCHAR default_data[], DWORD
       return(true);
     }
 
-  status = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
+  status = RegOpenKeyEx(HKEY_CURRENT_USER,
                        _T("SOFTWARE\\OpenVPN-GUI"),
                        0,
                        KEY_READ,
@@ -186,7 +192,7 @@ int GetRegKey(const TCHAR name[], TCHAR *data, const TCHAR default_data[], DWORD
 
   if (status != ERROR_SUCCESS)
     {
-      if (RegCreateKeyEx(HKEY_LOCAL_MACHINE,
+      if (RegCreateKeyEx(HKEY_CURRENT_USER,
                         _T("Software\\OpenVPN-GUI"),
                         0,
                         _T(""),
@@ -197,7 +203,7 @@ int GetRegKey(const TCHAR name[], TCHAR *data, const TCHAR default_data[], DWORD
                         &dwDispos) != ERROR_SUCCESS)
         {
           /* error creating registry key */
-          ShowLocalizedMsg(IDS_ERR_CREATE_REG_KEY);
+          ShowLocalizedMsg(IDS_ERR_CREATE_REG_HKCU_KEY, _T("OpenVPN-GUI"));
           return(false);
         }  
     }
@@ -208,7 +214,7 @@ int GetRegKey(const TCHAR name[], TCHAR *data, const TCHAR default_data[], DWORD
   if (status != ERROR_SUCCESS || type != REG_SZ)
     {
       /* key did not exist - set default value */
-      status = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
+      status = RegOpenKeyEx(HKEY_CURRENT_USER,
 			  _T("SOFTWARE\\OpenVPN-GUI"),
 			  0,
 			  KEY_READ | KEY_WRITE,
@@ -216,7 +222,7 @@ int GetRegKey(const TCHAR name[], TCHAR *data, const TCHAR default_data[], DWORD
 
       if (status != ERROR_SUCCESS) {
          /* can't open registry for writing */
-         ShowLocalizedMsg(IDS_ERR_OPEN_WRITE_REG);
+         ShowLocalizedMsg(IDS_ERR_WRITE_REGVALUE, _T("OpenVPN-GUI"), name);
          return(false);
       }    
       if(!SetRegistryValue(openvpn_key_write, name, default_data))

@@ -239,5 +239,6 @@
 #define IDS_ERR_OPEN_WRITE_REG          1810
 #define IDS_ERR_READ_SET_KEY            1811
 #define IDS_ERR_WRITE_REGVALUE          1812
+#define IDS_ERR_GET_PROFILE_DIR         1813
 
 #endif

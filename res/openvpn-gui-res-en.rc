@@ -325,6 +325,7 @@ BEGIN
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Error getting Windows Directory."
+    IDS_ERR_GET_PROFILE_DIR "Error getting User Profile Directory."
     IDS_ERR_GET_PROGRAM_DIR "Error getting ""Program"" folder name."
     IDS_ERR_OPEN_REGISTRY "Error opening registry for reading (HKLM\\SOFTWARE\\OpenVPN).\n " \
                       "OpenVPN is probably not installed"
