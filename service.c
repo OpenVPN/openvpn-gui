@@ -241,6 +241,40 @@ int MyReStartService()
     return(false);
 }
 
+bool
+CheckIServiceStatus()
+{
+    SC_HANDLE schSCManager;
+    SC_HANDLE schService;
+    SERVICE_STATUS ssStatus;
+
+    // Open a handle to the SC Manager database.
+    schSCManager = OpenSCManager(NULL, NULL, SC_MANAGER_CONNECT);
+
+    if (NULL == schSCManager)
+        return(false);
+
+    schService = OpenService(schSCManager, _T("OpenVPNServiceInteractive"),
+                             SERVICE_QUERY_STATUS);
+    if (schService == NULL &&
+        GetLastError() == ERROR_SERVICE_DOES_NOT_EXIST)
+    {
+        /* warn that iservice is not installed */
+        ShowLocalizedMsg(IDS_ERR_INSTALL_ISERVICE);
+        return(false);
+    }
+
+    if (!QueryServiceStatus(schService, &ssStatus))
+        return(false);
+
+    if (ssStatus.dwCurrentState != SERVICE_RUNNING)
+    {
+        /* warn that iservice is not started */
+        ShowLocalizedMsg(IDS_ERR_NOTSTARTED_ISERVICE);
+        return(false);
+    }
+    return true;
+}
 
 int CheckServiceStatus()
 {

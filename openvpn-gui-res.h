@@ -229,6 +229,8 @@
 #define IDS_NFO_RESTARTED               1708
 #define IDS_ERR_ACCESS_SERVICE_PIPE     1709
 #define IDS_ERR_WRITE_SERVICE_PIPE      1710
+#define IDS_ERR_NOTSTARTED_ISERVICE     1711
+#define IDS_ERR_INSTALL_ISERVICE        1712
 
 /* Registry Related */
 #define IDS_ERR_GET_WINDOWS_DIR         1801

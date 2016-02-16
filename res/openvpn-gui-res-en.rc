@@ -327,6 +327,10 @@ BEGIN
     IDS_NFO_RESTARTED "OpenVPN Service Restarted."
     IDS_ERR_ACCESS_SERVICE_PIPE "Access to service pipe failed."
     IDS_ERR_WRITE_SERVICE_PIPE "Writing to service pipe failed."
+    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is not installed.\n"
+                                 "Tasks requiring administrative access may not work."
+    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" is not started.\n"
+                                 "Tasks requiring administrative access may not work."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Error getting Windows Directory."
