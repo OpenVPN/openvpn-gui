@@ -228,4 +228,8 @@ Building OpenVPN GUI from source
 
 * Start a bash shell by running msys.bat.
 
-* Run "make" from the OpenVPN GUI source directory. 
+* Run at the OpenVPN GUI source directory:
+
+$ autoreconf -i
+$ ./configure
+$ make
