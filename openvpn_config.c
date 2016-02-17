@@ -92,7 +92,7 @@ ConfigAlreadyExists(TCHAR *newconfig)
 
 
 static void
-AddConfigFileToList(int config, TCHAR *filename, TCHAR *config_dir)
+AddConfigFileToList(int config, const TCHAR *filename, const TCHAR *config_dir)
 {
     connection_t *c = &o.conn[config];
     int i;
@@ -120,22 +120,18 @@ AddConfigFileToList(int config, TCHAR *filename, TCHAR *config_dir)
 }
 
 
-void
-BuildFileList()
+static void
+BuildFileList0(const TCHAR *config_dir, bool warn_duplicates)
 {
     WIN32_FIND_DATA find_obj;
     HANDLE find_handle;
     TCHAR find_string[MAX_PATH];
     TCHAR subdir_table[MAX_CONFIG_SUBDIRS][MAX_PATH];
     TCHAR fullpath[MAX_PATH];
-    static int warn_no_configs = 1;
     int subdirs = 0;
     int i;
 
-    /* Reset config counter */
-    o.num_configs = 0;
-
-    _sntprintf_0(find_string, _T("%s\\*"), o.config_dir);
+    _sntprintf_0(find_string, _T("%s\\*"), config_dir);
     find_handle = FindFirstFile(find_string, &find_obj);
     if (find_handle == INVALID_HANDLE_VALUE)
         return;
@@ -152,9 +148,17 @@ BuildFileList()
         match_t match_type = match(&find_obj, o.ext_string);
         if (match_type == match_file)
         {
-            _sntprintf_0(fullpath, _T("%s\\%s"), o.config_dir, find_obj.cFileName);
+            _sntprintf_0(fullpath, _T("%s\\%s"), config_dir, find_obj.cFileName);
+
+            if (ConfigAlreadyExists(find_obj.cFileName))
+            {
+                if (warn_duplicates)
+                    ShowLocalizedMsg(IDS_ERR_CONFIG_EXIST, find_obj.cFileName);
+                continue;
+            }
+
             if (CheckReadAccess (fullpath))
-                AddConfigFileToList(o.num_configs++, find_obj.cFileName, o.config_dir);
+                AddConfigFileToList(o.num_configs++, find_obj.cFileName, config_dir);
         }
         else if (match_type == match_dir)
         {
@@ -163,7 +167,7 @@ BuildFileList()
             &&  subdirs < MAX_CONFIG_SUBDIRS)
             {
                 /* Add dir to dir_table */
-                _sntprintf_0(subdir_table[subdirs], _T("%s\\%s"), o.config_dir, find_obj.cFileName);
+                _sntprintf_0(subdir_table[subdirs], _T("%s\\%s"), config_dir, find_obj.cFileName);
                 subdirs++;
             }
         }
@@ -195,7 +199,8 @@ BuildFileList()
 
             if (ConfigAlreadyExists(find_obj.cFileName))
             {
-                ShowLocalizedMsg(IDS_ERR_CONFIG_EXIST, find_obj.cFileName);
+                if (warn_duplicates)
+                    ShowLocalizedMsg(IDS_ERR_CONFIG_EXIST, find_obj.cFileName);
                 continue;
             }
 
@@ -204,9 +209,22 @@ BuildFileList()
 
         FindClose(find_handle);
     }
-    if (o.num_configs == 0 && warn_no_configs)
-    {
-        ShowLocalizedMsg(IDS_NFO_NO_CONFIGS, o.config_dir);
-        warn_no_configs = 0;
-    }
+}
+
+void
+BuildFileList()
+{
+    static bool issue_warnings = true;
+
+    o.num_configs = 0;
+
+    BuildFileList0 (o.config_dir, issue_warnings);
+
+    if (_tcscmp (o.global_config_dir, o.config_dir))
+        BuildFileList0 (o.global_config_dir, issue_warnings);
+
+    if (o.num_configs == 0 && issue_warnings)
+        ShowLocalizedMsg(IDS_NFO_NO_CONFIGS);
+
+    issue_warnings = false;
 }
