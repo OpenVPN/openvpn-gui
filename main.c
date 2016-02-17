@@ -29,6 +29,7 @@
 #include <prsht.h>
 #include <pbt.h>
 #include <commdlg.h>
+#include <shlobj.h>
 
 #include "tray.h"
 #include "openvpn.h"
@@ -561,6 +562,9 @@ ImportConfigFile()
         
         TCHAR destination[MAX_PATH];
         PTCHAR fileName = source + fn.nFileOffset;
+
+        /* make sure full config path exists */
+        SHCreateDirectoryEx(NULL, o.config_dir, NULL);
 
         _sntprintf_0(destination, _T("%s\\%s"), o.config_dir, fileName);
         
