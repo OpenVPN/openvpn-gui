@@ -28,6 +28,7 @@
 #include <wtsapi32.h>
 #include <prsht.h>
 #include <pbt.h>
+#include <commdlg.h>
 
 #include "tray.h"
 #include "openvpn.h"
@@ -53,6 +54,7 @@
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
 static void ShowSettingsDialog();
 void CloseApplication(HWND hwnd);
+void ImportConfigFile();
 
 /*  Class name and window title  */
 TCHAR szClassName[ ] = _T("OpenVPN-GUI");
@@ -349,6 +351,9 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         ShowChangePassphraseDialog(&o.conn[LOWORD(wParam) - IDM_PASSPHRASEMENU]);
       }
 #endif
+      if (LOWORD(wParam) == IDM_IMPORT) {
+        ImportConfigFile();
+      }
       if (LOWORD(wParam) == IDM_SETTINGS) {
         ShowSettingsDialog();
       }
@@ -523,6 +528,55 @@ CloseApplication(HWND hwnd)
     }
 
     DestroyWindow(hwnd);
+}
+
+void
+ImportConfigFile()
+{
+    
+    TCHAR filter[32];
+
+    memset(filter, 0, sizeof(filter));
+    _sntprintf_0(filter, _T("*.%s *.%s"), o.ext_string, o.ext_string);
+    filter[2 + _tcslen(o.ext_string)] = _T('\0');
+    
+    OPENFILENAME fn;
+    TCHAR source[MAX_PATH] = _T("");
+
+    fn.lStructSize = sizeof(OPENFILENAME);
+    fn.hwndOwner = NULL;
+    fn.lpstrFilter = filter;
+    fn.lpstrCustomFilter = NULL;
+    fn.nFilterIndex = 1;
+    fn.lpstrFile = source;
+    fn.nMaxFile = MAX_PATH;
+    fn.lpstrFileTitle = NULL;
+    fn.lpstrInitialDir = NULL;
+    fn.lpstrTitle = NULL;
+    fn.Flags = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST;
+    fn.lpstrDefExt = NULL;
+
+    if (GetOpenFileName(&fn)) 
+    {
+        
+        TCHAR destination[MAX_PATH];
+        PTCHAR fileName = source + fn.nFileOffset;
+
+        _sntprintf_0(destination, _T("%s\\%s"), o.config_dir, fileName);
+        
+        if (!CopyFile(source, destination, TRUE)) 
+        {
+            if (GetLastError() == ERROR_FILE_EXISTS) 
+            {
+                fileName[_tcslen(fileName) - _tcslen(o.ext_string) - 1] = _T('\0');
+                ShowLocalizedMsg(IDS_ERR_IMPORT_EXISTS, fileName);
+            }
+            else
+                ShowLocalizedMsg(IDS_ERR_IMPORT_FAILED);
+        }
+
+    }
+    
 }
 
 #ifdef DEBUG

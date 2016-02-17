@@ -107,6 +107,7 @@
 #define IDS_MENU_SERVICEONLY_STOP       1020
 #define IDS_MENU_SERVICEONLY_RESTART    1021
 #define IDS_MENU_ASK_STOP_SERVICE       1022
+#define IDS_MENU_IMPORT                 1023
 
 /* LogViewer Dialog */
 #define IDS_ERR_START_LOG_VIEWER        1101
@@ -240,5 +241,10 @@
 #define IDS_ERR_READ_SET_KEY            1811
 #define IDS_ERR_WRITE_REGVALUE          1812
 #define IDS_ERR_GET_PROFILE_DIR         1813
+
+/* Importation Related */
+
+#define IDS_ERR_IMPORT_EXISTS           1901
+#define IDS_ERR_IMPORT_FAILED           1902
 
 #endif

@@ -147,6 +147,7 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\nConectado desde: "
     IDS_TIP_ASSIGNED_IP "\nIP atribuído: %s"
     IDS_MENU_SERVICE "Serviço OpenVPN"
+    IDS_MENU_IMPORT "Importar arquivo…"
     IDS_MENU_SETTINGS "Configurações…"
     IDS_MENU_CLOSE "Sair"
     IDS_MENU_CONNECT "Conectar"
@@ -324,4 +325,8 @@ BEGIN
                            "uma vez como Administrador para alterar o registro."
     IDS_ERR_READ_SET_KEY "Erro ao ler e ajustar chave de registro ""%s""."
     IDS_ERR_WRITE_REGVALUE "Erro ao gravar valor da chave de registro ""HKEY_CURRENT_USER\\%s\\%s""."
+
+    /* importation */
+    IDS_ERR_IMPORT_EXISTS "Já existe uma configuração com o nome ""%s""."
+    IDS_ERR_IMPORT_FAILED "Falha ao importar o arquivo."
 END
