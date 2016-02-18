@@ -29,7 +29,6 @@
 #include <prsht.h>
 #include <pbt.h>
 #include <commdlg.h>
-#include <shlobj.h>
 
 #include "tray.h"
 #include "openvpn.h"
@@ -535,11 +534,9 @@ void
 ImportConfigFile()
 {
     
-    TCHAR filter[32];
+    TCHAR filter[37];
 
-    memset(filter, 0, sizeof(filter));
-    _sntprintf_0(filter, _T("*.%s *.%s"), o.ext_string, o.ext_string);
-    filter[2 + _tcslen(o.ext_string)] = _T('\0');
+    _sntprintf_0(filter, _T("*.%s%c*.%s%c"), o.ext_string, _T('\0'), o.ext_string, _T('\0'));
     
     OPENFILENAME fn;
     TCHAR source[MAX_PATH] = _T("");
@@ -559,25 +556,34 @@ ImportConfigFile()
 
     if (GetOpenFileName(&fn)) 
     {
-        
+
         TCHAR destination[MAX_PATH];
         PTCHAR fileName = source + fn.nFileOffset;
 
-        /* make sure full config path exists */
-        SHCreateDirectoryEx(NULL, o.config_dir, NULL);
-
         _sntprintf_0(destination, _T("%s\\%s"), o.config_dir, fileName);
+
+        destination[_tcslen(destination) - _tcslen(o.ext_string) - 1] = _T('\0');
         
-        if (!CopyFile(source, destination, TRUE)) 
+        if (EnsureDirExists(destination))
         {
-            if (GetLastError() == ERROR_FILE_EXISTS) 
+
+            _sntprintf_0(destination, _T("%s\\%s"), destination, fileName);
+            
+            if (!CopyFile(source, destination, TRUE))
             {
-                fileName[_tcslen(fileName) - _tcslen(o.ext_string) - 1] = _T('\0');
-                ShowLocalizedMsg(IDS_ERR_IMPORT_EXISTS, fileName);
+                if (GetLastError() == ERROR_FILE_EXISTS)
+                {
+                    fileName[_tcslen(fileName) - _tcslen(o.ext_string) - 1] = _T('\0');
+                    ShowLocalizedMsg(IDS_ERR_IMPORT_EXISTS, fileName);
+                    return;
+                }
             }
             else
-                ShowLocalizedMsg(IDS_ERR_IMPORT_FAILED);
+                return;
+
         }
+
+        ShowLocalizedMsg(IDS_ERR_IMPORT_FAILED);
 
     }
     
