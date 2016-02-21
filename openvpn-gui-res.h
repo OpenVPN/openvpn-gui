@@ -246,5 +246,6 @@
 
 #define IDS_ERR_IMPORT_EXISTS           1901
 #define IDS_ERR_IMPORT_FAILED           1902
+#define IDS_NFO_IMPORT_SUCCESS          1903
 
 #endif

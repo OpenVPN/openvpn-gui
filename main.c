@@ -579,11 +579,14 @@ ImportConfigFile()
                 }
             }
             else
+            {
+                ShowLocalizedMsg(IDS_NFO_IMPORT_SUCCESS);
                 return;
+            }
 
         }
 
-        ShowLocalizedMsg(IDS_ERR_IMPORT_FAILED);
+        ShowLocalizedMsg(IDS_ERR_IMPORT_FAILED, destination);
 
     }
     

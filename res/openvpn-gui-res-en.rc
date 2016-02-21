@@ -343,5 +343,7 @@ BEGIN
 
     /* importation */
     IDS_ERR_IMPORT_EXISTS "A config named ""%s"" already exists."
-    IDS_ERR_IMPORT_FAILED "Failed to import file."
+    IDS_ERR_IMPORT_FAILED "Failed to import file. The following path could not be created.\n\n" \
+                          "%s\n\nMake sure you have the right permissions."
+    IDS_NFO_IMPORT_SUCCESS "File imported successfully."
 END

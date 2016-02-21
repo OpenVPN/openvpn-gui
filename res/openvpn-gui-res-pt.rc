@@ -328,5 +328,7 @@ BEGIN
 
     /* importation */
     IDS_ERR_IMPORT_EXISTS "Já existe uma configuração com o nome ""%s""."
-    IDS_ERR_IMPORT_FAILED "Falha ao importar o arquivo."
+    IDS_ERR_IMPORT_FAILED "Falha ao importar o arquivo. O seguinte caminho não pôde ser criado.\n\n" \
+                          "%s\n\nCertifique-se de que você possui as permissões necessárias."
+    IDS_NFO_IMPORT_SUCCESS "Arquivo importado com sucesso."
 END
