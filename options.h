@@ -74,6 +74,14 @@ typedef enum {
     timedout
 } conn_state_t;
 
+/* Interactive Service IO parameters */
+typedef struct {
+    OVERLAPPED o; /* This has to be the first element */
+    HANDLE pipe;
+    HANDLE hEvent;
+    WCHAR readbuf[512];
+} service_io_t;
+
 /* Connections parameters */
 struct connection {
     TCHAR config_file[MAX_PATH];    /* Name of the config file */
@@ -95,7 +103,11 @@ struct connection {
         char *saved_data;
         size_t saved_size;
         mgmt_cmd_t *cmd_queue;
+        BOOL connected;             /* True, if management interface has connected */
     } manage;
+
+    HANDLE hProcess;                /* Handle of openvpn process if directly started */
+    service_io_t iserv;
 
     HANDLE exit_event;
     DWORD threadId;

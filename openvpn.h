@@ -38,4 +38,10 @@ void OnStop(connection_t *, char *);
 
 extern const TCHAR *cfgProp;
 
+/* These error codes are from openvpn service sources */
+#define ERROR_OPENVPN_STARTUP 0x20000000
+#define ERROR_STARTUP_DATA 0x20000001
+#define ERROR_MESSAGE_DATA 0x20000002
+#define ERROR_MESSAGE_TYPE 0x20000003
+
 #endif

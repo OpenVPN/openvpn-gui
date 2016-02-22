@@ -3,6 +3,7 @@
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
  *                2010 Heiko Hund <heikoh@users.sf.net>
+ *                2016 Selva Nair <selva.nair@gmail.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,6 +32,7 @@
 #include <stdio.h>
 #include <process.h>
 #include <richedit.h>
+#include <time.h>
 
 #include "tray.h"
 #include "main.h"
@@ -466,6 +468,269 @@ OnStop(connection_t *c, UNUSED char *msg)
     }
 }
 
+/*
+ * Break a long line into shorter segments
+ */
+static WCHAR *
+WrapLine (WCHAR *line)
+{
+    int i = 0;
+    WCHAR *next = NULL;
+    int len = 80;
+
+    for (i = 0; *line; i++, ++line)
+    {
+        if ((*line == L'\r') || (*line == L'\n'))
+            *line = L' ';
+        if (next && i > len) break;
+        if (iswspace(*line))  next = line;
+    }
+    if (!*line) next = NULL;
+    if (next)
+    {
+        *next = L'\0';
+        ++next;
+    }
+    return next;
+}
+
+/*
+ * Write a line to the status log window and optionally to the log file
+ */
+static void
+WriteStatusLog (connection_t *c, const WCHAR *prefix, const WCHAR *line, BOOL fileio)
+{
+    HWND logWnd = GetDlgItem(c->hwndStatus, ID_EDT_LOG);
+    FILE *log_fd;
+    time_t now;
+    WCHAR datetime[26];
+
+    time (&now);
+    /* TODO: change this to use _wctime_s when mingw supports it */
+    wcsncpy (datetime, _wctime(&now), _countof(datetime));
+    datetime[24] = L' ';
+
+    /* Remove lines from log window if it is getting full */
+    if (SendMessage(logWnd, EM_GETLINECOUNT, 0, 0) > MAX_LOG_LINES)
+    {
+        int pos = SendMessage(logWnd, EM_LINEINDEX, DEL_LOG_LINES, 0);
+        SendMessage(logWnd, EM_SETSEL, 0, pos);
+        SendMessage(logWnd, EM_REPLACESEL, FALSE, (LPARAM) _T(""));
+    }
+    /* Append line to log window */
+    SendMessage(logWnd, EM_SETSEL, (WPARAM) -1, (LPARAM) -1);
+    SendMessage(logWnd, EM_REPLACESEL, FALSE, (LPARAM) datetime);
+    SendMessage(logWnd, EM_REPLACESEL, FALSE, (LPARAM) prefix);
+    SendMessage(logWnd, EM_REPLACESEL, FALSE, (LPARAM) line);
+    SendMessage(logWnd, EM_REPLACESEL, FALSE, (LPARAM) L"\n");
+
+    if (!fileio) return;
+
+    log_fd = _tfopen (c->log_path, TEXT("at+,ccs=UTF-8"));
+    if (log_fd)
+    {
+        fwprintf (log_fd, L"%s%s%s\n", datetime, prefix, line);
+        fclose (log_fd);
+    }
+}
+
+#define IO_TIMEOUT 5000 /* milliseconds */
+
+static void
+CloseServiceIO (service_io_t *s)
+{
+    if (s->hEvent)
+        CloseHandle(s->hEvent);
+    s->hEvent = NULL;
+    if (s->pipe && s->pipe != INVALID_HANDLE_VALUE)
+        CloseHandle(s->pipe);
+    s->pipe = NULL;
+}
+
+/*
+ * Open the service pipe and initialize service I/O.
+ * Failure is not fatal.
+ */
+static BOOL
+InitServiceIO (service_io_t *s)
+{
+    DWORD dwMode = PIPE_READMODE_MESSAGE;
+    CLEAR(*s);
+
+    /* auto-reset event used for signalling i/o completion*/
+    s->hEvent = CreateEvent (NULL, FALSE, FALSE, NULL);
+    if (!s->hEvent)
+    {
+        return FALSE;
+    }
+
+    s->pipe = CreateFile(_T("\\\\.\\pipe\\openvpn\\service"),
+                GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, NULL);
+
+    if ( !s->pipe                                               ||
+         s->pipe == INVALID_HANDLE_VALUE                        ||
+         !SetNamedPipeHandleState(s->pipe, &dwMode, NULL, NULL)
+       )
+    {
+        CloseServiceIO (s);
+        return FALSE;
+    }
+
+    return TRUE;
+}
+
+/*
+ * Read-completion routine for interactive service pipe. Call with
+ * err = 0, bytes = 0 to queue the first read request.
+ */
+static void
+HandleServiceIO (DWORD err, DWORD bytes, LPOVERLAPPED lpo)
+{
+    service_io_t *s = (service_io_t *) lpo;
+    int len, capacity;
+
+    len = _countof(s->readbuf);
+    capacity = len*sizeof(*(s->readbuf));
+
+    if (bytes > 0)
+        SetEvent (s->hEvent);
+    if (err)
+    {
+        _snwprintf(s->readbuf, len, L"0x%08x\nInteractive Service disconnected\n", err);
+        s->readbuf[len-1] = L'\0';
+        SetEvent (s->hEvent);
+        return;
+    }
+
+    /* queue next read request */
+    ReadFileEx (s->pipe, s->readbuf, capacity, lpo, (LPOVERLAPPED_COMPLETION_ROUTINE) HandleServiceIO);
+    /* Any error in the above call will get checked in next round */
+}
+
+/*
+ * Write size bytes in buf to the pipe with a timeout.
+ * Retun value: TRUE on success FLASE on error
+ */
+static BOOL
+WritePipe (HANDLE pipe, LPVOID buf, DWORD size)
+{
+    OVERLAPPED o;
+    BOOL retval = FALSE;
+
+    CLEAR(o);
+    o.hEvent = CreateEvent (NULL, TRUE, FALSE, NULL);
+
+    if (!o.hEvent)
+    {
+        return retval;
+    }
+
+    if (WriteFile (pipe, buf, size, NULL, &o)  ||
+        GetLastError() == ERROR_IO_PENDING )
+    {
+        if (WaitForSingleObject(o.hEvent, IO_TIMEOUT) == WAIT_OBJECT_0)
+            retval = TRUE;
+        else
+            CancelIo (pipe);
+            // TODO report error -- timeout
+    }
+
+    CloseHandle(o.hEvent);
+    return retval;
+}
+
+/*
+ * Called when read from service pipe signals
+ */
+static void
+OnService(connection_t *c, UNUSED char *msg)
+{
+    DWORD err = 0;
+    WCHAR *p, *buf, *next;
+    DWORD len;
+    const WCHAR *prefix = L"IService> ";
+
+    len = wcslen (c->iserv.readbuf);
+    if (!len || (buf = wcsdup (c->iserv.readbuf)) == NULL)
+        return;
+
+    /* messages from the service are in the format "0x08x\n%s\n%s" */
+    if (swscanf (buf, L"0x%08x\n", &err) != 1)
+    {
+        free (buf);
+        return;
+    }
+ 
+    p = buf + 11;
+    while (iswspace(*p)) ++p;
+
+    while (p && *p)
+    {
+        next = WrapLine (p);
+        WriteStatusLog (c, prefix, p, c->manage.connected ? FALSE : TRUE);
+        p = next;
+    }
+    free (buf);
+
+    /* Error from iservice before management interface is connected */
+    switch (err)
+    {
+        case 0:
+            break;
+        case ERROR_STARTUP_DATA:
+            WriteStatusLog (c, prefix, L"OpenVPN not started due to previous errors", true);
+            c->state = timedout;   /* Force the popup message to include the log file name */
+            OnStop (c, NULL);
+            break;
+        case ERROR_OPENVPN_STARTUP:
+            WriteStatusLog (c, prefix, L"Check the log file for details", false);
+            c->state = timedout;   /* Force the popup message to include the log file name */
+            OnStop(c, NULL);
+            break;
+        default:
+            /* Unknown failure: let management connection timeout */
+            break;
+    }
+}
+
+/*
+ * Called when the directly started openvpn process exits
+ */
+static void
+OnProcess (connection_t *c, UNUSED char *msg)
+{
+    DWORD err;
+    WCHAR tmp[256];
+
+    if (!GetExitCodeProcess(c->hProcess, &err) || err == STILL_ACTIVE)
+        return;
+
+    _snwprintf(tmp, _countof(tmp),  L"OpenVPN terminated with exit code %lu. "
+                                    L"See the log file for details", err);
+    tmp[_countof(tmp)-1] = L'\0';
+    WriteStatusLog(c, L"OpenVPN GUI> ", tmp, false);
+
+    OnStop (c, NULL);
+}
+
+/*
+ * Close open handles
+ */
+static void
+Cleanup (connection_t *c)
+{
+    CloseManagement (c);
+
+    if (c->hProcess)
+        CloseHandle (c->hProcess);
+    else
+        CloseServiceIO (&c->iserv);
+    c->hProcess = NULL;
+
+    if (c->exit_event)
+        CloseHandle (c->exit_event);
+    c->exit_event = NULL;
+}
 
 /*
  * DialogProc for OpenVPN status dialog windows
@@ -587,7 +852,6 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
     return FALSE;
 }
 
-
 /*
  * ThreadProc for OpenVPN status dialog windows
  */
@@ -597,6 +861,9 @@ ThreadOpenVPNStatus(void *p)
     connection_t *c = p;
     TCHAR conn_name[200];
     MSG msg;
+    HANDLE wait_event;
+
+    CLEAR (msg);
 
     /* Cut of extention from config filename. */
     _tcsncpy(conn_name, c->config_file, _countof(conn_name));
@@ -617,12 +884,35 @@ ThreadOpenVPNStatus(void *p)
     if (!OpenManagement(c))
         PostMessage(c->hwndStatus, WM_CLOSE, 0, 0);
 
+    /* Start the async read loop for service and set it as the wait event */
+    if (!c->hProcess)
+    {
+        HandleServiceIO (0, 0, (LPOVERLAPPED) &c->iserv);
+        wait_event = c->iserv.hEvent;
+    }
+    else
+        wait_event = c->hProcess;
+
     if (o.silent_connection[0] == '0')
         ShowWindow(c->hwndStatus, SW_SHOW);
 
     /* Run the message loop for the status window */
-    while (GetMessage(&msg, NULL, 0, 0))
+    while (WM_QUIT != msg.message)
     {
+        DWORD res;
+        if (!PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+        {
+            if ((res = MsgWaitForMultipleObjectsEx (1, &wait_event, INFINITE, QS_ALLINPUT,
+                                         MWMO_ALERTABLE)) == WAIT_OBJECT_0)
+            {
+                if (c->hProcess)
+                    OnProcess (c, NULL);
+                else
+                    OnService (c, NULL);
+            }
+            continue;
+        }
+
         if (msg.hwnd == NULL)
         {
             switch (msg.message)
@@ -653,9 +943,11 @@ ThreadOpenVPNStatus(void *p)
             DispatchMessage(&msg);
         }
     }
+
+    /* release handles etc.*/
+    Cleanup (c);
     return 0;
 }
-
 
 /*
  * Set priority based on the registry or cmd-line value
@@ -682,7 +974,6 @@ SetProcessPriority(DWORD *priority)
     return TRUE;
 }
 
-
 /*
  * Launch an OpenVPN process and the accompanying thread to monitor it
  */
@@ -693,7 +984,7 @@ StartOpenVPN(connection_t *c)
     TCHAR *options = cmdline + 8;
     TCHAR exit_event_name[17];
     HANDLE hStdInRead = NULL, hStdInWrite = NULL;
-    HANDLE hNul = NULL, hThread = NULL, service = NULL;
+    HANDLE hNul = NULL, hThread = NULL;
     DWORD written;
     BOOL retval = FALSE;
 
@@ -739,15 +1030,10 @@ StartOpenVPN(connection_t *c)
         (o.proxy_source != config ? _T("--management-query-proxy ") : _T("")));
 
     /* Try to open the service pipe */
-    if (!IsUserAdmin())
-      service = CreateFile(_T("\\\\.\\pipe\\openvpn\\service"),
-                GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
-
-    if (service && service != INVALID_HANDLE_VALUE)
+    if (!IsUserAdmin() && InitServiceIO (&c->iserv))
     {
         DWORD size = _tcslen(c->config_dir) + _tcslen(options) + sizeof(c->manage.password) + 3;
         TCHAR startup_info[1024];
-        DWORD dwMode = PIPE_READMODE_MESSAGE;
 
         if ( !AuthorizeConfig(c))
         {
@@ -755,22 +1041,17 @@ StartOpenVPN(connection_t *c)
             goto out;
         }
 
-        if (!SetNamedPipeHandleState(service, &dwMode, NULL, NULL))
-        {
-            ShowLocalizedMsg (IDS_ERR_ACCESS_SERVICE_PIPE);
-            CloseHandle(c->exit_event);
-            goto out;
-        }
-
+        c->hProcess = NULL;
         c->manage.password[sizeof(c->manage.password) - 1] = '\n';
         _sntprintf_0(startup_info, _T("%s%c%s%c%.*S"), c->config_dir, _T('\0'),
             options, _T('\0'), sizeof(c->manage.password), c->manage.password);
         c->manage.password[sizeof(c->manage.password) - 1] = '\0';
 
-        if (!WriteFile(service, startup_info, size * sizeof (TCHAR), &written, NULL))
+        if (!WritePipe(c->iserv.pipe, startup_info, size * sizeof (TCHAR)))
         {
             ShowLocalizedMsg (IDS_ERR_WRITE_SERVICE_PIPE);
             CloseHandle(c->exit_event);
+            CloseServiceIO(&c->iserv);
             goto out;
         }
     }
@@ -788,6 +1069,7 @@ StartOpenVPN(connection_t *c)
             .lpSecurityDescriptor = &sd,
             .bInheritHandle = TRUE
         };
+
         if (!InitializeSecurityDescriptor(&sd, SECURITY_DESCRIPTOR_REVISION))
         {
             ShowLocalizedMsg(IDS_ERR_INIT_SEC_DESC);
@@ -852,7 +1134,7 @@ StartOpenVPN(connection_t *c)
         WriteFile(hStdInWrite, c->manage.password, sizeof(c->manage.password), &written, NULL);
         c->manage.password[sizeof(c->manage.password) - 1] = '\0';
 
-        CloseHandle(pi.hProcess);
+        c->hProcess = pi.hProcess; /* Will be closed in the event loop on exit */
         CloseHandle(pi.hThread);
     }
 
@@ -861,8 +1143,6 @@ StartOpenVPN(connection_t *c)
     retval = TRUE;
 
 out:
-    if (service && service != INVALID_HANDLE_VALUE)
-        CloseHandle(service);
     if (hThread && hThread != INVALID_HANDLE_VALUE)
         CloseHandle(hThread);
     if (hStdInWrite && hStdInWrite != INVALID_HANDLE_VALUE)
@@ -1030,4 +1310,3 @@ out:
     CloseHandle(hStdOutWrite);
     return retval;
 }
-
