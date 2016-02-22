@@ -178,6 +178,9 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
     exit(1);
   }
 
+  if (!IsUserAdmin())
+    CheckIServiceStatus();
+
   BuildFileList();
   if (!VerifyAutoConnections()) {
     exit(1);

@@ -341,6 +341,7 @@ void
 OnStop(connection_t *c, UNUSED char *msg)
 {
     UINT txt_id, msg_id;
+    TCHAR *msg_xtra;
     SetMenuStatus(c, disconnected);
 
     switch (c->state)
@@ -366,9 +367,13 @@ OnStop(connection_t *c, UNUSED char *msg)
     case resuming:
     case connecting:
     case reconnecting:
+    case timedout:
         /* We have failed to (re)connect */
         txt_id = c->state == reconnecting ? IDS_NFO_STATE_FAILED_RECONN : IDS_NFO_STATE_FAILED;
         msg_id = c->state == reconnecting ? IDS_NFO_RECONN_FAILED : IDS_NFO_CONN_FAILED;
+        msg_xtra = c->state == timedout ? c->log_path : c->config_name;
+        if (c->state == timedout)
+            msg_id = IDS_NFO_CONN_TIMEOUT;
 
         c->state = disconnecting;
         CheckAndSetTrayIcon();
@@ -382,7 +387,7 @@ OnStop(connection_t *c, UNUSED char *msg)
             SetForegroundWindow(c->hwndStatus);
             ShowWindow(c->hwndStatus, SW_SHOW);
         }
-        ShowLocalizedMsg(msg_id, c->config_name);
+        ShowLocalizedMsg(msg_id, msg_xtra);
         SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
         break;
 
@@ -704,7 +709,7 @@ StartOpenVPN(connection_t *c)
         DWORD dwMode = PIPE_READMODE_MESSAGE;
         if (!SetNamedPipeHandleState(service, &dwMode, NULL, NULL))
         {
-            // TODO: add error message
+            ShowLocalizedMsg (IDS_ERR_ACCESS_SERVICE_PIPE);
             CloseHandle(c->exit_event);
             goto out;
         }
@@ -716,7 +721,7 @@ StartOpenVPN(connection_t *c)
 
         if (!WriteFile(service, startup_info, size * sizeof (TCHAR), &written, NULL))
         {
-            // TODO: add error message
+            ShowLocalizedMsg (IDS_ERR_WRITE_SERVICE_PIPE);
             CloseHandle(c->exit_event);
             goto out;
         }

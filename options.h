@@ -67,7 +67,8 @@ typedef enum {
     disconnecting,
     suspending,
     suspended,
-    resuming
+    resuming,
+    timedout
 } conn_state_t;
 
 /* Connections parameters */
