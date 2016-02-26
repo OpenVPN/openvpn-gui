@@ -23,6 +23,10 @@
 #include <config.h>
 #endif
 
+#if !defined (UNICODE)
+#error UNICODE and _UNICODE must be defined. This version only supports unicode builds.
+#endif
+
 #include <windows.h>
 #include <shlwapi.h>
 #include <wtsapi32.h>
@@ -120,7 +124,7 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
 
 #ifdef DEBUG
   /* Open debug file for output */
-  if (!(o.debug_fp = fopen(DEBUG_FILE, "w")))
+  if (!(o.debug_fp = _wfopen(DEBUG_FILE, L"a+,ccs=UTF-8")))
     {
       /* can't open debug file */
       ShowLocalizedMsg(IDS_ERR_OPEN_DEBUG_FILE, DEBUG_FILE);
@@ -183,7 +187,7 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
   }
 
   if (!IsUserAdmin())
-    CheckIServiceStatus();
+    CheckIServiceStatus(TRUE);
 
   BuildFileList();
   if (!VerifyAutoConnections()) {

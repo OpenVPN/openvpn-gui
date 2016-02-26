@@ -29,8 +29,11 @@ typedef struct connection connection_t;
 #include <windows.h>
 #include <stdio.h>
 #include <time.h>
+#include <lmcons.h>
 
 #include "manage.h"
+
+#define MAX_NAME (UNLEN + 1)
 
 /*
  * Maximum number of parameters associated with an option,
@@ -145,6 +148,7 @@ typedef struct {
     TCHAR connectscript_timeout_string[4];
     TCHAR disconnectscript_timeout_string[4];
     TCHAR preconnectscript_timeout_string[4];
+    TCHAR ovpn_admin_group[MAX_NAME];
 
 #ifdef DEBUG
     FILE *debug_fp;
@@ -153,6 +157,7 @@ typedef struct {
     HWND hWnd;
     HINSTANCE hInstance;
     BOOL session_locked;
+    HANDLE netcmd_semaphore;
 } options_t;
 
 void InitOptions(options_t *);

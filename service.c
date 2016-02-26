@@ -242,7 +242,7 @@ int MyReStartService()
 }
 
 bool
-CheckIServiceStatus()
+CheckIServiceStatus(BOOL warn)
 {
     SC_HANDLE schSCManager;
     SC_HANDLE schService;
@@ -260,7 +260,8 @@ CheckIServiceStatus()
         GetLastError() == ERROR_SERVICE_DOES_NOT_EXIST)
     {
         /* warn that iservice is not installed */
-        ShowLocalizedMsg(IDS_ERR_INSTALL_ISERVICE);
+        if (warn)
+            ShowLocalizedMsg(IDS_ERR_INSTALL_ISERVICE);
         return(false);
     }
 
@@ -270,7 +271,8 @@ CheckIServiceStatus()
     if (ssStatus.dwCurrentState != SERVICE_RUNNING)
     {
         /* warn that iservice is not started */
-        ShowLocalizedMsg(IDS_ERR_NOTSTARTED_ISERVICE);
+        if (warn)
+            ShowLocalizedMsg(IDS_ERR_NOTSTARTED_ISERVICE);
         return(false);
     }
     return true;

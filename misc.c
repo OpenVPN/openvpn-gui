@@ -32,6 +32,7 @@
 
 #include "options.h"
 #include "manage.h"
+#include "main.h"
 #include "misc.h"
 
 /*
@@ -321,4 +322,19 @@ BOOL IsUserAdmin(VOID)
     }
 
     return(b);
+}
+
+HANDLE
+InitSemaphore (void)
+{
+    HANDLE semaphore = NULL;
+    semaphore = CreateSemaphore (NULL, 1, 1, NULL);
+    if (!semaphore)
+    {
+        MessageBoxW (NULL, L"PACKAGE_NAME", L"Error creating semaphore", MB_OK);
+#ifdef DEBUG
+        PrintDebug (L"InitSemaphore: CreateSemaphore failed [error = %lu]", GetLastError());
+#endif
+    }
+    return semaphore;
 }

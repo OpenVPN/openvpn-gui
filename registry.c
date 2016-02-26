@@ -68,6 +68,7 @@ GetRegistryKeys()
     {
       /* error reading registry value */
       ShowLocalizedMsg(IDS_ERR_READING_REGISTRY);
+      RegCloseKey(regkey);
       return(false);
     }
   if (openvpn_path[_tcslen(openvpn_path) - 1] != _T('\\'))
@@ -79,6 +80,11 @@ GetRegistryKeys()
       /* use default = openvpnpath\config */
       _sntprintf_0(o.global_config_dir, _T("%sconfig"), openvpn_path);
     }
+  if (!GetRegistryValue(regkey, _T("ovpn_admin_group"), o.ovpn_admin_group, _countof(o.ovpn_admin_group)))
+    {
+      _tcsncpy(o.ovpn_admin_group, OVPN_ADMIN_GROUP, _countof(o.ovpn_admin_group));
+    }
+  RegCloseKey(regkey);
 
   /* config_dir in user's profile by default */
   _sntprintf_0(temp_path, _T("%s\\OpenVPN\\config"), profile_dir);
