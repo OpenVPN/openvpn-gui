@@ -25,8 +25,6 @@
 
 #include "options.h"
 
-#define WM_NOTIFYICONTRAY (WM_APP + 1)
-
 #define IDM_SERVICE_START       100
 #define IDM_SERVICE_STOP        101
 #define IDM_SERVICE_RESTART     102
