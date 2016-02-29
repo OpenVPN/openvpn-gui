@@ -62,6 +62,11 @@
 #define ID_EDT_AUTH_CHALLENGE            185
 #define ID_CHK_SAVE_PASS                 186
 
+/* Challenege Response Dialog */
+#define ID_DLG_CHALLENGE_RESPONSE        190
+#define ID_TXT_DESCRIPTION               191
+#define ID_EDT_RESPONSE                  192
+
 /* Proxy Settings Dialog */
 #define ID_DLG_PROXY                     200
 #define ID_RB_PROXY_OPENVPN              210

@@ -40,7 +40,7 @@
  * Helper function to do base64 conversion through CryptoAPI
  * Returns TRUE on success, FALSE on error. Caller must free *output.
  */
-static BOOL
+BOOL
 Base64Encode(const char *input, int input_len, char **output)
 {
     DWORD output_len;
@@ -61,6 +61,9 @@ Base64Encode(const char *input, int input_len, char **output)
         return FALSE;
     }
     *output = (char *)malloc(output_len);
+    if (*output == NULL)
+        return FALSE;
+
     if (!CryptBinaryToStringA((const BYTE *) input, (DWORD) input_len,
         CRYPT_STRING_BASE64, *output, &output_len))
     {
@@ -79,6 +82,46 @@ Base64Encode(const char *input, int input_len, char **output)
         (*output)[output_len - 2] = 0;
 
     return TRUE;
+}
+/*
+ * Decode a nul-terminated base64 encoded input and save the result in
+ * an allocated buffer *output. The caller must free *output after use.
+ * The decoded output is nul-terminated so that the caller may treat
+ * it as a string when appropriate.
+ *
+ * Return the length of the decoded result (excluding nul) or -1 on
+ * error.
+ */
+int
+Base64Decode(const char *input, char **output)
+{
+    DWORD len;
+
+    PrintDebug (L"decoding %S", input);
+    if (!CryptStringToBinaryA(input, 0, CRYPT_STRING_BASE64_ANY,
+                              NULL, &len, NULL, NULL) || len == 0)
+    {
+        *output = NULL;
+        return -1;
+    }
+
+    *output = malloc(len + 1);
+    if (*output == NULL)
+        return -1;
+
+    if (!CryptStringToBinaryA(input, 0,
+        CRYPT_STRING_BASE64, (BYTE *) *output, &len, NULL, NULL))
+    {
+        free(*output);
+        *output = NULL;
+        return -1;
+    }
+
+    /* NUL terminate output */
+    (*output)[len] = '\0';
+    PrintDebug (L"Decoded output %S", *output);
+
+    return len;
 }
 
 /*
@@ -383,4 +426,30 @@ CheckFileAccess (const TCHAR *path, int access)
     }
 
     return ret;
+}
+
+/*
+ * Convert a NUL terminated utf8 string to widechar. The caller must free
+ * the returned pointer. Return NULL on error.
+ */
+WCHAR *
+Widen(const char *utf8)
+{
+    WCHAR *wstr = NULL;
+    if (!utf8)
+        return wstr;
+
+    int nch = MultiByteToWideChar(CP_UTF8, 0, utf8, -1, NULL, 0);
+    if (nch > 0)
+        wstr = malloc(sizeof(WCHAR) * nch);
+    if (wstr)
+        nch =  MultiByteToWideChar(CP_UTF8, 0, utf8, -1, wstr, nch);
+
+    if (nch == 0 && wstr)
+    {
+        free (wstr);
+        wstr = NULL;
+    }
+
+    return wstr;
 }

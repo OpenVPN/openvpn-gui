@@ -79,7 +79,7 @@ CreatePopupMenus()
         AppendMenu(hMenu, MF_STRING, IDM_CLEARPASSMENU, LoadLocalizedString(IDS_MENU_CLEARPASS));
 
 #ifndef DISABLE_CHANGE_PASSWORD
-        if (o.conn[0].flags & ALLOW_CHANGE_PASSPHRASE)
+        if (o.conn[0].flags & FLAG_ALLOW_CHANGE_PASSPHRASE)
             AppendMenu(hMenu, MF_STRING, IDM_PASSPHRASEMENU, LoadLocalizedString(IDS_MENU_PASSPHRASE));
 #endif
 
@@ -127,7 +127,7 @@ CreatePopupMenus()
             AppendMenu(hMenuConn[i], MF_STRING, IDM_CLEARPASSMENU + i, LoadLocalizedString(IDS_MENU_CLEARPASS));
 
 #ifndef DISABLE_CHANGE_PASSWORD
-            if (o.conn[i].flags & ALLOW_CHANGE_PASSPHRASE)
+            if (o.conn[i].flags & FLAG_ALLOW_CHANGE_PASSPHRASE)
                 AppendMenu(hMenuConn[i], MF_STRING, IDM_PASSPHRASEMENU + i, LoadLocalizedString(IDS_MENU_PASSPHRASE));
 #endif
 

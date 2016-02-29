@@ -36,4 +36,7 @@ BOOL IsUserAdmin(VOID);
 HANDLE InitSemaphore (void);
 BOOL CheckFileAccess (const TCHAR *path, int access);
 
+BOOL Base64Encode(const char *input, int input_len, char **output);
+int Base64Decode(const char *input, char **output);
+WCHAR *Widen(const char *utf8);
 #endif
