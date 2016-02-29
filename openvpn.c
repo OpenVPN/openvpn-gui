@@ -59,11 +59,41 @@ TerminateOpenVPN(connection_t *c);
 
 const TCHAR *cfgProp = _T("conn");
 
+#define FLAG_CR_TYPE_SCRV1 0x1    /* static challenege */
+#define FLAG_CR_TYPE_CRV1  0x2    /* dynamic challenege */
+#define FLAG_CR_ECHO       0x4    /* echo the response */
+#define FLAG_CR_RESPONSE   0x8    /* response needed */
 typedef struct {
     connection_t *c;
-    int challenge_echo;
-    char *challenge_str;
+    unsigned int flags;
+    char *str;
+    char *id;
+    char *user;
 } auth_param_t;
+
+static void
+WriteStatusLog (connection_t *c, const WCHAR *prefix, const WCHAR *line, BOOL fileio);
+
+static void
+free_auth_param (auth_param_t *param)
+{
+    if (!param)
+        return;
+    free (param->str);
+    free (param->id);
+    free (param->user);
+    free (param);
+}
+
+void
+AppendTextToCaption (HANDLE hwnd, const WCHAR *str)
+{
+    WCHAR old[256];
+    WCHAR new[256];
+    GetWindowTextW (hwnd, old, _countof(old));
+    _sntprintf_0 (new, L"%s (%s)", old, str);
+    SetWindowText (hwnd, new);
+}
 
 /*
  * Receive banner on connection to management interface
@@ -170,7 +200,7 @@ OnStateChange(connection_t *c, char *data)
             *pos = '\0';
 
         /* Convert the IP address to Unicode */
-        MultiByteToWideChar(CP_ACP, 0, local_ip, -1, c->ip, _countof(c->ip));
+        MultiByteToWideChar(CP_UTF8, 0, local_ip, -1, c->ip, _countof(c->ip));
 
         /* Show connection tray balloon */
         if ((c->state == connecting   && o.show_balloon != 0)
@@ -198,14 +228,17 @@ OnStateChange(connection_t *c, char *data)
     }
     else if (strcmp(state, "RECONNECTING") == 0)
     {
-        if (strcmp(message, "auth-failure") == 0
-        ||  strcmp(message, "private-key-password-failure") == 0)
-            c->failed_psw_attempts++;
+        if (!c->dynamic_cr)
+        {
+            if (strcmp(message, "auth-failure") == 0 || strcmp(message, "private-key-password-failure") == 0)
+                c->failed_psw_attempts++;
 
-        if (strcmp(message, "auth-failure") == 0 && (c->flags & FLAG_SAVE_AUTH_PASS))
-            SaveAuthPass(c->config_name, L"");
-        else if (strcmp(message, "private-key-password-failure") == 0 && (c->flags & FLAG_SAVE_KEY_PASS))
-            SaveKeyPass(c->config_name, L"");
+            if (strcmp(message, "auth-failure") == 0 && (c->flags & FLAG_SAVE_AUTH_PASS))
+                SaveAuthPass(c->config_name, L""); /* clear saved password */
+
+            else if (strcmp(message, "private-key-password-failure") == 0 && (c->flags & FLAG_SAVE_KEY_PASS))
+                SaveKeyPass(c->config_name, L"");  /* clear saved private key password */
+        }
 
         c->state = reconnecting;
         CheckAndSetTrayIcon();
@@ -214,7 +247,6 @@ OnStateChange(connection_t *c, char *data)
         SetStatusWinIcon(c->hwndStatus, ID_ICO_CONNECTING);
     }
 }
-
 
 /*
  * DialogProc for OpenVPN username/password/challenge auth dialog windows
@@ -232,19 +264,24 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         /* Set connection for this dialog and show it */
         param = (auth_param_t *) lParam;
         SetProp(hwndDlg, cfgProp, (HANDLE) param);
-        if (param->challenge_str)
+
+        if (param->str)
         {
-            int wchars_num = MultiByteToWideChar(CP_UTF8, 0, param->challenge_str, -1, NULL, 0);
-            LPWSTR wstr = (LPWSTR)malloc(sizeof(WCHAR) * wchars_num);
+            LPWSTR wstr = Widen (param->str);
             HWND wnd_challenge = GetDlgItem(hwndDlg, ID_EDT_AUTH_CHALLENGE);
 
-            MultiByteToWideChar(CP_UTF8, 0, param->challenge_str, -1, wstr, wchars_num);
-            SetDlgItemTextW(hwndDlg, ID_TXT_AUTH_CHALLENGE, wstr);
+            if (!wstr)
+                WriteStatusLog(param->c, L"GUI> ", L"Error converting challenge string to widechar", false);
+            else
+                SetDlgItemTextW(hwndDlg, ID_TXT_AUTH_CHALLENGE, wstr);
+
             free(wstr);
+
             /* Set/Remove style ES_PASSWORD by SetWindowLong(GWL_STYLE) does nothing,
                send EM_SETPASSWORDCHAR just works. */
-            if(param->challenge_echo)
+            if (param->flags & FLAG_CR_ECHO)
                 SendMessage(wnd_challenge, EM_SETPASSWORDCHAR, 0, 0);
+
         }
         if (RecallUsername(param->c->config_name, username))
             SetDlgItemTextW(hwndDlg, ID_EDT_AUTH_USER, username);
@@ -256,10 +293,13 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         if (param->c->flags & FLAG_SAVE_AUTH_PASS)
             Button_SetCheck(GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
 
+        AppendTextToCaption (hwndDlg, param->c->config_name);
+
         if (param->c->state == resuming)
             ForceForegroundWindow(hwndDlg);
         else
             SetForegroundWindow(hwndDlg);
+
         break;
 
     case WM_COMMAND:
@@ -298,7 +338,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 SecureZeroMemory(password, sizeof(password));
             }
             ManagementCommandFromInput(param->c, "username \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_USER);
-            if (param->challenge_str)
+            if (param->flags & FLAG_CR_TYPE_SCRV1)
                 ManagementCommandFromInputBase64(param->c, "password \"Auth\" \"SCRV1:%s:%s\"", hwndDlg, ID_EDT_AUTH_PASS, ID_EDT_AUTH_CHALLENGE);
             else
                 ManagementCommandFromInput(param->c, "password \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_PASS);
@@ -318,8 +358,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
     case WM_NCDESTROY:
         param = (auth_param_t *) GetProp(hwndDlg, cfgProp);
-        if (param->challenge_str) free(param->challenge_str);
-        free(param);
+        free_auth_param (param);
         RemoveProp(hwndDlg, cfgProp);
         break;
     }
@@ -327,6 +366,112 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
     return FALSE;
 }
 
+/*
+ * DialogProc for challenge-response, token PIN etc.
+ */
+INT_PTR CALLBACK
+GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    auth_param_t *param;
+
+    switch (msg)
+    {
+    case WM_INITDIALOG:
+        param = (auth_param_t *) lParam;
+        SetProp(hwndDlg, cfgProp, (HANDLE) param);
+
+        WCHAR *wstr = Widen (param->str);
+        if (!wstr)
+        {
+            WriteStatusLog(param->c, L"GUI> ", L"Error converting challenge string to widechar", false);
+            EndDialog(hwndDlg, LOWORD(wParam));
+            break;
+        }
+        if (param->flags & FLAG_CR_TYPE_CRV1)
+        {
+            SetDlgItemTextW(hwndDlg, ID_TXT_DESCRIPTION, wstr);
+
+            /* Set password echo on if needed */
+            if (param->flags & FLAG_CR_ECHO)
+                SendMessage(GetDlgItem(hwndDlg, ID_EDT_RESPONSE), EM_SETPASSWORDCHAR, 0, 0);
+        }
+        free(wstr);
+
+        AppendTextToCaption (hwndDlg, param->c->config_name);
+        if (param->c->state == resuming)
+            ForceForegroundWindow(hwndDlg);
+        else
+            SetForegroundWindow(hwndDlg);
+
+        break;
+
+    case WM_COMMAND:
+        param = (auth_param_t *) GetProp(hwndDlg, cfgProp);
+        switch (LOWORD(wParam))
+        {
+        case IDOK:
+            if (param->flags & FLAG_CR_TYPE_CRV1)
+            {
+                /* send username */
+                const char *template = "username \"Auth\" \"%s\"";
+                char *fmt = malloc(strlen(template) + strlen(param->user));
+                if (fmt)
+                {
+                    sprintf(fmt, template, param->user);
+                    ManagementCommand(param->c, fmt, NULL, regular);
+                    free(fmt);
+                }
+                else /* no memory? send an emty username and let it error out */
+                {
+                    WriteStatusLog(param->c, L"GUI> ",
+                        L"Out of memory: sending empty username for dynamic CR", false);
+                    ManagementCommand(param->c, "username \"Auth\" \"user\"", NULL, regular);
+                }
+
+                /* send password */
+                template = "password \"Auth\" \"CRV1::%s::%%s\"";
+                fmt = malloc(strlen(template) + strlen(param->id));
+                if (fmt)
+                {
+                    sprintf(fmt, template, param->id);
+                    ManagementCommandFromInput(param->c, fmt, hwndDlg, ID_EDT_RESPONSE);
+                    free (fmt);
+                }
+                else /* no memory? send an empty password and let it error out. */
+                {
+                    WriteStatusLog(param->c, L"GUI> ",
+                        L"Out of memory: sending empty password for dynamic CR", false);
+                    ManagementCommand(param->c, "password \"Auth\" \"CRV1::0::\"", NULL, regular);
+                }
+            }
+            else
+            {
+                /* Unknown request ? */
+                WriteStatusLog(param->c, L"GUI> ", L"Unknown password reuest ignored", false);
+            }
+            EndDialog(hwndDlg, LOWORD(wParam));
+            return TRUE;
+
+        case IDCANCEL:
+            EndDialog(hwndDlg, LOWORD(wParam));
+            StopOpenVPN(param->c);
+            return TRUE;
+        }
+        break;
+
+    case WM_CLOSE:
+        EndDialog(hwndDlg, LOWORD(wParam));
+        return TRUE;
+
+    case WM_NCDESTROY:
+        param = (auth_param_t *) GetProp(hwndDlg, cfgProp);
+        free_auth_param (param);
+        RemoveProp(hwndDlg, cfgProp);
+        break;
+    }
+
+    return FALSE;
+}
 
 /*
  * DialogProc for OpenVPN private key password dialog windows
@@ -343,6 +488,7 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         /* Set connection for this dialog and show it */
         c = (connection_t *) lParam;
         SetProp(hwndDlg, cfgProp, (HANDLE) c);
+        AppendTextToCaption (hwndDlg, c->config_name);
         if (RecallKeyPass(c->config_name, passphrase) && wcslen(passphrase))
         {
             /* Use the saved password and skip the dialog */
@@ -405,31 +551,130 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
   return FALSE;
 }
 
+static void
+free_dynamic_cr (connection_t *c)
+{
+    free (c->dynamic_cr);
+    c->dynamic_cr = NULL;
+}
 
 /*
- * Handle the request to release a hold from the OpenVPN management interface
+ * Parse dynamic challenge string received from the server. Returns
+ * true on success. The caller must free param->str and param->id
+ * even on error.
+ */
+static BOOL
+parse_dynamic_cr (const char *str, auth_param_t *param)
+{
+    BOOL ret = FALSE;
+    char *token[4] = {0};
+    char *p = strdup (str);
+
+    int i;
+    char *p1;
+
+    if (!param || !p) goto out;
+
+    /* expected: str = "E,R:challenge_id:user_b64:challenge_str" */
+    for (i = 0, p1 = p; i < 4; ++i, p1 = NULL)
+    {
+        token[i] = strtok (p1, ":"); /* strtok is thread-safe on Windows */
+        if (!token[i])
+        {
+            WriteStatusLog(param->c, L"GUI> ", L"Error parsing dynamic challenge string", false);
+            goto out;
+        }
+    }
+
+    if (Base64Decode(token[2], &param->user) < 0)
+    {
+        WriteStatusLog(param->c, L"GUI> ", L"Error decoding the username in dynamic challenge string", false);
+        goto out;
+    }
+
+    param->flags |= FLAG_CR_TYPE_CRV1;
+    param->flags |= strchr(token[0], 'E') ? FLAG_CR_ECHO : 0;
+    param->flags |= strchr(token[0], 'R') ? FLAG_CR_RESPONSE : 0;
+    param->id = strdup(token[1]);
+    param->str = strdup(token[3]);
+    if (!param->id || !param->str)
+        goto out;
+
+    ret = TRUE;
+
+out:
+    free (p);
+    return ret;
+}
+
+/*
+ * Handle >PASSWORD: request from OpenVPN management interface
  */
 void
 OnPassword(connection_t *c, char *msg)
 {
+    PrintDebug(L"OnPassword with msg = %S", msg);
     if (strncmp(msg, "Verification Failed", 19) == 0)
+    {
+        /* If the failure is due to dynamic challenge save the challenge string */
+        char *chstr = strstr(msg, "CRV1:");
+
+        free_dynamic_cr (c);
+        if (chstr)
+        {
+            chstr += 5; /* beginning of dynamic CR string */
+
+            /* Check if a response is required: ie.,  starts with R or E,R */
+            if (strncmp (chstr, "R", 1) != 0 && strncmp (chstr, "E,R", 3) != 0)
+            {
+                PrintDebug(L"Got dynamic challenge request with no response required: <%S>", chstr);
+                return;
+            }
+
+            /* Save the string for later processing during next Auth request */
+            c->dynamic_cr = strdup(chstr);
+            if (c->dynamic_cr && (chstr =  strstr (c->dynamic_cr, "']")) != NULL)
+                *chstr = '\0';
+
+            PrintDebug(L"Got dynamic challenge: <%S>", c->dynamic_cr);
+        }
+
         return;
+    }
 
     if (strstr(msg, "'Auth'"))
     {
-        char* chstr = strstr(msg, "SC:");
-        auth_param_t *param = (auth_param_t *) malloc(sizeof(auth_param_t));
-        param->c = c;
-        if (chstr)
+        char *chstr;
+        auth_param_t *param = (auth_param_t *) calloc(1, sizeof(auth_param_t));
+
+        if (!param)
         {
-            param->challenge_echo = *(chstr + 3) != '0';
-            param->challenge_str = strdup(chstr + 5);
+            WriteStatusLog (c, L"GUI> ", L"Error: Out of memory - ignoring user-auth request", false);
+            return;
+        }
+        param->c = c;
+
+        if (c->dynamic_cr)
+        {
+            if (!parse_dynamic_cr (c->dynamic_cr, param))
+            {
+                WriteStatusLog (c, L"GUI> ", L"Error parsing dynamic challenge string", FALSE);
+                free_dynamic_cr (c);
+                free_auth_param (param);
+                return;
+            }
+            LocalizedDialogBoxParam(ID_DLG_CHALLENGE_RESPONSE, GenericPassDialogFunc, (LPARAM) param);
+            free_dynamic_cr (c);
+        }
+        else if ( (chstr = strstr(msg, "SC:")) && strlen (chstr) > 5)
+        {
+            param->flags |= FLAG_CR_TYPE_SCRV1;
+            param->flags |= (*(chstr + 3) != '0') ? FLAG_CR_ECHO : 0;
+            param->str = strdup(chstr + 5);
             LocalizedDialogBoxParam(ID_DLG_AUTH_CHALLENGE, UserAuthDialogFunc, (LPARAM) param);
         }
         else
         {
-            param->challenge_echo = 0;
-            param->challenge_str = NULL;
             LocalizedDialogBoxParam(ID_DLG_AUTH, UserAuthDialogFunc, (LPARAM) param);
         }
     }
@@ -756,7 +1001,7 @@ OnService(connection_t *c, UNUSED char *msg)
     while (p && *p)
     {
         next = WrapLine (p);
-        WriteStatusLog (c, prefix, p, c->manage.connected ? FALSE : TRUE);
+        WriteStatusLog (c, prefix, p, false);
         p = next;
     }
     free (buf);
@@ -809,6 +1054,8 @@ static void
 Cleanup (connection_t *c)
 {
     CloseManagement (c);
+
+    free_dynamic_cr (c);
 
     if (c->hProcess)
         CloseHandle (c->hProcess);
