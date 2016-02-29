@@ -52,6 +52,12 @@ extern options_t o;
 
 const TCHAR *cfgProp = _T("conn");
 
+typedef struct {
+    connection_t *c;
+    int challenge_echo;
+    char *challenge_str;
+} auth_param_t;
+
 /*
  * Receive banner on connection to management interface
  * Format: <BANNER>
@@ -202,27 +208,41 @@ OnStateChange(connection_t *c, char *data)
 
 
 /*
- * DialogProc for OpenVPN username/password auth dialog windows
+ * DialogProc for OpenVPN username/password/challenge auth dialog windows
  */
 INT_PTR CALLBACK
 UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    connection_t *c;
+    auth_param_t *param;
 
     switch (msg)
     {
     case WM_INITDIALOG:
         /* Set connection for this dialog and show it */
-        c = (connection_t *) lParam;
-        SetProp(hwndDlg, cfgProp, (HANDLE) c);
-        if (c->state == resuming)
+        param = (auth_param_t *) lParam;
+        SetProp(hwndDlg, cfgProp, (HANDLE) param);
+        if (param->challenge_str)
+        {
+            int wchars_num = MultiByteToWideChar(CP_UTF8, 0, param->challenge_str, -1, NULL, 0);
+            LPWSTR wstr = (LPWSTR)malloc(sizeof(WCHAR) * wchars_num);
+            HWND wnd_challenge = GetDlgItem(hwndDlg, ID_EDT_AUTH_CHALLENGE);
+
+            MultiByteToWideChar(CP_UTF8, 0, param->challenge_str, -1, wstr, wchars_num);
+            SetDlgItemTextW(hwndDlg, ID_TXT_AUTH_CHALLENGE, wstr);
+            free(wstr);
+            /* Set/Remove style ES_PASSWORD by SetWindowLong(GWL_STYLE) does nothing,
+               send EM_SETPASSWORDCHAR just works. */
+            if(param->challenge_echo)
+                SendMessage(wnd_challenge, EM_SETPASSWORDCHAR, 0, 0);
+        }
+        if (param->c->state == resuming)
             ForceForegroundWindow(hwndDlg);
         else
             SetForegroundWindow(hwndDlg);
         break;
 
     case WM_COMMAND:
-        c = (connection_t *) GetProp(hwndDlg, cfgProp);
+        param = (auth_param_t *) GetProp(hwndDlg, cfgProp);
         switch (LOWORD(wParam))
         {
         case ID_EDT_AUTH_USER:
@@ -234,14 +254,17 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case IDOK:
-            ManagementCommandFromInput(c, "username \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_USER);
-            ManagementCommandFromInput(c, "password \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_PASS);
+            ManagementCommandFromInput(param->c, "username \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_USER);
+            if (param->challenge_str)
+                ManagementCommandFromInputBase64(param->c, "password \"Auth\" \"SCRV1:%s:%s\"", hwndDlg, ID_EDT_AUTH_PASS, ID_EDT_AUTH_CHALLENGE);
+            else
+                ManagementCommandFromInput(param->c, "password \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_PASS);
             EndDialog(hwndDlg, LOWORD(wParam));
             return TRUE;
 
         case IDCANCEL:
             EndDialog(hwndDlg, LOWORD(wParam));
-            StopOpenVPN(c);
+            StopOpenVPN(param->c);
             return TRUE;
         }
         break;
@@ -251,6 +274,9 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         return TRUE;
 
     case WM_NCDESTROY:
+        param = (auth_param_t *) GetProp(hwndDlg, cfgProp);
+        if (param->challenge_str) free(param->challenge_str);
+        free(param);
         RemoveProp(hwndDlg, cfgProp);
         break;
     }
@@ -317,7 +343,21 @@ OnPassword(connection_t *c, char *msg)
 
     if (strstr(msg, "'Auth'"))
     {
-        LocalizedDialogBoxParam(ID_DLG_AUTH, UserAuthDialogFunc, (LPARAM) c);
+        char* chstr = strstr(msg, "SC:");
+        auth_param_t *param = (auth_param_t *) malloc(sizeof(auth_param_t));
+        param->c = c;
+        if (chstr)
+        {
+            param->challenge_echo = *(chstr + 3) != '0';
+            param->challenge_str = strdup(chstr + 5);
+            LocalizedDialogBoxParam(ID_DLG_AUTH_CHALLENGE, UserAuthDialogFunc, (LPARAM) param);
+        }
+        else
+        {
+            param->challenge_echo = 0;
+            param->challenge_str = NULL;
+            LocalizedDialogBoxParam(ID_DLG_AUTH, UserAuthDialogFunc, (LPARAM) param);
+        }
     }
     else if (strstr(msg, "'Private Key'"))
     {

@@ -56,6 +56,11 @@
 #define ID_EDT_AUTH_USER                 181
 #define ID_EDT_AUTH_PASS                 182
 
+/* Auth Username/Password/Challenge Dialog */
+#define ID_DLG_AUTH_CHALLENGE            183
+#define ID_TXT_AUTH_CHALLENGE            184
+#define ID_EDT_AUTH_CHALLENGE            185
+
 /* Proxy Settings Dialog */
 #define ID_DLG_PROXY                     200
 #define ID_RB_PROXY_OPENVPN              210

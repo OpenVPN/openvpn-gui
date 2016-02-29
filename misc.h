@@ -23,6 +23,7 @@
 #define MISC_H
 
 BOOL ManagementCommandFromInput(connection_t *, LPCSTR, HWND, int);
+BOOL ManagementCommandFromInputBase64(connection_t *, LPCSTR, HWND, int, int);
 
 BOOL EnsureDirExists(LPTSTR);
 

@@ -24,6 +24,7 @@
 #endif
 
 #include <windows.h>
+#include <wincrypt.h>
 #include <tchar.h>
 #include <string.h>
 #include <stdlib.h>
@@ -32,6 +33,35 @@
 #include "options.h"
 #include "manage.h"
 #include "misc.h"
+
+/*
+ * Helper function to do base64 conversion through CryptoAPI
+ */
+static void
+Base64Encode(const char *input, int input_len, char **output)
+{
+    DWORD output_len;
+    if (!CryptBinaryToStringA((const BYTE *) input, (DWORD) input_len,
+        CRYPT_STRING_BASE64, NULL, &output_len) || output_len == 0)
+    {
+        *output = NULL;
+        return;
+    }
+    *output = (char *)malloc(output_len);
+    if (!CryptBinaryToStringA((const BYTE *) input, (DWORD) input_len,
+        CRYPT_STRING_BASE64, *output, &output_len))
+    {
+        free(*output);
+        *output = NULL;
+        return;
+    }
+    /* Trim trailing "\r\n" manually.
+       Actually they can be stripped by adding CRYPT_STRING_NOCRLF to dwFlags,
+       but Windows XP/2003 does not support this flag. */
+    if(output_len > 1 && (*output)[output_len - 1] == '\x0A'
+        && (*output)[output_len - 2] == '\x0D')
+        (*output)[output_len - 2] = 0;
+}
 
 /*
  * Helper function to convert UCS-2 text from a dialog item to UTF-8.
@@ -119,6 +149,83 @@ out:
         memset(input, 'x', input_len);
         SetDlgItemTextA(hDlg, id, input);
         free(input);
+    }
+
+    return retval;
+}
+
+
+
+/*
+ * Generate a management command from double user inputs and send it
+ */
+BOOL
+ManagementCommandFromInputBase64(connection_t *c, LPCSTR fmt, HWND hDlg,int id, int id2)
+{
+    BOOL retval = FALSE;
+    LPSTR input, input2, input_b64, input2_b64, cmd;
+    int input_len, input2_len, cmd_len, pos;
+
+    GetDlgItemTextUtf8(hDlg, id, &input, &input_len);
+    GetDlgItemTextUtf8(hDlg, id2, &input2, &input2_len);
+
+    /* Escape input if needed */
+    for (pos = 0; pos < input_len; ++pos)
+    {
+        if (input[pos] == '\\' || input[pos] == '"')
+        {
+            LPSTR buf = realloc(input, ++input_len + 1);
+            if (buf == NULL)
+                goto out;
+
+            input = buf;
+            memmove(input + pos + 1, input + pos, input_len - pos + 1);
+            input[pos] = '\\';
+            pos += 1;
+        }
+    }
+    for (pos = 0; pos < input2_len; ++pos)
+    {
+        if (input2[pos] == '\\' || input2[pos] == '"')
+        {
+            LPSTR buf = realloc(input2, ++input2_len + 1);
+            if (buf == NULL)
+                goto out;
+
+            input2 = buf;
+            memmove(input2 + pos + 1, input2 + pos, input2_len - pos + 1);
+            input2[pos] = '\\';
+            pos += 1;
+        }
+    }
+
+    Base64Encode(input, input_len, &input_b64);
+    Base64Encode(input2, input2_len, &input2_b64);
+
+    cmd_len = input_len * 2 + input2_len * 2 + strlen(fmt);
+    cmd = malloc(cmd_len);
+    if (cmd)
+    {
+        snprintf(cmd, cmd_len, fmt, input_b64, input2_b64);
+        retval = ManagementCommand(c, cmd, NULL, regular);
+        free(cmd);
+    }
+    free(input_b64);
+    free(input2_b64);
+
+out:
+    /* Clear buffers with potentially secret content */
+    if (input_len)
+    {
+        memset(input, 'x', input_len);
+        SetDlgItemTextA(hDlg, id, input);
+        free(input);
+    }
+    if (input2_len)
+    {
+        memset(input2, 'x', input2_len);
+        SetDlgItemTextA(hDlg, id2, input2);
+        free(input2);
     }
 
     return retval;
