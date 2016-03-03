@@ -33,6 +33,7 @@
 
 #define IDM_SETTINGS            221
 #define IDM_CLOSE               223
+#define IDM_IMPORT              224
 
 #define IDM_CONNECTMENU         300
 #define IDM_DISCONNECTMENU      (MAX_CONFIGS + IDM_CONNECTMENU)

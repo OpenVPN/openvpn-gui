@@ -54,7 +54,6 @@ InitManagement(const mgmt_rtmsg_handler *handler)
     }
 }
 
-
 /*
  * Connect to the OpenVPN management interface and register
  * asynchronous socket event notification for it
@@ -205,7 +204,11 @@ OnManagement(SOCKET sk, LPARAM lParam)
             if (time(NULL) < c->manage.timeout)
                 connect(c->manage.sk, (SOCKADDR *)&c->manage.skaddr, sizeof(c->manage.skaddr));
             else
+            {
+                /* Connection to MI timed out. */
+                c->state = timedout;
                 rtmsg_handler[stop](c, "");
+            }
         }
         break;
 

@@ -52,6 +52,12 @@ extern options_t o;
 
 const TCHAR *cfgProp = _T("conn");
 
+typedef struct {
+    connection_t *c;
+    int challenge_echo;
+    char *challenge_str;
+} auth_param_t;
+
 /*
  * Receive banner on connection to management interface
  * Format: <BANNER>
@@ -202,27 +208,41 @@ OnStateChange(connection_t *c, char *data)
 
 
 /*
- * DialogProc for OpenVPN username/password auth dialog windows
+ * DialogProc for OpenVPN username/password/challenge auth dialog windows
  */
 INT_PTR CALLBACK
 UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    connection_t *c;
+    auth_param_t *param;
 
     switch (msg)
     {
     case WM_INITDIALOG:
         /* Set connection for this dialog and show it */
-        c = (connection_t *) lParam;
-        SetProp(hwndDlg, cfgProp, (HANDLE) c);
-        if (c->state == resuming)
+        param = (auth_param_t *) lParam;
+        SetProp(hwndDlg, cfgProp, (HANDLE) param);
+        if (param->challenge_str)
+        {
+            int wchars_num = MultiByteToWideChar(CP_UTF8, 0, param->challenge_str, -1, NULL, 0);
+            LPWSTR wstr = (LPWSTR)malloc(sizeof(WCHAR) * wchars_num);
+            HWND wnd_challenge = GetDlgItem(hwndDlg, ID_EDT_AUTH_CHALLENGE);
+
+            MultiByteToWideChar(CP_UTF8, 0, param->challenge_str, -1, wstr, wchars_num);
+            SetDlgItemTextW(hwndDlg, ID_TXT_AUTH_CHALLENGE, wstr);
+            free(wstr);
+            /* Set/Remove style ES_PASSWORD by SetWindowLong(GWL_STYLE) does nothing,
+               send EM_SETPASSWORDCHAR just works. */
+            if(param->challenge_echo)
+                SendMessage(wnd_challenge, EM_SETPASSWORDCHAR, 0, 0);
+        }
+        if (param->c->state == resuming)
             ForceForegroundWindow(hwndDlg);
         else
             SetForegroundWindow(hwndDlg);
         break;
 
     case WM_COMMAND:
-        c = (connection_t *) GetProp(hwndDlg, cfgProp);
+        param = (auth_param_t *) GetProp(hwndDlg, cfgProp);
         switch (LOWORD(wParam))
         {
         case ID_EDT_AUTH_USER:
@@ -234,14 +254,17 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case IDOK:
-            ManagementCommandFromInput(c, "username \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_USER);
-            ManagementCommandFromInput(c, "password \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_PASS);
+            ManagementCommandFromInput(param->c, "username \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_USER);
+            if (param->challenge_str)
+                ManagementCommandFromInputBase64(param->c, "password \"Auth\" \"SCRV1:%s:%s\"", hwndDlg, ID_EDT_AUTH_PASS, ID_EDT_AUTH_CHALLENGE);
+            else
+                ManagementCommandFromInput(param->c, "password \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_PASS);
             EndDialog(hwndDlg, LOWORD(wParam));
             return TRUE;
 
         case IDCANCEL:
             EndDialog(hwndDlg, LOWORD(wParam));
-            StopOpenVPN(c);
+            StopOpenVPN(param->c);
             return TRUE;
         }
         break;
@@ -251,6 +274,9 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         return TRUE;
 
     case WM_NCDESTROY:
+        param = (auth_param_t *) GetProp(hwndDlg, cfgProp);
+        if (param->challenge_str) free(param->challenge_str);
+        free(param);
         RemoveProp(hwndDlg, cfgProp);
         break;
     }
@@ -317,7 +343,21 @@ OnPassword(connection_t *c, char *msg)
 
     if (strstr(msg, "'Auth'"))
     {
-        LocalizedDialogBoxParam(ID_DLG_AUTH, UserAuthDialogFunc, (LPARAM) c);
+        char* chstr = strstr(msg, "SC:");
+        auth_param_t *param = (auth_param_t *) malloc(sizeof(auth_param_t));
+        param->c = c;
+        if (chstr)
+        {
+            param->challenge_echo = *(chstr + 3) != '0';
+            param->challenge_str = strdup(chstr + 5);
+            LocalizedDialogBoxParam(ID_DLG_AUTH_CHALLENGE, UserAuthDialogFunc, (LPARAM) param);
+        }
+        else
+        {
+            param->challenge_echo = 0;
+            param->challenge_str = NULL;
+            LocalizedDialogBoxParam(ID_DLG_AUTH, UserAuthDialogFunc, (LPARAM) param);
+        }
     }
     else if (strstr(msg, "'Private Key'"))
     {
@@ -341,6 +381,7 @@ void
 OnStop(connection_t *c, UNUSED char *msg)
 {
     UINT txt_id, msg_id;
+    TCHAR *msg_xtra;
     SetMenuStatus(c, disconnected);
 
     switch (c->state)
@@ -366,9 +407,13 @@ OnStop(connection_t *c, UNUSED char *msg)
     case resuming:
     case connecting:
     case reconnecting:
+    case timedout:
         /* We have failed to (re)connect */
         txt_id = c->state == reconnecting ? IDS_NFO_STATE_FAILED_RECONN : IDS_NFO_STATE_FAILED;
         msg_id = c->state == reconnecting ? IDS_NFO_RECONN_FAILED : IDS_NFO_CONN_FAILED;
+        msg_xtra = c->state == timedout ? c->log_path : c->config_name;
+        if (c->state == timedout)
+            msg_id = IDS_NFO_CONN_TIMEOUT;
 
         c->state = disconnecting;
         CheckAndSetTrayIcon();
@@ -382,7 +427,7 @@ OnStop(connection_t *c, UNUSED char *msg)
             SetForegroundWindow(c->hwndStatus);
             ShowWindow(c->hwndStatus, SW_SHOW);
         }
-        ShowLocalizedMsg(msg_id, c->config_name);
+        ShowLocalizedMsg(msg_id, msg_xtra);
         SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
         break;
 
@@ -682,27 +727,29 @@ StartOpenVPN(connection_t *c)
     /* Create a management interface password */
     GetRandomPassword(c->manage.password, sizeof(c->manage.password) - 1);
 
-    /* Construct command line */
-    _sntprintf_0(cmdline, _T("openvpn --config \"%s\" "
-        "--setenv IV_GUI_VER \"%S\" --service %s 0 --log%s \"%s\" --auth-retry interact "
+    /* Construct command line -- put log first */
+    _sntprintf_0(cmdline, _T("openvpn --log%s \"%s\" --config \"%s\" "
+        "--setenv IV_GUI_VER \"%S\" --service %s 0 --auth-retry interact "
         "--management %S %hd stdin --management-query-passwords %s"
-        "--management-hold"), c->config_file, PACKAGE_STRING, exit_event_name,
+        "--management-hold"),
         (o.append_string[0] == '1' ? _T("-append") : _T("")), c->log_path,
+        c->config_file, PACKAGE_STRING, exit_event_name,
         inet_ntoa(c->manage.skaddr.sin_addr), ntohs(c->manage.skaddr.sin_port),
         (o.proxy_source != config ? _T("--management-query-proxy ") : _T("")));
 
     /* Try to open the service pipe */
-    service = CreateFile(_T("\\\\.\\pipe\\openvpn\\service"),
+    if (!IsUserAdmin())
+      service = CreateFile(_T("\\\\.\\pipe\\openvpn\\service"),
                 GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
 
-    if (service != INVALID_HANDLE_VALUE)
+    if (service && service != INVALID_HANDLE_VALUE)
     {
         DWORD size = _tcslen(c->config_dir) + _tcslen(options) + sizeof(c->manage.password) + 3;
         TCHAR startup_info[1024];
         DWORD dwMode = PIPE_READMODE_MESSAGE;
         if (!SetNamedPipeHandleState(service, &dwMode, NULL, NULL))
         {
-            // TODO: add error message
+            ShowLocalizedMsg (IDS_ERR_ACCESS_SERVICE_PIPE);
             CloseHandle(c->exit_event);
             goto out;
         }
@@ -714,7 +761,7 @@ StartOpenVPN(connection_t *c)
 
         if (!WriteFile(service, startup_info, size * sizeof (TCHAR), &written, NULL))
         {
-            // TODO: add error message
+            ShowLocalizedMsg (IDS_ERR_WRITE_SERVICE_PIPE);
             CloseHandle(c->exit_event);
             goto out;
         }

@@ -48,6 +48,24 @@ BEGIN
     PUSHBUTTON "Cancelar", IDCANCEL, 90, 42, 52, 14
 END
 
+/* Auth Username/Password/Challenge Dialog */
+ID_DLG_AUTH_CHALLENGE DIALOG 6, 18, 160, 96
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+CAPTION "OpenVPN - User Authentication"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_PORTUGUESE, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Usuário:", 0, 6, 9, 50, 10
+    LTEXT "Senha:", 0, 6, 26, 50, 10
+    LTEXT "Response:", 0, 6, 60, 50, 10
+    EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    LTEXT "", ID_TXT_AUTH_CHALLENGE, 6, 43, 148, 10
+    EDITTEXT ID_EDT_AUTH_CHALLENGE, 60, 57, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "OK", IDOK, 20, 76, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "Cancelar", IDCANCEL, 90, 76, 52, 14
+END
+
 /* Status Dialog */
 ID_DLG_STATUS DIALOG 6, 18, 380, 210
 STYLE WS_SIZEBOX | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | DS_CENTER
@@ -147,6 +165,7 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\nConectado desde: "
     IDS_TIP_ASSIGNED_IP "\nIP atribuído: %s"
     IDS_MENU_SERVICE "Serviço OpenVPN"
+    IDS_MENU_IMPORT "Importar arquivo…"
     IDS_MENU_SETTINGS "Configurações…"
     IDS_MENU_CLOSE "Sair"
     IDS_MENU_CONNECT "Conectar"
@@ -324,4 +343,10 @@ BEGIN
                            "uma vez como Administrador para alterar o registro."
     IDS_ERR_READ_SET_KEY "Erro ao ler e ajustar chave de registro ""%s""."
     IDS_ERR_WRITE_REGVALUE "Erro ao gravar valor da chave de registro ""HKEY_CURRENT_USER\\%s\\%s""."
+
+    /* importation */
+    IDS_ERR_IMPORT_EXISTS "Já existe uma configuração com o nome ""%s""."
+    IDS_ERR_IMPORT_FAILED "Falha ao importar o arquivo. O seguinte caminho não pôde ser criado.\n\n" \
+                          "%s\n\nCertifique-se de que você possui as permissões necessárias."
+    IDS_NFO_IMPORT_SUCCESS "Arquivo importado com sucesso."
 END

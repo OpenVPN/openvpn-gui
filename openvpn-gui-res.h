@@ -56,6 +56,11 @@
 #define ID_EDT_AUTH_USER                 181
 #define ID_EDT_AUTH_PASS                 182
 
+/* Auth Username/Password/Challenge Dialog */
+#define ID_DLG_AUTH_CHALLENGE            183
+#define ID_TXT_AUTH_CHALLENGE            184
+#define ID_EDT_AUTH_CHALLENGE            185
+
 /* Proxy Settings Dialog */
 #define ID_DLG_PROXY                     200
 #define ID_RB_PROXY_OPENVPN              210
@@ -107,6 +112,7 @@
 #define IDS_MENU_SERVICEONLY_STOP       1020
 #define IDS_MENU_SERVICEONLY_RESTART    1021
 #define IDS_MENU_ASK_STOP_SERVICE       1022
+#define IDS_MENU_IMPORT                 1023
 
 /* LogViewer Dialog */
 #define IDS_ERR_START_LOG_VIEWER        1101
@@ -156,6 +162,8 @@
 #define IDS_ERR_CONN_SCRIPT_FAILED      1248
 #define IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT 1249
 #define IDS_ERR_CONFIG_EXIST            1251
+#define IDS_NFO_CONN_TIMEOUT            1252
+#define IDS_NFO_NO_CONFIGS              1253
 
 /* Program Startup Related */
 #define IDS_ERR_OPEN_DEBUG_FILE         1301
@@ -225,6 +233,10 @@
 #define IDS_ERR_OPEN_SCMGR              1706
 #define IDS_ERR_STOP_SERVICE            1707
 #define IDS_NFO_RESTARTED               1708
+#define IDS_ERR_ACCESS_SERVICE_PIPE     1709
+#define IDS_ERR_WRITE_SERVICE_PIPE      1710
+#define IDS_ERR_NOTSTARTED_ISERVICE     1711
+#define IDS_ERR_INSTALL_ISERVICE        1712
 
 /* Registry Related */
 #define IDS_ERR_GET_WINDOWS_DIR         1801
@@ -239,5 +251,12 @@
 #define IDS_ERR_OPEN_WRITE_REG          1810
 #define IDS_ERR_READ_SET_KEY            1811
 #define IDS_ERR_WRITE_REGVALUE          1812
+#define IDS_ERR_GET_PROFILE_DIR         1813
+
+/* Importation Related */
+
+#define IDS_ERR_IMPORT_EXISTS           1901
+#define IDS_ERR_IMPORT_FAILED           1902
+#define IDS_NFO_IMPORT_SUCCESS          1903
 
 #endif

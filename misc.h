@@ -23,6 +23,7 @@
 #define MISC_H
 
 BOOL ManagementCommandFromInput(connection_t *, LPCSTR, HWND, int);
+BOOL ManagementCommandFromInputBase64(connection_t *, LPCSTR, HWND, int, int);
 
 BOOL EnsureDirExists(LPTSTR);
 
@@ -30,4 +31,6 @@ BOOL streq(LPCSTR, LPCSTR);
 BOOL wcsbegins(LPCWSTR, LPCWSTR);
 
 BOOL ForceForegroundWindow(HWND);
+
+BOOL IsUserAdmin(VOID);
 #endif
