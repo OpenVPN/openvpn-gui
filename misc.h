@@ -30,4 +30,6 @@ BOOL streq(LPCSTR, LPCSTR);
 BOOL wcsbegins(LPCWSTR, LPCWSTR);
 
 BOOL ForceForegroundWindow(HWND);
+
+BOOL IsUserAdmin(VOID);
 #endif

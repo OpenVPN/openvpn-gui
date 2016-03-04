@@ -682,20 +682,22 @@ StartOpenVPN(connection_t *c)
     /* Create a management interface password */
     GetRandomPassword(c->manage.password, sizeof(c->manage.password) - 1);
 
-    /* Construct command line */
-    _sntprintf_0(cmdline, _T("openvpn --config \"%s\" "
-        "--setenv IV_GUI_VER \"%S\" --service %s 0 --log%s \"%s\" --auth-retry interact "
+    /* Construct command line -- put log first */
+    _sntprintf_0(cmdline, _T("openvpn --log%s \"%s\" --config \"%s\" "
+        "--setenv IV_GUI_VER \"%S\" --service %s 0 --auth-retry interact "
         "--management %S %hd stdin --management-query-passwords %s"
-        "--management-hold"), c->config_file, PACKAGE_STRING, exit_event_name,
+        "--management-hold"),
         (o.append_string[0] == '1' ? _T("-append") : _T("")), c->log_path,
+        c->config_file, PACKAGE_STRING, exit_event_name,
         inet_ntoa(c->manage.skaddr.sin_addr), ntohs(c->manage.skaddr.sin_port),
         (o.proxy_source != config ? _T("--management-query-proxy ") : _T("")));
 
     /* Try to open the service pipe */
-    service = CreateFile(_T("\\\\.\\pipe\\openvpn\\service"),
+    if (!IsUserAdmin())
+      service = CreateFile(_T("\\\\.\\pipe\\openvpn\\service"),
                 GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
 
-    if (service != INVALID_HANDLE_VALUE)
+    if (service && service != INVALID_HANDLE_VALUE)
     {
         DWORD size = _tcslen(c->config_dir) + _tcslen(options) + sizeof(c->manage.password) + 3;
         TCHAR startup_info[1024];
