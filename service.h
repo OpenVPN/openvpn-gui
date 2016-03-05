@@ -19,7 +19,7 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#define bool _Bool
+#define bool int
 
 int MyStartService();
 int MyStopService();
