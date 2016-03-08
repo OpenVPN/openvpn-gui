@@ -73,8 +73,15 @@ GetRegistryKeys()
   if (openvpn_path[_tcslen(openvpn_path) - 1] != _T('\\'))
     _tcscat(openvpn_path, _T("\\"));
 
+  /* an admin-defined global config dir defined in HKLM\OpenVPN\config_dir */
+  if (!GetRegistryValue(regkey, _T("config_dir"), o.global_config_dir, _countof(o.global_config_dir)))
+    {
+      /* use default = openvpnpath\config */
+      _sntprintf_0(o.global_config_dir, _T("%sconfig"), openvpn_path);
+    }
 
-  _sntprintf_0(temp_path, _T("%sconfig"), openvpn_path);
+  /* config_dir in user's profile by default */
+  _sntprintf_0(temp_path, _T("%s\\OpenVPN\\config"), profile_dir);
   if (!GetRegKey(_T("config_dir"), o.config_dir, 
       temp_path, _countof(o.config_dir))) return(false);
 

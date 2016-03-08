@@ -125,6 +125,7 @@ typedef struct {
     /* Registry values */
     TCHAR exe_path[MAX_PATH];
     TCHAR config_dir[MAX_PATH];
+    TCHAR global_config_dir[MAX_PATH];
     TCHAR ext_string[16];
     TCHAR log_dir[MAX_PATH];
     TCHAR priority_string[64];
