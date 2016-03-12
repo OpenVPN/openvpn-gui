@@ -640,7 +640,7 @@ ThreadOpenVPNStatus(void *p)
                 c->state = suspending;
                 EnableWindow(GetDlgItem(c->hwndStatus, ID_DISCONNECT), FALSE);
                 EnableWindow(GetDlgItem(c->hwndStatus, ID_RESTART), FALSE);
-                SetMenuStatus(&o.conn[config], disconnecting);
+                SetMenuStatus(c, disconnecting);
                 SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_WAIT_TERM));
                 SetEvent(c->exit_event);
                 break;
