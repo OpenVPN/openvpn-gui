@@ -69,7 +69,7 @@ VerifyAutoConnections()
     int i;
     BOOL match;
 
-    for (i = 0; o.auto_connect[i] != 0 && i < MAX_CONFIGS; i++)
+    for (i = 0; i < MAX_CONFIGS && o.auto_connect[i] != 0; i++)
     {
         int j;
         match = FALSE;
