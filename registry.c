@@ -303,7 +303,6 @@ int SetRegistryValue(HKEY regkey, const TCHAR *name, const TCHAR *data)
     }
 
   return(1);
-
 }
 
 int
@@ -315,4 +314,80 @@ SetRegistryValueNumeric(HKEY regkey, const TCHAR *name, DWORD data)
 
   ShowLocalizedMsg(IDS_ERR_WRITE_REGVALUE, GUI_REGKEY_HKCU, name);
   return 0;
+}
+
+/*
+ * Open HKCU\Software\OpenVPN-GUI\config-name (create if doesn't exist).
+ * The caller must close the key. Returns 1 on success.
+ */
+static int
+OpenConfigRegistryKey(const WCHAR *config_name, HKEY *regkey)
+{
+    DWORD status;
+    const WCHAR fmt[] = L"SOFTWARE\\OpenVPN-GUI\\%s";
+    int count = (wcslen(config_name) + wcslen(fmt) + 1);
+    WCHAR *name = malloc(count * sizeof(WCHAR));
+
+    if (!name)
+        return 0;
+
+    _snwprintf(name, count, fmt, config_name);
+    name[count-1] = L'\0';
+
+    /* create if key doesn't exist */
+    status = RegCreateKeyEx(HKEY_CURRENT_USER, name, 0, NULL,
+               REG_OPTION_NON_VOLATILE, KEY_READ | KEY_WRITE, NULL, regkey, NULL);
+    free (name);
+
+    return (status == ERROR_SUCCESS);
+}
+
+int
+SetConfigRegistryValueBinary(const WCHAR *config_name, const WCHAR *name, const BYTE *data, DWORD len)
+{
+    HKEY regkey;
+    DWORD status;
+
+    if (!OpenConfigRegistryKey(config_name, &regkey))
+        return 0;
+    status = RegSetValueEx(regkey, name, 0, REG_BINARY, data, len);
+    RegCloseKey(regkey);
+
+    return (status == ERROR_SUCCESS);
+}
+
+/*
+ * Read registry value into the user supplied buffer data that can hold
+ * up to len bytes. Returns the actual number of bytes read or zero on error.
+ * If data is NULL returns the required buffer size, and no data is read.
+ */
+DWORD
+GetConfigRegistryValue(const WCHAR *config_name, const WCHAR *name, BYTE *data, DWORD len)
+{
+    DWORD status;
+    DWORD type;
+    HKEY regkey;
+
+    if (!OpenConfigRegistryKey(config_name, &regkey))
+        return 0;
+    status = RegQueryValueEx(regkey, name, NULL, &type, data, &len);
+    RegCloseKey(regkey);
+    if (status == ERROR_SUCCESS)
+        return len;
+    else
+        return 0;
+}
+
+int
+DeleteConfigRegistryValue(const WCHAR *config_name, const WCHAR *name)
+{
+    DWORD status;
+    HKEY regkey;
+
+    if (!OpenConfigRegistryKey(config_name, &regkey))
+        return 0;
+    status = RegDeleteValue(regkey, name);
+    RegCloseKey(regkey);
+
+    return (status == ERROR_SUCCESS);
 }

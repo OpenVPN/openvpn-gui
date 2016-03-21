@@ -359,7 +359,7 @@ InitSemaphore (void)
     semaphore = CreateSemaphore (NULL, 1, 1, NULL);
     if (!semaphore)
     {
-        MessageBoxW (NULL, L"PACKAGE_NAME", L"Error creating semaphore", MB_OK);
+        MessageBoxW (NULL, L"Error creating semaphore", TEXT(PACKAGE_NAME), MB_OK);
 #ifdef DEBUG
         PrintDebug (L"InitSemaphore: CreateSemaphore failed [error = %lu]", GetLastError());
 #endif

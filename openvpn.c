@@ -47,6 +47,7 @@
 #include "localization.h"
 #include "misc.h"
 #include "access.h"
+#include "save_pass.h"
 
 #define WM_OVPN_STOP    (WM_APP + 10)
 #define WM_OVPN_SUSPEND (WM_APP + 11)
@@ -200,6 +201,10 @@ OnStateChange(connection_t *c, char *data)
 
         if (c->failed_psw_attempts >= o.psw_attempts - 1)
             ManagementCommand(c, "auth-retry none", NULL, regular);
+        if (strcmp(message, "auth-failure") == 0 && (c->flags & FLAG_SAVE_AUTH_PASS))
+            SaveAuthPass(c->config_name, L"");
+        else if (strcmp(message, "private-key-password-failure") == 0 && (c->flags & FLAG_SAVE_KEY_PASS))
+            SaveKeyPass(c->config_name, L"");
 
         c->state = reconnecting;
         CheckAndSetTrayIcon();
@@ -217,6 +222,8 @@ INT_PTR CALLBACK
 UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     auth_param_t *param;
+    WCHAR username[USER_PASS_LEN];
+    WCHAR password[USER_PASS_LEN];
 
     switch (msg)
     {
@@ -238,6 +245,16 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             if(param->challenge_echo)
                 SendMessage(wnd_challenge, EM_SETPASSWORDCHAR, 0, 0);
         }
+        if (RecallUsername(param->c->config_name, username))
+            SetDlgItemTextW(hwndDlg, ID_EDT_AUTH_USER, username);
+        if (RecallAuthPass(param->c->config_name, password))
+        {
+            SetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password);
+            SecureZeroMemory(password, sizeof(password));
+        }
+        if (param->c->flags & FLAG_SAVE_AUTH_PASS)
+            Button_SetCheck(GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
+
         if (param->c->state == resuming)
             ForceForegroundWindow(hwndDlg);
         else
@@ -256,7 +273,29 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             }
             break;
 
+        case ID_CHK_SAVE_PASS:
+            param->c->flags ^= FLAG_SAVE_AUTH_PASS;
+            if (param->c->flags & FLAG_SAVE_AUTH_PASS)
+                Button_SetCheck(GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
+            else
+            {
+                DeleteSavedAuthPass(param->c->config_name);
+                Button_SetCheck(GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), BST_UNCHECKED);
+            }
+            break;
+
         case IDOK:
+            if (GetDlgItemTextW(hwndDlg, ID_EDT_AUTH_USER, username, _countof(username)))
+            {
+                SaveUsername(param->c->config_name, username);
+            }
+            if ( param->c->flags & FLAG_SAVE_AUTH_PASS &&
+                 GetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password, _countof(password)) &&
+                 wcslen(password) )
+            {
+                SaveAuthPass(param->c->config_name, password);
+                SecureZeroMemory(password, sizeof(password));
+            }
             ManagementCommandFromInput(param->c, "username \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_USER);
             if (param->challenge_str)
                 ManagementCommandFromInputBase64(param->c, "password \"Auth\" \"SCRV1:%s:%s\"", hwndDlg, ID_EDT_AUTH_PASS, ID_EDT_AUTH_CHALLENGE);
@@ -295,6 +334,7 @@ INT_PTR CALLBACK
 PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     connection_t *c;
+    WCHAR passphrase[KEY_PASS_LEN];
 
     switch (msg)
     {
@@ -302,6 +342,17 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         /* Set connection for this dialog and show it */
         c = (connection_t *) lParam;
         SetProp(hwndDlg, cfgProp, (HANDLE) c);
+        if (RecallKeyPass(c->config_name, passphrase) && wcslen(passphrase))
+        {
+            /* Use the saved password and skip the dialog */
+            SetDlgItemTextW(hwndDlg, ID_EDT_PASSPHRASE, passphrase);
+            SecureZeroMemory(passphrase, sizeof(passphrase));
+            ManagementCommandFromInput(c, "password \"Private Key\" \"%s\"", hwndDlg, ID_EDT_PASSPHRASE);
+            EndDialog(hwndDlg, IDOK);
+            return TRUE;
+        }
+        if (c->flags & FLAG_SAVE_KEY_PASS)
+            Button_SetCheck (GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
         if (c->state == resuming)
             ForceForegroundWindow(hwndDlg);
         else
@@ -312,13 +363,32 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         c = (connection_t *) GetProp(hwndDlg, cfgProp);
         switch (LOWORD(wParam))
         {
+        case ID_CHK_SAVE_PASS:
+            c->flags ^= FLAG_SAVE_KEY_PASS;
+            if (c->flags & FLAG_SAVE_KEY_PASS)
+                Button_SetCheck (GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
+            else
+            {
+                Button_SetCheck (GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), BST_UNCHECKED);
+                DeleteSavedKeyPass(c->config_name);
+            }
+            break;
+
         case IDOK:
+            if ((c->flags & FLAG_SAVE_KEY_PASS) &&
+                GetDlgItemTextW(hwndDlg, ID_EDT_PASSPHRASE, passphrase, _countof(passphrase)) &&
+                wcslen(passphrase) > 0)
+            {
+                SaveKeyPass(c->config_name, passphrase);
+                SecureZeroMemory(passphrase, sizeof(passphrase));
+            }
             ManagementCommandFromInput(c, "password \"Private Key\" \"%s\"", hwndDlg, ID_EDT_PASSPHRASE);
             EndDialog(hwndDlg, LOWORD(wParam));
             return TRUE;
 
         case IDCANCEL:
             EndDialog(hwndDlg, LOWORD(wParam));
+            StopOpenVPN(c);
             return TRUE;
         }
         break;
@@ -660,7 +730,7 @@ OnService(connection_t *c, UNUSED char *msg)
         free (buf);
         return;
     }
- 
+
     p = buf + 11;
     while (iswspace(*p)) ++p;
 
@@ -1309,4 +1379,14 @@ out:
     CloseHandle(hStdOutRead);
     CloseHandle(hStdOutWrite);
     return retval;
+}
+
+void
+DisablePasswordSave(connection_t *c)
+{
+    if (ShowLocalizedMsgEx(MB_OKCANCEL, TEXT(PACKAGE_NAME), IDS_NFO_DELETE_PASS, c->config_name) == IDCANCEL)
+        return;
+    DeleteSavedPasswords(c->config_name);
+    c->flags &= ~(FLAG_SAVE_KEY_PASS | FLAG_SAVE_AUTH_PASS);
+    SetMenuStatus(c, c->state);
 }

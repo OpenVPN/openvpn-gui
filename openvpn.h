@@ -36,6 +36,8 @@ void OnStateChange(connection_t *, char *);
 void OnPassword(connection_t *, char *);
 void OnStop(connection_t *, char *);
 
+void DisablePasswordSave(connection_t *);
+
 extern const TCHAR *cfgProp;
 
 /* These error codes are from openvpn service sources */
