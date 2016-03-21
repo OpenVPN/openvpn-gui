@@ -51,13 +51,13 @@ END
 /* Auth Username/Password/Challenge Dialog */
 ID_DLG_AUTH_CHALLENGE DIALOG 6, 18, 160, 96
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
-CAPTION "OpenVPN - User Authentication"
+CAPTION "OpenVPN - Autenticação de usuário"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_PORTUGUESE, SUBLANG_DEFAULT
 BEGIN
     LTEXT "Usuário:", 0, 6, 9, 50, 10
     LTEXT "Senha:", 0, 6, 26, 50, 10
-    LTEXT "Response:", 0, 6, 60, 50, 10
+    LTEXT "Resposta:", 0, 6, 60, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     LTEXT "", ID_TXT_AUTH_CHALLENGE, 6, 43, 148, 10
@@ -82,7 +82,7 @@ END
 /* Change Passphrase Dialog */
 ID_DLG_CHGPASS DIALOG 6, 18, 193, 82
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "OpenVPN - Trocar senha"
+CAPTION "OpenVPN - Alterar senha"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_PORTUGUESE, SUBLANG_DEFAULT
 BEGIN
@@ -117,6 +117,18 @@ BEGIN
     RTEXT "Porta:", ID_TXT_PROXY_PORT, 167, 77, 24, 10
     EDITTEXT ID_EDT_PROXY_ADDRESS, 58, 75, 108, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_PROXY_PORT, 196, 75, 30, 12, ES_AUTOHSCROLL
+END
+
+/* General Settings Dialog */
+ID_DLG_GENERAL DIALOGEX 6, 18, 249, 104
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Geral"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+BEGIN
+    GROUPBOX "Interface do Usuário", 201, 6, 12, 235, 30
+    LTEXT "Idioma:", ID_TXT_LANGUAGE, 17, 25, 52, 12
+    COMBOBOX ID_CMB_LANGUAGE, 57, 23, 171, 400, CBS_DROPDOWNLIST | WS_TABSTOP
 END
 
 /* About Dialog */
@@ -172,8 +184,8 @@ BEGIN
     IDS_MENU_DISCONNECT "Desconectar"
     IDS_MENU_STATUS "Mostrar status"
     IDS_MENU_VIEWLOG "Visualizar log"
-    IDS_MENU_EDITCONFIG "Editar Configurações"
-    IDS_MENU_PASSPHRASE "Trocar senha"
+    IDS_MENU_EDITCONFIG "Editar configurações"
+    IDS_MENU_PASSPHRASE "Alterar senha"
     IDS_MENU_SERVICE_START "Iniciar"
     IDS_MENU_SERVICE_STOP "Parar"
     IDS_MENU_SERVICE_RESTART "Reiniciar"
@@ -187,12 +199,13 @@ BEGIN
     IDS_ERR_START_CONF_EDITOR "Erro iniciando o editor de configuração: %s"
 
     /* OpenVPN */
-    IDS_ERR_MANY_CONFIGS "OpenVPN GUI não suporta mais do que %d configurações. Contate o autor se você necessita mais."
-    IDS_ERR_ONE_CONN_OLD_VER "Você pode ter apenas uma conexão rodando ao mesmo tempo quando estiver usando uma versão anterior a OpenVPN 2.0-beta6."
-    IDS_ERR_STOP_SERV_OLD_VER "Você não pode usar o OpenVPN GUI para iniciar uma conexão enquanto o servico OpenVPN estiver rodando (com OpenVPN 1.5/1.6). Pare o serviço OpenVPN primero se você quer utilizar o OpenVPN GUI."
+    IDS_ERR_MANY_CONFIGS "OpenVPN GUI não suporta mais do que %d configurações. Contate o autor se você necessita de mais."
+    IDS_NFO_NO_CONFIGS "Nenhum perfil de conexão (arquivo de configuração) foi localizado."
+    IDS_ERR_ONE_CONN_OLD_VER "Você pode ter apenas uma conexão ativa enquanto estiver usando uma versão anterior a OpenVPN 2.0-beta6."
+    IDS_ERR_STOP_SERV_OLD_VER "Você não pode usar o OpenVPN GUI para iniciar uma conexão enquanto o serviço OpenVPN estiver em execução (com OpenVPN 1.5/1.6). Pare o serviço OpenVPN primero se você quiser utilizar o OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "CreateEvent falhou no evento de saída: %s"
     IDS_ERR_UNKNOWN_PRIORITY "Nome de prioridade desconhecida: %s"
-    IDS_ERR_LOG_APPEND_BOOL "Log file append flag (given as '%s') must be '0' or '1'"
+    IDS_ERR_LOG_APPEND_BOOL "Parâmetro ""adicionar ao arquivo de log"" (informado como '%s') deve ser '0' ou '1'"
     IDS_ERR_GET_MSIE_PROXY "Impossível carregar configurações de proxy do MSIE."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor falhou."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl falhou."
@@ -216,33 +229,36 @@ BEGIN
     IDS_NFO_STATE_FAILED_RECONN "Estado atual: Falha ao reconectar"
     IDS_NFO_RECONN_FAILED "Reconexão a %s falhou."
     IDS_NFO_STATE_SUSPENDED "Estado atual: Suspenso"
-    IDS_ERR_READ_STDOUT_PIPE "Erro lendo do OpenVPN StdOut Pipe."
+    IDS_ERR_READ_STDOUT_PIPE "Erro lendo o pipe de stdout do OpenVPN."
     IDS_ERR_CREATE_EDIT_LOGWINDOW "Creating RichEdit LogWindow falhou!!"
     IDS_ERR_SET_SIZE "Set Size falhou!"
-    IDS_ERR_AUTOSTART_CONF "Impossível encontrar configurações para autostart: %s"
+    IDS_ERR_AUTOSTART_CONF "Impossível encontrar configurações para autoinício: %s"
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe em hInputRead falhou."
     IDS_NFO_STATE_CONNECTING "Estado atual: Conectando"
     IDS_NFO_CONNECTION_XXX "Conexão OpenVPN (%s)"
     IDS_NFO_STATE_CONN_SCRIPT "Estado atual: Rodando script de conexão"
     IDS_NFO_STATE_DISCONN_SCRIPT "Estado atual: Running script de desconexão"
-    IDS_ERR_RUN_CONN_SCRIPT "Erro rodando script de conexão: %s"
-    IDS_ERR_GET_EXIT_CODE "Falha ao consultar código ExitCode do script de conexão (%s)"
+    IDS_ERR_RUN_CONN_SCRIPT "Erro ao executar o script de conexão: %s"
+    IDS_ERR_GET_EXIT_CODE "Falha ao obter o código de saída do script de conexão (%s)"
     IDS_ERR_CONN_SCRIPT_FAILED "Script de conexão falhou. (exitcode=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Script de conexão falhou. Tempo limite depois de %d seg."
-    IDS_ERR_CONFIG_EXIST "Arquivo de configuração '%s' já existe. Você não pode " \
+    IDS_ERR_CONFIG_EXIST "O arquivo de configuração '%s' já existe. Você não pode " \
                          "ter vários arquivos de configuração com o mesmo nome, mesmo que " \
-                         "fiquem em pastas diferentes."
+                         "em pastas diferentes."
+    IDS_NFO_CONN_TIMEOUT "A conexão com a interface de gerenciamento falhou.\n" \
+                         "Consulte o arquivo de log (%s) para mais detalhes."
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "Erro ao abrir arquivo de debug (%s) para saída."
+    IDS_ERR_CREATE_PATH "Não foi possível criar o caminho %s:\n%s"
     IDS_ERR_LOAD_RICHED20 "Erro ao carregar RICHED20.DLL."
     IDS_ERR_SHELL_DLL_VERSION "Sua versão do shell32.dll é antiga (0x%lx). Você precisa de no mínimo da versão 5.0."
-    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI já está rodando."
+    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI já está em execução."
     IDS_NFO_SERVICE_STARTED "Serviço OpenVPN iniciado."
     IDS_NFO_SERVICE_STOPPED "Serviço OpenVPN parado."
-    IDS_NFO_ACTIVE_CONN_EXIT "Ainda existem conexões ativas, estas conexões serão fechadas se você sair do OpenVPN GUI." \
-                             "\n\nVocê tem certeza que quer sair?"
+    IDS_NFO_ACTIVE_CONN_EXIT "Ainda existem conexões ativas. Estas conexões serão encerradas se você sair do OpenVPN GUI." \
+                             "\n\nVocê tem certeza de que deseja sair?"
     IDS_NFO_SERVICE_ACTIVE_EXIT "Você está conectado atualmente (Serviço OpenVPN está rodando). " \
-                                "Você irá ficar conectado mesmo que feche o OpenVPN GUI.\n\n" \
+                                "Você permanecerá conectado mesmo que feche o OpenVPN GUI.\n\n" \
                                 "Você deseja continuar e fechar o OpenVPN GUI?"
 
     /* options - Resources */
@@ -252,10 +268,10 @@ BEGIN
                   "\n" \
                   "Opções para sobrescrever opções do registro:\n" \
                   "--exe_path\t\t: Caminho para openvpn.exe.\n" \
-                  "--config_dir\t\t: Caminho para o diretorio dos arquivos de configuração.\n" \
+                  "--config_dir\t\t: Caminho para o diretório dos arquivos de configuração.\n" \
                   "--ext_string\t\t: Extensão dos arquivos de configuração.\n" \
-                  "--log_dir\t\t\t: Caminho para o diretório aonde os logs serão salvos.\n" \
-                  "--priority_string\t\t: String de prioridade (Ver install.txt para maiores informações).\n" \
+                  "--log_dir\t\t\t: Caminho para o diretório onde os logs serão salvos.\n" \
+                  "--priority_string\t\t: String de prioridade (Ver install.txt para mais informações).\n" \
                   "--append_string\t\t: 1=Adicionar ao arquivo de log. 0=Truncar o arquivo de log quando conectando.\n" \
                   "--log_viewer\t\t: Caminho para Visualizador de log.\n" \
                   "--editor\t\t\t: Caminho para config editor.\n" \
@@ -280,10 +296,10 @@ BEGIN
 
     /* passphrase - Resources */
     IDS_ERR_CREATE_PASS_THREAD "CreateThread para mostrar ChangePassphrase dialog falhou."
-    IDS_NFO_CHANGE_PWD "Trocar senha (%s)"
-    IDS_ERR_PWD_DONT_MATCH "Senhas digitadas não conferem. Tente novamente."
+    IDS_NFO_CHANGE_PWD "Alterar senha (%s)"
+    IDS_ERR_PWD_DONT_MATCH "As senhas digitadas não conferem. Tente novamente."
     IDS_ERR_PWD_TO_SHORT "A nova senha deve ter no mínimo %d caracteres."
-    IDS_NFO_EMPTY_PWD "Você tem certeza que quer deixar a senha em branco?"
+    IDS_NFO_EMPTY_PWD "Você tem certeza de que deseja deixar a senha em branco?"
     IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Formato do keyfile inválido."
     IDS_ERR_OPEN_PRIVATE_KEY_FILE "Erro abrindo arquivo private key (%s)."
     IDS_ERR_OLD_PWD_INCORRECT "A senha antiga está incorreta."
@@ -299,11 +315,11 @@ BEGIN
     IDS_ERR_HAVE_KEY_OR_PKCS12 "Seu arquivo de configuração não contém nenhuma opção ""key"" ou ""pkcs12"" ."
     IDS_ERR_KEY_FILENAME_TO_LONG "Seu arquivo key na configuração é muito longo."
     IDS_ERR_PASSPHRASE2STDIN "Erro passando passphrase para stdin."
-    IDS_ERR_AUTH_USERNAME2STDIN "Erro passando auth Usuário para stdin."
+    IDS_ERR_AUTH_USERNAME2STDIN "Erro passando auth usuário para stdin."
     IDS_ERR_AUTH_PASSWORD2STDIN "Erro passando auth senha para stdin."
-    IDS_ERR_CR2STDIN "Erro passando CR to stdin."
+    IDS_ERR_CR2STDIN "Erro passando CR para stdin."
     IDS_ERR_INVALID_CHARS_IN_PSW "A nova senha contém caracteres inválidos. " \
-                                 "Por favor escolha outra."
+                                 "Por favor, escolha outra."
 
     /* settings */
     IDS_SETTINGS_CAPTION "OpenVPN - Configurações"
@@ -323,14 +339,21 @@ BEGIN
     IDS_ERR_OPEN_VPN_SERVICE "Falha ao abrir ""OpenVPNService"""
     IDS_ERR_START_SERVICE "Falha ao iniciar ""OpenVPNService"""
     IDS_ERR_QUERY_SERVICE "Falha ao consultar status do serviço."
-    IDS_ERR_SERVICE_START_FAILED "Serviço OpenVPN falhou ao iniciar."
+    IDS_ERR_SERVICE_START_FAILED "O serviço OpenVPN falhou ao iniciar."
     IDS_ERR_OPEN_SCMGR "OpenSCManager falhou (%d)"
-    IDS_ERR_STOP_SERVICE "Falha ao parar o serviço OpenVPN"
+    IDS_ERR_STOP_SERVICE "Falha ao parar o serviço OpenVPN."
     IDS_NFO_RESTARTED "Serviço OpenVPN reiniciado."
+    IDS_ERR_ACCESS_SERVICE_PIPE "O acesso ao pipe do serviço falhou."
+    IDS_ERR_WRITE_SERVICE_PIPE "Falha ao escrever no pipe do serviço."
+    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" não está instalado.\n"
+                                 "Operações que requeiram acesso de administrador podem não funcionar."
+    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" não foi iniciado.\n"
+                                 "Operações que requeiram acesso de administrador podem não funcionar."
 
     /* registry */
-    IDS_ERR_GET_WINDOWS_DIR "Erro ao acessar pasta do Windows."
-    IDS_ERR_GET_PROGRAM_DIR "Erro ao acessar pasta ""Program""."
+    IDS_ERR_GET_WINDOWS_DIR "Erro ao localizar o diretório do Windows."
+    IDS_ERR_GET_PROFILE_DIR "Erro ao localizar o diretório do perfil do usuário."
+    IDS_ERR_GET_PROGRAM_DIR "Erro ao localizar o diretório ""Program""."
     IDS_ERR_OPEN_REGISTRY "Erro abrindo registro para leitura (HKLM\\SOFTWARE\\OpenVPN).\n " \
                           "OpenVPN provavelmente não está instalado"
     IDS_ERR_READING_REGISTRY "Erro lendo valor da chave de registro (HKLM\\SOFTWARE\\OpenVPN)."
@@ -339,7 +362,7 @@ BEGIN
     IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Valor de registro ""disconnectscript_timeout"" deve ser um número entre 1 e 99."
     IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Valor de registro ""preconnectscript_timeout"" deve ser um número entre 1 e 99."
     IDS_ERR_CREATE_REG_KEY "Erro criando chave HKLM\\SOFTWARE\\OpenVPN-GUI."
-    IDS_ERR_OPEN_WRITE_REG "Erro ao abrir registro para gravação. Você deve rodar esta aplicação " \
+    IDS_ERR_OPEN_WRITE_REG "Erro ao abrir o registro para gravação. Você deve executar esta aplicação " \
                            "uma vez como Administrador para alterar o registro."
     IDS_ERR_READ_SET_KEY "Erro ao ler e ajustar chave de registro ""%s""."
     IDS_ERR_WRITE_REGVALUE "Erro ao gravar valor da chave de registro ""HKEY_CURRENT_USER\\%s\\%s""."
