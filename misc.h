@@ -33,4 +33,6 @@ BOOL wcsbegins(LPCWSTR, LPCWSTR);
 BOOL ForceForegroundWindow(HWND);
 
 BOOL IsUserAdmin(VOID);
+HANDLE InitSemaphore (void);
+
 #endif
