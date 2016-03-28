@@ -87,7 +87,7 @@ CheckGroupMember(DWORD count, WCHAR *grp[])
             break;
     }
 #ifdef DEBUG
-    PrintDebug(L"User is %s in an authorized gtoup", ret? L"" : L"not");
+    PrintDebug(L"User is%s in an authorized group", ret? L"" : L" not");
 #endif
 
 out:
@@ -161,6 +161,7 @@ GetBuiltinAdminGroupName (WCHAR *name, DWORD nlen)
 }
 /*
  * Add current user to the specified group. Uses RunAsAdmin to elevate.
+ * Reject if the group name contains certain illegal characters.
  */
 static BOOL
 AddUserToGroup (const WCHAR *group)
@@ -176,6 +177,20 @@ AddUserToGroup (const WCHAR *group)
     DWORD size;
     DWORD status;
     BOOL retval = FALSE;
+    WCHAR reject[] = L"\"\?\\/[]:;|=,+*<>\'&";
+
+    /*
+     * The only unknown content in the command line is the variable group. Ensure it
+     * does not contain any '"' character. Here we reject all characters not allowed
+     * in group names and special characters such as '&' as well.
+     */
+    if (wcspbrk(group, reject) != NULL)
+    {
+#ifdef DEBUG
+        PrintDebug (L"AddUSerToGroup: illegal characters in group name: '%s'.", group);
+#endif
+        return retval;
+    }
 
     size = _countof(username);
     if (!GetUserNameExW (NameSamCompatible, username, &size))
