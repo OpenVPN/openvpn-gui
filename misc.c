@@ -343,7 +343,8 @@ BOOL IsUserAdmin(VOID)
                                   &AdministratorsGroup);
     if(b)
     {
-        CheckTokenMembership(NULL, AdministratorsGroup, &b);
+        if (!CheckTokenMembership(NULL, AdministratorsGroup, &b))
+            b = FALSE;
         FreeSid(AdministratorsGroup);
     }
 
