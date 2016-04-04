@@ -44,6 +44,7 @@
 #include "passphrase.h"
 #include "localization.h"
 #include "misc.h"
+#include "access.h"
 
 #define WM_OVPN_STOP    (WM_APP + 10)
 #define WM_OVPN_SUSPEND (WM_APP + 11)
@@ -747,6 +748,13 @@ StartOpenVPN(connection_t *c)
         DWORD size = _tcslen(c->config_dir) + _tcslen(options) + sizeof(c->manage.password) + 3;
         TCHAR startup_info[1024];
         DWORD dwMode = PIPE_READMODE_MESSAGE;
+
+        if ( !AuthorizeConfig(c))
+        {
+            CloseHandle(c->exit_event);
+            goto out;
+        }
+
         if (!SetNamedPipeHandleState(service, &dwMode, NULL, NULL))
         {
             ShowLocalizedMsg (IDS_ERR_ACCESS_SERVICE_PIPE);

@@ -164,6 +164,10 @@
 #define IDS_ERR_CONFIG_EXIST            1251
 #define IDS_NFO_CONN_TIMEOUT            1252
 #define IDS_NFO_NO_CONFIGS              1253
+#define IDS_ERR_CONFIG_NOT_AUTHORIZED   1254
+#define IDS_ERR_CONFIG_TRY_AUTHORIZE    1255
+#define IDS_NFO_CONFIG_AUTH_PENDING     1256
+#define IDS_ERR_ADD_USER_TO_ADMIN_GROUP 1257
 
 /* Program Startup Related */
 #define IDS_ERR_OPEN_DEBUG_FILE         1301

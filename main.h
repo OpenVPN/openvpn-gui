@@ -29,7 +29,7 @@
 
 /* Define this to enable DEBUG build */
 //#define DEBUG
-#define DEBUG_FILE	"c:\\openvpngui_debug.txt"
+#define DEBUG_FILE	L"C:\\windows\\temp\\openvpngui_debug.txt"
 
 /* Define this to disable Change Password support */
 //#define DISABLE_CHANGE_PASSWORD
@@ -44,7 +44,8 @@
 #define MAX_LOG_LINES		500	/* Max number of lines in LogWindow */
 #define DEL_LOG_LINES		10	/* Number of lines to delete from LogWindow */
 
-
+/* Authorized group who can use any options and config locations */
+#define OVPN_ADMIN_GROUP TEXT("OpenVPN Administrators") /* May be reset in registry */
 
 /* bool definitions */
 #define bool int
@@ -103,11 +104,11 @@ __snprintf_0(char *buf, size_t size, char *format, ...)
 #ifdef DEBUG
 /* Print Debug Message */
 #define PrintDebug(...) \
-        { \
+        do { \
            TCHAR x_msg[256]; \
            _sntprintf_0(x_msg, __VA_ARGS__); \
            PrintDebugMsg(x_msg); \
-        }
+        } while(0)
 
 void PrintDebugMsg(TCHAR *msg);
 #endif

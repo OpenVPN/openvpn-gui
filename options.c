@@ -34,6 +34,7 @@
 #include "main.h"
 #include "openvpn-gui-res.h"
 #include "localization.h"
+#include "misc.h"
 
 #define streq(x, y) (_tcscmp((x), (y)) == 0)
 
@@ -210,6 +211,7 @@ void
 InitOptions(options_t *opt)
 {
     CLEAR(*opt);
+    opt->netcmd_semaphore = InitSemaphore ();
 }
 
 

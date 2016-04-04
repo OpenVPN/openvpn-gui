@@ -88,6 +88,7 @@ openvpn_gui_SOURCES = \
 	misc.c misc.h \
 	openvpn_config.c \
 	openvpn_config.h \
+	access.c access.h \
 	chartable.h \
 	openvpn-gui-res.h
 
@@ -99,7 +100,9 @@ openvpn_gui_LDADD = \
 	-lcomctl32 \
 	-lwinhttp \
 	-lwtsapi32 \
-	-lcrypt32
+	-lcrypt32 \
+	-lnetapi32 \
+	-lsecur32
 
 openvpn-gui-res.o: $(openvpn_gui_RESOURCES) $(srcdir)/openvpn-gui-res.h
 	$(RCCOMPILE) -i $< -o $@
