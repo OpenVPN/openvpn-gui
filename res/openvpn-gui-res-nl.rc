@@ -176,6 +176,7 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\nVerbonden sinds: "
     IDS_TIP_ASSIGNED_IP "\nToegewezen IP: %s"
     IDS_MENU_SERVICE "OpenVPN Service"
+    IDS_MENU_IMPORT "Importeer bestand…"
     IDS_MENU_SETTINGS "Instellingen…"
     IDS_MENU_CLOSE "Afsluiten"
     IDS_MENU_CONNECT "Verbinden"
@@ -198,6 +199,17 @@ BEGIN
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI ondersteunt niet meer dan %d configuraties. Neem contact op met de auteur indien u er meer wenst."
+    IDS_NFO_NO_CONFIGS "Geen leesbare verbindingsprofielen (config files) gevonden."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "Het maken van deze verbinding (%s) vereist lidmaatschap van\n"\
+                                  "de ""%s""-groep. Neem contact op met de systeembeheerder.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Het maken van deze verbinding (%s) vereist lidmaatschap van\n"\
+                                  "de ""%s""-groep.\n\n"\
+                                  "Wilt u uzelf toevoegen aan deze groep?\n"\
+                                  "Tijdens deze actie kan er om het administratorwachtwoord gevraagd worden."
+    IDS_NFO_CONFIG_AUTH_PENDING   "Het maken van deze verbinding (%s) vereist lidmaatschap van\n"\
+                                  "de ""%s""-groep.\n\n"\
+                                  "Vul het voorgaande authorizationscherm volledig in."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Toevoegen van de grbruiker aan de ""%s""-groep is mislukt."
     IDS_ERR_ONE_CONN_OLD_VER "Er kan maar één verbinding per OpenVPN-client gestart worden met versies ouder dan OpenVPN 2.0-beta6."
     IDS_ERR_STOP_SERV_OLD_VER "De OpenVPN GUI kan niet gestart worden als de OpenVPN Service actief is. (OpenVPN 1.5/1.6). Stop eerst de OpenVPN Service indien u de OpenVPN GUI wenst te gebruiken."
     IDS_ERR_CREATE_EVENT "CreateEvent mislukt tijdens exit event: %s"
@@ -212,29 +224,29 @@ BEGIN
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite mislukt."
     IDS_ERR_CREATE_PROCESS "CreateProcess mislukt, exe='%s' cmdline='%s' dir='%s'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread om Statusvenster te tonen mislukt."
-    IDS_NFO_STATE_WAIT_TERM "Huidige Status: Wachten tot OpenVPN gestopt is…"
+    IDS_NFO_STATE_WAIT_TERM "Huidige status: Wachten tot OpenVPN gestopt is…"
     IDS_NFO_STATE_CONNECTED "Huidige status: Verbonden"
     IDS_NFO_NOW_CONNECTED "%s is nu verbonden."
     IDS_NFO_ASSIGN_IP "Toegewezen IP: %s"
     IDS_ERR_CERT_EXPIRED "Kan geen verbinding maken, het certificaat is vervallen. Controleer eventueel de systeemtijd."
     IDS_ERR_CERT_NOT_YET_VALID "Kan geen verbinding maken, het certificaat is nog niet geldig. Controleer eventueel de systeemtijd."
-    IDS_NFO_STATE_RECONNECTING "Huidige Status: Opnieuw verbinden"
-    IDS_NFO_STATE_DISCONNECTED "Huidige Status: Niet verbonden"
+    IDS_NFO_STATE_RECONNECTING "Huidige status: Opnieuw verbinden"
+    IDS_NFO_STATE_DISCONNECTED "Huidige status: Niet verbonden"
     IDS_NFO_CONN_TERMINATED "Verbinding met %s is verbroken."
-    IDS_NFO_STATE_FAILED "Huidige Status: Kan geen verbinding maken"
+    IDS_NFO_STATE_FAILED "Huidige status: Kan geen verbinding maken"
     IDS_NFO_CONN_FAILED "Verbinden met %s is mislukt."
-    IDS_NFO_STATE_FAILED_RECONN "Huidige Status: Opnieuw verbinden is mislukt."
+    IDS_NFO_STATE_FAILED_RECONN "Huidige status: Opnieuw verbinden is mislukt."
     IDS_NFO_RECONN_FAILED "Opnieuw verbinden met %s is mislukt."
-    IDS_NFO_STATE_SUSPENDED "Huidige Status: Onderbroken"
+    IDS_NFO_STATE_SUSPENDED "Huidige status: Onderbroken"
     IDS_ERR_READ_STDOUT_PIPE "Fout tijdens lezen van OpenVPN StdOut Pipe."
     IDS_ERR_CREATE_EDIT_LOGWINDOW "Creatie van RichEdit LogWindow mislukt!"
     IDS_ERR_SET_SIZE "Instellen afmetingen mislukt!"
     IDS_ERR_AUTOSTART_CONF "Kan opgegeven configuratie voor automatische verbinding niet vinden: %s"
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe tijdens hInputRead mislukt."
-    IDS_NFO_STATE_CONNECTING "Huidige Status: Verbinden"
+    IDS_NFO_STATE_CONNECTING "Huidige status: Verbinden"
     IDS_NFO_CONNECTION_XXX "OpenVPN Verbinding (%s)"
-    IDS_NFO_STATE_CONN_SCRIPT "Huidige Status: Connect Script Uitvoeren"
-    IDS_NFO_STATE_DISCONN_SCRIPT "Huidige Status: Disconnect Script Uitvoeren"
+    IDS_NFO_STATE_CONN_SCRIPT "Huidige status: Connect Script Uitvoeren"
+    IDS_NFO_STATE_DISCONN_SCRIPT "Huidige status: Disconnect Script Uitvoeren"
     IDS_ERR_RUN_CONN_SCRIPT "Fout tijdens  uitvoeren Connect Script: %s"
     IDS_ERR_GET_EXIT_CODE "Kan ExitCode niet uitlezen voor Connect Script (%s)"
     IDS_ERR_CONN_SCRIPT_FAILED "Connect Script mislukt. (exitcode=%ld)"
@@ -242,6 +254,8 @@ BEGIN
     IDS_ERR_CONFIG_EXIST "Er bestaat al een configuratie '%s'. Elke configuratie " \
                          "moet een unieke naam hebben, ook als " \
                          "ze in verschillende mappen bewaard worden."
+    IDS_NFO_CONN_TIMEOUT "Verbinden met management interface mislukt.\n" \
+                         "Bekijk logbestand (%s) voor meer informatie."
 
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "Fout tijdens schrijven naar debug-log (%s)."
@@ -338,9 +352,16 @@ BEGIN
     IDS_ERR_OPEN_SCMGR "Starten van OpenSCManager mislukt (%d)"
     IDS_ERR_STOP_SERVICE "Stoppen van OpenVPN Service mislukt"
     IDS_NFO_RESTARTED "OpenVPN Service Herstart."
+    IDS_ERR_ACCESS_SERVICE_PIPE "Toegang tot service pipe mislukt."
+    IDS_ERR_WRITE_SERVICE_PIPE "Schrijven naar service pipe mislukt."
+    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is niet geinstalleerd.\n"
+                                 "Taken die administratieve rechten nodig hebben werken mogelijk niet."
+    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" is niet gestart.\n"
+                                 "Taken die administratieve rechten nodig hebben werken mogelijk niet."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Fout tijdens opvragen Windows-map."
+    IDS_ERR_GET_PROFILE_DIR "Fout tijdens opvragen Gebruikersprofiel-map."
     IDS_ERR_GET_PROGRAM_DIR "Fout tijdens opvragen ""Program"" map naam."
     IDS_ERR_OPEN_REGISTRY "Fout tijdens lezen van register (HKLM\\SOFTWARE\\OpenVPN).\n " \
                           "OpenVPN is waarschijnlijk niet geïnstalleerd"
@@ -354,4 +375,10 @@ BEGIN
                            "om de registerinstellingen te updaten."
     IDS_ERR_READ_SET_KEY "Fout tijdens lezen en instellen van registersleutel ""%s""."
     IDS_ERR_WRITE_REGVALUE "Fout tijdens schrijven van registersleutel ""HKEY_CURRENT_USER\\%s\\%s""."
+
+    /* importation */
+    IDS_ERR_IMPORT_EXISTS "Een configuratie met de naam ""%s"" bestaat al."
+    IDS_ERR_IMPORT_FAILED "Importeren bestand is mislukt. De onderstaande bestandsnaam kon niet gemaakt worden.\n\n" \
+                          "%s\n\nControleer of de juiste rechten gebruikt worden."
+    IDS_NFO_IMPORT_SUCCESS "Importeren bestand gelukt."
 END
