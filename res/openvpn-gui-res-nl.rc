@@ -201,15 +201,15 @@ BEGIN
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI ondersteunt niet meer dan %d configuraties. Neem contact op met de auteur indien u er meer wenst."
     IDS_NFO_NO_CONFIGS "Geen leesbare verbindingsprofielen (config files) gevonden."
     IDS_ERR_CONFIG_NOT_AUTHORIZED "Het maken van deze verbinding (%s) vereist lidmaatschap van\n"\
-                                  "de ""%s""-groep. Neem contact op met de systeembeheerder.\n"
+                                  "de groep ""%s"". Neem contact op met de systeembeheerder.\n"
     IDS_ERR_CONFIG_TRY_AUTHORIZE  "Het maken van deze verbinding (%s) vereist lidmaatschap van\n"\
-                                  "de ""%s""-groep.\n\n"\
+                                  "de groep ""%s"".\n\n"\
                                   "Wilt u uzelf toevoegen aan deze groep?\n"\
                                   "Tijdens deze actie kan er om het administratorwachtwoord gevraagd worden."
     IDS_NFO_CONFIG_AUTH_PENDING   "Het maken van deze verbinding (%s) vereist lidmaatschap van\n"\
-                                  "de ""%s""-groep.\n\n"\
-                                  "Vul het voorgaande authorizationscherm volledig in."
-    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Toevoegen van de grbruiker aan de ""%s""-groep is mislukt."
+                                  "de groep ""%s"".\n\n"\
+                                  "Vul het voorgaande autorisatiescherm volledig in."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Toevoegen van de gebruiker aan de groep ""%s"" is mislukt."
     IDS_ERR_ONE_CONN_OLD_VER "Er kan maar één verbinding per OpenVPN-client gestart worden met versies ouder dan OpenVPN 2.0-beta6."
     IDS_ERR_STOP_SERV_OLD_VER "De OpenVPN GUI kan niet gestart worden als de OpenVPN Service actief is. (OpenVPN 1.5/1.6). Stop eerst de OpenVPN Service indien u de OpenVPN GUI wenst te gebruiken."
     IDS_ERR_CREATE_EVENT "CreateEvent mislukt tijdens exit event: %s"
