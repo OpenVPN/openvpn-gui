@@ -247,6 +247,11 @@ int GetRegKey(const TCHAR name[], TCHAR *data, const TCHAR default_data[], DWORD
       RegCloseKey(openvpn_key_write);
 
     }
+  else
+    {
+      size /= sizeof(*data);
+      data[size - 1] = L'\0'; /* REG_SZ strings are not guaranteed to be null-terminated */
+    }
 
   RegCloseKey(openvpn_key);
 
@@ -270,7 +275,10 @@ LONG GetRegistryValue(HKEY regkey, const TCHAR *name, TCHAR *data, DWORD len)
   if (status != ERROR_SUCCESS || type != REG_SZ)
     return(0);
 
-  return(data_len / sizeof(*data));
+  data_len /= sizeof(*data);
+  data[data_len - 1] = L'\0'; /* REG_SZ strings are not guaranteed to be null-terminated */
+
+  return(data_len);
 
 }
 
