@@ -20,7 +20,7 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef OEPNVPN_H
+#ifndef OPENVPN_H
 #define OPENVPN_H
 
 BOOL StartOpenVPN(connection_t *);
