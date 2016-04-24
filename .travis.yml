@@ -17,18 +17,23 @@ matrix:
 
 install:
     - sudo apt-get update -qq
-    - sudo apt-get install -qq -y gcc-mingw-w64
-    - sudo apt-get install -qq -y man2html
+    - sudo apt-get install -qq -y gcc-mingw-w64 man2html cppcheck
 
 before_script:
     - unset CC; unset CXX
 
 script:
+    - cppcheck --force --enable=warning,missingInclude --error-exitcode=1 . >build.log 2>&1 || (cat build.log && exit 1)
     - mkdir image
-    - wget http://www.openssl.org/source/openssl-1.0.1q.tar.gz && tar zxf openssl-1.0.1q.tar.gz && cd openssl-1.0.1q
-    - ./Configure --prefix=/ --cross-compile-prefix=${CHOST}- shared $m no-multilib no-capieng --openssldir=/etc/ssl --libdir=/lib -static-libgcc
-    - make install INSTALL_PREFIX="${HOME}/image" INSTALLTOP="/" MANDIR="/tmp"
+    - wget http://www.openssl.org/source/openssl-1.0.1r.tar.gz && tar zxf openssl-1.0.1r.tar.gz && cd openssl-1.0.1r
+    - ./Configure --prefix=/ --cross-compile-prefix=${CHOST}- shared $m no-multilib no-capieng --openssldir=/etc/ssl --libdir=/lib -static-libgcc >build.log 2>&1 || (cat build.log && exit 1)
+    - make install INSTALL_PREFIX="${HOME}/image" INSTALLTOP="/" MANDIR="/tmp" >build.log 2>&1 || (cat build.log && exit 1)
     - cd .. && autoreconf -i -v
     - export OPENSSL_CRYPTO_CFLAGS="-I${HOME}/image/include"
     - export OPENSSL_CRYPTO_LIBS="-L${HOME}/image/lib -lcrypto"
     - ./configure --prefix=/ --libdir=/lib --host=$CHOST --build=x86_64-pc-linux-gnu --program-prefix='' && make
+    
+notifications:
+  irc:
+    channels:
+      - "chat.freenode.net#openvpn-windows"
