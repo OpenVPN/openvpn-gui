@@ -32,8 +32,3 @@ script:
     - export OPENSSL_CRYPTO_CFLAGS="-I${HOME}/image/include"
     - export OPENSSL_CRYPTO_LIBS="-L${HOME}/image/lib -lcrypto"
     - ./configure --prefix=/ --libdir=/lib --host=$CHOST --build=x86_64-pc-linux-gnu --program-prefix='' && make
-    
-notifications:
-  irc:
-    channels:
-      - "chat.freenode.net#openvpn-windows"
