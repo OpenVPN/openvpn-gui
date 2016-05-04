@@ -17,6 +17,7 @@ Makefile.in
 aclocal.m4
 autodefs.h
 autom4te.cache
+compile
 config.guess
 config.h
 config.h.in
