@@ -29,7 +29,8 @@ MAINTAINERCLEANFILES = \
 	$(srcdir)/config.h.in $(srcdir)/config.h.in~\
 	$(srcdir)/install-sh $(srcdir)/missing \
 	$(srcdir)/depcomp $(srcdir)/aclocal.m4 \
-	$(srcdir)/config.guess $(srcdir)/config.sub
+	$(srcdir)/config.guess $(srcdir)/config.sub \
+	$(srcdir)/compile
 
 bin_PROGRAMS = openvpn-gui
 
