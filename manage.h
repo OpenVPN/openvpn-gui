@@ -68,5 +68,6 @@ BOOL OpenManagement(connection_t *);
 BOOL ManagementCommand(connection_t *, char *, mgmt_msg_func, mgmt_cmd_type);
 
 void OnManagement(SOCKET, LPARAM);
+void CloseManagement(connection_t *);
 
 #endif

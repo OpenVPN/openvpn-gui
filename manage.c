@@ -65,10 +65,13 @@ OpenManagement(connection_t *c)
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
         return FALSE;
 
+    c->manage.connected = FALSE;
     c->manage.sk = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (c->manage.sk == INVALID_SOCKET)
+    {
+        WSACleanup ();
         return FALSE;
-
+    }
     if (WSAAsyncSelect(c->manage.sk, c->hwndStatus, WM_MANAGEMENT,
         FD_CONNECT|FD_READ|FD_WRITE|FD_CLOSE) != 0)
         return FALSE;
@@ -206,10 +209,14 @@ OnManagement(SOCKET sk, LPARAM lParam)
             else
             {
                 /* Connection to MI timed out. */
-                c->state = timedout;
+                if (c->state != disconnected)
+                    c->state = timedout;
+                CloseManagement (c);
                 rtmsg_handler[stop](c, "");
             }
         }
+        else
+            c->manage.connected = TRUE;
         break;
 
     case FD_READ:
@@ -340,6 +347,18 @@ OnManagement(SOCKET sk, LPARAM lParam)
         break;
 
     case FD_CLOSE:
+        CloseManagement (c);
+        if (rtmsg_handler[stop])
+            rtmsg_handler[stop](c, "");
+        break;
+    }
+}
+
+void
+CloseManagement(connection_t *c)
+{
+    if (c->manage.sk != INVALID_SOCKET)
+    {
         if (c->manage.saved_size)
         {
             free(c->manage.saved_data);
@@ -348,11 +367,9 @@ OnManagement(SOCKET sk, LPARAM lParam)
         }
         closesocket(c->manage.sk);
         c->manage.sk = INVALID_SOCKET;
+        c->manage.connected = FALSE;
         while (UnqueueCommand(c))
             ;
         WSACleanup();
-        if (rtmsg_handler[stop])
-            rtmsg_handler[stop](c, "");
-        break;
     }
 }
