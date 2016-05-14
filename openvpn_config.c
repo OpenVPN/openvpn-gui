@@ -62,10 +62,13 @@ match(const WIN32_FIND_DATA *find, const TCHAR *ext)
 }
 
 static bool
-CheckReadAccess (const TCHAR *path)
+CheckReadAccess (const TCHAR *dir, const TCHAR *file)
 {
     HANDLE h;
     bool ret = FALSE;
+    TCHAR path[MAX_PATH];
+
+    _sntprintf_0 (path, _T("%s\\%s"), dir, file);
 
     h = CreateFile (path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
                    FILE_ATTRIBUTE_NORMAL, NULL);
@@ -127,7 +130,6 @@ BuildFileList0(const TCHAR *config_dir, bool warn_duplicates)
     HANDLE find_handle;
     TCHAR find_string[MAX_PATH];
     TCHAR subdir_table[MAX_CONFIG_SUBDIRS][MAX_PATH];
-    TCHAR fullpath[MAX_PATH];
     int subdirs = 0;
     int i;
 
@@ -148,8 +150,6 @@ BuildFileList0(const TCHAR *config_dir, bool warn_duplicates)
         match_t match_type = match(&find_obj, o.ext_string);
         if (match_type == match_file)
         {
-            _sntprintf_0(fullpath, _T("%s\\%s"), config_dir, find_obj.cFileName);
-
             if (ConfigAlreadyExists(find_obj.cFileName))
             {
                 if (warn_duplicates)
@@ -157,7 +157,7 @@ BuildFileList0(const TCHAR *config_dir, bool warn_duplicates)
                 continue;
             }
 
-            if (CheckReadAccess (fullpath))
+            if (CheckReadAccess (config_dir, find_obj.cFileName))
                 AddConfigFileToList(o.num_configs++, find_obj.cFileName, config_dir);
         }
         else if (match_type == match_dir)
@@ -204,7 +204,8 @@ BuildFileList0(const TCHAR *config_dir, bool warn_duplicates)
                 continue;
             }
 
-            AddConfigFileToList(o.num_configs++, find_obj.cFileName, subdir_table[i]);
+            if (CheckReadAccess (subdir_table[i], find_obj.cFileName))
+                AddConfigFileToList(o.num_configs++, find_obj.cFileName, subdir_table[i]);
         } while (FindNextFile(find_handle, &find_obj));
 
         FindClose(find_handle);
