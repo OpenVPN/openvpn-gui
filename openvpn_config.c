@@ -217,7 +217,13 @@ BuildFileList()
 {
     static bool issue_warnings = true;
 
-    o.num_configs = 0;
+    /*
+     * If no connections are active reset num_configs and rescan
+     * to make a new list. Else we keep all current configs and
+     * rescan to add any new one's found
+     */
+    if (CountConnState(disconnected) == o.num_configs)
+        o.num_configs = 0;
 
     BuildFileList0 (o.config_dir, issue_warnings);
 

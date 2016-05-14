@@ -182,8 +182,7 @@ OnNotifyTray(LPARAM lParam)
     case WM_RBUTTONUP:
         /* Recreate popup menus */
         DestroyPopupMenus();
-        if (CountConnState(disconnected) == o.num_configs)
-            BuildFileList();
+        BuildFileList();
         CreatePopupMenus();
 
         GetCursorPos(&pt);
@@ -206,16 +205,13 @@ OnNotifyTray(LPARAM lParam)
         else {
             int disconnected_conns = CountConnState(disconnected);
 
-            if (disconnected_conns == o.num_configs) {
-                /* Reread configs and recreate menus if no connection is running */
-                DestroyPopupMenus();
-                BuildFileList();
-                CreatePopupMenus();
+            DestroyPopupMenus();
+            BuildFileList();
+            CreatePopupMenus();
 
-                /* Start connection if only one config exist */
-                if (o.num_configs == 1 && o.conn[0].state == disconnected)
+            /* Start connection if only one config exist */
+            if (o.num_configs == 1 && o.conn[0].state == disconnected)
                     StartOpenVPN(&o.conn[0]);
-            }
             else if (disconnected_conns == o.num_configs - 1) {
                 /* Show status window if only one connection is running */
                 int i;
