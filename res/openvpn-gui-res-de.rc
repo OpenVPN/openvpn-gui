@@ -130,6 +130,8 @@ BEGIN
     GROUPBOX "Benutzeroberfläche", 201, 6, 12, 235, 30
     LTEXT "Sprache:", ID_TXT_LANGUAGE, 17, 25, 29, 12
     COMBOBOX ID_CMB_LANGUAGE, 51, 23, 177, 400, CBS_DROPDOWNLIST | WS_TABSTOP
+    GROUPBOX "Startup", 202, 6, 47, 235, 30
+    AUTOCHECKBOX "Launch on Windows startup", ID_CHK_STARTUP, 17, 59, 200, 12
 END
 
 /* About Dialog */

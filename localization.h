@@ -32,6 +32,6 @@ LPCDLGTEMPLATE LocalizedDialogResource(const UINT);
 INT_PTR LocalizedDialogBoxParam(const UINT, DLGPROC, const LPARAM);
 HWND CreateLocalizedDialogParam(const UINT, DLGPROC, const LPARAM);
 HWND CreateLocalizedDialog(const UINT, DLGPROC);
-INT_PTR CALLBACK LanguageSettingsDlgProc(HWND, UINT, WPARAM, LPARAM);
+INT_PTR CALLBACK GeneralSettingsDlgProc(HWND, UINT, WPARAM, LPARAM);
 
 #endif
