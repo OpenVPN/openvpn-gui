@@ -8,6 +8,8 @@ compiler: gcc
 env:
   global:
     - OPENSSL_VERSION=1.0.1r
+    - OPENSSL_CRYPTO_CFLAGS="-I${HOME}/image/include"
+    - OPENSSL_CRYPTO_LIBS="-L${HOME}/image/lib -lcrypto"
 
 matrix:
   fast_finish: true
@@ -39,8 +41,6 @@ script:
     - ./Configure --prefix=/ --cross-compile-prefix=${CHOST}- shared $m no-multilib no-capieng --openssldir=/etc/ssl --libdir=/lib -static-libgcc >build.log 2>&1 || (cat build.log && exit 1)
     - make install INSTALL_PREFIX="${HOME}/image" INSTALLTOP="/" MANDIR="/tmp" >build.log 2>&1 || (cat build.log && exit 1)
     - cd .. && autoreconf -i -v
-    - export OPENSSL_CRYPTO_CFLAGS="-I${HOME}/image/include"
-    - export OPENSSL_CRYPTO_LIBS="-L${HOME}/image/lib -lcrypto"
     - ./configure --prefix=/ --libdir=/lib --host=$CHOST --build=x86_64-pc-linux-gnu --program-prefix='' && make
     
 cache:
