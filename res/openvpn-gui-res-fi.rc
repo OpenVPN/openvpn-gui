@@ -131,6 +131,8 @@ BEGIN
     GROUPBOX "Käyttöliittymä", 201, 6, 12, 235, 30
     LTEXT "Kieli:", ID_TXT_LANGUAGE, 17, 25, 36, 12
     COMBOBOX ID_CMB_LANGUAGE, 37, 23, 191, 400, CBS_DROPDOWNLIST | WS_TABSTOP
+    GROUPBOX "Startup", 202, 6, 47, 235, 30
+    AUTOCHECKBOX "Launch on Windows startup", ID_CHK_STARTUP, 17, 59, 200, 12
 END
 
 /* About Dialog */

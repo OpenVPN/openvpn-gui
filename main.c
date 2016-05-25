@@ -486,7 +486,7 @@ ShowSettingsDialog()
   psp[page_number].dwFlags = PSP_DLGINDIRECT;
   psp[page_number].hInstance = o.hInstance;
   psp[page_number].pResource = LocalizedDialogResource(ID_DLG_GENERAL);
-  psp[page_number].pfnDlgProc = LanguageSettingsDlgProc;
+  psp[page_number].pfnDlgProc = GeneralSettingsDlgProc;
   psp[page_number].lParam = 0;
   psp[page_number].pfnCallback = NULL;
   ++page_number;

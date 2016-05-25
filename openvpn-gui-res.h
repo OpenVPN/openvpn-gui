@@ -77,6 +77,7 @@
 #define ID_DLG_GENERAL                   230
 #define ID_CMB_LANGUAGE                  231
 #define ID_TXT_LANGUAGE                  232
+#define ID_CHK_STARTUP                   233
 
 /* Proxy Auth Dialog */
 #define ID_DLG_PROXY_AUTH                250
