@@ -1,5 +1,5 @@
 Installation Instructions for OpenVPN GUI for Windows
------------------------------------------------------
+#####################################################
 
 You can either get my installation package for OpenVPN 2.0.X where I've
 bundled the gui in the installation package, or you can use the original
@@ -7,7 +7,7 @@ installation package from OpenVPN, and then manually install OpenVPN GUI.
 
 
 Installation using the bundled OpenVPN package with OpenVPN GUI included
-------------------------------------------------------------------------
+************************************************************************
 
 * Download openvpn-2.0.X-gui-1.0.X-install.exe from 
   http://openvpn.se
@@ -27,7 +27,7 @@ Installation using the bundled OpenVPN package with OpenVPN GUI included
 
 
 Manual installation of OpenVPN GUI
-----------------------------------
+**********************************
 
 * Download and install OpenVPN from http://openvpn.net/
 
@@ -47,16 +47,13 @@ Manual installation of OpenVPN GUI
   "Start->All Program->StartUp" folder if you want the gui started automatically
   when you logon to Windows.
 
-* Start the GUI by double-clicking the openvpn-gui-1.0.X.exe file.
-
-*** You need to be Administrator the first time you run OpenVPN GUI for it to
-    create its registry keys. After that you don't have to be administrator
-    just to run the GUI, however OpenVPN requires the user to be
-    administrator to run! ***
-
+* Start the GUI by double-clicking the openvpn-gui-1.0.X.exe file. You need to 
+  be Administrator the first time you run OpenVPN GUI for it to create its 
+  registry keys. After that you don't have to be administrator just to run the 
+  GUI, however OpenVPN requires the user to be administrator to run!
 
 Using OpenVPN GUI
------------------
+#################
 
 When OpenVPN GUI is started your config folder (C:\Program Files\OpenVPN\config)
 will be scanned for .ovpn files, and an icon will be displayed in the taskbar's
@@ -78,7 +75,7 @@ openvpn-gui --connect office.ovpn
 
 
 Run OpenVPN GUI as a Non-Admin user
------------------------------------
+***********************************
 
 OpenVPN currently does not work as a normal (non-admin) user. OpenVPN GUI
 2.0 will solve this by using an enhanced version of the OpenVPN service
@@ -92,22 +89,22 @@ To use OpenVPN GUI to control the OpenVPN service, set the registry value
 
 Limitations with this way:
   
-  There is no way for OpenVPN GUI ta hand over a password to the service
+* There is no way for OpenVPN GUI ta hand over a password to the service
   wrapper, so you can't use passphrase protected private keys or 
   username/password authentication.
 
-  If you have multiple openvpn configurations, all will be started and
+* If you have multiple openvpn configurations, all will be started and
   stopped at the same time.
 
-  OpenVPN GUI is not able to retrieve any status info about the connections
+* OpenVPN GUI is not able to retrieve any status info about the connections
   from OpenVPN, so it will report connected as soon as the service is
   started regarless of if OpenVPN has really succeded to connect or not.
 
-  You cannot see the OpenVPN log in real-time.
+* You cannot see the OpenVPN log in real-time.
 
 
 Run Connect/Disconnect/Preconnect Scripts
------------------------------------------
+*****************************************
 
 There are three diffrent scripts that OpenVPN GUI can execute to help
 with diffrent tasks like mapping network drives.
@@ -126,7 +123,7 @@ Disconnect  If a file named "xxx_down.bat" exist in the config folder
 
 
 Registry Values affecting the OpenVPN GUI operation
----------------------------------------------------
+***************************************************
 
 All OpenVPN GUI reg-values are located below the following key:
 HKEY_LOCAL_MACHINE\SOFTWARE\OpenVPN-GUI\
@@ -165,11 +162,11 @@ priority
     the windows priority class for each instantiated OpenVPN process, 
     can be one of:
 
-        * "IDLE_PRIORITY_CLASS"
-        * "BELOW_NORMAL_PRIORITY_CLASS"
-        * "NORMAL_PRIORITY_CLASS" (default)
-        * "ABOVE_NORMAL_PRIORITY_CLASS"
-        * "HIGH_PRIORITY_CLASS"
+    * IDLE_PRIORITY_CLASS
+    * BELOW_NORMAL_PRIORITY_CLASS
+    * NORMAL_PRIORITY_CLASS (default)
+    * ABOVE_NORMAL_PRIORITY_CLASS
+    * HIGH_PRIORITY_CLASS
 
 allow_edit
     If set to "1", the Edit config menu will be showed.
@@ -193,9 +190,12 @@ service_only
     of launching openvpn.exe directly.
 
 show_balloon
-    If set to "0" - Never show any connected balloon.
-              "1" - Show balloon after initial connection is established.
-              "2" - Show balloon even after re-connects.
+    0: Never show any connected balloon
+
+    1: Show balloon after initial connection is established
+
+    2: Show balloon even after re-connects
+
 log_viewer
     The program used to view your log files, defaults to
     "C:\windows\notepad.exe"
@@ -216,10 +216,10 @@ email at mathias@nilings.se.
 
 
 Building OpenVPN GUI from source
---------------------------------
+********************************
 
-* Download and install MinGW and MSYS from http://www.mingw.org/
-  I'm using MinGW-3.2.0-rc-3 and MSYS-1.0.10.
+* Download and install MinGW and MSYS from http://www.mingw.org/. I'm using
+  MinGW-3.2.0-rc-3 and MSYS-1.0.10.
 
 * Download and install the binary distribution of OpenSSL from
   http://www.slproweb.com/products/Win32OpenSSL.html
@@ -228,8 +228,8 @@ Building OpenVPN GUI from source
 
 * Start a bash shell by running msys.bat.
 
-* Run at the OpenVPN GUI source directory:
-
-$ autoreconf -i
-$ ./configure
-$ make
+* Run at the OpenVPN GUI source directory::
+  
+    $ autoreconf -i
+    $ ./configure
+    $ make
