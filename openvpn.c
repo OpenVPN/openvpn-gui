@@ -54,6 +54,9 @@
 
 extern options_t o;
 
+static BOOL
+TerminateOpenVPN(connection_t *c);
+
 const TCHAR *cfgProp = _T("conn");
 
 typedef struct {
@@ -719,6 +722,7 @@ static void
 OnService(connection_t *c, UNUSED char *msg)
 {
     DWORD err = 0;
+    DWORD pid = 0;
     WCHAR *p, *buf, *next;
     DWORD len;
     const WCHAR *prefix = L"IService> ";
@@ -735,6 +739,17 @@ OnService(connection_t *c, UNUSED char *msg)
     }
 
     p = buf + 11;
+    if (!err && swscanf (p, L"0x%08x\nProcess ID", &pid) == 1 && pid != 0)
+    {
+        PrintDebug (L"Process ID of openvpn started by IService: %d", pid);
+        c->hProcess = OpenProcess (PROCESS_TERMINATE|PROCESS_QUERY_INFORMATION, FALSE, pid);
+        if (!c->hProcess)
+            PrintDebug (L"Failed to get process handle from pid of openvpn: error = %lu",
+                        GetLastError());
+        free (buf);
+        return;
+    }
+
     while (iswspace(*p)) ++p;
 
     while (p && *p)
@@ -796,9 +811,10 @@ Cleanup (connection_t *c)
 
     if (c->hProcess)
         CloseHandle (c->hProcess);
-    else
-        CloseServiceIO (&c->iserv);
     c->hProcess = NULL;
+
+    if (c->iserv.hEvent)
+        CloseServiceIO (&c->iserv);
 
     if (c->exit_event)
         CloseHandle (c->exit_event);
@@ -931,6 +947,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         SetMenuStatus(c, disconnecting);
         SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_WAIT_TERM));
         SetEvent(c->exit_event);
+        SetTimer(hwndDlg, IDT_STOP_TIMER, 3000, NULL);
         break;
 
     case WM_OVPN_SUSPEND:
@@ -941,6 +958,18 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         SetMenuStatus(c, disconnecting);
         SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_WAIT_TERM));
         SetEvent(c->exit_event);
+        SetTimer(hwndDlg, IDT_STOP_TIMER, 3000, NULL);
+        break;
+
+    case WM_TIMER:
+        PrintDebug(L"WM_TIMER message with wParam = %lu", wParam);
+        c = (connection_t *) GetProp(hwndDlg, cfgProp);
+        if (wParam == IDT_STOP_TIMER)
+        {
+            /* openvpn failed to respond to stop signal -- terminate */
+            TerminateOpenVPN(c);
+            KillTimer (hwndDlg, IDT_STOP_TIMER);
+        }
         break;
     }
     return FALSE;
@@ -979,7 +1008,7 @@ ThreadOpenVPNStatus(void *p)
         PostMessage(c->hwndStatus, WM_CLOSE, 0, 0);
 
     /* Start the async read loop for service and set it as the wait event */
-    if (!c->hProcess)
+    if (c->iserv.hEvent)
     {
         HandleServiceIO (0, 0, (LPOVERLAPPED) &c->iserv);
         wait_event = c->iserv.hEvent;
@@ -999,9 +1028,9 @@ ThreadOpenVPNStatus(void *p)
             if ((res = MsgWaitForMultipleObjectsEx (1, &wait_event, INFINITE, QS_ALLINPUT,
                                          MWMO_ALERTABLE)) == WAIT_OBJECT_0)
             {
-                if (c->hProcess)
+                if (wait_event == c->hProcess)
                     OnProcess (c, NULL);
-                else
+                else if (wait_event == c->iserv.hEvent)
                     OnService (c, NULL);
             }
             continue;
@@ -1224,6 +1253,33 @@ StopOpenVPN(connection_t *c)
     PostMessage(c->hwndStatus, WM_OVPN_STOP, 0, 0);
 }
 
+/* force-kill as a last resort */
+static BOOL
+TerminateOpenVPN (connection_t *c)
+{
+    DWORD exit_code = 0;
+    BOOL retval = TRUE;
+
+    if (!c->hProcess)
+        return retval;
+    if (!GetExitCodeProcess (c->hProcess, &exit_code))
+    {
+        PrintDebug (L"In TerminateOpenVPN: failed to get process status: error = %lu", GetLastError());
+        return FALSE;
+    }
+    if (exit_code == STILL_ACTIVE)
+    {
+        retval = TerminateProcess (c->hProcess, 1);
+        if (retval)
+            PrintDebug (L"Openvpn Process for config '%s' terminated", c->config_name);
+        else
+            PrintDebug (L"Failed to terminate openvpn Process for config '%s'", c->config_name);
+    }
+    else
+        PrintDebug(L"In TerminateOpenVPN: Process is not active");
+
+    return retval;
+}
 
 void
 SuspendOpenVPN(int config)

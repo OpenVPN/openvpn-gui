@@ -296,4 +296,7 @@
 /* Save password related messages */
 #define IDS_NFO_DELETE_PASS             2001
 
+/* Timer IDs */
+#define IDT_STOP_TIMER                  2500  /* Timer used to trigger force termination */
+
 #endif
