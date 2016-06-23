@@ -658,10 +658,15 @@ HandleServiceIO (DWORD err, DWORD bytes, LPOVERLAPPED lpo)
     int len, capacity;
 
     len = _countof(s->readbuf);
-    capacity = len*sizeof(*(s->readbuf));
+    capacity = (len-1)*sizeof(*(s->readbuf));
 
     if (bytes > 0)
+    {
+        /* messages from the service are not nul terminated */
+        int nchars = bytes/sizeof(s->readbuf[0]);
+        s->readbuf[nchars] = L'\0';
         SetEvent (s->hEvent);
+    }
     if (err)
     {
         _snwprintf(s->readbuf, len, L"0x%08x\nInteractive Service disconnected\n", err);
