@@ -47,3 +47,13 @@ want to build the 32-bit version, simply replace ``x86_64`` with ``i686``.
 Both 32-bit and 64-bit version of Cygwin can build the 32-bit and 64-bit
 version of ``openvpn-gui.exe``. Just install the packages you need and use
 the right ``--host`` option.
+
+How to build using openvpn-build
+================================
+
+The `OpenVPN cross-compile buildsystem
+<https://github.com/OpenVPN/openvpn-build>`_ builds OpenVPN GUI along all the
+other OpenVPN dependencies. Instructions and automated scripts for setting up
+the buildsystem are available on the
+`Building OpenVPN using the generic buildsystem <https://community.openvpn.net/openvpn/wiki/BuildingUsingGenericBuildsystem>`_
+page on the OpenVPN community Wiki.
