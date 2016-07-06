@@ -128,13 +128,15 @@ GetRegistryKeys()
 
   if (!GetRegKey(_T("log_append"), o.append_string, _T("0"), _countof(o.append_string))) return(false);
 
-  _sntprintf_0(temp_path, _T("%s\\system32\\notepad.exe"), windows_dir);
-  if (!GetRegKey(_T("log_viewer"), o.log_viewer, 
-      temp_path, _countof(o.log_viewer))) return(false);
+  if (o.editor[0] != L'\0') /* set by cmd-line */
+      ExpandString (o.editor, _countof(o.editor));
+  else
+      _sntprintf_0(o.editor, _T("%s\\system32\\notepad.exe"), windows_dir);
 
-  _sntprintf_0(temp_path, _T("%s\\system32\\notepad.exe"), windows_dir);
-  if (!GetRegKey(_T("editor"), o.editor, 
-      temp_path, _countof(o.editor))) return(false);
+  if (o.log_viewer[0] != L'\0') /* set by cmd-line */
+      ExpandString (o.log_viewer, _countof(o.log_viewer));
+  else
+      _sntprintf_0(o.log_viewer, _T("%s\\system32\\notepad.exe"), windows_dir);
 
   if (!GetRegKey(_T("service_only"), o.service_only, _T("0"), _countof(o.service_only))) return(false);
 

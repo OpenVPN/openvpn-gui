@@ -25,6 +25,8 @@
 
 #include <windows.h>
 #include <stdio.h>
+#include <shellapi.h>
+#include <objbase.h>
 
 #include "tray.h"
 #include "openvpn.h"
@@ -37,17 +39,28 @@ extern options_t o;
 
 void ViewLog(int config)
 {
-  TCHAR filename[200];
+  TCHAR filename[2*MAX_PATH];
 
   STARTUPINFO start_info;
   PROCESS_INFORMATION proc_info;
   SECURITY_ATTRIBUTES sa;
   SECURITY_DESCRIPTOR sd;
+  HINSTANCE status;
 
   CLEAR (start_info);
   CLEAR (proc_info);
   CLEAR (sa);
   CLEAR (sd);
+
+  /* Try first using file association */
+  CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE); /* Safe to init COM multiple times */
+  status = ShellExecuteW (o.hWnd, L"open", o.conn[config].log_path, NULL, o.log_dir, SW_SHOWNORMAL);
+
+  if (status > (HINSTANCE) 32) /* Success */
+    return;
+  else
+    PrintDebug (L"Opening log file using ShellExecute with verb = open failed"
+                 " for config '%s' (status = %lu)", o.conn[config].config_name, status);
 
   _sntprintf_0(filename, _T("%s \"%s\""), o.log_viewer, o.conn[config].log_path);
 
@@ -81,17 +94,29 @@ void ViewLog(int config)
 
 void EditConfig(int config)
 {
-  TCHAR filename[200];
+  TCHAR filename[2*MAX_PATH];
 
   STARTUPINFO start_info;
   PROCESS_INFORMATION proc_info;
   SECURITY_ATTRIBUTES sa;
   SECURITY_DESCRIPTOR sd;
+  HINSTANCE status;
 
   CLEAR (start_info);
   CLEAR (proc_info);
   CLEAR (sa);
   CLEAR (sd);
+
+  /* Try first using file association */
+  _sntprintf_0(filename, L"%s\\%s", o.conn[config].config_dir, o.conn[config].config_file);
+
+  CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE); /* Safe to init COM multiple times */
+  status = ShellExecuteW (o.hWnd, L"open", filename, NULL, o.conn[config].config_dir, SW_SHOWNORMAL);
+  if (status > (HINSTANCE) 32)
+    return;
+  else
+    PrintDebug (L"Opening config file using ShellExecute with verb = open failed"
+                 " for config '%s' (status = %lu)", o.conn[config].config_name, status);
 
   _sntprintf_0(filename, _T("%s \"%s\\%s\""), o.editor, o.conn[config].config_dir, o.conn[config].config_file);
 

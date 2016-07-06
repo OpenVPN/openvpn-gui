@@ -104,6 +104,7 @@ openvpn_gui_LDADD = \
 	-lwtsapi32 \
 	-lcrypt32 \
 	-lnetapi32 \
+	-lole32 \
 	-lsecur32
 
 openvpn-gui-res.o: $(openvpn_gui_RESOURCES) $(srcdir)/openvpn-gui-res.h
