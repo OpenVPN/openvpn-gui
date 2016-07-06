@@ -59,8 +59,9 @@ There are three ways to do this:
 Using OpenVPN GUI
 #################
 
-When OpenVPN GUI is started your OpenVPN config folder
-(*C:\\Program Files\\OpenVPN\\config*) will be scanned for .ovpn files and the
+When OpenVPN GUI is started your OpenVPN config folders
+(*C:\\Users\\username\\OpenVPN\\config* and
+*C:\\Program Files\\OpenVPN\\config*) will be scanned for .ovpn files and the
 OpenVPN GUI icon will appear in the system tray. Each OpenVPN configuration 
 file shows up as a separate menu item in the OpenVPN GUI tray, allowing you to
 selectively connect to and disconnect to your VPNs. The config dir will be
@@ -124,15 +125,41 @@ Disconnect  If a file named "xxx_down.bat" exist in the config folder
 Registry Values affecting the OpenVPN GUI operation
 ***************************************************
 
-All OpenVPN GUI registry values are located below the
-*HKEY_LOCAL_MACHINE\\SOFTWARE\\OpenVPN-GUI\\* key
-
-The follow keys are used to control the OpenVPN GUI
+Parameters taken from the global registry values in
+*HKEY_LOCAL_MACHINE\\SOFTWARE\\OpenVPN\\* key
 
 config_dir
-    the system-wide configuration file directory, defaults to
-    *C:\\Program Files\\OpenVPN\\config*; the user-specific configuration file
-    directory is hardcoded to *C:\\Users\\username\\OpenVPN\\config**.
+    The global configuration file directory. Defaults to
+    *C:\\Program Files\\OpenVPN\\config*
+
+exe_path
+    path to openvpn.exe, defaults to *C:\\Program Files\\OpenVPN\\bin\\openvpn.exe*
+
+priority
+    the windows priority class for each instantiated OpenVPN process,
+    can be one of:
+
+    * IDLE_PRIORITY_CLASS
+    * BELOW_NORMAL_PRIORITY_CLASS
+    * NORMAL_PRIORITY_CLASS (default)
+    * ABOVE_NORMAL_PRIORITY_CLASS
+    * HIGH_PRIORITY_CLASS
+
+ovpn_admin_group
+    The windows group whose membership allows the user to start any configuration file
+    in their profile (not just those installed by the administrator in the global
+    config directory). Default: "OpenVPN Administrators".
+
+All other OpenVPN GUI registry values are located below the
+*HKEY_CURRENT_USER\\SOFTWARE\\OpenVPN-GUI\\* key
+
+The following keys are used to control the OpenVPN GUI
+
+config_dir
+    The user-specific configuration file directory: defaults to
+    *C:\\Users\\username\\OpenVPN\\config*.
+    The GUI parses this directory for configuration files before
+    parsing the global config_dir.
 
 config_ext
     file extension on configuration files, defaults to *ovpn*
@@ -149,38 +176,13 @@ preconnectscript_timeout
     Time in seconds to wait for the preconnect script to finish. Must be a
     value between 1-99.
 
-exe_path
-    path to openvpn.exe, defaults to *C:\\Program Files\\OpenVPN\\bin\\openvpn.exe*
-
 log_dir
-    log file directory, defaults to *C:\\Program Files\\OpenVPN\\log*
+    log file directory, defaults to *C:\\Users\\username\\OpenVPN\\log*
 
 log_append
     if set to "0", the log file will be truncated every time you start a
     connection. If set to "1", the log will be appended to the log file.
   
-priority
-    the windows priority class for each instantiated OpenVPN process, 
-    can be one of:
-
-    * IDLE_PRIORITY_CLASS
-    * BELOW_NORMAL_PRIORITY_CLASS
-    * NORMAL_PRIORITY_CLASS (default)
-    * ABOVE_NORMAL_PRIORITY_CLASS
-    * HIGH_PRIORITY_CLASS
-
-allow_edit
-    If set to "1", the Edit config menu will be showed.
-
-allow_password
-    If set to "1", the Change Password menu will be showed.
-
-allow_proxy
-    If set to "1", the Proxy Settings menu will be showed.
-
-allow_service
-    If set to "1", the Service control menu will be showed.
-
 silent_connection
     If set to "1", the status window with the OpenVPN log output will
     not be showed while connecting.
@@ -197,18 +199,7 @@ show_balloon
 
     2: Show balloon even after re-connects
 
-log_viewer
-    The program used to view your log files, defaults to
-    *C:\\Windows\\System32\\notepad.exe*
-
-editor
-    The program used to edit your config files, defaults to
-    *C:\\Windows\\System32\\notepad.exe*
-
-passphrase_attempts
-    Number of attempts to enter the passphrase to allow. 
-
-All these registry options is also available as cmd-line options.
+All of these registry options are also available as cmd-line options.
 Use "openvpn-gui --help" for more info about cmd-line options.
 
 Building OpenVPN GUI from source

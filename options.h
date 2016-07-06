@@ -84,6 +84,7 @@ typedef struct {
 
 #define FLAG_SAVE_KEY_PASS  1<<4
 #define FLAG_SAVE_AUTH_PASS 1<<5
+#define ALLOW_CHANGE_PASSPHRASE (1<<1)
 
 /* Connections parameters */
 struct connection {
@@ -128,7 +129,6 @@ typedef struct {
     int num_configs;                  /* Number of configs */
 
     service_state_t service_state;    /* State of the OpenVPN Service */
-    int psw_attempts;                 /* Number of psw attemps to allow */
     int connectscript_timeout;        /* Connect Script execution timeout (sec) */
     int disconnectscript_timeout;     /* Disconnect Script execution timeout (sec) */
     int preconnectscript_timeout;     /* Preconnect Script execution timeout (sec) */
@@ -141,30 +141,25 @@ typedef struct {
     TCHAR proxy_socks_address[100];   /* SOCKS Proxy Address */
     TCHAR proxy_socks_port[6];        /* SOCKS Proxy Address */
 
-    /* Registry values */
+    /* HKLM Registry values */
     TCHAR exe_path[MAX_PATH];
-    TCHAR config_dir[MAX_PATH];
     TCHAR global_config_dir[MAX_PATH];
+    TCHAR priority_string[64];
+    TCHAR ovpn_admin_group[MAX_NAME];
+    /* HKCU registry values */
+    TCHAR config_dir[MAX_PATH];
     TCHAR ext_string[16];
     TCHAR log_dir[MAX_PATH];
-    TCHAR priority_string[64];
     TCHAR append_string[2];
     TCHAR log_viewer[MAX_PATH];
     TCHAR editor[MAX_PATH];
-    TCHAR allow_edit[2];
-    TCHAR allow_service[2];
-    TCHAR allow_password[2];
-    TCHAR allow_proxy[2];
     TCHAR silent_connection[2];
     TCHAR service_only[2];
     TCHAR show_balloon[2];
     TCHAR show_script_window[2];
-    TCHAR psw_attempts_string[2];
-    TCHAR disconnect_on_suspend[2];
     TCHAR connectscript_timeout_string[4];
     TCHAR disconnectscript_timeout_string[4];
     TCHAR preconnectscript_timeout_string[4];
-    TCHAR ovpn_admin_group[MAX_NAME];
 
 #ifdef DEBUG
     FILE *debug_fp;

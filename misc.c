@@ -366,3 +366,21 @@ InitSemaphore (void)
     }
     return semaphore;
 }
+
+/* Check access rights on an existing file */
+BOOL
+CheckFileAccess (const TCHAR *path, int access)
+{
+    HANDLE h;
+    bool ret = FALSE;
+
+    h = CreateFile (path, access, FILE_SHARE_READ, NULL, OPEN_EXISTING,
+                   FILE_ATTRIBUTE_NORMAL, NULL);
+    if ( h != INVALID_HANDLE_VALUE )
+    {
+        ret = TRUE;
+        CloseHandle (h);
+    }
+
+    return ret;
+}

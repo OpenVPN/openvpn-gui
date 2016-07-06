@@ -307,7 +307,6 @@ ResumeConnections()
 LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
   static UINT s_uTaskbarRestart;
-  int i;
 
   switch (message) {
     case WM_CREATE:       
@@ -328,7 +327,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
       CreatePopupMenus();	/* Create popup menus */  
       ShowTrayIcon();
-      if (o.allow_service[0]=='1' || o.service_only[0]=='1')
+      if (o.service_only[0]=='1')
         CheckServiceStatus();	// Check if service is running or not
       if (!AutoStartConnections()) {
         SendMessage(hwnd, WM_CLOSE, 0, 0);
@@ -414,31 +413,6 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       }
       break;
 
-    case WM_POWERBROADCAST:
-      switch (wParam) {
-        case PBT_APMSUSPEND:
-          if (o.disconnect_on_suspend[0] == '1')
-            {
-              /* Suspend running connections */
-              for (i=0; i<o.num_configs; i++)
-                {
-                  if (o.conn[i].state == connected)
-                SuspendOpenVPN(i);
-                }
-
-              /* Wait for all connections to suspend */
-              for (i=0; i<10; i++, Sleep(500))
-                if (CountConnState(suspending) == 0) break;
-            }
-          return FALSE;
-
-        case PBT_APMRESUMESUSPEND:
-        case PBT_APMRESUMECRITICAL:
-          if (CountConnState(suspended) != 0 && !o.session_locked)
-            ResumeConnections();
-          return FALSE;
-      }
-
     default:			/* for messages that we don't deal with */
       if (message == s_uTaskbarRestart)
         {
@@ -474,7 +448,7 @@ ShowSettingsDialog()
   int page_number = 0;
 
   /* Proxy tab */
-  if (o.allow_proxy[0] == '1' && o.service_only[0] == '0') {
+  if (o.service_only[0] == '0') {
     psp[page_number].dwSize = sizeof(PROPSHEETPAGE);
     psp[page_number].dwFlags = PSP_DLGINDIRECT;
     psp[page_number].hInstance = o.hInstance;

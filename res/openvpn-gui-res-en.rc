@@ -86,7 +86,7 @@ END
 /* Change Passphrase Dialog */
 ID_DLG_CHGPASS DIALOG 6, 18, 193, 82
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "OpenVPN - Change Passphrase"
+CAPTION "OpenVPN - Change Private Key Passphrase"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 BEGIN
@@ -313,7 +313,7 @@ BEGIN
 
     /* passphrase - Resources */
     IDS_ERR_CREATE_PASS_THREAD "CreateThread to show ChangePassphrase dialog failed."
-    IDS_NFO_CHANGE_PWD "Change Password (%s)"
+    IDS_NFO_CHANGE_PWD "Change Private Key Password (%s)"
     IDS_ERR_PWD_DONT_MATCH "The passwords you typed do not match. Try again."
     IDS_ERR_PWD_TO_SHORT "Your new password must be at least %d characters long."
     IDS_NFO_EMPTY_PWD "Are you sure you want to set an EMPTY password?"

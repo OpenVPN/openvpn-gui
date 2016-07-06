@@ -75,22 +75,15 @@ CreatePopupMenus()
 
         AppendMenu(hMenu, MF_STRING, IDM_VIEWLOGMENU, LoadLocalizedString(IDS_MENU_VIEWLOG));
 
-        if (o.allow_edit[0] == '1')
-            AppendMenu(hMenu, MF_STRING, IDM_EDITMENU, LoadLocalizedString(IDS_MENU_EDITCONFIG));
+        AppendMenu(hMenu, MF_STRING, IDM_EDITMENU, LoadLocalizedString(IDS_MENU_EDITCONFIG));
         AppendMenu(hMenu, MF_STRING, IDM_CLEARPASSMENU, LoadLocalizedString(IDS_MENU_CLEARPASS));
 
 #ifndef DISABLE_CHANGE_PASSWORD
-        if (o.allow_password[0] == '1')
+        if (o.conn[0].flags & ALLOW_CHANGE_PASSPHRASE)
             AppendMenu(hMenu, MF_STRING, IDM_PASSPHRASEMENU, LoadLocalizedString(IDS_MENU_PASSPHRASE));
 #endif
 
         AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
-
-        if (o.allow_service[0] == '1' && o.service_only[0] == '0')
-        {
-            AppendMenu(hMenu, MF_POPUP, (UINT_PTR) hMenuService, LoadLocalizedString(IDS_MENU_SERVICE));
-            AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
-        }
 
         AppendMenu(hMenu, MF_STRING, IDM_IMPORT, LoadLocalizedString(IDS_MENU_IMPORT));
         AppendMenu(hMenu, MF_STRING ,IDM_SETTINGS, LoadLocalizedString(IDS_MENU_SETTINGS));
@@ -107,11 +100,7 @@ CreatePopupMenus()
         if (o.num_configs > 0)
             AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
 
-        if (o.service_only[0] == '0' && o.allow_service[0] == '1') {
-            AppendMenu(hMenu, MF_POPUP, (UINT_PTR) hMenuService, LoadLocalizedString(IDS_MENU_SERVICE));
-            AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
-        }
-        else if (o.service_only[0] == '1') {
+        if (o.service_only[0] == '1') {
             AppendMenu(hMenu, MF_STRING, IDM_SERVICE_START, LoadLocalizedString(IDS_MENU_SERVICEONLY_START));
             AppendMenu(hMenu, MF_STRING, IDM_SERVICE_STOP, LoadLocalizedString(IDS_MENU_SERVICEONLY_STOP));
             AppendMenu(hMenu, MF_STRING, IDM_SERVICE_RESTART, LoadLocalizedString(IDS_MENU_SERVICEONLY_RESTART));
@@ -134,25 +123,16 @@ CreatePopupMenus()
 
             AppendMenu(hMenuConn[i], MF_STRING, IDM_VIEWLOGMENU + i, LoadLocalizedString(IDS_MENU_VIEWLOG));
 
-            if (o.allow_edit[0] == '1')
-                AppendMenu(hMenuConn[i], MF_STRING, IDM_EDITMENU + i, LoadLocalizedString(IDS_MENU_EDITCONFIG));
+            AppendMenu(hMenuConn[i], MF_STRING, IDM_EDITMENU + i, LoadLocalizedString(IDS_MENU_EDITCONFIG));
             AppendMenu(hMenuConn[i], MF_STRING, IDM_CLEARPASSMENU + i, LoadLocalizedString(IDS_MENU_CLEARPASS));
 
 #ifndef DISABLE_CHANGE_PASSWORD
-            if (o.allow_password[0] == '1')
+            if (o.conn[i].flags & ALLOW_CHANGE_PASSPHRASE)
                 AppendMenu(hMenuConn[i], MF_STRING, IDM_PASSPHRASEMENU + i, LoadLocalizedString(IDS_MENU_PASSPHRASE));
 #endif
 
             SetMenuStatus(&o.conn[i], o.conn[i].state);
         }
-    }
-
-    /* Create service menu */
-    if (o.allow_service[0] == '1' && o.service_only[0] == '0')
-    {
-        AppendMenu(hMenuService, MF_STRING, IDM_SERVICE_START, LoadLocalizedString(IDS_MENU_SERVICE_START));
-        AppendMenu(hMenuService, MF_STRING, IDM_SERVICE_STOP, LoadLocalizedString(IDS_MENU_SERVICE_STOP));
-        AppendMenu(hMenuService, MF_STRING, IDM_SERVICE_RESTART, LoadLocalizedString(IDS_MENU_SERVICE_RESTART));
     }
 
     SetServiceMenuStatus();
@@ -431,7 +411,7 @@ SetServiceMenuStatus()
 {
     HMENU hMenuHandle;
 
-    if (o.allow_service[0] == '0' && o.service_only[0] == '0')
+    if (o.service_only[0] == '0')
         return;
 
     if (o.service_only[0] == '1')

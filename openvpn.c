@@ -199,8 +199,6 @@ OnStateChange(connection_t *c, char *data)
         ||  strcmp(message, "private-key-password-failure") == 0)
             c->failed_psw_attempts++;
 
-        if (c->failed_psw_attempts >= o.psw_attempts - 1)
-            ManagementCommand(c, "auth-retry none", NULL, regular);
         if (strcmp(message, "auth-failure") == 0 && (c->flags & FLAG_SAVE_AUTH_PASS))
             SaveAuthPass(c->config_name, L"");
         else if (strcmp(message, "private-key-password-failure") == 0 && (c->flags & FLAG_SAVE_KEY_PASS))
@@ -388,7 +386,7 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
         case IDCANCEL:
             EndDialog(hwndDlg, LOWORD(wParam));
-            StopOpenVPN(c);
+            StopOpenVPN (c);
             return TRUE;
         }
         break;

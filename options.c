@@ -105,22 +105,22 @@ add_option(options_t *options, int i, TCHAR **p)
     else if (streq(p[0], _T("allow_edit")) && p[1])
     {
         ++i;
-        _tcsncpy(options->allow_edit, p[1], _countof(options->allow_edit) - 1);
+        PrintDebug (L"Deprecated option: '%s' ignored.", p[0]);
     }
     else if (streq(p[0], _T("allow_service")) && p[1])
     {
         ++i;
-        _tcsncpy(options->allow_service, p[1], _countof(options->allow_service) - 1);
+        PrintDebug (L"Deprecated option: '%s' ignored.", p[0]);
     }
     else if (streq(p[0], _T("allow_password")) && p[1])
     {
         ++i;
-        _tcsncpy(options->allow_password, p[1], _countof(options->allow_password) - 1);
+        PrintDebug (L"Deprecated option: '%s' ignored.", p[0]);
     }
     else if (streq(p[0], _T("allow_proxy")) && p[1])
     {
         ++i;
-        _tcsncpy(options->allow_proxy, p[1], _countof(options->allow_proxy) - 1);
+        PrintDebug (L"Deprecated option: '%s' ignored.", p[0]);
     }
     else if (streq(p[0], _T("show_balloon")) && p[1])
     {
@@ -145,7 +145,7 @@ add_option(options_t *options, int i, TCHAR **p)
     else if (streq(p[0], _T("passphrase_attempts")) && p[1])
     {
         ++i;
-        _tcsncpy(options->psw_attempts_string, p[1], _countof(options->psw_attempts_string) - 1);
+        PrintDebug (L"Deprecated option: '%s' ignored.", p[0]);
     }
     else if (streq(p[0], _T("connectscript_timeout")) && p[1])
     {

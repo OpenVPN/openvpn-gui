@@ -36,6 +36,20 @@
 
 extern options_t o;
 
+static void
+ExpandString (WCHAR *str, int max_len)
+{
+  WCHAR expanded_string[MAX_PATH];
+  int len = ExpandEnvironmentStringsW(str, expanded_string, _countof(expanded_string));
+
+  if (len > max_len || len > (int) _countof(expanded_string))
+  {
+      PrintDebug (L"Failed to expanded env vars in '%s'. String too long", str);
+      return;
+  }
+  wcsncpy(str, expanded_string, max_len);
+}
+
 int
 GetRegistryKeys()
 {
@@ -80,31 +94,39 @@ GetRegistryKeys()
       /* use default = openvpnpath\config */
       _sntprintf_0(o.global_config_dir, _T("%sconfig"), openvpn_path);
     }
+
   if (!GetRegistryValue(regkey, _T("ovpn_admin_group"), o.ovpn_admin_group, _countof(o.ovpn_admin_group)))
     {
-      _tcsncpy(o.ovpn_admin_group, OVPN_ADMIN_GROUP, _countof(o.ovpn_admin_group));
+      _tcsncpy(o.ovpn_admin_group, OVPN_ADMIN_GROUP, _countof(o.ovpn_admin_group)-1);
+    }
+
+  if (o.exe_path[0] != L'\0') /* set by cmd-line */
+      ExpandString (o.exe_path, _countof(o.exe_path));
+  else if (!GetRegistryValue(regkey, _T("exe_path"), o.exe_path, _countof(o.exe_path)))
+    {
+      _sntprintf_0(o.exe_path, _T("%sbin\\openvpn.exe"), openvpn_path);
+    }
+
+  if (o.priority_string[0] != L'\0') /* set by cmd-line */
+    ExpandString (o.priority_string, _countof(o.priority_string));
+  if (!GetRegistryValue(regkey, _T("priority"), o.priority_string, _countof(o.priority_string)))
+    {
+      _tcsncpy(o.priority_string, _T("NORMAL_PRIORITY_CLASS"), _countof(o.priority_string)-1);
     }
   RegCloseKey(regkey);
 
-  /* config_dir in user's profile by default */
+  /* user-sepcific config_dir in user's profile by default */
   _sntprintf_0(temp_path, _T("%s\\OpenVPN\\config"), profile_dir);
   if (!GetRegKey(_T("config_dir"), o.config_dir, 
       temp_path, _countof(o.config_dir))) return(false);
 
   if (!GetRegKey(_T("config_ext"), o.ext_string, _T("ovpn"), _countof(o.ext_string))) return(false);
 
-  _sntprintf_0(temp_path, _T("%sbin\\openvpn.exe"), openvpn_path);
-  if (!GetRegKey(_T("exe_path"), o.exe_path, 
-      temp_path, _countof(o.exe_path))) return(false);
-
   _sntprintf_0(temp_path, _T("%s\\OpenVPN\\log"), profile_dir);
   if (!GetRegKey(_T("log_dir"), o.log_dir, 
       temp_path, _countof(o.log_dir))) return(false);
 
   if (!GetRegKey(_T("log_append"), o.append_string, _T("0"), _countof(o.append_string))) return(false);
-
-  if (!GetRegKey(_T("priority"), o.priority_string, 
-      _T("NORMAL_PRIORITY_CLASS"), _countof(o.priority_string))) return(false);
 
   _sntprintf_0(temp_path, _T("%s\\system32\\notepad.exe"), windows_dir);
   if (!GetRegKey(_T("log_viewer"), o.log_viewer, 
@@ -114,14 +136,6 @@ GetRegistryKeys()
   if (!GetRegKey(_T("editor"), o.editor, 
       temp_path, _countof(o.editor))) return(false);
 
-  if (!GetRegKey(_T("allow_edit"), o.allow_edit, _T("1"), _countof(o.allow_edit))) return(false);
-  
-  if (!GetRegKey(_T("allow_service"), o.allow_service, _T("0"), _countof(o.allow_service))) return(false);
-
-  if (!GetRegKey(_T("allow_password"), o.allow_password, _T("1"), _countof(o.allow_password))) return(false);
-
-  if (!GetRegKey(_T("allow_proxy"), o.allow_proxy, _T("1"), _countof(o.allow_proxy))) return(false);
-
   if (!GetRegKey(_T("service_only"), o.service_only, _T("0"), _countof(o.service_only))) return(false);
 
   if (!GetRegKey(_T("show_balloon"), o.show_balloon, _T("1"), _countof(o.show_balloon))) return(false);
@@ -129,19 +143,6 @@ GetRegistryKeys()
   if (!GetRegKey(_T("silent_connection"), o.silent_connection, _T("0"), _countof(o.silent_connection))) return(false);
 
   if (!GetRegKey(_T("show_script_window"), o.show_script_window, _T("1"), _countof(o.show_script_window))) return(false);
-
-  if (!GetRegKey(_T("disconnect_on_suspend"), o.disconnect_on_suspend, _T("0"),
-      _countof(o.disconnect_on_suspend))) return(false);
-
-  if (!GetRegKey(_T("passphrase_attempts"), o.psw_attempts_string, _T("3"), 
-      _countof(o.psw_attempts_string))) return(false);
-  o.psw_attempts = _ttoi(o.psw_attempts_string);
-  if ((o.psw_attempts < 1) || (o.psw_attempts > 9))
-    {
-      /* 0 <= passphrase_attempts <= 9 */
-      ShowLocalizedMsg(IDS_ERR_PASSPHRASE_ATTEMPTS);
-      return(false);
-    }
 
   if (!GetRegKey(_T("connectscript_timeout"), o.connectscript_timeout_string, _T("15"), 
       _countof(o.connectscript_timeout_string))) return(false);
@@ -184,16 +185,13 @@ int GetRegKey(const TCHAR name[], TCHAR *data, const TCHAR default_data[], DWORD
   HKEY openvpn_key;
   HKEY openvpn_key_write;
   DWORD dwDispos;
-  TCHAR expanded_string[MAX_PATH];
   DWORD size = len * sizeof(*data);
   DWORD max_len = len - 1;
 
   /* If option is already set via cmd-line, return */
   if (data[0] != 0) 
     {
-      // Expand environment variables inside the string.
-      ExpandEnvironmentStrings(data, expanded_string, _countof(expanded_string));
-      _tcsncpy(data, expanded_string, max_len);
+      ExpandString (data, len);
       return(true);
     }
 
@@ -256,8 +254,7 @@ int GetRegKey(const TCHAR name[], TCHAR *data, const TCHAR default_data[], DWORD
   RegCloseKey(openvpn_key);
 
   // Expand environment variables inside the string.
-  ExpandEnvironmentStrings(data, expanded_string, _countof(expanded_string));
-  _tcsncpy(data, expanded_string, max_len);
+  ExpandString (data, len);
 
   return(true);
 }

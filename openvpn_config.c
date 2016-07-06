@@ -31,6 +31,8 @@
 #include "options.h"
 #include "localization.h"
 #include "save_pass.h"
+#include "misc.h"
+#include "passphrase.h"
 
 typedef enum
 {
@@ -65,21 +67,11 @@ match(const WIN32_FIND_DATA *find, const TCHAR *ext)
 static bool
 CheckReadAccess (const TCHAR *dir, const TCHAR *file)
 {
-    HANDLE h;
-    bool ret = FALSE;
     TCHAR path[MAX_PATH];
 
     _sntprintf_0 (path, _T("%s\\%s"), dir, file);
 
-    h = CreateFile (path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
-                   FILE_ATTRIBUTE_NORMAL, NULL);
-    if ( h != INVALID_HANDLE_VALUE )
-    {
-        ret = TRUE;
-        CloseHandle (h);
-    }
-
-    return ret;
+    return CheckFileAccess (path, GENERIC_READ);
 }
 
 static int
@@ -111,6 +103,9 @@ AddConfigFileToList(int config, const TCHAR *filename, const TCHAR *config_dir)
     c->manage.skaddr.sin_family = AF_INET;
     c->manage.skaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
     c->manage.skaddr.sin_port = htons(25340 + config);
+
+    if (CheckKeyFileWriteAccess (c))
+        c->flags |= ALLOW_CHANGE_PASSPHRASE;
 
     /* Check if connection should be autostarted */
     for (i = 0; i < MAX_CONFIGS && o.auto_connect[i]; ++i)

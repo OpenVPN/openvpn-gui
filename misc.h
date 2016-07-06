@@ -34,5 +34,6 @@ BOOL ForceForegroundWindow(HWND);
 
 BOOL IsUserAdmin(VOID);
 HANDLE InitSemaphore (void);
+BOOL CheckFileAccess (const TCHAR *path, int access);
 
 #endif
