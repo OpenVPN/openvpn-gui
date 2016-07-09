@@ -3,6 +3,7 @@
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
  *                2010 Heiko Hund <heikoh@users.sf.net>
+ *                2016 Selva Nair <selva.nair@gmail.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -86,6 +87,10 @@ typedef struct {
 #define FLAG_SAVE_AUTH_PASS 1<<5
 #define ALLOW_CHANGE_PASSPHRASE (1<<1)
 
+typedef struct {
+    unsigned short major, minor, build, revision;
+} version_t;
+
 /* Connections parameters */
 struct connection {
     TCHAR config_file[MAX_PATH];    /* Name of the config file */
@@ -129,9 +134,6 @@ typedef struct {
     int num_configs;                  /* Number of configs */
 
     service_state_t service_state;    /* State of the OpenVPN Service */
-    int connectscript_timeout;        /* Connect Script execution timeout (sec) */
-    int disconnectscript_timeout;     /* Disconnect Script execution timeout (sec) */
-    int preconnectscript_timeout;     /* Preconnect Script execution timeout (sec) */
 
     /* Proxy Settings */
     proxy_source_t proxy_source;      /* Where to get proxy information from */
@@ -150,16 +152,16 @@ typedef struct {
     TCHAR config_dir[MAX_PATH];
     TCHAR ext_string[16];
     TCHAR log_dir[MAX_PATH];
-    TCHAR append_string[2];
+    DWORD log_append;
     TCHAR log_viewer[MAX_PATH];
     TCHAR editor[MAX_PATH];
-    TCHAR silent_connection[2];
-    TCHAR service_only[2];
-    TCHAR show_balloon[2];
-    TCHAR show_script_window[2];
-    TCHAR connectscript_timeout_string[4];
-    TCHAR disconnectscript_timeout_string[4];
-    TCHAR preconnectscript_timeout_string[4];
+    DWORD silent_connection;
+    DWORD service_only;
+    DWORD show_balloon;
+    DWORD show_script_window;
+    DWORD connectscript_timeout;        /* Connect Script execution timeout (sec) */
+    DWORD disconnectscript_timeout;     /* Disconnect Script execution timeout (sec) */
+    DWORD preconnectscript_timeout;     /* Preconnect Script execution timeout (sec) */
 
 #ifdef DEBUG
     FILE *debug_fp;
@@ -169,10 +171,17 @@ typedef struct {
     HINSTANCE hInstance;
     BOOL session_locked;
     HANDLE netcmd_semaphore;
+    version_t version;
 } options_t;
 
 void InitOptions(options_t *);
 void ProcessCommandLine(options_t *, TCHAR *);
 int CountConnState(conn_state_t);
 connection_t* GetConnByManagement(SOCKET);
+INT_PTR CALLBACK ScriptSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK ConnectionSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK AdvancedSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
+
+void ExpandOptions(void);
+int CompareStringExpanded(const WCHAR *str1, const WCHAR *str2);
 #endif

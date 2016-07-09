@@ -161,9 +161,6 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
 #endif
 
 
-  /* Parse command-line options */
-  ProcessCommandLine(&o, GetCommandLine());
-
   /* Check if a previous instance is already running. */
   if ((FindWindow (szClassName, NULL)) != NULL)
     {
@@ -172,9 +169,12 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
         exit(1);
     }
 
-  if (!GetRegistryKeys()) {
-    exit(1);
-  }
+  UpdateRegistry(); /* Checks version change and update keys/values */
+
+  GetRegistryKeys();
+  /* Parse command-line options */
+  ProcessCommandLine(&o, GetCommandLine());
+
   EnsureDirExists(o.config_dir);
 
   if (!CheckVersion()) {
@@ -327,7 +327,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
       CreatePopupMenus();	/* Create popup menus */  
       ShowTrayIcon();
-      if (o.service_only[0]=='1')
+      if (o.service_only)
         CheckServiceStatus();	// Check if service is running or not
       if (!AutoStartConnections()) {
         SendMessage(hwnd, WM_CLOSE, 0, 0);
@@ -444,11 +444,21 @@ AboutDialogFunc(UNUSED HWND hDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
 static void
 ShowSettingsDialog()
 {
-  PROPSHEETPAGE psp[3];
+  PROPSHEETPAGE psp[4];
   int page_number = 0;
 
+  /* General tab */
+  psp[page_number].dwSize = sizeof(PROPSHEETPAGE);
+  psp[page_number].dwFlags = PSP_DLGINDIRECT;
+  psp[page_number].hInstance = o.hInstance;
+  psp[page_number].pResource = LocalizedDialogResource(ID_DLG_GENERAL);
+  psp[page_number].pfnDlgProc = GeneralSettingsDlgProc;
+  psp[page_number].lParam = 0;
+  psp[page_number].pfnCallback = NULL;
+  ++page_number;
+
   /* Proxy tab */
-  if (o.service_only[0] == '0') {
+  if (o.service_only == 0) {
     psp[page_number].dwSize = sizeof(PROPSHEETPAGE);
     psp[page_number].dwFlags = PSP_DLGINDIRECT;
     psp[page_number].hInstance = o.hInstance;
@@ -459,12 +469,12 @@ ShowSettingsDialog()
     ++page_number;
   }
 
-  /* General tab */
+  /* Advanced tab */
   psp[page_number].dwSize = sizeof(PROPSHEETPAGE);
   psp[page_number].dwFlags = PSP_DLGINDIRECT;
   psp[page_number].hInstance = o.hInstance;
-  psp[page_number].pResource = LocalizedDialogResource(ID_DLG_GENERAL);
-  psp[page_number].pfnDlgProc = GeneralSettingsDlgProc;
+  psp[page_number].pResource = LocalizedDialogResource(ID_DLG_ADVANCED);
+  psp[page_number].pfnDlgProc = AdvancedSettingsDlgProc;
   psp[page_number].lParam = 0;
   psp[page_number].pfnCallback = NULL;
   ++page_number;
@@ -521,7 +531,7 @@ void
 ImportConfigFile()
 {
     
-    TCHAR filter[37];
+    TCHAR filter[2*_countof(o.ext_string)+5];
 
     _sntprintf_0(filter, _T("*.%s%c*.%s%c"), o.ext_string, _T('\0'), o.ext_string, _T('\0'));
     

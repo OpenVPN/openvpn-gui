@@ -60,7 +60,7 @@ CreatePopupMenus()
 
     if (o.num_configs == 1) {
         /* Create Main menu with actions */
-        if (o.service_only[0] == '0') {
+        if (o.service_only == 0) {
             AppendMenu(hMenu, MF_STRING, IDM_CONNECTMENU, LoadLocalizedString(IDS_MENU_CONNECT));
             AppendMenu(hMenu, MF_STRING, IDM_DISCONNECTMENU, LoadLocalizedString(IDS_MENU_DISCONNECT));
             AppendMenu(hMenu, MF_STRING, IDM_STATUSMENU, LoadLocalizedString(IDS_MENU_STATUS));
@@ -100,7 +100,7 @@ CreatePopupMenus()
         if (o.num_configs > 0)
             AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
 
-        if (o.service_only[0] == '1') {
+        if (o.service_only) {
             AppendMenu(hMenu, MF_STRING, IDM_SERVICE_START, LoadLocalizedString(IDS_MENU_SERVICEONLY_START));
             AppendMenu(hMenu, MF_STRING, IDM_SERVICE_STOP, LoadLocalizedString(IDS_MENU_SERVICEONLY_STOP));
             AppendMenu(hMenu, MF_STRING, IDM_SERVICE_RESTART, LoadLocalizedString(IDS_MENU_SERVICEONLY_RESTART));
@@ -114,7 +114,7 @@ CreatePopupMenus()
 
         /* Create popup menus for every connection */
         for (i=0; i < o.num_configs; i++) {
-            if (o.service_only[0] == '0') {
+            if (o.service_only == 0) {
                 AppendMenu(hMenuConn[i], MF_STRING, IDM_CONNECTMENU + i, LoadLocalizedString(IDS_MENU_CONNECT));
                 AppendMenu(hMenuConn[i], MF_STRING, IDM_DISCONNECTMENU + i, LoadLocalizedString(IDS_MENU_DISCONNECT));
                 AppendMenu(hMenuConn[i], MF_STRING, IDM_STATUSMENU + i, LoadLocalizedString(IDS_MENU_STATUS));
@@ -174,7 +174,7 @@ OnNotifyTray(LPARAM lParam)
         break;
 
     case WM_LBUTTONDBLCLK:
-        if (o.service_only[0] == '1') {
+        if (o.service_only) {
             /* Start or stop OpenVPN service */
             if (o.service_state == service_disconnected) {
                 MyStartService();
@@ -411,10 +411,10 @@ SetServiceMenuStatus()
 {
     HMENU hMenuHandle;
 
-    if (o.service_only[0] == '0')
+    if (o.service_only == 0)
         return;
 
-    if (o.service_only[0] == '1')
+    if (o.service_only)
         hMenuHandle = hMenu;
     else
         hMenuHandle = hMenuService;

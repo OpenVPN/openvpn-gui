@@ -3,6 +3,7 @@
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
  *                2010 Heiko Hund <heikoh@users.sf.net>
+ *                2016 Selva Nair <selva.nair@gmail.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by

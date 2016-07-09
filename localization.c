@@ -427,6 +427,19 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
         if (GetLaunchOnStartup())
             Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_STARTUP), BST_CHECKED);
 
+        if (o.log_append)
+            Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_LOG_APPEND), BST_CHECKED);
+        if (o.silent_connection)
+            Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SILENT), BST_CHECKED);
+        if (o.show_balloon == 0)
+            CheckRadioButton (hwndDlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON0);
+        else if (o.show_balloon == 1)
+            CheckRadioButton (hwndDlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON1);
+        else if (o.show_balloon == 2)
+            CheckRadioButton (hwndDlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON2);
+        if (o.show_script_window)
+            Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SHOW_SCRIPT_WIN), BST_CHECKED);
+
         break;
 
     case WM_NOTIFY:
@@ -440,6 +453,21 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
                 SetGUILanguage(langId);
 
             SetLaunchOnStartup(Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_STARTUP)) == BST_CHECKED);
+
+            o.log_append =
+                (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_LOG_APPEND)) == BST_CHECKED);
+            o.silent_connection =
+                (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_SILENT)) == BST_CHECKED);
+            if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON0))
+                o.show_balloon = 0;
+            else if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON2))
+                o.show_balloon = 2;
+            else
+                o.show_balloon = 1;
+            o.show_script_window =
+                (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_SHOW_SCRIPT_WIN)) == BST_CHECKED);
+
+            SaveRegistryKeys();
 
             SetWindowLongPtr(hwndDlg, DWLP_MSGRESULT, PSNRET_NOERROR);
             return TRUE;

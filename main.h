@@ -35,10 +35,7 @@
 //#define DISABLE_CHANGE_PASSWORD
 
 /* Registry key for User Settings */
-#define GUI_REGKEY_HKCU	_T("Software\\Nilings\\OpenVPN-GUI")
-
-/* Registry key for Global Settings */
-#define GUI_REGKEY_HKLM	_T("SOFTWARE\\OpenVPN-GUI")
+#define GUI_REGKEY_HKCU	_T("Software\\OpenVPN-GUI")
 
 #define MAX_LOG_LENGTH      1024/* Max number of characters per log line */
 #define MAX_LOG_LINES		500	/* Max number of lines in LogWindow */

@@ -224,6 +224,7 @@ SaveProxySettings(HWND hwndDlg)
     DWORD dwDispos;
     TCHAR proxy_source_string[2] = _T("0");
     TCHAR proxy_type_string[2] = _T("0");
+    TCHAR proxy_subkey[MAX_PATH];
 
     /* Save Proxy Settings Source */
     if (IsDlgButtonChecked(hwndDlg, ID_RB_PROXY_OPENVPN) == BST_CHECKED)
@@ -265,11 +266,12 @@ SaveProxySettings(HWND hwndDlg)
     }
 
     /* Open Registry for writing */
-    if (RegCreateKeyEx(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, 0, _T(""), REG_OPTION_NON_VOLATILE,
+    _sntprintf_0(proxy_subkey, _T("%s\\proxy"), GUI_REGKEY_HKCU);
+    if (RegCreateKeyEx(HKEY_CURRENT_USER, proxy_subkey, 0, _T(""), REG_OPTION_NON_VOLATILE,
                        KEY_WRITE, NULL, &regkey, &dwDispos) != ERROR_SUCCESS)
     {
         /* error creating Registry-Key */
-        ShowLocalizedMsg(IDS_ERR_CREATE_REG_HKCU_KEY, GUI_REGKEY_HKCU);
+        ShowLocalizedMsg(IDS_ERR_CREATE_REG_HKCU_KEY, proxy_subkey);
         return;
     }
 
@@ -292,9 +294,11 @@ GetProxyRegistrySettings()
     HKEY regkey;
     TCHAR proxy_source_string[2] = _T("0");
     TCHAR proxy_type_string[2] = _T("0");
+    TCHAR proxy_subkey[MAX_PATH];
 
     /* Open Registry for reading */
-    status = RegOpenKeyEx(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, 0, KEY_READ, &regkey);
+    _sntprintf_0(proxy_subkey, _T("%s\\proxy"), GUI_REGKEY_HKCU);
+    status = RegOpenKeyEx(HKEY_CURRENT_USER, proxy_subkey, 0, KEY_READ, &regkey);
     if (status != ERROR_SUCCESS)
         return;
 
