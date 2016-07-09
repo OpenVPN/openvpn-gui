@@ -317,14 +317,14 @@ SetRegistryValueNumeric(HKEY regkey, const TCHAR *name, DWORD data)
 }
 
 /*
- * Open HKCU\Software\OpenVPN-GUI\config-name (create if doesn't exist).
+ * Open HKCU\Software\OpenVPN-GUI\configs\config-name.
  * The caller must close the key. Returns 1 on success.
  */
 static int
-OpenConfigRegistryKey(const WCHAR *config_name, HKEY *regkey)
+OpenConfigRegistryKey(const WCHAR *config_name, HKEY *regkey, BOOL create)
 {
     DWORD status;
-    const WCHAR fmt[] = L"SOFTWARE\\OpenVPN-GUI\\%s";
+    const WCHAR fmt[] = L"SOFTWARE\\OpenVPN-GUI\\configs\\%s";
     int count = (wcslen(config_name) + wcslen(fmt) + 1);
     WCHAR *name = malloc(count * sizeof(WCHAR));
 
@@ -334,8 +334,11 @@ OpenConfigRegistryKey(const WCHAR *config_name, HKEY *regkey)
     _snwprintf(name, count, fmt, config_name);
     name[count-1] = L'\0';
 
+    if (!create)
+       status = RegOpenKeyEx (HKEY_CURRENT_USER, name, 0, KEY_READ | KEY_WRITE, regkey);
+    else
     /* create if key doesn't exist */
-    status = RegCreateKeyEx(HKEY_CURRENT_USER, name, 0, NULL,
+       status = RegCreateKeyEx(HKEY_CURRENT_USER, name, 0, NULL,
                REG_OPTION_NON_VOLATILE, KEY_READ | KEY_WRITE, NULL, regkey, NULL);
     free (name);
 
@@ -348,7 +351,7 @@ SetConfigRegistryValueBinary(const WCHAR *config_name, const WCHAR *name, const 
     HKEY regkey;
     DWORD status;
 
-    if (!OpenConfigRegistryKey(config_name, &regkey))
+    if (!OpenConfigRegistryKey(config_name, &regkey, TRUE))
         return 0;
     status = RegSetValueEx(regkey, name, 0, REG_BINARY, data, len);
     RegCloseKey(regkey);
@@ -368,7 +371,7 @@ GetConfigRegistryValue(const WCHAR *config_name, const WCHAR *name, BYTE *data, 
     DWORD type;
     HKEY regkey;
 
-    if (!OpenConfigRegistryKey(config_name, &regkey))
+    if (!OpenConfigRegistryKey(config_name, &regkey, FALSE))
         return 0;
     status = RegQueryValueEx(regkey, name, NULL, &type, data, &len);
     RegCloseKey(regkey);
@@ -384,7 +387,7 @@ DeleteConfigRegistryValue(const WCHAR *config_name, const WCHAR *name)
     DWORD status;
     HKEY regkey;
 
-    if (!OpenConfigRegistryKey(config_name, &regkey))
+    if (!OpenConfigRegistryKey(config_name, &regkey, FALSE))
         return 0;
     status = RegDeleteValue(regkey, name);
     RegCloseKey(regkey);
