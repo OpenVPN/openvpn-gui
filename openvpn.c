@@ -848,6 +848,27 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
+
+    case WM_OVPN_STOP:
+        c = (connection_t *) GetProp(hwndDlg, cfgProp);
+        c->state = disconnecting;
+        RunDisconnectScript(c, false);
+        EnableWindow(GetDlgItem(c->hwndStatus, ID_DISCONNECT), FALSE);
+        EnableWindow(GetDlgItem(c->hwndStatus, ID_RESTART), FALSE);
+        SetMenuStatus(c, disconnecting);
+        SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_WAIT_TERM));
+        SetEvent(c->exit_event);
+        break;
+
+    case WM_OVPN_SUSPEND:
+        c = (connection_t *) GetProp(hwndDlg, cfgProp);
+        c->state = suspending;
+        EnableWindow(GetDlgItem(c->hwndStatus, ID_DISCONNECT), FALSE);
+        EnableWindow(GetDlgItem(c->hwndStatus, ID_RESTART), FALSE);
+        SetMenuStatus(c, disconnecting);
+        SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_WAIT_TERM));
+        SetEvent(c->exit_event);
+        break;
     }
     return FALSE;
 }
@@ -913,31 +934,7 @@ ThreadOpenVPNStatus(void *p)
             continue;
         }
 
-        if (msg.hwnd == NULL)
-        {
-            switch (msg.message)
-            {
-            case WM_OVPN_STOP:
-                c->state = disconnecting;
-                RunDisconnectScript(c, false);
-                EnableWindow(GetDlgItem(c->hwndStatus, ID_DISCONNECT), FALSE);
-                EnableWindow(GetDlgItem(c->hwndStatus, ID_RESTART), FALSE);
-                SetMenuStatus(c, disconnecting);
-                SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_WAIT_TERM));
-                SetEvent(c->exit_event);
-                break;
-
-            case WM_OVPN_SUSPEND:
-                c->state = suspending;
-                EnableWindow(GetDlgItem(c->hwndStatus, ID_DISCONNECT), FALSE);
-                EnableWindow(GetDlgItem(c->hwndStatus, ID_RESTART), FALSE);
-                SetMenuStatus(c, disconnecting);
-                SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_WAIT_TERM));
-                SetEvent(c->exit_event);
-                break;
-            }
-        }
-        else if (IsDialogMessage(c->hwndStatus, &msg) == 0)
+        if (IsDialogMessage(c->hwndStatus, &msg) == 0)
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
@@ -1158,14 +1155,14 @@ out:
 void
 StopOpenVPN(connection_t *c)
 {
-    PostThreadMessage(c->threadId, WM_OVPN_STOP, 0, 0);
+    PostMessage(c->hwndStatus, WM_OVPN_STOP, 0, 0);
 }
 
 
 void
 SuspendOpenVPN(int config)
 {
-    PostThreadMessage(o.conn[config].threadId, WM_OVPN_SUSPEND, 0, 0);
+    PostMessage(o.conn[config].hwndStatus, WM_OVPN_SUSPEND, 0, 0);
 }
 
 
