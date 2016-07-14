@@ -238,6 +238,15 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             if(param->challenge_echo)
                 SendMessage(wnd_challenge, EM_SETPASSWORDCHAR, 0, 0);
         }
+        /* Fill the username field with the current Windows username and put the focus on the password field */
+        WCHAR username[MAX_PATH];
+        DWORD usernamesize = MAX_PATH;
+        if (GetUserName(username, &usernamesize))
+        {
+            SetDlgItemText(hwndDlg, ID_EDT_AUTH_USER, username);
+            SendMessage(hwndDlg, WM_NEXTDLGCTL, (WPARAM) GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS), TRUE);
+        }
+
         if (param->c->state == resuming)
             ForceForegroundWindow(hwndDlg);
         else
