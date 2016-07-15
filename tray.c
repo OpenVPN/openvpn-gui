@@ -77,6 +77,7 @@ CreatePopupMenus()
 
         if (o.allow_edit[0] == '1')
             AppendMenu(hMenu, MF_STRING, IDM_EDITMENU, LoadLocalizedString(IDS_MENU_EDITCONFIG));
+        AppendMenu(hMenu, MF_STRING, IDM_CLEARPASSMENU, LoadLocalizedString(IDS_MENU_CLEARPASS));
 
 #ifndef DISABLE_CHANGE_PASSWORD
         if (o.allow_password[0] == '1')
@@ -135,6 +136,7 @@ CreatePopupMenus()
 
             if (o.allow_edit[0] == '1')
                 AppendMenu(hMenuConn[i], MF_STRING, IDM_EDITMENU + i, LoadLocalizedString(IDS_MENU_EDITCONFIG));
+            AppendMenu(hMenuConn[i], MF_STRING, IDM_CLEARPASSMENU + i, LoadLocalizedString(IDS_MENU_CLEARPASS));
 
 #ifndef DISABLE_CHANGE_PASSWORD
             if (o.allow_password[0] == '1')
@@ -381,6 +383,10 @@ SetMenuStatus(connection_t *c, conn_state_t state)
             EnableMenuItem(hMenu, IDM_DISCONNECTMENU, MF_GRAYED);
             EnableMenuItem(hMenu, IDM_STATUSMENU, MF_ENABLED);
         }
+        if (c->flags & (FLAG_SAVE_AUTH_PASS | FLAG_SAVE_KEY_PASS))
+            EnableMenuItem(hMenu, IDM_CLEARPASSMENU, MF_ENABLED);
+        else
+            EnableMenuItem(hMenu, IDM_CLEARPASSMENU, MF_GRAYED);
     }
     else
     {
@@ -412,6 +418,10 @@ SetMenuStatus(connection_t *c, conn_state_t state)
             EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU + i, MF_GRAYED);
             EnableMenuItem(hMenuConn[i], IDM_STATUSMENU + i, MF_ENABLED);
         }
+        if (c->flags & (FLAG_SAVE_AUTH_PASS | FLAG_SAVE_KEY_PASS))
+            EnableMenuItem(hMenuConn[i], IDM_CLEARPASSMENU + i, MF_ENABLED);
+        else
+            EnableMenuItem(hMenuConn[i], IDM_CLEARPASSMENU + i, MF_GRAYED);
     }
 }
 

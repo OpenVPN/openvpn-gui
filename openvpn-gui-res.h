@@ -60,6 +60,7 @@
 #define ID_DLG_AUTH_CHALLENGE            183
 #define ID_TXT_AUTH_CHALLENGE            184
 #define ID_EDT_AUTH_CHALLENGE            185
+#define ID_CHK_SAVE_PASS                 186
 
 /* Proxy Settings Dialog */
 #define ID_DLG_PROXY                     200
@@ -114,6 +115,7 @@
 #define IDS_MENU_SERVICEONLY_RESTART    1021
 #define IDS_MENU_ASK_STOP_SERVICE       1022
 #define IDS_MENU_IMPORT                 1023
+#define IDS_MENU_CLEARPASS              1024
 
 /* LogViewer Dialog */
 #define IDS_ERR_START_LOG_VIEWER        1101
@@ -263,5 +265,8 @@
 #define IDS_ERR_IMPORT_EXISTS           1901
 #define IDS_ERR_IMPORT_FAILED           1902
 #define IDS_NFO_IMPORT_SUCCESS          1903
+
+/* Save password related messages */
+#define IDS_NFO_DELETE_PASS             2001
 
 #endif

@@ -30,6 +30,7 @@
 #include "openvpn-gui-res.h"
 #include "options.h"
 #include "localization.h"
+#include "save_pass.h"
 
 typedef enum
 {
@@ -120,6 +121,11 @@ AddConfigFileToList(int config, const TCHAR *filename, const TCHAR *config_dir)
             break;
         }
     }
+    /* check whether passwords are saved */
+    if (IsAuthPassSaved(c->config_name))
+        c->flags |= FLAG_SAVE_AUTH_PASS;
+    if (IsKeyPassSaved(c->config_name))
+        c->flags |= FLAG_SAVE_KEY_PASS;
 }
 
 

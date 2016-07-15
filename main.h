@@ -111,6 +111,8 @@ __snprintf_0(char *buf, size_t size, char *format, ...)
         } while(0)
 
 void PrintDebugMsg(TCHAR *msg);
+#else
+#define PrintDebug(...) do { } while(0)
 #endif
 
 DWORD GetDllVersion(LPCTSTR lpszDllName);
