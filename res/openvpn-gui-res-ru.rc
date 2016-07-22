@@ -31,7 +31,7 @@ LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 BEGIN
     LTEXT "Введите пароль:", 201, 6, 6, 100, 10
     EDITTEXT ID_EDT_PASSPHRASE, 6, 17, 107, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 33, 100, 10
+    CHECKBOX "Запомнить", ID_CHK_SAVE_PASS, 6, 33, 100, 10
     PUSHBUTTON "OK", IDOK, 6, 49, 50, 14
     PUSHBUTTON "Отмена", IDCANCEL, 64, 49, 50, 14
 END
@@ -192,6 +192,7 @@ BEGIN
     IDS_MENU_VIEWLOG "Показать журнал"
     IDS_MENU_EDITCONFIG "Редактировать конфигурацию"
     IDS_MENU_PASSPHRASE "Сменить пароль"
+    IDS_MENU_CLEARPASS  "Очистить сохраненные пароли"
     IDS_MENU_SERVICE_START "Запустить"
     IDS_MENU_SERVICE_STOP "Остановить"
     IDS_MENU_SERVICE_RESTART "Перезапустить"
@@ -362,4 +363,8 @@ BEGIN
                        "однократно с правами администратора, чтобы обновить реестр."
     IDS_ERR_READ_SET_KEY "Ошибка чтения и установки значения ключа ""%s""."
     IDS_ERR_WRITE_REGVALUE "Ошибка записи значения реестра ""HKEY_CURRENT_USER\\%s\\%s""."
+
+    /* save/delete password */
+    IDS_NFO_DELETE_PASS "Подтвердите удаление сохраненных паролей для ""%s"""
+
 END
