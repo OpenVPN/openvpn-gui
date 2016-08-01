@@ -7,7 +7,7 @@ compiler: gcc
 
 env:
   global:
-    - OPENSSL_VERSION=1.0.1r
+    - OPENSSL_VERSION=1.0.1t
     - OPENSSL_CRYPTO_CFLAGS="-I${HOME}/image/include"
     - OPENSSL_CRYPTO_LIBS="-L${HOME}/image/lib -lcrypto"
 
