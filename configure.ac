@@ -38,6 +38,13 @@ AC_ARG_ENABLE(
 	[enable_distonly="no"]
 )
 
+AC_ARG_ENABLE(
+	[password-change],
+	[AS_HELP_STRING([--disable-password-change], [disable password change support @<:@default=yes@:>@])],
+	,
+	[enable_password_change="yes"]
+)
+
 AC_ARG_VAR([MAX_CONFIGS], [specify the maximum number of configs @<:@default=50@:>@])
 if test -z "$MAX_CONFIGS"; then
 	MAX_CONFIGS=50
@@ -57,7 +64,6 @@ case "$host" in
 		;;
 esac
 
-PKG_PROG_PKG_CONFIG
 AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_LN_S
@@ -69,6 +75,8 @@ if test "x$MAKENSIS" = "x"; then
 fi
 AM_CONDITIONAL([HAVE_NSIS], [test "x$MAKENSIS" != "x"])
 
+if test "${enable_password_change}" = "yes"; then
+PKG_PROG_PKG_CONFIG
 PKG_CHECK_MODULES(
 	[OPENSSL_CRYPTO],
 	[libcrypto >= 0.9.6],
@@ -80,6 +88,9 @@ PKG_CHECK_MODULES(
 		[test "${enable_distonly}" = "no" && AC_MSG_ERROR([Cannot find OpenSSL library])]
 	)]
 )
+else
+	AC_DEFINE([DISABLE_CHANGE_PASSWORD],[1],[disable password change])
+fi
 
 test "${GCC}" = "yes" && CFLAGS="${CFLAGS} -pedantic -Wall -Wextra"
 
