@@ -7,20 +7,22 @@ compiler: gcc
 
 env:
   global:
-    - OPENSSL_VERSION=1.0.1r
-    - OPENSSL_CRYPTO_CFLAGS="-I${HOME}/image/include"
-    - OPENSSL_CRYPTO_LIBS="-L${HOME}/image/lib -lcrypto"
+    - OPENSSL_VERSION=1.0.1t
 
 matrix:
   fast_finish: true
   include:
     - compiler: ": Win32"
-      env: CHOST=i686-w64-mingw32 m=mingw
+      env: CHOST=i686-w64-mingw32 CONFIG=""
     - compiler: ": Win64"
-      env: CHOST=x86_64-w64-mingw32 m=mingw64
+      env: CHOST=x86_64-w64-mingw32 CONFIG=""
+    - compiler: ": Win32"
+      env: CHOST=i686-w64-mingw32 CONFIG="--disable-password-change"
+    - compiler: ": Win64"
+      env: CHOST=x86_64-w64-mingw32 CONFIG="--disable-password-change"
   exclude:
     - compiler: gcc
-    
+
 addons:
   apt:
     packages:
@@ -30,20 +32,14 @@ addons:
 before_script:
     - unset CC; unset CXX
 
-install:
-  - if [ ! -d download-cache ]; then mkdir download-cache; fi
-  - if [ ! -f download-cache/openssl-${OPENSSL_VERSION}.tar.gz ]; then wget -O download-cache/openssl-${OPENSSL_VERSION}.tar.gz https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz; fi
-
 script:
     - cppcheck --force --enable=warning,missingInclude --error-exitcode=1 . >build.log 2>&1 || (cat build.log && exit 1)
-    - mkdir image
-    - tar zxf download-cache/openssl-${OPENSSL_VERSION}.tar.gz && cd openssl-${OPENSSL_VERSION}
-    - ./Configure --prefix=/ --cross-compile-prefix=${CHOST}- shared $m no-multilib no-capieng --openssldir=/etc/ssl --libdir=/lib -static-libgcc >build.log 2>&1 || (cat build.log && exit 1)
-    - make install INSTALL_PREFIX="${HOME}/image" INSTALLTOP="/" MANDIR="/tmp" >build.log 2>&1 || (cat build.log && exit 1)
-    - cd .. && autoreconf -i -v
-    - ./configure --prefix=/ --libdir=/lib --host=$CHOST --build=x86_64-pc-linux-gnu --program-prefix='' && make
+    - if [[ $CONFIG != *"--disable-password-change"* ]]; then . .travis-build-openssl.sh; fi
+    - autoreconf -i -v
+    - ./configure --prefix=/ --libdir=/lib --host=$CHOST --build=x86_64-pc-linux-gnu --program-prefix='' $CONFIG && make
     
 cache:
   apt: true
   directories:
   - download-cache
+
