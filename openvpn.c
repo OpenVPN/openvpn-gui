@@ -170,9 +170,9 @@ OnStateChange(connection_t *c, char *data)
         MultiByteToWideChar(CP_ACP, 0, local_ip, -1, c->ip, _countof(c->ip));
 
         /* Show connection tray balloon */
-        if ((c->state == connecting   && o.show_balloon[0] != '0')
-        ||  (c->state == resuming     && o.show_balloon[0] != '0')
-        ||  (c->state == reconnecting && o.show_balloon[0] == '2'))
+        if ((c->state == connecting   && o.show_balloon != 0)
+        ||  (c->state == resuming     && o.show_balloon != 0)
+        ||  (c->state == reconnecting && o.show_balloon == 2))
         {
             TCHAR msg[256];
             LoadLocalizedStringBuf(msg, _countof(msg), IDS_NFO_NOW_CONNECTED, c->config_name);
@@ -199,8 +199,6 @@ OnStateChange(connection_t *c, char *data)
         ||  strcmp(message, "private-key-password-failure") == 0)
             c->failed_psw_attempts++;
 
-        if (c->failed_psw_attempts >= o.psw_attempts - 1)
-            ManagementCommand(c, "auth-retry none", NULL, regular);
         if (strcmp(message, "auth-failure") == 0 && (c->flags & FLAG_SAVE_AUTH_PASS))
             SaveAuthPass(c->config_name, L"");
         else if (strcmp(message, "private-key-password-failure") == 0 && (c->flags & FLAG_SAVE_KEY_PASS))
@@ -388,7 +386,7 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
         case IDCANCEL:
             EndDialog(hwndDlg, LOWORD(wParam));
-            StopOpenVPN(c);
+            StopOpenVPN (c);
             return TRUE;
         }
         break;
@@ -468,7 +466,7 @@ OnStop(connection_t *c, UNUSED char *msg)
         SetStatusWinIcon(c->hwndStatus, ID_ICO_DISCONNECTED);
         EnableWindow(GetDlgItem(c->hwndStatus, ID_DISCONNECT), FALSE);
         EnableWindow(GetDlgItem(c->hwndStatus, ID_RESTART), FALSE);
-        if (o.silent_connection[0] == '0')
+        if (o.silent_connection == 0)
         {
             SetForegroundWindow(c->hwndStatus);
             ShowWindow(c->hwndStatus, SW_SHOW);
@@ -495,7 +493,7 @@ OnStop(connection_t *c, UNUSED char *msg)
         EnableWindow(GetDlgItem(c->hwndStatus, ID_RESTART), FALSE);
         SetStatusWinIcon(c->hwndStatus, ID_ICO_DISCONNECTED);
         SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(txt_id));
-        if (o.silent_connection[0] == '0')
+        if (o.silent_connection == 0)
         {
             SetForegroundWindow(c->hwndStatus);
             ShowWindow(c->hwndStatus, SW_SHOW);
@@ -984,7 +982,7 @@ ThreadOpenVPNStatus(void *p)
     else
         wait_event = c->hProcess;
 
-    if (o.silent_connection[0] == '0')
+    if (o.silent_connection == 0)
         ShowWindow(c->hwndStatus, SW_SHOW);
 
     /* Run the message loop for the status window */
@@ -1059,13 +1057,6 @@ StartOpenVPN(connection_t *c)
 
     RunPreconnectScript(c);
 
-    /* Check that log append flag has a valid value */
-    if ((o.append_string[0] != '0') && (o.append_string[0] != '1'))
-    {
-        ShowLocalizedMsg(IDS_ERR_LOG_APPEND_BOOL, o.append_string);
-        return FALSE;
-    }
-
     /* Create thread to show the connection's status dialog */
     hThread = CreateThread(NULL, 0, ThreadOpenVPNStatus, c, CREATE_SUSPENDED, &c->threadId);
     if (hThread == NULL)
@@ -1091,7 +1082,7 @@ StartOpenVPN(connection_t *c)
         "--setenv IV_GUI_VER \"%S\" --service %s 0 --auth-retry interact "
         "--management %S %hd stdin --management-query-passwords %s"
         "--management-hold"),
-        (o.append_string[0] == '1' ? _T("-append") : _T("")), c->log_path,
+        (o.log_append ? _T("-append") : _T("")), c->log_path,
         c->config_file, PACKAGE_STRING, exit_event_name,
         inet_ntoa(c->manage.skaddr.sin_addr), ntohs(c->manage.skaddr.sin_port),
         (o.proxy_source != config ? _T("--management-query-proxy ") : _T("")));

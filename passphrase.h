@@ -30,5 +30,6 @@ BOOL GetRandomPassword(char *, size_t);
 #ifndef DISABLE_CHANGE_PASSWORD
 void ShowChangePassphraseDialog(connection_t *);
 #endif
+BOOL CheckKeyFileWriteAccess (connection_t *);
 
 #endif

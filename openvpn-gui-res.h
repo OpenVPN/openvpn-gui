@@ -79,12 +79,39 @@
 #define ID_CMB_LANGUAGE                  231
 #define ID_TXT_LANGUAGE                  232
 #define ID_CHK_STARTUP                   233
+#define ID_CHK_SERVICE_ONLY              234
+#define ID_TXT_LOG_APPEND                235
+#define ID_CHK_LOG_APPEND                236
+#define ID_CHK_SILENT                    237
+#define ID_TXT_BALLOON                   238
+#define ID_RB_BALLOON0                   239
+#define ID_RB_BALLOON1                   240
+#define ID_RB_BALLOON2                   241
+#define ID_CHK_SHOW_SCRIPT_WIN           242
 
 /* Proxy Auth Dialog */
 #define ID_DLG_PROXY_AUTH                250
 #define ID_EDT_PROXY_USER                251
 #define ID_EDT_PROXY_PASS                252
 
+/* Advanced dialog */
+#define ID_DLG_ADVANCED                  270
+#define ID_TXT_FOLDER                    271
+#define ID_TXT_EXTENSION                 272
+#define ID_EDT_CONFIG_DIR                274
+#define ID_EDT_CONFIG_EXT                275
+#define ID_EDT_LOG_DIR                   276
+#define ID_BTN_CONFIG_DIR                277
+#define ID_BTN_LOG_DIR                   278
+#define ID_TXT_PRECONNECT_TIMEOUT        279
+#define ID_TXT_CONNECT_TIMEOUT           280
+#define ID_TXT_DISCONNECT_TIMEOUT        281
+#define ID_EDT_PRECONNECT_TIMEOUT        282
+#define ID_EDT_CONNECT_TIMEOUT           283
+#define ID_EDT_DISCONNECT_TIMEOUT        284
+
+/* Connections dialog */
+#define ID_DLG_CONNECTIONS               290
 
 /*
  * String Table Resources

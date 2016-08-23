@@ -22,7 +22,9 @@
 #ifndef REGISTRY_H
 #define REGISTRY_H
 
-int GetRegistryKeys();
+int GetRegistryKeys(void);
+int SaveRegistryKeys(void);
+int UpdateRegistry(void);
 int GetRegKey(const TCHAR name[], TCHAR data[], const TCHAR default_data[], DWORD len);
 LONG GetRegistryValue(HKEY regkey, const TCHAR *name, TCHAR *data, DWORD len);
 LONG GetRegistryValueNumeric(HKEY regkey, const TCHAR *name, DWORD *data);

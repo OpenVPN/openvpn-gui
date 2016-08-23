@@ -3,6 +3,7 @@
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
  *                2010 Heiko Hund <heikoh@users.sf.net>
+ *                2016 Selva Nair <selva.nair@gmail.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -26,19 +27,55 @@
 #endif
 
 #include <windows.h>
+#include <windowsx.h>
+#include <prsht.h>
 #include <stdlib.h>
 #include <malloc.h>
 #include <memory.h>
+#include <shlobj.h>
+#include <shlwapi.h>
 
 #include "options.h"
 #include "main.h"
 #include "openvpn-gui-res.h"
 #include "localization.h"
 #include "misc.h"
+#include "registry.h"
 
 #define streq(x, y) (_tcscmp((x), (y)) == 0)
 
 extern options_t o;
+
+static version_t
+MakeVersion (short ma, short mi, short b, short r)
+{
+    version_t v = {ma, mi, b, r};
+    return v;
+}
+
+static void
+ExpandString (WCHAR *str, int max_len)
+{
+  WCHAR expanded_string[MAX_PATH];
+  int len = ExpandEnvironmentStringsW (str, expanded_string, _countof(expanded_string));
+
+  if (len > max_len || len > (int) _countof(expanded_string))
+  {
+      PrintDebug (L"Failed to expanded env vars in '%s'. String too long", str);
+      return;
+  }
+  wcsncpy (str, expanded_string, max_len);
+}
+
+void
+ExpandOptions (void)
+{
+    ExpandString (o.exe_path, _countof(o.exe_path));
+    ExpandString (o.config_dir, _countof(o.config_dir));
+    ExpandString (o.log_dir, _countof(o.log_dir));
+    ExpandString (o.editor, _countof(o.editor));
+    ExpandString (o.log_viewer, _countof(o.log_viewer));
+}
 
 static int
 add_option(options_t *options, int i, TCHAR **p)
@@ -87,10 +124,11 @@ add_option(options_t *options, int i, TCHAR **p)
         ++i;
         _tcsncpy(options->priority_string, p[1], _countof(options->priority_string) - 1);
     }
-    else if (streq(p[0], _T("append_string")) && p[1])
+    else if ( (streq(p[0], _T("append_string")) ||
+             streq(p[0], _T("log_append"))) && p[1] )
     {
         ++i;
-        _tcsncpy(options->append_string, p[1], _countof(options->append_string) - 1);
+        options->log_append = _ttoi(p[1]) ? 1 : 0;
     }
     else if (streq(p[0], _T("log_viewer")) && p[1])
     {
@@ -105,62 +143,62 @@ add_option(options_t *options, int i, TCHAR **p)
     else if (streq(p[0], _T("allow_edit")) && p[1])
     {
         ++i;
-        _tcsncpy(options->allow_edit, p[1], _countof(options->allow_edit) - 1);
+        PrintDebug (L"Deprecated option: '%s' ignored.", p[0]);
     }
     else if (streq(p[0], _T("allow_service")) && p[1])
     {
         ++i;
-        _tcsncpy(options->allow_service, p[1], _countof(options->allow_service) - 1);
+        PrintDebug (L"Deprecated option: '%s' ignored.", p[0]);
     }
     else if (streq(p[0], _T("allow_password")) && p[1])
     {
         ++i;
-        _tcsncpy(options->allow_password, p[1], _countof(options->allow_password) - 1);
+        PrintDebug (L"Deprecated option: '%s' ignored.", p[0]);
     }
     else if (streq(p[0], _T("allow_proxy")) && p[1])
     {
         ++i;
-        _tcsncpy(options->allow_proxy, p[1], _countof(options->allow_proxy) - 1);
+        PrintDebug (L"Deprecated option: '%s' ignored.", p[0]);
     }
     else if (streq(p[0], _T("show_balloon")) && p[1])
     {
         ++i;
-        _tcsncpy(options->show_balloon, p[1], _countof(options->show_balloon) - 1);
+        options->show_balloon = _ttoi(p[1]);
     }
     else if (streq(p[0], _T("service_only")) && p[1])
     {
         ++i;
-        _tcsncpy(options->service_only, p[1], _countof(options->service_only) - 1);
+        options->service_only = _ttoi(p[1]) ? 1 : 0;
     }
     else if (streq(p[0], _T("show_script_window")) && p[1])
     {
         ++i;
-        _tcsncpy(options->show_script_window, p[1], _countof(options->show_script_window) - 1);
+        options->show_script_window = _ttoi(p[1]) ? 1 : 0;
     }
     else if (streq(p[0], _T("silent_connection")) && p[1])
     {
         ++i;
-        _tcsncpy(options->silent_connection, p[1], _countof(options->silent_connection) - 1);
+        options->silent_connection = _ttoi(p[1]) ? 1 : 0;
     }
     else if (streq(p[0], _T("passphrase_attempts")) && p[1])
     {
         ++i;
-        _tcsncpy(options->psw_attempts_string, p[1], _countof(options->psw_attempts_string) - 1);
+        PrintDebug (L"Deprecated option: '%s' ignored.", p[0]);
     }
     else if (streq(p[0], _T("connectscript_timeout")) && p[1])
     {
         ++i;
-        _tcsncpy(options->connectscript_timeout_string, p[1], _countof(options->connectscript_timeout_string) - 1);
+        options->connectscript_timeout = _ttoi(p[1]);
     }
     else if (streq(p[0], _T("disconnectscript_timeout")) && p[1])
     {
         ++i;
-        _tcsncpy(options->disconnectscript_timeout_string, p[1], _countof(options->disconnectscript_timeout_string) - 1);
+        options->disconnectscript_timeout = _ttoi(p[1]);
     }
     else if (streq(p[0], _T("preconnectscript_timeout")) && p[1])
     {
         ++i;
-        _tcsncpy(options->preconnectscript_timeout_string, p[1], _countof(options->preconnectscript_timeout_string) - 1);
+        options->preconnectscript_timeout = _ttoi(p[1]);
     }
     else
     {
@@ -212,6 +250,7 @@ InitOptions(options_t *opt)
 {
     CLEAR(*opt);
     opt->netcmd_semaphore = InitSemaphore ();
+    opt->version = MakeVersion (PACKAGE_VERSION_RESOURCE);
 }
 
 
@@ -277,6 +316,8 @@ ProcessCommandLine(options_t *options, TCHAR *command_line)
     parse_argv(options, argc, argv);
 
     free(argv);
+
+    ExpandOptions ();
 }
 
 
@@ -306,4 +347,187 @@ GetConnByManagement(SOCKET sk)
             return &o.conn[i];
     }
     return NULL;
+}
+
+/* callback to set the initial value of folder browse selection */
+static int CALLBACK
+BrowseCallback (HWND h, UINT msg, UNUSED LPARAM l, LPARAM data)
+{
+    if (msg == BFFM_INITIALIZED)
+        SendMessage (h, BFFM_SETSELECTION, TRUE, data);
+
+    return 0;
+}
+
+static BOOL
+BrowseFolder (const WCHAR *initial_path, WCHAR *selected_path)
+{
+    BOOL ret = false;
+    BROWSEINFO bi;
+
+    CLEAR(bi);
+    bi.lpszTitle = L"Select folder...";
+    bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
+    bi.lpfn    = BrowseCallback;
+    bi.lParam  = (LPARAM) initial_path;
+
+    PIDLIST_ABSOLUTE idlist = SHBrowseForFolder (&bi);
+
+    if (idlist)
+    {
+        ret = SHGetPathFromIDList (idlist, selected_path);
+        CoTaskMemFree (idlist);
+    }
+
+    return ret;
+}
+
+static BOOL
+CheckAdvancedDlgParams (HWND hdlg)
+{
+    WCHAR tmp_path[MAX_PATH];
+
+    /* replace empty entries by current values */
+    if (GetWindowTextLength (GetDlgItem(hdlg, ID_EDT_CONFIG_DIR)) == 0)
+        SetDlgItemText (hdlg, ID_EDT_CONFIG_DIR, o.config_dir);
+    if (GetWindowTextLength (GetDlgItem(hdlg, ID_EDT_LOG_DIR)) == 0)
+        SetDlgItemText (hdlg, ID_EDT_LOG_DIR, o.log_dir);
+    if (GetWindowTextLength (GetDlgItem(hdlg, ID_EDT_CONFIG_EXT)) == 0)
+        SetDlgItemText (hdlg, ID_EDT_CONFIG_EXT, o.ext_string);
+
+    /* ensure paths are absolute */
+    GetDlgItemText (hdlg, ID_EDT_CONFIG_DIR, tmp_path, _countof(tmp_path));
+    ExpandString (tmp_path, _countof(tmp_path));
+    if (PathIsRelativeW (tmp_path))
+    {
+        MessageBox (NULL, L"Specified config directory is not an absolute path",
+                    L"Option error", MB_OK);
+        return false;
+    }
+
+    GetDlgItemText (hdlg, ID_EDT_LOG_DIR, tmp_path, _countof(tmp_path));
+    ExpandString (tmp_path, _countof(tmp_path));
+    if (PathIsRelativeW (tmp_path))
+    {
+        MessageBox (NULL, L"Specified log directory is not an absolute path",
+                    L"Option error", MB_OK);
+        return false;
+    }
+    return true;
+}
+
+static BOOL
+SaveAdvancedDlgParams (HWND hdlg)
+{
+    WCHAR tmp_path[MAX_PATH], tmp_path1[MAX_PATH];
+    UINT tmp;
+    BOOL status;
+
+    GetDlgItemText (hdlg, ID_EDT_CONFIG_DIR, o.config_dir, _countof(o.config_dir));
+
+    GetDlgItemText (hdlg, ID_EDT_LOG_DIR, tmp_path, _countof(tmp_path));
+    wcsncpy (tmp_path1, tmp_path, _countof(tmp_path1));
+    ExpandString (tmp_path1, _countof(tmp_path1));
+
+    if (EnsureDirExists (tmp_path1)) /* this will try to create the path if needed */
+        wcsncpy (o.log_dir, tmp_path, _countof(o.log_dir)); /* save unexpanded path */
+    else
+    {
+        ShowLocalizedMsg(IDS_ERR_CREATE_PATH, L"Log", tmp_path1);
+        return false;
+    }
+
+    GetDlgItemText (hdlg, ID_EDT_CONFIG_EXT, o.ext_string, _countof(o.ext_string));
+
+    tmp = GetDlgItemInt (hdlg, ID_EDT_PRECONNECT_TIMEOUT, &status, FALSE);
+    if (status && tmp > 0) o.preconnectscript_timeout = tmp;
+
+    tmp = GetDlgItemInt (hdlg, ID_EDT_CONNECT_TIMEOUT, &status, FALSE);
+    if (status) o.connectscript_timeout = tmp;
+
+    tmp = GetDlgItemInt (hdlg, ID_EDT_DISCONNECT_TIMEOUT, &status, FALSE);
+    if (status && tmp > 0) o.disconnectscript_timeout = tmp;
+
+    SaveRegistryKeys ();
+    ExpandOptions ();
+
+    return true;
+}
+
+static void
+LoadAdvancedDlgParams (HWND hdlg)
+{
+    SetDlgItemText (hdlg, ID_EDT_CONFIG_DIR, o.config_dir);
+    SetDlgItemText (hdlg, ID_EDT_CONFIG_EXT, o.ext_string);
+    SetDlgItemText (hdlg, ID_EDT_LOG_DIR, o.log_dir);
+    SetDlgItemInt (hdlg, ID_EDT_PRECONNECT_TIMEOUT, o.preconnectscript_timeout, FALSE);
+    SetDlgItemInt (hdlg, ID_EDT_CONNECT_TIMEOUT, o.connectscript_timeout, FALSE);
+    SetDlgItemInt (hdlg, ID_EDT_DISCONNECT_TIMEOUT, o.disconnectscript_timeout, FALSE);
+}
+
+INT_PTR CALLBACK
+AdvancedSettingsDlgProc (HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
+{
+    LPPSHNOTIFY psn;
+
+    switch(msg) {
+
+    case WM_INITDIALOG:
+        /* Limit extension editbox to 4 chars. */
+        SendMessage (GetDlgItem(hwndDlg, ID_EDT_CONFIG_EXT), EM_SETLIMITTEXT, 4, 0);
+        /* Populate UI */
+        LoadAdvancedDlgParams (hwndDlg);
+        break;
+
+    case WM_COMMAND:
+        switch (LOWORD(wParam)) {
+        WCHAR path[MAX_PATH];
+
+        case ID_BTN_CONFIG_DIR:
+            GetDlgItemText (hwndDlg, ID_EDT_CONFIG_DIR, path, _countof(path));
+            if (BrowseFolder (path, path))
+                SetDlgItemText (hwndDlg, ID_EDT_CONFIG_DIR, path);
+            break;
+
+        case ID_BTN_LOG_DIR:
+            GetDlgItemText (hwndDlg, ID_EDT_LOG_DIR, path, _countof(path));
+            if (BrowseFolder (path, path))
+                SetDlgItemText (hwndDlg, ID_EDT_LOG_DIR, path);
+            break;
+        }
+        break;
+
+    case WM_NOTIFY:
+        psn = (LPPSHNOTIFY) lParam;
+        if (psn->hdr.code == (UINT) PSN_KILLACTIVE)
+        {
+            SetWindowLongPtr (hwndDlg, DWLP_MSGRESULT, (CheckAdvancedDlgParams(hwndDlg) ? FALSE : TRUE));
+            return TRUE;
+        }
+        if (psn->hdr.code == (UINT) PSN_APPLY)
+        {
+            BOOL status = SaveAdvancedDlgParams (hwndDlg);
+            SetWindowLongPtr (hwndDlg, DWLP_MSGRESULT, status? PSNRET_NOERROR:PSNRET_INVALID);
+            return TRUE;
+        }
+        break;
+    }
+
+    return FALSE;
+}
+
+int
+CompareStringExpanded (const WCHAR *str1, const WCHAR *str2)
+{
+    WCHAR str1_cpy[MAX_PATH], str2_cpy[MAX_PATH];
+
+    wcsncpy (str1_cpy, str1, _countof(str1_cpy));
+    wcsncpy (str2_cpy, str2, _countof(str2_cpy));
+    str1_cpy[MAX_PATH-1] = L'\0';
+    str2_cpy[MAX_PATH-1] = L'\0';
+
+    ExpandString (str1_cpy, _countof(str1_cpy));
+    ExpandString (str2_cpy, _countof(str2_cpy));
+
+    return wcsicmp (str1_cpy, str2_cpy);
 }

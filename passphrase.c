@@ -40,6 +40,7 @@
 #include "openvpn-gui-res.h"
 #include "chartable.h"
 #include "localization.h"
+#include "misc.h"
 
 extern options_t o;
 
@@ -567,15 +568,15 @@ ParseKeyFilenameLine(connection_t *c, TCHAR *keyfilename, size_t keyfilenamesize
   return(1);
 }
 
-
 static int
-GetKeyFilename(connection_t *c, TCHAR *keyfilename, size_t keyfilenamesize, int *keyfile_format)
+GetKeyFilename(connection_t *c, TCHAR *keyfilename, size_t keyfilenamesize, int *keyfile_format, bool silent)
 {
-  FILE *fp;
+  FILE *fp = NULL;
   char line[256];
   int found_key=0;
   int found_pkcs12=0;
   TCHAR configfile_path[MAX_PATH];
+  int ret = 0;
 
   _tcsncpy(configfile_path, c->config_dir, _countof(configfile_path));
   if (!(configfile_path[_tcslen(configfile_path)-1] == '\\'))
@@ -586,8 +587,9 @@ GetKeyFilename(connection_t *c, TCHAR *keyfilename, size_t keyfilenamesize, int 
   if (!(fp=_tfopen(configfile_path, _T("r"))))
     {
       /* can't open config file */
-      ShowLocalizedMsg(IDS_ERR_OPEN_CONFIG, configfile_path);
-      return(0);
+      if (!silent)
+        ShowLocalizedMsg(IDS_ERR_OPEN_CONFIG, configfile_path);
+      goto out;
     }
 
   while (fgets(line, sizeof (line), fp))
@@ -597,49 +599,57 @@ GetKeyFilename(connection_t *c, TCHAR *keyfilename, size_t keyfilenamesize, int 
           if (found_key)
             {
               /* only one key option */
-              ShowLocalizedMsg(IDS_ERR_ONLY_ONE_KEY_OPTION);
-              return(0);
+              if (!silent)
+                ShowLocalizedMsg(IDS_ERR_ONLY_ONE_KEY_OPTION);
+              goto out;
             }
           if (found_pkcs12)
             {
               /* key XOR pkcs12 */
-              ShowLocalizedMsg(IDS_ERR_ONLY_KEY_OR_PKCS12);
-              return(0);
+	      if (!silent)
+                ShowLocalizedMsg(IDS_ERR_ONLY_KEY_OR_PKCS12);
+              goto out;
             }
           found_key=1;
           *keyfile_format = KEYFILE_FORMAT_PEM;
           if (!ParseKeyFilenameLine(c, keyfilename, keyfilenamesize, &line[4]))
-            return(0);
+            goto out;
         }
       if (LineBeginsWith(line, "pkcs12", 6))
         {
           if (found_pkcs12)
             {
               /* only one pkcs12 option */
-              ShowLocalizedMsg(IDS_ERR_ONLY_ONE_PKCS12_OPTION);
-              return(0);
+	      if (!silent)
+                ShowLocalizedMsg(IDS_ERR_ONLY_ONE_PKCS12_OPTION);
+              goto out;
             }
           if (found_key)
             {
               /* only key XOR pkcs12 */
-              ShowLocalizedMsg(IDS_ERR_ONLY_KEY_OR_PKCS12);
-              return(0);
+	      if (!silent)
+                ShowLocalizedMsg(IDS_ERR_ONLY_KEY_OR_PKCS12);
+              goto out;
             }
           found_pkcs12=1;
           *keyfile_format = KEYFILE_FORMAT_PKCS12;
           if (!ParseKeyFilenameLine(c, keyfilename, keyfilenamesize, &line[7]))
-            return(0);
+            goto out;
         }
     }
 
   if ((!found_key) && (!found_pkcs12))
     {
       /* must have key or pkcs12 option */
-      ShowLocalizedMsg(IDS_ERR_HAVE_KEY_OR_PKCS12);
-      return(0);
+      if (!silent)
+        ShowLocalizedMsg(IDS_ERR_HAVE_KEY_OR_PKCS12);
+      goto out;
     }
-
-  return(1);
+  ret = 1;
+out:
+  if (fp)
+    fclose(fp);
+  return ret;
 }
 
 
@@ -658,7 +668,7 @@ ChangePassphraseThread(LPVOID data)
   conn_name[_tcslen(conn_name) - (_tcslen(o.ext_string)+1)]=0;
 
   /* Get Key filename from config file */
-  if (!GetKeyFilename(c, keyfilename, _countof(keyfilename), &keyfile_format))
+  if (!GetKeyFilename(c, keyfilename, _countof(keyfilename), &keyfile_format, false))
     {
       ExitThread(1);
     }
@@ -685,6 +695,7 @@ ChangePassphraseThread(LPVOID data)
       }
     }
 
+  CloseHandle (hwndChangePSW);
   ExitThread(0);
 }
 
@@ -703,8 +714,18 @@ ShowChangePassphraseDialog(connection_t *c)
     ShowLocalizedMsg(IDS_ERR_CREATE_PASS_THREAD);
     return;
   }
-
+  CloseHandle (hThread);
 }
 
+bool
+CheckKeyFileWriteAccess (connection_t *c)
+{
+   TCHAR keyfile[MAX_PATH];
+   int format = 0;
+   if (!GetKeyFilename (c, keyfile, _countof(keyfile), &format, true))
+     return FALSE;
+   else
+     return CheckFileAccess (keyfile, GENERIC_WRITE);
+}
 
 #endif

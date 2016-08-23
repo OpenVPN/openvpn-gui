@@ -69,11 +69,11 @@ RunPreconnectScript(connection_t *c)
     si.hStdOutput = NULL;
 
     if (!CreateProcess(NULL, cmdline, NULL, NULL, TRUE,
-                       (o.show_script_window[0] == '1' ? CREATE_NEW_CONSOLE : CREATE_NO_WINDOW),
+                       (o.show_script_window ? CREATE_NEW_CONSOLE : CREATE_NO_WINDOW),
                        NULL, c->config_dir, &si, &pi))
         return;
 
-    for (i = 0; i <= o.preconnectscript_timeout; i++)
+    for (i = 0; i <= (int) o.preconnectscript_timeout; i++)
     {
         if (!GetExitCodeProcess(pi.hProcess, &exit_code))
             goto out;
@@ -122,7 +122,7 @@ RunConnectScript(connection_t *c, int run_as_service)
     si.hStdOutput = NULL;
 
     if (!CreateProcess(NULL, cmdline, NULL, NULL, TRUE,
-                       (o.show_script_window[0] == '1' ? CREATE_NEW_CONSOLE : CREATE_NO_WINDOW),
+                       (o.show_script_window ? CREATE_NEW_CONSOLE : CREATE_NO_WINDOW),
                        NULL, c->config_dir, &si, &pi))
     {
         ShowLocalizedMsg(IDS_ERR_RUN_CONN_SCRIPT, cmdline);
@@ -132,7 +132,7 @@ RunConnectScript(connection_t *c, int run_as_service)
     if (o.connectscript_timeout == 0)
         goto out;
 
-    for (i = 0; i <= o.connectscript_timeout; i++)
+    for (i = 0; i <= (int) o.connectscript_timeout; i++)
     {
         if (!GetExitCodeProcess(pi.hProcess, &exit_code))
         {
@@ -191,11 +191,11 @@ RunDisconnectScript(connection_t *c, int run_as_service)
     si.hStdOutput = NULL;
 
     if (!CreateProcess(NULL, cmdline, NULL, NULL, TRUE,
-                       (o.show_script_window[0] == '1' ? CREATE_NEW_CONSOLE : CREATE_NO_WINDOW),
+                       (o.show_script_window ? CREATE_NEW_CONSOLE : CREATE_NO_WINDOW),
                        NULL, c->config_dir, &si, &pi))
         return;
 
-    for (i = 0; i <= o.disconnectscript_timeout; i++)
+    for (i = 0; i <= (int) o.disconnectscript_timeout; i++)
     {
         if (!GetExitCodeProcess(pi.hProcess, &exit_code))
             goto out;
