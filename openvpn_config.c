@@ -105,8 +105,10 @@ AddConfigFileToList(int config, const TCHAR *filename, const TCHAR *config_dir)
     c->manage.skaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
     c->manage.skaddr.sin_port = htons(25340 + config);
 
+#ifndef DISABLE_CHANGE_PASSWORD
     if (CheckKeyFileWriteAccess (c))
         c->flags |= ALLOW_CHANGE_PASSPHRASE;
+#endif
 
     /* Check if connection should be autostarted */
     for (i = 0; i < MAX_CONFIGS && o.auto_connect[i]; ++i)
