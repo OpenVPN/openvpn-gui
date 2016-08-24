@@ -25,7 +25,7 @@
 ID_DLG_PASSPHRASE DIALOGEX 6, 18, 120, 67
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
 EXSTYLE WS_EX_TOPMOST
-CAPTION "OpenVPN - Пароль для приватного ключа"
+CAPTION "OpenVPN - Пароль закрытого ключа"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 BEGIN
@@ -87,7 +87,7 @@ END
 /* Change Passphrase Dialog */
 ID_DLG_CHGPASS DIALOG 6, 18, 193, 82
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "OpenVPN - Смена пароля приватного ключа"
+CAPTION "OpenVPN - Смена пароля закрытого ключа"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 BEGIN
@@ -136,13 +136,13 @@ BEGIN
     COMBOBOX ID_CMB_LANGUAGE, 42, 23, 186, 400, CBS_DROPDOWNLIST | WS_TABSTOP
 
     GROUPBOX "Запуск", 202, 6, 47, 235, 30
-    AUTOCHECKBOX "Запускаться при старте Windows", ID_CHK_STARTUP, 17, 59, 200, 12
+    AUTOCHECKBOX "Запускать при старте Windows", ID_CHK_STARTUP, 17, 59, 200, 12
 
     GROUPBOX "Настройки", 202, 6, 82, 235, 90
-    AUTOCHECKBOX "Дописывать, а не перезаписывать, лог", ID_CHK_LOG_APPEND, 17, 95, 60, 10
-    AUTOCHECKBOX "Отображать окно скрипта", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
+    AUTOCHECKBOX "Дописывать, а не перезаписывать журнал", ID_CHK_LOG_APPEND, 17, 95, 60, 10
+    AUTOCHECKBOX "Показывать окно выполнения", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "«Тихое» подключение", ID_CHK_SILENT, 17, 125, 200, 10
-    LTEXT "Показывать балун", ID_TXT_BALLOON, 17, 140, 100, 10
+    LTEXT "Всплывающее окно", ID_TXT_BALLOON, 17, 140, 100, 10
     AUTORADIOBUTTON "При подключении", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "При подключении и переподключении", ID_RB_BALLOON2, 86, 155, 90, 10
     AUTORADIOBUTTON "Никогда", ID_RB_BALLOON0, 181, 155, 40, 10
@@ -175,7 +175,7 @@ BEGIN
     EDITTEXT ID_EDT_CONNECT_TIMEOUT, 103, 123, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 103, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
 
-    AUTOCHECKBOX "Всегда использовать сервис", ID_CHK_SERVICE_ONLY, 6, 162, 100, 12
+    AUTOCHECKBOX "Режим управления сервисом", ID_CHK_SERVICE_ONLY, 6, 162, 100, 12
 END
 
 /* About Dialog */
@@ -224,7 +224,7 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\nПодключен с: "
     IDS_TIP_ASSIGNED_IP "\nНазначенный IP: %s"
     IDS_MENU_SERVICE "Служба OpenVPN"
-    IDS_MENU_IMPORT "Импортировать конфигурацию…"
+    IDS_MENU_IMPORT "Импорт конфигурации…"
     IDS_MENU_SETTINGS "Настройки…"
     IDS_MENU_CLOSE "Выход"
     IDS_MENU_CONNECT "Подключиться"
@@ -248,7 +248,7 @@ BEGIN
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI не поддерживает более %d конфигураций. Пожалуйста, свяжитесь с автором, если вам нужно больше."
-    IDS_NFO_NO_CONFIGS "Конфигурационные файлы не найдены."
+    IDS_NFO_NO_CONFIGS "Файлы конфигурации не найдены."
     IDS_ERR_CONFIG_NOT_AUTHORIZED "Для запуска данного подключения (%s) требуется членство в группе\n"\
                                   """%s"". Свяжитесь с вашим системным администратором.\n"
     IDS_ERR_CONFIG_TRY_AUTHORIZE  "Для запуска данного подключения (%s) требуется членство в группе\n"\
@@ -424,7 +424,7 @@ BEGIN
     IDS_ERR_WRITE_REGVALUE "Ошибка записи значения реестра ""HKEY_CURRENT_USER\\%s\\%s""."
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS "Конфигурационный файл ""%s"" уже существует."
+    IDS_ERR_IMPORT_EXISTS "Файл конфигурации ""%s"" уже существует."
     IDS_ERR_IMPORT_FAILED "Ошибка импорта файла. Путь %s не может быть создан.\n\n" \
                           "Убедитесь, что у вас есть необходимые привилегии для данного действия."
     IDS_NFO_IMPORT_SUCCESS "Импорт файла успешно завершен."
