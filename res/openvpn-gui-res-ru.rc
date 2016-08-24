@@ -25,7 +25,7 @@
 ID_DLG_PASSPHRASE DIALOGEX 6, 18, 120, 67
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
 EXSTYLE WS_EX_TOPMOST
-CAPTION "OpenVPN"
+CAPTION "OpenVPN - Пароль для приватного ключа"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 BEGIN
@@ -55,18 +55,18 @@ END
 /* Auth Username/Password/Challenge Dialog */
 ID_DLG_AUTH_CHALLENGE DIALOG 6, 18, 160, 112
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
-CAPTION "OpenVPN - User Authentication"
+CAPTION "OpenVPN - Аутентификация пользователя"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 BEGIN
     LTEXT "Имя пользователя:", 0, 6, 9, 50, 10
     LTEXT "Пароль:", 0, 6, 26, 50, 10
-    LTEXT "Response:", 0, 6, 60, 50, 10
+    LTEXT "Ответный код:", 0, 6, 60, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     LTEXT "", ID_TXT_AUTH_CHALLENGE, 6, 43, 148, 10
     EDITTEXT ID_EDT_AUTH_CHALLENGE, 60, 57, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 76, 100, 10
+    CHECKBOX "Запомнить", ID_CHK_SAVE_PASS, 6, 76, 100, 10
     PUSHBUTTON "OK", IDOK, 20, 92, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
     PUSHBUTTON "Отмена", IDCANCEL, 90, 92, 52, 14
 END
@@ -87,7 +87,7 @@ END
 /* Change Passphrase Dialog */
 ID_DLG_CHGPASS DIALOG 6, 18, 193, 82
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "OpenVPN - Смена пароля"
+CAPTION "OpenVPN - Смена пароля приватного ключа"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 BEGIN
@@ -111,7 +111,7 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 BEGIN
     GROUPBOX "   ", 201, 6, 46, 235, 52
-    AUTORADIOBUTTON "Использовать настройки файла конфигурации OpenVPN", ID_RB_PROXY_OPENVPN, \
+    AUTORADIOBUTTON "Использовать настройки из файла конфигурации OpenVPN", ID_RB_PROXY_OPENVPN, \
                     13, 16, 210, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Использовать системные настройки прокси-сервера", \
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
@@ -134,17 +134,18 @@ BEGIN
     GROUPBOX "Интерфейс пользователя", 201, 6, 12, 235, 30
     LTEXT "Язык:", ID_TXT_LANGUAGE, 17, 25, 23, 12
     COMBOBOX ID_CMB_LANGUAGE, 42, 23, 186, 400, CBS_DROPDOWNLIST | WS_TABSTOP
-    GROUPBOX "Startup", 202, 6, 47, 235, 30
-    AUTOCHECKBOX "Launch on Windows startup", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "Preferences", 202, 6, 82, 235, 90
-    AUTOCHECKBOX "Append to log", ID_CHK_LOG_APPEND, 17, 95, 60, 10
-    AUTOCHECKBOX "Show script window", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
-    AUTOCHECKBOX "Silent connection", ID_CHK_SILENT, 17, 125, 200, 10
-    LTEXT "Show Balloon", ID_TXT_BALLOON, 17, 140, 100, 10
-    AUTORADIOBUTTON "On connect", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "On connect/reconnect", ID_RB_BALLOON2, 86, 155, 90, 10
-    AUTORADIOBUTTON "Never", ID_RB_BALLOON0, 181, 155, 40, 10
+    GROUPBOX "Запуск", 202, 6, 47, 235, 30
+    AUTOCHECKBOX "Запускаться при старте Windows", ID_CHK_STARTUP, 17, 59, 200, 12
+
+    GROUPBOX "Настройки", 202, 6, 82, 235, 90
+    AUTOCHECKBOX "Дописывать, а не перезаписывать, лог", ID_CHK_LOG_APPEND, 17, 95, 60, 10
+    AUTOCHECKBOX "Отображать окно скрипта", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
+    AUTOCHECKBOX "«Тихое» подключение", ID_CHK_SILENT, 17, 125, 200, 10
+    LTEXT "Показывать балун", ID_TXT_BALLOON, 17, 140, 100, 10
+    AUTORADIOBUTTON "При подключении", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "При подключении и переподключении", ID_RB_BALLOON2, 86, 155, 90, 10
+    AUTORADIOBUTTON "Никогда", ID_RB_BALLOON0, 181, 155, 40, 10
 END
 
 /* Advanced Dialog */
@@ -154,27 +155,27 @@ CAPTION "Advanced"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 BEGIN
-    GROUPBOX "Configuration Files", 201, 6, 12, 235, 45
-    LTEXT "Folder:", ID_TXT_FOLDER, 17, 25, 32, 10
-    LTEXT "Extension:", ID_TXT_EXTENSION, 17, 40, 52, 10
+    GROUPBOX "Файлы конфигурации", 201, 6, 12, 235, 45
+    LTEXT "Папка:", ID_TXT_FOLDER, 17, 25, 32, 10
+    LTEXT "Расширение:", ID_TXT_EXTENSION, 17, 40, 52, 10
     EDITTEXT ID_EDT_CONFIG_DIR, 53, 23, 150, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_CONFIG_EXT, 53, 38, 25, 12, ES_AUTOHSCROLL
     PUSHBUTTON "…", ID_BTN_CONFIG_DIR, 208, 23, 25, 12
 
-    GROUPBOX "Log Files", 202, 6, 62, 235, 30
-    LTEXT "Folder:", ID_TXT_FOLDER, 17, 74, 32, 10
+    GROUPBOX "Файлы журнала", 202, 6, 62, 235, 30
+    LTEXT "Папка:", ID_TXT_FOLDER, 17, 74, 32, 10
     EDITTEXT ID_EDT_LOG_DIR, 53, 72, 150, 12, ES_AUTOHSCROLL
     PUSHBUTTON "…", ID_BTN_LOG_DIR, 208, 72, 25, 12
 
-    GROUPBOX "Script Timeout", 201, 6, 97, 235, 60
-    LTEXT "Preconnect script timeout:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
-    LTEXT "Connect script timeout:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
-    LTEXT "Disconnect script timeout:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
+    GROUPBOX "Ограничение времени выполнения скриптов", 201, 6, 97, 235, 60
+    LTEXT "Тайм-аут Preconnect-скрипта:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
+    LTEXT "Тайм-аут Connect-скрипта:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
+    LTEXT "Тайм-аут Disconnect-скрипта:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
     EDITTEXT ID_EDT_PRECONNECT_TIMEOUT, 103, 108, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_CONNECT_TIMEOUT, 103, 123, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 103, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
 
-    AUTOCHECKBOX "Service only", ID_CHK_SERVICE_ONLY, 6, 162, 100, 12
+    AUTOCHECKBOX "Всегда использовать сервис", ID_CHK_SERVICE_ONLY, 6, 162, 100, 12
 END
 
 /* About Dialog */
@@ -200,7 +201,7 @@ END
 /* Proxy Authentication Dialog */
 ID_DLG_PROXY_AUTH DIALOG 29, 23, 181, 63
 STYLE DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER
-CAPTION "OpenVPN - Аутентификация прокси-сервера"
+CAPTION "OpenVPN - Аутентификация на прокси-сервере"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 BEGIN
@@ -223,6 +224,7 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\nПодключен с: "
     IDS_TIP_ASSIGNED_IP "\nНазначенный IP: %s"
     IDS_MENU_SERVICE "Служба OpenVPN"
+    IDS_MENU_IMPORT "Импортировать конфигурацию…"
     IDS_MENU_SETTINGS "Настройки…"
     IDS_MENU_CLOSE "Выход"
     IDS_MENU_CONNECT "Подключиться"
@@ -246,6 +248,17 @@ BEGIN
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI не поддерживает более %d конфигураций. Пожалуйста, свяжитесь с автором, если вам нужно больше."
+    IDS_NFO_NO_CONFIGS "Конфигурационные файлы не найдены."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "Для запуска данного подключения (%s) требуется членство в группе\n"\
+                                  """%s"". Свяжитесь с вашим системным администратором.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Для запуска данного подключения (%s) требуется членство в группе\n"\
+                                  """%s"".\n\n"\
+                                  "Хотите добавить вашу учетную запись в эту группу?\n"\
+                                  "Данное действие может потребовать ввод пароля администратора."
+    IDS_NFO_CONFIG_AUTH_PENDING   "Для запуска данного подключения (%s) требуется членство в группе\n"\
+                                  """%s"".\n\n"\
+                                  "Пожалуйста, сначала закройте предыдущий диалог авторизации."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Ошибка добавления учетной записи в группу ""%s""."
     IDS_ERR_ONE_CONN_OLD_VER "Одновременно вы можете использовать только одно соединение, если вы используете OpenVPN версии старее 2.0-beta6."
     IDS_ERR_STOP_SERV_OLD_VER "Вы не можете использовать OpenVPN GUI для запуска подключения, пока запущена служба OpenVPN (с OpenVPN 1.5/1.6). Сначала остановите службу OpenVPN, если хотите использовать OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "Ошибка выполнения CreateEvent при выходе: %s"
@@ -386,9 +399,16 @@ BEGIN
     IDS_ERR_OPEN_SCMGR "Не удалось выполнить OpenSCManager (%d)"
     IDS_ERR_STOP_SERVICE "Не удалось остановить службу OpenVPN"
     IDS_NFO_RESTARTED "Служба OpenVPN перезапущена."
+    IDS_ERR_ACCESS_SERVICE_PIPE "Попытка доступа к пайпу сервиса не удалась."
+    IDS_ERR_WRITE_SERVICE_PIPE "Попытка записи в пайп сервиса не удалась."
+    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" не установлен.\n"
+                                 "Функциональность, требующая прав администратора, может не работать."
+    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" не запущен.\n"
+                                 "Функциональность, требующая прав администратора, может не работать."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Ошибка получения пути к папке ""Windows""."
+    IDS_ERR_GET_PROFILE_DIR "Ошибка получения пути к папке профиля текущего пользователя."
     IDS_ERR_GET_PROGRAM_DIR "Ошибка получения пути к папке ""Program Files""."
     IDS_ERR_OPEN_REGISTRY "Ошибка открытия реестра для чтения (HKLM\\SOFTWARE\\OpenVPN).\n " \
                       "OpenVPN, возможно, не установлен."
@@ -402,6 +422,12 @@ BEGIN
                        "однократно с правами администратора, чтобы обновить реестр."
     IDS_ERR_READ_SET_KEY "Ошибка чтения и установки значения ключа ""%s""."
     IDS_ERR_WRITE_REGVALUE "Ошибка записи значения реестра ""HKEY_CURRENT_USER\\%s\\%s""."
+
+    /* importation */
+    IDS_ERR_IMPORT_EXISTS "Конфигурационный файл ""%s"" уже существует."
+    IDS_ERR_IMPORT_FAILED "Ошибка импорта файла. Путь %s не может быть создан.\n\n" \
+                          "Убедитесь, что у вас есть необходимые привилегии для данного действия."
+    IDS_NFO_IMPORT_SUCCESS "Импорт файла успешно завершен."
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "Подтвердите удаление сохраненных паролей для ""%s"""
