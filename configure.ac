@@ -51,9 +51,6 @@ if test -z "$MAX_CONFIGS"; then
 fi
 AC_DEFINE_UNQUOTED([MAX_CONFIGS], [$MAX_CONFIGS], [Maximum number of config files supported.])
 
-AC_ARG_VAR([ARCH], [override the CPU architecture for the NSIS installer])
-test "x$ARCH" = "x" && ARCH=${host%%-*}
-
 case "$host" in
 	*-mingw*)
 		CPPFLAGS="${CPPFLAGS} -DWIN32_LEAN_AND_MEAN"
@@ -68,12 +65,6 @@ AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
-
-AC_ARG_VAR([MAKENSIS], [define the path to the makensis tool])
-if test "x$MAKENSIS" = "x"; then
-	AC_PATH_PROG([MAKENSIS], [makensis])
-fi
-AM_CONDITIONAL([HAVE_NSIS], [test "x$MAKENSIS" != "x"])
 
 if test "${enable_password_change}" = "yes"; then
 PKG_PROG_PKG_CONFIG
