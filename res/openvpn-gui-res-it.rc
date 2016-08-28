@@ -259,7 +259,7 @@ BEGIN
     IDS_NFO_STATE_WAIT_TERM "Stato corrente: In attesa che OpenVPN termini…"
     IDS_NFO_STATE_CONNECTED "Stato corrente: Connesso"
     IDS_NFO_NOW_CONNECTED "%s è ora connesso."
-    IDS_NFO_ASSIGN_IP "IP asseganto: %s"
+    IDS_NFO_ASSIGN_IP "IP assegnato: %s"
     IDS_ERR_CERT_EXPIRED "Non riesco a connettermi perché il tuo certificato è scaduto o l'orologio di sistema non è corretto."
     IDS_ERR_CERT_NOT_YET_VALID "Non riesco a connettermi perché il tuo certificato non è ancora valido. Assicurati che l'orologio di sistema sia corretto."
     IDS_NFO_STATE_RECONNECTING "Stato corrente: Riconnessione in corso"
