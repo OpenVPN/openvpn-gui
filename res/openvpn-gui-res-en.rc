@@ -429,6 +429,7 @@ BEGIN
     IDS_ERR_IMPORT_FAILED "Failed to import file. The following path could not be created.\n\n" \
                           "%s\n\nMake sure you have the right permissions."
     IDS_NFO_IMPORT_SUCCESS "File imported successfully."
+    IDS_ASK_IMPORT_CONFIRM "Do you want to import file ""%s""?"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "Press OK to delete saved passwords for config ""%s"""

@@ -87,6 +87,11 @@ add_option(options_t *options, int i, TCHAR **p)
         ShowLocalizedMsgEx(MB_OK, caption, IDS_NFO_USAGE);
         exit(0);
     }
+    else if (streq(p[0], _T("import")) && p[1])
+    {
+        ImportConfigFile(p[1]);
+        exit(0);
+    }
     else if (streq(p[0], _T("connect")) && p[1])
     {
         ++i;
