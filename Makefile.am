@@ -67,11 +67,7 @@ openvpn_gui_RESOURCES = \
 	res/reconnecting.ico \
 	res/openvpn-gui.manifest
 
-openvpn_gui_NSIS = \
-    nsis/openvpn-gui.nsi \
-    nsis/english.nsh
-
-EXTRA_DIST = $(openvpn_gui_RESOURCES) $(openvpn_gui_NSIS)
+EXTRA_DIST = $(openvpn_gui_RESOURCES)
 
 openvpn_gui_SOURCES = \
 	main.c main.h \
@@ -110,15 +106,3 @@ openvpn_gui_LDADD = \
 
 openvpn-gui-res.o: $(openvpn_gui_RESOURCES) $(srcdir)/openvpn-gui-res.h
 	$(RCCOMPILE) -i $< -o $@
-
-if HAVE_NSIS
-CLEANFILES = openvpn-gui-installer.exe
-
-openvpn-gui-installer.exe: $(openvpn_gui_NSIS) $(bin_PROGRAMS)
-	$(STRIP) -s $(bin_PROGRAMS)
-	$(MAKENSIS) -DARCH=$(ARCH) -DVERSION=$(VERSION) $<
-
-installer: openvpn-gui-installer.exe
-
-.PHONY: installer
-endif
