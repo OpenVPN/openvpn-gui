@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include <shellapi.h>
 #include <objbase.h>
+#include <shlwapi.h>
 
 #include "tray.h"
 #include "openvpn.h"
@@ -40,12 +41,14 @@ extern options_t o;
 void ViewLog(int config)
 {
   TCHAR filename[2*MAX_PATH];
+  TCHAR assocexe[2*MAX_PATH];
+  DWORD assocexe_num;
 
   STARTUPINFO start_info;
   PROCESS_INFORMATION proc_info;
   SECURITY_ATTRIBUTES sa;
   SECURITY_DESCRIPTOR sd;
-  HINSTANCE status;
+  HINSTANCE status = 0;
 
   CLEAR (start_info);
   CLEAR (proc_info);
@@ -54,8 +57,8 @@ void ViewLog(int config)
 
   /* Try first using file association */
   CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE); /* Safe to init COM multiple times */
-  status = ShellExecuteW (o.hWnd, L"open", o.conn[config].log_path, NULL, o.log_dir, SW_SHOWNORMAL);
-
+  if (AssocQueryString(0, ASSOCSTR_EXECUTABLE, L".txt", NULL, assocexe, &assocexe_num) == S_OK)
+    status = ShellExecuteW (o.hWnd, L"open", assocexe, o.conn[config].log_path, o.log_dir, SW_SHOWNORMAL);
   if (status > (HINSTANCE) 32) /* Success */
     return;
   else
@@ -95,12 +98,14 @@ void ViewLog(int config)
 void EditConfig(int config)
 {
   TCHAR filename[2*MAX_PATH];
+  TCHAR assocexe[2*MAX_PATH];
+  DWORD assocexe_num;
 
   STARTUPINFO start_info;
   PROCESS_INFORMATION proc_info;
   SECURITY_ATTRIBUTES sa;
   SECURITY_DESCRIPTOR sd;
-  HINSTANCE status;
+  HINSTANCE status = 0;
 
   CLEAR (start_info);
   CLEAR (proc_info);
@@ -111,7 +116,8 @@ void EditConfig(int config)
   _sntprintf_0(filename, L"%s\\%s", o.conn[config].config_dir, o.conn[config].config_file);
 
   CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE); /* Safe to init COM multiple times */
-  status = ShellExecuteW (o.hWnd, L"open", filename, NULL, o.conn[config].config_dir, SW_SHOWNORMAL);
+  if (AssocQueryString(0, ASSOCSTR_EXECUTABLE, L".txt", NULL, assocexe, &assocexe_num) == S_OK)
+    status = ShellExecuteW (o.hWnd, L"open", assocexe, filename, o.conn[config].config_dir, SW_SHOWNORMAL);
   if (status > (HINSTANCE) 32)
     return;
   else
