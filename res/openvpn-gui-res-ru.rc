@@ -248,7 +248,8 @@ BEGIN
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI не поддерживает более %d конфигураций. Пожалуйста, свяжитесь с автором, если вам нужно больше."
-    IDS_NFO_NO_CONFIGS "Файлы конфигурации не найдены."
+    IDS_NFO_NO_CONFIGS "Файлы конфигурации не найдены.\n"\
+                       "Use the ""Import File.."" menu or copy your config files to ""%s"" or ""%s""."
     IDS_ERR_CONFIG_NOT_AUTHORIZED "Для запуска данного подключения (%s) требуется членство в группе\n"\
                                   """%s"". Свяжитесь с вашим системным администратором.\n"
     IDS_ERR_CONFIG_TRY_AUTHORIZE  "Для запуска данного подключения (%s) требуется членство в группе\n"\

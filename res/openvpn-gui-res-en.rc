@@ -247,7 +247,8 @@ BEGIN
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI does not support more than %d configs. Please contact the author if you have the need for more."
-    IDS_NFO_NO_CONFIGS "No readable connection profiles (config files) found"
+    IDS_NFO_NO_CONFIGS "No readable connection profiles (config files) found.\n"\
+                       "Use the ""Import File.."" menu or copy your config files to ""%s"" or ""%s""."
     IDS_ERR_CONFIG_NOT_AUTHORIZED "Starting this connection (%s) requires membership in "\
                                   """%s"" group. Contact your system administrator.\n"
     IDS_ERR_CONFIG_TRY_AUTHORIZE  "Starting this connection (%s) requires membership in "\
