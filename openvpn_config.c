@@ -235,7 +235,7 @@ BuildFileList()
         BuildFileList0 (o.global_config_dir, issue_warnings);
 
     if (o.num_configs == 0 && issue_warnings)
-        ShowLocalizedMsg(IDS_NFO_NO_CONFIGS);
+        ShowLocalizedMsg(IDS_NFO_NO_CONFIGS, o.config_dir, o.global_config_dir);
 
     issue_warnings = false;
 }

@@ -244,7 +244,8 @@ BEGIN
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI não suporta mais do que %d configurações. Contate o autor se você necessita de mais."
-    IDS_NFO_NO_CONFIGS "Nenhum perfil de conexão (arquivo de configuração) foi localizado."
+    IDS_NFO_NO_CONFIGS "Nenhum perfil de conexão (arquivo de configuração) foi localizado.\n"\
+                       "Use the ""Import File.."" menu or copy your config files to ""%s"" or ""%s""."
     IDS_ERR_ONE_CONN_OLD_VER "Você pode ter apenas uma conexão ativa enquanto estiver usando uma versão anterior a OpenVPN 2.0-beta6."
     IDS_ERR_STOP_SERV_OLD_VER "Você não pode usar o OpenVPN GUI para iniciar uma conexão enquanto o serviço OpenVPN estiver em execução (com OpenVPN 1.5/1.6). Pare o serviço OpenVPN primero se você quiser utilizar o OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "CreateEvent falhou no evento de saída: %s"

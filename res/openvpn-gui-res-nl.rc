@@ -244,7 +244,8 @@ BEGIN
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI ondersteunt niet meer dan %d configuraties. Neem contact op met de auteur indien u er meer wenst."
-    IDS_NFO_NO_CONFIGS "Geen leesbare verbindingsprofielen (config files) gevonden."
+    IDS_NFO_NO_CONFIGS "Geen leesbare verbindingsprofielen (config files) gevonden.\n"\
+                       "Use the ""Import File.."" menu or copy your config files to ""%s"" or ""%s""."
     IDS_ERR_CONFIG_NOT_AUTHORIZED "Het maken van deze verbinding (%s) vereist lidmaatschap van\n"\
                                   "de groep ""%s"". Neem contact op met de systeembeheerder.\n"
     IDS_ERR_CONFIG_TRY_AUTHORIZE  "Het maken van deze verbinding (%s) vereist lidmaatschap van\n"\
