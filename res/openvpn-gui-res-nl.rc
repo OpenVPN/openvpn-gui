@@ -389,7 +389,6 @@ BEGIN
     IDS_ERR_GET_TEMP_PATH "Fout tijdens opvragen TempPath met GetTempPath(). Gebruikt ""C:\\"" als TempPath."
 
     /* service */
-    IDS_ERR_OPEN_SCMGR_ADMIN "Starten van OpenSCManager mislukt. Administrator-rechten zijn vereist om een service te starten."
     IDS_ERR_OPEN_VPN_SERVICE "Openen ""OpenVPNService"" mislukt"
     IDS_ERR_START_SERVICE "Starten ""OpenVPNService"" mislukt"
     IDS_ERR_QUERY_SERVICE "Opvragen servicestatus mislukt."

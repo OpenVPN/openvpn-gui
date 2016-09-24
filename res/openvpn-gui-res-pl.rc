@@ -376,7 +376,6 @@ BEGIN
     IDS_ERR_GET_TEMP_PATH "Błąd przy ustalaniu katalogu tymczasowego przy pomocy funkcji GetTempPath(). Użyty zostanie katalog ""C:\\""."
 
     /* service */
-    IDS_ERR_OPEN_SCMGR_ADMIN "Błąd OpenSCManager'a. Do uruchomienia usługi wymagane są uprawnienia administratora."
     IDS_ERR_OPEN_VPN_SERVICE "Błąd otwarcia usługi ""OpenVPNService"""
     IDS_ERR_START_SERVICE "Uruchomienie usługi ""OpenVPNService"" nie powiodło się."
     IDS_ERR_QUERY_SERVICE "Błąd przy odczycie statusu usługi."

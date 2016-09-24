@@ -374,7 +374,6 @@ BEGIN
     IDS_ERR_GET_TEMP_PATH "En feil oppsto når GetTempPath() ble kalt opp. Alternativ ""C:\\"" vil bi benyttet."
 
     /* service */
-    IDS_ERR_OPEN_SCMGR_ADMIN "En feil oppsto under åpning av Service Manager. Du har sannsynligvis ikke rettigheter til å starte/stoppe en service."
     IDS_ERR_OPEN_VPN_SERVICE "Kunnne ike åpne ""OpenVPNService"""
     IDS_ERR_START_SERVICE "En feil oppsto under oppstart av OpenVPN Service"
     IDS_ERR_QUERY_SERVICE "En feil oppsto når status på OpenVPN Service skulle kontrolleres."

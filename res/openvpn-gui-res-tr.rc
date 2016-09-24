@@ -376,7 +376,6 @@ BEGIN
     IDS_ERR_GET_TEMP_PATH "GetTempPath() ile TempPath aranırken hata oluştu. ""C:\\"" kullanılacak."
 
     /* service */
-    IDS_ERR_OPEN_SCMGR_ADMIN "OpenSCManager başarısız oldu. Yeni bir servis çalıştırmak için yönetici haklarına sahip olmanız gerekmektedir."
     IDS_ERR_OPEN_VPN_SERVICE """OpenVPNService"" başlatımı başarısız oldu."
     IDS_ERR_START_SERVICE """OpenVPNService"" başlatımı başarısız oldu."
     IDS_ERR_QUERY_SERVICE "Servis durumu sorgulaması başarısız oldu."

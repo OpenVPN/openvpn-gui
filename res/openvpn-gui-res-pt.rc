@@ -379,7 +379,6 @@ BEGIN
     IDS_ERR_GET_TEMP_PATH "Erro ao determinar TempPath com GetTempPath(). Usando ""C:\\"" no lugar."
 
     /* service */
-    IDS_ERR_OPEN_SCMGR_ADMIN "OpenSCManager falhou. Você precisa ter permissões de Administrador para iniciar um serviço."
     IDS_ERR_OPEN_VPN_SERVICE "Falha ao abrir ""OpenVPNService"""
     IDS_ERR_START_SERVICE "Falha ao iniciar ""OpenVPNService"""
     IDS_ERR_QUERY_SERVICE "Falha ao consultar status do serviço."
