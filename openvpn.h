@@ -35,6 +35,8 @@ void OnLogLine(connection_t *, char *);
 void OnStateChange(connection_t *, char *);
 void OnPassword(connection_t *, char *);
 void OnStop(connection_t *, char *);
+void OnNeedOk(connection_t *, char *);
+void OnNeedStr(connection_t *, char *);
 
 void DisablePasswordSave(connection_t *);
 

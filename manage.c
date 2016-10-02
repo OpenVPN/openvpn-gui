@@ -312,6 +312,16 @@ OnManagement(SOCKET sk, LPARAM lParam)
                     if (rtmsg_handler[ready])
                         rtmsg_handler[ready](c, pos + 5);
                 }
+                else if (strncmp(pos, "NEED-OK:", 8) == 0)
+                {
+                    if (rtmsg_handler[needok])
+                        rtmsg_handler[needok](c, pos + 8);
+                }
+                else if (strncmp(pos, "NEED-STR:", 9) == 0)
+                {
+                    if (rtmsg_handler[needstr])
+                        rtmsg_handler[needstr](c, pos + 9);
+                }
             }
             else if (c->manage.cmd_queue)
             {

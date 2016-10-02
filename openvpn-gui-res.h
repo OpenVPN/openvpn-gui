@@ -301,7 +301,12 @@
 /* Save password related messages */
 #define IDS_NFO_DELETE_PASS             2001
 
+/* Token password dialog related */
+#define IDS_NFO_TOKEN_PASSWORD_CAPTION  2100
+#define IDS_NFO_TOKEN_PASSWORD_REQUEST  2101
+
 /* Timer IDs */
 #define IDT_STOP_TIMER                  2500  /* Timer used to trigger force termination */
+
 
 #endif

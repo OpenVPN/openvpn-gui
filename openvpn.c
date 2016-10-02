@@ -63,6 +63,10 @@ const TCHAR *cfgProp = _T("conn");
 #define FLAG_CR_TYPE_CRV1  0x2    /* dynamic challenege */
 #define FLAG_CR_ECHO       0x4    /* echo the response */
 #define FLAG_CR_RESPONSE   0x8    /* response needed */
+#define FLAG_PASS_TOKEN    0x10   /* PKCS11 token password needed */
+#define FLAG_STRING_PKCS11 0x20   /* PKCS11 id needed */
+#define FLAG_PASS_PKEY     0x40   /* Private key password needed */
+
 typedef struct {
     connection_t *c;
     unsigned int flags;
@@ -395,6 +399,16 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             if (param->flags & FLAG_CR_ECHO)
                 SendMessage(GetDlgItem(hwndDlg, ID_EDT_RESPONSE), EM_SETPASSWORDCHAR, 0, 0);
         }
+        else if (param->flags & FLAG_PASS_TOKEN)
+        {
+            SetWindowText(hwndDlg, LoadLocalizedString(IDS_NFO_TOKEN_PASSWORD_CAPTION));
+            SetDlgItemText(hwndDlg, ID_TXT_DESCRIPTION, LoadLocalizedString(IDS_NFO_TOKEN_PASSWORD_REQUEST, param->id));
+        }
+        else
+        {
+            WriteStatusLog(param->c, L"GUI> ", L"Unknown password request", false);
+            SetDlgItemText(hwndDlg, ID_TXT_DESCRIPTION, wstr);
+        }
         free(wstr);
 
         AppendTextToCaption (hwndDlg, param->c->config_name);
@@ -407,14 +421,17 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
     case WM_COMMAND:
         param = (auth_param_t *) GetProp(hwndDlg, cfgProp);
+        const char *template;
+        char *fmt;
         switch (LOWORD(wParam))
         {
         case IDOK:
             if (param->flags & FLAG_CR_TYPE_CRV1)
             {
                 /* send username */
-                const char *template = "username \"Auth\" \"%s\"";
-                char *fmt = malloc(strlen(template) + strlen(param->user));
+                template = "username \"Auth\" \"%s\"";
+                fmt = malloc(strlen(template) + strlen(param->user));
+
                 if (fmt)
                 {
                     sprintf(fmt, template, param->user);
@@ -424,31 +441,33 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 else /* no memory? send an emty username and let it error out */
                 {
                     WriteStatusLog(param->c, L"GUI> ",
-                        L"Out of memory: sending empty username for dynamic CR", false);
+                        L"Out of memory: sending a generic username for dynamic CR", false);
                     ManagementCommand(param->c, "username \"Auth\" \"user\"", NULL, regular);
                 }
 
-                /* send password */
+                /* password template */
                 template = "password \"Auth\" \"CRV1::%s::%%s\"";
-                fmt = malloc(strlen(template) + strlen(param->id));
-                if (fmt)
-                {
-                    sprintf(fmt, template, param->id);
-                    ManagementCommandFromInput(param->c, fmt, hwndDlg, ID_EDT_RESPONSE);
-                    free (fmt);
-                }
-                else /* no memory? send an empty password and let it error out. */
-                {
-                    WriteStatusLog(param->c, L"GUI> ",
-                        L"Out of memory: sending empty password for dynamic CR", false);
-                    ManagementCommand(param->c, "password \"Auth\" \"CRV1::0::\"", NULL, regular);
-                }
             }
-            else
+            else /* generic password request of type param->id */
             {
-                /* Unknown request ? */
-                WriteStatusLog(param->c, L"GUI> ", L"Unknown password reuest ignored", false);
+                template = "password \"%s\" \"%%s\"";
             }
+
+            fmt = malloc(strlen(template) + strlen(param->id));
+            if (fmt)
+            {
+                sprintf(fmt, template, param->id);
+                PrintDebug(L"Send passwd to mgmt with format: '%S'", fmt);
+                ManagementCommandFromInput(param->c, fmt, hwndDlg, ID_EDT_RESPONSE);
+                free (fmt);
+            }
+            else /* no memory? send stop signal */
+            {
+                WriteStatusLog(param->c, L"GUI> ",
+                    L"Out of memory in password dialog: sending stop signal", false);
+                StopOpenVPN (param->c);
+            }
+
             EndDialog(hwndDlg, LOWORD(wParam));
             return TRUE;
 
@@ -608,6 +627,69 @@ out:
 }
 
 /*
+ * Parse password or string request of the form "Need 'What' password/string MSG:message"
+ * and assign param->id = What, param->str = message. Also set param->flags if the type
+ * of the requested info is known. If message is empty param->id is copied to param->str.
+ * Return true on succsess. The caller must free param even when the function fails.
+ */
+static BOOL
+parse_input_request (const char *msg, auth_param_t *param)
+{
+    BOOL ret = FALSE;
+    char *p = strdup (msg);
+    char *sep[4] = {" ", "'", " ", ""}; /* separators to use to break up msg */
+    char *token[4];
+
+    char *p1 = p;
+    for (int i = 0; i < 4; ++i, p1 = NULL)
+    {
+        token[i] = strtok (p1, sep[i]); /* strtok is thread-safe on Windows */
+        if (!token[i] && i < 3) /* first three tokens required */
+            goto out;
+    }
+    if (token[3] && strncmp(token[3], "MSG:", 4) == 0)
+        token[3] += 4;
+    if (!token[3] || !*token[3]) /* use id as the description if none provided */
+        token[3] = token[1];
+
+    PrintDebug (L"Tokens: '%S' '%S' '%S' '%S'", token[0], token[1],
+                token[2], token[3]);
+
+    if (strcmp (token[0], "Need") != 0)
+        goto out;
+
+    if ((param->id = strdup(token[1])) == NULL)
+        goto out;
+
+    if (strcmp(token[2], "password") == 0)
+    {
+        if (strcmp (param->id, "Private Key") == 0)
+            param->flags |= FLAG_PASS_PKEY;
+        else
+            param->flags |= FLAG_PASS_TOKEN;
+    }
+    else if (strcmp(token[2], "string") == 0
+             && strcmp (param->id, "pkcs11-id-request") == 0)
+    {
+        param->flags |= FLAG_STRING_PKCS11;
+    }
+
+    param->str = strdup (token[3]);
+    if (param->str == NULL)
+        goto out;
+
+    PrintDebug (L"parse_input_request: id = '%S' str = '%S' flags = %u",
+                param->id, param->str, param->flags);
+    ret = TRUE;
+
+out:
+    free (p);
+    if (!ret)
+        PrintDebug (L"Error parsing password/string request msg: <%S>", msg);
+    return ret;
+}
+
+/*
  * Handle >PASSWORD: request from OpenVPN management interface
  */
 void
@@ -689,6 +771,24 @@ OnPassword(connection_t *c, char *msg)
     else if (strstr(msg, "'SOCKS Proxy'"))
     {
         QueryProxyAuth(c, socks);
+    }
+    /* All other password requests such as PKCS11 pin */
+    else if (strncmp(msg, "Need '", 6) == 0)
+    {
+        auth_param_t *param = (auth_param_t *) calloc(1, sizeof(auth_param_t));
+
+        if (!param)
+        {
+            WriteStatusLog (c, L"GUI> ", L"Error: Out of memory - ignoring user-auth request", false);
+            return;
+        }
+        param->c = c;
+        if (!parse_input_request (msg, param))
+        {
+            free_auth_param(param);
+            return;
+        }
+        LocalizedDialogBoxParam(ID_DLG_CHALLENGE_RESPONSE, GenericPassDialogFunc, (LPARAM) param);
     }
 }
 
@@ -1045,6 +1145,65 @@ OnProcess (connection_t *c, UNUSED char *msg)
     WriteStatusLog(c, L"OpenVPN GUI> ", tmp, false);
 
     OnStop (c, NULL);
+}
+
+/*
+ * Called when NEED-OK is received
+ */
+void
+OnNeedOk (connection_t *c, char *msg)
+{
+    char *resp = NULL;
+    WCHAR *wstr = NULL;
+    auth_param_t *param = (auth_param_t *) calloc(1, sizeof(auth_param_t));
+
+    if (!param)
+    {
+        WriteStatusLog(c, L"GUI> ", L"Error: out of memory while processing NEED-OK. Sending stop signal", false);
+        StopOpenVPN(c);
+        return;
+    }
+    if (!parse_input_request(msg, param))
+        goto out;
+
+    /* allocate space for response : "needok param->id cancel/ok" */
+    resp = malloc (strlen(param->id) + strlen("needok \' \' cancel"));
+    wstr = Widen(param->str);
+
+    if (!wstr || !resp)
+    {
+        WriteStatusLog(c, L"GUI> ", L"Error: out of memory while processing NEED-OK. Sending stop signal", false);
+        StopOpenVPN(c);
+        goto out;
+    }
+
+    const char *fmt;
+    if (MessageBoxW (NULL, wstr, L""PACKAGE_NAME, MB_OKCANCEL) == IDOK)
+    {
+        fmt = "needok \'%s\' ok";
+    }
+    else
+    {
+        ManagementCommand (c, "auth-retry none", NULL, regular);
+        fmt = "needok \'%s\' cancel";
+    }
+
+    sprintf (resp, fmt, param->id);
+    ManagementCommand (c, resp, NULL, regular);
+
+out:
+    free_auth_param (param);
+    free(wstr);
+    free(resp);
+}
+
+/*
+ * Called when NEED-STR is received
+ */
+void
+OnNeedStr (connection_t *c, UNUSED char *msg)
+{
+    WriteStatusLog (c, L"GUI> ", L"Error: Received NEED-STR message -- not implemented", false);
 }
 
 /*
