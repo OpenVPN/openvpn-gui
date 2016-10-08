@@ -474,7 +474,8 @@ OnStop(connection_t *c, UNUSED char *msg)
             SetForegroundWindow(c->hwndStatus);
             ShowWindow(c->hwndStatus, SW_SHOW);
         }
-        ShowLocalizedMsg(IDS_NFO_CONN_TERMINATED, c->config_name);
+        MessageBox(c->hwndStatus, LoadLocalizedString(IDS_NFO_CONN_TERMINATED, c->config_file),
+                   _T(PACKAGE_NAME), MB_OK);
         SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
         break;
 
@@ -501,7 +502,7 @@ OnStop(connection_t *c, UNUSED char *msg)
             SetForegroundWindow(c->hwndStatus);
             ShowWindow(c->hwndStatus, SW_SHOW);
         }
-        ShowLocalizedMsg(msg_id, msg_xtra);
+        MessageBox(c->hwndStatus, LoadLocalizedString(msg_id, msg_xtra), _T(PACKAGE_NAME), MB_OK);
         SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
         break;
 
@@ -1045,6 +1046,7 @@ ThreadOpenVPNStatus(void *p)
 
     /* release handles etc.*/
     Cleanup (c);
+    c->hwndStatus = NULL;
     return 0;
 }
 
@@ -1088,6 +1090,15 @@ StartOpenVPN(connection_t *c)
     BOOL retval = FALSE;
 
     CLEAR(c->ip);
+
+    if (c->hwndStatus)
+    {
+        PrintDebug(L"Connection request when previous status window is still open -- ignored");
+        WriteStatusLog(c, L"OpenVPN GUI> ",
+                       L"Complete the pending dialog before starting a new connection", false);
+        SetForegroundWindow(c->hwndStatus);
+        return FALSE;
+    }
 
     RunPreconnectScript(c);
 
