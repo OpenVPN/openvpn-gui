@@ -259,7 +259,7 @@
 #define IDS_LANGUAGE_NAME               1650
 
 /* Win32 Service Related */
-#define IDS_ERR_OPEN_SCMGR_ADMIN        1701
+/* historic: #define IDS_ERR_OPEN_SCMGR_ADMIN        1701 */
 #define IDS_ERR_OPEN_VPN_SERVICE        1702
 #define IDS_ERR_START_SERVICE           1703
 #define IDS_ERR_QUERY_SERVICE           1704

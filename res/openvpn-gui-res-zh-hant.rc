@@ -337,7 +337,6 @@ BEGIN
     IDS_ERR_GET_TEMP_PATH "決定TempPath with GetTempPath()錯誤. 請用 ""C:\\"" 代替."
 
     /* service */
-    IDS_ERR_OPEN_SCMGR_ADMIN "OpenSCManager失敗. 請以管理者權限啟動服務."
     IDS_ERR_OPEN_VPN_SERVICE "無法開啟 ""OpenVPNService"""
     IDS_ERR_START_SERVICE "無法啟動 ""OpenVPNService"""
     IDS_ERR_QUERY_SERVICE "無法查詢服務狀態."

@@ -377,7 +377,6 @@ BEGIN
     IDS_ERR_GET_TEMP_PATH "Virhe määritettäessä muuttujaa TempPath funktiolla GetTempPath(). Käytetään polkua ""C:\\""."
 
     /* service */
-    IDS_ERR_OPEN_SCMGR_ADMIN "OpenSCManager kohtasi virheen. Palveluna käynnistäminen vaatii ylläpitäjän oikeudet."
     IDS_ERR_OPEN_VPN_SERVICE "Palvelun ""OpenVPNService"" avaaminen epäonnistui"
     IDS_ERR_START_SERVICE "Palvelun ""OpenVPNService"" käynnistäminen epäonnistui"
     IDS_ERR_QUERY_SERVICE "Palvelun tilan tarkistaminen epäonnistui."

@@ -377,7 +377,6 @@ BEGIN
     IDS_ERR_GET_TEMP_PATH "GetTempPath()で一時ディレクトリが取得できませんでした。""C:\\"" を使用します。"
 
     /* service */
-    IDS_ERR_OPEN_SCMGR_ADMIN "OpenSCManagerに失敗しました。サービスを開始するには管理者権限が必要です。"
     IDS_ERR_OPEN_VPN_SERVICE """OpenVPNService"" のオープンに失敗しました。"
     IDS_ERR_START_SERVICE """OpenVPNService"" の開始に失敗しました。"
     IDS_ERR_QUERY_SERVICE  "サービス状態の取得に失敗しました。"
