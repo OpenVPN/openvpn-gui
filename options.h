@@ -172,6 +172,7 @@ typedef struct {
     BOOL session_locked;
     HANDLE netcmd_semaphore;
     version_t version;
+    char ovpn_version[16]; /* OpenVPN version string: 2.3.12, 2.4_alpha2 etc.. */
 } options_t;
 
 void InitOptions(options_t *);
