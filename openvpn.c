@@ -1431,8 +1431,14 @@ CheckVersion()
         CloseHandle(pi.hProcess);
 
         /* OpenVPN version 2.x */
-        if (strstr(line, match_version))
+        char *p = strstr(line, match_version);
+        if (p)
+        {
             retval = TRUE;
+            p = strtok(p+8, " ");
+            strncpy(o.ovpn_version, p, _countof(o.ovpn_version)-1);
+            o.ovpn_version[_countof(o.ovpn_version)] = '\0';
+        }
     }
 
 out:
