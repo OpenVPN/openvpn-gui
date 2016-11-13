@@ -57,13 +57,20 @@ void ViewLog(int config)
 
   /* Try first using file association */
   CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE); /* Safe to init COM multiple times */
-  if (AssocQueryString(0, ASSOCSTR_EXECUTABLE, L".txt", NULL, assocexe, &assocexe_num) == S_OK)
+  if (AssocQueryString(0, ASSOCSTR_EXECUTABLE, L".log", NULL, assocexe, &assocexe_num) == S_OK)
     status = ShellExecuteW (o.hWnd, L"open", assocexe, o.conn[config].log_path, o.log_dir, SW_SHOWNORMAL);
   if (status > (HINSTANCE) 32) /* Success */
     return;
   else
-    PrintDebug (L"Opening log file using ShellExecute with verb = open failed"
-                 " for config '%s' (status = %lu)", o.conn[config].config_name, status);
+  {
+    if (AssocQueryString(0, ASSOCSTR_EXECUTABLE, L".txt", NULL, assocexe, &assocexe_num) == S_OK)
+      status = ShellExecuteW (o.hWnd, L"open", assocexe, o.conn[config].log_path, o.log_dir, SW_SHOWNORMAL);
+    if (status > (HINSTANCE) 32) /* Success */
+      return;
+    else
+      PrintDebug (L"Opening log file using ShellExecute with verb = open failed"
+                  " for config '%s' (status = %lu)", o.conn[config].config_name, status);
+  }
 
   _sntprintf_0(filename, _T("%s \"%s\""), o.log_viewer, o.conn[config].log_path);
 
@@ -94,10 +101,12 @@ void ViewLog(int config)
   CloseHandle(proc_info.hProcess);
 }
 
-
-void EditConfig(int config)
+/* either config or config_path */
+void EditConfig(int config, PTCHAR config_path)
 {
-  TCHAR filename[2*MAX_PATH];
+  TCHAR config_file[2*MAX_PATH];
+  TCHAR fullpath[2*MAX_PATH];
+  TCHAR config_dir[2*MAX_PATH];
   TCHAR assocexe[2*MAX_PATH];
   DWORD assocexe_num;
 
@@ -112,19 +121,34 @@ void EditConfig(int config)
   CLEAR (sa);
   CLEAR (sd);
 
-  /* Try first using file association */
-  _sntprintf_0(filename, L"%s\\%s", o.conn[config].config_dir, o.conn[config].config_file);
+  if (config_path == NULL)
+  {
+    // using "config"
+    _sntprintf_0(fullpath, L"%s\\%s", o.conn[config].config_dir, o.conn[config].config_file);
+    _tcsncpy(config_dir, o.conn[config].config_dir, _countof(config_dir) - 1);
+    _tcsncpy(config_file, o.conn[config].config_file, _countof(config_file) - 1);
+  }
+  else
+  {
+    // using "config_path"
+    _tcsncpy(fullpath, config_path, _countof(config_dir) - 1);
+    _tcsncpy(config_dir, config_path, _countof(config_dir) - 1);
+    PathRemoveFileSpec(config_dir);
+    _tcsncpy(config_file, config_path, _countof(config_file) - 1);
+    *config_file = PathFindFileName(config_file);
+  }
 
+  /* Try first using file association */
   CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE); /* Safe to init COM multiple times */
   if (AssocQueryString(0, ASSOCSTR_EXECUTABLE, L".txt", NULL, assocexe, &assocexe_num) == S_OK)
-    status = ShellExecuteW (o.hWnd, L"open", assocexe, filename, o.conn[config].config_dir, SW_SHOWNORMAL);
+    status = ShellExecuteW (o.hWnd, L"open", assocexe, fullpath, config_dir, SW_SHOWNORMAL);
   if (status > (HINSTANCE) 32)
     return;
   else
     PrintDebug (L"Opening config file using ShellExecute with verb = open failed"
-                 " for config '%s' (status = %lu)", o.conn[config].config_name, status);
+                 " for config '%s' (status = %lu)", config_file, status);
 
-  _sntprintf_0(filename, _T("%s \"%s\\%s\""), o.editor, o.conn[config].config_dir, o.conn[config].config_file);
+  _sntprintf_0(fullpath, _T("%s \"%s\""), o.editor, fullpath);
 
   /* fill in STARTUPINFO struct */
   GetStartupInfo(&start_info);
@@ -135,13 +159,13 @@ void EditConfig(int config)
   start_info.hStdOutput = NULL;
 
   if (!CreateProcess(NULL,
-		     filename, 	//commandline
+		     fullpath, 	//commandline
 		     NULL,
 		     NULL,
 		     TRUE,
 		     CREATE_NEW_CONSOLE,
 		     NULL,
-		     o.conn[config].config_dir,	//start-up dir
+		     config_dir,	//start-up dir
 		     &start_info,
 		     &proc_info))
     {

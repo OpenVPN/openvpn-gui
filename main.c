@@ -105,6 +105,7 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
   MSG messages;            /* Here messages to the application are saved */
   WNDCLASSEX wincl;        /* Data structure for the windowclass */
   DWORD shell32_version;
+  BOOL already_running = 0;
 
   /* Initialize handlers for manangement interface notifications */
   mgmt_rtmsg_handler handler[] = {
@@ -159,22 +160,28 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
   PrintDebug(_T("Shell32.dll version: 0x%lx"), shell32_version);
 #endif
 
-  /* Parse command-line options */
-  ProcessCommandLine(&o, GetCommandLine());
-
   /* Check if a previous instance is already running. */
   if ((FindWindow (szClassName, NULL)) != NULL)
     {
         /* GUI already running */
-        ShowLocalizedMsg(IDS_ERR_GUI_ALREADY_RUNNING);
-        exit(1);
+        already_running = 1;
     }
-
-  UpdateRegistry(); /* Checks version change and update keys/values */
+  else
+    {
+        UpdateRegistry(); /* Checks version change and update keys/values */
+    }
 
   GetRegistryKeys();
 
   EnsureDirExists(o.config_dir);
+  /* Parse command-line options */
+  ProcessCommandLine(&o, GetCommandLine());
+
+  if (already_running)
+    {
+        ShowLocalizedMsg(IDS_ERR_GUI_ALREADY_RUNNING);
+        exit(1);
+    }
 
   if (!CheckVersion()) {
     exit(1);
@@ -352,7 +359,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         ViewLog(LOWORD(wParam) - IDM_VIEWLOGMENU);
       }
       if ( (LOWORD(wParam) >= IDM_EDITMENU) && (LOWORD(wParam) < IDM_EDITMENU + MAX_CONFIGS) ) {
-        EditConfig(LOWORD(wParam) - IDM_EDITMENU);
+        EditConfig(LOWORD(wParam) - IDM_EDITMENU, NULL);
       }
       if ( (LOWORD(wParam) >= IDM_CLEARPASSMENU) && (LOWORD(wParam) < IDM_CLEARPASSMENU + MAX_CONFIGS) ) {
         DisablePasswordSave(&o.conn[LOWORD(wParam) - IDM_CLEARPASSMENU]);
@@ -527,11 +534,26 @@ CloseApplication(HWND hwnd)
 }
 
 void
+ShowConfigFileDialog(PTCHAR config_file)
+{
+    PTCHAR fileName;
+    int dlgresult = 0;
+
+    fileName = PathFindFileName(config_file);
+    dlgresult = ShowLocalizedMsgEx(MB_YESNO, _T(PACKAGE_NAME), IDS_ASK_IMPORT_OR_EDIT, fileName);
+    if (dlgresult == IDYES)
+        ImportConfigFile(config_file);
+    else
+        EditConfig(0, config_file);
+}
+
+
+void
 ImportConfigFile(PTCHAR config_file)
 {
     TCHAR source[MAX_PATH] = _T("");
     PTCHAR fileName;
-    BOOL dlgresult;
+    BOOL result = 1;
 
     if (config_file == NULL)
     {
@@ -553,16 +575,15 @@ ImportConfigFile(PTCHAR config_file)
         fn.Flags = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST;
         fn.lpstrDefExt = NULL;
 
-        dlgresult = GetOpenFileName(&fn) && (fileName = source + fn.nFileOffset);
+        result = GetOpenFileName(&fn) && (fileName = source + fn.nFileOffset);
     }
     else
     {
         fileName = PathFindFileName(config_file);
-        dlgresult = ShowLocalizedMsgEx(MB_YESNO, _T(PACKAGE_NAME), IDS_ASK_IMPORT_CONFIRM, fileName) == IDYES;
         _tcscpy(source, config_file);
     }
 
-    if (dlgresult)
+    if (result)
     {
         TCHAR destination[MAX_PATH];
 
@@ -570,7 +591,7 @@ ImportConfigFile(PTCHAR config_file)
 
         destination[_tcslen(destination) - _tcslen(o.ext_string) - 1] = _T('\0');
         
-        if (EnsureDirExists(destination))
+        if (EnsureDirExists(destination) && EnsureDirExists(o.config_dir))
         {
 
             _sntprintf_0(destination, _T("%s\\%s"), destination, fileName);

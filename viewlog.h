@@ -20,4 +20,4 @@
  */
 
 void ViewLog(int config);
-void EditConfig(int config);
+void EditConfig(int config, PTCHAR config_path);

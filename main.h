@@ -115,5 +115,6 @@ void PrintDebugMsg(TCHAR *msg);
 DWORD GetDllVersion(LPCTSTR lpszDllName);
 
 void ImportConfigFile(PTCHAR);
+void ShowConfigFileDialog(PTCHAR config_file);
 
 #endif

@@ -41,6 +41,7 @@
 #include "localization.h"
 #include "misc.h"
 #include "registry.h"
+#include "viewlog.h"
 
 #define streq(x, y) (_tcscmp((x), (y)) == 0)
 
@@ -85,11 +86,6 @@ add_option(options_t *options, int i, TCHAR **p)
         TCHAR caption[200];
         LoadLocalizedStringBuf(caption, _countof(caption), IDS_NFO_USAGECAPTION);
         ShowLocalizedMsgEx(MB_OK, caption, IDS_NFO_USAGE);
-        exit(0);
-    }
-    else if (streq(p[0], _T("import")) && p[1])
-    {
-        ImportConfigFile(p[1]);
         exit(0);
     }
     else if (streq(p[0], _T("connect")) && p[1])
@@ -149,6 +145,16 @@ add_option(options_t *options, int i, TCHAR **p)
     {
         ++i;
         PrintDebug (L"Deprecated option: '%s' ignored.", p[0]);
+    }
+        else if (streq(p[0], _T("edit")) && p[1])
+    {
+        EditConfig(0, p[1]);
+        exit(0);
+    }
+        else if (streq(p[0], _T("configfile_dialog")) && p[1])
+    {
+        ShowConfigFileDialog(p[1]);
+        exit(0);
     }
     else if (streq(p[0], _T("allow_service")) && p[1])
     {
