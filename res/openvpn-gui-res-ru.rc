@@ -175,7 +175,7 @@ BEGIN
     EDITTEXT ID_EDT_CONNECT_TIMEOUT, 123, 123, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 123, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
 
-    AUTOCHECKBOX "Режим управления сервисом", ID_CHK_SERVICE_ONLY, 6, 162, 112, 12
+    AUTOCHECKBOX "Режим управления службой", ID_CHK_SERVICE_ONLY, 6, 162, 112, 12
 END
 
 /* About Dialog */
@@ -339,7 +339,7 @@ BEGIN
                   "--allow_password\t\t: 1=Отображать пункт меню «Сменить пароль».\n" \
                   "--allow_proxy\t\t: 1=Отображать пункт меню «Настройки прокси-сервера».\n" \
                   "--show_balloon\t\t: Показывать информационное всплывающее окно. 0=Никогда, 1=При первом подключении, 2=При каждом переподключении.\n" \
-                  "--service_only\t\t: 1=Включить режим работы только через службу.\n" \
+                  "--service_only\t\t: 1=Включить режим управления службой.\n" \
                   "--silent_connection\t\t: 1=Не показывать диалог состояния при подключении.\n" \
                   "--show_script_window\t: 0=Скрыть окно выполнения скрипта, 1=Показать его.\n" \
                   "--passphrase_attempts\t: Количество разрешённых попыток ввода пароля.\n" \
@@ -401,8 +401,8 @@ BEGIN
     IDS_ERR_OPEN_SCMGR "Не удалось выполнить OpenSCManager (%d)"
     IDS_ERR_STOP_SERVICE "Не удалось остановить службу OpenVPN"
     IDS_NFO_RESTARTED "Служба OpenVPN перезапущена."
-    IDS_ERR_ACCESS_SERVICE_PIPE "Попытка доступа к пайпу сервиса не удалась."
-    IDS_ERR_WRITE_SERVICE_PIPE "Попытка записи в пайп сервиса не удалась."
+    IDS_ERR_ACCESS_SERVICE_PIPE "Попытка доступа к пайпу службы не удалась."
+    IDS_ERR_WRITE_SERVICE_PIPE "Попытка записи в пайп службы не удалась."
     IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" не установлен.\n"
                                  "Функциональность, требующая прав администратора, может не работать."
     IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" не запущен.\n"
