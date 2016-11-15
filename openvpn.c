@@ -655,7 +655,7 @@ InitServiceIO (service_io_t *s)
  * Read-completion routine for interactive service pipe. Call with
  * err = 0, bytes = 0 to queue the first read request.
  */
-static void
+static void WINAPI
 HandleServiceIO (DWORD err, DWORD bytes, LPOVERLAPPED lpo)
 {
     service_io_t *s = (service_io_t *) lpo;
@@ -680,7 +680,7 @@ HandleServiceIO (DWORD err, DWORD bytes, LPOVERLAPPED lpo)
     }
 
     /* queue next read request */
-    ReadFileEx (s->pipe, s->readbuf, capacity, lpo, (LPOVERLAPPED_COMPLETION_ROUTINE) HandleServiceIO);
+    ReadFileEx (s->pipe, s->readbuf, capacity, lpo, HandleServiceIO);
     /* Any error in the above call will get checked in next round */
 }
 
@@ -1437,7 +1437,7 @@ CheckVersion()
             retval = TRUE;
             p = strtok(p+8, " ");
             strncpy(o.ovpn_version, p, _countof(o.ovpn_version)-1);
-            o.ovpn_version[_countof(o.ovpn_version)] = '\0';
+            o.ovpn_version[_countof(o.ovpn_version)-1] = '\0';
         }
     }
 
