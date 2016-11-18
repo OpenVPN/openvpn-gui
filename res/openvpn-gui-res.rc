@@ -59,6 +59,7 @@ ID_ICO_DISCONNECTED  ICON  DISCARDABLE  "disconnected.ico"
 /* Version information and such */
 VS_VERSION_INFO VERSIONINFO
 FILEVERSION   PACKAGE_VERSION_RESOURCE
+PRODUCTVERSION   PACKAGE_VERSION_RESOURCE
 FILEOS        VOS_NT
 FILETYPE      VFT_APP
 BEGIN
@@ -89,11 +90,11 @@ BEGIN
         BLOCK "040904B0"  /* en_US, Unicode */
         BEGIN
             VALUE "FileDescription",  PACKAGE_NAME " for Windows"
-            VALUE "FileVersion",      PACKAGE_VERSION
+            VALUE "FileVersion",      PACKAGE_VERSION_RESOURCE_STR
             VALUE "InternalName",     PACKAGE_TARNAME
             VALUE "OriginalFilename", PACKAGE_TARNAME ".exe"
             VALUE "ProductName",      PACKAGE_NAME
-            VALUE "ProductVersion",   PACKAGE_VERSION
+            VALUE "ProductVersion",   PACKAGE_VERSION_RESOURCE_STR
             VALUE "Website",          PACKAGE_URL
             VALUE "LegalCopyright",   "The " PACKAGE_NAME " developers"
             VALUE "CompanyName",      PACKAGE_NAME
