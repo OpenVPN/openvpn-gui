@@ -821,6 +821,19 @@ Cleanup (connection_t *c)
         CloseHandle (c->exit_event);
     c->exit_event = NULL;
 }
+/*
+ * Helper to position and scale widgets in status window using current dpi
+ * Takes status window width and height in screen pixels as input
+ */
+void
+RenderStatusWindow(HWND hwndDlg, UINT w, UINT h)
+{
+        MoveWindow(GetDlgItem(hwndDlg, ID_EDT_LOG), DPI_SCALE(20), DPI_SCALE(25), w - DPI_SCALE(40), h - DPI_SCALE(70), TRUE);
+        MoveWindow(GetDlgItem(hwndDlg, ID_TXT_STATUS), DPI_SCALE(20), DPI_SCALE(5), w - DPI_SCALE(25), DPI_SCALE(15), TRUE);
+        MoveWindow(GetDlgItem(hwndDlg, ID_DISCONNECT), DPI_SCALE(20), h - DPI_SCALE(30), DPI_SCALE(110), DPI_SCALE(23), TRUE);
+        MoveWindow(GetDlgItem(hwndDlg, ID_RESTART), DPI_SCALE(145), h - DPI_SCALE(30), DPI_SCALE(110), DPI_SCALE(23), TRUE);
+        MoveWindow(GetDlgItem(hwndDlg, ID_HIDE), w - DPI_SCALE(130), h - DPI_SCALE(30), DPI_SCALE(110), DPI_SCALE(23), TRUE);
+}
 
 /*
  * DialogProc for OpenVPN status dialog windows
@@ -871,22 +884,13 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         /* Set size and position of controls */
         RECT rect;
         GetClientRect(hwndDlg, &rect);
-        MoveWindow(hLogWnd, 20, 25, rect.right - 40, rect.bottom - 70, TRUE);
-        MoveWindow(GetDlgItem(hwndDlg, ID_TXT_STATUS), 20, 5, rect.right - 25, 15, TRUE);
-        MoveWindow(GetDlgItem(hwndDlg, ID_DISCONNECT), 20, rect.bottom - 30, 110, 23, TRUE);
-        MoveWindow(GetDlgItem(hwndDlg, ID_RESTART), 145, rect.bottom - 30, 110, 23, TRUE);
-        MoveWindow(GetDlgItem(hwndDlg, ID_HIDE), rect.right - 130, rect.bottom - 30, 110, 23, TRUE);
-
+        RenderStatusWindow(hwndDlg, rect.right, rect.bottom);
         /* Set focus on the LogWindow so it scrolls automatically */
         SetFocus(hLogWnd);
         return FALSE;
 
     case WM_SIZE:
-        MoveWindow(GetDlgItem(hwndDlg, ID_EDT_LOG), 20, 25, LOWORD(lParam) - 40, HIWORD(lParam) - 70, TRUE);
-        MoveWindow(GetDlgItem(hwndDlg, ID_DISCONNECT), 20, HIWORD(lParam) - 30, 110, 23, TRUE);
-        MoveWindow(GetDlgItem(hwndDlg, ID_RESTART), 145, HIWORD(lParam) - 30, 110, 23, TRUE);
-        MoveWindow(GetDlgItem(hwndDlg, ID_HIDE), LOWORD(lParam) - 130, HIWORD(lParam) - 30, 110, 23, TRUE);
-        MoveWindow(GetDlgItem(hwndDlg, ID_TXT_STATUS), 20, 5, LOWORD(lParam) - 25, 15, TRUE);
+        RenderStatusWindow(hwndDlg, LOWORD(lParam), HIWORD(lParam));
         InvalidateRect(hwndDlg, NULL, TRUE);
         return TRUE;
 
