@@ -1,8 +1,7 @@
 #!/bin/bash 
 
 
-if [ ! -d download-cache ]; then mkdir download-cache; fi
-if [ ! -f download-cache/openssl-${OPENSSL_VERSION}.tar.gz ]; then wget -O download-cache/openssl-${OPENSSL_VERSION}.tar.gz https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz; fi
+if [ ! -f download-cache/openssl-${OPENSSL_VERSION}.tar.gz ]; then wget -P download-cache/ https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz; fi
 
 mkdir image
 tar zxf download-cache/openssl-${OPENSSL_VERSION}.tar.gz && cd openssl-${OPENSSL_VERSION}
