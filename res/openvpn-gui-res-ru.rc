@@ -186,7 +186,7 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, 0, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v" PACKAGE_VERSION " - графический интерфейс OpenVPN для Windows\n" \
+    LTEXT "OpenVPN GUI v" PACKAGE_VERSION_RESOURCE_STR " - графический интерфейс OpenVPN для Windows\n" \
           "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n" \
           "Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n" \
           "Copyright (C) 2012-2016 OpenVPN GUI contributors\n" \
