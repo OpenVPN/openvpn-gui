@@ -41,7 +41,7 @@ CAPTION "OpenVPN - Gebruikersauthenticatie"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_DUTCH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "Gebruikersnaam:", 0, 6, 9, 50, 10
+    LTEXT "Gebruikersnaam:", 0, 6, 9, 54, 10
     LTEXT "Wachtwoord:", 0, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
@@ -57,7 +57,7 @@ CAPTION "OpenVPN - Gebruikersauthenticatie"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_DUTCH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "Gebruikersnaam:", 0, 6, 9, 50, 10
+    LTEXT "Gebruikersnaam:", 0, 6, 9, 54, 10
     LTEXT "Wachtwoord:", 0, 6, 26, 50, 10
     LTEXT "Response:", 0, 6, 60, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
@@ -110,7 +110,7 @@ LANGUAGE LANG_DUTCH, SUBLANG_DEFAULT
 BEGIN
     GROUPBOX "   ", 201, 6, 46, 235, 52
     AUTORADIOBUTTON "Proxyinstellingen van OpenVPN configuratiebestand gebruiken", ID_RB_PROXY_OPENVPN, \
-                    13, 16, 200, 10, WS_GROUP | WS_TABSTOP
+                    13, 16, 210, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Proxyinstellingen van systeem gebruiken", \
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
     AUTORADIOBUTTON "Handmatige configuratie", ID_RB_PROXY_MANUAL, 13, 46, 90, 10
@@ -197,17 +197,17 @@ BEGIN
 END
 
 /* Proxy Authentication Dialog */
-ID_DLG_PROXY_AUTH DIALOG 29, 23, 154, 65
+ID_DLG_PROXY_AUTH DIALOG 29, 23, 170, 65
 STYLE DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER
 CAPTION "OpenVPN - Proxy Authenticatie"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_DUTCH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "Gebruikersnaam:", 201, 9, 8, 38, 10
-    EDITTEXT ID_EDT_PROXY_USER, 49, 5, 94, 12, ES_AUTOHSCROLL
-    LTEXT "Wachtwoord:", 202, 9, 26, 38, 10
-    EDITTEXT ID_EDT_PROXY_PASS, 49, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    PUSHBUTTON "OK", IDOK, 58, 43, 40, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    LTEXT "Gebruikersnaam:", 201, 9, 8, 54, 10
+    EDITTEXT ID_EDT_PROXY_USER, 65, 5, 94, 12, ES_AUTOHSCROLL
+    LTEXT "Wachtwoord:", 202, 9, 26, 54, 10
+    EDITTEXT ID_EDT_PROXY_PASS, 65, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "OK", IDOK, 68, 43, 40, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
 END
 
 STRINGTABLE
