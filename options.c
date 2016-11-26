@@ -262,6 +262,8 @@ InitOptions(options_t *opt)
     CLEAR(*opt);
     opt->netcmd_semaphore = InitSemaphore ();
     opt->version = MakeVersion (PACKAGE_VERSION_RESOURCE);
+    /* An editor to fall back to if associated exec not found*/
+    _sntprintf_0(opt->editor, L"%s", L"C:\\Windows\\system32\\notepad.exe");
 }
 
 

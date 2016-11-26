@@ -293,6 +293,7 @@
 #define IDS_ERR_IMPORT_FAILED           1902
 #define IDS_NFO_IMPORT_SUCCESS          1903
 #define IDS_ASK_IMPORT_OR_EDIT          1904
+#define IDS_ERR_PATH_NOT_FOUND          1905
 
 /* Save password related messages */
 #define IDS_NFO_DELETE_PASS             2001

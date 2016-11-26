@@ -431,6 +431,7 @@ BEGIN
     IDS_NFO_IMPORT_SUCCESS "File imported successfully."
     IDS_ASK_IMPORT_OR_EDIT "Do you want to import ""%s""?\n" \
                        "Choose ""yes"" to import or ""no"" to edit config file."
+    IDS_ERR_PATH_NOT_FOUND "Specified path '%s' not found"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "Press OK to delete saved passwords for config ""%s"""

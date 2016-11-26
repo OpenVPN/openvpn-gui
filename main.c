@@ -173,9 +173,10 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
 
   GetRegistryKeys();
 
-  EnsureDirExists(o.config_dir);
   /* Parse command-line options */
   ProcessCommandLine(&o, GetCommandLine());
+
+  EnsureDirExists(o.config_dir);
 
   if (already_running)
     {
@@ -540,11 +541,13 @@ ShowConfigFileDialog(PTCHAR config_file)
     int dlgresult = 0;
 
     fileName = PathFindFileName(config_file);
-    dlgresult = ShowLocalizedMsgEx(MB_YESNO, _T(PACKAGE_NAME), IDS_ASK_IMPORT_OR_EDIT, fileName);
+    dlgresult = ShowLocalizedMsgEx(MB_YESNOCANCEL, _T(PACKAGE_NAME), IDS_ASK_IMPORT_OR_EDIT, fileName);
     if (dlgresult == IDYES)
         ImportConfigFile(config_file);
-    else
+    else if(dlgresult == IDNO)
         EditConfig(0, config_file);
+    else
+        return;
 }
 
 
@@ -553,7 +556,7 @@ ImportConfigFile(PTCHAR config_file)
 {
     TCHAR source[MAX_PATH] = _T("");
     PTCHAR fileName;
-    BOOL result = 1;
+    BOOL result = FALSE;
 
     if (config_file == NULL)
     {
@@ -577,10 +580,17 @@ ImportConfigFile(PTCHAR config_file)
 
         result = GetOpenFileName(&fn) && (fileName = source + fn.nFileOffset);
     }
-    else
+    else if(PathFileExists(config_file))
     {
         fileName = PathFindFileName(config_file);
-        _tcscpy(source, config_file);
+        _sntprintf_0(source, L"%s", config_file);
+        result = TRUE;
+    }
+    else
+    {
+        ShowLocalizedMsg(IDS_ERR_PATH_NOT_FOUND, config_file);
+        PrintDebug(L"The file specified for import does not exist: '%s'", config_file);
+        return;
     }
 
     if (result)
@@ -589,9 +599,9 @@ ImportConfigFile(PTCHAR config_file)
 
         _sntprintf_0(destination, _T("%s\\%s"), o.config_dir, fileName);
 
-        destination[_tcslen(destination) - _tcslen(o.ext_string) - 1] = _T('\0');
+        PathRemoveExtension(destination);
         
-        if (EnsureDirExists(destination) && EnsureDirExists(o.config_dir))
+        if (EnsureDirExists(destination))
         {
 
             _sntprintf_0(destination, _T("%s\\%s"), destination, fileName);
@@ -612,11 +622,8 @@ ImportConfigFile(PTCHAR config_file)
             }
 
         }
-
         ShowLocalizedMsg(IDS_ERR_IMPORT_FAILED, destination);
-
     }
-    
 }
 
 #ifdef DEBUG

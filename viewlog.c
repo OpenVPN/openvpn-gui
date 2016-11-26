@@ -41,7 +41,7 @@ extern options_t o;
 void ViewLog(int config)
 {
   TCHAR filename[2*MAX_PATH];
-  TCHAR assocexe[2*MAX_PATH];
+  TCHAR assocexe[MAX_PATH];
   DWORD assocexe_num;
 
   STARTUPINFO start_info;
@@ -57,12 +57,14 @@ void ViewLog(int config)
 
   /* Try first using file association */
   CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE); /* Safe to init COM multiple times */
+  assocexe_num = _countof(assocexe);
   if (AssocQueryString(0, ASSOCSTR_EXECUTABLE, L".log", NULL, assocexe, &assocexe_num) == S_OK)
     status = ShellExecuteW (o.hWnd, L"open", assocexe, o.conn[config].log_path, o.log_dir, SW_SHOWNORMAL);
   if (status > (HINSTANCE) 32) /* Success */
     return;
   else
   {
+    assocexe_num = _countof(assocexe);
     if (AssocQueryString(0, ASSOCSTR_EXECUTABLE, L".txt", NULL, assocexe, &assocexe_num) == S_OK)
       status = ShellExecuteW (o.hWnd, L"open", assocexe, o.conn[config].log_path, o.log_dir, SW_SHOWNORMAL);
     if (status > (HINSTANCE) 32) /* Success */
@@ -72,7 +74,7 @@ void ViewLog(int config)
                   " for config '%s' (status = %lu)", o.conn[config].config_name, status);
   }
 
-  _sntprintf_0(filename, _T("%s \"%s\""), o.log_viewer, o.conn[config].log_path);
+  _sntprintf_0(filename, _T("\"%s\" \"%s\""), o.log_viewer, o.conn[config].log_path);
 
   /* fill in STARTUPINFO struct */
   GetStartupInfo(&start_info);
@@ -102,12 +104,12 @@ void ViewLog(int config)
 }
 
 /* either config or config_path */
-void EditConfig(int config, PTCHAR config_path)
+void EditConfig(int config, const PTCHAR config_path)
 {
-  TCHAR config_file[2*MAX_PATH];
-  TCHAR fullpath[2*MAX_PATH];
-  TCHAR config_dir[2*MAX_PATH];
-  TCHAR assocexe[2*MAX_PATH];
+  TCHAR fullpath[MAX_PATH];
+  TCHAR config_dir[MAX_PATH];
+  TCHAR cmdline[2*MAX_PATH + 3]; /* space for execname, filename and " " */
+  TCHAR assocexe[MAX_PATH];
   DWORD assocexe_num;
 
   STARTUPINFO start_info;
@@ -126,29 +128,35 @@ void EditConfig(int config, PTCHAR config_path)
     // using "config"
     _sntprintf_0(fullpath, L"%s\\%s", o.conn[config].config_dir, o.conn[config].config_file);
     _tcsncpy(config_dir, o.conn[config].config_dir, _countof(config_dir) - 1);
-    _tcsncpy(config_file, o.conn[config].config_file, _countof(config_file) - 1);
   }
   else
   {
     // using "config_path"
-    _tcsncpy(fullpath, config_path, _countof(config_dir) - 1);
+    _tcsncpy(fullpath, config_path, _countof(fullpath) - 1);
+    fullpath[_countof(fullpath) - 1] = '\0';
     _tcsncpy(config_dir, config_path, _countof(config_dir) - 1);
+    config_dir[_countof(config_dir) - 1] = '\0';
     PathRemoveFileSpec(config_dir);
-    _tcsncpy(config_file, config_path, _countof(config_file) - 1);
-    *config_file = PathFindFileName(config_file);
   }
 
   /* Try first using file association */
   CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE); /* Safe to init COM multiple times */
+  assocexe_num = _countof(assocexe);
   if (AssocQueryString(0, ASSOCSTR_EXECUTABLE, L".txt", NULL, assocexe, &assocexe_num) == S_OK)
-    status = ShellExecuteW (o.hWnd, L"open", assocexe, fullpath, config_dir, SW_SHOWNORMAL);
-  if (status > (HINSTANCE) 32)
-    return;
+    {
+      status = ShellExecuteW (o.hWnd, L"open", assocexe, fullpath, config_dir, SW_SHOWNORMAL);
+      if (status > (HINSTANCE) 32)
+          return;
+      else
+          PrintDebug (L"Opening config file using ShellExecute with verb = open failed"
+                      " for config '%s' using exec = '%s' (status = %lu)", fullpath, assocexe, status);
+    }
   else
-    PrintDebug (L"Opening config file using ShellExecute with verb = open failed"
-                 " for config '%s' (status = %lu)", config_file, status);
+    {
+      PrintDebug (L"Querying associated exec for .txt failed");
+    }
 
-  _sntprintf_0(fullpath, _T("%s \"%s\""), o.editor, fullpath);
+  _sntprintf_0(cmdline, _T("\"%s\" \"%s\""), o.editor, fullpath);
 
   /* fill in STARTUPINFO struct */
   GetStartupInfo(&start_info);
@@ -159,7 +167,7 @@ void EditConfig(int config, PTCHAR config_path)
   start_info.hStdOutput = NULL;
 
   if (!CreateProcess(NULL,
-		     fullpath, 	//commandline
+		     cmdline,
 		     NULL,
 		     NULL,
 		     TRUE,
