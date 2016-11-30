@@ -173,6 +173,7 @@ typedef struct {
     HANDLE netcmd_semaphore;
     version_t version;
     char ovpn_version[16]; /* OpenVPN version string: 2.3.12, 2.4_alpha2 etc.. */
+    unsigned int dpi_scale;
 } options_t;
 
 void InitOptions(options_t *);

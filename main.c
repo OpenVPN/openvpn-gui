@@ -302,6 +302,47 @@ ResumeConnections()
     }
 }
 
+/*
+ * Set scale factor of windows in pixels. Scale = 100% for dpi = 96
+ */
+static void
+dpi_setscale(UINT dpix)
+{
+    /* scale factor in percentage compared to the reference dpi of 96 */
+    if (dpix != 0)
+        o.dpi_scale = MulDiv(dpix, 100, 96);
+    else
+        o.dpi_scale = 100;
+    PrintDebug(L"DPI scale set to %u", o.dpi_scale);
+}
+
+/*
+ * Get dpi of the system and set the scale factor.
+ * The system dpi may be different from the per monitor dpi on
+ * Win 8.1 later. We set dpi awareness to system-dpi level in the
+ * manifest, and let Windows automatically re-scale windows
+ * if/when dpi changes dynamically.
+ */
+static void
+dpi_initialize(void)
+{
+    UINT dpix = 0;
+    HDC hdc = GetDC(NULL);
+
+    if (hdc)
+    {
+        dpix = GetDeviceCaps(hdc, LOGPIXELSX);
+        ReleaseDC(NULL, hdc);
+        PrintDebug(L"System DPI: dpix = %u", dpix);
+    }
+    else
+    {
+        PrintDebug(L"GetDC failed, using default dpi = 96 (error = %lu)", GetLastError());
+        dpix = 96;
+    }
+
+    dpi_setscale(dpix);
+}
 
 /*  This function is called by the Windows function DispatchMessage()  */
 LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -313,6 +354,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
       /* Save Window Handle */
       o.hWnd = hwnd;
+      dpi_initialize();
 
       s_uTaskbarRestart = RegisterWindowMessage(TEXT("TaskbarCreated"));
 
