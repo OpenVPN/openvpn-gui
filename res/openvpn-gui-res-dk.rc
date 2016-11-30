@@ -185,16 +185,18 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_DANISH, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, 0, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v" PACKAGE_VERSION " - Et Windows-brugerprogram til OpenVPN\n" \
+    LTEXT "OpenVPN GUI v" PACKAGE_VERSION_RESOURCE_STR " - Et Windows-brugerprogram til OpenVPN\n" \
           "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n" \
-          "http://openvpn.se/", 0, 36, 15, 206, 26
+          "Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n" \
+          "Copyright (C) 2012-2016 OpenVPN GUI contributors\n" \
+          "https://github.com/OpenVPN/openvpn-gui/", 0, 36, 15, 206, 50
     LTEXT "OpenVPN - Et program til sikker overførsel af IP netværk " \
-          "over en enkelt UDP port, med støtte til SSL/TLS-baseret " \
+          "over en enkelt TCP/UDP port, med støtte til SSL/TLS-baseret " \
           "sessions autentisering og nøgle håndtering, pakke- " \
           "kryptering, -autentisering og -komprimering.\n" \
           "\n" \
-          "Copyright (C) 2002-2005 OpenVPN Solutions LLC  <info@openvpn.net>\n" \
-          "http://openvpn.net/", 0, 8, 45, 235, 56
+          "Copyright (C) 2002-2016 OpenVPN Technologies, Inc <info@openvpn.net>\n" \
+          "https://openvpn.net/", 0, 8, 70, 240, 64
 END
 
 /* Proxy Authentication Dialog */

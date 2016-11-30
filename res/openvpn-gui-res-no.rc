@@ -137,13 +137,13 @@ BEGIN
     AUTOCHECKBOX "Kjør automatisk når Windows starter", ID_CHK_STARTUP, 17, 59, 200, 12
 
     GROUPBOX "Innstillinger", 202, 6, 82, 235, 90
-    AUTOCHECKBOX "Tilføy til eksisterende logg", ID_CHK_LOG_APPEND, 17, 95, 60, 10
+    AUTOCHECKBOX "Tilføy til eksisterende logg", ID_CHK_LOG_APPEND, 17, 95, 93, 10
     AUTOCHECKBOX "Vis scriptvindu", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "Skjul statusvindu ved tilkobling", ID_CHK_SILENT, 17, 125, 200, 10
     LTEXT "Vis ballong", ID_TXT_BALLOON, 17, 140, 100, 10
-    AUTORADIOBUTTON "Ved tilkobling", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Ved tilkobling/gjenoppkobling", ID_RB_BALLOON2, 86, 155, 90, 10
-    AUTORADIOBUTTON "Aldri", ID_RB_BALLOON0, 181, 155, 40, 10
+    AUTORADIOBUTTON "Ved tilkobling", ID_RB_BALLOON1, 28, 155, 58, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Ved tilkobling/gjenoppkobling", ID_RB_BALLOON2, 87, 155, 103, 10
+    AUTORADIOBUTTON "Aldri", ID_RB_BALLOON0, 200, 155, 27, 10
 END
 
 /* Advanced Dialog */
@@ -155,10 +155,10 @@ LANGUAGE LANG_NORWEGIAN, SUBLANG_DEFAULT
 BEGIN
     GROUPBOX "Konfigurasjonsfiler", 201, 6, 12, 235, 45
     LTEXT "Mappe:", ID_TXT_FOLDER, 17, 25, 32, 10
-    LTEXT "Filetternavn:", ID_TXT_EXTENSION, 17, 40, 52, 10
-    EDITTEXT ID_EDT_CONFIG_DIR, 53, 23, 150, 12, ES_AUTOHSCROLL
-    EDITTEXT ID_EDT_CONFIG_EXT, 53, 38, 25, 12, ES_AUTOHSCROLL
-    PUSHBUTTON "…", ID_BTN_CONFIG_DIR, 208, 23, 25, 12
+    LTEXT "Filetternavn:", ID_TXT_EXTENSION, 17, 40, 40, 10
+    EDITTEXT ID_EDT_CONFIG_DIR, 58, 23, 150, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_CONFIG_EXT, 58, 38, 25, 12, ES_AUTOHSCROLL
+    PUSHBUTTON "…", ID_BTN_CONFIG_DIR, 211, 23, 25, 12
 
     GROUPBOX "Loggfiler", 202, 6, 62, 235, 30
     LTEXT "Mappe:", ID_TXT_FOLDER, 17, 74, 32, 10
@@ -184,16 +184,18 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_NORWEGIAN, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, 0, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v" PACKAGE_VERSION " - Et Windows-grensesnitt mot OpenVPN\n" \
+    LTEXT "OpenVPN GUI v" PACKAGE_VERSION_RESOURCE_STR " - Et Windows-grensesnitt mot OpenVPN\n" \
           "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n" \
-          "http://openvpn.se/", 0, 36, 15, 206, 26
-    LTEXT "En applikasjon for sikker kommunikasjon mellom nettverk over en usikker " \
+          "Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n" \
+          "Copyright (C) 2012-2016 OpenVPN GUI contributors\n" \
+          "https://github.com/OpenVPN/openvpn-gui/", 0, 36, 15, 206, 50
+    LTEXT "OpenVPN - En applikasjon for sikker kommunikasjon mellom nettverk over en usikker " \
           "kommunikasjonskanal på én enkelt port, med støtte for SSL/TLS-basert " \
-          "sesjonsautentisering og nøkkelhåndtering, pakkekryptering, \n" \
+          "sesjonsautentisering og nøkkelhåndtering, pakkekryptering,  " \
           "-autentisering og -komprimering.\n" \
           "\n" \
-          "Copyright (C) 2002-2005 OpenVPN Solutions LLC  <info@openvpn.net>\n" \
-          "http://openvpn.net/", 0, 8, 45, 235, 56
+          "Copyright (C) 2002-2016 OpenVPN Technologies, Inc <info@openvpn.net>\n" \
+          "https://openvpn.net/", 0, 8, 70, 240, 64
 END
 
 /* Proxy Authentication Dialog */
