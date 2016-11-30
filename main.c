@@ -116,6 +116,8 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
       { password, OnPassword },
       { proxy,    OnProxy },
       { stop,     OnStop },
+      { needok,   OnNeedOk },
+      { needstr,  OnNeedStr },
       { 0,        NULL }
   };
   InitManagement(handler);

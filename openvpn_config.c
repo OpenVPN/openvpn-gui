@@ -107,7 +107,7 @@ AddConfigFileToList(int config, const TCHAR *filename, const TCHAR *config_dir)
 
 #ifndef DISABLE_CHANGE_PASSWORD
     if (CheckKeyFileWriteAccess (c))
-        c->flags |= ALLOW_CHANGE_PASSPHRASE;
+        c->flags |= FLAG_ALLOW_CHANGE_PASSPHRASE;
 #endif
 
     /* Check if connection should be autostarted */

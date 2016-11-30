@@ -62,6 +62,11 @@
 #define ID_EDT_AUTH_CHALLENGE            185
 #define ID_CHK_SAVE_PASS                 186
 
+/* Challenege Response Dialog */
+#define ID_DLG_CHALLENGE_RESPONSE        190
+#define ID_TXT_DESCRIPTION               191
+#define ID_EDT_RESPONSE                  192
+
 /* Proxy Settings Dialog */
 #define ID_DLG_PROXY                     200
 #define ID_RB_PROXY_OPENVPN              210
@@ -296,7 +301,12 @@
 /* Save password related messages */
 #define IDS_NFO_DELETE_PASS             2001
 
+/* Token password dialog related */
+#define IDS_NFO_TOKEN_PASSWORD_CAPTION  2100
+#define IDS_NFO_TOKEN_PASSWORD_REQUEST  2101
+
 /* Timer IDs */
 #define IDT_STOP_TIMER                  2500  /* Timer used to trigger force termination */
+
 
 #endif

@@ -83,9 +83,9 @@ typedef struct {
     WCHAR readbuf[512];
 } service_io_t;
 
-#define FLAG_SAVE_KEY_PASS  1<<4
-#define FLAG_SAVE_AUTH_PASS 1<<5
-#define ALLOW_CHANGE_PASSPHRASE (1<<1)
+#define FLAG_ALLOW_CHANGE_PASSPHRASE (1<<1)
+#define FLAG_SAVE_KEY_PASS  (1<<4)
+#define FLAG_SAVE_AUTH_PASS (1<<5)
 
 typedef struct {
     unsigned short major, minor, build, revision;
@@ -122,6 +122,7 @@ struct connection {
     DWORD threadId;
     HWND hwndStatus;
     int flags;
+    char *dynamic_cr;              /* Pointer to buffer for dynamic challenge string received */
 };
 
 /* All options used within OpenVPN GUI */
