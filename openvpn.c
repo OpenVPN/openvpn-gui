@@ -1712,12 +1712,14 @@ SuspendOpenVPN(int config)
 void
 SetStatusWinIcon(HWND hwndDlg, int iconId)
 {
-    HICON hIcon = LoadLocalizedIcon(iconId);
+    HICON hIcon = LoadLocalizedSmallIcon(iconId);
     if (!hIcon)
         return;
-
+    HICON hIconBig = LoadLocalizedIcon(ID_ICO_APP);
+    if (!hIconBig)
+        hIconBig = hIcon;
     SendMessage(hwndDlg, WM_SETICON, (WPARAM) ICON_SMALL, (LPARAM) hIcon);
-    SendMessage(hwndDlg, WM_SETICON, (WPARAM) ICON_BIG, (LPARAM) hIcon);
+    SendMessage(hwndDlg, WM_SETICON, (WPARAM) ICON_BIG, (LPARAM) hIconBig);
 }
 
 

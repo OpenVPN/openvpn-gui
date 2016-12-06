@@ -236,12 +236,22 @@ ShowLocalizedMsg(const UINT stringId, ...)
     va_end(args);
 }
 
-
-HICON
-LoadLocalizedIcon(const UINT iconId)
+static HICON
+LoadLocalizedIconEx(const UINT iconId, int cxDesired, int cyDesired)
 {
     LANGID langId = GetGUILanguage();
 
+    HICON hIcon =
+            (HICON) LoadImage (o.hInstance, MAKEINTRESOURCE(iconId),
+                    IMAGE_ICON, cxDesired, cyDesired, LR_DEFAULTSIZE|LR_SHARED);
+    if (hIcon)
+        return hIcon;
+    else
+        PrintDebug (L"Loading icon using LoadImage failed.");
+
+    /* Fallback to CreateIconFromResource which always scales
+     * from the first image in the resource
+     */
     /* find group icon resource */
     HRSRC res = FindResourceLang(RT_GROUP_ICON, MAKEINTRESOURCE(iconId), langId);
     if (res == NULL)
@@ -268,9 +278,29 @@ LoadLocalizedIcon(const UINT iconId)
     if (resSize == 0)
         return NULL;
 
-    return CreateIconFromResource(resInfo, resSize, TRUE, 0x30000);
+    /* Note: this uses the first icon in the resource and scales it */
+    hIcon = CreateIconFromResourceEx(resInfo, resSize, TRUE, 0x30000,
+            cxDesired, cyDesired, LR_DEFAULTSIZE|LR_SHARED);
+    return hIcon;
 }
 
+HICON
+LoadLocalizedIcon(const UINT iconId)
+{
+   /* get the required normal icon size (e.g., taskbar icon) */
+   int cx = GetSystemMetrics(SM_CXICON);
+   int cy = GetSystemMetrics(SM_CYICON);
+   return LoadLocalizedIconEx(iconId, cx, cy);
+}
+
+HICON
+LoadLocalizedSmallIcon(const UINT iconId)
+{
+   /* get the required small icon size (e.g., tray icon) */
+   int cx = GetSystemMetrics(SM_CXSMICON);
+   int cy = GetSystemMetrics(SM_CYSMICON);
+   return LoadLocalizedIconEx(iconId, cx, cy);
+}
 
 LPCDLGTEMPLATE
 LocalizedDialogResource(const UINT dialogId)

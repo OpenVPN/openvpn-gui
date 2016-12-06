@@ -227,7 +227,7 @@ ShowTrayIcon()
   ni.hWnd = o.hWnd;
   ni.uFlags = NIF_MESSAGE | NIF_TIP | NIF_ICON;
   ni.uCallbackMessage = WM_NOTIFYICONTRAY;
-  ni.hIcon = LoadLocalizedIcon(ID_ICO_DISCONNECTED);
+  ni.hIcon = LoadLocalizedSmallIcon(ID_ICO_DISCONNECTED);
   _tcsncpy(ni.szTip, LoadLocalizedString(IDS_TIP_DEFAULT), _countof(ni.szTip));
 
   Shell_NotifyIcon(NIM_ADD, &ni);
@@ -291,7 +291,7 @@ SetTrayIcon(conn_state_t state)
     ni.cbSize = sizeof(ni);
     ni.uID = 0;
     ni.hWnd = o.hWnd;
-    ni.hIcon = LoadLocalizedIcon(icon_id);
+    ni.hIcon = LoadLocalizedSmallIcon(icon_id);
     ni.uFlags = NIF_MESSAGE | NIF_TIP | NIF_ICON;
     ni.uCallbackMessage = WM_NOTIFYICONTRAY;
     _tcsncpy(ni.szTip, msg, _countof(ni.szTip));
