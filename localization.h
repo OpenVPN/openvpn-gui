@@ -28,6 +28,7 @@ int LoadLocalizedStringBuf(PTSTR, const int, const UINT, ...);
 void ShowLocalizedMsg(const UINT, ...);
 int ShowLocalizedMsgEx(const UINT, LPCTSTR, const UINT, ...);
 HICON LoadLocalizedIcon(const UINT);
+HICON LoadLocalizedSmallIcon(const UINT);
 LPCDLGTEMPLATE LocalizedDialogResource(const UINT);
 INT_PTR LocalizedDialogBoxParam(const UINT, DLGPROC, const LPARAM);
 HWND CreateLocalizedDialogParam(const UINT, DLGPROC, const LPARAM);
