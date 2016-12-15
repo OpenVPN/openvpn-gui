@@ -56,7 +56,7 @@ AC_DEFINE_UNQUOTED([MAX_CONFIGS], [$MAX_CONFIGS], [Maximum number of config file
 case "$host" in
 	*-mingw*)
 		CPPFLAGS="${CPPFLAGS} -DWIN32_LEAN_AND_MEAN"
-		CPPFLAGS="${CPPFLAGS} -D_WIN32_WINNT=NTDDI_WINXP"
+		CPPFLAGS="${CPPFLAGS} -D_WIN32_WINNT=_WIN32_WINNT_VISTA -DWINVER=_WIN32_WINNT"
 		LDFLAGS="${LDFLAGS} -Wl,--nxcompat,--dynamicbase"
 
 		dnl older mingw doesn't support `--high-entropy-va`
