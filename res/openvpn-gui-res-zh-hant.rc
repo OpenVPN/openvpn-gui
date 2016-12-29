@@ -4,6 +4,7 @@
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
  *                2009 Heiko Hund <heikoh@users.sf.net>
  *                2012 Yi-Wen Cheng <u4787521@anu.edu.au>
+ *                2016 Pin-Guang Chen <petercpg@gmail.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,7 +32,7 @@ LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
 BEGIN
     LTEXT "輸入密碼:", 201, 6, 6, 100, 10
     EDITTEXT ID_EDT_PASSPHRASE, 6, 17, 107, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 33, 100, 10
+    CHECKBOX "儲存密碼", ID_CHK_SAVE_PASS, 6, 33, 100, 10
     PUSHBUTTON "確認", IDOK, 6, 49, 50, 14
     PUSHBUTTON "取消", IDCANCEL, 64, 49, 50, 14
 END
@@ -39,15 +40,15 @@ END
 /* Auth Username/Password Dialog */
 ID_DLG_AUTH DIALOG 6, 18, 160, 78
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
-CAPTION "OpenVPN - 使用者權限"
+CAPTION "OpenVPN - 使用者驗證"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
 BEGIN
     LTEXT "使用者名稱:", 0, 6, 9, 50, 10
     LTEXT "密碼:", 0, 6, 26, 50, 10
-    EDITTEXT ID_EDT_AUTH_USER, 52, 6, 102, 12, ES_AUTOHSCROLL
-    EDITTEXT ID_EDT_AUTH_PASS, 52, 23, 102, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 42, 100, 10
+    EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    CHECKBOX "儲存密碼", ID_CHK_SAVE_PASS, 6, 42, 100, 10
     PUSHBUTTON "確認", IDOK, 20, 58, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
     PUSHBUTTON "取消", IDCANCEL, 90, 58, 52, 14
 END
@@ -55,18 +56,18 @@ END
 /* Auth Username/Password/Challenge Dialog */
 ID_DLG_AUTH_CHALLENGE DIALOG 6, 18, 160, 112
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
-CAPTION "OpenVPN - User Authentication"
+CAPTION "OpenVPN - 使用者驗證"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
 BEGIN
     LTEXT "使用者名稱:", 0, 6, 9, 50, 10
     LTEXT "密碼:", 0, 6, 26, 50, 10
-    LTEXT "Response:", 0, 6, 60, 50, 10
+    LTEXT "回應:", 0, 6, 60, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     LTEXT "", ID_TXT_AUTH_CHALLENGE, 6, 43, 148, 10
     EDITTEXT ID_EDT_AUTH_CHALLENGE, 60, 57, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 76, 100, 10
+    CHECKBOX "儲存密碼", ID_CHK_SAVE_PASS, 6, 76, 100, 10
     PUSHBUTTON "確認", IDOK, 20, 92, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
     PUSHBUTTON "取消", IDCANCEL, 90, 92, 52, 14
 END
@@ -74,12 +75,12 @@ END
 /* Challenge Response Dialog */
 ID_DLG_CHALLENGE_RESPONSE DIALOG 6, 18, 212, 72
 STYLE WS_SIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
-CAPTION "OpenVPN - Challenge Response"
+CAPTION "OpenVPN - 挑戰回應"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
 BEGIN
     LTEXT "", ID_TXT_DESCRIPTION, 6, 9, 208, 10
-    LTEXT "Response:", 0, 6, 30, 50, 10
+    LTEXT "回應:", 0, 6, 30, 50, 10
     EDITTEXT ID_EDT_RESPONSE, 60, 27, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     PUSHBUTTON "確認", IDOK, 20, 51, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
     PUSHBUTTON "取消", IDCANCEL, 90, 51, 52, 14
@@ -101,16 +102,16 @@ END
 /* Change Passphrase Dialog */
 ID_DLG_CHGPASS DIALOG 6, 18, 193, 82
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "OpenVPN - Change Passphrase"
+CAPTION "OpenVPN - 修改密碼"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
 BEGIN
     LTEXT "原密碼:", 171, 6, 9, 85, 10
     LTEXT "新密碼:", 172, 6, 26, 85, 10
     LTEXT "確認新密碼:", 173, 6, 42, 85, 10
-    EDITTEXT ID_EDT_PASS_CUR, 52, 6, 133, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    EDITTEXT ID_EDT_PASS_NEW, 52, 23, 133, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    EDITTEXT ID_EDT_PASS_NEW2, 52, 39, 133, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PASS_CUR, 95, 6, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PASS_NEW, 95, 23, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PASS_NEW2, 95, 39, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
     PUSHBUTTON "確認", IDOK, 40, 59, 50, 14
     PUSHBUTTON "取消", IDCANCEL, 103, 59, 50, 14
     LTEXT "", ID_TXT_KEYFORMAT, 0, 0, 0, 0
@@ -125,16 +126,16 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
 BEGIN
     GROUPBOX "   ", 201, 6, 46, 235, 52
-    AUTORADIOBUTTON "使用 OpenVPN Config-file 設定", ID_RB_PROXY_OPENVPN, \
+    AUTORADIOBUTTON "使用 OpenVPN 設定檔中的設定", ID_RB_PROXY_OPENVPN, \
                     13, 16, 200, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "使用系統 Proxy 設定", \
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
     AUTORADIOBUTTON "手動設定", ID_RB_PROXY_MANUAL, 13, 46, 47, 10
     AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "SOCKS Proxy", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
-    LTEXT "位址:", ID_TXT_PROXY_ADDRESS, 20, 77, 32, 10
-    RTEXT "連接埠:", ID_TXT_PROXY_PORT, 163, 77, 28, 10
-    EDITTEXT ID_EDT_PROXY_ADDRESS, 42, 75, 117, 12, ES_AUTOHSCROLL
+    LTEXT "地址:", ID_TXT_PROXY_ADDRESS, 20, 77, 32, 10
+    RTEXT "連接埠:", ID_TXT_PROXY_PORT, 171, 77, 20, 10
+    EDITTEXT ID_EDT_PROXY_ADDRESS, 53, 75, 117, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_PROXY_PORT, 196, 75, 30, 12, ES_AUTOHSCROLL
 END
 
@@ -147,18 +148,49 @@ LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
 BEGIN
     GROUPBOX "使用者介面", 201, 6, 12, 235, 30
     LTEXT "語言:", ID_TXT_LANGUAGE, 17, 25, 52, 12
-    COMBOBOX ID_CMB_LANGUAGE, 40, 23, 188, 400, CBS_DROPDOWNLIST | WS_TABSTOP
-    GROUPBOX "Startup", 202, 6, 47, 235, 30
-    AUTOCHECKBOX "Launch on Windows startup", ID_CHK_STARTUP, 17, 59, 200, 12
+    COMBOBOX ID_CMB_LANGUAGE, 57, 23, 171, 400, CBS_DROPDOWNLIST | WS_TABSTOP
 
-    GROUPBOX "Preferences", 202, 6, 82, 235, 90
-    AUTOCHECKBOX "Append to log", ID_CHK_LOG_APPEND, 17, 95, 60, 10
-    AUTOCHECKBOX "Show script window", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
-    AUTOCHECKBOX "Silent connection", ID_CHK_SILENT, 17, 125, 200, 10
-    LTEXT "Show Balloon", ID_TXT_BALLOON, 17, 140, 100, 10
-    AUTORADIOBUTTON "On connect", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "On connect/reconnect", ID_RB_BALLOON2, 86, 155, 90, 10
-    AUTORADIOBUTTON "Never", ID_RB_BALLOON0, 181, 155, 40, 10
+    GROUPBOX "啟動", 202, 6, 47, 235, 30
+    AUTOCHECKBOX "在 Windows 開機時執行", ID_CHK_STARTUP, 17, 59, 200, 12
+
+    GROUPBOX "偏好設定", 202, 6, 82, 235, 90
+    AUTOCHECKBOX "附加紀錄檔", ID_CHK_LOG_APPEND, 17, 95, 60, 10
+    AUTOCHECKBOX "顯示指令碼視窗", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
+    AUTOCHECKBOX "寧靜連線", ID_CHK_SILENT, 17, 125, 200, 10
+    LTEXT "顯示通知氣球", ID_TXT_BALLOON, 17, 140, 100, 10
+    AUTORADIOBUTTON "連上線時", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "連上線、重新連線時", ID_RB_BALLOON2, 86, 155, 90, 10
+    AUTORADIOBUTTON "永不顯示", ID_RB_BALLOON0, 181, 155, 40, 10
+END
+
+/* Advanced Dialog */
+ID_DLG_ADVANCED DIALOGEX 6, 18, 252, 218
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "進階"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
+BEGIN
+    GROUPBOX "設定檔", 201, 6, 12, 235, 45
+    LTEXT "資料夾:", ID_TXT_FOLDER, 17, 25, 32, 10
+    LTEXT "副檔名:", ID_TXT_EXTENSION, 17, 40, 52, 10
+    EDITTEXT ID_EDT_CONFIG_DIR, 53, 23, 150, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_CONFIG_EXT, 53, 38, 25, 12, ES_AUTOHSCROLL
+    PUSHBUTTON "…", ID_BTN_CONFIG_DIR, 208, 23, 25, 12
+
+    GROUPBOX "記錄檔", 202, 6, 62, 235, 30
+    LTEXT "資料夾:", ID_TXT_FOLDER, 17, 74, 32, 10
+    EDITTEXT ID_EDT_LOG_DIR, 53, 72, 150, 12, ES_AUTOHSCROLL
+    PUSHBUTTON "…", ID_BTN_LOG_DIR, 208, 72, 25, 12
+
+    GROUPBOX "指令碼逾時", 201, 6, 97, 235, 60
+    LTEXT "連線前指令碼逾時時限:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
+    LTEXT "連線指令碼逾時時限:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
+    LTEXT "離線指令碼逾時時限:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
+    EDITTEXT ID_EDT_PRECONNECT_TIMEOUT, 103, 108, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
+    EDITTEXT ID_EDT_CONNECT_TIMEOUT, 103, 123, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
+    EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 103, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
+
+    AUTOCHECKBOX "僅使用系統服務", ID_CHK_SERVICE_ONLY, 6, 162, 100, 12
 END
 
 /* About Dialog */
@@ -169,15 +201,15 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
 BEGIN
     ICON ID_ICO_APP, 0, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v" PACKAGE_VERSION_RESOURCE_STR " - A Windows GUI for OpenVPN\n" \
+    LTEXT "OpenVPN GUI v" PACKAGE_VERSION_RESOURCE_STR " - OpenVPN 的 Windows 圖形化介面\n" \
           "版權所有 (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n" \
           "版權所有 (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n" \
-          "版權所有 (C) 2012-2016 OpenVPN GUI contributors\n" \
+          "版權所有 (C) 2012-2016 OpenVPN GUI 貢獻者\n" \
           "https://github.com/OpenVPN/openvpn-gui/", 0, 36, 15, 206, 42
-    LTEXT "OpenVPN - An application to securely tunnel IP networks " \
-          "over a single UDP port, with support for SSL/TLS-based " \
-          "session Authentication and key exchange, packet " \
-          "encryption, packet authentication, and packet compression.\n" \
+    LTEXT "OpenVPN 是一套可安全地透過單一 UDP 通訊埠穿隧 IP 網路" \
+          "的應用程式。支援以 SSL/TLS 為基礎的連線驗證與金鑰交換" \
+          "、封包加密、封包驗證，以及封包壓縮。" \
+          "\n" \
           "\n" \
           "版權所有 (C) 2002-2016 OpenVPN Technologies, Inc <info@openvpn.net>\n" \
           "https://openvpn.net/", 0, 8, 61, 240, 64
@@ -200,188 +232,225 @@ END
 STRINGTABLE
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
 BEGIN
-    IDS_LANGUAGE_NAME "繁體中文 - Chinese (traditional)"
+    IDS_LANGUAGE_NAME "繁體中文 - Chinese (Traditional)"
 
     /* Tray - Resources */
     IDS_TIP_DEFAULT "OpenVPN GUI "
-    IDS_TIP_CONNECTED "\n連接至: "
-    IDS_TIP_CONNECTING "\n連線中: "
-    IDS_TIP_CONNECTED_SINCE "\nConnected since: "
-    IDS_TIP_ASSIGNED_IP "\n指定 IP: %s"
+    IDS_TIP_CONNECTED "\n已連線至: "
+    IDS_TIP_CONNECTING "\n正在連線至: "
+    IDS_TIP_CONNECTED_SINCE "\n連線自: "
+    IDS_TIP_ASSIGNED_IP "\n配發 IP: %s"
     IDS_MENU_SERVICE "OpenVPN 服務"
-    IDS_MENU_SETTINGS "設定中…"
+    IDS_MENU_IMPORT "匯入設定檔…"
+    IDS_MENU_SETTINGS "選項…"
     IDS_MENU_CLOSE "離開"
-    IDS_MENU_CONNECT "連接"
+    IDS_MENU_CONNECT "連線"
     IDS_MENU_DISCONNECT "斷線"
     IDS_MENU_STATUS "顯示狀態"
     IDS_MENU_VIEWLOG "顯示紀錄"
-    IDS_MENU_EDITCONFIG "編輯 config"
+    IDS_MENU_EDITCONFIG "編輯設定檔"
     IDS_MENU_PASSPHRASE "更改密碼"
+    IDS_MENU_CLEARPASS "清除儲存的密碼"
     IDS_MENU_SERVICE_START "開始"
     IDS_MENU_SERVICE_STOP "結束"
     IDS_MENU_SERVICE_RESTART "重新啟動"
-    IDS_MENU_SERVICEONLY_START "連接"
+    IDS_MENU_SERVICEONLY_START "連線"
     IDS_MENU_SERVICEONLY_STOP "斷線"
     IDS_MENU_SERVICEONLY_RESTART "重新連線"
-    IDS_MENU_ASK_STOP_SERVICE "您想要斷線嗎 (停止  OpenVPN 服務)?"
+    IDS_MENU_ASK_STOP_SERVICE "您想要斷線（停止 OpenVPN 服務）嗎？"
 
     /* Logviewer - Resources */
-    IDS_ERR_START_LOG_VIEWER "啟動 log-viewer 失敗: %s"
-    IDS_ERR_START_CONF_EDITOR "啟動 config-editor 失敗: %s"
+    IDS_ERR_START_LOG_VIEWER "記錄檔檢視器啟動失敗: %s"
+    IDS_ERR_START_CONF_EDITOR "設定檔編輯器啟動失敗: %s"
 
     /* OpenVPN */
-    IDS_ERR_MANY_CONFIGS "OpenVPN GUI 並無提供超過 %d 的configs. 如果您有需要,請聯繫作者."
-    IDS_ERR_ONE_CONN_OLD_VER "若您使用OpenVPN 2.0-beta6以前的舊版本,您只能一次連線一個."
-    IDS_ERR_STOP_SERV_OLD_VER "當OpenVPN 服務正在使用時,您無法使用OpenVPN GUI啟動連線 (with OpenVPN 1.5/1.6). 若您需要使用OpenVPN GUI,請停止OpenVPN服務."
-    IDS_ERR_CREATE_EVENT "CreateEvent failed on exit event: %s"
-    IDS_ERR_UNKNOWN_PRIORITY "未知優先名稱: %s"
-    IDS_ERR_LOG_APPEND_BOOL "Log檔案追加標誌(例如 '%s')必須為 '0' or '1'"
-    IDS_ERR_GET_MSIE_PROXY "無法取得MSIE proxy 設定."
-    IDS_ERR_INIT_SEC_DESC "初始化安全描述失敗."
-    IDS_ERR_SET_SEC_DESC_ACL "設定安全描述失敗."
-    IDS_ERR_CREATE_PIPE_OUTPUT "建立hOutputWrite管道失敗."
-    IDS_ERR_CREATE_PIPE_INPUT "建立hInputRead管道失敗."
-    IDS_ERR_DUP_HANDLE_OUT_READ "hOutputRead重複處理失敗."
-    IDS_ERR_DUP_HANDLE_IN_WRITE "hInputWrite重複處理失敗."
-    IDS_ERR_CREATE_PROCESS "建立程序失敗, exe='%s' cmdline='%s' dir='%s'"
-    IDS_ERR_CREATE_THREAD_STATUS "建立執行序顯示狀態視窗失敗."
-    IDS_NFO_STATE_WAIT_TERM "目前狀態: 等待中止OpenVPN"
-    IDS_NFO_STATE_CONNECTED "目前狀態: 已連接"
-    IDS_NFO_NOW_CONNECTED "%s 目前已連接."
-    IDS_NFO_ASSIGN_IP "指定IP: %s"
-    IDS_ERR_CERT_EXPIRED "無法連接,因為您的認證已過期或是系統時間不正確."
-    IDS_ERR_CERT_NOT_YET_VALID "無法連接,因為您的認證尚未生效.請檢查您的系統時間是正確的."
+    IDS_ERR_MANY_CONFIGS "OpenVPN GUI 不支援超過 %d 組連線設定檔。若您有需要，請聯繫作者。"
+    IDS_NFO_NO_CONFIGS "沒有找到可讀取的連線設定檔。\n"\
+                       "請使用選單的「匯入設定檔…」，或將設定檔複製到「%s」或「%s」。"
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "啟動此連線 (%s) 必須要有「%s」群組的成員資格。"\
+                                  "請連絡您的系統管理員。\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "啟動此連線 (%s) 必須要有「%s」群組的成員資格。"\
+                                  "\n\n"\
+                                  "您想要把自己加入到此群組嗎？\n"\
+                                  "可能需要輸入管理密碼或管理員同意才能進行此行為。"
+    IDS_NFO_CONFIG_AUTH_PENDING   "啟動此連線 (%s) 必須要有「%s」群組的成員資格。"\
+                                  "\n\n"\
+                                  "請完成先前的授權對話窗。"
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "將使用者加入至「%s」群組失敗。"
+    IDS_ERR_ONE_CONN_OLD_VER "若您使用 OpenVPN 2.0-beta6 以前的舊版本，同時僅能有一個連線。"
+    IDS_ERR_STOP_SERV_OLD_VER "OpenVPN 1.5/1.6 的服務執行中時，將無法使用 OpenVPN GUI 進行連線。若您想使用 OpenVPN GUI，請先停止 OpenVPN 服務。"
+    IDS_ERR_CREATE_EVENT "發生結束事件時 CreateEvent 失敗: %s"
+    IDS_ERR_UNKNOWN_PRIORITY "未知的優先權名稱: %s"
+    IDS_ERR_LOG_APPEND_BOOL "附加記錄檔的旗標（例如「%s」）必須為「0」或「1」"
+    IDS_ERR_GET_MSIE_PROXY "無法取得 MSIE 的 Proxy 設定。"
+    IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor 失敗。"
+    IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl 失敗。"
+    IDS_ERR_CREATE_PIPE_OUTPUT "建立 hOutputWrite 管道失敗。"
+    IDS_ERR_CREATE_PIPE_INPUT "建立 hInputRead 管道失敗。"
+    IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle on hOutputRead 失敗。"
+    IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite 失敗。"
+    IDS_ERR_CREATE_PROCESS "CreateProcess 失敗，exe=「%s」 cmdline=「%s」 dir=「%s」"
+    IDS_ERR_CREATE_THREAD_STATUS "CreateThread 以顯示狀態視窗時失敗。"
+    IDS_NFO_STATE_WAIT_TERM "目前狀態: 等待中止 OpenVPN…"
+    IDS_NFO_STATE_CONNECTED "目前狀態: 已連線"
+    IDS_NFO_NOW_CONNECTED "已連線至 %s。"
+    IDS_NFO_ASSIGN_IP "配發 IP: %s"
+    IDS_ERR_CERT_EXPIRED "您的憑證已過期，或是系統時間不正確，無法連線。"
+    IDS_ERR_CERT_NOT_YET_VALID "您的憑證尚未生效，無法連線。請檢查您的系統時間是否正確。"
     IDS_NFO_STATE_RECONNECTING "目前狀態: 重新連線中"
     IDS_NFO_STATE_DISCONNECTED "目前狀態: 已斷線"
-    IDS_NFO_CONN_TERMINATED "連接至 %s 被終止."
+    IDS_NFO_CONN_TERMINATED "%s 連線已中斷。"
     IDS_NFO_STATE_FAILED "目前狀態: 連線失敗"
-    IDS_NFO_CONN_FAILED "連接至 %s 已失敗."
+    IDS_NFO_CONN_FAILED "%s 連線失敗。"
     IDS_NFO_STATE_FAILED_RECONN "目前狀態: 重新連線失敗"
-    IDS_NFO_RECONN_FAILED "重新連線至 %s 已失敗."
+    IDS_NFO_RECONN_FAILED "%s 重新連線失敗。"
     IDS_NFO_STATE_SUSPENDED "目前狀態: 已暫停"
-    IDS_ERR_READ_STDOUT_PIPE "無法讀取從OpenVPN StdOut."
-    IDS_ERR_CREATE_EDIT_LOGWINDOW "建立RichEditg失敗!!"
-    IDS_ERR_SET_SIZE "設定大小失敗!"
-    IDS_ERR_AUTOSTART_CONF "無法找到自動啟動的config: %s"
-    IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe on hInputRead failed."
+    IDS_ERR_READ_STDOUT_PIPE "無法從 OpenVPN StdOut 管道讀取。"
+    IDS_ERR_CREATE_EDIT_LOGWINDOW "建立 RichEdit 紀錄視窗失敗！"
+    IDS_ERR_SET_SIZE "設定大小失敗！"
+    IDS_ERR_AUTOSTART_CONF "無法找到指定的自動連線設定檔: %s"
+    IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe on hInputRead 失敗。"
     IDS_NFO_STATE_CONNECTING "目前狀態: 連線中"
     IDS_NFO_CONNECTION_XXX "OpenVPN 連線 (%s)"
-    IDS_NFO_STATE_CONN_SCRIPT "目前狀態: 執行Script連線"
-    IDS_NFO_STATE_DISCONN_SCRIPT "目前狀態: 執行Script斷線"
-    IDS_ERR_RUN_CONN_SCRIPT "無法執行連接script: %s"
-    IDS_ERR_GET_EXIT_CODE "無法取得連接script的退出碼 (%s)"
-    IDS_ERR_CONN_SCRIPT_FAILED "連接script失敗. (退出碼為=%ld)"
-    IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "連接script失敗. 在 %d sec timeout."
-    IDS_ERR_CONFIG_EXIST "目前已存在的config文件名為 '%s'." \
-                         "您不能擁有多個相同名稱的config文件" \
-                         "即使他們存在不同資料夾."
+    IDS_NFO_STATE_CONN_SCRIPT "目前狀態: 正在執行連線指令碼"
+    IDS_NFO_STATE_DISCONN_SCRIPT "目前狀態: 正在執行斷線指令碼"
+    IDS_ERR_RUN_CONN_SCRIPT "執行連線指令碼時發生錯誤: %s"
+    IDS_ERR_GET_EXIT_CODE "無法取得連線指令碼的 ExitCode (%s)"
+    IDS_ERR_CONN_SCRIPT_FAILED "連線指令碼執行失敗。（退出碼為 %ld）"
+    IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "連線指令碼執行失敗，執行超過 %d 已逾時。"
+    IDS_ERR_CONFIG_EXIST "已有名為「%s」的連線設定檔。即使連線設定檔存在不同資料夾，" \
+                         "您也不得使用相同名稱。"
+    IDS_NFO_CONN_TIMEOUT "連限至管理介面失敗。\n" \
+                         "請檢視記錄檔 (%s) 取得更多詳細資訊。"
     /* main - Resources */
-    IDS_ERR_OPEN_DEBUG_FILE "無法開啟輸出debug文件."
-    IDS_ERR_LOAD_RICHED20 "無法載入RICHED20.DLL."
-    IDS_ERR_SHELL_DLL_VERSION "您的shell32.dll 版本為太舊(0x%lx). 您至少需要5.0以上的版本."
-    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI正在執行."
-    IDS_NFO_SERVICE_STARTED "OpenVPN已啟動."
-    IDS_NFO_SERVICE_STOPPED "OpenVPN已停止."
-    IDS_NFO_ACTIVE_CONN_EXIT "還在正在連接,如果您退出OpenVPN GUI,服務將被關閉." \
-                             "\n\n您確定您要離開嗎?"
-    IDS_NFO_SERVICE_ACTIVE_EXIT "您目前以連接中(OpenVPN服務正在執行中). " \
-                                "您會保持連線,即使您離開OpenVPN GUI.\n\n" \
-                                "您想要執行退出OpenVPN GUI嗎?"
+    IDS_ERR_OPEN_DEBUG_FILE "開啟除錯文件 (%s) 時失敗。"
+    IDS_ERR_CREATE_PATH "無法建立 %s 路徑:\n%s"
+    IDS_ERR_LOAD_RICHED20 "無法載入 RICHED20.DLL。"
+    IDS_ERR_SHELL_DLL_VERSION "您的 shell32.dll 版本太舊 (0x%lx)，需要至少 5.0 版本或更新版。"
+    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI 正在執行。"
+    IDS_NFO_SERVICE_STARTED "已啟動 OpenVPN 服務。"
+    IDS_NFO_SERVICE_STOPPED "已停止 OpenVPN 服務。"
+    IDS_NFO_ACTIVE_CONN_EXIT "目前還有未中斷的連線，若您結束 OpenVPN GUI 該連線將被中斷。" \
+                             "\n\n您確定要離開嗎？"
+    IDS_NFO_SERVICE_ACTIVE_EXIT "您目前已連接（OpenVPN 服務正在執行中）。" \
+                                "離開 OpenVPN GUI 仍將保持連線。\n\n" \
+                                "您確定要離開 OpenVPN GUI 嗎？"
 
     /* options - Resources */
-    IDS_NFO_USAGE "--help\t\t\t: 顯示訊息.\n" \
-                  "--connect cnn \t\t: 當開啟時連接至 ""cnn"".\n" \
-                  "\t\t\t   例子: openvpn-gui --連接至 office.ovpn\n" \
+    IDS_NFO_USAGE "--help\t\t\t: 顯示此訊息。\n" \
+                  "--connect cnn \t\t: 啟動時連線至 ""cnn""。\n" \
+                  "\t\t\t   舉例: openvpn-gui --connect office.ovpn\n" \
                   "\n" \
-                  "選項重寫到註冊表設定:\n" \
-                  "--exe_path\t\t: 路徑至openvpn.exe.\n" \
-                  "--config_dir\t\t: 搜索config文件的目錄路徑.\n" \
-                  "--ext_string\t\t: Extension on config files.\n" \
-                  "--log_dir\t\t\t: 日誌文件將被保存在目錄路徑.\n" \
-                  "--priority_string\t\t: 優先字串 (參見更多訊息).\n" \
-                  "--append_string\t\t: 1=追加到日誌文件. 0=連接時截斷日誌.\n" \
-                  "--log_viewer\t\t: 日誌查看路徑.\n" \
-                  "--editor\t\t\t: 編輯config路徑.\n" \
-                  "--allow_edit\t\t: 1=顯示編輯config的選項.\n" \
-                  "--allow_service\t\t: 1=顯示控制服務選項.\n" \
-                  "--allow_password\t\t: 1=S顯示變更密碼選項.\n" \
-                  "--allow_proxy\t\t: 1=顯示通訊埠設定選項.\n" \
-                  "--show_balloon\t\t: 0=從未, 1=初始連線, 2=每次重新連線.\n" \
-                  "--service_only\t\t: 1=啟動服務模式.\n" \
-                  "--silent_connection\t\t: 1=連接時,不顯示狀態對話視窗.\n" \
-                  "--show_script_window\t: 0=隱藏執行視窗, 1=顯示.\n" \
-                  "--passphrase_attempts\t: 允許嘗試密碼次數.\n" \
-                  "--connectscript_timeout\t: 等待連接至時間.\n" \
-                  "--disconnectscript_timeout\t: 等待斷線結束時間.\n" \
-                  "--preconnectscript_timeout\t: 等待預先連線時間.\n"
+                  "可覆蓋系統登錄表設定的選項:\n" \
+                  "--exe_path\t\t: openvpn.exe 的路徑。\n" \
+                  "--config_dir\t\t: 要搜尋連線設定檔的資料夾路徑。\n" \
+                  "--ext_string\t\t: 連線設定檔的副檔名。\n" \
+                  "--log_dir\t\t\t: 儲存記錄檔的資料夾路徑。.\n" \
+                  "--priority_string\t\t: 優先權字串（請參考 install.txt 取得更多訊息）。\n" \
+                  "--append_string\t\t: 1=追加到現有記錄檔、0=連線時清空記錄。\n" \
+                  "--log_viewer\t\t: 記錄檔檢視器路徑。\n" \
+                  "--editor\t\t\t: 連線設定檔編輯器路徑。\n" \
+                  "--allow_edit\t\t: 1=顯示「編輯連線設定檔」選單項目。\n" \
+                  "--allow_service\t\t: 1=顯示「服務控制」選單。\n" \
+                  "--allow_password\t\t: 1=顯示「變更密碼」選單。\n" \
+                  "--allow_proxy\t\t: 1=顯示「Proxy 設定」選單。\n" \
+                  "--show_balloon\t\t: 0=永不、1=首次連線時、2=每次重新連線時顯示通知氣球。\n" \
+                  "--service_only\t\t: 1=啟動「僅有系統服務」模式。\n" \
+                  "--silent_connection\t\t: 1=連線時，不顯示狀態視窗。\n" \
+                  "--show_script_window\t: 0=隱藏指令碼執行視窗、1=顯示。\n" \
+                  "--passphrase_attempts\t: 允許嘗試輸入密碼次數。\n" \
+                  "--connectscript_timeout\t: 等待連線指令碼執行的時限。\n" \
+                  "--disconnectscript_timeout\t: 等待斷線指令碼執行的時限。\n" \
+                  "--preconnectscript_timeout\t: 等待連線前指令碼執行的時限。\n"
 
-    IDS_NFO_USAGECAPTION "OpenVPN GUI Usage"
-    IDS_ERR_BAD_PARAMETER "正嘗試符合語法 ""%s"" 的密碼選項 " \
-                      "但我沒有看到一個leading'--'"
-    IDS_ERR_BAD_OPTION "選項錯誤: 無法辨別選項或是遺漏參數(s): --%s\n" \
-                   "使用 openvpn-gui --幫助更多."
+    IDS_NFO_USAGECAPTION "OpenVPN GUI 使用方式"
+    IDS_ERR_BAD_PARAMETER "嘗試將「%s」剖析成 --option 的參數，" \
+                          "但沒看到參數前面的「--」"
+    IDS_ERR_BAD_OPTION "選項錯誤: 無法識別選項，或缺少參數: --%s\n" \
+                       "使用 openvpn-gui --help 取得更多資訊。"
 
     /* passphrase - Resources */
-    IDS_ERR_CREATE_PASS_THREAD "新建執行序以顯示變更密碼對話框失敗."
-    IDS_NFO_CHANGE_PWD "變更密碼 (%s)"
-    IDS_ERR_PWD_DONT_MATCH "密碼輸入不符合. 請再試一次."
-    IDS_ERR_PWD_TO_SHORT "您的新密碼必須至少 %d 字元長."
-    IDS_NFO_EMPTY_PWD "您確定要設定設置空密碼?"
-    IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Unknown keyfile format."
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "無法開啟新的私鑰文件 (%s)."
-    IDS_ERR_OLD_PWD_INCORRECT "原密碼不正確."
-    IDS_ERR_OPEN_WRITE_KEY "無法開啟寫入私鑰文件 (%s)."
-    IDS_ERR_WRITE_NEW_KEY "無法寫入新的私鑰文件 (%s)."
-    IDS_NFO_PWD_CHANGED "您的密碼已經變更."
-    IDS_ERR_READ_PKCS12 "無法讀取PKCS #12 檔案 (%s)."
-    IDS_ERR_CREATE_PKCS12 "無法新建PKCS #12 物件. 變更密碼失敗."
-    IDS_ERR_OPEN_CONFIG "無法開啟讀取config檔案: (%s)"
-    IDS_ERR_ONLY_ONE_KEY_OPTION "您的config不能擁有超過一個以上的""key"" 選項."
-    IDS_ERR_ONLY_KEY_OR_PKCS12 "您的config不能同時擁有""key""和""pkcs12"" 選項."
-    IDS_ERR_ONLY_ONE_PKCS12_OPTION "您的config不能擁有超過一個以上的""pkcs12"" 選項."
-    IDS_ERR_HAVE_KEY_OR_PKCS12 "您的config檔案不包含任何""key""或者""pkcs12""選項."
-    IDS_ERR_KEY_FILENAME_TO_LONG "您在config的密鑰文件名稱太長!"
-    IDS_ERR_PASSPHRASE2STDIN "無法通過密碼至 stdin."
-    IDS_ERR_AUTH_USERNAME2STDIN "無法通過驗證使用者名稱至 stdin."
-    IDS_ERR_AUTH_PASSWORD2STDIN "無法通過驗證密碼至 stdin."
-    IDS_ERR_CR2STDIN "無法通過CR 至 stdin."
-    IDS_ERR_INVALID_CHARS_IN_PSW "您的新密碼包含非有效字元. " \
-                             "請選擇一個新的."
+    IDS_ERR_CREATE_PASS_THREAD "CreateThread 以顯示變更密碼對話框失敗。"
+    IDS_NFO_CHANGE_PWD "變更私鑰密碼 (%s)"
+    IDS_ERR_PWD_DONT_MATCH "您輸入的密碼不符合，請再試一次。"
+    IDS_ERR_PWD_TO_SHORT "您的新密碼必須要有至少 %d 字元長。"
+    IDS_NFO_EMPTY_PWD "您確定要設定空白密碼嗎？"
+    IDS_ERR_UNKNOWN_KEYFILE_FORMAT "未知格式的金鑰檔案。"
+    IDS_ERR_OPEN_PRIVATE_KEY_FILE "開啟私鑰檔案 (%s) 時發生錯誤。"
+    IDS_ERR_OLD_PWD_INCORRECT "舊密碼不正確。"
+    IDS_ERR_OPEN_WRITE_KEY "無法開啟私鑰檔案進行寫入 (%s)。"
+    IDS_ERR_WRITE_NEW_KEY "寫入新私鑰檔案時發生錯誤 (%s)。"
+    IDS_NFO_PWD_CHANGED "您的密碼已經變更。"
+    IDS_ERR_READ_PKCS12 "讀取 PKCS #12 檔案時發生錯誤 (%s)。"
+    IDS_ERR_CREATE_PKCS12 "無法建立新的 PKCS #12 物件，密碼變更失敗。"
+    IDS_ERR_OPEN_CONFIG "無法讀取連線設定檔: (%s)"
+    IDS_ERR_ONLY_ONE_KEY_OPTION "您的連線設定檔中不能包含超過一個「key」選項。"
+    IDS_ERR_ONLY_KEY_OR_PKCS12 "您的連線設定檔中不能同時包含「key」和「pkcs12」選項。"
+    IDS_ERR_ONLY_ONE_PKCS12_OPTION "您的連線設定檔中不能包含超過一個「pkcs12」選項。"
+    IDS_ERR_HAVE_KEY_OR_PKCS12 "您的連線設定檔中未包含任何「key」或「pkcs12」選項。"
+    IDS_ERR_KEY_FILENAME_TO_LONG "您的連線設定檔中的私鑰檔案名稱太長！"
+    IDS_ERR_PASSPHRASE2STDIN "傳送密碼至 stdin 時發生錯誤。"
+    IDS_ERR_AUTH_USERNAME2STDIN "傳送驗證使用者名稱至 stdin 時發生錯誤。"
+    IDS_ERR_AUTH_PASSWORD2STDIN "傳送驗證密碼至 stdin 時發生錯誤。"
+    IDS_ERR_CR2STDIN "傳送 CR 至 stdin 時發生錯誤。"
+    IDS_ERR_INVALID_CHARS_IN_PSW "您的新密碼包含無效字元。" \
+                                 "請使用其他密碼。"
 
     /* settings */
     IDS_SETTINGS_CAPTION "OpenVPN - 設定"
 
     /* proxy */
-    IDS_ERR_HTTP_PROXY_ADDRESS "您必須指定一個 HTTP 通訊位址"
-    IDS_ERR_HTTP_PROXY_PORT "您必須指定一個 HTTP 通訊埠."
-    IDS_ERR_HTTP_PROXY_PORT_RANGE "您必須在1-65535之間指定一個 HTTP 通訊埠"
-    IDS_ERR_SOCKS_PROXY_ADDRESS "您必須指定一個SOCKS的通訊地址."
-    IDS_ERR_SOCKS_PROXY_PORT "您必須指定一個SOCKS的通訊埠."
-    IDS_ERR_SOCKS_PROXY_PORT_RANGE "您必須在 1-65535之間指定一個SOCKS的通訊埠"
-    IDS_ERR_CREATE_REG_HKCU_KEY "新建 ""HKEY_CURRENT_USER\\%s"" key失敗."
-    IDS_ERR_GET_TEMP_PATH "決定TempPath with GetTempPath()錯誤. 請用 ""C:\\"" 代替."
+    IDS_ERR_HTTP_PROXY_ADDRESS "您必須指定 HTTP Proxy 地址"
+    IDS_ERR_HTTP_PROXY_PORT "您必須指定 HTTP Proxy 通訊埠。"
+    IDS_ERR_HTTP_PROXY_PORT_RANGE "您必須指定在 1-65535 之間的 HTTP Proxy 通訊埠"
+    IDS_ERR_SOCKS_PROXY_ADDRESS "您必須指定 SOCKS Proxy 地址。"
+    IDS_ERR_SOCKS_PROXY_PORT "您必須指定 SOCKS Proxy 通訊埠。"
+    IDS_ERR_SOCKS_PROXY_PORT_RANGE "您必須指定在 1-65535 之間的 SOCKS Proxy 通訊埠"
+    IDS_ERR_CREATE_REG_HKCU_KEY "「HKEY_CURRENT_USER\\%s」登錄機碼建立失敗。"
+    IDS_ERR_GET_TEMP_PATH "使用 GetTempPath() 決定 TempPath 時發生錯誤。改用「C:\\」。"
 
     /* service */
-    IDS_ERR_OPEN_VPN_SERVICE "無法開啟 ""OpenVPNService"""
-    IDS_ERR_START_SERVICE "無法啟動 ""OpenVPNService"""
-    IDS_ERR_QUERY_SERVICE "無法查詢服務狀態."
-    IDS_ERR_SERVICE_START_FAILED "OpenVPN服務啟動失敗."
-    IDS_ERR_OPEN_SCMGR "OpenSCManager失敗 (%d)"
-    IDS_ERR_STOP_SERVICE "停止OpenVPN服務失敗"
-    IDS_NFO_RESTARTED "重啟OpenVPN 服務."
+    IDS_ERR_OPEN_VPN_SERVICE "「OpenVPNService」開啟失敗"
+    IDS_ERR_START_SERVICE "「OpenVPNService」啟動失敗"
+    IDS_ERR_QUERY_SERVICE "無法查詢服務狀態。"
+    IDS_ERR_SERVICE_START_FAILED "OpenVPN 服務啟動失敗。"
+    IDS_ERR_OPEN_SCMGR "OpenSCManager 失敗 (%d)"
+    IDS_ERR_STOP_SERVICE "OpenVPN 服務停止失敗"
+    IDS_NFO_RESTARTED "已重新啟動 OpenVPN 服務。"
+    IDS_ERR_ACCESS_SERVICE_PIPE "服務管道存取失敗。"
+    IDS_ERR_WRITE_SERVICE_PIPE "服務管道寫入失敗。"
+    IDS_ERR_INSTALL_ISERVICE     "未安裝「OpenVPNServiceInteractive」。\n"
+                                 "需要管理員權限的任務可能無法正常執行。"
+    IDS_ERR_NOTSTARTED_ISERVICE  "未啟動「OpenVPNServiceInteractive」。\n"
+                                 "需要管理員權限的任務可能無法正常執行。"
 
     /* registry */
-    IDS_ERR_GET_WINDOWS_DIR "取得Windows Directory錯誤."
-    IDS_ERR_GET_PROGRAM_DIR "取得 ""Program"" 資料夾名稱錯誤."
-    IDS_ERR_OPEN_REGISTRY "無法開啟讀取註冊表值(HKLM\\SOFTWARE\\OpenVPN).\n " \
-                      "也許未安裝OpenVPN "
-    IDS_ERR_READING_REGISTRY "讀取註冊表值 (HKLM\\SOFTWARE\\OpenVPN)錯誤."
-    IDS_ERR_PASSPHRASE_ATTEMPTS "註冊表值 ""passphrase_attempts"" 必須是一個在0到99之間的數字."
-    IDS_ERR_CONN_SCRIPT_TIMEOUT "註冊表值 ""connectscript_timeout"" 必須是一個在0到99之間的數字."
-    IDS_ERR_DISCONN_SCRIPT_TIMEOUT "註冊表值 ""disconnectscript_timeout"" 必須是一個在1到99之間的數字."
-    IDS_ERR_PRECONN_SCRIPT_TIMEOUT "註冊表值 ""preconnectscript_timeout"" 必須是一個在1到99之間的數字."
-    IDS_ERR_CREATE_REG_KEY "新建 creating HKLM\\SOFTWARE\\OpenVPN-GUI key有誤."
-    IDS_ERR_OPEN_WRITE_REG "無法打開寫入註冊表. 您必須以管理員身分執行此應用程式以更新註冊表"
-    IDS_ERR_READ_SET_KEY "讀取和設定註冊key錯誤 ""%s""."
-    IDS_ERR_WRITE_REGVALUE "寫入註冊值錯誤""HKEY_CURRENT_USER\\%s\\%s""."
+    IDS_ERR_GET_WINDOWS_DIR "取得 Windows 目錄時發生錯誤。"
+    IDS_ERR_GET_PROFILE_DIR "取得使用者設定檔目錄時發生錯誤。"
+    IDS_ERR_GET_PROGRAM_DIR "取得「程式集」目錄名稱時發生錯誤。"
+    IDS_ERR_OPEN_REGISTRY "無法讀取系統登錄檔 (HKLM\\SOFTWARE\\OpenVPN)。\n " \
+                          "可能尚未安裝 OpenVPN"
+    IDS_ERR_READING_REGISTRY "讀取系統登錄檔 (HKLM\\SOFTWARE\\OpenVPN) 時發生錯誤。"
+    IDS_ERR_PASSPHRASE_ATTEMPTS "系統登錄設定「passphrase_attempts」必須為 1 到 9 之間的數字。"
+    IDS_ERR_CONN_SCRIPT_TIMEOUT "系統登錄設定「connectscript_timeout」必須為 0 到 99 之間的數字。"
+    IDS_ERR_DISCONN_SCRIPT_TIMEOUT "系統登錄設定「disconnectscript_timeout」必須為 1 到 99 之間的數字。"
+    IDS_ERR_PRECONN_SCRIPT_TIMEOUT "系統登錄設定「preconnectscript_timeout」必須為 1 到 99 之間的數字。"
+    IDS_ERR_CREATE_REG_KEY "建立 HKLM\\SOFTWARE\\OpenVPN-GUI 機碼時發生錯誤。"
+    IDS_ERR_OPEN_WRITE_REG "無法開啟系統登錄檔進行寫入，您必須以管理員身分執行此應用程式更新註冊表。"
+    IDS_ERR_READ_SET_KEY "讀取並設定系統登錄機碼「%s」時發生錯誤。"
+    IDS_ERR_WRITE_REGVALUE "讀取系統登錄值「HKEY_CURRENT_USER\\%s\\%s」時發生錯誤。"
+
+    /* importation */
+    IDS_ERR_IMPORT_EXISTS "已有名為「%s」的連線設定檔。"
+    IDS_ERR_IMPORT_FAILED "檔案匯入失敗。無法建立下列路徑。\n\n" \
+                          "%s\n\n請確定您有正確的系統權限。"
+    IDS_NFO_IMPORT_SUCCESS "已成功匯入檔案。"
+
+    /* save/delete password */
+    IDS_NFO_DELETE_PASS "請按「確定」刪除「%s」連線設定檔的已存密碼。"
+
+    /* Token password related */
+    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN - Token 密碼"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "請輸入 Token「%S」的密碼或 PIN"
+
 END
