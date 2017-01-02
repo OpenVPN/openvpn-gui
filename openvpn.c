@@ -191,7 +191,7 @@ OnStateChange(connection_t *c, char *data)
         return;
     *pos = '\0';
 
-    if (strcmp(state, "CONNECTED") == 0)
+    if (strcmp(state, "CONNECTED") == 0 && strcmp(message, "SUCCESS") == 0)
     {
         /* Run Connect Script */
         if (c->state == connecting || c->state == resuming)
