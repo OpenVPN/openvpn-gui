@@ -185,7 +185,8 @@ log_append
   
 silent_connection
     If set to "1", the status window with the OpenVPN log output will
-    not be showed while connecting.
+    not be shown while connecting. Warnings such as interactive service
+    not started or multiple config files with same name are also suppressed.
 
 service_only
     If set to "1", OpenVPN GUI's normal "Connect" and "Disconnect"

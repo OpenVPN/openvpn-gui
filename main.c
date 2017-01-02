@@ -189,7 +189,7 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
     exit(1);
   }
 
-  if (!IsUserAdmin() && strtod(o.ovpn_version, NULL) > 2.3)
+  if (!IsUserAdmin() && strtod(o.ovpn_version, NULL) > 2.3 && !o.silent_connection)
     CheckIServiceStatus(TRUE);
 
   BuildFileList();
