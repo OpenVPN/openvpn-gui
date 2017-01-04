@@ -221,6 +221,9 @@ BuildFileList()
 {
     static bool issue_warnings = true;
 
+    if (o.silent_connection)
+        issue_warnings = false;
+
     /*
      * If no connections are active reset num_configs and rescan
      * to make a new list. Else we keep all current configs and
