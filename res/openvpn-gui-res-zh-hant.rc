@@ -126,7 +126,7 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
 BEGIN
     GROUPBOX "   ", 201, 6, 46, 235, 52
-    AUTORADIOBUTTON "使用 OpenVPN 設定檔中的設定", ID_RB_PROXY_OPENVPN, \
+    AUTORADIOBUTTON "使用 OpenVPN 連線設定檔中的設定", ID_RB_PROXY_OPENVPN, \
                     13, 16, 200, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "使用系統 Proxy 設定", \
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
@@ -134,8 +134,8 @@ BEGIN
     AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "SOCKS Proxy", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
     LTEXT "地址:", ID_TXT_PROXY_ADDRESS, 20, 77, 32, 10
-    RTEXT "連接埠:", ID_TXT_PROXY_PORT, 171, 77, 20, 10
-    EDITTEXT ID_EDT_PROXY_ADDRESS, 53, 75, 117, 12, ES_AUTOHSCROLL
+    RTEXT "通訊埠:", ID_TXT_PROXY_PORT, 163, 77, 28, 10
+    EDITTEXT ID_EDT_PROXY_ADDRESS, 42, 75, 117, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_PROXY_PORT, 196, 75, 30, 12, ES_AUTOHSCROLL
 END
 
@@ -154,13 +154,13 @@ BEGIN
     AUTOCHECKBOX "在 Windows 開機時執行", ID_CHK_STARTUP, 17, 59, 200, 12
 
     GROUPBOX "偏好設定", 202, 6, 82, 235, 90
-    AUTOCHECKBOX "附加紀錄檔", ID_CHK_LOG_APPEND, 17, 95, 60, 10
+    AUTOCHECKBOX "附加記錄檔", ID_CHK_LOG_APPEND, 17, 95, 60, 10
     AUTOCHECKBOX "顯示指令碼視窗", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "寧靜連線", ID_CHK_SILENT, 17, 125, 200, 10
     LTEXT "顯示通知氣球", ID_TXT_BALLOON, 17, 140, 100, 10
     AUTORADIOBUTTON "連上線時", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "連上線、重新連線時", ID_RB_BALLOON2, 86, 155, 90, 10
-    AUTORADIOBUTTON "永不顯示", ID_RB_BALLOON0, 181, 155, 40, 10
+    AUTORADIOBUTTON "永不顯示", ID_RB_BALLOON0, 181, 155, 50, 10
 END
 
 /* Advanced Dialog */
@@ -206,13 +206,13 @@ BEGIN
           "版權所有 (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n" \
           "版權所有 (C) 2012-2016 OpenVPN GUI 貢獻者\n" \
           "https://github.com/OpenVPN/openvpn-gui/", 0, 36, 15, 206, 42
-    LTEXT "OpenVPN 是一套可安全地透過單一 UDP 通訊埠穿隧 IP 網路" \
+    LTEXT "OpenVPN 是一套可安全地透過單一 TCP/UDP 通訊埠穿隧 IP 網路" \
           "的應用程式。支援以 SSL/TLS 為基礎的連線驗證與金鑰交換" \
           "、封包加密、封包驗證，以及封包壓縮。" \
           "\n" \
           "\n" \
           "版權所有 (C) 2002-2016 OpenVPN Technologies, Inc <info@openvpn.net>\n" \
-          "https://openvpn.net/", 0, 8, 61, 240, 64
+          "https://openvpn.net/", 0, 8, 61, 234, 64
 END
 
 /* Proxy Authentication Dialog */
@@ -235,7 +235,7 @@ BEGIN
     IDS_LANGUAGE_NAME "繁體中文 - Chinese (Traditional)"
 
     /* Tray - Resources */
-    IDS_TIP_DEFAULT "OpenVPN GUI "
+    IDS_TIP_DEFAULT "OpenVPN GUI"
     IDS_TIP_CONNECTED "\n已連線至: "
     IDS_TIP_CONNECTING "\n正在連線至: "
     IDS_TIP_CONNECTED_SINCE "\n連線自: "
@@ -330,11 +330,11 @@ BEGIN
     IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI 正在執行。"
     IDS_NFO_SERVICE_STARTED "已啟動 OpenVPN 服務。"
     IDS_NFO_SERVICE_STOPPED "已停止 OpenVPN 服務。"
-    IDS_NFO_ACTIVE_CONN_EXIT "目前還有未中斷的連線，若您結束 OpenVPN GUI 該連線將被中斷。" \
+    IDS_NFO_ACTIVE_CONN_EXIT "目前還有進行中的連線，若您結束 OpenVPN GUI 該連線將被中斷。" \
                              "\n\n您確定要離開嗎？"
-    IDS_NFO_SERVICE_ACTIVE_EXIT "您目前已連接（OpenVPN 服務正在執行中）。" \
+    IDS_NFO_SERVICE_ACTIVE_EXIT "您目前已連線（OpenVPN 服務正在執行中）。" \
                                 "離開 OpenVPN GUI 仍將保持連線。\n\n" \
-                                "您確定要離開 OpenVPN GUI 嗎？"
+                                "您確定要離開嗎？"
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: 顯示此訊息。\n" \
@@ -345,7 +345,7 @@ BEGIN
                   "--exe_path\t\t: openvpn.exe 的路徑。\n" \
                   "--config_dir\t\t: 要搜尋連線設定檔的資料夾路徑。\n" \
                   "--ext_string\t\t: 連線設定檔的副檔名。\n" \
-                  "--log_dir\t\t\t: 儲存記錄檔的資料夾路徑。.\n" \
+                  "--log_dir\t\t\t: 儲存記錄檔的資料夾路徑。\n" \
                   "--priority_string\t\t: 優先權字串（請參考 install.txt 取得更多訊息）。\n" \
                   "--append_string\t\t: 1=追加到現有記錄檔、0=連線時清空記錄。\n" \
                   "--log_viewer\t\t: 記錄檔檢視器路徑。\n" \
@@ -400,7 +400,7 @@ BEGIN
     IDS_SETTINGS_CAPTION "OpenVPN - 設定"
 
     /* proxy */
-    IDS_ERR_HTTP_PROXY_ADDRESS "您必須指定 HTTP Proxy 地址"
+    IDS_ERR_HTTP_PROXY_ADDRESS "您必須指定 HTTP Proxy 地址。"
     IDS_ERR_HTTP_PROXY_PORT "您必須指定 HTTP Proxy 通訊埠。"
     IDS_ERR_HTTP_PROXY_PORT_RANGE "您必須指定在 1-65535 之間的 HTTP Proxy 通訊埠"
     IDS_ERR_SOCKS_PROXY_ADDRESS "您必須指定 SOCKS Proxy 地址。"
