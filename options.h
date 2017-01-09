@@ -86,6 +86,7 @@ typedef struct {
 #define FLAG_ALLOW_CHANGE_PASSPHRASE (1<<1)
 #define FLAG_SAVE_KEY_PASS  (1<<4)
 #define FLAG_SAVE_AUTH_PASS (1<<5)
+#define FLAG_DISABLE_SAVE_PASS (1<<6)
 
 typedef struct {
     unsigned short major, minor, build, revision;
@@ -149,6 +150,7 @@ typedef struct {
     TCHAR global_config_dir[MAX_PATH];
     TCHAR priority_string[64];
     TCHAR ovpn_admin_group[MAX_NAME];
+    DWORD disable_save_passwords;
     /* HKCU registry values */
     TCHAR config_dir[MAX_PATH];
     TCHAR ext_string[16];
@@ -184,6 +186,7 @@ connection_t* GetConnByManagement(SOCKET);
 INT_PTR CALLBACK ScriptSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK ConnectionSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK AdvancedSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
+void DisableSavePasswords(connection_t *);
 
 void ExpandOptions(void);
 int CompareStringExpanded(const WCHAR *str1, const WCHAR *str2);

@@ -294,7 +294,9 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             SetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password);
             SecureZeroMemory(password, sizeof(password));
         }
-        if (param->c->flags & FLAG_SAVE_AUTH_PASS)
+        if (param->c->flags & FLAG_DISABLE_SAVE_PASS)
+            ShowWindow(GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), SW_HIDE);
+        else if (param->c->flags & FLAG_SAVE_AUTH_PASS)
             Button_SetCheck(GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
 
         AppendTextToCaption (hwndDlg, param->c->config_name);
@@ -517,7 +519,9 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             EndDialog(hwndDlg, IDOK);
             return TRUE;
         }
-        if (c->flags & FLAG_SAVE_KEY_PASS)
+        if (c->flags & FLAG_DISABLE_SAVE_PASS)
+            ShowWindow(GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), SW_HIDE);
+        else if (c->flags & FLAG_SAVE_KEY_PASS)
             Button_SetCheck (GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
         if (c->state == resuming)
             ForceForegroundWindow(hwndDlg);
@@ -1859,8 +1863,9 @@ out:
     return retval;
 }
 
+/* Delete saved passwords and reset the checkboxes to default */
 void
-DisablePasswordSave(connection_t *c)
+ResetSavePasswords(connection_t *c)
 {
     if (ShowLocalizedMsgEx(MB_OKCANCEL, TEXT(PACKAGE_NAME), IDS_NFO_DELETE_PASS, c->config_name) == IDCANCEL)
         return;
