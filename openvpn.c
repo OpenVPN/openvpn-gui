@@ -1551,6 +1551,7 @@ StartOpenVPN(connection_t *c)
         if ( !AuthorizeConfig(c))
         {
             CloseHandle(c->exit_event);
+            CloseServiceIO(&c->iserv);
             goto out;
         }
 
