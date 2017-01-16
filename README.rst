@@ -31,7 +31,8 @@ Configuring OpenVPN GUI to start on Windows logon
 *************************************************
 
 OpenVPN GUI can be configured to start automatically on logon to Windows from
-its setting menu.
+its setting menu. This is default behavior for all users if OpenVPN GUI was
+installed by an OpenVPN 2.4 installer using default installer options.
 
 Adding an OpenVPN configuration file
 ************************************
@@ -53,7 +54,11 @@ There are three ways to do this:
   system.
 * Place the file into *C:\\Users\\username\\OpenVPN\\config\\*, or any of its
   immediated subdirectories. The configuration file is only visible for the
-  user in question.
+  user in question. If the user is not a member of the built-in "Administrators"
+  group or "OpenVPN Administrators" group and tries to launch such a connection,
+  OpenVPN GUI pops up a UAC, offering to create the latter group (if missing)
+  and to add the user to it. This will only work if admin-level credentials are
+  available.
 * Use the "Import file" function in OpenVPN GUI itself
 
 Using OpenVPN GUI
