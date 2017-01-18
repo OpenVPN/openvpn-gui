@@ -58,6 +58,13 @@ case "$host" in
 		CPPFLAGS="${CPPFLAGS} -DWIN32_LEAN_AND_MEAN"
 		CPPFLAGS="${CPPFLAGS} -D_WIN32_WINNT=NTDDI_WINXP"
 		LDFLAGS="${LDFLAGS} -Wl,--nxcompat,--dynamicbase"
+
+		dnl older mingw doesn't support `--high-entropy-va`
+		_save_ldflags="$LDFLAGS"
+		LDFLAGS="-Wl,--high-entropy-va"
+		AC_LINK_IFELSE([AC_LANG_PROGRAM([])],[AS_VAR_SET(high_entropy_aslr,[yes])],)
+		LDFLAGS="$_save_ldflags"
+		AS_VAR_IF(high_entropy_aslr,[yes],[LDFLAGS="${LDFLAGS} -Wl,--high-entropy-va"],)
 		;;
 	*)
 		test "${enable_distonly}" = "no" && AC_MSG_ERROR([This project is supported for windows only.])
