@@ -68,6 +68,9 @@ TCHAR szTitleText[ ] = _T("OpenVPN");
 /* Options structure */
 options_t o;
 
+/* Workaround for ASLR on Windows */
+__declspec(dllexport) char aslr_workaround;
+
 static int
 VerifyAutoConnections()
 {

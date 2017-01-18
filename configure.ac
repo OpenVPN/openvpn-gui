@@ -57,7 +57,7 @@ case "$host" in
 	*-mingw*)
 		CPPFLAGS="${CPPFLAGS} -DWIN32_LEAN_AND_MEAN"
 		CPPFLAGS="${CPPFLAGS} -D_WIN32_WINNT=NTDDI_WINXP"
-		LDFLAGS="${LDFLAGS} -Wl,--nxcompat"
+		LDFLAGS="${LDFLAGS} -Wl,--nxcompat,--dynamicbase"
 		;;
 	*)
 		test "${enable_distonly}" = "no" && AC_MSG_ERROR([This project is supported for windows only.])
