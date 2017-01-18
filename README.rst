@@ -1,3 +1,9 @@
+OpenVPN GUI
+#####################################################
+.. image:: https://travis-ci.org/OpenVPN/openvpn-gui.svg?branch=master
+  :target: https://travis-ci.org/OpenVPN/openvpn-gui
+  :alt: TravisCI status
+
 Installation Instructions for OpenVPN GUI for Windows
 #####################################################
 
