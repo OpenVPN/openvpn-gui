@@ -63,6 +63,7 @@ CreatePopupMenus()
         if (o.service_only == 0) {
             AppendMenu(hMenu, MF_STRING, IDM_CONNECTMENU, LoadLocalizedString(IDS_MENU_CONNECT));
             AppendMenu(hMenu, MF_STRING, IDM_DISCONNECTMENU, LoadLocalizedString(IDS_MENU_DISCONNECT));
+            AppendMenu(hMenu, MF_STRING, IDM_RECONNECTMENU, LoadLocalizedString(IDS_MENU_RECONNECT));
             AppendMenu(hMenu, MF_STRING, IDM_STATUSMENU, LoadLocalizedString(IDS_MENU_STATUS));
             AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
         }
@@ -117,6 +118,7 @@ CreatePopupMenus()
             if (o.service_only == 0) {
                 AppendMenu(hMenuConn[i], MF_STRING, IDM_CONNECTMENU + i, LoadLocalizedString(IDS_MENU_CONNECT));
                 AppendMenu(hMenuConn[i], MF_STRING, IDM_DISCONNECTMENU + i, LoadLocalizedString(IDS_MENU_DISCONNECT));
+                AppendMenu(hMenuConn[i], MF_STRING, IDM_RECONNECTMENU + i, LoadLocalizedString(IDS_MENU_RECONNECT));
                 AppendMenu(hMenuConn[i], MF_STRING, IDM_STATUSMENU + i, LoadLocalizedString(IDS_MENU_STATUS));
                 AppendMenu(hMenuConn[i], MF_SEPARATOR, 0, 0);
             }
@@ -349,18 +351,21 @@ SetMenuStatus(connection_t *c, conn_state_t state)
         {
             EnableMenuItem(hMenu, IDM_CONNECTMENU, MF_ENABLED);
             EnableMenuItem(hMenu, IDM_DISCONNECTMENU, MF_GRAYED);
+            EnableMenuItem(hMenu, IDM_RECONNECTMENU, MF_GRAYED);
             EnableMenuItem(hMenu, IDM_STATUSMENU, MF_GRAYED);
         }
         else if (state == connecting || state == resuming || state == connected)
         {
             EnableMenuItem(hMenu, IDM_CONNECTMENU, MF_GRAYED);
             EnableMenuItem(hMenu, IDM_DISCONNECTMENU, MF_ENABLED);
+            EnableMenuItem(hMenu, IDM_RECONNECTMENU, MF_ENABLED);
             EnableMenuItem(hMenu, IDM_STATUSMENU, MF_ENABLED);
         }
         else if (state == disconnecting)
         {
             EnableMenuItem(hMenu, IDM_CONNECTMENU, MF_GRAYED);
             EnableMenuItem(hMenu, IDM_DISCONNECTMENU, MF_GRAYED);
+            EnableMenuItem(hMenu, IDM_RECONNECTMENU, MF_GRAYED);
             EnableMenuItem(hMenu, IDM_STATUSMENU, MF_ENABLED);
         }
         if (c->flags & (FLAG_SAVE_AUTH_PASS | FLAG_SAVE_KEY_PASS))
@@ -384,18 +389,21 @@ SetMenuStatus(connection_t *c, conn_state_t state)
         {
             EnableMenuItem(hMenuConn[i], IDM_CONNECTMENU + i, MF_ENABLED);
             EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU + i, MF_GRAYED);
+            EnableMenuItem(hMenuConn[i], IDM_RECONNECTMENU + i, MF_GRAYED);
             EnableMenuItem(hMenuConn[i], IDM_STATUSMENU + i, MF_GRAYED);
         }
         else if (state == connecting || state == resuming || state == connected)
         {
             EnableMenuItem(hMenuConn[i], IDM_CONNECTMENU + i, MF_GRAYED);
             EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU + i, MF_ENABLED);
+            EnableMenuItem(hMenuConn[i], IDM_RECONNECTMENU + i, MF_ENABLED);
             EnableMenuItem(hMenuConn[i], IDM_STATUSMENU + i, MF_ENABLED);
         }
         else if (state == disconnecting)
         {
             EnableMenuItem(hMenuConn[i], IDM_CONNECTMENU + i, MF_GRAYED);
             EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU + i, MF_GRAYED);
+            EnableMenuItem(hMenuConn[i], IDM_RECONNECTMENU + i, MF_GRAYED);
             EnableMenuItem(hMenuConn[i], IDM_STATUSMENU + i, MF_ENABLED);
         }
         if (c->flags & (FLAG_SAVE_AUTH_PASS | FLAG_SAVE_KEY_PASS))

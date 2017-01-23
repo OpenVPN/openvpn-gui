@@ -394,6 +394,9 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       if ( (LOWORD(wParam) >= IDM_DISCONNECTMENU) && (LOWORD(wParam) < IDM_DISCONNECTMENU + MAX_CONFIGS) ) {
         StopOpenVPN(&o.conn[LOWORD(wParam) - IDM_DISCONNECTMENU]);
       }
+      if ( (LOWORD(wParam) >= IDM_RECONNECTMENU) && (LOWORD(wParam) < IDM_RECONNECTMENU + MAX_CONFIGS) ) {
+        RestartOpenVPN(&o.conn[LOWORD(wParam) - IDM_RECONNECTMENU]);
+      }
       if ( (LOWORD(wParam) >= IDM_STATUSMENU) && (LOWORD(wParam) < IDM_STATUSMENU + MAX_CONFIGS) ) {
         ShowWindow(o.conn[LOWORD(wParam) - IDM_STATUSMENU].hwndStatus, SW_SHOW);
       }

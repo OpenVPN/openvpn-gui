@@ -247,6 +247,7 @@ BEGIN
     IDS_MENU_CLOSE "Exit"
     IDS_MENU_CONNECT "Connect"
     IDS_MENU_DISCONNECT "Disconnect"
+    IDS_MENU_RECONNECT "Reconnect"
     IDS_MENU_STATUS "Show Status"
     IDS_MENU_VIEWLOG "View Log"
     IDS_MENU_EDITCONFIG "Edit Config"
