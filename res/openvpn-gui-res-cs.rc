@@ -202,7 +202,7 @@ BEGIN
     LTEXT "OpenVPN GUI v" PACKAGE_VERSION_RESOURCE_STR " - GUI pro OpenVPN ve Windows\n" \
           "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n" \
           "Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n" \
-          "Copyright (C) 2012-2016 OpenVPN GUI contributors\n" \
+          "Copyright (C) 2012-2016 OpenVPN GUI přispěvatelé\n" \
           "https://github.com/OpenVPN/openvpn-gui/", 0, 36, 15, 206, 42
     LTEXT "OpenVPN - Aplikace pro vytváření bezpečných tunelů sítí IP " \
           "přes jediný port TCP/UDP s podporou SSL/TLS autentifikace sezení " \
@@ -304,8 +304,8 @@ BEGIN
     IDS_NFO_RECONN_FAILED "Restartování spojení k %s selhalo."
     IDS_NFO_STATE_SUSPENDED "Aktuální stav: Pozastaveno"
     IDS_ERR_READ_STDOUT_PIPE "Došlo k chybě při čtení z OpenVPN StdOut Pipe."
-    IDS_ERR_CREATE_EDIT_LOGWINDOW "Došlo k chybě při vytváření okna s formátovaným logem!!"
-    IDS_ERR_SET_SIZE "Selhalo nastavení velikosti!"
+    IDS_ERR_CREATE_EDIT_LOGWINDOW "Došlo k chybě při vytváření okna s formátovaným logem."
+    IDS_ERR_SET_SIZE "Selhalo nastavení velikosti."
     IDS_ERR_AUTOSTART_CONF "Nebylo možné najít požadovanou konfiguraci k automatickému spojení: %s"
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe na hInputRead selhal."
     IDS_NFO_STATE_CONNECTING "Aktuální stav: Připojování"
@@ -317,7 +317,7 @@ BEGIN
     IDS_ERR_CONN_SCRIPT_FAILED "Skript při připojení selhal. (exitcode=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Skript při připojení selhal. Čas spojení vypršel po %ds."
     IDS_ERR_CONFIG_EXIST "Konfigurační soubor s názvem '%s' již existuje. Je nutné jeden z konfiguračních " \
-                         "souborů stejného názvu přejmenovat i když se " \
+                         "souborů stejného názvu přejmenovat, i když se " \
                          "nachází v jiné složce."
     IDS_NFO_CONN_TIMEOUT "Připojení k rozhraní správy selhalo.\n" \
                          "Více informací najdete v logu (%s)."
@@ -332,7 +332,7 @@ BEGIN
     IDS_NFO_ACTIVE_CONN_EXIT "Některá spojení jsou stále aktivní. Pokud OpenVPN GUI ukončíte, budou přerušena." \
                              "\n\nOpravdu chcete aplikaci ukončit?"
     IDS_NFO_SERVICE_ACTIVE_EXIT "Některá spojení jsou stále aktivní. Díky běžící službě OpenVPN " \
-                                "zůstanete připojeni i když ukončíte OpenVPN GUI.\n\n" \
+                                "zůstanete připojeni, i když ukončíte OpenVPN GUI.\n\n" \
                                 "Chcete pokračovat a aplikaci ukončit?"
 
     /* options - Resources */
@@ -355,7 +355,7 @@ BEGIN
                   "--allow_proxy\t\t: 1=Zobrazit nastavení proxy v menu.\n" \
                   "--show_balloon\t\t: Ukazovat upozornění: 0=Nikdy, 1=Při připojení, 2=Při připojení/obnovení spojení.\n" \
                   "--service_only\t\t: 1=Ovládat pouze službu systému.\n" \
-                  "--silent_connection\t\t: 1=Nezobrazovat stav při připojování nebo nekritické varování při spuštění.\n" \
+                  "--silent_connection\t\t: 1=Nezobrazovat stav při připojování ani nekritická varování při spuštění.\n" \
                   "--show_script_window\t: 0=Nezobrazovat okno skriptu, 1=Zobrazit okno skriptu.\n" \
                   "--passphrase_attempts\t: Počet možných pokusů o zadání hesla.\n" \
                   "--connectscript_timeout\t: Časový limit skriptu v průběhu připojování.\n" \
@@ -387,7 +387,7 @@ BEGIN
     IDS_ERR_ONLY_KEY_OR_PKCS12 "Není možné mít definice ""key"" a ""pkcs12"" ve stejném konfiguračním souboru."
     IDS_ERR_ONLY_ONE_PKCS12_OPTION "Není možné mít více než jednu definici ""pkcs12"" v konfiguračním souboru."
     IDS_ERR_HAVE_KEY_OR_PKCS12 "V konfiguračním souboru chybí definice ""key"" nebo ""pkcs12""."
-    IDS_ERR_KEY_FILENAME_TO_LONG "Název souboru klíče v konfiguračním souboru je příliš dlouhý!"
+    IDS_ERR_KEY_FILENAME_TO_LONG "Název souboru klíče v konfiguračním souboru je příliš dlouhý."
     IDS_ERR_PASSPHRASE2STDIN "Došlo k chybě při předávání hesla privátního klíče do příkazové řádky."
     IDS_ERR_AUTH_USERNAME2STDIN "Došlo k chybě při předávání uživatelského jména do příkazové řádky."
     IDS_ERR_AUTH_PASSWORD2STDIN "Došlo k chybě při předávání hesla do příkazové řádky."
