@@ -83,8 +83,10 @@ add_option(options_t *options, int i, TCHAR **p)
     if (streq(p[0], _T("help")))
     {
         TCHAR caption[200];
+        TCHAR msg[USAGE_BUF_SIZE];
         LoadLocalizedStringBuf(caption, _countof(caption), IDS_NFO_USAGECAPTION);
-        ShowLocalizedMsgEx(MB_OK, caption, IDS_NFO_USAGE);
+        LoadLocalizedStringBuf(msg, _countof(msg), IDS_NFO_USAGE);
+        MessageBoxEx(NULL, msg, caption, MB_OK | MB_SETFOREGROUND, GetGUILanguage());
         exit(0);
     }
     else if (streq(p[0], _T("connect")) && p[1])

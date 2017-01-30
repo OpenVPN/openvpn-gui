@@ -34,5 +34,6 @@ INT_PTR LocalizedDialogBoxParam(const UINT, DLGPROC, const LPARAM);
 HWND CreateLocalizedDialogParam(const UINT, DLGPROC, const LPARAM);
 HWND CreateLocalizedDialog(const UINT, DLGPROC);
 INT_PTR CALLBACK GeneralSettingsDlgProc(HWND, UINT, WPARAM, LPARAM);
+LANGID GetGUILanguage(void);
 
 #endif
