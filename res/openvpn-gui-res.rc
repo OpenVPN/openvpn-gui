@@ -38,6 +38,7 @@ ID_ICO_CONNECTED     ICON  DISCARDABLE  "connected.ico"
 ID_ICO_CONNECTING    ICON  DISCARDABLE  "connecting.ico"
 ID_ICO_DISCONNECTED  ICON  DISCARDABLE  "disconnected.ico"
 
+#include "openvpn-gui-res-cs.rc"
 #include "openvpn-gui-res-de.rc"
 #include "openvpn-gui-res-dk.rc"
 #include "openvpn-gui-res-en.rc"
@@ -66,6 +67,7 @@ BEGIN
     BLOCK "VarFileInfo"
     BEGIN
         VALUE "Translation"
+            , LANG_CZECH,       1200
             , LANG_GERMAN,      1200
             , LANG_DANISH,      1200
             , LANG_ENGLISH,     1200

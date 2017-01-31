@@ -1,0 +1,456 @@
+/*
+ *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
+ *
+ *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
+ *                2009 Heiko Hund <heikoh@users.sf.net>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program (see the file COPYING included with this
+ *  distribution); if not, write to the Free Software Foundation, Inc.,
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+/* Passphrase Dialog */
+ID_DLG_PASSPHRASE DIALOGEX 6, 18, 120, 67
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+EXSTYLE WS_EX_TOPMOST
+CAPTION "OpenVPN - Heslo privátního klíče"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Zadejte heslo:", 201, 6, 6, 100, 10
+    EDITTEXT ID_EDT_PASSPHRASE, 6, 17, 107, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    CHECKBOX "Uložit heslo", ID_CHK_SAVE_PASS, 6, 33, 100, 10
+    PUSHBUTTON "OK", IDOK, 6, 49, 50, 14
+    PUSHBUTTON "Zrušit", IDCANCEL, 64, 49, 50, 14
+END
+
+/* Auth Username/Password Dialog */
+ID_DLG_AUTH DIALOG 6, 18, 160, 78
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+CAPTION "OpenVPN - Ověření uživatele"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Jméno:", 0, 6, 9, 50, 10
+    LTEXT "Heslo:", 0, 6, 26, 50, 10
+    EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    CHECKBOX "Uložit heslo", ID_CHK_SAVE_PASS, 6, 42, 100, 10
+    PUSHBUTTON "OK", IDOK, 20, 58, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "Zrušit", IDCANCEL, 90, 58, 52, 14
+END
+
+/* Auth Username/Password/Challenge Dialog */
+ID_DLG_AUTH_CHALLENGE DIALOG 6, 18, 160, 112
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+CAPTION "OpenVPN - Ověření uživatele"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Jméno:", 0, 6, 9, 50, 10
+    LTEXT "Heslo:", 0, 6, 26, 50, 10
+    LTEXT "Odpověď:", 0, 6, 60, 50, 10
+    EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    LTEXT "", ID_TXT_AUTH_CHALLENGE, 6, 43, 148, 10
+    EDITTEXT ID_EDT_AUTH_CHALLENGE, 60, 57, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    CHECKBOX "Uložit heslo", ID_CHK_SAVE_PASS, 6, 76, 100, 10
+    PUSHBUTTON "OK", IDOK, 20, 92, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "Zrušit", IDCANCEL, 90, 92, 52, 14
+END
+
+/* Challenge Response Dialog */
+ID_DLG_CHALLENGE_RESPONSE DIALOG 6, 18, 212, 72
+STYLE WS_SIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+CAPTION "OpenVPN - Odpověď na výzvu"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "", ID_TXT_DESCRIPTION, 6, 9, 208, 10
+    LTEXT "Odpověď:", 0, 6, 30, 50, 10
+    EDITTEXT ID_EDT_RESPONSE, 60, 27, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "OK", IDOK, 20, 51, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "Zrušit", IDCANCEL, 90, 51, 52, 14
+END
+
+/* Status Dialog */
+ID_DLG_STATUS DIALOG 6, 18, 380, 210
+STYLE WS_SIZEBOX | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | DS_CENTER
+CAPTION "OpenVPN"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Připojování…", ID_TXT_STATUS, 20, 5, 200, 10
+    PUSHBUTTON "Odpojit", ID_DISCONNECT, 50, 190, 50, 14
+    PUSHBUTTON "Restartovat", ID_RESTART, 150, 190, 50, 14
+    PUSHBUTTON "Skrýt", ID_HIDE, 100, 190, 50, 14
+END
+
+/* Change Passphrase Dialog */
+ID_DLG_CHGPASS DIALOG 6, 18, 193, 82
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "OpenVPN - Změna hesla privátního klíče"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Staré heslo:", 171, 6, 9, 85, 10
+    LTEXT "Nové heslo:", 172, 6, 26, 85, 10
+    LTEXT "Potvrzení nového hesla:", 173, 6, 42, 85, 10
+    EDITTEXT ID_EDT_PASS_CUR, 95, 6, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PASS_NEW, 95, 23, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PASS_NEW2, 95, 39, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "OK", IDOK, 40, 59, 50, 14
+    PUSHBUTTON "Zrušit", IDCANCEL, 103, 59, 50, 14
+    LTEXT "", ID_TXT_KEYFORMAT, 0, 0, 0, 0
+    LTEXT "", ID_TXT_KEYFILE, 0, 0, 0, 0
+END
+
+/* Proxy Settings Dialog */
+ID_DLG_PROXY DIALOG 6, 18, 249, 104
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Proxy"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
+BEGIN
+    GROUPBOX "   ", 201, 6, 46, 235, 52
+    AUTORADIOBUTTON "Použít nastavení z konfiguračního souboru OpenVPN", ID_RB_PROXY_OPENVPN, \
+                    13, 16, 200, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Použít systémové nastavení proxy", \
+                    ID_RB_PROXY_MSIE, 13, 31, 200, 10
+    AUTORADIOBUTTON "Ruční konfigurace", ID_RB_PROXY_MANUAL, 13, 46, 79, 10
+    AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "SOCKS Proxy", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
+    LTEXT "Adresa:", ID_TXT_PROXY_ADDRESS, 20, 77, 32, 10
+    RTEXT "Port:", ID_TXT_PROXY_PORT, 171, 77, 20, 10
+    EDITTEXT ID_EDT_PROXY_ADDRESS, 53, 75, 117, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PROXY_PORT, 196, 75, 30, 12, ES_AUTOHSCROLL
+END
+
+/* General Settings Dialog */
+ID_DLG_GENERAL DIALOGEX 6, 18, 249, 104
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Obecné"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
+BEGIN
+    GROUPBOX "Uživatelské rozhraní", 201, 6, 12, 235, 30
+    LTEXT "Jazyk:", ID_TXT_LANGUAGE, 17, 25, 52, 12
+    COMBOBOX ID_CMB_LANGUAGE, 57, 23, 171, 400, CBS_DROPDOWNLIST | WS_TABSTOP
+
+    GROUPBOX "Spuštění", 202, 6, 47, 235, 30
+    AUTOCHECKBOX "Spustit při startu Windows", ID_CHK_STARTUP, 17, 59, 100, 12
+
+    GROUPBOX "Volby", 202, 6, 82, 235, 90
+    AUTOCHECKBOX "Připojovat záznamy na konec logu", ID_CHK_LOG_APPEND, 17, 95, 130, 10
+    AUTOCHECKBOX "Zobrazit okno skriptu", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
+    AUTOCHECKBOX "Tiché spojení", ID_CHK_SILENT, 17, 125, 200, 10
+    LTEXT "Ukazovat upozornění", ID_TXT_BALLOON, 17, 140, 100, 10
+    AUTORADIOBUTTON "Při připojení", ID_RB_BALLOON1, 28, 155, 53, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Při připojení/obnovení spojení", ID_RB_BALLOON2, 86, 155, 115, 10
+    AUTORADIOBUTTON "Nikdy", ID_RB_BALLOON0, 203, 155, 35, 10
+END
+
+/* Advanced Dialog */
+ID_DLG_ADVANCED DIALOGEX 6, 18, 252, 218
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Pokročilé"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
+BEGIN
+    GROUPBOX "Konfigurační soubory", 201, 6, 12, 235, 45
+    LTEXT "Složka:", ID_TXT_FOLDER, 17, 25, 32, 10
+    LTEXT "Přípona:", ID_TXT_EXTENSION, 17, 40, 52, 10
+    EDITTEXT ID_EDT_CONFIG_DIR, 53, 23, 150, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_CONFIG_EXT, 53, 38, 25, 12, ES_AUTOHSCROLL
+    PUSHBUTTON "…", ID_BTN_CONFIG_DIR, 208, 23, 25, 12
+
+    GROUPBOX "Logy", 202, 6, 62, 235, 30
+    LTEXT "Složka:", ID_TXT_FOLDER, 17, 74, 32, 10
+    EDITTEXT ID_EDT_LOG_DIR, 53, 72, 150, 12, ES_AUTOHSCROLL
+    PUSHBUTTON "…", ID_BTN_LOG_DIR, 208, 72, 25, 12
+
+    GROUPBOX "Časový limit skriptu", 201, 6, 97, 235, 60
+    LTEXT "Před připojením:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
+    LTEXT "Průběh připojování:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
+    LTEXT "Při odpojování:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
+    EDITTEXT ID_EDT_PRECONNECT_TIMEOUT, 103, 108, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
+    EDITTEXT ID_EDT_CONNECT_TIMEOUT, 103, 123, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
+    EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 103, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
+
+    AUTOCHECKBOX "Ovládat pouze službu systému", ID_CHK_SERVICE_ONLY, 6, 162, 150, 12
+END
+
+/* About Dialog */
+ID_DLG_ABOUT DIALOG 6, 18, 249, 104
+STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "O aplikaci"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
+BEGIN
+    ICON ID_ICO_APP, 0, 8, 16, 21, 20
+    LTEXT "OpenVPN GUI v" PACKAGE_VERSION_RESOURCE_STR " - GUI pro OpenVPN ve Windows\n" \
+          "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n" \
+          "Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n" \
+          "Copyright (C) 2012-2016 OpenVPN GUI přispěvatelé\n" \
+          "https://github.com/OpenVPN/openvpn-gui/", 0, 36, 15, 206, 42
+    LTEXT "OpenVPN - Aplikace pro vytváření bezpečných tunelů sítí IP " \
+          "přes jediný port TCP/UDP s podporou SSL/TLS autentifikace sezení " \
+          "a výměn klíčů, šifrování paketů, autentifikace paketů " \
+          "a komprese paketů.\n" \
+          "\n" \
+          "Copyright (C) 2002-2017 OpenVPN Technologies, Inc <info@openvpn.net>\n" \
+          "https://openvpn.net/", 0, 8, 61, 240, 64
+END
+
+/* Proxy Authentication Dialog */
+ID_DLG_PROXY_AUTH DIALOG 29, 23, 154, 65
+STYLE DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER
+CAPTION "OpenVPN - Přihlášení k proxy"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Jméno:", 201, 9, 8, 38, 10
+    EDITTEXT ID_EDT_PROXY_USER, 49, 5, 94, 12, ES_AUTOHSCROLL
+    LTEXT "Heslo:", 202, 9, 26, 38, 10
+    EDITTEXT ID_EDT_PROXY_PASS, 49, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "OK", IDOK, 58, 43, 40, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+END
+
+STRINGTABLE
+LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
+BEGIN
+    IDS_LANGUAGE_NAME "Česky - Czech"
+
+    /* Tray - Resources */
+    IDS_TIP_DEFAULT "OpenVPN GUI "
+    IDS_TIP_CONNECTED "\nPřipojeno: "
+    IDS_TIP_CONNECTING "\nPřipojování: "
+    IDS_TIP_CONNECTED_SINCE "\nPřipojeno od: "
+    IDS_TIP_ASSIGNED_IP "\nPřiřazená IP: %s"
+    IDS_MENU_SERVICE "Služba OpenVPN"
+    IDS_MENU_IMPORT "Import souboru konfigurace…"
+    IDS_MENU_SETTINGS "Nastavení…"
+    IDS_MENU_CLOSE "Ukončit"
+    IDS_MENU_CONNECT "Připojit"
+    IDS_MENU_DISCONNECT "Odpojit"
+    IDS_MENU_STATUS "Zobrazit stav"
+    IDS_MENU_VIEWLOG "Otevřít log"
+    IDS_MENU_EDITCONFIG "Upravit konfiguraci"
+    IDS_MENU_PASSPHRASE "Změnit heslo"
+    IDS_MENU_CLEARPASS "Odstranit uložená hesla"
+    IDS_MENU_SERVICE_START "Spustit"
+    IDS_MENU_SERVICE_STOP "Zastavit"
+    IDS_MENU_SERVICE_RESTART "Restartovat"
+    IDS_MENU_SERVICEONLY_START "Připojit"
+    IDS_MENU_SERVICEONLY_STOP "Odpojit"
+    IDS_MENU_SERVICEONLY_RESTART "Restartovat"
+    IDS_MENU_ASK_STOP_SERVICE "Opravdu se chcete odpojit (Zastavit službu OpenVPN)?"
+
+    /* Logviewer - Resources */
+    IDS_ERR_START_LOG_VIEWER "Došlo k chybě při spouštění nástroje pro zobrazení logu: %s"
+    IDS_ERR_START_CONF_EDITOR "Došlo k chybě při spouštění nástroje pro úpravu konfigurace: %s"
+
+    /* OpenVPN */
+    IDS_ERR_MANY_CONFIGS "OpenVPN GUI nepodporuje více než %d konfigurací. Prosím kontaktujte autora, pokud jich potřebujete více."
+    IDS_NFO_NO_CONFIGS "Nebyly nalezeny žádné soubory konfigurací spojení.\n"\
+                       "Použijte volbu menu ""Import souboru konfigurace…"" nebo zkopírujte konfigurační soubory do ""%s"" nebo ""%s""."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "Vytvoření tohoto spojení (%s) vyžaduje členství ve skupině "\
+                                  """%s"". Kontaktujte svého správce systému.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Vytvoření tohoto spojení (%s) vyžaduje členství ve skupině "\
+                                  """%s"".\n\n"\
+                                  "Chcete se přidat do této skupiny?\n"\
+                                  "Tato akce může vyžadovat svolení nebo heslo správce."
+    IDS_NFO_CONFIG_AUTH_PENDING   "Vytvoření tohoto spojení (%s) vyžaduje členství ve skupině "\
+                                  """%s"".\n\n"\
+                                  "Prosím dokončete předchozí autorizační dialog."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Přidání uživatele do skupiny ""%s"" nebylo úspěšné."
+    IDS_ERR_ONE_CONN_OLD_VER "V případě, že používáte OpenVPN starší než verze 2.0-beta6, můžete mít aktivní pouze jedno spojení."
+    IDS_ERR_STOP_SERV_OLD_VER "Není možno použít OpenVPN GUI pro vytvoření spojení, pokud již běží služba OpenVPN (verze OpenVPN 1.5/1.6). Prosím zastavte nejprve službu OpenVPN."
+    IDS_ERR_CREATE_EVENT "Selhala akce CreateEvent při ukončení události: %s"
+    IDS_ERR_UNKNOWN_PRIORITY "Neznámý název priority: %s"
+    IDS_ERR_LOG_APPEND_BOOL "Přepínač přidávání na konec logu (identifikovaný jako '%s') musí nabývat hodnot '0' nebo '1'"
+    IDS_ERR_GET_MSIE_PROXY "Nepodařilo se načíst nastavení proxy z MSIE."
+    IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor selhal."
+    IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl selhal."
+    IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe na hOutputWrite selhal."
+    IDS_ERR_CREATE_PIPE_INPUT "CreatePipe na hInputRead selhal."
+    IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle na hOutputRead selhal."
+    IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle na hInputWrite selhal."
+    IDS_ERR_CREATE_PROCESS "CreateProcess selhal, exe='%s' cmdline='%s' dir='%s'"
+    IDS_ERR_CREATE_THREAD_STATUS "CreateThread k zobrazení stavu selhal."
+    IDS_NFO_STATE_WAIT_TERM "Aktuální stav: Čekání, než se OpenVPN ukončí…"
+    IDS_NFO_STATE_CONNECTED "Aktuální stav: Připojeno"
+    IDS_NFO_NOW_CONNECTED "%s je nyní připojeno."
+    IDS_NFO_ASSIGN_IP "Přiřazená IP: %s"
+    IDS_ERR_CERT_EXPIRED "Spojení nelze navázat, protože certifikát expiroval, nebo není správně nastaven systémový čas."
+    IDS_ERR_CERT_NOT_YET_VALID "Spojení nelze navázat, protože certifikát ještě není platný. Prosím zkontrolujte, že je správně nastaven systémový čas."
+    IDS_NFO_STATE_RECONNECTING "Aktuální stav: Restartování"
+    IDS_NFO_STATE_DISCONNECTED "Aktuální stav: Odpojeno"
+    IDS_NFO_CONN_TERMINATED "Připojení k %s bylo přerušeno."
+    IDS_NFO_STATE_FAILED "Aktuální stav: Nepodařilo se připojit"
+    IDS_NFO_CONN_FAILED "Připojování k %s selhalo."
+    IDS_NFO_STATE_FAILED_RECONN "Aktuální stav: Nepodařilo se restartovat"
+    IDS_NFO_RECONN_FAILED "Restartování spojení k %s selhalo."
+    IDS_NFO_STATE_SUSPENDED "Aktuální stav: Pozastaveno"
+    IDS_ERR_READ_STDOUT_PIPE "Došlo k chybě při čtení z OpenVPN StdOut Pipe."
+    IDS_ERR_CREATE_EDIT_LOGWINDOW "Došlo k chybě při vytváření okna s formátovaným logem."
+    IDS_ERR_SET_SIZE "Selhalo nastavení velikosti."
+    IDS_ERR_AUTOSTART_CONF "Nebylo možné najít požadovanou konfiguraci k automatickému spojení: %s"
+    IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe na hInputRead selhal."
+    IDS_NFO_STATE_CONNECTING "Aktuální stav: Připojování"
+    IDS_NFO_CONNECTION_XXX "OpenVPN spojení (%s)"
+    IDS_NFO_STATE_CONN_SCRIPT "Aktuální stav: Spouštění skriptu při připojení"
+    IDS_NFO_STATE_DISCONN_SCRIPT "Aktuální stav: Spouštění skriptu při odpojení"
+    IDS_ERR_RUN_CONN_SCRIPT "Došlo k chybě při při běhu skriptu při připojení: %s"
+    IDS_ERR_GET_EXIT_CODE "Nepodařilo se získat ExitCode skriptu při připojení (%s)"
+    IDS_ERR_CONN_SCRIPT_FAILED "Skript při připojení selhal. (exitcode=%ld)"
+    IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Skript při připojení selhal. Čas spojení vypršel po %ds."
+    IDS_ERR_CONFIG_EXIST "Konfigurační soubor s názvem '%s' již existuje. Je nutné jeden z konfiguračních " \
+                         "souborů stejného názvu přejmenovat, i když se " \
+                         "nachází v jiné složce."
+    IDS_NFO_CONN_TIMEOUT "Připojení k rozhraní správy selhalo.\n" \
+                         "Více informací najdete v logu (%s)."
+    /* main - Resources */
+    IDS_ERR_OPEN_DEBUG_FILE "Nelze otevřít soubor pro zápis ladění (%s)."
+    IDS_ERR_CREATE_PATH "Nepodařilo se vytvořit %s složku:\n%s"
+    IDS_ERR_LOAD_RICHED20 "Nepodařilo se načíst riched20.dll."
+    IDS_ERR_SHELL_DLL_VERSION "Verze vaší knihovny shell32.dll je příliš nízká (0x%lx). Potřebujete verzi 5.0 nebo novější."
+    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI již běží."
+    IDS_NFO_SERVICE_STARTED "Služba OpenVPN spuštěna."
+    IDS_NFO_SERVICE_STOPPED "Služba OpenVPN zastavena."
+    IDS_NFO_ACTIVE_CONN_EXIT "Některá spojení jsou stále aktivní. Pokud OpenVPN GUI ukončíte, budou přerušena." \
+                             "\n\nOpravdu chcete aplikaci ukončit?"
+    IDS_NFO_SERVICE_ACTIVE_EXIT "Některá spojení jsou stále aktivní. Díky běžící službě OpenVPN " \
+                                "zůstanete připojeni, i když ukončíte OpenVPN GUI.\n\n" \
+                                "Chcete pokračovat a aplikaci ukončit?"
+
+    /* options - Resources */
+    IDS_NFO_USAGE "--help\t\t\t: Zobrazí tuto zprávu.\n" \
+                  "--connect cnn \t\t: Připojí se k ""cnn"" při spuštění. (musí být obsažena přípona souboru)\n" \
+                  "\t\t\t   Příklad: openvpn-gui --connect office.ovpn\n" \
+                  "\n" \
+                  "Volby k použití explicitního nastavení namísto výchozího z registru:\n" \
+                  "--exe_path\t\t: Cesta k openvpn.exe.\n" \
+                  "--config_dir\t\t: Cesta ke složce, kde se mají hledat konfigurační soubory.\n" \
+                  "--ext_string\t\t: Přípona konfiguračních souborů.\n" \
+                  "--log_dir\t\t\t: Cesta ke složce s logy.\n" \
+                  "--priority_string\t\t: Upravená priorita (více info v install.txt).\n" \
+                  "--append_string\t\t: 1=Zapisovat na konec logu. 0=Přepisovat log při připojování.\n" \
+                  "--log_viewer\t\t: Cesta k nástroji pro zobrazení logu.\n" \
+                  "--editor\t\t\t: Cesta k nástroji pro úpravu konfigurace.\n" \
+                  "--allow_edit\t\t: 1=Zobrazit položku Upravit konfiguraci v menu.\n" \
+                  "--allow_service\t\t: 1=Zobrazit možnosti ovládání služby v menu.\n" \
+                  "--allow_password\t\t: 1=Zobrazit položku Změnit heslo v menu.\n" \
+                  "--allow_proxy\t\t: 1=Zobrazit nastavení proxy v menu.\n" \
+                  "--show_balloon\t\t: Ukazovat upozornění: 0=Nikdy, 1=Při připojení, 2=Při připojení/obnovení spojení.\n" \
+                  "--service_only\t\t: 1=Ovládat pouze službu systému.\n" \
+                  "--silent_connection\t\t: 1=Nezobrazovat stav při připojování ani nekritická varování při spuštění.\n" \
+                  "--show_script_window\t: 0=Nezobrazovat okno skriptu, 1=Zobrazit okno skriptu.\n" \
+                  "--passphrase_attempts\t: Počet možných pokusů o zadání hesla.\n" \
+                  "--connectscript_timeout\t: Časový limit skriptu v průběhu připojování.\n" \
+                  "--disconnectscript_timeout\t: Časový limit skriptu při odpojování.\n" \
+                  "--preconnectscript_timeout\t: Časový limit skriptu před připojením.\n"
+
+    IDS_NFO_USAGECAPTION "Použití OpenVPN GUI"
+    IDS_ERR_BAD_PARAMETER "Parametr ""%s"" nebyl úspěšně zpracován, " \
+                      "zkuste před něj dát '--'."
+    IDS_ERR_BAD_OPTION "Nepovolená hodnota: Neznámá volba nebo chybějící parametr: --%s\n" \
+                   "Použijte openvpn-gui --help pro více informací."
+
+    /* passphrase - Resources */
+    IDS_ERR_CREATE_PASS_THREAD "Selhal CreateThread při vytváření dialogu Změna hesla privátního klíče."
+    IDS_NFO_CHANGE_PWD "Změna hesla privátního klíče (%s)"
+    IDS_ERR_PWD_DONT_MATCH "Zadaná hesla se neshodují. Zkuste to prosím znovu."
+    IDS_ERR_PWD_TO_SHORT "Minimální délka hesla je %d znaků."
+    IDS_NFO_EMPTY_PWD "Opravdu chcete nastavit prázdné heslo?"
+    IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Neznámý formát souboru klíče."
+    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Došlo k chybě při načítání souboru privátního klíče (%s)."
+    IDS_ERR_OLD_PWD_INCORRECT "Staré heslo není správné."
+    IDS_ERR_OPEN_WRITE_KEY "Nepodařilo se zapsat do souboru privátního klíče (%s)."
+    IDS_ERR_WRITE_NEW_KEY "Nepodařilo se vytvořit nový soubor privátního klíče (%s)."
+    IDS_NFO_PWD_CHANGED "Vaše heslo bylo změněno."
+    IDS_ERR_READ_PKCS12 "Došlo k chybě při načítání souboru PKCS #12 (%s)."
+    IDS_ERR_CREATE_PKCS12 "Došlo k chybě při vytváření nového souboru PKCS #12. Změna hesla se nezdařila."
+    IDS_ERR_OPEN_CONFIG "Nepodařilo se otevřít konfigurační soubor ke čtení: (%s)"
+    IDS_ERR_ONLY_ONE_KEY_OPTION "Není možné mít více než jednu definici ""key"" v konfiguračním souboru."
+    IDS_ERR_ONLY_KEY_OR_PKCS12 "Není možné mít definice ""key"" a ""pkcs12"" ve stejném konfiguračním souboru."
+    IDS_ERR_ONLY_ONE_PKCS12_OPTION "Není možné mít více než jednu definici ""pkcs12"" v konfiguračním souboru."
+    IDS_ERR_HAVE_KEY_OR_PKCS12 "V konfiguračním souboru chybí definice ""key"" nebo ""pkcs12""."
+    IDS_ERR_KEY_FILENAME_TO_LONG "Název souboru klíče v konfiguračním souboru je příliš dlouhý."
+    IDS_ERR_PASSPHRASE2STDIN "Došlo k chybě při předávání hesla privátního klíče do příkazové řádky."
+    IDS_ERR_AUTH_USERNAME2STDIN "Došlo k chybě při předávání uživatelského jména do příkazové řádky."
+    IDS_ERR_AUTH_PASSWORD2STDIN "Došlo k chybě při předávání hesla do příkazové řádky."
+    IDS_ERR_CR2STDIN "Došlo k chybě při předávání odpovědi na výzvu do příkazové řádky."
+    IDS_ERR_INVALID_CHARS_IN_PSW "Vaše nové heslo obsahuje neplatné znaky. " \
+                             "Prosím zadejte jiné."
+
+    /* settings */
+    IDS_SETTINGS_CAPTION "OpenVPN - Nastavení"
+
+    /* proxy */
+    IDS_ERR_HTTP_PROXY_ADDRESS "Je nutné zadat adresu HTTP proxy."
+    IDS_ERR_HTTP_PROXY_PORT "Je nutné zadat port HTTP proxy."
+    IDS_ERR_HTTP_PROXY_PORT_RANGE "Port HTTP proxy musí být v rozsahu 1-65535"
+    IDS_ERR_SOCKS_PROXY_ADDRESS "Je nutné zadat adresu SOCKS proxy."
+    IDS_ERR_SOCKS_PROXY_PORT "Je nutné zadat port SOCKS proxy."
+    IDS_ERR_SOCKS_PROXY_PORT_RANGE "Port SOCKS proxy musí být v rozsahu 1-65535"
+    IDS_ERR_CREATE_REG_HKCU_KEY "Došlo k chybě při vytváření klíče ""HKCU\\%s"" v registru."
+    IDS_ERR_GET_TEMP_PATH "Došlo k chybě při zjišťování cesty ke složce Temp pomocí GetTempPath(). Bude použito ""C:\\""."
+
+    /* service */
+    IDS_ERR_OPEN_VPN_SERVICE "Došlo k chybě při načítání služby ""OpenVPNService""."
+    IDS_ERR_START_SERVICE "Došlo k chybě při spouštění služby ""OpenVPNService""."
+    IDS_ERR_QUERY_SERVICE "Došlo k chybě při zjištění stavu služby."
+    IDS_ERR_SERVICE_START_FAILED "Nepodařilo se spustit službu OpenVPN."
+    IDS_ERR_OPEN_SCMGR "OpenSCManager selhal (%d)"
+    IDS_ERR_STOP_SERVICE "Nepodařilo se zastavit službu OpenVPN."
+    IDS_NFO_RESTARTED "Služba OpenVPN byla restartována."
+    IDS_ERR_ACCESS_SERVICE_PIPE "Přístup k pipe služby selhal."
+    IDS_ERR_WRITE_SERVICE_PIPE "Zápis do pipe služby selhal."
+    IDS_ERR_INSTALL_ISERVICE     "Služba ""OpenVPNServiceInteractive"" není nainstalována.\n"
+                                 "Úlohy vyžadující oprávnění správce nemusí fungovat."
+    IDS_ERR_NOTSTARTED_ISERVICE  "Služba ""OpenVPNServiceInteractive"" není spuštěna.\n"
+                                 "Úlohy vyžadující oprávnění správce nemusí fungovat."
+
+    /* registry */
+    IDS_ERR_GET_WINDOWS_DIR "Nepodařilo se získat umístění složky Windows."
+    IDS_ERR_GET_PROFILE_DIR "Nepodařilo se získat umístění složky uživatelského profilu."
+    IDS_ERR_GET_PROGRAM_DIR "Nepodařilo se získat umístění složky ""Program""."
+    IDS_ERR_OPEN_REGISTRY "Nepodařilo se otevřít klíč registru ke čtení (HKLM\\SOFTWARE\\OpenVPN).\n " \
+                      "OpenVPN pravděpodobně není nainstalováno."
+    IDS_ERR_READING_REGISTRY "Došlo k chybě při čtení hodnoty z registru (HKLM\\SOFTWARE\\OpenVPN)."
+    IDS_ERR_PASSPHRASE_ATTEMPTS "Hodnota ""passphrase_attempts"" v registru musí být číslo mezi 1 a 9."
+    IDS_ERR_CONN_SCRIPT_TIMEOUT "Hodnota ""connectscript_timeout"" v registru musí být číslo mezi 0 a 99."
+    IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Hodnota ""disconnectscript_timeout"" v registru musí být číslo mezi 1 a 99."
+    IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Hodnota ""preconnectscript_timeout"" v registru musí být číslo mezi 1 a 99."
+    IDS_ERR_CREATE_REG_KEY "Nepodařilo se vytvořit klíč HKLM\\SOFTWARE\\OpenVPN-GUI."
+    IDS_ERR_OPEN_WRITE_REG "Nepodařilo se otevřít registr pro zápis. Je nutné spustit aplikaci " \
+                       "jednou jako správce, aby se registr aktualizoval."
+    IDS_ERR_READ_SET_KEY "Došlo k chybě při čtení a zápisu klíče registru ""%s""."
+    IDS_ERR_WRITE_REGVALUE "Došlo k chybě při zápisu hodnoty registru ""HKCU\\%s\\%s""."
+
+    /* importation */
+    IDS_ERR_IMPORT_EXISTS "Konfigurace s názvem ""%s"" již existuje."
+    IDS_ERR_IMPORT_FAILED "Nepodařilo se importovat konfigurační soubor. Následující cestu se nepodařilo vytvořit.\n\n" \
+                          "%s\n\nUjistěte se prosím, že máte potřebná oprávnění."
+    IDS_NFO_IMPORT_SUCCESS "Konfigurace úspěšně importována."
+
+    /* save/delete password */
+    IDS_NFO_DELETE_PASS "Stiskněte OK pro odstranění uložených hesel pro konfiguraci ""%s"""
+
+    /* Token password related */
+    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN - Heslo tokenu"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "Prosím zadejte heslo/PIN pro token '%S'"
+
+END
