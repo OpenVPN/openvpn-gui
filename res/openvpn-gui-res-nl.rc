@@ -99,7 +99,7 @@ END
 /* Change Passphrase Dialog */
 ID_DLG_CHGPASS DIALOG 6, 18, 193, 82
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "OpenVPN - Wijzig wachtwoord"
+CAPTION "OpenVPN - Wachtwoord wijzigen"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_DUTCH, SUBLANG_DEFAULT
 BEGIN
@@ -149,14 +149,14 @@ BEGIN
     GROUPBOX "Opstarten", 202, 6, 47, 235, 30
     AUTOCHECKBOX "Opstarten met Windows", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "Preferences", 202, 6, 82, 235, 90
-    AUTOCHECKBOX "Append to log", ID_CHK_LOG_APPEND, 17, 95, 60, 10
-    AUTOCHECKBOX "Show script window", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
-    AUTOCHECKBOX "Silent connection", ID_CHK_SILENT, 17, 125, 200, 10
-    LTEXT "Show Balloon", ID_TXT_BALLOON, 17, 140, 100, 10
-    AUTORADIOBUTTON "On connect", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "On connect/reconnect", ID_RB_BALLOON2, 86, 155, 90, 10
-    AUTORADIOBUTTON "Never", ID_RB_BALLOON0, 181, 155, 40, 10
+    GROUPBOX "Voorkeuren", 202, 6, 82, 235, 90
+    AUTOCHECKBOX "Aan logbestand toevoegen", ID_CHK_LOG_APPEND, 17, 95, 60, 10
+    AUTOCHECKBOX "Script-venster tonen", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
+    AUTOCHECKBOX "Stille verbinding", ID_CHK_SILENT, 17, 125, 200, 10
+    LTEXT "Laat ballontip zien", ID_TXT_BALLOON, 17, 140, 100, 10
+    AUTORADIOBUTTON "Bij verbinden", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Bij opnieuw verbinden", ID_RB_BALLOON2, 86, 155, 90, 10
+    AUTORADIOBUTTON "Nooit", ID_RB_BALLOON0, 181, 155, 40, 10
 END
 
 /* Advanced Dialog */
@@ -166,15 +166,15 @@ CAPTION "Advanced"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_DUTCH, SUBLANG_DEFAULT
 BEGIN
-    GROUPBOX "Configuration Files", 201, 6, 12, 235, 45
-    LTEXT "Folder:", ID_TXT_FOLDER, 17, 25, 32, 10
-    LTEXT "Extension:", ID_TXT_EXTENSION, 17, 40, 52, 10
+    GROUPBOX "Configuratiebestanden", 201, 6, 12, 235, 45
+    LTEXT "Map:", ID_TXT_FOLDER, 17, 25, 32, 10
+    LTEXT "Extensie:", ID_TXT_EXTENSION, 17, 40, 52, 10
     EDITTEXT ID_EDT_CONFIG_DIR, 53, 23, 150, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_CONFIG_EXT, 53, 38, 25, 12, ES_AUTOHSCROLL
     PUSHBUTTON "…", ID_BTN_CONFIG_DIR, 208, 23, 25, 12
 
-    GROUPBOX "Log Files", 202, 6, 62, 235, 30
-    LTEXT "Folder:", ID_TXT_FOLDER, 17, 74, 32, 10
+    GROUPBOX "Logbestanden", 202, 6, 62, 235, 30
+    LTEXT "Map:", ID_TXT_FOLDER, 17, 74, 32, 10
     EDITTEXT ID_EDT_LOG_DIR, 53, 72, 150, 12, ES_AUTOHSCROLL
     PUSHBUTTON "…", ID_BTN_LOG_DIR, 208, 72, 25, 12
 
@@ -186,7 +186,7 @@ BEGIN
     EDITTEXT ID_EDT_CONNECT_TIMEOUT, 103, 123, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 103, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
 
-    AUTOCHECKBOX "Service only", ID_CHK_SERVICE_ONLY, 6, 162, 100, 12
+    AUTOCHECKBOX "Alleen service", ID_CHK_SERVICE_ONLY, 6, 162, 100, 12
 END
 
 /* About Dialog */
@@ -236,19 +236,19 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\nVerbonden sinds: "
     IDS_TIP_ASSIGNED_IP "\nToegewezen IP: %s"
     IDS_MENU_SERVICE "OpenVPN Service"
-    IDS_MENU_IMPORT "Importeer bestand…"
+    IDS_MENU_IMPORT "Bestand importeren…"
     IDS_MENU_SETTINGS "Instellingen…"
     IDS_MENU_CLOSE "Afsluiten"
     IDS_MENU_CONNECT "Verbinden"
     IDS_MENU_DISCONNECT "Verbinding verbreken"
-    IDS_MENU_STATUS "Toon status"
-    IDS_MENU_VIEWLOG "Toon log"
+    IDS_MENU_STATUS "Status weergeven"
+    IDS_MENU_VIEWLOG "Logbestand weergeven"
     IDS_MENU_EDITCONFIG "Configuratie bewerken"
     IDS_MENU_PASSPHRASE "Wachtwoord wijzigen"
     IDS_MENU_CLEARPASS  "Opgeslagen wachtwoorden vergeten"
-    IDS_MENU_SERVICE_START "Start"
-    IDS_MENU_SERVICE_STOP "Stop"
-    IDS_MENU_SERVICE_RESTART "Herstart"
+    IDS_MENU_SERVICE_START "Starten"
+    IDS_MENU_SERVICE_STOP "Stoppen"
+    IDS_MENU_SERVICE_RESTART "Herstarten"
     IDS_MENU_SERVICEONLY_START "Verbinden"
     IDS_MENU_SERVICEONLY_STOP "Verbinding verbreken"
     IDS_MENU_SERVICEONLY_RESTART "Verbinding herstellen"
@@ -261,7 +261,7 @@ BEGIN
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI ondersteunt niet meer dan %d configuraties. Neem contact op met de auteur indien u er meer wenst."
     IDS_NFO_NO_CONFIGS "Geen leesbare verbindingsprofielen (config files) gevonden.\n"\
-                       "Use the ""Import File.."" menu or copy your config files to ""%s"" or ""%s""."
+                       "Gebruik het menu ""Bestand importeren…"" of kopieer uw configuratiebestanden naar ""%s"" of ""%s""."
     IDS_ERR_CONFIG_NOT_AUTHORIZED "Het maken van deze verbinding (%s) vereist lidmaatschap van\n"\
                                   "de groep ""%s"". Neem contact op met de systeembeheerder.\n"
     IDS_ERR_CONFIG_TRY_AUTHORIZE  "Het maken van deze verbinding (%s) vereist lidmaatschap van\n"\
@@ -346,14 +346,14 @@ BEGIN
                   "--append_string\t\t: 1=Toevoegen aan logbestand. 0=Overschrijf logbestand tijdens verbinden.\n" \
                   "--log_viewer\t\t: Pad naar de logviewer.\n" \
                   "--editor\t\t\t: Pad naar de configuratie-editor.\n" \
-                  "--allow_edit\t\t: 1=Toon Bewerk Configuratie menu-item.\n" \
-                  "--allow_service\t\t: 1=Toon Service controle menu.\n" \
-                  "--allow_password\t\t: 1=Toon Wijzig Wachtwoord menu-item.\n" \
-                  "--allow_proxy\t\t: 1=Toon Proxy-instellingen menu.\n" \
+                  "--allow_edit\t\t: 1=Bewerk Configuratie menu-item weergeven.\n" \
+                  "--allow_service\t\t: 1=Service Controle menu-item weergeven.\n" \
+                  "--allow_password\t\t: 1=Wachtwoord Wijzigen menu-item weergeven.\n" \
+                  "--allow_proxy\t\t: 1=Proxy-instellingen menu-item weergeven.\n" \
                   "--show_balloon\t\t: 0=Nooit, 1=Tijdens eerste verbinding, 2=Bij elke herverbinding.\n" \
-                  "--service_only\t\t: 1=Activeer Service Only mode.\n" \
-                  "--silent_connection\t\t: 1=Verberg het Status-venster tijdens het verbinden.\n" \
-                  "--show_script_window\t: 0=Verberg Script output-venster, 1=Toon het.\n" \
+                  "--service_only\t\t: 1=Service Only modus activeren.\n" \
+                  "--silent_connection\t\t: 1=Het status-venster tijdens het verbinden verbergen.\n" \
+                  "--show_script_window\t: 0=Het script uitvoer-venster verbergen, 1=Weergeven.\n" \
                   "--passphrase_attempts\t: Aantal wachtwoordpogingen.\n" \
                   "--connectscript_timeout\t: Timeout voor uitvoer van Connect Script.\n" \
                   "--disconnectscript_timeout\t: Timeout voor uitvoer van Disconnect Script.\n" \
