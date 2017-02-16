@@ -43,6 +43,7 @@ AM_CFLAGS = -municode
 
 openvpn_gui_RESOURCES = \
 	res/openvpn-gui-res.rc \
+	res/openvpn-gui-res-cs.rc \
 	res/openvpn-gui-res-de.rc \
 	res/openvpn-gui-res-dk.rc \
 	res/openvpn-gui-res-en.rc \
