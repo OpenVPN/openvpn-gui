@@ -128,6 +128,7 @@ struct connection {
     char *dynamic_cr;              /* Pointer to buffer for dynamic challenge string received */
     unsigned long long int bytes_in;
     unsigned long long int bytes_out;
+    struct env_item *es;           /* Pointer to the head of config-specific env variables list */
 };
 
 /* All options used within OpenVPN GUI */

@@ -51,4 +51,7 @@ extern const TCHAR *cfgProp;
 #define ERROR_MESSAGE_DATA 0x20000002
 #define ERROR_MESSAGE_TYPE 0x20000003
 
+/* Write a line to status window and optionally to the log file */
+void WriteStatusLog (connection_t *c, const WCHAR *prefix, const WCHAR *line, BOOL fileio);
+
 #endif
