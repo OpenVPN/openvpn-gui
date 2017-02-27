@@ -37,6 +37,7 @@ void OnPassword(connection_t *, char *);
 void OnStop(connection_t *, char *);
 void OnNeedOk(connection_t *, char *);
 void OnNeedStr(connection_t *, char *);
+void OnEcho(connection_t *, char *);
 
 void DisablePasswordSave(connection_t *);
 

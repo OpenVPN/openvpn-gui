@@ -322,6 +322,11 @@ OnManagement(SOCKET sk, LPARAM lParam)
                     if (rtmsg_handler[needstr])
                         rtmsg_handler[needstr](c, pos + 9);
                 }
+                else if (strncmp(pos, "ECHO:", 5) == 0)
+                {
+                    if (rtmsg_handler[echo])
+                        rtmsg_handler[echo](c, pos + 5);
+                }
             }
             else if (c->manage.cmd_queue)
             {

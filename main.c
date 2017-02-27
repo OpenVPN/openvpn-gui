@@ -121,6 +121,7 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
       { stop,     OnStop },
       { needok,   OnNeedOk },
       { needstr,  OnNeedStr },
+      { echo,     OnEcho },
       { 0,        NULL }
   };
   InitManagement(handler);
