@@ -34,7 +34,9 @@
 #include "main.h"
 #include "openvpn-gui-res.h"
 #include "options.h"
+#include "misc.h"
 #include "localization.h"
+#include "env_set.h"
 
 extern options_t o;
 
@@ -67,6 +69,10 @@ RunPreconnectScript(connection_t *c)
     si.wShowWindow = SW_SHOWDEFAULT;
     si.hStdInput = NULL;
     si.hStdOutput = NULL;
+
+    /* Preconnect script is run too early for config env to be available
+     * so we use the default process env here.
+     */
 
     if (!CreateProcess(NULL, cmdline, NULL, NULL, TRUE,
                        (o.show_script_window ? CREATE_NEW_CONSOLE : CREATE_NO_WINDOW),
@@ -121,11 +127,17 @@ RunConnectScript(connection_t *c, int run_as_service)
     si.hStdInput = NULL;
     si.hStdOutput = NULL;
 
+    /* make an env array with confg specific env appended to the process's env */
+    WCHAR *env = c->es ? merge_env_block(c->es) : NULL;
+    DWORD flags = CREATE_UNICODE_ENVIRONMENT;
+
     if (!CreateProcess(NULL, cmdline, NULL, NULL, TRUE,
-                       (o.show_script_window ? CREATE_NEW_CONSOLE : CREATE_NO_WINDOW),
-                       NULL, c->config_dir, &si, &pi))
+                       (o.show_script_window ? flags|CREATE_NEW_CONSOLE : flags|CREATE_NO_WINDOW),
+                       env, c->config_dir, &si, &pi))
     {
+        PrintDebug(L"CreateProcess: error = %lu", GetLastError());
         ShowLocalizedMsg(IDS_ERR_RUN_CONN_SCRIPT, cmdline);
+        free(env);
         return;
     }
 
@@ -153,6 +165,7 @@ RunConnectScript(connection_t *c, int run_as_service)
     ShowLocalizedMsg(IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT, o.connectscript_timeout);
 
 out:
+    free(env);
     CloseHandle(pi.hThread);
     CloseHandle(pi.hProcess);
 }
@@ -190,10 +203,17 @@ RunDisconnectScript(connection_t *c, int run_as_service)
     si.hStdInput = NULL;
     si.hStdOutput = NULL;
 
+    /* make an env array with confg specific env appended to the process's env */
+    WCHAR *env = c->es ? merge_env_block(c->es) : NULL;
+    DWORD flags = CREATE_UNICODE_ENVIRONMENT;
+
     if (!CreateProcess(NULL, cmdline, NULL, NULL, TRUE,
-                       (o.show_script_window ? CREATE_NEW_CONSOLE : CREATE_NO_WINDOW),
+                       (o.show_script_window ? flags|CREATE_NEW_CONSOLE : flags|CREATE_NO_WINDOW),
                        NULL, c->config_dir, &si, &pi))
+    {
+        free(env);
         return;
+    }
 
     for (i = 0; i <= (int) o.disconnectscript_timeout; i++)
     {
@@ -206,6 +226,7 @@ RunDisconnectScript(connection_t *c, int run_as_service)
         Sleep(1000);
     }
 out:
+    free(env);
     CloseHandle(pi.hThread);
     CloseHandle(pi.hProcess);
 }

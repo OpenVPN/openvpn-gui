@@ -349,6 +349,12 @@ streq(LPCSTR str1, LPCSTR str2)
 }
 
 BOOL
+strbegins(const char *str, const char *begin)
+{
+    return (strncmp(str, begin, strlen(begin)) == 0);
+}
+
+BOOL
 wcsbegins(LPCWSTR str, LPCWSTR begin)
 {
     return (wcsncmp(str, begin, wcslen(begin)) == 0);

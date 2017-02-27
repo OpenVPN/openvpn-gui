@@ -49,6 +49,7 @@
 #include "misc.h"
 #include "access.h"
 #include "save_pass.h"
+#include "env_set.h"
 
 extern options_t o;
 
@@ -72,9 +73,6 @@ typedef struct {
     char *id;
     char *user;
 } auth_param_t;
-
-static void
-WriteStatusLog (connection_t *c, const WCHAR *prefix, const WCHAR *line, BOOL fileio);
 
 static void
 free_auth_param (auth_param_t *param)
@@ -940,7 +938,7 @@ out:
 void
 OnEcho(connection_t *c, char *msg)
 {
-    WCHAR errmsg[256];
+    time_t timestamp = strtoul(msg, NULL, 10); /* openvpn prints these as %u */
 
     PrintDebug(L"OnEcho with msg = %S", msg);
     if (!(msg = strchr(msg, ',')))
@@ -949,7 +947,6 @@ OnEcho(connection_t *c, char *msg)
         return;
     }
     msg++;
-
     if (strcmp(msg, "forget-passwords") == 0)
     {
         DeleteSavedPasswords(c->config_name);
@@ -962,9 +959,14 @@ OnEcho(connection_t *c, char *msg)
         else
             c->flags |= (FLAG_SAVE_KEY_PASS | FLAG_SAVE_AUTH_PASS);
     }
+    else if (strbegins(msg, "setenv "))
+    {
+        process_setenv(c, timestamp, msg);
+    }
     else
     {
-        _sntprintf_0(errmsg, L"WARNING: Unknown ECHO directive '%S' ignored.", msg);
+        wchar_t errmsg[256];
+        _sntprintf_0(errmsg, L"WARNING: Unknown ECHO directive '%hs' ignored.", msg);
         WriteStatusLog(c, L"GUI> ", errmsg, false);
     }
 }
@@ -1241,7 +1243,7 @@ WrapLine (WCHAR *line)
 /*
  * Write a line to the status log window and optionally to the log file
  */
-static void
+void
 WriteStatusLog (connection_t *c, const WCHAR *prefix, const WCHAR *line, BOOL fileio)
 {
     HWND logWnd = GetDlgItem(c->hwndStatus, ID_EDT_LOG);
@@ -1543,6 +1545,8 @@ Cleanup (connection_t *c)
     CloseManagement (c);
 
     free_dynamic_cr (c);
+    env_item_del_all(c->es);
+    c->es = NULL;
 
     if (c->hProcess)
         CloseHandle (c->hProcess);

@@ -28,6 +28,7 @@ BOOL ManagementCommandFromInputBase64(connection_t *, LPCSTR, HWND, int, int);
 BOOL EnsureDirExists(LPTSTR);
 
 BOOL streq(LPCSTR, LPCSTR);
+BOOL strbegins(const char *str, const char *begin);
 BOOL wcsbegins(LPCWSTR, LPCWSTR);
 
 BOOL ForceForegroundWindow(HWND);
