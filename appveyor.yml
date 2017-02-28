@@ -1,0 +1,15 @@
+version: "cygwin-{build}"
+
+environment:
+  matrix:
+    - ARCH: x86
+      CYGWIN: C:\Cygwin
+    - ARCH: x86_64
+      CYGWIN: C:\Cygwin64
+
+build_script:
+  - "%CYGWIN%\\setup-%ARCH%.exe -q -P mingw64-i686-openssl,mingw64-x86_64-openssl,mingw64-i686-gcc-core,mingw64-x86_64-gcc-core,cygwin-devel"
+  - "%CYGWIN%\\bin\\bash -lc 'cd /cygdrive/c/projects/%APPVEYOR_PROJECT_NAME% ; ./appveyor.sh'"
+
+artifacts:
+  - path: openvpn-gui.exe
