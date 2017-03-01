@@ -8,8 +8,11 @@ environment:
       CYGWIN: C:\Cygwin64
 
 build_script:
-  - "%CYGWIN%\\setup-%ARCH%.exe -q -P mingw64-i686-openssl,mingw64-x86_64-openssl,mingw64-i686-gcc-core,mingw64-x86_64-gcc-core,cygwin-devel"
+  - "%CYGWIN%\\setup-%ARCH%.exe -q -P mingw64-i686-openssl,mingw64-x86_64-openssl,mingw64-i686-gcc-core-5.4.0-3,mingw64-x86_64-gcc-core-5.4.0-3,cygwin-devel"
   - "%CYGWIN%\\bin\\bash -lc 'cd /cygdrive/c/projects/%APPVEYOR_PROJECT_NAME% ; ./appveyor.sh'"
 
 artifacts:
   - path: openvpn-gui.exe
+
+on_failure:
+  - cmd: appveyor PushArtifact config.log
