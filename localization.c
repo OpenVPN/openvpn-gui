@@ -63,7 +63,7 @@ FindResourceLang(PTSTR resType, PTSTR resId, LANGID langId)
 }
 
 
-static LANGID
+LANGID
 GetGUILanguage(void)
 {
     if (gui_language != 0)
