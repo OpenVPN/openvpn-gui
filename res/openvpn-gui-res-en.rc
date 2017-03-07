@@ -270,7 +270,7 @@ BEGIN
     IDS_ERR_CONFIG_TRY_AUTHORIZE  "Starting this connection (%s) requires membership in "\
                                   """%s"" group.\n\n"\
                                   "Do you want to add yourself to this group?\n"\
-                                  "This action may prompt for administrtaive password or consent."
+                                  "This action may prompt for administrative password or consent."
     IDS_NFO_CONFIG_AUTH_PENDING   "Starting this connection (%s) requires membership in "\
                                   """%s"" group.\n\n"\
                                   "Please complete the previous authorization dialog."
