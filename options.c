@@ -41,6 +41,7 @@
 #include "localization.h"
 #include "misc.h"
 #include "registry.h"
+#include "save_pass.h"
 
 #define streq(x, y) (_tcscmp((x), (y)) == 0)
 
@@ -532,4 +533,13 @@ CompareStringExpanded (const WCHAR *str1, const WCHAR *str2)
     ExpandString (str2_cpy, _countof(str2_cpy));
 
     return wcsicmp (str1_cpy, str2_cpy);
+}
+
+/* Hide the password save options from user */
+void
+DisableSavePasswords(connection_t *c)
+{
+    DeleteSavedPasswords(c->config_name);
+    c->flags &= ~(FLAG_SAVE_AUTH_PASS | FLAG_SAVE_KEY_PASS);
+    c->flags |= FLAG_DISABLE_SAVE_PASS;
 }

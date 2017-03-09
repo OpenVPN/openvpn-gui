@@ -403,7 +403,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         EditConfig(LOWORD(wParam) - IDM_EDITMENU);
       }
       if ( (LOWORD(wParam) >= IDM_CLEARPASSMENU) && (LOWORD(wParam) < IDM_CLEARPASSMENU + MAX_CONFIGS) ) {
-        DisablePasswordSave(&o.conn[LOWORD(wParam) - IDM_CLEARPASSMENU]);
+        ResetSavePasswords(&o.conn[LOWORD(wParam) - IDM_CLEARPASSMENU]);
       }
 #ifndef DISABLE_CHANGE_PASSWORD
       if ( (LOWORD(wParam) >= IDM_PASSPHRASEMENU) && (LOWORD(wParam) < IDM_PASSPHRASEMENU + MAX_CONFIGS) ) {

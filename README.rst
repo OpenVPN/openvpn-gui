@@ -139,6 +139,10 @@ Registry Values affecting the OpenVPN GUI operation
 Parameters taken from the global registry values in
 *HKEY_LOCAL_MACHINE\\SOFTWARE\\OpenVPN\\* key
 
+(Default)
+    The installation directory of openvpn (e.g., *C:\\Program Files\\OpenVPN*).
+    This value must be present.
+
 config_dir
     The global configuration file directory. Defaults to
     *C:\\Program Files\\OpenVPN\\config*
@@ -160,6 +164,10 @@ ovpn_admin_group
     The windows group whose membership allows the user to start any configuration file
     in their profile (not just those installed by the administrator in the global
     config directory). Default: "OpenVPN Administrators".
+
+disable_save_passwords
+    Set to a nonzero value to disable the password save feature.
+    Default: 0
 
 All other OpenVPN GUI registry values are located below the
 *HKEY_CURRENT_USER\\SOFTWARE\\OpenVPN-GUI\\* key

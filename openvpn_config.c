@@ -87,12 +87,13 @@ ConfigAlreadyExists(TCHAR *newconfig)
     return false;
 }
 
-
 static void
 AddConfigFileToList(int config, const TCHAR *filename, const TCHAR *config_dir)
 {
     connection_t *c = &o.conn[config];
     int i;
+
+    memset(c, 0, sizeof(*c));
 
     _tcsncpy(c->config_file, filename, _countof(c->config_file) - 1);
     _tcsncpy(c->config_dir, config_dir, _countof(c->config_dir) - 1);
@@ -120,10 +121,17 @@ AddConfigFileToList(int config, const TCHAR *filename, const TCHAR *config_dir)
         }
     }
     /* check whether passwords are saved */
-    if (IsAuthPassSaved(c->config_name))
-        c->flags |= FLAG_SAVE_AUTH_PASS;
-    if (IsKeyPassSaved(c->config_name))
-        c->flags |= FLAG_SAVE_KEY_PASS;
+    if (o.disable_save_passwords)
+    {
+        DisableSavePasswords(c);
+    }
+    else
+    {
+        if (IsAuthPassSaved(c->config_name))
+            c->flags |= FLAG_SAVE_AUTH_PASS;
+        if (IsKeyPassSaved(c->config_name))
+            c->flags |= FLAG_SAVE_KEY_PASS;
+    }
 }
 
 

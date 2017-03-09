@@ -127,6 +127,10 @@ GetGlobalRegistryKeys()
     {
       _tcsncpy(o.priority_string, _T("NORMAL_PRIORITY_CLASS"), _countof(o.priority_string)-1);
     }
+  if (!GetRegistryValueNumeric(regkey, _T("disable_save_passwords"), &o.disable_save_passwords))
+  {
+      o.disable_save_passwords = 0;
+  }
   RegCloseKey(regkey);
   return true;
 }

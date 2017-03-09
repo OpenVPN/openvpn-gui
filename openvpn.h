@@ -38,7 +38,7 @@ void OnStop(connection_t *, char *);
 void OnNeedOk(connection_t *, char *);
 void OnNeedStr(connection_t *, char *);
 
-void DisablePasswordSave(connection_t *);
+void ResetSavePasswords(connection_t *);
 
 extern const TCHAR *cfgProp;
 
