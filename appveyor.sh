@@ -1,4 +1,4 @@
-
+#!/bin/sh
 autoreconf -iv
 unset CC
 unset CXX
