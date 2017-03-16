@@ -108,6 +108,7 @@ OnReady(connection_t *c, UNUSED char *msg)
 {
     ManagementCommand(c, "state on", NULL, regular);
     ManagementCommand(c, "log all on", OnLogLine, combined);
+    ManagementCommand(c, "echo all on", OnEcho, combined);
 }
 
 
@@ -691,6 +692,38 @@ out:
     if (!ret)
         PrintDebug (L"Error parsing password/string request msg: <%S>", msg);
     return ret;
+}
+
+/*
+ * Handle >ECHO: request from OpenVPN management interface
+ * Expect msg = timestamp,message
+ */
+void
+OnEcho(connection_t *c, char *msg)
+{
+    WCHAR errmsg[256];
+
+    PrintDebug(L"OnEcho with msg = %S", msg);
+    if (!(msg = strchr(msg, ',')))
+    {
+        PrintDebug(L"OnEcho: msg format not recognized");
+        return;
+    }
+    msg++;
+
+    if (strcmp(msg, "forget-passwords") == 0)
+    {
+        DeleteSavedPasswords(c->config_name);
+    }
+    else if (strcmp(msg, "save-passwords") == 0)
+    {
+        c->flags |= (FLAG_SAVE_KEY_PASS | FLAG_SAVE_AUTH_PASS);
+    }
+    else
+    {
+        _sntprintf_0(errmsg, L"WARNING: Unknown ECHO directive '%S' ignored.", msg);
+        WriteStatusLog(c, L"GUI> ", errmsg, false);
+    }
 }
 
 /*
