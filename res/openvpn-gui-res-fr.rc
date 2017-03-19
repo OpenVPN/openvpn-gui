@@ -154,8 +154,8 @@ BEGIN
     AUTOCHECKBOX "Afficher la fenêtre des scripts", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "Connexion silencieuse", ID_CHK_SILENT, 17, 125, 200, 10
     LTEXT "Afficher une bulle d'information", ID_TXT_BALLOON, 17, 140, 100, 10
-    AUTORADIOBUTTON "A la connexion", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "A la connexion/déconnexion", ID_RB_BALLOON2, 86, 155, 90, 10
+    AUTORADIOBUTTON "À la connexion", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "À la connexion/reconnexion", ID_RB_BALLOON2, 86, 155, 90, 10
     AUTORADIOBUTTON "Jamais", ID_RB_BALLOON0, 181, 155, 40, 10
 END
 
@@ -166,7 +166,7 @@ CAPTION "Avancé"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FRENCH, SUBLANG_DEFAULT
 BEGIN
-    GROUPBOX "Fichier de configuration", 201, 6, 12, 235, 45
+    GROUPBOX "Fichiers de configuration", 201, 6, 12, 235, 45
     LTEXT "Dossier:", ID_TXT_FOLDER, 17, 25, 32, 10
     LTEXT "Extension:", ID_TXT_EXTENSION, 17, 40, 52, 10
     EDITTEXT ID_EDT_CONFIG_DIR, 53, 23, 150, 12, ES_AUTOHSCROLL
@@ -178,10 +178,10 @@ BEGIN
     EDITTEXT ID_EDT_LOG_DIR, 53, 72, 150, 12, ES_AUTOHSCROLL
     PUSHBUTTON "…", ID_BTN_LOG_DIR, 208, 72, 25, 12
 
-    GROUPBOX "Timeout des scripts", 201, 6, 97, 235, 60
-    LTEXT "Timeout du script de préconnexion:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
-    LTEXT "Timeout du script de connexion:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
-    LTEXT "Timeout du script de déconnexion:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
+    GROUPBOX "Temps d’exécution maximum des scripts", 201, 6, 97, 235, 60
+    LTEXT "Script de préconnexion:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
+    LTEXT "Script de connexion:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
+    LTEXT "Script de déconnexion:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
     EDITTEXT ID_EDT_PRECONNECT_TIMEOUT, 103, 108, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_CONNECT_TIMEOUT, 103, 123, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 103, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
