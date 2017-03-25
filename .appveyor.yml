@@ -1,0 +1,22 @@
+version: "cygwin-{build}"
+
+environment:
+  matrix:
+    - ARCH: x86
+      CYGWIN: C:\Cygwin
+      CHOST: i686-w64-mingw32
+      CC: i686-w64-mingw32-gcc
+    - ARCH: x86_64
+      CYGWIN: C:\Cygwin64
+      CHOST: x86_64-w64-mingw32
+      CC: x86_64-w64-mingw32-gcc
+
+build_script:
+  - "%CYGWIN%\\setup-%ARCH%.exe -g -q -P mingw64-i686-openssl,mingw64-x86_64-openssl,cygwin-devel"
+  - "%CYGWIN%\\bin\\bash -lc 'set -eux; cd /cygdrive/c/projects/%APPVEYOR_PROJECT_NAME%; autoreconf -iv; ./configure --prefix=/ --libdir=/lib --host=$CHOST --build=i686-pc-cygwin --program-prefix=\'\'; make'"
+
+artifacts:
+  - path: openvpn-gui.exe
+
+on_failure:
+  - cmd: appveyor PushArtifact config.log
