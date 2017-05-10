@@ -52,6 +52,7 @@ openvpn_gui_RESOURCES = \
 	res/openvpn-gui-res-fr.rc \
 	res/openvpn-gui-res-it.rc \
 	res/openvpn-gui-res-jp.rc \
+	res/openvpn-gui-res-kr.rc \
 	res/openvpn-gui-res-nl.rc \
 	res/openvpn-gui-res-no.rc \
 	res/openvpn-gui-res-pl.rc \
