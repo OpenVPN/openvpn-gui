@@ -324,7 +324,7 @@ GetProcessTokenGroups(void)
     if (!groups)
     {
         PrintDebug(L"GetProcessTokenGroups: error = %lu", GetLastError());
-        return NULL;
+        goto out;
     }
     if (!GetTokenInformation(token, TokenGroups, groups, buf_size, &buf_size))
     {
@@ -332,6 +332,9 @@ GetProcessTokenGroups(void)
         free (groups);
         groups = NULL;
     }
+
+out:
+    CloseHandle(token);
     return groups;
 }
 
