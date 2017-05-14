@@ -174,7 +174,7 @@ GetRegistryKeys ()
             PrintDebug(L"from registry: %s = %lu", regkey_int[i].name, *regkey_int[i].var);
     }
 
-    if ( status != ERROR_SUCCESS)
+    if ( status == ERROR_SUCCESS)
         RegCloseKey (regkey);
 
     if ((o.disconnectscript_timeout == 0))
@@ -198,13 +198,14 @@ SaveRegistryKeys ()
     HKEY regkey;
     DWORD status;
     int i;
+    int ret = false;
 
     status = RegCreateKeyEx(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, 0, NULL, REG_OPTION_NON_VOLATILE,
                             KEY_WRITE|KEY_READ, NULL, &regkey, NULL);
     if (status != ERROR_SUCCESS)
     {
         ShowLocalizedMsg (IDS_ERR_CREATE_REG_HKCU_KEY, GUI_REGKEY_HKCU);
-        return false;
+        goto out;
     }
     for (i = 0 ; i < (int) _countof (regkey_str); ++i)
     {
@@ -213,7 +214,7 @@ SaveRegistryKeys ()
              RegValueExists(regkey, regkey_str[i].name) )
         {
             if (!SetRegistryValue (regkey, regkey_str[i].name, regkey_str[i].var))
-                return false;
+                goto out;
         }
     }
 
@@ -223,13 +224,16 @@ SaveRegistryKeys ()
              RegValueExists(regkey, regkey_int[i].name) )
         {
             if (!SetRegistryValueNumeric (regkey, regkey_int[i].name, *regkey_int[i].var))
-                return false;
+                goto out;
         }
     }
+    ret = true;
 
-    RegCloseKey (regkey);
+out:
 
-    return true;
+    if (status == ERROR_SUCCESS)
+        RegCloseKey(regkey);
+    return ret;
 }
 
 static BOOL
@@ -260,8 +264,8 @@ SetRegistryVersion (const version_t *v)
                             KEY_WRITE, NULL, &regkey, NULL);
     if (status == ERROR_SUCCESS)
     {
-        ret = (RegSetValueEx(regkey, L"version", 0, REG_BINARY, (const BYTE*) v, sizeof(*v))
-                != ERROR_SUCCESS);
+        if (RegSetValueEx(regkey, L"version", 0, REG_BINARY, (const BYTE*) v, sizeof(*v)) == ERROR_SUCCESS)
+            ret = true;
         RegCloseKey(regkey);
     }
     else
