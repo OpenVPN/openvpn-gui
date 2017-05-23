@@ -1,0 +1,3 @@
+C:/msys64/mingw/bin/openvpn-gui.exe
+C:/msys64/mingw/share/doc/openvpn-gui/COPYRIGHT.GPL
+C:/msys64/mingw/share/doc/openvpn-gui/COPYING
