@@ -307,6 +307,8 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             Button_SetCheck(GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
 
         AppendTextToCaption (hwndDlg, param->c->config_name);
+        if (param->c->failed_auth_attempts > 0)
+            SetDlgItemTextW(hwndDlg, ID_TXT_WARNING, LoadLocalizedString(IDS_NFO_AUTH_PASS_RETRY));
 
         if (param->c->state == resuming)
             ForceForegroundWindow(hwndDlg);
@@ -362,6 +364,15 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             EndDialog(hwndDlg, LOWORD(wParam));
             StopOpenVPN(param->c);
             return TRUE;
+        }
+        break;
+
+    case WM_CTLCOLORSTATIC:
+        if (GetDlgCtrlID((HWND) lParam) == ID_TXT_WARNING)
+        {
+            HBRUSH br = (HBRUSH) DefWindowProc(hwndDlg, msg, wParam, lParam);
+            SetTextColor((HDC) wParam, o.clr_warning);
+            return (INT_PTR) br;
         }
         break;
 
@@ -530,6 +541,8 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             ShowWindow(GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), SW_HIDE);
         else if (c->flags & FLAG_SAVE_KEY_PASS)
             Button_SetCheck (GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
+        if (c->failed_psw_attempts > 0)
+            SetDlgItemTextW(hwndDlg, ID_TXT_WARNING, LoadLocalizedString(IDS_NFO_KEY_PASS_RETRY));
         if (c->state == resuming)
             ForceForegroundWindow(hwndDlg);
         else
@@ -567,6 +580,15 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             EndDialog(hwndDlg, LOWORD(wParam));
             StopOpenVPN (c);
             return TRUE;
+        }
+        break;
+
+    case WM_CTLCOLORSTATIC:
+        if (GetDlgCtrlID((HWND) lParam) == ID_TXT_WARNING)
+        {
+            HBRUSH br = (HBRUSH) DefWindowProc(hwndDlg, msg, wParam, lParam);
+            SetTextColor((HDC) wParam, o.clr_warning);
+            return (INT_PTR) br;
         }
         break;
 

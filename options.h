@@ -178,6 +178,8 @@ typedef struct {
     version_t version;
     char ovpn_version[16]; /* OpenVPN version string: 2.3.12, 2.4_alpha2 etc.. */
     unsigned int dpi_scale;
+    COLORREF clr_warning;
+    COLORREF clr_error;
 } options_t;
 
 void InitOptions(options_t *);
