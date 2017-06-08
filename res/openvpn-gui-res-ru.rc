@@ -51,7 +51,7 @@ BEGIN
     CHECKBOX "Запомнить", ID_CHK_SAVE_PASS, 6, 42, 100, 10
     PUSHBUTTON "OK", IDOK, 30, 58, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
     PUSHBUTTON "Отмена", IDCANCEL, 100, 58, 52, 14
-    LTEXT "", ID_TXT_WARNING, 6, 74, 150, 10
+    LTEXT "", ID_TXT_WARNING, 6, 74, 180, 10
 END
 
 /* Auth Username/Password/Challenge Dialog */
@@ -450,5 +450,8 @@ BEGIN
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "Подтвердите удаление сохраненных паролей для ""%s"""
+
+    IDS_NFO_AUTH_PASS_RETRY "Неправильное имя пользователя или пароль"
+    IDS_NFO_KEY_PASS_RETRY  "Неправильный пароль"
 
 END
