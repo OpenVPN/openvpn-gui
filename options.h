@@ -102,6 +102,7 @@ struct connection {
     BOOL auto_connect;              /* AutoConnect at startup id TRUE */
     conn_state_t state;             /* State the connection currently is in */
     int failed_psw_attempts;        /* # of failed attempts entering password(s) */
+    int failed_auth_attempts;       /* # of failed user-auth attempts */
     time_t connected_since;         /* Time when the connection was established */
     proxy_t proxy_type;             /* Set during querying proxy credentials */
 
