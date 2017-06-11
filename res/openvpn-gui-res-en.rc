@@ -462,6 +462,6 @@ BEGIN
     IDS_ERR_INVALID_PASSWORD_INPUT "Invalid character in password"
     IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
     IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds..."
-    IDS_NFO_CLICK_HERE_TO_START "Right click here to start"
+    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
 
 END
