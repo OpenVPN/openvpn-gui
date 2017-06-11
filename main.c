@@ -79,21 +79,10 @@ static int
 VerifyAutoConnections()
 {
     int i;
-    BOOL match;
 
     for (i = 0; i < MAX_CONFIGS && o.auto_connect[i] != 0; i++)
     {
-        int j;
-        match = FALSE;
-        for (j = 0; j < MAX_CONFIGS; j++)
-        {
-            if (_tcsicmp(o.conn[j].config_file, o.auto_connect[i]) == 0)
-            {
-                match = TRUE;
-                break;
-            }
-        }
-        if (match == FALSE)
+        if (GetConnByName(o.auto_connect[i]) == NULL)
         {
             /* autostart config not found */
             ShowLocalizedMsg(IDS_ERR_AUTOSTART_CONF, o.auto_connect[i]);
