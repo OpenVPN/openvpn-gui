@@ -318,7 +318,7 @@ BEGIN
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Connect Script failed. TimeOut after %d sec."
     IDS_ERR_CONFIG_EXIST "There already exist a config file named '%s'. You cannot " \
                          "have multiple config files with the same name, even if " \
-                         "they reside in diffrent folders."
+                         "they reside in different folders."
     IDS_NFO_CONN_TIMEOUT "Connecting to management interface failed.\n" \
                          "View log file (%s) for more details."
     /* main - Resources */
