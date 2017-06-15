@@ -289,7 +289,10 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
         }
         if (RecallUsername(param->c->config_name, username))
+        {
             SetDlgItemTextW(hwndDlg, ID_EDT_AUTH_USER, username);
+            SetFocus(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS));
+        }
         if (RecallAuthPass(param->c->config_name, password))
         {
             SetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password);
