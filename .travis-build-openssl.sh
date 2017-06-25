@@ -1,5 +1,6 @@
 #!/bin/bash 
 
+set -e
 
 if [ ! -f download-cache/openssl-${OPENSSL_VERSION}.tar.gz ]; then wget -P download-cache/ https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz; fi
 
