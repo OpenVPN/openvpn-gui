@@ -220,6 +220,7 @@ OnStateChange(connection_t *c, char *data)
         /* Save time when we got connected. */
         c->connected_since = atoi(data);
         c->failed_psw_attempts = 0;
+        c->failed_auth_attempts = 0;
         c->state = connected;
 
         SetMenuStatus(c, connected);
@@ -235,7 +236,9 @@ OnStateChange(connection_t *c, char *data)
     {
         if (!c->dynamic_cr)
         {
-            if (strcmp(message, "auth-failure") == 0 || strcmp(message, "private-key-password-failure") == 0)
+            if (strcmp(message, "auth-failure") == 0)
+                c->failed_auth_attempts++;
+            else if (strcmp(message, "private-key-password-failure") == 0)
                 c->failed_psw_attempts++;
 
             if (strcmp(message, "auth-failure") == 0 && (c->flags & FLAG_SAVE_AUTH_PASS))
@@ -304,6 +307,8 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             Button_SetCheck(GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
 
         AppendTextToCaption (hwndDlg, param->c->config_name);
+        if (param->c->failed_auth_attempts > 0)
+            SetDlgItemTextW(hwndDlg, ID_TXT_WARNING, LoadLocalizedString(IDS_NFO_AUTH_PASS_RETRY));
 
         if (param->c->state == resuming)
             ForceForegroundWindow(hwndDlg);
@@ -359,6 +364,15 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             EndDialog(hwndDlg, LOWORD(wParam));
             StopOpenVPN(param->c);
             return TRUE;
+        }
+        break;
+
+    case WM_CTLCOLORSTATIC:
+        if (GetDlgCtrlID((HWND) lParam) == ID_TXT_WARNING)
+        {
+            HBRUSH br = (HBRUSH) DefWindowProc(hwndDlg, msg, wParam, lParam);
+            SetTextColor((HDC) wParam, o.clr_warning);
+            return (INT_PTR) br;
         }
         break;
 
@@ -527,6 +541,8 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             ShowWindow(GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), SW_HIDE);
         else if (c->flags & FLAG_SAVE_KEY_PASS)
             Button_SetCheck (GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
+        if (c->failed_psw_attempts > 0)
+            SetDlgItemTextW(hwndDlg, ID_TXT_WARNING, LoadLocalizedString(IDS_NFO_KEY_PASS_RETRY));
         if (c->state == resuming)
             ForceForegroundWindow(hwndDlg);
         else
@@ -564,6 +580,15 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             EndDialog(hwndDlg, LOWORD(wParam));
             StopOpenVPN (c);
             return TRUE;
+        }
+        break;
+
+    case WM_CTLCOLORSTATIC:
+        if (GetDlgCtrlID((HWND) lParam) == ID_TXT_WARNING)
+        {
+            HBRUSH br = (HBRUSH) DefWindowProc(hwndDlg, msg, wParam, lParam);
+            SetTextColor((HDC) wParam, o.clr_warning);
+            return (INT_PTR) br;
         }
         break;
 
@@ -848,6 +873,7 @@ OnStop(connection_t *c, UNUSED char *msg)
     case connected:
         /* OpenVPN process ended unexpectedly */
         c->failed_psw_attempts = 0;
+        c->failed_auth_attempts = 0;
         c->state = disconnected;
         CheckAndSetTrayIcon();
         SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_DISCONNECTED));
@@ -909,6 +935,7 @@ OnStop(connection_t *c, UNUSED char *msg)
 //     }
         /* Shutdown was initiated by us */
         c->failed_psw_attempts = 0;
+        c->failed_auth_attempts = 0;
         c->state = disconnected;
         CheckAndSetTrayIcon();
         SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);

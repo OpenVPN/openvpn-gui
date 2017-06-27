@@ -61,6 +61,7 @@
 #define ID_TXT_AUTH_CHALLENGE            184
 #define ID_EDT_AUTH_CHALLENGE            185
 #define ID_CHK_SAVE_PASS                 186
+#define ID_TXT_WARNING                   187
 
 /* Challenege Response Dialog */
 #define ID_DLG_CHALLENGE_RESPONSE        190
@@ -305,8 +306,11 @@
 #define IDS_NFO_TOKEN_PASSWORD_CAPTION  2100
 #define IDS_NFO_TOKEN_PASSWORD_REQUEST  2101
 
+/* Password retry messages */
+#define IDS_NFO_AUTH_PASS_RETRY         2150
+#define IDS_NFO_KEY_PASS_RETRY          2151
+
 /* Timer IDs */
 #define IDT_STOP_TIMER                  2500  /* Timer used to trigger force termination */
-
 
 #endif

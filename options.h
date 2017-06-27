@@ -102,6 +102,7 @@ struct connection {
     BOOL auto_connect;              /* AutoConnect at startup id TRUE */
     conn_state_t state;             /* State the connection currently is in */
     int failed_psw_attempts;        /* # of failed attempts entering password(s) */
+    int failed_auth_attempts;       /* # of failed user-auth attempts */
     time_t connected_since;         /* Time when the connection was established */
     proxy_t proxy_type;             /* Set during querying proxy credentials */
 
@@ -177,6 +178,8 @@ typedef struct {
     version_t version;
     char ovpn_version[16]; /* OpenVPN version string: 2.3.12, 2.4_alpha2 etc.. */
     unsigned int dpi_scale;
+    COLORREF clr_warning;
+    COLORREF clr_error;
 } options_t;
 
 void InitOptions(options_t *);
