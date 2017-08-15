@@ -49,8 +49,8 @@ version of ``openvpn-gui.exe``. Just install the packages you need and use
 the right ``--host`` option.
 
 
-MSYS2
-=====
+How to build using MSYS2
+========================
 
 One-time preperation
 --------------------
