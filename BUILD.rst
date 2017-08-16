@@ -57,13 +57,13 @@ One-time preperation
 
 Install MSYS2. Instructions and prerequisites can be found on the official website: https://msys2.github.io/
 
-Once installed use the `mingw64.exe` provided by MSYS2.
+Once installed use the ``mingw64.exe`` provided by MSYS2.
 
 Update the base MSYS2 system until no further updates are available using:
 
 .. code-block:: bash
 
-    $ pacman -Syu
+	pacman -Syu
 
 You may have to restart your MINGW64 prompt between those updates.
 
@@ -88,7 +88,7 @@ You can build using these commands:
 ----------------
 
 The above describes how to build the 64-bit version of openvpn-gui.
-If you want to build the 32-bit version, use the `mingew32.exe` and in the package names simply replace ``x86_64`` with ``i686``.
+If you want to build the 32-bit version, use the ``mingw32.exe`` and in the package names simply replace ``x86_64`` with ``i686``.
 
 
 How to build using openvpn-build
