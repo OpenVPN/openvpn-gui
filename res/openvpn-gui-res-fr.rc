@@ -61,7 +61,7 @@ LANGUAGE LANG_FRENCH, SUBLANG_DEFAULT
 BEGIN
     LTEXT "Utilisateur:", 0, 6, 9, 50, 10
     LTEXT "Mot de passe:", 0, 6, 26, 50, 10
-    LTEXT "Response:", 0, 6, 60, 50, 10
+    LTEXT "Réponse:", 0, 6, 60, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     LTEXT "", ID_TXT_AUTH_CHALLENGE, 6, 43, 148, 10
@@ -75,12 +75,12 @@ END
 /* Challenge Response Dialog */
 ID_DLG_CHALLENGE_RESPONSE DIALOG 6, 18, 212, 72
 STYLE WS_SIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
-CAPTION "OpenVPN - Challenge Response"
+CAPTION "OpenVPN"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FRENCH, SUBLANG_DEFAULT
 BEGIN
     LTEXT "", ID_TXT_DESCRIPTION, 6, 9, 208, 10
-    LTEXT "Response:", 0, 6, 30, 50, 10
+    LTEXT "Réponse:", 0, 6, 30, 50, 10
     EDITTEXT ID_EDT_RESPONSE, 60, 27, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     PUSHBUTTON "OK", IDOK, 20, 51, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
     PUSHBUTTON "Annuler", IDCANCEL, 90, 51, 52, 14
@@ -149,16 +149,17 @@ BEGIN
     GROUPBOX "Interface utilisateur", 201, 6, 12, 235, 30
     LTEXT "Langue:", ID_TXT_LANGUAGE, 17, 25, 52, 12
     COMBOBOX ID_CMB_LANGUAGE, 47, 23, 181, 400, CBS_DROPDOWNLIST | WS_TABSTOP
+    
     GROUPBOX "Démarrage", 202, 6, 47, 235, 30
     AUTOCHECKBOX "Lancer au démarrage de Windows", ID_CHK_STARTUP, 17, 59, 200, 12
 
     GROUPBOX "Préférences", 202, 6, 82, 235, 90
-    AUTOCHECKBOX "Ajouter au fichier log", ID_CHK_LOG_APPEND, 17, 95, 60, 10
+    AUTOCHECKBOX "Ajouter au fichier log", ID_CHK_LOG_APPEND, 17, 95, 81, 10
     AUTOCHECKBOX "Afficher la fenêtre des scripts", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "Connexion silencieuse", ID_CHK_SILENT, 17, 125, 200, 10
     LTEXT "Afficher une bulle d'information", ID_TXT_BALLOON, 17, 140, 100, 10
-    AUTORADIOBUTTON "À la connexion", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "À la connexion/reconnexion", ID_RB_BALLOON2, 86, 155, 90, 10
+    AUTORADIOBUTTON "Connexion", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Connexion/Reconnexion", ID_RB_BALLOON2, 86, 155, 90, 10
     AUTORADIOBUTTON "Jamais", ID_RB_BALLOON0, 181, 155, 40, 10
 END
 
@@ -240,6 +241,7 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\nConnecté depuis: "
     IDS_TIP_ASSIGNED_IP "\nAdresse IP assignée: %s"
     IDS_MENU_SERVICE "OpenVPN Service"
+    IDS_MENU_IMPORT "Importer fichier…"
     IDS_MENU_SETTINGS "Configuration…"
     IDS_MENU_CLOSE "Quitter"
     IDS_MENU_CONNECT "Connecter"
@@ -248,6 +250,7 @@ BEGIN
     IDS_MENU_VIEWLOG "Voir le log"
     IDS_MENU_EDITCONFIG "Editer la configuration"
     IDS_MENU_PASSPHRASE "Changer le Mot de passe"
+    IDS_MENU_CLEARPASS  "Effacer les mots de passe enregistrés"
     IDS_MENU_SERVICE_START "Démarrer"
     IDS_MENU_SERVICE_STOP "Arrêter"
     IDS_MENU_SERVICE_RESTART "Redémarrer"
@@ -262,6 +265,18 @@ BEGIN
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI ne permet pas plus de %d configurations. Contacter l'auteur si vous en avez besoin de plus."
+        IDS_NFO_NO_CONFIGS "Aucun profil de connexion lisible trouvé (fichiers de configuration).\n"\
+                       "Utilisez le menu ""Importer fichier.."" ou copiez vos fichiers de configuration vers ""%s"" ou ""%s""."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "À partir de cette connexion (%s) une adhésion est nécessaire au groupe "\
+                                  """%s"". Contactez votre administrateur système.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "À partir de cette connexion (%s) une adhésion est nécessaire au groupe "\
+                                  """%s"".\n\n"\
+                                  "Voulez-vous vous ajouter à ce groupe?\n"\
+                                  "Cette action peut demander un mot de passe administratif ou un consentement."
+    IDS_NFO_CONFIG_AUTH_PENDING   "À partir de cette connexion (%s) une adhésion est nécessaire au groupe "\
+                                  """%s"".\n\n"\
+                                  "Veuillez compléter la boîte de dialogue d'autorisation précédente."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Ajout de l'utilisateur au groupe ""%s"" échoué."
     IDS_ERR_ONE_CONN_OLD_VER "Vous ne pouvez avoir qu'une connexion en même temps si vous utilisez une version d'OpenVPN plus ancienne que la 2.0-beta6."
     IDS_ERR_STOP_SERV_OLD_VER "Vous ne pouvez utiliser OpenVPN GUI pour ouvrir une connexion lorsque que le service OpenVPN est actif (avec OpenVPN 1.5/1.6). Arrêtez le service OpenVPN si vous voulez utiliser OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "CreateEvent échoué à la terminaison. Code d'événnement: %s"
@@ -306,8 +321,11 @@ BEGIN
     IDS_ERR_CONFIG_EXIST "Il éxiste déjà un fichier de configuration nommé '%s'. Vous ne pouvez " \
                          "pas avoir différentes configurations avec le même nom même s'ils " \
                          "ont placés dans un répertoire différent."
+    IDS_NFO_CONN_TIMEOUT "La connexion à l'interface de gestion a échoué.\n" \
+                         "Afficher le fichier journal (%s) pour plus de détails."
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "Erreur d'ouverture du fichier de debug (%s) pour output."
+    IDS_ERR_CREATE_PATH "Impossible de créer le chemin vers %s:\n%s"
     IDS_ERR_LOAD_RICHED20 "Impossible de charger RICHED20.DLL."
     IDS_ERR_SHELL_DLL_VERSION "La version de votre shell32.dll est trop basse (0x%lx). Vous devez avoir au moins la version 5.0."
     IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI est déjà ouvert."
@@ -400,9 +418,16 @@ BEGIN
     IDS_ERR_OPEN_SCMGR "OpenSCManager échoué (%d)"
     IDS_ERR_STOP_SERVICE "Impossible de terminer le Service OpenVPN"
     IDS_NFO_RESTARTED "Service OpenVPN redémarré."
+    IDS_ERR_ACCESS_SERVICE_PIPE "L'accès au canal de service a échoué."
+    IDS_ERR_WRITE_SERVICE_PIPE "L'écriture au canal de service a échoué."
+    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" n'est pas installé.\n"
+                                 "Les tâches nécessitant un accès administratif peuvent ne pas fonctionner."
+    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" n'est pas démarré.\n"
+                                 "Les tâches nécessitant un accès administratif peuvent ne pas fonctionner."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Impossible d'obtenir le Répertoire Windows."
+    IDS_ERR_GET_PROFILE_DIR "Erreur lors de l'obtention du répertoire de profil utilisateur."
     IDS_ERR_GET_PROGRAM_DIR "Impossible d'obtenir le nom du répertoire ""Program""."
     IDS_ERR_OPEN_REGISTRY "Erreur d'ouverture du registre pour lecture (HKLM\\SOFTWARE\\OpenVPN).\n " \
                           "OpenVPN n'est probablement pas installé."
@@ -416,4 +441,21 @@ BEGIN
                            "en tant qu'Administrator pour mettre à jour la base de registre."
     IDS_ERR_READ_SET_KEY "Impossible de lire et modifier la clé de registre ""%s""."
     IDS_ERR_WRITE_REGVALUE "Impossible d'écrire la valeur de registre ""HKEY_CURRENT_USER\\%s\\%s""."
+    
+    /* importation */
+    IDS_ERR_IMPORT_EXISTS "Une configuration nommée ""%s"" existe déjà."
+    IDS_ERR_IMPORT_FAILED "Impossible d'importer un fichier. Le chemin suivant n'a pas pu être créé.\n\n" \
+                          "%s\n\nAssurez-vous d'avoir les bonnes autorisations."
+    IDS_NFO_IMPORT_SUCCESS "File imported successfully."
+
+    /* save/delete password */
+    IDS_NFO_DELETE_PASS "Appuyez sur OK pour supprimer les mots de passe enregistrés pour config ""%s"""
+
+    /* Token password related */
+    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN - Token Password"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "Entrer le mot de passe/PIN pour Token '%S'"
+
+    IDS_NFO_AUTH_PASS_RETRY "Nom d'utilisateur ou mot de passe incorrect. Réessayer..."
+    IDS_NFO_KEY_PASS_RETRY  "Mauvais mot de passe. Réessayer..."
+
 END
