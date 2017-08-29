@@ -452,7 +452,7 @@ BEGIN
     IDS_NFO_DELETE_PASS "Appuyez sur OK pour supprimer les mots de passe enregistrés pour config ""%s"""
 
     /* Token password related */
-    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN - Token Password"
+    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN - Mot de passe Token"
     IDS_NFO_TOKEN_PASSWORD_REQUEST "Entrer le mot de passe/PIN pour Token '%S'"
 
     IDS_NFO_AUTH_PASS_RETRY "Nom d'utilisateur ou mot de passe incorrect. Réessayer..."
