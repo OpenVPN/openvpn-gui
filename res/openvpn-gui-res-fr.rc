@@ -446,7 +446,7 @@ BEGIN
     IDS_ERR_IMPORT_EXISTS "Une configuration nommée ""%s"" existe déjà."
     IDS_ERR_IMPORT_FAILED "Impossible d'importer un fichier. Le chemin suivant n'a pas pu être créé.\n\n" \
                           "%s\n\nAssurez-vous d'avoir les bonnes autorisations."
-    IDS_NFO_IMPORT_SUCCESS "File imported successfully."
+    IDS_NFO_IMPORT_SUCCESS "Fichier importé avec succès."
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "Appuyez sur OK pour supprimer les mots de passe enregistrés pour config ""%s"""
