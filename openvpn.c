@@ -294,6 +294,88 @@ OnStateChange(connection_t *c, char *data)
     }
 }
 
+static void
+SimulateButtonPress(HWND hwnd, UINT btn)
+{
+    SendMessage(hwnd, WM_COMMAND, MAKEWPARAM(btn, BN_CLICKED), (LPARAM)GetDlgItem(hwnd, btn));
+}
+
+/* A private struct to keep autoclose parameters */
+typedef struct autoclose {
+    UINT start;    /* start time in msec */
+    UINT timeout;  /* timeout in msec at which autoclose triggers */
+    UINT btn;      /* button which is 'pressed' for autoclose */
+    UINT txtid;    /* id of a text control to display an informaltional message */
+    UINT txtres;   /* resource id of localized text to use for message:
+                      LoadLocalizedString(txtid, time_remaining_in_seconds)
+                      is used to generate the message */
+    COLORREF txtclr;  /* color for message text */
+} autoclose;
+
+/* Cancel scheduled auto close of a dialog */
+static void
+AutoCloseCancel(HWND hwnd)
+{
+    autoclose *ac = (autoclose *)GetProp(hwnd, L"AutoClose");
+    if (!ac)
+        return;
+
+    if (ac->txtid)
+        SetDlgItemText(hwnd, ac->txtid, L"");
+    KillTimer(hwnd, 1);
+    RemoveProp(hwnd, L"AutoClose");
+    free(ac);
+}
+
+/* Called when autoclose timer expires. */
+static void CALLBACK
+AutoCloseHandler(HWND hwnd, UINT UNUSED msg, UINT_PTR id, DWORD now)
+{
+    autoclose *ac = (autoclose *)GetProp(hwnd, L"AutoClose");
+    if (!ac)
+        return;
+
+    UINT end = ac->start + ac->timeout;
+    if (now >= end)
+    {
+        SimulateButtonPress(hwnd, ac->btn);
+        AutoCloseCancel(hwnd);
+    }
+    else
+    {
+        SetDlgItemText(hwnd, ac->txtid, LoadLocalizedString(ac->txtres, (end - now)/1000));
+        SetTimer(hwnd, id, 500, AutoCloseHandler);
+    }
+}
+
+/* Schedule an event to automatically activate specified btn after timeout seconds.
+ * Used for automatically closing a dialog after some delay unless user interrupts.
+ * Optionally a txtid and txtres resource may be specified to display a message.
+ * %u in the message is replaced by time remaining before timeout will trigger.
+ * Call AutoCloseCancel to cancel the scheduled event and clear the displayed
+ * text.
+ */
+static void
+AutoCloseSetup(HWND hwnd, UINT btn, UINT timeout, UINT txtid, UINT txtres)
+{
+    if (timeout == 0)
+        SimulateButtonPress(hwnd, btn);
+    else
+    {
+        autoclose *ac = GetPropW(hwnd, L"AutoClose"); /* reuse if set */
+        if (!ac && (ac = malloc(sizeof(autoclose))) == NULL)
+            return;
+
+        *ac = (autoclose) {.start = GetTickCount(), .timeout = timeout*1000, .btn = btn,
+                  .txtid = txtid, .txtres = txtres, .txtclr = GetSysColor(COLOR_WINDOWTEXT)};
+
+        SetTimer(hwnd, 1, 500, AutoCloseHandler); /* using timer id = 1 */
+        if (txtid && txtres)
+            SetDlgItemText(hwnd, txtid, LoadLocalizedString(txtres, timeout));
+        SetPropW(hwnd, L"AutoClose", (HANDLE) ac);
+    }
+}
+
 /*
  * DialogProc for OpenVPN username/password/challenge auth dialog windows
  */
@@ -301,8 +383,8 @@ INT_PTR CALLBACK
 UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     auth_param_t *param;
-    WCHAR username[USER_PASS_LEN];
-    WCHAR password[USER_PASS_LEN];
+    WCHAR username[USER_PASS_LEN] = L"";
+    WCHAR password[USER_PASS_LEN] = L"";
 
     switch (msg)
     {
@@ -338,6 +420,16 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         {
             SetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password);
             SecureZeroMemory(password, sizeof(password));
+            if (username[0] != L'\0' && !(param->flags & FLAG_CR_TYPE_SCRV1))
+            {
+               /* user/pass available and no challenge response needed: skip dialog
+                * if silent_connection is on, else auto submit after a few seconds.
+                * User can interrupt.
+                */
+                SetFocus(GetDlgItem(hwndDlg, IDOK));
+                UINT timeout = o.silent_connection ? 0 : 6; /* in seconds */
+                AutoCloseSetup(hwndDlg, IDOK, timeout, ID_TXT_WARNING, IDS_NFO_AUTO_CONNECT);
+            }
         }
         if (param->c->flags & FLAG_DISABLE_SAVE_PASS)
             ShowWindow(GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), SW_HIDE);
@@ -355,6 +447,14 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
         break;
 
+    case WM_LBUTTONDOWN:
+    case WM_RBUTTONDOWN:
+    case WM_NCLBUTTONDOWN:
+    case WM_NCRBUTTONDOWN:
+        /* user interrupt */
+        AutoCloseCancel(hwndDlg);
+        break;
+
     case WM_COMMAND:
         param = (auth_param_t *) GetProp(hwndDlg, cfgProp);
         switch (LOWORD(wParam))
@@ -365,6 +465,11 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 int len = Edit_GetTextLength((HWND) lParam);
                 EnableWindow(GetDlgItem(hwndDlg, IDOK), (len ? TRUE : FALSE));
             }
+            AutoCloseCancel(hwndDlg); /* user interrupt */
+            break;
+
+        case ID_EDT_AUTH_PASS:
+            AutoCloseCancel(hwndDlg); /* user interrupt */
             break;
 
         case ID_CHK_SAVE_PASS:
@@ -376,6 +481,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 DeleteSavedAuthPass(param->c->config_name);
                 Button_SetCheck(GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), BST_UNCHECKED);
             }
+            AutoCloseCancel(hwndDlg); /* user interrupt */
             break;
 
         case IDOK:
@@ -420,8 +526,13 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
     case WM_CTLCOLORSTATIC:
         if (GetDlgCtrlID((HWND) lParam) == ID_TXT_WARNING)
         {
+            autoclose *ac = (autoclose *)GetProp(hwndDlg, L"AutoClose");
             HBRUSH br = (HBRUSH) DefWindowProc(hwndDlg, msg, wParam, lParam);
-            SetTextColor((HDC) wParam, o.clr_warning);
+            /* This text id is used for auth failure warning or autoclose message. Use appropriate color */
+            COLORREF clr = o.clr_warning;
+            if (ac && ac->txtid == ID_TXT_WARNING)
+                clr = ac->txtclr;
+            SetTextColor((HDC) wParam, clr);
             return (INT_PTR) br;
         }
         break;
@@ -433,6 +544,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
     case WM_NCDESTROY:
         param = (auth_param_t *) GetProp(hwndDlg, cfgProp);
         free_auth_param (param);
+        AutoCloseCancel(hwndDlg);
         RemoveProp(hwndDlg, cfgProp);
         break;
     }

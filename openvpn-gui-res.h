@@ -305,6 +305,7 @@
 /* Token password dialog related */
 #define IDS_NFO_TOKEN_PASSWORD_CAPTION  2100
 #define IDS_NFO_TOKEN_PASSWORD_REQUEST  2101
+#define IDS_NFO_AUTO_CONNECT            2102
 
 /* Password retry messages */
 #define IDS_NFO_AUTH_PASS_RETRY         2150
