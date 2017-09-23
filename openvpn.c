@@ -145,6 +145,7 @@ OnLogLine(connection_t *c, char *line)
     message = strchr(flags, ',') + 1;
     if (message - 1 == NULL)
         return;
+    size_t flag_size = message - flags - 1; /* message is always > flags */
 
     /* Remove lines from log window if it is getting full */
     if (SendMessage(logWnd, EM_GETLINECOUNT, 0, 0) > MAX_LOG_LINES)
@@ -158,8 +159,28 @@ OnLogLine(connection_t *c, char *line)
     datetime = _tctime(&timestamp);
     datetime[24] = _T(' ');
 
-    /* Append line to log window */
+    /* deselect current selection, if any */
     SendMessage(logWnd, EM_SETSEL, (WPARAM) -1, (LPARAM) -1);
+
+    /* change text color if Warning or Error */
+    COLORREF text_clr = 0;
+
+    if (memchr(flags, 'N', flag_size) || memchr(flags, 'F', flag_size))
+        text_clr = o.clr_error;
+    else if (memchr(flags, 'W', flag_size))
+        text_clr = o.clr_warning;
+
+    if (text_clr != 0)
+    {
+        CHARFORMAT cfm = { .cbSize = sizeof(CHARFORMAT),
+                           .dwMask = CFM_COLOR|CFM_BOLD,
+                           .dwEffects = 0,
+                           .crTextColor = text_clr,
+                         };
+        SendMessage(logWnd, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM) &cfm);
+    }
+
+    /* Append line to log window */
     SendMessage(logWnd, EM_REPLACESEL, FALSE, (LPARAM) datetime);
     SendMessage(logWnd, EM_SETTEXTEX, (WPARAM) &ste, (LPARAM) message);
     SendMessage(logWnd, EM_REPLACESEL, FALSE, (LPARAM) _T("\n"));
