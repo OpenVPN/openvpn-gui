@@ -29,9 +29,9 @@ CAPTION "OpenVPN"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_DANISH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "Indtast password:", 201, 6, 6, 100, 10
+    LTEXT "Indtast kodeord:", 201, 6, 6, 100, 10
     EDITTEXT ID_EDT_PASSPHRASE, 6, 17, 107, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 33, 100, 10
+    CHECKBOX "Husk kodeord", ID_CHK_SAVE_PASS, 6, 33, 100, 10
     PUSHBUTTON "OK", IDOK, 20, 49, 50, 14
     PUSHBUTTON "Annuller", IDCANCEL, 90, 49, 50, 14
     LTEXT "", ID_TXT_WARNING, 6, 65, 100, 10
@@ -45,10 +45,10 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_DANISH, SUBLANG_DEFAULT
 BEGIN
     LTEXT "Brugernavn:", 0, 6, 9, 50, 10
-    LTEXT "Password:", 0, 6, 26, 50, 10
+    LTEXT "Kodeord:", 0, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 42, 100, 10
+    CHECKBOX "Husk kodeord", ID_CHK_SAVE_PASS, 6, 42, 100, 10
     PUSHBUTTON "OK", IDOK, 20, 58, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_DISABLED
     PUSHBUTTON "Annuller", IDCANCEL, 90, 58, 52, 14
     LTEXT "", ID_TXT_WARNING, 6, 80, 150, 10
@@ -62,13 +62,13 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_DANISH, SUBLANG_DEFAULT
 BEGIN
     LTEXT "Brugernavn:", 0, 6, 9, 50, 10
-    LTEXT "Password:", 0, 6, 26, 50, 10
+    LTEXT "Kodeord:", 0, 6, 26, 50, 10
     LTEXT "Response:", 0, 6, 60, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     LTEXT "", ID_TXT_AUTH_CHALLENGE, 6, 43, 148, 10
     EDITTEXT ID_EDT_AUTH_CHALLENGE, 60, 57, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 76, 100, 10
+    CHECKBOX "Husk kodeord", ID_CHK_SAVE_PASS, 6, 76, 100, 10
     PUSHBUTTON "OK", IDOK, 20, 92, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
     PUSHBUTTON "Annuller", IDCANCEL, 90, 92, 52, 14
     LTEXT "", ID_TXT_WARNING, 6, 108, 150, 10
@@ -95,25 +95,25 @@ CAPTION "OpenVPN"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_DANISH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "Forbinder til…", ID_TXT_STATUS, 20, 5, 200, 10
+    LTEXT "Etablere forbindelse…", ID_TXT_STATUS, 20, 5, 200, 10
     LTEXT "", ID_TXT_BYTECOUNT, 20, 175, 200, 10
     LTEXT "OpenVPN GUI 11.y.0.0/2.4.x", ID_TXT_VERSION, 220, 175, 150, 10
     LTEXT "", ID_TXT_IP, 20, 160, 300, 10
     PUSHBUTTON "Afbryd", ID_DISCONNECT, 50, 190, 50, 14
-    PUSHBUTTON "Tilslut igen", ID_RESTART, 150, 190, 40, 14
+    PUSHBUTTON "Genforbind", ID_RESTART, 150, 190, 40, 14
     PUSHBUTTON "Skjul", ID_HIDE, 100, 190, 40, 14
 END
 
 /* Change Passphrase Dialog */
 ID_DLG_CHGPASS DIALOG 6, 18, 193, 82
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "OpenVPN - Ændre password"
+CAPTION "OpenVPN - Ændre kodeord"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_DANISH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "Nuværende password:", 171, 6, 9, 85, 10
-    LTEXT "Indtast nyt password:", 172, 6, 26, 85, 10
-    LTEXT "Bekræft nyt password:", 173, 6, 42, 85, 10
+    LTEXT "Nuværende kodeord:", 171, 6, 9, 85, 10
+    LTEXT "Indtast nyt kodeord:", 172, 6, 26, 85, 10
+    LTEXT "Bekræft nyt kodeord:", 173, 6, 42, 85, 10
     EDITTEXT ID_EDT_PASS_CUR, 95, 6, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
     EDITTEXT ID_EDT_PASS_NEW, 95, 23, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
     EDITTEXT ID_EDT_PASS_NEW2, 95, 39, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
@@ -152,44 +152,44 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_DANISH, SUBLANG_DEFAULT
 BEGIN
     GROUPBOX "Brugergrænseflade", 201, 6, 12, 235, 30
-    LTEXT "Language:", ID_TXT_LANGUAGE, 17, 25, 52, 12
+    LTEXT "Sprog:", ID_TXT_LANGUAGE, 17, 25, 52, 12
     COMBOBOX ID_CMB_LANGUAGE, 57, 23, 171, 400, CBS_DROPDOWNLIST | WS_TABSTOP
-    GROUPBOX "Startup", 202, 6, 47, 235, 30
-    AUTOCHECKBOX "Launch on Windows startup", ID_CHK_STARTUP, 17, 59, 200, 12
+    GROUPBOX "Autostart", 202, 6, 47, 235, 30
+    AUTOCHECKBOX "Start med Windows", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "Preferences", 202, 6, 82, 235, 90
-    AUTOCHECKBOX "Append to log", ID_CHK_LOG_APPEND, 17, 95, 60, 10
-    AUTOCHECKBOX "Show script window", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
-    AUTOCHECKBOX "Silent connection", ID_CHK_SILENT, 17, 125, 200, 10
-    LTEXT "Show Balloon", ID_TXT_BALLOON, 17, 140, 100, 10
-    AUTORADIOBUTTON "On connect", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "On connect/reconnect", ID_RB_BALLOON2, 86, 155, 90, 10
-    AUTORADIOBUTTON "Never", ID_RB_BALLOON0, 181, 155, 40, 10
+    GROUPBOX "Indstillinger", 202, 6, 82, 235, 90
+    AUTOCHECKBOX "Tilføj til log", ID_CHK_LOG_APPEND, 17, 95, 60, 10
+    AUTOCHECKBOX "Vis script vindue", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
+    AUTOCHECKBOX "Stille forbindelse", ID_CHK_SILENT, 17, 125, 200, 10
+    LTEXT "Vis Notifikation", ID_TXT_BALLOON, 17, 140, 100, 10
+    AUTORADIOBUTTON "Ved forbind", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Ved forbind/genforbind", ID_RB_BALLOON2, 86, 155, 90, 10
+    AUTORADIOBUTTON "Aldrig", ID_RB_BALLOON0, 181, 155, 40, 10
 END
 
 /* Advanced Dialog */
 ID_DLG_ADVANCED DIALOGEX 6, 18, 252, 218
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "Advanced"
+CAPTION "Avanceret"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_DANISH, SUBLANG_DEFAULT
 BEGIN
-    GROUPBOX "Configuration Files", 201, 6, 12, 235, 45
-    LTEXT "Folder:", ID_TXT_FOLDER, 17, 25, 32, 10
-    LTEXT "Extension:", ID_TXT_EXTENSION, 17, 40, 52, 10
-    EDITTEXT ID_EDT_CONFIG_DIR, 53, 23, 150, 12, ES_AUTOHSCROLL
-    EDITTEXT ID_EDT_CONFIG_EXT, 53, 38, 25, 12, ES_AUTOHSCROLL
+    GROUPBOX "Configurations Filer", 201, 6, 12, 235, 45
+    LTEXT "Mappe:", ID_TXT_FOLDER, 17, 25, 32, 10
+    LTEXT "Filtypenavn:", ID_TXT_EXTENSION, 17, 40, 52, 10
+    EDITTEXT ID_EDT_CONFIG_DIR, 60, 23, 150, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_CONFIG_EXT, 60, 38, 25, 12, ES_AUTOHSCROLL
     PUSHBUTTON "…", ID_BTN_CONFIG_DIR, 208, 23, 25, 12
 
-    GROUPBOX "Log Files", 202, 6, 62, 235, 30
-    LTEXT "Folder:", ID_TXT_FOLDER, 17, 74, 32, 10
+    GROUPBOX "Log Filer", 202, 6, 62, 235, 30
+    LTEXT "Mappe:", ID_TXT_FOLDER, 17, 74, 32, 10
     EDITTEXT ID_EDT_LOG_DIR, 53, 72, 150, 12, ES_AUTOHSCROLL
     PUSHBUTTON "…", ID_BTN_LOG_DIR, 208, 72, 25, 12
 
     GROUPBOX "Script Timeout", 201, 6, 97, 235, 60
-    LTEXT "Preconnect script timeout:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
-    LTEXT "Connect script timeout:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
-    LTEXT "Disconnect script timeout:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
+    LTEXT "Før-Forbind script timeout:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
+    LTEXT "Forbind script timeout:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
+    LTEXT "Afbryd script timeout:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
     EDITTEXT ID_EDT_PRECONNECT_TIMEOUT, 103, 108, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_CONNECT_TIMEOUT, 103, 123, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 103, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
@@ -220,13 +220,13 @@ END
 /* Proxy Authentication Dialog */
 ID_DLG_PROXY_AUTH DIALOG 29, 23, 170, 65
 STYLE DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER
-CAPTION "OpenVPN - Proxy Autentisering"
+CAPTION "OpenVPN - Proxy Autentificering"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_DANISH, SUBLANG_DEFAULT
 BEGIN
     LTEXT "Brugernavn:", 201, 9, 8, 55, 10
     EDITTEXT ID_EDT_PROXY_USER, 65, 5, 94, 12, ES_AUTOHSCROLL
-    LTEXT "Password:", 202, 9, 26, 55, 10
+    LTEXT "Kodeord:", 202, 9, 26, 55, 10
     EDITTEXT ID_EDT_PROXY_PASS, 65, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     PUSHBUTTON "OK", IDOK, 60, 43, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
 END
@@ -238,34 +238,34 @@ BEGIN
 
     /* Tray - Resources */
     IDS_TIP_DEFAULT "OpenVPN Brugerprogram"
-    IDS_TIP_CONNECTED "\nTilsluttet: "
-    IDS_TIP_CONNECTING "\nTilslutter: "
-    IDS_TIP_CONNECTED_SINCE "\nTilsluttet siden: "
+    IDS_TIP_CONNECTED "\nForbundet: "
+    IDS_TIP_CONNECTING "\nEtablere forbindelse: "
+    IDS_TIP_CONNECTED_SINCE "\nForbundet siden: "
     IDS_TIP_ASSIGNED_IP "\nTildelt IP: %s"
     IDS_MENU_SERVICE "OpenVPN Service"
     IDS_MENU_SETTINGS "Indstillinger…"
     IDS_MENU_CLOSE "Afslut"
-    IDS_MENU_CONNECT "Tilslut"
+    IDS_MENU_CONNECT "Forbind"
     IDS_MENU_DISCONNECT "Afbryd"
     IDS_MENU_STATUS "Vis status"
     IDS_MENU_VIEWLOG "Vis log"
-    IDS_MENU_EDITCONFIG "Rette konfiguration"
-    IDS_MENU_PASSPHRASE "Ændre password"
+    IDS_MENU_EDITCONFIG "Ret konfiguration"
+    IDS_MENU_PASSPHRASE "Ændre kodeord"
     IDS_MENU_SERVICE_START "Start"
     IDS_MENU_SERVICE_STOP "Stop"
     IDS_MENU_SERVICE_RESTART "Genstart"
-    IDS_MENU_SERVICEONLY_START "Tilslut"
+    IDS_MENU_SERVICEONLY_START "Forbind"
     IDS_MENU_SERVICEONLY_STOP "Afbryd"
-    IDS_MENU_SERVICEONLY_RESTART "Tilslut igen"
+    IDS_MENU_SERVICEONLY_RESTART "Genforbind"
     IDS_MENU_ASK_STOP_SERVICE "Vil du afbryde? (Stoppe OpenVPN Service)?"
 
     /* Logviewer - Resources */
     IDS_ERR_START_LOG_VIEWER "Fejl ved start af log fremviser: %s"
-    IDS_ERR_START_CONF_EDITOR "Fejl ved start af config editor: %s"
+    IDS_ERR_START_CONF_EDITOR "Fejl ved start af konfigurations editor: %s"
 
     /* OpenVPN */
-    IDS_ERR_MANY_CONFIGS "Du kan ikke have flere end %d config-filer. Kontakt udvikleren af OpenVPN GUI hvis du har behov for at håndtere flere."
-    IDS_ERR_ONE_CONN_OLD_VER "Du kan kun have en tilslutning igang samtidig med ældre versioner af OpenVPN end 2.0-beta6."
+    IDS_ERR_MANY_CONFIGS "Du kan ikke have flere end %d konfigurations-filer. Kontakt udvikleren af OpenVPN GUI hvis du har behov for at håndtere flere."
+    IDS_ERR_ONE_CONN_OLD_VER "Du kan kun have en forbindelse igang samtidig med ældre versioner af OpenVPN end 2.0-beta6."
     IDS_ERR_STOP_SERV_OLD_VER "Du kan ikke tilslutte med OpenVPN GUI når OpenVPN Service kører. (kun OpenVPN 1.5/1.6). Stop tjenesten først hvis du vil bruge OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "CreateEvent fejlede ved exit event: %s"
     IDS_ERR_UNKNOWN_PRIORITY "Ukendt prioritet: %s"
@@ -280,33 +280,33 @@ BEGIN
     IDS_ERR_CREATE_PROCESS "CreateProcess fejlramt, exe='%s' cmdline='%s' dir='%s'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread for at vise statusvindue fejlramt."
     IDS_NFO_STATE_WAIT_TERM "Status: Venter på OpenVPN afslutning…"
-    IDS_NFO_STATE_CONNECTED "Status: Tilsluttet"
-    IDS_NFO_NOW_CONNECTED "%s er tilsluttet."
+    IDS_NFO_STATE_CONNECTED "Status: Forbundet"
+    IDS_NFO_NOW_CONNECTED "%s er forbundet."
     IDS_NFO_ASSIGN_IP "tildelt IP: %s"
-    IDS_ERR_CERT_EXPIRED "Kunne ikke tilslutte, dit certifikat er for gammelt eller uret i din PC går forkert."
-    IDS_ERR_CERT_NOT_YET_VALID "Kunne ikke tilslutte, dit certifikat er dateret fremad i tiden eller uret i din PC går forkert."
-    IDS_NFO_STATE_RECONNECTING "Status: Tilslutter på ny"
+    IDS_ERR_CERT_EXPIRED "Kunne ikke forbinde, dit certifikat er for gammelt eller uret på din PC er forkert."
+    IDS_ERR_CERT_NOT_YET_VALID "Kunne ikke forbinde, dit certifikat er dateret fremad i tiden eller uret på din PC er forkert."
+    IDS_NFO_STATE_RECONNECTING "Status: Genforbinder"
     IDS_NFO_STATE_DISCONNECTED "Status: Afbrudt"
-    IDS_NFO_CONN_TERMINATED "Du er blevet frakoblet %s."
-    IDS_NFO_STATE_FAILED "Status: Tilslutningen fejlramt."
-    IDS_NFO_CONN_FAILED "Tilslutning til %s fejlramt."
-    IDS_NFO_STATE_FAILED_RECONN "Status: Kunne ikke genetablere tilslutningen"
-    IDS_NFO_RECONN_FAILED "Tilslutning til %s fejlramt."
+    IDS_NFO_CONN_TERMINATED "Du er blevet frakoblet/afbrudt %s."
+    IDS_NFO_STATE_FAILED "Status: Forbindelse fejlet."
+    IDS_NFO_CONN_FAILED "Forbindelse til %s fejlet."
+    IDS_NFO_STATE_FAILED_RECONN "Status: Kunne ikke genforbinde"
+    IDS_NFO_RECONN_FAILED "Forbindelse til %s fejlet."
     IDS_NFO_STATE_SUSPENDED "Status: I dvale (midlertidigt afbrudt)"
     IDS_ERR_READ_STDOUT_PIPE "Fejl under læsning fra OpenVPN StdOut pipe."
     IDS_ERR_CREATE_EDIT_LOGWINDOW "Oprettelse af RichEdit LogWindow fejlramt!!"
     IDS_ERR_SET_SIZE "Set Size fejlramt!"
     IDS_ERR_AUTOSTART_CONF "Følgende config kunne ikke starte automatisk: %s"
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe på hInputRead fejlramt."
-    IDS_NFO_STATE_CONNECTING "Status: Tilslutter"
-    IDS_NFO_CONNECTION_XXX "OpenVPN tilsluttet (%s)"
-    IDS_NFO_STATE_CONN_SCRIPT "Status: Kører tilslutnings-script"
-    IDS_NFO_STATE_DISCONN_SCRIPT "Status: Kører afbrydelses-script"
+    IDS_NFO_STATE_CONNECTING "Status: Forbinder"
+    IDS_NFO_CONNECTION_XXX "OpenVPN forbundet (%s)"
+    IDS_NFO_STATE_CONN_SCRIPT "Status: Kører forbind-script"
+    IDS_NFO_STATE_DISCONN_SCRIPT "Status: Kører afbryd-script"
     IDS_ERR_RUN_CONN_SCRIPT "En fejl opstod under kørsel af script: %s"
-    IDS_ERR_GET_EXIT_CODE "Fejlede med at få Exit-kode fra tilslutnings script: %s"
-    IDS_ERR_CONN_SCRIPT_FAILED "Tilslutningsscriptet fejlramt. (afslutningskode=%ld)"
-    IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Tilslutningsscriptet fik TimeOut efter %d sekunder."
-    IDS_ERR_CONFIG_EXIST "Det findes allerede en config-fil med navn '%s'. Du kan ikke have flere " \
+    IDS_ERR_GET_EXIT_CODE "Fejlede med at få Exit-kode fra forbind-script: %s"
+    IDS_ERR_CONN_SCRIPT_FAILED "Forbind-scriptet fejlet. (Exit-kode=%ld)"
+    IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Forbind-scriptet fik TimeOut efter %d sekunder."
+    IDS_ERR_CONFIG_EXIST "Det findes allerede en konfigurations-fil med navn '%s'. Du kan ikke have flere " \
                          "konfigurations-filer med samme navn, selv om de " \
                          "ligger i forskellige kataloger."
     /* main - Resources */
@@ -315,39 +315,39 @@ BEGIN
     IDS_ERR_SHELL_DLL_VERSION "Din shell32.dll version er for lav (0x%lx). Du skal have mindst version 5.0."
     IDS_NFO_SERVICE_STARTED "OpenVPN Service startet."
     IDS_NFO_SERVICE_STOPPED "OpenVPN Service stoppet."
-    IDS_NFO_ACTIVE_CONN_EXIT "Aktive tilkoblinger vil blive afbrudt hvis du afslutter OpenVPN GUI. " \
+    IDS_NFO_ACTIVE_CONN_EXIT "Aktive forbindelser vil blive afbrudt hvis du afslutter OpenVPN GUI. " \
                              " \n\nVil du afslutte?"
 
-    IDS_NFO_SERVICE_ACTIVE_EXIT "Du er tilsluttet med OpenVPN (OpenVPN tjenesten kører). " \
-                                "Aktive tilslutninger vil forblive tilsluttet hvis du afslutter OpenVPN GUI.\n\n" \
+    IDS_NFO_SERVICE_ACTIVE_EXIT "Du er forbundet med OpenVPN (OpenVPN tjenesten kører). " \
+                                "Aktive forbindelser vil forblive tilsluttet hvis du afslutter OpenVPN GUI.\n\n" \
                                 "Vil du afslutte?"
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Vis denne meddelelse.\n" \
-                  "--connect cnn \t\t: Tilslutter til ""cnn"" ved start. (filtypen skal være med i filnavnet)\n" \
+                  "--connect cnn \t\t: Forbinder til ""cnn"" ved start. (filtypen skal være med i filnavnet)\n" \
                   "\t\t\t   Eksempel: openvpn-gui --connect office.ovpn\n" \
                   "\n" \
-                  "Parametre som vil overstyrer indstillinger i registreringsdatabasen:\n" \
-                  "--exe_path\t\t: Path til openvpn.exe.\n" \
-                  "--config_dir\t\t: Path til OpenVPNs config-katalog.\n" \
-                  "--ext_string\t\t: Filtype for config-filer.\n" \
-                  "--log_dir\t\t\t: Path til logfil-katalog.\n" \
+                  "Parametre som vil tilsidesætte indstillinger i registreringsdatabasen:\n" \
+                  "--exe_path\t\t: Sti til openvpn.exe.\n" \
+                  "--config_dir\t\t: Sti til OpenVPNs konfigurations-mappe.\n" \
+                  "--ext_string\t\t: Filtype for konfigurations-filer.\n" \
+                  "--log_dir\t\t\t: Sti til logfil-mappe.\n" \
                   "--priority_string\t\t: Prioritet på OpenVPN processer (Se detaljer i install.txt).\n" \
-                  "--append_string\t\t: 1=Behold gammel log. 0=Tøm log ved ny tilslutning.\n" \
-                  "--log_viewer\t\t: Path til log-viewer.\n" \
-                  "--editor\t\t\t: Path til config-editor.\n" \
+                  "--append_string\t\t: 1=Behold gammel log. 0=Tøm log ved ny forbindelse.\n" \
+                  "--log_viewer\t\t: Sti til log-viewer.\n" \
+                  "--editor\t\t\t: Sti til konfigurations-editor.\n" \
                   "--allow_edit\t\t: 1=Vis Editere Config i menu.\n" \
                   "--allow_service\t\t: 1=Vise OpenVPN Service i menu.\n" \
                   "--allow_password\t\t: 1=Vise Ændre Password i menu.\n" \
                   "--allow_proxy\t\t: 1=Vise Proxy Innstillinger i menu.\n" \
                   "--show_balloon\t\t: 0=Aldrig, 1=under tilslutning, 2=Ved hver ""gen-tilslutning"".\n" \
-                  "--service_only\t\t: 1=Aktivere ""Service Only"" tilstand.\n" \
+                  "--service_only\t\t: 1=Aktivere ""Kun Service"" tilstand.\n" \
                   "--silent_connection\t\t: 1=ikke vise status-vindue ved tilslutning.\n" \
                   "--show_script_window\t: 0=Skjul script-vindue, 1=Vise script-vindue.\n" \
-                  "--passphrase_attempts\t: Antal tilslutnings-forsøg.\n" \
-                  "--connectscript_timeout\t: Max tilladt connect-script tid.\n" \
-                  "--disconnectscript_timeout\t: Max tilladt disconnect-script tid.\n" \
-                  "--preconnectscript_timeout\t: Max tilladt preconnect-script tid.\n"
+                  "--passphrase_attempts\t: Antal forbindelses-forsøg.\n" \
+                  "--connectscript_timeout\t: Max tilladt forbind-script tid.\n" \
+                  "--disconnectscript_timeout\t: Max tilladt afbryd-script tid.\n" \
+                  "--preconnectscript_timeout\t: Max tilladt før-forbind-script tid.\n"
 
     IDS_NFO_USAGECAPTION "OpenVPN GUI brug"
     IDS_ERR_BAD_PARAMETER "Forsøger at tolke ""%s"" som en --option parameter " \
@@ -357,29 +357,29 @@ BEGIN
 
     /* passphrase - Resources */
     IDS_ERR_CREATE_PASS_THREAD "CreateThread for at vise at ChangePassphrase dialogen fejlede."
-    IDS_NFO_CHANGE_PWD "Ændre password (%s)"
-    IDS_ERR_PWD_DONT_MATCH "De indtastede nye password er forskellige. Prøv igen"
-    IDS_ERR_PWD_TO_SHORT "Password skal være mindst %d tegn."
-    IDS_NFO_EMPTY_PWD "Er du sikker på at du vil bruge et BLANKT password??"
+    IDS_NFO_CHANGE_PWD "Ændre kodeord (%s)"
+    IDS_ERR_PWD_DONT_MATCH "De indtastede nye kodeord er forskellige. Prøv igen"
+    IDS_ERR_PWD_TO_SHORT "Kodeord skal være mindst %d tegn."
+    IDS_NFO_EMPTY_PWD "Er du sikker på at du vil bruge et BLANKT kodeord??"
     IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Nøglefilen har ukendt format."
     IDS_ERR_OPEN_PRIVATE_KEY_FILE "En fejl opstod under åbning af nøgle-fil (%s)."
-    IDS_ERR_OLD_PWD_INCORRECT "Du har indtastet forkert password."
+    IDS_ERR_OLD_PWD_INCORRECT "Du har indtastet forkert kodeord."
     IDS_ERR_OPEN_WRITE_KEY "En fejl opstod under åbning af nøgle-fil til skrivning (%s)."
     IDS_ERR_WRITE_NEW_KEY "En fejl opstod under oprettelse af ny nøgle-fil (%s)."
-    IDS_NFO_PWD_CHANGED "Dit password er blevet ændret."
+    IDS_NFO_PWD_CHANGED "Dit kodeord er blevet ændret."
     IDS_ERR_READ_PKCS12 "Fejl under læsning fra pkcs #12 fil (%s)."
     IDS_ERR_CREATE_PKCS12 "En fejl opstod under oprettelse af pkcs12 objekt."
-    IDS_ERR_OPEN_CONFIG "En fejl opstod under åbning af følgende config-fil: %s."
-    IDS_ERR_ONLY_ONE_KEY_OPTION "Du kan ikke have mere end en ""key"" parameter i din config-fil."
-    IDS_ERR_ONLY_KEY_OR_PKCS12 "Du kan ikke have både ""key"" og ""pkcs12"" parametre i din config-fil."
-    IDS_ERR_ONLY_ONE_PKCS12_OPTION "Du kan ikke have mere end en ""pkcs12"" parameter i din config-fil."
-    IDS_ERR_HAVE_KEY_OR_PKCS12 "Din config-fil mangler ""key"" eller ""pkcs12"" parameter."
-    IDS_ERR_KEY_FILENAME_TO_LONG "Den oplyste path til din nøgle i config-fil er for lang!"
-    IDS_ERR_PASSPHRASE2STDIN "En fejl opstod da passwordet skulle sendes til OpenVPN via stdin."
+    IDS_ERR_OPEN_CONFIG "En fejl opstod under åbning af følgende konfigurations-fil: %s."
+    IDS_ERR_ONLY_ONE_KEY_OPTION "Du kan ikke have mere end en ""key"" parameter i din konfigurations-fil."
+    IDS_ERR_ONLY_KEY_OR_PKCS12 "Du kan ikke have både ""key"" og ""pkcs12"" parametre i din konfigurations-fil."
+    IDS_ERR_ONLY_ONE_PKCS12_OPTION "Du kan ikke have mere end en ""pkcs12"" parameter i din konfigurations-fil."
+    IDS_ERR_HAVE_KEY_OR_PKCS12 "Din konfigurations-fil mangler ""key"" eller ""pkcs12"" parameter."
+    IDS_ERR_KEY_FILENAME_TO_LONG "Den oplyste sti til din nøgle i konfigurations-filen er for lang!"
+    IDS_ERR_PASSPHRASE2STDIN "En fejl opstod da kodeordet skulle sendes til OpenVPN via stdin."
     IDS_ERR_AUTH_USERNAME2STDIN "En fejl opstod da brugernavnet skulle sendes til OpenVPN via stdin."
-    IDS_ERR_AUTH_PASSWORD2STDIN "En fejl opstod da passwordet skulle sendes til OpenVPN via stdin."
+    IDS_ERR_AUTH_PASSWORD2STDIN "En fejl opstod da kodeordet skulle sendes til OpenVPN via stdin."
     IDS_ERR_CR2STDIN "En fejl opstod da CR skulle sendes til OpenVPN via stdin."
-    IDS_ERR_INVALID_CHARS_IN_PSW "Nyt password indeholder tegn som ikke er tilladt. " \
+    IDS_ERR_INVALID_CHARS_IN_PSW "Nyt kodeord indeholder tegn som ikke er tilladt. " \
                                  "Forsøg igen."
 
     /* settings */
@@ -405,8 +405,8 @@ BEGIN
     IDS_NFO_RESTARTED "OpenVPN Service genstartet."
 
     /* registry */
-    IDS_ERR_GET_WINDOWS_DIR "Kunne ikke finde katalog hvor Windows er installeret."
-    IDS_ERR_GET_PROGRAM_DIR "Kunne ikke finde path til dit ""Programmer"" katalog."
+    IDS_ERR_GET_WINDOWS_DIR "Kunne ikke finde mappen hvor Windows er installeret."
+    IDS_ERR_GET_PROGRAM_DIR "Kunne ikke finde stien til dit ""Programmer"" mappe."
     IDS_ERR_OPEN_REGISTRY "Fejl under åbning af register til læsning (HKLM\\SOFTWARE\\OpenVPN).\n " \
                           "OpenVPN er måske ikke installeret."
     IDS_ERR_READING_REGISTRY "Fejl under læsning af register-nøgle (HKLM\\SOFTWARE\\OpenVPN)."
