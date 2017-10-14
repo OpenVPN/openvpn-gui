@@ -1173,7 +1173,8 @@ OnService(connection_t *c, UNUSED char *msg)
     }
 
     p = buf + 11;
-    if (!err && swscanf (p, L"0x%08x\nProcess ID", &pid) == 1 && pid != 0)
+    /* next line is the pid if followed by "\nProcess ID" */
+    if (!err && wcsstr(p, L"\nProcess ID") && swscanf (p, L"0x%08x", &pid) == 1 && pid != 0)
     {
         PrintDebug (L"Process ID of openvpn started by IService: %d", pid);
         c->hProcess = OpenProcess (PROCESS_TERMINATE|PROCESS_QUERY_INFORMATION, FALSE, pid);
