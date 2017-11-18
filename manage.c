@@ -340,6 +340,12 @@ OnManagement(SOCKET sk, LPARAM lParam)
                 }
                 else if (strncmp(line, "ERROR:", 6) == 0)
                 {
+                    /* Response sent to management is not processed. Log an error in status window  */
+                    char buf[256];
+                    _snprintf_0(buf, "%lld,N,Previous command sent to management failed: %s",
+                                (long long)time(NULL), line)
+                    rtmsg_handler[log](c, buf);
+
                     if (cmd->handler)
                         cmd->handler(c, NULL);
                     UnqueueCommand(c);

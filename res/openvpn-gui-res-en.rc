@@ -458,5 +458,6 @@ BEGIN
 
     IDS_NFO_AUTH_PASS_RETRY "Wrong username or password. Try again..."
     IDS_NFO_KEY_PASS_RETRY  "Wrong password. Try again..."
-
+    IDS_ERR_INVALID_PASSWORD_INPUT "Invalid character in password"
+    IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
 END
