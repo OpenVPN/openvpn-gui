@@ -13,7 +13,7 @@ environment:
 
 build_script:
   - "%CYGWIN%\\setup-%ARCH%.exe -g -q -P mingw64-i686-openssl,mingw64-x86_64-openssl,cygwin-devel"
-  - "%CYGWIN%\\bin\\bash -lc 'set -eux; cd /cygdrive/c/projects/%APPVEYOR_PROJECT_NAME%; autoreconf -iv; ./configure --prefix=/ --libdir=/lib --host=$CHOST --build=i686-pc-cygwin --program-prefix=\'\'; make'"
+  - "%CYGWIN%\\bin\\bash -lc 'set -eux; cd /cygdrive/c/projects/%APPVEYOR_PROJECT_SLUG%; autoreconf -iv; ./configure --prefix=/ --libdir=/lib --host=$CHOST --build=i686-pc-cygwin --program-prefix=\'\'; make'"
 
 artifacts:
   - path: openvpn-gui.exe
