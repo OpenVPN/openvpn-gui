@@ -599,7 +599,7 @@ OnProxy(connection_t *c, char *line)
     }
 
     char cmd[128];
-    snprintf(cmd, sizeof(cmd), "proxy %s %S %S", type, addr, port);
+    snprintf(cmd, sizeof(cmd), "proxy %s %ls %ls", type, addr, port);
     cmd[sizeof(cmd) - 1] = '\0';
     ManagementCommand(c, cmd, NULL, regular);
 
