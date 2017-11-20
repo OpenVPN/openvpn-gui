@@ -25,9 +25,12 @@ matrix:
 
 addons:
   apt:
-    packages:
-      - gcc-mingw-w64
-      - cppcheck
+    packages: [ cppcheck ]
+
+install:
+    - sudo apt-add-repository "deb http://archive.ubuntu.com/ubuntu xenial main universe"
+    - sudo apt-get update
+    - sudo apt-get -y install dpkg gcc-mingw-w64
 
 before_script:
     - unset CC; unset CXX
