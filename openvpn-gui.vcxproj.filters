@@ -18,6 +18,9 @@
     <ClCompile Include="access.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="echo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="env_set.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -72,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="chartable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="echo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="env_set.h">

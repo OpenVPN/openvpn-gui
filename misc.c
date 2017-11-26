@@ -488,3 +488,35 @@ CloseHandleEx(LPHANDLE handle)
         *handle = INVALID_HANDLE_VALUE;
     }
 }
+
+/*
+ * Decode url encoded characters in buffer src and
+ * return the result in a newly allocated buffer. The
+ * caller should free the returned pointer. Returns
+ * NULL on memory allocation error.
+ */
+char *
+url_decode(const char *src)
+{
+    const char *s = src;
+    char *out = malloc(strlen(src) + 1); /* output is guaranteed to be not longer than src */
+    char *o;
+
+    if (!out)
+        return NULL;
+
+    for (o = out; *s; o++)
+    {
+        unsigned int c = *s++;
+        if (c == '%' && isxdigit(s[0]) && isxdigit(s[1]))
+        {
+            sscanf(s, "%2x", &c);
+            s += 2;
+        }
+        /* We passthough all other chars including % not followed by 2 hex digits */
+        *o = (char)c;
+    }
+    *o = '\0';
+
+    return out;
+}
