@@ -48,4 +48,9 @@ void CloseSemaphore(HANDLE sem);
 /* Close a handle if not null or invalid */
 void CloseHandleEx(LPHANDLE h);
 
+/* Decode url encoded charcters in src and return the result as a newly
+ * allocated string. Returns NULL on error.
+ */
+char *url_decode(const char *src);
+
 #endif

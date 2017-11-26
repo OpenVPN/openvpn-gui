@@ -137,6 +137,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="access.c" />
+    <ClCompile Include="echo.c" />
     <ClCompile Include="env_set.c" />
     <ClCompile Include="localization.c" />
     <ClCompile Include="main.c" />
@@ -158,6 +159,7 @@
     <ClInclude Include="access.h" />
     <ClInclude Include="chartable.h" />
     <ClInclude Include="config-msvc.h" />
+    <ClInclude Include="echo.h" />
     <ClInclude Include="env_set.h" />
     <ClInclude Include="localization.h" />
     <ClInclude Include="main.h" />

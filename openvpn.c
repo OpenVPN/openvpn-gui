@@ -55,6 +55,7 @@
 #include "access.h"
 #include "save_pass.h"
 #include "env_set.h"
+#include "echo.h"
 
 extern options_t o;
 
@@ -324,6 +325,7 @@ OnStateChange(connection_t *c, char *data)
                 c->failed_psw_attempts++;
         }
 
+        echo_msg_clear(c, false); /* do not clear history */
         // We change the state to reconnecting only if there was a prior successful connection.
         if (c->state == connected)
         {
@@ -991,6 +993,10 @@ OnEcho(connection_t *c, char *msg)
     {
         process_setenv(c, timestamp, msg);
     }
+    else if (strbegins(msg, "msg"))
+    {
+        echo_msg_process(c, timestamp, msg);
+    }
     else
     {
         wchar_t errmsg[256];
@@ -1580,6 +1586,7 @@ Cleanup (connection_t *c)
     free_dynamic_cr (c);
     env_item_del_all(c->es);
     c->es = NULL;
+    echo_msg_clear(c, true); /* clear history */
 
     if (c->hProcess)
         CloseHandle (c->hProcess);
@@ -1831,6 +1838,9 @@ ThreadOpenVPNStatus(void *p)
 
     if (o.silent_connection == 0)
         ShowWindow(c->hwndStatus, SW_SHOW);
+
+    /* Load echo msg histroy from registry */
+    echo_msg_load(c);
 
     /* Run the message loop for the status window */
     while (WM_QUIT != msg.message)

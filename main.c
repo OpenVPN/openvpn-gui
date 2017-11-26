@@ -49,6 +49,7 @@
 #include "manage.h"
 #include "misc.h"
 #include "save_pass.h"
+#include "echo.h"
 
 #ifndef DISABLE_CHANGE_PASSWORD
 #include <openssl/evp.h>
@@ -509,6 +510,8 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 #if 0
       ChangeWindowMessageFilterEx(hwnd, WM_COPYDATA, MSGFLT_ALLOW, NULL);
 #endif
+
+      echo_msg_init();
 
       CreatePopupMenus();	/* Create popup menus */  
       ShowTrayIcon();
