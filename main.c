@@ -175,11 +175,11 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
         exit(1);
     }
 
-  UpdateRegistry(); /* Checks version change and update keys/values */
-
-  GetRegistryKeys();
   /* Parse command-line options */
   ProcessCommandLine(&o, GetCommandLine());
+
+  UpdateRegistry(); /* Checks version change and update keys/values */
+  GetRegistryKeys();
 
   EnsureDirExists(o.config_dir);
 
