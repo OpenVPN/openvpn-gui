@@ -33,6 +33,7 @@
 #include <process.h>
 #include <richedit.h>
 #include <time.h>
+#include <commctrl.h>
 
 #include "tray.h"
 #include "main.h"
@@ -97,6 +98,22 @@ AppendTextToCaption (HANDLE hwnd, const WCHAR *str)
     GetWindowTextW (hwnd, old, _countof(old));
     _sntprintf_0 (new, L"%s (%s)", old, str);
     SetWindowText (hwnd, new);
+}
+
+/*
+ * Show an error tooltip with msg attached to the specified
+ * editbox handle.
+ */
+static void
+show_error_tip(HWND editbox, const WCHAR *msg)
+{
+    EDITBALLOONTIP bt;
+    bt.cbStruct = sizeof(EDITBALLOONTIP);
+    bt.pszText = msg;
+    bt.pszTitle = L"Invalid input";
+    bt.ttiIcon = TTI_ERROR_LARGE;
+
+    SendMessage(editbox, EM_SHOWBALLOONTIP, 0, (LPARAM)&bt);
 }
 
 /*
@@ -364,13 +381,25 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         case IDOK:
             if (GetDlgItemTextW(hwndDlg, ID_EDT_AUTH_USER, username, _countof(username)))
             {
+                if (!validate_input(username, L"\n"))
+                {
+                    show_error_tip(GetDlgItem(hwndDlg, ID_EDT_AUTH_USER), LoadLocalizedString(IDS_ERR_INVALID_USERNAME_INPUT));
+                    return 0;
+                }
                 SaveUsername(param->c->config_name, username);
             }
-            if ( param->c->flags & FLAG_SAVE_AUTH_PASS &&
-                 GetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password, _countof(password)) &&
-                 wcslen(password) )
+            if (GetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password, _countof(password)))
             {
-                SaveAuthPass(param->c->config_name, password);
+                if (!validate_input(password, L"\n"))
+                {
+                    show_error_tip(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS), LoadLocalizedString(IDS_ERR_INVALID_PASSWORD_INPUT));
+                    SecureZeroMemory(password, sizeof(password));
+                    return 0;
+                }
+                if ( param->c->flags & FLAG_SAVE_AUTH_PASS && wcslen(password) )
+                {
+                    SaveAuthPass(param->c->config_name, password);
+                }
                 SecureZeroMemory(password, sizeof(password));
             }
             ManagementCommandFromInput(param->c, "username \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_USER);
@@ -418,6 +447,7 @@ INT_PTR CALLBACK
 GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     auth_param_t *param;
+    WCHAR password[USER_PASS_LEN];
 
     switch (msg)
     {
@@ -467,6 +497,13 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         switch (LOWORD(wParam))
         {
         case IDOK:
+            if (GetDlgItemTextW(hwndDlg, ID_EDT_RESPONSE, password, _countof(password))
+                && !validate_input(password, L"\n"))
+            {
+                show_error_tip(GetDlgItem(hwndDlg, ID_EDT_RESPONSE), LoadLocalizedString(IDS_ERR_INVALID_PASSWORD_INPUT));
+                SecureZeroMemory(password, sizeof(password));
+                return 0;
+            }
             if (param->flags & FLAG_CR_TYPE_CRV1)
             {
                 /* send username */
@@ -586,11 +623,18 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case IDOK:
-            if ((c->flags & FLAG_SAVE_KEY_PASS) &&
-                GetDlgItemTextW(hwndDlg, ID_EDT_PASSPHRASE, passphrase, _countof(passphrase)) &&
-                wcslen(passphrase) > 0)
+            if (GetDlgItemTextW(hwndDlg, ID_EDT_PASSPHRASE, passphrase, _countof(passphrase)))
             {
-                SaveKeyPass(c->config_name, passphrase);
+                if (!validate_input(passphrase, L"\n"))
+                {
+                    show_error_tip(GetDlgItem(hwndDlg, ID_EDT_PASSPHRASE), LoadLocalizedString(IDS_ERR_INVALID_PASSWORD_INPUT));
+                    SecureZeroMemory(passphrase, sizeof(passphrase));
+                    return 0;
+                }
+                if ((c->flags & FLAG_SAVE_KEY_PASS) && wcslen(passphrase) > 0)
+                {
+                    SaveKeyPass(c->config_name, passphrase);
+                }
                 SecureZeroMemory(passphrase, sizeof(passphrase));
             }
             ManagementCommandFromInput(c, "password \"Private Key\" \"%s\"", hwndDlg, ID_EDT_PASSPHRASE);
@@ -1173,7 +1217,8 @@ OnService(connection_t *c, UNUSED char *msg)
     }
 
     p = buf + 11;
-    if (!err && swscanf (p, L"0x%08x\nProcess ID", &pid) == 1 && pid != 0)
+    /* next line is the pid if followed by "\nProcess ID" */
+    if (!err && wcsstr(p, L"\nProcess ID") && swscanf (p, L"0x%08x", &pid) == 1 && pid != 0)
     {
         PrintDebug (L"Process ID of openvpn started by IService: %d", pid);
         c->hProcess = OpenProcess (PROCESS_TERMINATE|PROCESS_QUERY_INFORMATION, FALSE, pid);

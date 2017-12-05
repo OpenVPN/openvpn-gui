@@ -310,6 +310,10 @@
 #define IDS_NFO_AUTH_PASS_RETRY         2150
 #define IDS_NFO_KEY_PASS_RETRY          2151
 
+/* Invalid input errors */
+#define IDS_ERR_INVALID_PASSWORD_INPUT  2152
+#define IDS_ERR_INVALID_USERNAME_INPUT  2153
+
 /* Timer IDs */
 #define IDT_STOP_TIMER                  2500  /* Timer used to trigger force termination */
 
