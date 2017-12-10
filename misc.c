@@ -29,6 +29,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <malloc.h>
+#include <shellapi.h>
 
 #include "options.h"
 #include "manage.h"
@@ -461,4 +462,49 @@ validate_input(const WCHAR *input, const WCHAR *exclude)
     if (!exclude)
         exclude = L"\n";
     return (wcspbrk(input, exclude) == NULL);
+}
+
+/*
+ * Read the text from edit control h within the range specified in the
+ * CHARRANGE structure chrg. Return the result in a newly allocated
+ * string or NULL on error.
+ *
+ * The caller must free the returned pointer.
+ */
+wchar_t *
+get_link_text(HWND h, CHARRANGE chrg)
+{
+    size_t len = chrg.cpMax - chrg.cpMin;
+    wchar_t *url = malloc((len + 1)*sizeof(wchar_t));
+
+    if (url)
+    {
+        TEXTRANGEW txt = {chrg, url};
+        if (SendMessage(h, EM_GETTEXTRANGE, 0, (LPARAM)&txt) <= 0)
+            url[0] = '\0';
+        else
+            url[len] = '\0'; /* nul termination paranoia */
+        PrintDebug(L"get_link_text: url = <%s>", url);
+    }
+    return url;
+}
+
+/* Open specified http/https URL using ShellExecute. */
+BOOL
+open_url(const wchar_t *url)
+{
+    if (!url || !wcsbegins(url, L"http"))
+    {
+        PrintDebug(L"launch_url: empty url or unsupported scheme: <%s>", url);
+        return true;
+    }
+
+    HINSTANCE ret = ShellExecuteW(NULL, L"open", url, NULL, NULL, SW_SHOWNORMAL);
+
+    if (ret <= (HINSTANCE) 32)
+    {
+        PrintDebug(L"launch_url: ShellExecute <%s> returned error: %d", url, ret);
+        return false;
+    }
+    return true;
 }

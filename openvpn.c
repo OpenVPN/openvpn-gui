@@ -1381,6 +1381,7 @@ INT_PTR CALLBACK
 StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     connection_t *c;
+    NMHDR* nmh;
 
     switch (msg)
     {
@@ -1420,6 +1421,13 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         if (SendMessage(hLogWnd, EM_SETCHARFORMAT, SCF_DEFAULT, (LPARAM) &cfm) == 0)
             ShowLocalizedMsg(IDS_ERR_SET_SIZE);
 
+        /* Recognize URLs embedded in log text */
+        /* using wParam = AURL_ENABLEURL = 1 */
+        SendMessage(hLogWnd, EM_AUTOURLDETECT, 1, 0);
+        /* Have notified by EN_LINK messages when URLs are clicked etc. */
+        LRESULT evmask = SendMessage(hLogWnd, EM_GETEVENTMASK, 0, 0);
+        SendMessage(hLogWnd, EM_SETEVENTMASK, 0, evmask | ENM_LINK);
+
         /* Set size and position of controls */
         RECT rect;
         GetClientRect(hwndDlg, &rect);
@@ -1454,6 +1462,29 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             SetFocus(GetDlgItem(c->hwndStatus, ID_EDT_LOG));
             ManagementCommand(c, "signal SIGHUP", NULL, regular);
             return TRUE;
+        }
+        break;
+
+    case WM_NOTIFY:
+        c = (connection_t *) GetProp(hwndDlg, cfgProp);
+        nmh = (NMHDR*) lParam;
+
+        /* We handle only EN_LINK messages */
+        if (nmh->idFrom == ID_EDT_LOG && nmh->code == EN_LINK)
+        {
+            ENLINK *el = (ENLINK*) lParam;
+
+            if (el->msg == WM_LBUTTONUP)
+            {
+                /* get the link text */
+                wchar_t *url = get_link_text(nmh->hwndFrom, el->chrg);
+                if (!url || !open_url(url))
+                {
+                    WriteStatusLog(c, L"GUI> ", L"Opening URL failed.", false);
+                }
+                free(url);
+                return TRUE;
+            }
         }
         break;
 
