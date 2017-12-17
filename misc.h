@@ -22,6 +22,8 @@
 #ifndef MISC_H
 #define MISC_H
 
+#include <wincrypt.h>
+
 BOOL ManagementCommandFromInput(connection_t *, LPCSTR, HWND, int);
 BOOL ManagementCommandFromInputBase64(connection_t *, LPCSTR, HWND, int, int);
 
@@ -52,5 +54,15 @@ void CloseHandleEx(LPHANDLE h);
  * allocated string. Returns NULL on error.
  */
 char *url_decode(const char *src);
+
+/* digest functions */
+typedef struct md_ctx {
+     HCRYPTPROV prov;
+     HCRYPTHASH hash;
+} md_ctx;
+
+DWORD md_init(md_ctx *ctx, ALG_ID hash_type);
+DWORD md_update(md_ctx *ctx, const BYTE *data, size_t size);
+DWORD md_final(md_ctx *ctx, BYTE *md);
 
 #endif
