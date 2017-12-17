@@ -35,6 +35,8 @@
 #include "openvpn-gui-res.h"
 #include "localization.h"
 
+extern options_t o;
+
 /* echo msg types */
 #define ECHO_MSG_WINDOW (1)
 #define ECHO_MSG_NOTIFY (2)
@@ -80,12 +82,44 @@ echo_msg_add_fp(struct echo_msg *msg, time_t timestamp)
     return;
 }
 
-/* Add message to history -- update if already present */
+/* find message with given digest in history */
+static struct echo_msg_history *
+echo_msg_recall(const BYTE *digest, struct echo_msg_history *hist)
+{
+    for( ; hist; hist = hist->next)
+    {
+        if (memcmp(hist->fp.digest, digest, HASHLEN) == 0) break;
+    }
+    return hist;
+}
+
+/* Add an item to message history and return the head of the list */
+static struct echo_msg_history*
+echo_msg_history_add(struct echo_msg_history *head, const struct echo_msg_fp *fp)
+{
+    struct echo_msg_history *hist = malloc(sizeof(struct echo_msg_history));
+    if (hist)
+    {
+        memcpy(&hist->fp, fp, sizeof(*fp));
+        hist->next = head;
+        head = hist;
+    }
+    return head;
+}
+
+/* Save message in history -- update if already present */
 static void
 echo_msg_save(struct echo_msg *msg)
 {
-    /* Not implemented */
-    return;
+    struct echo_msg_history *hist = echo_msg_recall(msg->fp.digest, msg->history);
+    if (hist) /* update */
+    {
+        hist->fp.timestamp = msg->fp.timestamp;
+    }
+    else     /* add */
+    {
+        msg->history = echo_msg_history_add(msg->history, &msg->fp);
+    }
 }
 
 /* persist echo msg history to the registry */
@@ -108,8 +142,10 @@ echo_msg_load(connection_t *c)
 static BOOL
 echo_msg_repeated(const struct echo_msg *msg)
 {
-    /* Not implemented */
-    return false;
+    const struct echo_msg_history *hist;
+
+    hist = echo_msg_recall(msg->fp.digest, msg->history);
+    return (hist && (hist->fp.timestamp + o.popup_mute_interval*3600 > msg->fp.timestamp));
 }
 
 /* Append a line of echo msg */

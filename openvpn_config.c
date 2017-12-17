@@ -133,6 +133,10 @@ AddConfigFileToList(int config, const TCHAR *filename, const TCHAR *config_dir)
         if (IsKeyPassSaved(c->config_name))
             c->flags |= FLAG_SAVE_KEY_PASS;
     }
+    if (o.disable_popup_messages)
+    {
+        DisablePopupMessages(c);
+    }
 }
 
 #define FLAG_WARN_DUPLICATES        (0x1)
