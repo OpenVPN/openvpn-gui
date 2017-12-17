@@ -207,6 +207,8 @@ typedef struct {
     DWORD disconnectscript_timeout;     /* Disconnect Script execution timeout (sec) */
     DWORD preconnectscript_timeout;     /* Preconnect Script execution timeout (sec) */
     DWORD config_menu_view;             /* 0 for auto, 1 for original flat menu, 2 for hierarchical */
+    DWORD disable_popup_messages;       /* set nonzero to suppress all echo msg messages */
+    DWORD popup_mute_interval;          /* Interval in hours to suppress repeated echo messages */
 
 #ifdef DEBUG
     FILE *debug_fp;
@@ -236,6 +238,7 @@ INT_PTR CALLBACK ScriptSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LP
 INT_PTR CALLBACK ConnectionSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK AdvancedSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 void DisableSavePasswords(connection_t *);
+void DisablePopupMessages(connection_t *);
 
 void ExpandOptions(void);
 int CompareStringExpanded(const WCHAR *str1, const WCHAR *str2);
