@@ -520,3 +520,53 @@ url_decode(const char *src)
 
     return out;
 }
+
+DWORD
+md_init(md_ctx *ctx, ALG_ID hash_type)
+{
+    DWORD status = 0;
+
+    if (!CryptAcquireContext(&ctx->prov, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT))
+        goto err;
+    if (!CryptCreateHash(ctx->prov, hash_type, 0, 0, &ctx->hash))
+    {
+        CryptReleaseContext(ctx->prov, 0);
+        goto err;
+    }
+
+    return status;
+
+err:
+    status = GetLastError();
+    MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Error in md_ctx_init: status = %lu", status);
+    return status;
+}
+
+DWORD
+md_update(md_ctx *ctx, const BYTE *data, size_t size)
+{
+    DWORD status = 0;
+
+    if (!CryptHashData(ctx->hash, data, (DWORD)size, 0))
+    {
+        status = GetLastError();
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Error in md_update: status = %lu", status);
+    }
+    return status;
+}
+
+DWORD
+md_final(md_ctx *ctx, BYTE *md)
+{
+    DWORD status = 0;
+
+    DWORD digest_len = HASHLEN;
+    if (!CryptGetHashParam(ctx->hash, HP_HASHVAL, md, &digest_len, 0))
+    {
+        status = GetLastError();
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Error in md_final: status = %lu", status);
+    }
+    CryptDestroyHash(ctx->hash);
+    CryptReleaseContext(ctx->prov, 0);
+    return status;
+}

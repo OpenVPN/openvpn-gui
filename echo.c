@@ -69,8 +69,14 @@ echo_msg_init(void)
 static void
 echo_msg_add_fp(struct echo_msg *msg, time_t timestamp)
 {
+    md_ctx ctx;
+
     msg->fp.timestamp = timestamp;
-    /* digest not implemented */
+    if (md_init(&ctx, CALG_SHA1) != 0)
+        return;
+    md_update(&ctx, (BYTE*) msg->text, msg->txtlen*sizeof(msg->text[0]));
+    md_update(&ctx, (BYTE*) msg->title, wcslen(msg->title)*sizeof(msg->title[0]));
+    md_final(&ctx, msg->fp.digest);
     return;
 }
 
