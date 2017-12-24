@@ -14,6 +14,7 @@ int RecallKeyPass(const WCHAR *config_name, WCHAR *password);
 int RecallAuthPass(const WCHAR *config_name, WCHAR *password);
 int RecallUsername(const WCHAR *config_name, WCHAR *username);
 
+void DeleteSavedUsername(const WCHAR *config_name);
 void DeleteSavedAuthPass(const WCHAR *config_name);
 void DeleteSavedKeyPass(const WCHAR *config_name);
 void DeleteSavedPasswords(const WCHAR *config_name);
