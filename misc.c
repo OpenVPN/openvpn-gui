@@ -29,6 +29,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <malloc.h>
+#include <shellapi.h>
 
 #include "options.h"
 #include "manage.h"
@@ -569,4 +570,23 @@ md_final(md_ctx *ctx, BYTE *md)
     CryptDestroyHash(ctx->hash);
     CryptReleaseContext(ctx->prov, 0);
     return status;
+}
+
+/* Open specified http/https URL using ShellExecute. */
+BOOL
+open_url(const wchar_t *url)
+{
+    if (!url || !wcsbegins(url, L"http"))
+    {
+        return false;
+    }
+
+    HINSTANCE ret = ShellExecuteW(NULL, L"open", url, NULL, NULL, SW_SHOWNORMAL);
+
+    if (ret <= (HINSTANCE) 32)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"launch_url: ShellExecute <%s> returned error: %d", url, ret);
+        return false;
+    }
+    return true;
 }
