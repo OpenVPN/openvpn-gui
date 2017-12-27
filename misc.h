@@ -65,4 +65,7 @@ DWORD md_init(md_ctx *ctx, ALG_ID hash_type);
 DWORD md_update(md_ctx *ctx, const BYTE *data, size_t size);
 DWORD md_final(md_ctx *ctx, BYTE *md);
 
+/* Open specified http/https URL using ShellExecute. */
+BOOL open_url(const wchar_t *url);
+
 #endif

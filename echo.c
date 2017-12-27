@@ -339,6 +339,60 @@ echo_msg_clear(connection_t *c, BOOL clear_history)
     }
 }
 
+/*
+ * Read the text from edit control h within the range specified in the
+ * CHARRANGE structure chrg. Return the result in a newly allocated
+ * string or NULL on error.
+ *
+ * The caller must free the returned pointer.
+ */
+static wchar_t *
+get_text_in_range(HWND h, CHARRANGE chrg)
+{
+    if (chrg.cpMax <= chrg.cpMin)
+	return NULL;
+
+    size_t len = chrg.cpMax - chrg.cpMin;
+    wchar_t *txt = malloc((len + 1)*sizeof(wchar_t));
+
+    if (txt)
+    {
+        TEXTRANGEW txtrg = {chrg, txt};
+        if (SendMessage(h, EM_GETTEXTRANGE, 0, (LPARAM)&txtrg) <= 0)
+            txt[0] = '\0';
+        else
+            txt[len] = '\0'; /* safety */
+    }
+    return txt;
+}
+
+/* Enable url detection and subscribe to link click notification in an edit control */
+static void
+enable_url_detection(HWND hmsg)
+{
+    /* Recognize URLs embedded in message text */
+    SendMessage(hmsg, EM_AUTOURLDETECT, AURL_ENABLEURL, 0);
+    /* Have notified by EN_LINK messages when URLs are clicked etc. */
+    LRESULT evmask = SendMessage(hmsg, EM_GETEVENTMASK, 0, 0);
+    SendMessage(hmsg, EM_SETEVENTMASK, 0, evmask | ENM_LINK);
+}
+
+/* Open URL when ENLINK notification is received */
+static int
+OnEnLinkNotify(HWND UNUSED hwnd, ENLINK *el)
+{
+    if (el->msg == WM_LBUTTONUP)
+    {
+        /* get the link text */
+        wchar_t *url = get_text_in_range(el->nmhdr.hwndFrom, el->chrg);
+        if (url)
+            open_url(url);
+        free(url);
+        return 1;
+    }
+    return 0;
+}
+
 /* Add new message to the message box window and optionally show it */
 static void
 AddMessageBoxText(HWND hwnd, const wchar_t *text, const wchar_t *title, BOOL show)
@@ -394,6 +448,7 @@ MessageDialogFunc(HWND hwnd, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
     HWND hmsg;
     const UINT top_margin = DPI_SCALE(16);
     const UINT side_margin = DPI_SCALE(20);
+    NMHDR *nmh;
 
     switch (msg)
     {
@@ -407,6 +462,8 @@ MessageDialogFunc(HWND hwnd, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
         SetWindowText(hwnd, L"OpenVPN Messages");
         SendMessage(hmsg, EM_SETMARGINS, EC_LEFTMARGIN|EC_RIGHTMARGIN,
                          MAKELPARAM(side_margin, side_margin));
+
+        enable_url_detection(hmsg);
 
         /* Position the window close to top right corner of the screen */
         RECT rc;
@@ -445,6 +502,13 @@ MessageDialogFunc(HWND hwnd, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
                 ShowCaret((HWND)lParam);
             }
         }
+        break;
+
+    case WM_NOTIFY:
+        nmh = (NMHDR*) lParam;
+        /* We handle only EN_LINK messages */
+        if (nmh->idFrom == ID_TXT_MESSAGE && nmh->code == EN_LINK)
+            return OnEnLinkNotify(hwnd, (ENLINK*)lParam);
         break;
 
     case WM_CLOSE:
