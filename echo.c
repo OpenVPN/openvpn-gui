@@ -34,6 +34,7 @@
 #include "tray.h"
 #include "openvpn-gui-res.h"
 #include "localization.h"
+#include "registry.h"
 
 extern options_t o;
 
@@ -126,7 +127,34 @@ echo_msg_save(struct echo_msg *msg)
 void
 echo_msg_persist(connection_t *c)
 {
-    /* Not implemented */
+    struct echo_msg_history *hist;
+    size_t len = 0;
+
+    for (hist = c->echo_msg.history; hist; hist = hist->next)
+    {
+        len++;
+        if (len > 99) break; /* max 100 history items persisted */
+    }
+    if (len == 0)
+        return;
+
+    size_t size = len*sizeof(struct echo_msg_fp);
+    struct echo_msg_fp *data = malloc(size);
+    if (data == NULL)
+    {
+        WriteStatusLog(c, L"GUI> ", L"Failed to persist echo msg history: Out of memory", false);
+        return;
+    }
+
+    size_t i = 0;
+    for (hist = c->echo_msg.history; i < len && hist; hist = hist->next)
+    {
+        data[i++] = hist->fp;
+    }
+    if (!SetConfigRegistryValueBinary(c->config_name, L"echo_msg_history", (BYTE *) data, size))
+        WriteStatusLog(c, L"GUI> ", L"Failed to persist echo msg history: error writing to registry", false);
+
+    free(data);
     return;
 }
 
@@ -134,8 +162,30 @@ echo_msg_persist(connection_t *c)
 void
 echo_msg_load(connection_t *c)
 {
-    /* Not implemented */
-    return;
+    struct echo_msg_fp *data = NULL;
+    DWORD item_len = sizeof(struct echo_msg_fp);
+
+    size_t size = GetConfigRegistryValue(c->config_name, L"echo_msg_history", NULL, 0);
+    if (size == 0)
+        return; /* no history in registry */
+    else if (size%item_len != 0)
+    {
+        WriteStatusLog(c, L"GUI> ", L"echo msg history in registry has invalid size", false);
+        return;
+    }
+
+    data = malloc(size);
+    if (!data || !GetConfigRegistryValue(c->config_name, L"echo_msg_history", (BYTE*) data, size))
+        goto out;
+
+    size_t len = size/item_len;
+    for(size_t i = 0; i < len; i++)
+    {
+        c->echo_msg.history = echo_msg_history_add(c->echo_msg.history, &data[i]);
+    }
+
+out:
+    free(data);
 }
 
 /* Return true if the message is same as recently shown */
