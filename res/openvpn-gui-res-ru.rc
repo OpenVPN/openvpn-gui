@@ -454,4 +454,6 @@ BEGIN
     IDS_NFO_AUTH_PASS_RETRY "Неправильное имя пользователя или пароль"
     IDS_NFO_KEY_PASS_RETRY  "Неправильный пароль"
 
+    IDS_NFO_AUTO_CONNECT    "Автоматическое подключение через %u сек..."
+
 END
