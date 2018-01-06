@@ -50,7 +50,7 @@ BEGIN
     CHECKBOX "Husk passord", ID_CHK_SAVE_PASS, 6, 42, 100, 10
     PUSHBUTTON "OK", IDOK, 20, 58, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_DISABLED
     PUSHBUTTON "Avbryt", IDCANCEL, 90, 58, 52, 14
-    LTEXT "", ID_TXT_WARNING, 6, 74, 150, 10
+    LTEXT "", ID_TXT_WARNING, 6, 80, 150, 10
 END
 
 /* Auth Username/Password/Challenge Dialog */
