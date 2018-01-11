@@ -419,8 +419,8 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         if (RecallAuthPass(param->c->config_name, password))
         {
             SetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password);
-            SecureZeroMemory(password, sizeof(password));
-            if (username[0] != L'\0' && !(param->flags & FLAG_CR_TYPE_SCRV1))
+            if (username[0] != L'\0' && !(param->flags & FLAG_CR_TYPE_SCRV1)
+                && password[0] != L'\0' && param->c->failed_auth_attempts == 0)
             {
                /* user/pass available and no challenge response needed: skip dialog
                 * if silent_connection is on, else auto submit after a few seconds.
@@ -430,6 +430,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 UINT timeout = o.silent_connection ? 0 : 6; /* in seconds */
                 AutoCloseSetup(hwndDlg, IDOK, timeout, ID_TXT_WARNING, IDS_NFO_AUTO_CONNECT);
             }
+            SecureZeroMemory(password, sizeof(password));
         }
         if (param->c->flags & FLAG_DISABLE_SAVE_PASS)
             ShowWindow(GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), SW_HIDE);
