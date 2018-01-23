@@ -7,7 +7,7 @@ compiler: gcc
 
 env:
   global:
-    - OPENSSL_VERSION=1.0.2k
+    - OPENSSL_VERSION=1.0.2n
 
 matrix:
   fast_finish: true
@@ -16,6 +16,10 @@ matrix:
       env: CHOST=i686-w64-mingw32 CONFIG=""
     - compiler: ": Win64"
       env: CHOST=x86_64-w64-mingw32 CONFIG=""
+    - compiler: ": Win32 + openssl-1.1.0"
+      env: CHOST=i686-w64-mingw32 CONFIG="" OPENSSL_VERSION=1.1.0g
+    - compiler: ": Win64 + openssl-1.1.0"
+      env: CHOST=x86_64-w64-mingw32 CONFIG="" OPENSSL_VERSION=1.1.0g
     - compiler: ": Win32"
       env: CHOST=i686-w64-mingw32 CONFIG="--disable-password-change"
     - compiler: ": Win64"
