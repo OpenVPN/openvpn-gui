@@ -62,7 +62,7 @@ There are three ways to do this:
   subdirectories. This VPN connection will be visible for all users of the
   system.
 * Place the file into *C:\\Users\\username\\OpenVPN\\config\\*, or any of its
-  immediated subdirectories. The configuration file is only visible for the
+  immediate subdirectories. The configuration file is only visible for the
   user in question. If the user is not a member of the built-in "Administrators"
   group or "OpenVPN Administrators" group and tries to launch such a connection,
   OpenVPN GUI pops up a UAC, offering to create the latter group (if missing)
@@ -87,10 +87,12 @@ the specified config file. If you use a passphrase protected key you will be
 prompted for the passphrase.
 
 If you want OpenVPN GUI to start a connection automatically when it's started,
-you can use the --connect cmd-line option. You have to include the extention
-for the config file. Example::
+you can use the --connect cmd-line option. The extension of the config file
+may be optionally included. Example::
 
     openvpn-gui --connect office.ovpn
+    OR
+    openvpn-gui --connect office
 
 To get help with OpenVPN GUI please use one of the official `OpenVPN support
 channels <https://community.openvpn.net/openvpn/wiki/GettingHelp>`_.
@@ -135,6 +137,39 @@ Disconnect  If a file named "xxx_down.bat" exist in the config folder
             where xxx is the same as your OpenVPN config file name,
             this will be executed BEFORE the OpenVPN tunnel is closed.
 
+Send Commands to a Running Instance of OpenVPN GUI
+**************************************************
+
+When an instance of the GUI is running, certain commands may be sent to
+it using the command line interface using the following syntax::
+
+    openvpn-gui.exe --command *cmd* [*args*]
+
+Currently supported *cmds* are
+
+connect ``config-name``
+     Connect the configuration named *config-name* (excluding the
+     extension .ovpn). If already connected, show the status window.
+
+disconnect ``config-name``
+     Disconnect the configuration named *config-name* if connected.
+
+reconnect ``config-name``
+     Disconnect and then reconnect the configuration named *config-name*
+     if connected.
+
+disconnect\_all
+     Disconnect all active connections.
+
+silent\_connection 0 \| 1
+     Set the silent connection flag on (1) or off (0)
+
+exit
+     Disconnect all active connections and terminate the GUI process
+
+If no running instance of the GUI is found, these commands do nothing
+except for *--command connect config-name* which gets interpreted
+as *--connect config-name*
 
 Registry Values affecting the OpenVPN GUI operation
 ***************************************************
@@ -172,10 +207,18 @@ disable_save_passwords
     Set to a nonzero value to disable the password save feature.
     Default: 0
 
-All other OpenVPN GUI registry values are located below the
-*HKEY_CURRENT_USER\\SOFTWARE\\OpenVPN-GUI\\* key
+User Preferences
+****************
 
-The following keys are used to control the OpenVPN GUI
+All other OpenVPN GUI registry values are located below the
+*HKEY_CURRENT_USER\\SOFTWARE\\OpenVPN-GUI\\* key. In a fresh
+installation none of these values are present and are not
+required for the operation of the program. These keys are only
+used for persisting user's preferences, and the key names
+and their values are subject to change.
+
+The user is not expected to edit any of these values directly.
+Instead, edit all preferences using the settings menu.
 
 config_dir
     The user-specific configuration file directory: defaults to
@@ -204,7 +247,7 @@ log_dir
 log_append
     if set to "0", the log file will be truncated every time you start a
     connection. If set to "1", the log will be appended to the log file.
-  
+
 silent_connection
     If set to "1", the status window with the OpenVPN log output will
     not be shown while connecting. Warnings such as interactive service
