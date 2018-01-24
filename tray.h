@@ -25,8 +25,6 @@
 
 #include "options.h"
 
-#define WM_NOTIFYICONTRAY (WM_APP + 1)
-
 #define IDM_SERVICE_START       100
 #define IDM_SERVICE_STOP        101
 #define IDM_SERVICE_RESTART     102
@@ -42,6 +40,7 @@
 #define IDM_EDITMENU            (MAX_CONFIGS + IDM_VIEWLOGMENU)
 #define IDM_PASSPHRASEMENU      (MAX_CONFIGS + IDM_EDITMENU)
 #define IDM_CLEARPASSMENU       (MAX_CONFIGS + IDM_PASSPHRASEMENU)
+#define IDM_RECONNECTMENU       (MAX_CONFIGS + IDM_CLEARPASSMENU)
 
 void CreatePopupMenus();
 void OnNotifyTray(LPARAM);

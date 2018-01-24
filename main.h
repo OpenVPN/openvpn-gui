@@ -45,6 +45,21 @@
 /* Authorized group who can use any options and config locations */
 #define OVPN_ADMIN_GROUP TEXT("OpenVPN Administrators") /* May be reset in registry */
 
+/* Application defined message IDs */
+#define WM_NOTIFYICONTRAY      (WM_APP + 1)
+#define WM_MANAGEMENT          (WM_APP + 2)
+
+#define WM_OVPN_STOP           (WM_APP + 10)
+#define WM_OVPN_SUSPEND        (WM_APP + 11)
+#define WM_OVPN_RESTART        (WM_APP + 12)
+#define WM_OVPN_START          (WM_APP + 13)
+#define WM_OVPN_STOPALL        (WM_APP + 14)
+#define WM_OVPN_SHOWSTATUS     (WM_APP + 15)
+#define WM_OVPN_NOTIFY         (WM_APP + 16)
+#define WM_OVPN_EXIT           (WM_APP + 17)
+#define WM_OVPN_SILENT         (WM_APP + 18)
+#define WM_OVPN_IMPORT         (WM_APP + 20)
+
 /* bool definitions */
 #define bool int
 #define true 1

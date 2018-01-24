@@ -396,10 +396,10 @@ BOOL IsUserAdmin(VOID)
 }
 
 HANDLE
-InitSemaphore (void)
+InitSemaphore (WCHAR *name)
 {
     HANDLE semaphore = NULL;
-    semaphore = CreateSemaphore (NULL, 1, 1, NULL);
+    semaphore = CreateSemaphore (NULL, 1, 1, name);
     if (!semaphore)
     {
         MessageBoxW (NULL, L"Error creating semaphore", TEXT(PACKAGE_NAME), MB_OK);

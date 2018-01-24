@@ -24,8 +24,6 @@
 
 #include <winsock2.h>
 
-#define WM_MANAGEMENT (WM_APP + 2)
-
 typedef enum {
     ready,
     stop,

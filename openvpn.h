@@ -26,6 +26,7 @@
 BOOL StartOpenVPN(connection_t *);
 void StopOpenVPN(connection_t *);
 void SuspendOpenVPN(int config);
+void RestartOpenVPN(connection_t *);
 BOOL CheckVersion();
 void SetStatusWinIcon(HWND hwndDlg, int IconID);
 

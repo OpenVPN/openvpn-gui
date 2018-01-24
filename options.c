@@ -101,6 +101,14 @@ add_option(options_t *options, int i, TCHAR **p)
             exit(1);
         }
         options->auto_connect[auto_connect_nr++] = p[1];
+        /* Treat the first connect option to also mean --command connect profile.
+         * This gets used if we are not the first instance.
+         */
+        if (auto_connect_nr == 1)
+        {
+            options->action = WM_OVPN_START;
+            options->action_arg = p[1];
+        }
     }
     else if (streq(p[0], _T("exe_path")) && p[1])
     {
@@ -203,6 +211,56 @@ add_option(options_t *options, int i, TCHAR **p)
         ++i;
         options->preconnectscript_timeout = _ttoi(p[1]);
     }
+    else if (streq(p[0], _T("command")) && p[1])
+    {
+        ++i;
+        /* command to be sent to a running instance */
+        if (streq(p[1], _T("connect")) && p[2])
+        {
+            /* Treat this as "--connect profile" in case this is the first instance */
+            add_option(options, i, &p[1]);
+            ++i;
+            options->action = WM_OVPN_START;
+            options->action_arg = p[2];
+        }
+        else if (streq(p[1], _T("disconnect")) && p[2])
+        {
+            ++i;
+            options->action = WM_OVPN_STOP;
+            options->action_arg = p[2];
+        }
+        else if (streq(p[1], _T("reconnect")) && p[2])
+        {
+            ++i;
+            options->action = WM_OVPN_RESTART;
+            options->action_arg = p[2];
+        }
+        else if (streq(p[1], _T("status")) && p[2])
+        {
+            ++i;
+            options->action = WM_OVPN_SHOWSTATUS;
+            options->action_arg = p[2];
+        }
+        else if (streq(p[1], _T("silent_connection")))
+        {
+            ++i;
+            options->action = WM_OVPN_SILENT;
+            options->action_arg = p[2] ? p[2] : _T("1");
+        }
+        else if (streq(p[1], _T("disconnect_all")))
+        {
+            options->action = WM_OVPN_STOPALL;
+        }
+        else if (streq(p[1], _T("exit")))
+        {
+            options->action = WM_OVPN_EXIT;
+        }
+        else
+        {
+            ShowLocalizedMsg(IDS_ERR_BAD_OPTION, p[0]);
+            exit(1);
+        }
+    }
     else
     {
         /* Unrecognized option or missing parameter */
@@ -252,7 +310,7 @@ void
 InitOptions(options_t *opt)
 {
     CLEAR(*opt);
-    opt->netcmd_semaphore = InitSemaphore ();
+    opt->netcmd_semaphore = InitSemaphore (NULL);
     opt->version = MakeVersion (PACKAGE_VERSION_RESOURCE);
     opt->clr_warning = RGB(0xff, 0, 0);
     opt->clr_error = RGB(0xff, 0, 0);
@@ -349,6 +407,18 @@ GetConnByManagement(SOCKET sk)
     for (i = 0; i < o.num_configs; ++i)
     {
         if (o.conn[i].manage.sk == sk)
+            return &o.conn[i];
+    }
+    return NULL;
+}
+
+connection_t*
+GetConnByName(const WCHAR *name)
+{
+    for (int i = 0; i < o.num_configs; ++i)
+    {
+        if (wcsicmp (o.conn[i].config_file, name) == 0
+            || wcsicmp(o.conn[i].config_name, name) == 0)
             return &o.conn[i];
     }
     return NULL;

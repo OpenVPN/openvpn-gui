@@ -50,9 +50,6 @@
 #include "access.h"
 #include "save_pass.h"
 
-#define WM_OVPN_STOP    (WM_APP + 10)
-#define WM_OVPN_SUSPEND (WM_APP + 11)
-
 extern options_t o;
 
 static BOOL
@@ -1565,7 +1562,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         case ID_RESTART:
             c->state = reconnecting;
             SetFocus(GetDlgItem(c->hwndStatus, ID_EDT_LOG));
-            ManagementCommand(c, "signal SIGHUP", NULL, regular);
+            RestartOpenVPN(c);
             return TRUE;
         }
         break;
@@ -1597,6 +1594,9 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
     case WM_OVPN_STOP:
         c = (connection_t *) GetProp(hwndDlg, cfgProp);
+        /* external messages can trigger when we are not ready -- check the state */
+        if (!IsWindowEnabled(GetDlgItem(c->hwndStatus, ID_DISCONNECT)))
+            break;
         c->state = disconnecting;
         RunDisconnectScript(c, false);
         EnableWindow(GetDlgItem(c->hwndStatus, ID_DISCONNECT), FALSE);
@@ -1604,7 +1604,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         SetMenuStatus(c, disconnecting);
         SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_WAIT_TERM));
         SetEvent(c->exit_event);
-        SetTimer(hwndDlg, IDT_STOP_TIMER, 3000, NULL);
+        SetTimer(hwndDlg, IDT_STOP_TIMER, 15000, NULL);
         break;
 
     case WM_OVPN_SUSPEND:
@@ -1615,7 +1615,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         SetMenuStatus(c, disconnecting);
         SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_WAIT_TERM));
         SetEvent(c->exit_event);
-        SetTimer(hwndDlg, IDT_STOP_TIMER, 3000, NULL);
+        SetTimer(hwndDlg, IDT_STOP_TIMER, 15000, NULL);
         break;
 
     case WM_TIMER:
@@ -1626,6 +1626,18 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             /* openvpn failed to respond to stop signal -- terminate */
             TerminateOpenVPN(c);
             KillTimer (hwndDlg, IDT_STOP_TIMER);
+        }
+        break;
+
+    case WM_OVPN_RESTART:
+        c = (connection_t *) GetProp(hwndDlg, cfgProp);
+        /* external messages can trigger when we are not ready -- check the state */
+        if (IsWindowEnabled(GetDlgItem(c->hwndStatus, ID_RESTART)))
+            ManagementCommand(c, "signal SIGHUP", NULL, regular);
+        if (!o.silent_connection)
+        {
+            SetForegroundWindow(c->hwndStatus);
+            ShowWindow(c->hwndStatus, SW_SHOW);
         }
         break;
     }
@@ -1749,12 +1761,19 @@ StartOpenVPN(connection_t *c)
 
     if (c->hwndStatus)
     {
-        PrintDebug(L"Connection request when previous status window is still open -- ignored");
-        WriteStatusLog(c, L"OpenVPN GUI> ",
-                       L"Complete the pending dialog before starting a new connection", false);
-        SetForegroundWindow(c->hwndStatus);
+        PrintDebug(L"Connection request when already started -- ignored");
+        /* the tread can hang around after disconnect if user has not dismissed any popups */
+        if (c->state == disconnected)
+            WriteStatusLog(c, L"OpenVPN GUI> ",
+                       L"Complete any pending dialog before starting a new connection", false);
+        if (!o.silent_connection)
+        {
+           SetForegroundWindow(c->hwndStatus);
+           ShowWindow(c->hwndStatus, SW_SHOW);
+        }
         return FALSE;
     }
+    PrintDebug(L"Starting openvpn on config %s", c->config_name);
 
     RunPreconnectScript(c);
 
@@ -1955,6 +1974,14 @@ SuspendOpenVPN(int config)
     PostMessage(o.conn[config].hwndStatus, WM_OVPN_SUSPEND, 0, 0);
 }
 
+void
+RestartOpenVPN(connection_t *c)
+{
+    if (c->hwndStatus)
+        PostMessage(c->hwndStatus, WM_OVPN_RESTART, 0, 0);
+    else /* Not started: treat this as a request to connect */
+        StartOpenVPN(c);
+}
 
 void
 SetStatusWinIcon(HWND hwndDlg, int iconId)

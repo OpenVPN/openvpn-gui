@@ -149,6 +149,7 @@
 #define IDS_MENU_ASK_STOP_SERVICE       1022
 #define IDS_MENU_IMPORT                 1023
 #define IDS_MENU_CLEARPASS              1024
+#define IDS_MENU_RECONNECT              1025
 
 /* LogViewer Dialog */
 #define IDS_ERR_START_LOG_VIEWER        1101
@@ -215,6 +216,7 @@
 #define IDS_NFO_ACTIVE_CONN_EXIT        1307
 #define IDS_NFO_SERVICE_ACTIVE_EXIT     1308
 #define IDS_ERR_CREATE_PATH             1309
+#define IDS_NFO_CLICK_HERE_TO_START     1310
 
 /* Program Options Related */
 #define IDS_NFO_USAGE                   1401

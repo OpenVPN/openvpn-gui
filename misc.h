@@ -33,7 +33,7 @@ BOOL wcsbegins(LPCWSTR, LPCWSTR);
 BOOL ForceForegroundWindow(HWND);
 
 BOOL IsUserAdmin(VOID);
-HANDLE InitSemaphore (void);
+HANDLE InitSemaphore (WCHAR *);
 BOOL CheckFileAccess (const TCHAR *path, int access);
 
 BOOL Base64Encode(const char *input, int input_len, char **output);

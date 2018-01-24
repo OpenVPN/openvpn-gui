@@ -180,12 +180,15 @@ typedef struct {
     unsigned int dpi_scale;
     COLORREF clr_warning;
     COLORREF clr_error;
+    int action;            /* action to send to a running instance */
+    TCHAR *action_arg;
 } options_t;
 
 void InitOptions(options_t *);
 void ProcessCommandLine(options_t *, TCHAR *);
 int CountConnState(conn_state_t);
 connection_t* GetConnByManagement(SOCKET);
+connection_t* GetConnByName(const WCHAR *config_name);
 INT_PTR CALLBACK ScriptSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK ConnectionSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK AdvancedSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
