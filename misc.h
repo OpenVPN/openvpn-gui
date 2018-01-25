@@ -22,6 +22,8 @@
 #ifndef MISC_H
 #define MISC_H
 
+#include <richedit.h>
+
 BOOL ManagementCommandFromInput(connection_t *, LPCSTR, HWND, int);
 BOOL ManagementCommandFromInputBase64(connection_t *, LPCSTR, HWND, int, int);
 
@@ -40,4 +42,6 @@ BOOL Base64Encode(const char *input, int input_len, char **output);
 int Base64Decode(const char *input, char **output);
 WCHAR *Widen(const char *utf8);
 BOOL validate_input(const WCHAR *input, const WCHAR *exclude);
+WCHAR *get_link_text(HWND hwnd, CHARRANGE chrg);
+BOOL open_url(const WCHAR *url);
 #endif
