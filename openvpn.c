@@ -200,6 +200,35 @@ OnLogLine(connection_t *c, char *line)
     SendMessage(logWnd, EM_REPLACESEL, FALSE, (LPARAM) _T("\n"));
 }
 
+/* expect ipv4,remote,port,,,ipv6 */
+static void
+parse_assigned_ip(connection_t *c, const char *msg)
+{
+    char *sep;
+
+    /* extract local ipv4 address if available*/
+    c->ip[0] = L'\0';
+    sep = strchr(msg, ',');
+    if (sep == NULL)
+        return;
+
+    /* Convert the IP address to Unicode */
+    MultiByteToWideChar(CP_UTF8, 0, msg, sep-msg, c->ip, _countof(c->ip));
+
+    /* extract local ipv6 address if available */
+    c->ipv6[0] = L'\0';
+    /* skip 4 commas */
+    for (int i = 0; i < 4 && sep; i++)
+    {
+        sep = strchr(sep + 1, ',');
+    }
+    if (!sep)
+        return;
+
+    sep++; /* start of ipv6 address */
+    /* Convert the IP address to Unicode */
+    MultiByteToWideChar(CP_UTF8, 0, sep, -1, c->ipv6, _countof(c->ipv6));
+}
 
 /*
  * Handle a state change notification from the OpenVPN management interface
@@ -227,20 +256,21 @@ OnStateChange(connection_t *c, char *data)
         return;
     *pos = '\0';
 
+    if (strcmp(state, "CONNECTED") == 0)
+    {
+        parse_assigned_ip(c, pos + 1);
+    }
     if (strcmp(state, "CONNECTED") == 0 && strcmp(message, "SUCCESS") == 0)
     {
+        /* concatenate ipv4 and ipv6 addresses into one string */
+        WCHAR ip_txt[256];
+        WCHAR ip[64];
+        wcs_concat2(ip, _countof(ip), c->ip, c->ipv6, L", ");
+        LoadLocalizedStringBuf(ip_txt, _countof(ip_txt), IDS_NFO_ASSIGN_IP, ip);
+
         /* Run Connect Script */
         if (c->state == connecting || c->state == resuming)
             RunConnectScript(c, false);
-
-        /* Save the local IP address if available */
-        char *local_ip = pos + 1;
-        pos = strchr(local_ip, ',');
-        if (pos != NULL)
-            *pos = '\0';
-
-        /* Convert the IP address to Unicode */
-        MultiByteToWideChar(CP_UTF8, 0, local_ip, -1, c->ip, _countof(c->ip));
 
         /* Show connection tray balloon */
         if ((c->state == connecting   && o.show_balloon != 0)
@@ -249,7 +279,7 @@ OnStateChange(connection_t *c, char *data)
         {
             TCHAR msg[256];
             LoadLocalizedStringBuf(msg, _countof(msg), IDS_NFO_NOW_CONNECTED, c->config_name);
-            ShowTrayBalloon(msg, (_tcslen(c->ip) ? LoadLocalizedString(IDS_NFO_ASSIGN_IP, c->ip) : _T("")));
+            ShowTrayBalloon(msg, (ip[0] ? ip_txt : _T("")));
         }
 
         /* Save time when we got connected. */

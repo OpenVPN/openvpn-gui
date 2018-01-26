@@ -462,3 +462,22 @@ validate_input(const WCHAR *input, const WCHAR *exclude)
         exclude = L"\n";
     return (wcspbrk(input, exclude) == NULL);
 }
+
+/* Concatenate two wide strings with a separator */
+void
+wcs_concat2(WCHAR *dest, int len, const WCHAR *src1, const WCHAR *src2, const WCHAR *sep)
+{
+    int n = 0;
+
+    if (!dest || len == 0)
+        return;
+
+    if (src1 && src2 && src2[0])
+        n = swprintf(dest, len, L"%s%s%s", src1, sep, src2);
+    else if (src1)
+        n = swprintf(dest, len, L"%s", src1);
+
+    if (n < 0 || n >= len) /*swprintf failed */
+        n = 0;
+    dest[n] = L'\0';
+}

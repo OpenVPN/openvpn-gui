@@ -99,6 +99,7 @@ struct connection {
     TCHAR config_dir[MAX_PATH];     /* Path to this configs dir */
     TCHAR log_path[MAX_PATH];       /* Path to Logfile */
     TCHAR ip[16];                   /* Assigned IP address for this connection */
+    TCHAR ipv6[46];                 /* Assigned IPv6 address */
     BOOL auto_connect;              /* AutoConnect at startup id TRUE */
     conn_state_t state;             /* State the connection currently is in */
     int failed_psw_attempts;        /* # of failed attempts entering password(s) */
