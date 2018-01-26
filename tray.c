@@ -37,6 +37,7 @@
 #include "openvpn_config.h"
 #include "openvpn-gui-res.h"
 #include "localization.h"
+#include "misc.h"
 
 /* Popup Menus */
 HMENU hMenu;
@@ -272,14 +273,18 @@ SetTrayIcon(conn_state_t state)
 
     if (CountConnState(connected) == 1) {
         /* Append "Connected since and assigned IP" to message */
+        const connection_t *c = &o.conn[config];
         TCHAR time[50];
 
         LocalizedTime(o.conn[config].connected_since, time, _countof(time));
         _tcsncat(msg, LoadLocalizedString(IDS_TIP_CONNECTED_SINCE), _countof(msg) - _tcslen(msg) - 1);
         _tcsncat(msg, time, _countof(msg) - _tcslen(msg) - 1);
 
-        if (_tcslen(o.conn[config].ip) > 0) {
-            TCHAR *assigned_ip = LoadLocalizedString(IDS_TIP_ASSIGNED_IP, o.conn[config].ip);
+        if ( _tcslen(c->ip) > 0) {
+            /* concatenate ipv4 and ipv6 addresses into one string */
+            WCHAR ip[64];
+            wcs_concat2(ip, _countof(ip), c->ip, c->ipv6, L", ");
+            WCHAR *assigned_ip = LoadLocalizedString(IDS_TIP_ASSIGNED_IP, ip);
             _tcsncat(msg, assigned_ip, _countof(msg) - _tcslen(msg) - 1);
         }
     }
