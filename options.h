@@ -126,6 +126,8 @@ struct connection {
     HWND hwndStatus;
     int flags;
     char *dynamic_cr;              /* Pointer to buffer for dynamic challenge string received */
+    unsigned long long int bytes_in;
+    unsigned long long int bytes_out;
 };
 
 /* All options used within OpenVPN GUI */

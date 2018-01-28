@@ -123,6 +123,7 @@ OnReady(connection_t *c, UNUSED char *msg)
     ManagementCommand(c, "state on", NULL, regular);
     ManagementCommand(c, "log all on", OnLogLine, combined);
     ManagementCommand(c, "echo all on", OnEcho, combined);
+    ManagementCommand(c, "bytecount 5", NULL, regular);
 }
 
 
@@ -1155,6 +1156,16 @@ OnStop(connection_t *c, UNUSED char *msg)
     default:
         break;
     }
+}
+
+/*
+ * Handle bytecount report from OpenVPN
+ * Expect bytes-in,bytes-out
+ */
+void OnByteCount(connection_t *c, char *msg)
+{
+    if (!msg || sscanf(msg, "%I64u,%I64u", &c->bytes_in, &c->bytes_out) != 2)
+        return;
 }
 
 /*
