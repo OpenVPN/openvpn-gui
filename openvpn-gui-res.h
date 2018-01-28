@@ -42,6 +42,9 @@
 #define ID_DISCONNECT                    163
 #define ID_RESTART                       164
 #define ID_HIDE                          165
+#define ID_TXT_VERSION                   166
+#define ID_TXT_BYTECOUNT                 168
+#define ID_TXT_IP                        169
 
 /* Change Passphrase Dialog */
 #define ID_DLG_CHGPASS                   170
@@ -205,6 +208,7 @@
 #define IDS_ERR_CONFIG_TRY_AUTHORIZE    1255
 #define IDS_NFO_CONFIG_AUTH_PENDING     1256
 #define IDS_ERR_ADD_USER_TO_ADMIN_GROUP 1257
+#define IDS_NFO_BYTECOUNT               1258
 
 /* Program Startup Related */
 #define IDS_ERR_OPEN_DEBUG_FILE         1301
