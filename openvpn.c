@@ -389,6 +389,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         /* Set connection for this dialog and show it */
         param = (auth_param_t *) lParam;
         SetProp(hwndDlg, cfgProp, (HANDLE) param);
+        SetStatusWinIcon(hwndDlg, ID_ICO_APP);
 
         if (param->str)
         {
@@ -434,7 +435,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         else if (param->c->flags & FLAG_SAVE_AUTH_PASS)
             Button_SetCheck(GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
 
-        AppendTextToCaption (hwndDlg, param->c->config_name);
+        SetWindowText (hwndDlg, param->c->config_name);
         if (param->c->failed_auth_attempts > 0)
             SetDlgItemTextW(hwndDlg, ID_TXT_WARNING, LoadLocalizedString(IDS_NFO_AUTH_PASS_RETRY));
 
@@ -537,6 +538,8 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
     case WM_CLOSE:
         EndDialog(hwndDlg, LOWORD(wParam));
+        param = (auth_param_t *) GetProp(hwndDlg, cfgProp);
+        StopOpenVPN(param->c);
         return TRUE;
 
     case WM_NCDESTROY:
