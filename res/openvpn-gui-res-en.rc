@@ -95,6 +95,9 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 BEGIN
     LTEXT "Connecting…", ID_TXT_STATUS, 20, 5, 200, 10
+    LTEXT "", ID_TXT_BYTECOUNT, 20, 175, 200, 10
+    LTEXT "OpenVPN GUI 11.y.0.0/2.4.x", ID_TXT_VERSION, 220, 175, 150, 10
+    LTEXT "", ID_TXT_IP, 20, 160, 300, 10
     PUSHBUTTON "Disconnect", ID_DISCONNECT, 50, 190, 50, 14
     PUSHBUTTON "Reconnect", ID_RESTART, 150, 190, 50, 14
     PUSHBUTTON "Hide", ID_HIDE, 100, 190, 50, 14
@@ -473,5 +476,6 @@ BEGIN
     IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
     IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds..."
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
+    IDS_NFO_BYTECOUNT "Bytes in: %s  out: %s"
 
 END

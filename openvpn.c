@@ -293,6 +293,7 @@ OnStateChange(connection_t *c, char *data)
         SetTrayIcon(connected);
 
         SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONNECTED));
+        SetDlgItemTextW(c->hwndStatus, ID_TXT_IP, ip_txt);
         SetStatusWinIcon(c->hwndStatus, ID_ICO_CONNECTED);
 
         /* Hide Status Window */
@@ -318,6 +319,7 @@ OnStateChange(connection_t *c, char *data)
         CheckAndSetTrayIcon();
 
         SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_RECONNECTING));
+        SetDlgItemTextW(c->hwndStatus, ID_TXT_IP, L"");
         SetStatusWinIcon(c->hwndStatus, ID_ICO_CONNECTING);
     }
 }
@@ -1158,6 +1160,36 @@ OnStop(connection_t *c, UNUSED char *msg)
     }
 }
 
+/* Convert bytecount c to a human readable string.
+ * Input c converted to a string of the form "nnn.. (xxx.y XiB)"
+ * where X is K, M, G, T, P or E depending on the count. The result
+ * is returned in buf up to max of len - 1 wide characters.
+ * Return value: pointer to buf.
+ */
+static wchar_t *
+format_bytecount(wchar_t *buf, size_t len, unsigned long long c)
+{
+    const char *suf[] = {"B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", NULL};
+    const char **s = suf;
+    double x = c;
+
+    if (c <= 1024)
+    {
+        swprintf(buf, len, L"%I64u B", c, *s);
+        buf[len-1] = L'\0';
+        return buf;
+    }
+    while (x > 1024 && *(s+1))
+    {
+        x /= 1024.0;
+        s++;
+    }
+    swprintf(buf, len, L"%I64u (%.1f %hs)", c, x, *s);
+    buf[len-1] = L'\0';
+
+    return buf;
+}
+
 /*
  * Handle bytecount report from OpenVPN
  * Expect bytes-in,bytes-out
@@ -1166,6 +1198,11 @@ void OnByteCount(connection_t *c, char *msg)
 {
     if (!msg || sscanf(msg, "%I64u,%I64u", &c->bytes_in, &c->bytes_out) != 2)
         return;
+    wchar_t in[32], out[32];
+    format_bytecount(in, _countof(in), c->bytes_in);
+    format_bytecount(out, _countof(out), c->bytes_out);
+    SetDlgItemTextW(c->hwndStatus, ID_TXT_BYTECOUNT,
+            LoadLocalizedString(IDS_NFO_BYTECOUNT, in, out));
 }
 
 /*
@@ -1518,8 +1555,11 @@ Cleanup (connection_t *c)
 void
 RenderStatusWindow(HWND hwndDlg, UINT w, UINT h)
 {
-        MoveWindow(GetDlgItem(hwndDlg, ID_EDT_LOG), DPI_SCALE(20), DPI_SCALE(25), w - DPI_SCALE(40), h - DPI_SCALE(70), TRUE);
-        MoveWindow(GetDlgItem(hwndDlg, ID_TXT_STATUS), DPI_SCALE(20), DPI_SCALE(5), w - DPI_SCALE(25), DPI_SCALE(15), TRUE);
+        MoveWindow(GetDlgItem(hwndDlg, ID_EDT_LOG), DPI_SCALE(20), DPI_SCALE(25), w - DPI_SCALE(40), h - DPI_SCALE(110), TRUE);
+        MoveWindow(GetDlgItem(hwndDlg, ID_TXT_STATUS), DPI_SCALE(20), DPI_SCALE(5), w-DPI_SCALE(30), DPI_SCALE(15), TRUE);
+        MoveWindow(GetDlgItem(hwndDlg, ID_TXT_IP), DPI_SCALE(20), h - DPI_SCALE(75), w-DPI_SCALE(30), DPI_SCALE(15), TRUE);
+        MoveWindow(GetDlgItem(hwndDlg, ID_TXT_BYTECOUNT), DPI_SCALE(20), h - DPI_SCALE(55), w-DPI_SCALE(210), DPI_SCALE(15), TRUE);
+        MoveWindow(GetDlgItem(hwndDlg, ID_TXT_VERSION), w-DPI_SCALE(180), h - DPI_SCALE(55), DPI_SCALE(170), DPI_SCALE(15), TRUE);
         MoveWindow(GetDlgItem(hwndDlg, ID_DISCONNECT), DPI_SCALE(20), h - DPI_SCALE(30), DPI_SCALE(110), DPI_SCALE(23), TRUE);
         MoveWindow(GetDlgItem(hwndDlg, ID_RESTART), DPI_SCALE(145), h - DPI_SCALE(30), DPI_SCALE(110), DPI_SCALE(23), TRUE);
         MoveWindow(GetDlgItem(hwndDlg, ID_HIDE), w - DPI_SCALE(130), h - DPI_SCALE(30), DPI_SCALE(110), DPI_SCALE(23), TRUE);
@@ -1570,6 +1610,11 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         };
         if (SendMessage(hLogWnd, EM_SETCHARFORMAT, SCF_DEFAULT, (LPARAM) &cfm) == 0)
             ShowLocalizedMsg(IDS_ERR_SET_SIZE);
+
+        /* display version string as "OpenVPN GUI gui_version/core_version" */
+        wchar_t version[256];
+        _sntprintf_0(version, L"%S %S/%S", PACKAGE_NAME, PACKAGE_VERSION_RESOURCE_STR, o.ovpn_version)
+        SetDlgItemText(hwndDlg, ID_TXT_VERSION, version);
 
         /* Set size and position of controls */
         RECT rect;
