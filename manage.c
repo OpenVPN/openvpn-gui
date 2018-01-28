@@ -327,6 +327,11 @@ OnManagement(SOCKET sk, LPARAM lParam)
                     if (rtmsg_handler[echo])
                         rtmsg_handler[echo](c, pos + 5);
                 }
+                else if (strncmp(pos, "BYTECOUNT:", 10) == 0)
+                {
+                    if (rtmsg_handler[bytecount])
+                        rtmsg_handler[bytecount](c, pos + 10);
+                }
             }
             else if (c->manage.cmd_queue)
             {
