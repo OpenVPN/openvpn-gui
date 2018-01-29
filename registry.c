@@ -74,19 +74,18 @@ GetGlobalRegistryKeys()
 {
   TCHAR windows_dir[MAX_PATH];
   TCHAR openvpn_path[MAX_PATH];
-  TCHAR profile_dir[MAX_PATH];
   HKEY regkey;
 
   if (!GetWindowsDirectory(windows_dir, _countof(windows_dir))) {
     /* can't get windows dir */
     ShowLocalizedMsg(IDS_ERR_GET_WINDOWS_DIR);
-    return(false);
+    /* Use a default value */
+    _sntprintf_0(windows_dir, L"C:\\Windows");
   }
 
-  if (SHGetFolderPath(NULL, CSIDL_PROFILE, NULL, SHGFP_TYPE_CURRENT, profile_dir) != S_OK) {
-    ShowLocalizedMsg(IDS_ERR_GET_PROFILE_DIR);
-    return(false);
-  }
+  /* set default editor and log_viewer as a fallback for opening config/log files */
+  _sntprintf_0(o.editor, L"%s\\%s", windows_dir, L"System32\\notepad.exe");
+  _sntprintf_0(o.log_viewer, L"%s", o.editor);
 
   /* Get path to OpenVPN installation. */
   if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, _T("SOFTWARE\\OpenVPN"), 0, KEY_READ, &regkey)
