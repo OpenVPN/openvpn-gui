@@ -247,6 +247,7 @@ BEGIN
     IDS_MENU_CLOSE "Afsluiten"
     IDS_MENU_CONNECT "Verbinden"
     IDS_MENU_DISCONNECT "Verbinding verbreken"
+    IDS_MENU_RECONNECT "Opnieuw verbinden"
     IDS_MENU_STATUS "Status weergeven"
     IDS_MENU_VIEWLOG "Logbestand weergeven"
     IDS_MENU_EDITCONFIG "Configuratie bewerken"
@@ -327,6 +328,7 @@ BEGIN
 
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "Fout tijdens schrijven naar debug-log (%s)."
+    IDS_ERR_CREATE_PATH "Kan het %s pad niet aanmaken:\n%s"
     IDS_ERR_LOAD_RICHED20 "Kan RICHED20.DLL niet laden."
     IDS_ERR_SHELL_DLL_VERSION "De shell32.dll versie is te oud (0x%lx). Minstens versie 5.0 is vereist."
     IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI is al gestart."
@@ -340,8 +342,18 @@ BEGIN
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Toon dit bericht.\n" \
-                  "--connect cnn \t\t: Verbind met ""cnn"" tijdens opstarten. (extensie moet opgegeven worden)\n" \
+                  "--connect cnn \t\t: Met ""cnn"" verbinden tijdens opstarten (extensie moet opgegeven worden).\n" \
                   "\t\t\t   Voorbeeld: openvpn-gui --connect office.ovpn\n" \
+                  "--command cmd [args]\t: Een commando naar een draaiende instantie van de GUI versturen\n" \
+                  "Ondersteunde commando's:\n"\
+                  "    connect cnn            \t: de configuratie met de naam ""cnn"" verbinden\n"\
+                  "    disconnect cnn         \t: de verbinding van de configuratie met de naam ""cnn"" verbreken\n"\
+                  "    reconnect cnn          \t: de configuratie met de naam ""cnn"" opnieuw verbinden\n"\
+                  "    disconnect_all         \t: de verbinding van alle verbonden configuraties verbreken\n"\
+                  "    exit                 \t\t: de huidige instantie van de GUI afsluiten (er kan om bevestiging gevraagd worden)\n"\
+                  "    status cnn           \t\t: het status-scherm van de configuratie ""cnn"" laten zien als de verbinding is gemaakt\n"\
+                  "    silent_connection [0|1]\t: de vlag ""silent_connection"" aan- (1) of uitzetten (0)\n"\
+		  "\t\t\tVoorbeeld: openvpn-gui.exe --command disconnect myconfig\n"\
                   "\n" \
                   "Instellingen die de registerinstellingen overschrijven:\n" \
                   "--exe_path\t\t: Pad naar openvpn.exe.\n" \
@@ -352,10 +364,10 @@ BEGIN
                   "--append_string\t\t: 1=Toevoegen aan logbestand. 0=Overschrijf logbestand tijdens verbinden.\n" \
                   "--log_viewer\t\t: Pad naar de logviewer.\n" \
                   "--editor\t\t\t: Pad naar de configuratie-editor.\n" \
-                  "--allow_edit\t\t: 1=Bewerk Configuratie menu-item weergeven.\n" \
-                  "--allow_service\t\t: 1=Service Controle menu-item weergeven.\n" \
-                  "--allow_password\t\t: 1=Wachtwoord Wijzigen menu-item weergeven.\n" \
-                  "--allow_proxy\t\t: 1=Proxy-instellingen menu-item weergeven.\n" \
+                  "--allow_edit\t\t: 1=Menu-item ""Configuratie bewerken"" weergeven.\n" \
+                  "--allow_service\t\t: 1=Servicecontrole menu-items weergeven.\n" \
+                  "--allow_password\t\t: 1=""Wachtwoord wijzigen"" menu-item weergeven.\n" \
+                  "--allow_proxy\t\t: 1=Menu ""Proxyinstellingen"" weergeven.\n" \
                   "--show_balloon\t\t: 0=Nooit, 1=Tijdens eerste verbinding, 2=Bij elke herverbinding.\n" \
                   "--service_only\t\t: 1=Service Only modus activeren.\n" \
                   "--silent_connection\t\t: 1=Het status-venster tijdens het verbinden verbergen.\n" \
@@ -448,4 +460,19 @@ BEGIN
     IDS_ERR_IMPORT_FAILED "Importeren bestand is mislukt. De onderstaande bestandsnaam kon niet gemaakt worden.\n\n" \
                           "%s\n\nControleer of de juiste rechten gebruikt worden."
     IDS_NFO_IMPORT_SUCCESS "Importeren bestand gelukt."
+
+    /* save/delete password */
+    IDS_NFO_DELETE_PASS "Klik op OK om alle opgeslagen wachtwoorden voor de configuratie ""%s"" te verwijderen"
+
+    /* Token password related */
+    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN - Wachtwoord voor Token"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "Vul het wachtwoord of de PIN in voor Token '%S'"
+
+    IDS_NFO_AUTH_PASS_RETRY "Onjuiste gebruikersnaam of wachtwoord. Probeer opnieuw..."
+    IDS_NFO_KEY_PASS_RETRY  "Onjuist wachtwoord. Probeer opnieuw..."
+    IDS_ERR_INVALID_PASSWORD_INPUT "Ongeldig karakter in het wachtwoord"
+    IDS_ERR_INVALID_USERNAME_INPUT "Ongeldig karakter in de gebruikersnaam"
+    IDS_NFO_AUTO_CONNECT    "Automatisch verbinden over %u seconden..."
+    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI draait al. Klik met de rechtermuisknop op het tray icon om te starten."
+
 END
