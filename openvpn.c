@@ -307,12 +307,6 @@ OnStateChange(connection_t *c, char *data)
                 c->failed_auth_attempts++;
             else if (strcmp(message, "private-key-password-failure") == 0)
                 c->failed_psw_attempts++;
-
-            if (strcmp(message, "auth-failure") == 0 && (c->flags & FLAG_SAVE_AUTH_PASS))
-                SaveAuthPass(c->config_name, L""); /* clear saved password */
-
-            else if (strcmp(message, "private-key-password-failure") == 0 && (c->flags & FLAG_SAVE_KEY_PASS))
-                SaveKeyPass(c->config_name, L"");  /* clear saved private key password */
         }
 
         c->state = reconnecting;
@@ -460,6 +454,11 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 SetFocus(GetDlgItem(hwndDlg, IDOK));
                 UINT timeout = o.silent_connection ? 0 : 6; /* in seconds */
                 AutoCloseSetup(hwndDlg, IDOK, timeout, ID_TXT_WARNING, IDS_NFO_AUTO_CONNECT);
+            }
+            /* if auth failed, highlight password so that user can type over */
+            else if (param->c->failed_auth_attempts)
+            {
+                SendMessage(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS), EM_SETSEL, 0, MAKELONG(0,-1));
             }
             SecureZeroMemory(password, sizeof(password));
         }
@@ -732,7 +731,8 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         c = (connection_t *) lParam;
         SetProp(hwndDlg, cfgProp, (HANDLE) c);
         AppendTextToCaption (hwndDlg, c->config_name);
-        if (RecallKeyPass(c->config_name, passphrase) && wcslen(passphrase))
+        if (RecallKeyPass(c->config_name, passphrase) && wcslen(passphrase)
+            && c->failed_psw_attempts == 0)
         {
             /* Use the saved password and skip the dialog */
             SetDlgItemTextW(hwndDlg, ID_EDT_PASSPHRASE, passphrase);
