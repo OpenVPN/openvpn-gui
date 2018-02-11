@@ -956,7 +956,11 @@ OnEcho(connection_t *c, char *msg)
     }
     else if (strcmp(msg, "save-passwords") == 0)
     {
-        c->flags |= (FLAG_SAVE_KEY_PASS | FLAG_SAVE_AUTH_PASS);
+        if (c->flags & FLAG_DISABLE_SAVE_PASS)
+            WriteStatusLog(c, L"GUI> echo save-passwords: ",
+               L"Ignored as disable_save_passwords is enabled.", false);
+        else
+            c->flags |= (FLAG_SAVE_KEY_PASS | FLAG_SAVE_AUTH_PASS);
     }
     else
     {
