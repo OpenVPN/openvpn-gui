@@ -1,9 +1,0 @@
-TODOs for OpenVPN-GUI
-
-* support usernames and passwords that contain a " character
-
-* pass string length to IDS_NFO_CONNECTION_XXX
-* move registry values below openvpn pregistry key
-* convert boolean registry values from string to dword
-* maybe parse config and use selected options in command line directly
-* have some kind of error log instead of message boxes for low level errors
