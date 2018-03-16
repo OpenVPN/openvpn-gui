@@ -329,7 +329,6 @@ BEGIN
     IDS_ERR_CREATE_PATH "%s 생성 실패:\n%s"
     IDS_ERR_LOAD_RICHED20 "RICHED20.DLL 로드를 실패 했습니다."
     IDS_ERR_SHELL_DLL_VERSION "shell32.dll version이 오래되었습니다(0x%lx). 5.0 이상이 필요 합니다."
-    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI가 이미 실행 중입니다."
     IDS_NFO_SERVICE_STARTED "OpenVPN Service가 시작 되었습니다."
     IDS_NFO_SERVICE_STOPPED "OpenVPN Service가 중지 되었습니다."
     IDS_NFO_ACTIVE_CONN_EXIT "OpenVPN GUI을 종료하면 현재 연결되어 있는 접속이 중단 됩니다." \

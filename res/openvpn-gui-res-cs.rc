@@ -332,7 +332,6 @@ BEGIN
     IDS_ERR_CREATE_PATH "Nepodařilo se vytvořit %s složku:\n%s"
     IDS_ERR_LOAD_RICHED20 "Nepodařilo se načíst riched20.dll."
     IDS_ERR_SHELL_DLL_VERSION "Verze vaší knihovny shell32.dll je příliš nízká (0x%lx). Potřebujete verzi 5.0 nebo novější."
-    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI již běží."
     IDS_NFO_SERVICE_STARTED "Služba OpenVPN spuštěna."
     IDS_NFO_SERVICE_STOPPED "Služba OpenVPN zastavena."
     IDS_NFO_ACTIVE_CONN_EXIT "Některá spojení jsou stále aktivní. Pokud OpenVPN GUI ukončíte, budou přerušena." \

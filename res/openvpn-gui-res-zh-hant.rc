@@ -333,7 +333,6 @@ BEGIN
     IDS_ERR_CREATE_PATH "無法建立 %s 路徑:\n%s"
     IDS_ERR_LOAD_RICHED20 "無法載入 RICHED20.DLL。"
     IDS_ERR_SHELL_DLL_VERSION "您的 shell32.dll 版本太舊 (0x%lx)，需要至少 5.0 版本或更新版。"
-    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI 已在執行中。"
     IDS_NFO_SERVICE_STARTED "已啟動 OpenVPN 服務。"
     IDS_NFO_SERVICE_STOPPED "已停止 OpenVPN 服務。"
     IDS_NFO_ACTIVE_CONN_EXIT "目前還有進行中的連線，若您結束 OpenVPN GUI 該連線將被中斷。" \

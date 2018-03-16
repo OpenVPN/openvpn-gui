@@ -312,7 +312,6 @@ BEGIN
     IDS_ERR_OPEN_DEBUG_FILE "Errore nell'apertura del file di debug (%s) per l'output."
     IDS_ERR_LOAD_RICHED20 "Non riesco a caricare RICHED20.DLL."
     IDS_ERR_SHELL_DLL_VERSION "La versione del tuo shell32.dll è troppo bassa (0x%lx). Hai bisogno almeno della versione 5.0."
-    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI è già in funzione."
     IDS_NFO_SERVICE_STARTED "OpenVPN Service iniziato."
     IDS_NFO_SERVICE_STOPPED "OpenVPN Service arrestato."
     IDS_NFO_ACTIVE_CONN_EXIT "Ci sono ancora connessioni attive che verranno chiuse se esci da OpenVPN GUI." \
