@@ -331,7 +331,6 @@ BEGIN
     IDS_ERR_CREATE_PATH "Impossible de créer le chemin vers %s:\n%s"
     IDS_ERR_LOAD_RICHED20 "Impossible de charger RICHED20.DLL."
     IDS_ERR_SHELL_DLL_VERSION "La version de votre shell32.dll est trop basse (0x%lx). Vous devez avoir au moins la version 5.0."
-    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI est déjà ouvert."
     IDS_NFO_SERVICE_STARTED "Service OpenVPN démarré."
     IDS_NFO_SERVICE_STOPPED "Service OpenVPN arreté."
     IDS_NFO_ACTIVE_CONN_EXIT "Les connexions en cours seront interrompues si vous fermez OpenVPN GUI." \

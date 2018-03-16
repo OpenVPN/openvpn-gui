@@ -331,7 +331,6 @@ BEGIN
     IDS_ERR_CREATE_PATH "Ei voitu luoda %s polkua:\n%s"
     IDS_ERR_LOAD_RICHED20 "Kirjaston RICHED20.DLL lataaminen epäonnistui."
     IDS_ERR_SHELL_DLL_VERSION "Kirjasto shell32.dll on liian vanha (0x%lx), tarvitaan vähintään versio 5.0."
-    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUI on jo käynnissä."
     IDS_NFO_SERVICE_STARTED "OpenVPN-palvelu käynnistetty."
     IDS_NFO_SERVICE_STOPPED "OpenVPN-palvelu pysäytetty."
     IDS_NFO_ACTIVE_CONN_EXIT "Jos OpenVPN GUI suljetaan, aktiiviset yhteydet katkeavat." \

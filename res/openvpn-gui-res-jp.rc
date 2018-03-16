@@ -315,7 +315,6 @@ BEGIN
     IDS_ERR_OPEN_DEBUG_FILE "デバッグファイル (%s) を出力用に開くときにエラーが発生しました。"
     IDS_ERR_LOAD_RICHED20 "RICHED20.DLL が読み込めません。"
     IDS_ERR_SHELL_DLL_VERSION "shell32.dll のバージョンが古いです (0x%lx). バージョン 5.0 以降に更新してください。"
-    IDS_ERR_GUI_ALREADY_RUNNING "OpenVPN GUIは既に実行されています。"
     IDS_NFO_SERVICE_STARTED "OpenVPNサービスが開始されました。"
     IDS_NFO_SERVICE_STOPPED "OpenVPNサービスが停止されました。"
     IDS_NFO_ACTIVE_CONN_EXIT "OpenVPN GUIを終了すると、現在接続中の接続が切断されます。" \
