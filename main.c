@@ -126,14 +126,29 @@ NotifyRunningInstance()
         PrintDebug(L"Instance 2: called with action %d : %s", o.action, o.action_arg);
         if (!SendMessageTimeout (hwnd_master, WM_COPYDATA, 0,
                                  (LPARAM) &config_data, 0, timeout, NULL))
-            exit_code = OVPN_EXITCODE_TIMEOUT;
+        {
+            DWORD error = GetLastError();
+            if (error == ERROR_TIMEOUT)
+            {
+                exit_code = OVPN_EXITCODE_TIMEOUT;
+                MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Sending command to running instance timed out.");
+            }
+            else
+            {
+                exit_code = OVPN_EXITCODE_ERROR;
+                MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Sending command to running instance failed (error = %lu).",
+                              error);
+            }
+        }
     }
     else
     {
-        PrintDebug(L"Instance 2: Previous instance not yet ready to accept comamnds");
+        /* An instance is already running but its main window not yet initialized */
         exit_code = OVPN_EXITCODE_NOTREADY;
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Previous instance not yet ready to accept commands. "
+                      "Try again later.");
     }
-    PrintDebug(L"Instance 2: Returning exit code %d", exit_code);
+
     return exit_code;
 }
 
@@ -235,7 +250,7 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
   }
   else if (o.action)
   {
-      PrintDebug(L"Instance 1: Called with --command when no previous instance available");
+      MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Called with --command when no previous instance available");
       exit(OVPN_EXITCODE_ERROR);
   }
 
@@ -312,6 +327,8 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
 
   CloseSemaphore(o.session_semaphore);
   o.session_semaphore = NULL;   /* though we're going to die.. */
+  if (o.event_log)
+      DeregisterEventSource(o.event_log);
 
   /* The program return-value is 0 - The value that PostQuitMessage() gave */
   return messages.wParam;
@@ -466,8 +483,10 @@ HandleCopyDataMessage(const COPYDATASTRUCT *copy_data)
     }
     else
     {
-        PrintDebug (L"WM_COPYDATA message ignored. (dwData: %lu, cbData: %lu)",
-                    copy_data->dwData, copy_data->cbData);
+        MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                      L"Unknown WM_COPYDATA message ignored. (dwData: %lu, cbData: %lu, lpData: %s)",
+                      copy_data->dwData, copy_data->cbData, copy_data->lpData);
+        return FALSE;
     }
     return TRUE; /* indicate we handled the message */
 }
@@ -834,4 +853,29 @@ DWORD GetDllVersion(LPCTSTR lpszDllName)
         FreeLibrary(hinstDll);
     }
     return dwVersion;
+}
+
+void
+MsgToEventLog(WORD type, wchar_t *format, ...)
+{
+    const wchar_t *msg[2];
+    wchar_t buf[256];
+    int size = _countof(buf);
+
+    if (!o.event_log)
+    {
+        o.event_log = RegisterEventSource(NULL, TEXT(PACKAGE_NAME));
+        if (!o.event_log)
+            return;
+    }
+
+    va_list args;
+    va_start(args, format);
+    if (vswprintf(buf, size-1, format, args) == -1)
+        return;
+    buf[size - 1] = '\0';
+
+    msg[0] = TEXT(PACKAGE_NAME);
+    msg[1] = buf;
+    ReportEventW(o.event_log, type, 0, 0, NULL, 2, 0, msg, NULL);
 }

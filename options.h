@@ -187,6 +187,7 @@ typedef struct {
     int action;            /* action to send to a running instance */
     TCHAR *action_arg;
     HANDLE session_semaphore;
+    HANDLE event_log;
 } options_t;
 
 void InitOptions(options_t *);
