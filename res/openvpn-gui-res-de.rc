@@ -207,7 +207,7 @@ BEGIN
     LTEXT "OpenVPN GUI v" PACKAGE_VERSION_RESOURCE_STR " – Eine grafische Oberfläche für OpenVPN\n" \
           "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n" \
           "Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n" \
-          "Copyright (C) 2012-2016 OpenVPN GUI contributors\n" \
+          "Copyright (C) 2012-" GUI_COPYRIGHT_YEAR_END " OpenVPN GUI contributors\n" \
           "https://github.com/OpenVPN/openvpn-gui/", 0, 36, 15, 206, 50
     LTEXT "OpenVPN – Eine Applikation zum sicheren Tunneln eines IP-" \
           "Netzwerks über einen einzelnen TCP/UDP-Port, mit Unterstützung " \
@@ -215,7 +215,7 @@ BEGIN
           "austauschs, Paket-Verschlüsselung, Paket-Authentisierung und " \
           "Paket-Kompression.\n" \
           "\n" \
-          "Copyright (C) 2002-2016 OpenVPN Technologies, Inc. <info@openvpn.net>\n" \
+          "Copyright (C) 2002-" CORE_COPYRIGHT_YEAR_END " OpenVPN Technologies, Inc. <info@openvpn.net>\n" \
           "https://openvpn.net/", 0, 8, 70, 240, 64
 END
 
