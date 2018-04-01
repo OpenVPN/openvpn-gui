@@ -151,7 +151,7 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
 
   /* try to lock the semaphore, else we are not the first instance */
   if (session_semaphore &&
-      WaitForSingleObject(session_semaphore, 0) != WAIT_OBJECT_0)
+      WaitForSingleObject(session_semaphore, 200) != WAIT_OBJECT_0)
   {
       first_instance = FALSE;
   }
@@ -175,6 +175,8 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
 
   /* initialize options to default state */
   InitOptions(&o);
+  if (first_instance)
+      o.session_semaphore = session_semaphore;
 
 #ifdef DEBUG
   /* Open debug file for output */
@@ -307,6 +309,9 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
     TranslateMessage(&messages);
     DispatchMessage(&messages);
   }
+
+  CloseSemaphore(o.session_semaphore);
+  o.session_semaphore = NULL;   /* though we're going to die.. */
 
   /* The program return-value is 0 - The value that PostQuitMessage() gave */
   return messages.wParam;

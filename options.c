@@ -85,6 +85,10 @@ add_option(options_t *options, int i, TCHAR **p)
     {
         TCHAR caption[200];
         TCHAR msg[USAGE_BUF_SIZE];
+        /* We only print help and exit: release the semapahore to allow another instance */
+        CloseSemaphore(o.session_semaphore); /* OK to call even if semaphore is NULL */
+        o.session_semaphore = NULL;
+
         LoadLocalizedStringBuf(caption, _countof(caption), IDS_NFO_USAGECAPTION);
         LoadLocalizedStringBuf(msg, _countof(msg), IDS_NFO_USAGE);
         MessageBoxEx(NULL, msg, caption, MB_OK | MB_SETFOREGROUND, GetGUILanguage());
