@@ -186,6 +186,7 @@ typedef struct {
     COLORREF clr_error;
     int action;            /* action to send to a running instance */
     TCHAR *action_arg;
+    HANDLE session_semaphore;
 } options_t;
 
 void InitOptions(options_t *);

@@ -416,6 +416,16 @@ InitSemaphore (WCHAR *name)
     return semaphore;
 }
 
+void
+CloseSemaphore(HANDLE sem)
+{
+    if (sem)
+    {
+        ReleaseSemaphore(sem, 1, NULL);
+    }
+    CloseHandle(sem);
+}
+
 /* Check access rights on an existing file */
 BOOL
 CheckFileAccess (const TCHAR *path, int access)
