@@ -341,18 +341,26 @@ BEGIN
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Show this message.\n" \
-                  "--connect cnn \t\t: Connect to ""cnn"" at startup. (extension must be included)\n" \
-                  "\t\t\t   Example: openvpn-gui --connect office.ovpn\n" \
-                  "--command cmd [args]\t: Send a command to a running instance of the GUI\n" \
-                  "Supported commands:\n"\
-                  "    connect cnn            \t: connect the config named ""cnn""\n"\
-                  "    disconnect cnn         \t: disconnect the config named ""cnn""\n"\
-                  "    reconnect cnn          \t: reconnect the config named ""cnn""\n"\
-                  "    disconnect_all         \t: disconnect all connected configs\n"\
-                  "    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n"\
-                  "    status cnn           \t\t: show the status window of config ""cnn"" if connected\n"\
-                  "    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n"\
-		  "\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n"\
+                  "--connect cnn \t\t: Connect to ""cnn"" at startup.\n" \
+                  "\t\t\t  (extension must be included)\n" \
+                  "   Example:\n" \
+                  "   openvpn-gui.exe --connect office.ovpn\n" \
+                  "\n" \
+                  "--command cmd [args]\t: Send a command to a running instance of\n" \
+                  "\t\t\t  the GUI\n" \
+                  "   Supported commands:\n"\
+                  "      connect cnn            \t: connect the config named ""cnn""\n"\
+                  "      disconnect cnn         \t: disconnect the config named ""cnn""\n"\
+                  "      reconnect cnn          \t: reconnect the config named ""cnn""\n"\
+                  "      disconnect_all         \t: disconnect all connected configs\n"\
+                  "      exit                 \t\t: terminate the running GUI instance\n"\
+                  "\t\t\t  (may ask for confirmation)\n"\
+                  "      status cnn             \t: show the status window of config ""cnn"" if\n"\
+                  "\t\t\t  connected\n"\
+                  "      silent_connection [0|1]\t: set the silent_connection flag on (1) or\n"\
+                  "\t\t\t  off (0)\n"\
+		              "      Example:\n"\
+                  "      openvpn-gui.exe --command disconnect myconfig\n"\
                   "\n" \
                   "Options to override registry settings:\n" \
                   "--exe_path\t\t: Path to openvpn.exe.\n" \
@@ -360,17 +368,23 @@ BEGIN
                   "--ext_string\t\t: Extension on config files.\n" \
                   "--log_dir\t\t\t: Path to dir where log files will be saved.\n" \
                   "--priority_string\t\t: Priority string (See install.txt for more info).\n" \
-                  "--append_string\t\t: 1=Append to log file. 0=Truncate logfile when connecting.\n" \
+                  "--append_string\t\t: 1=Append to log file.\n" \
+                  "\t\t\t  0=Truncate log file when connecting.\n" \
                   "--log_viewer\t\t: Path to log viewer.\n" \
                   "--editor\t\t\t: Path to config editor.\n" \
                   "--allow_edit\t\t: 1=Show Edit Config menu item.\n" \
                   "--allow_service\t\t: 1=Show Service control menu.\n" \
                   "--allow_password\t\t: 1=Show Change Password menu item.\n" \
                   "--allow_proxy\t\t: 1=Show Proxy Settings menu.\n" \
-                  "--show_balloon\t\t: 0=Never, 1=At initial connect, 2=At every reconnect.\n" \
+                  "--show_balloon\t\t: 0=Never.\n" \
+                  "\t\t\t  1=At initial connect.\n" \
+                  "\t\t\t  2=At every reconnect.\n" \
                   "--service_only\t\t: 1=Enable Service Only mode.\n" \
-                  "--silent_connection\t\t: 1=Do not show the status dialog while connecting or non-critical warnings at startup.\n" \
-                  "--show_script_window\t: 0=Hide Script execution window, 1=Show it.\n" \
+                  "--silent_connection\t: 1=Do not show the status dialog while\n" \
+                  "\t\t\t  connecting or non-critical warnings at\n" \
+                  "\t\t\t  startup.\n" \
+                  "--show_script_window\t: 0=Hide Script execution window.\n" \
+                  "\t\t\t  1=Show it.\n" \
                   "--passphrase_attempts\t: Number of passphrase attempts to allow.\n" \
                   "--connectscript_timeout\t: Time to wait for connect script to finish.\n" \
                   "--disconnectscript_timeout\t: Time to wait for disconnect script to finish.\n" \

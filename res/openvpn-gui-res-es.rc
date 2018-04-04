@@ -321,30 +321,46 @@ BEGIN
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Mostrar éste mensaje.\n" \
-                  "--connect cnn \t\t: Conectar con ""cnn"" al arrancar. (la extensión debe incluirse)\n" \
-                  "\t\t\t   Ejemplo: openvpn-gui --connect office.ovpn\n" \
+                  "--connect cnn \t\t: Conectar con ""cnn"" al arrancar.\n" \
+                  "\t\t\t  (la extensión debe incluirse)\n" \
+                  "   Ejemplo:\n" \
+                  "   openvpn-gui.exe --connect office.ovpn\n" \
                   "\n" \
                   "Opciones para sobreescribir opciones del registro:\n" \
                   "--exe_path\t\t: Ruta a openvpn.exe.\n" \
-                  "--config_dir\t\t: Ruta al directorio de los ficheros de configuración.\n" \
-                  "--ext_string\t\t: Extensión de los ficheros de configuración.\n" \
+                  "--config_dir\t\t: Ruta al directorio de los ficheros de\n" \
+                  "\t\t\t  configuración.\n" \
+                  "--ext_string\t\t: Extensión de los ficheros de\n" \
+                  "\t\t\t  configuración.\n" \
                   "--log_dir\t\t\t: Directorio donde se guardarán los log.\n" \
                   "--priority_string\t\t: Prioridad (Ver install.txt para más detalles).\n" \
-                  "--append_string\t\t: 1=Añadir al fichero. 0=Truncar fichero al conectar.\n" \
+                  "--append_string\t\t: 1=Añadir al fichero.\n" \
+                  "\t\t\t  0=Truncar fichero al conectar.\n" \
                   "--log_viewer\t\t: Ruta al visor de logs.\n" \
                   "--editor\t\t\t: Ruta al editor de configuración.\n" \
-                  "--allow_edit\t\t: 1=Mostrar el menú de Editar configuración.\n" \
+                  "--allow_edit\t\t: 1=Mostrar el menú de Editar\n" \
+                  "\t\t\t  configuración.\n" \
                   "--allow_service\t\t: 1=Mostrar el menú de control del Servicio.\n" \
                   "--allow_password\t\t: 1=Mostrar el menú de Cambiar Clave.\n" \
-                  "--allow_proxy\t\t: 1=Mostrar el menú de Configuración del Proxy.\n" \
-                  "--show_balloon\t\t: 0=Nunca, 1=En la conexión inicial, 2=En cada reconexión.\n" \
+                  "--allow_proxy\t\t: 1=Mostrar el menú de Configuración del\n" \
+                  "\t\t\t  Proxy.\n" \
+                  "--show_balloon\t\t: 0=Nunca.\n" \
+                  "\t\t\t  1=En la conexión inicial.\n" \
+                  "\t\t\t  2=En cada reconexión.\n" \
                   "--service_only\t\t: 1=Activar el modo de Solo Servicio.\n" \
-                  "--silent_connection\t\t: 1=No mostrar la ventana de estado al conectar.\n" \
-                  "--show_script_window\t: 0=Oculta la ventana de ejecución de Script, 1=Mostrarla.\n" \
-                  "--passphrase_attempts\t: Número de intentos permitidos para la passphrase.\n" \
-                  "--connectscript_timeout\t: Tiempo permitido para que finalice el script de conexión.\n" \
-                  "--disconnectscript_timeout\t: Tiempo permitido para que finalice el script de desconexión.\n" \
-                  "--preconnectscript_timeout\t: Tiempo permitido para que finalice el script de preconexión.\n"
+                  "--silent_connection\t: 1=No mostrar la ventana de estado al\n" \
+                  "\t\t\t conectar.\n" \
+                  "--show_script_window\t: 0=Oculta la ventana de ejecución de\n" \
+                  "\t\t\t  Script.\n" \
+                  "\t\t\t  1=Mostrarla.\n" \
+                  "--passphrase_attempts\t: Número de intentos permitidos para la\n" \
+                  "\t\t\t  passphrase.\n" \
+                  "--connectscript_timeout\t: Tiempo permitido para que finalice el\n" \
+                  "\t\t\t  script de conexión.\n" \
+                  "--disconnectscript_timeout\t: Tiempo permitido para que finalice el\n" \
+                  "\t\t\t  script de desconexión.\n" \
+                  "--preconnectscript_timeout\t: Tiempo permitido para que finalice el\n" \
+                  "\t\t\t  script de preconexión.\n"
 
     IDS_NFO_USAGECAPTION "Uso de OpenVPN GUI"
     IDS_ERR_BAD_PARAMETER "Intento parsear ""%s"" como un parámetro de --option " \

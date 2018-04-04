@@ -40,7 +40,7 @@
 #define MAX_LOG_LENGTH      1024/* Max number of characters per log line */
 #define MAX_LOG_LINES		500	/* Max number of lines in LogWindow */
 #define DEL_LOG_LINES		10	/* Number of lines to delete from LogWindow */
-#define USAGE_BUF_SIZE		2048	/* Size of buffer used to display usage message */
+#define USAGE_BUF_SIZE		2560	/* Size of buffer used to display usage message */
 
 /* Authorized group who can use any options and config locations */
 #define OVPN_ADMIN_GROUP TEXT("OpenVPN Administrators") /* May be reset in registry */

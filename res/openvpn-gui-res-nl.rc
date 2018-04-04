@@ -338,40 +338,62 @@ BEGIN
                                 "OpenVPN GUI afsluiten?"
 
     /* options - Resources */
-    IDS_NFO_USAGE "--help\t\t\t: Toon dit bericht.\n" \
-                  "--connect cnn \t\t: Met ""cnn"" verbinden tijdens opstarten (extensie moet opgegeven worden).\n" \
-                  "\t\t\t   Voorbeeld: openvpn-gui --connect office.ovpn\n" \
-                  "--command cmd [args]\t: Een commando naar een draaiende instantie van de GUI versturen\n" \
-                  "Ondersteunde commando's:\n"\
-                  "    connect cnn            \t: de configuratie met de naam ""cnn"" verbinden\n"\
-                  "    disconnect cnn         \t: de verbinding van de configuratie met de naam ""cnn"" verbreken\n"\
-                  "    reconnect cnn          \t: de configuratie met de naam ""cnn"" opnieuw verbinden\n"\
-                  "    disconnect_all         \t: de verbinding van alle verbonden configuraties verbreken\n"\
-                  "    exit                 \t\t: de huidige instantie van de GUI afsluiten (er kan om bevestiging gevraagd worden)\n"\
-                  "    status cnn           \t\t: het status-scherm van de configuratie ""cnn"" laten zien als de verbinding is gemaakt\n"\
-                  "    silent_connection [0|1]\t: de vlag ""silent_connection"" aan- (1) of uitzetten (0)\n"\
-		  "\t\t\tVoorbeeld: openvpn-gui.exe --command disconnect myconfig\n"\
+    IDS_NFO_USAGE "--help\t\t\t: Dit bericht weergeven.\n" \
+                  "--connect cnn \t\t: Met ""cnn"" verbinden tijdens opstarten.\n" \
+                  "\t\t\t  (extensie moet opgegeven worden).\n" \
+                  "   Voorbeeld:\n" \
+                  "   openvpn-gui.exe --connect office.ovpn\n" \
+                  "\n" \
+                  "--command cmd [args]\t: Een commando naar een draaiende\n" \
+                  "\t\t\t  instantie van de GUI versturen\n" \
+                  "   Ondersteunde commando's:\n"\
+                  "      connect cnn            \t: de configuratie met de naam ""cnn""\n" \
+                  "\t\t\t  verbinden\n"\
+                  "      disconnect cnn         \t: de verbinding van de configuratie met de\n" \
+                  "\t\t\t  naam ""cnn"" verbreken\n"\
+                  "      reconnect cnn          \t: de configuratie met de naam ""cnn""\n" \
+                  "\t\t\t  opnieuw verbinden\n"\
+                  "      disconnect_all         \t: de verbinding van alle verbonden\n" \
+                  "\t\t\t  configuraties verbreken\n"\
+                  "      exit                 \t\t: de huidige instantie van de GUI afsluiten\n" \
+                  "\t\t\t  (er kan om bevestiging gevraagd worden)\n"\
+                  "      status cnn             \t: het status-scherm van de configuratie\n" \
+                  "\t\t\t  ""cnn"" laten zien als de verbinding is\n" \
+                  "\t\t\t  gemaakt\n"\
+                  "      silent_connection [0|1]\t: de vlag ""silent_connection"" aan- (1) of\n" \
+                  "\t\t\t  uitzetten (0)\n"\
+                  "      Voorbeeld: openvpn-gui.exe --command disconnect myconfig\n"\
                   "\n" \
                   "Instellingen die de registerinstellingen overschrijven:\n" \
                   "--exe_path\t\t: Pad naar openvpn.exe.\n" \
                   "--config_dir\t\t: Pad naar map met configuratiebestanden.\n" \
                   "--ext_string\t\t: Extensies voor de configuratiebestanden.\n" \
-                  "--log_dir\t\t\t: Pad naar de map waar de logbestanden bewaard worden.\n" \
-                  "--priority_string\t\t: Prioriteitsstring (Zie install.txt voor meer info).\n" \
-                  "--append_string\t\t: 1=Toevoegen aan logbestand. 0=Overschrijf logbestand tijdens verbinden.\n" \
+                  "--log_dir\t\t\t: Pad naar de map waar de logbestanden\n" \
+                  "\t\t\t  bewaard worden.\n" \
+                  "--priority_string\t\t: Prioriteitsstring\n" \
+                  "\t\t\t  (Zie install.txt voor meer info).\n" \
+                  "--append_string\t\t: 1=Aan logbestand toevoegen.\n" \
+                  "\t\t\t  0=Logbestand tijdens verbinden\n" \
+                  "\t\t\t  overschrijven.\n" \
                   "--log_viewer\t\t: Pad naar de logviewer.\n" \
                   "--editor\t\t\t: Pad naar de configuratie-editor.\n" \
-                  "--allow_edit\t\t: 1=Menu-item ""Configuratie bewerken"" weergeven.\n" \
+                  "--allow_edit\t\t: 1=Menu-item ""Configuratie bewerken""\n" \
+                  "\t\t\t  weergeven.\n" \
                   "--allow_service\t\t: 1=Servicecontrole menu-items weergeven.\n" \
-                  "--allow_password\t\t: 1=""Wachtwoord wijzigen"" menu-item weergeven.\n" \
+                  "--allow_password\t\t: 1=""Wachtwoord wijzigen"" menu-item\n" \
+                  "\t\t\t  weergeven.\n" \
                   "--allow_proxy\t\t: 1=Menu ""Proxyinstellingen"" weergeven.\n" \
-                  "--show_balloon\t\t: 0=Nooit, 1=Tijdens eerste verbinding, 2=Bij elke herverbinding.\n" \
+                  "--show_balloon\t\t: 0=Nooit.\n" \
+                  "\t\t\t  1=Tijdens eerste verbinding.\n" \
+                  "\t\t\t  2=Bij elke herverbinding.\n" \
                   "--service_only\t\t: 1=Service Only modus activeren.\n" \
-                  "--silent_connection\t\t: 1=Het status-venster tijdens het verbinden verbergen.\n" \
-                  "--show_script_window\t: 0=Het script uitvoer-venster verbergen, 1=Weergeven.\n" \
+                  "--silent_connection\t: 1=Het status-venster tijdens het verbinden verbergen.\n" \
+                  "--show_script_window\t: 0=Het script uitvoer-venster verbergen.\n" \
+                  "\t\t\t  1=Het script uitvoer-venster weergeven.\n" \
                   "--passphrase_attempts\t: Aantal wachtwoordpogingen.\n" \
                   "--connectscript_timeout\t: Timeout voor uitvoer van Connect Script.\n" \
-                  "--disconnectscript_timeout\t: Timeout voor uitvoer van Disconnect Script.\n" \
+                  "--disconnectscript_timeout\t: Timeout voor uitvoer van Disconnect\n" \
+                  "\t\t\t  Script.\n" \
                   "--preconnectscript_timeout\t: Timeout voor uitvoer Preconnect Script.\n"
 
     IDS_NFO_USAGECAPTION "OpenVPN GUI Opties"

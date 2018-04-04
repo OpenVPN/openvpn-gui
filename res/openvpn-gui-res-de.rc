@@ -340,30 +340,48 @@ BEGIN
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Zeigt diese Information.\n" \
-                  "--connect cnn \t\t: Verbinden zu ""cnn"" beim Starten. (Die Dateierweiterung muss angegeben werden)\n" \
-                  "\t\t\t   Beispiel: openvpn-gui --connect office.ovpn\n" \
+                  "--connect cnn \t\t: Verbinden zu ""cnn"" beim Starten.\n" \
+                  "\t\t\t  (Die Dateierweiterung muss angegeben\n" \
+                  "\t\t\t  werden)\n" \
+                  "   Beispiel:\n " \
+                  "   openvpn-gui.exe --connect office.ovpn\n" \
                   "\n" \
                   "Option zum Überschreiben der Registry Einstellungen:\n" \
                   "--exe_path\t\t: Pfad zu openvpn.exe.\n" \
-                  "--config_dir\t\t: Pfad, in welchem nach Konfigurationsdateien gesucht werden soll.\n" \
-                  "--ext_string\t\t: Dateinamenerweiterung der Konfigurationsdatei.\n" \
-                  "--log_dir\t\t\t: Pfad zum Verzeichnis, in welchem die Logdateien gespeichert werden sollen.\n" \
-                  "--priority_string\t\t: Prioritätsnummer (Schauen Sie für mehr Informationen in install.txt nach).\n" \
-                  "--append_string\t\t: 1=Logfile erweitern. 0=Überschreibe Logfile beim Verbinden.\n" \
+                  "--config_dir\t\t: Pfad, in welchem nach\n" \
+                  "\t\t\t  Konfigurationsdateien gesucht werden\n" \
+                  "\t\t\t  soll.\n" \
+                  "--ext_string\t\t: Dateinamenerweiterung der\n" \
+                  "\t\t\t  Konfigurationsdatei.\n" \
+                  "--log_dir\t\t\t: Pfad zum Verzeichnis, in welchem die\n" \
+                  "\t\t\t  Logdateien gespeichert werden sollen.\n" \
+                  "--priority_string\t\t: Prioritätsnummer (Schauen Sie für mehr\n" \
+                  "\t\t\t  Informationen in install.txt nach).\n" \
+                  "--append_string\t\t: 1=Logfile erweitern.\n" \
+                  "\t\t\t  0=Überschreibe Logfile beim Verbinden.\n" \
                   "--log_viewer\t\t: Pfad zum Lofile-Betrachter.\n" \
                   "--editor\t\t\t: Pfad zum Konfigurationseditor.\n" \
                   "--allow_edit\t\t: 1=Zeige Konfiguration-bearbeiten-Menü.\n" \
                   "--allow_service\t\t: 1=Zeige Dienstkontrollmenü.\n" \
                   "--allow_password\t\t: 1=Zeige Passwort-ändern-Menü.\n" \
                   "--allow_proxy\t\t: 1=Zeige Proxy-Einstellungsmenü.\n" \
-                  "--show_balloon\t\t: 0=Nie, 1=Beim ersten Verbinden, 2=Bei jedem Wiederverbinden.\n" \
+                  "--show_balloon\t\t: 0=Nie.\n" \
+                  "\t\t\t  1=Beim ersten Verbinden.\n" \
+                  "\t\t\t  2=Bei jedem Wiederverbinden.\n" \
                   "--service_only\t\t: 1=Aktiviere Service-Only-Modus.\n" \
-                  "--silent_connection\t\t: 1=Unterdrücke die Anzeige des Statusdialogs beim Verbinden.\n" \
-                  "--show_script_window\t: 0=Unterdrücke die Anzeige des Skriptfensters, 1=Zeige es.\n" \
-                  "--passphrase_attempts\t: Anzahl der erlaubten Passphrase-Versuche.\n" \
-                  "--connectscript_timeout\t: Wartezeit, bis Verbindungsskript beendet wird.\n" \
-                  "--disconnectscript_timeout\t: Wartezeit, bis das Trennungsskript beendet wird.\n" \
-                  "--preconnectscript_timeout\t: Wartezeit, bis das Verbindungsskript beendet wird.\n"
+                  "--silent_connection\t: 1=Unterdrücke die Anzeige des\n" \
+                  "\t\t\t  Statusdialogs beim Verbinden.\n" \
+                  "--show_script_window\t: 0=Unterdrücke die Anzeige des\n" \
+                  "\t\t\t  Skriptfensters.\n" \
+                  "\t\t\t  1=Zeige es.\n" \
+                  "--passphrase_attempts\t: Anzahl der erlaubten\n" \
+                  "\t\t\t  Passphrase-Versuche.\n" \
+                  "--connectscript_timeout\t: Wartezeit, bis Verbindungsskript beendet\n" \
+                  "\t\t\t  wird.\n" \
+                  "--disconnectscript_timeout\t: Wartezeit, bis das Trennungsskript\n" \
+                  "\t\t\t  beendet wird.\n" \
+                  "--preconnectscript_timeout\t: Wartezeit, bis das Verbindungsskript\n" \
+                  "\t\t\t  beendet wird.\n"
 
     IDS_NFO_USAGECAPTION "OpenVPN GUI Verwendung"
     IDS_ERR_BAD_PARAMETER "Es wurde versucht, ""%s"" als einen Parameter zu parsen, es " \
