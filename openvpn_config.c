@@ -137,21 +137,19 @@ AddConfigFileToList(int config, const TCHAR *filename, const TCHAR *config_dir)
 
 
 static void
-BuildFileList0(const TCHAR *config_dir, bool warn_duplicates)
+BuildFileList0(const TCHAR *config_dir, int recurse_depth, bool warn_duplicates)
 {
     WIN32_FIND_DATA find_obj;
     HANDLE find_handle;
     TCHAR find_string[MAX_PATH];
-    TCHAR subdir_table[MAX_CONFIG_SUBDIRS][MAX_PATH];
-    int subdirs = 0;
-    int i;
+    TCHAR subdir_name[MAX_PATH];
 
     _sntprintf_0(find_string, _T("%s\\*"), config_dir);
     find_handle = FindFirstFile(find_string, &find_obj);
     if (find_handle == INVALID_HANDLE_VALUE)
         return;
 
-    /* Loop over each config file in main config dir */
+    /* Loop over each config file in config dir */
     do
     {
         if (o.num_configs >= MAX_CONFIGS)
@@ -173,62 +171,41 @@ BuildFileList0(const TCHAR *config_dir, bool warn_duplicates)
             if (CheckReadAccess (config_dir, find_obj.cFileName))
                 AddConfigFileToList(o.num_configs++, find_obj.cFileName, config_dir);
         }
-        else if (match_type == match_dir)
+    } while (FindNextFile(find_handle, &find_obj));
+
+    FindClose(find_handle);
+
+    /* optionally loop over each subdir */
+    if (recurse_depth <= 1)
+        return;
+
+    find_handle = FindFirstFile (find_string, &find_obj);
+    if (find_handle == INVALID_HANDLE_VALUE)
+        return;
+
+    do
+    {
+        match_t match_type = match(&find_obj, o.ext_string);
+        if (match_type == match_dir)
         {
-            if (_tcsncmp(find_obj.cFileName, _T("."), _tcslen(find_obj.cFileName)) != 0
-            &&  _tcsncmp(find_obj.cFileName, _T(".."), _tcslen(find_obj.cFileName)) != 0
-            &&  subdirs < MAX_CONFIG_SUBDIRS)
+            if (wcscmp(find_obj.cFileName, _T("."))
+                &&  wcscmp(find_obj.cFileName, _T("..")))
             {
-                /* Add dir to dir_table */
-                _sntprintf_0(subdir_table[subdirs], _T("%s\\%s"), config_dir, find_obj.cFileName);
-                subdirs++;
+                /* recurse into subdirectory */
+                _sntprintf_0(subdir_name, _T("%s\\%s"), config_dir, find_obj.cFileName);
+                BuildFileList0(subdir_name, recurse_depth - 1, warn_duplicates);
             }
         }
     } while (FindNextFile(find_handle, &find_obj));
 
     FindClose(find_handle);
-
-    /* Loop over each config file in every subdir */
-    for (i = 0; i < subdirs; ++i)
-    {
-        _sntprintf_0(find_string, _T("%s\\*"), subdir_table[i]);
-
-        find_handle = FindFirstFile (find_string, &find_obj);
-        if (find_handle == INVALID_HANDLE_VALUE)
-            continue;
-
-        do
-        {
-            if (o.num_configs >= MAX_CONFIGS)
-            {
-                ShowLocalizedMsg(IDS_ERR_MANY_CONFIGS, MAX_CONFIGS);
-                FindClose(find_handle);
-                return;
-            }
-
-            /* does file have the correct type and extension? */
-            if (match(&find_obj, o.ext_string) != match_file)
-                continue;
-
-            if (ConfigAlreadyExists(find_obj.cFileName))
-            {
-                if (warn_duplicates)
-                    ShowLocalizedMsg(IDS_ERR_CONFIG_EXIST, find_obj.cFileName);
-                continue;
-            }
-
-            if (CheckReadAccess (subdir_table[i], find_obj.cFileName))
-                AddConfigFileToList(o.num_configs++, find_obj.cFileName, subdir_table[i]);
-        } while (FindNextFile(find_handle, &find_obj));
-
-        FindClose(find_handle);
-    }
 }
 
 void
 BuildFileList()
 {
     static bool issue_warnings = true;
+    int recurse_depth = 2; /* read config_dir and sub-directories */
 
     if (o.silent_connection)
         issue_warnings = false;
@@ -241,10 +218,10 @@ BuildFileList()
     if (CountConnState(disconnected) == o.num_configs)
         o.num_configs = 0;
 
-    BuildFileList0 (o.config_dir, issue_warnings);
+    BuildFileList0 (o.config_dir, recurse_depth, issue_warnings);
 
     if (_tcscmp (o.global_config_dir, o.config_dir))
-        BuildFileList0 (o.global_config_dir, issue_warnings);
+        BuildFileList0 (o.global_config_dir, recurse_depth, issue_warnings);
 
     if (o.num_configs == 0 && issue_warnings)
         ShowLocalizedMsg(IDS_NFO_NO_CONFIGS, o.config_dir, o.global_config_dir);

@@ -40,8 +40,7 @@ typedef struct connection connection_t;
  * Maximum number of parameters associated with an option,
  * including the option name itself.
  */
-#define MAX_PARMS           5   /* May number of parameters per option */
-#define MAX_CONFIG_SUBDIRS  50  /* Max number of subdirs to scan for configs */
+#define MAX_PARMS           5   /* Max number of parameters per option */
 
 
 typedef enum {
