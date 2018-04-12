@@ -28,11 +28,11 @@ CAPTION "OpenVPN - Private Key Password"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "Enter Password:", 201, 6, 6, 100, 10
+    LTEXT "Enter &Password:", 201, 6, 6, 100, 10
     EDITTEXT ID_EDT_PASSPHRASE, 6, 17, 107, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 33, 100, 10
-    PUSHBUTTON "OK", IDOK, 20, 49, 50, 14
-    PUSHBUTTON "Cancel", IDCANCEL, 90, 49, 50, 14
+    CHECKBOX "&Save password", ID_CHK_SAVE_PASS, 6, 33, 100, 10
+    PUSHBUTTON "&OK", IDOK, 20, 49, 50, 14
+    PUSHBUTTON "&Cancel", IDCANCEL, 90, 49, 50, 14
     LTEXT "", ID_TXT_WARNING, 6, 65, 100, 10
 END
 
@@ -43,13 +43,13 @@ EXSTYLE WS_EX_TOPMOST
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "Username:", 0, 6, 9, 50, 10
-    LTEXT "Password:", 0, 6, 26, 50, 10
+    LTEXT "&Username:", 0, 6, 9, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
+    LTEXT "&Password:", 0, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 42, 100, 10
-    PUSHBUTTON "OK", IDOK, 20, 58, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_DISABLED
-    PUSHBUTTON "Cancel", IDCANCEL, 90, 58, 52, 14
+    CHECKBOX "&Save password", ID_CHK_SAVE_PASS, 6, 42, 100, 10
+    PUSHBUTTON "&OK", IDOK, 20, 58, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "&Cancel", IDCANCEL, 90, 58, 52, 14
     LTEXT "", ID_TXT_WARNING, 6, 80, 150, 10
 END
 
@@ -60,16 +60,16 @@ CAPTION "OpenVPN - User Authentication"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "Username:", 0, 6, 9, 50, 10
-    LTEXT "Password:", 0, 6, 26, 50, 10
-    LTEXT "Response:", 0, 6, 60, 50, 10
+    LTEXT "&Username:", 0, 6, 9, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
+    LTEXT "&Password:", 0, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    LTEXT "&Response:", 0, 6, 60, 50, 10
     LTEXT "", ID_TXT_AUTH_CHALLENGE, 6, 43, 148, 10
     EDITTEXT ID_EDT_AUTH_CHALLENGE, 60, 57, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 76, 100, 10
-    PUSHBUTTON "OK", IDOK, 20, 92, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
-    PUSHBUTTON "Cancel", IDCANCEL, 90, 92, 52, 14
+    CHECKBOX "&Save password", ID_CHK_SAVE_PASS, 6, 76, 100, 10
+    PUSHBUTTON "&OK", IDOK, 20, 92, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "&Cancel", IDCANCEL, 90, 92, 52, 14
     LTEXT "", ID_TXT_WARNING, 6, 108, 150, 10
 END
 
@@ -81,10 +81,10 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 BEGIN
     LTEXT "", ID_TXT_DESCRIPTION, 6, 9, 208, 10
-    LTEXT "Response:", 0, 6, 30, 50, 10
+    LTEXT "&Response:", 0, 6, 30, 50, 10
     EDITTEXT ID_EDT_RESPONSE, 60, 27, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    PUSHBUTTON "OK", IDOK, 20, 51, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
-    PUSHBUTTON "Cancel", IDCANCEL, 90, 51, 52, 14
+    PUSHBUTTON "&OK", IDOK, 20, 51, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "&Cancel", IDCANCEL, 90, 51, 52, 14
 END
 
 /* Status Dialog */
@@ -98,9 +98,9 @@ BEGIN
     LTEXT "", ID_TXT_BYTECOUNT, 20, 175, 200, 10
     LTEXT "OpenVPN GUI 11.y.0.0/2.4.x", ID_TXT_VERSION, 220, 175, 150, 10
     LTEXT "", ID_TXT_IP, 20, 160, 300, 10
-    PUSHBUTTON "Disconnect", ID_DISCONNECT, 50, 190, 50, 14
-    PUSHBUTTON "Reconnect", ID_RESTART, 150, 190, 50, 14
-    PUSHBUTTON "Hide", ID_HIDE, 100, 190, 50, 14
+    PUSHBUTTON "&Disconnect", ID_DISCONNECT, 50, 190, 50, 14
+    PUSHBUTTON "&Reconnect", ID_RESTART, 150, 190, 50, 14
+    PUSHBUTTON "&Hide", ID_HIDE, 100, 190, 50, 14
 END
 
 /* Change Passphrase Dialog */
@@ -110,14 +110,14 @@ CAPTION "OpenVPN - Change Private Key Passphrase"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "Old Password:", 171, 6, 9, 85, 10
-    LTEXT "New Password:", 172, 6, 26, 85, 10
-    LTEXT "Confirm New Password:", 173, 6, 42, 85, 10
+    LTEXT "O&ld Password:", 171, 6, 9, 85, 10
     EDITTEXT ID_EDT_PASS_CUR, 95, 6, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    LTEXT "&New Password:", 172, 6, 26, 85, 10
     EDITTEXT ID_EDT_PASS_NEW, 95, 23, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    LTEXT "Con&firm New Password:", 173, 6, 42, 85, 10
     EDITTEXT ID_EDT_PASS_NEW2, 95, 39, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    PUSHBUTTON "OK", IDOK, 40, 59, 50, 14
-    PUSHBUTTON "Cancel", IDCANCEL, 103, 59, 50, 14
+    PUSHBUTTON "&OK", IDOK, 40, 59, 50, 14
+    PUSHBUTTON "&Cancel", IDCANCEL, 103, 59, 50, 14
     LTEXT "", ID_TXT_KEYFORMAT, 0, 0, 0, 0
     LTEXT "", ID_TXT_KEYFILE, 0, 0, 0, 0
 END
@@ -130,16 +130,16 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 BEGIN
     GROUPBOX "   ", 201, 6, 46, 235, 52
-    AUTORADIOBUTTON "Use OpenVPN Config-file Settings", ID_RB_PROXY_OPENVPN, \
+    AUTORADIOBUTTON "Use OpenVPN &Config-file Settings", ID_RB_PROXY_OPENVPN, \
                     13, 16, 200, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Use System Proxy Settings", \
+    AUTORADIOBUTTON "Use System &Proxy Settings", \
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
-    AUTORADIOBUTTON "Manual Configuration", ID_RB_PROXY_MANUAL, 13, 46, 79, 10
-    AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "SOCKS Proxy", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
-    LTEXT "Address:", ID_TXT_PROXY_ADDRESS, 20, 77, 32, 10
-    RTEXT "Port:", ID_TXT_PROXY_PORT, 171, 77, 20, 10
+    AUTORADIOBUTTON "&Manual Configuration", ID_RB_PROXY_MANUAL, 13, 46, 79, 10
+    AUTORADIOBUTTON "&HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "&SOCKS Proxy", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
+    LTEXT "&Address:", ID_TXT_PROXY_ADDRESS, 20, 77, 32, 10
     EDITTEXT ID_EDT_PROXY_ADDRESS, 53, 75, 117, 12, ES_AUTOHSCROLL
+    RTEXT "P&ort:", ID_TXT_PROXY_PORT, 171, 77, 20, 10
     EDITTEXT ID_EDT_PROXY_PORT, 196, 75, 30, 12, ES_AUTOHSCROLL
 END
 
@@ -151,20 +151,20 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 BEGIN
     GROUPBOX "User Interface", 201, 6, 12, 235, 30
-    LTEXT "Language:", ID_TXT_LANGUAGE, 17, 25, 52, 12
+    LTEXT "&Language:", ID_TXT_LANGUAGE, 17, 25, 52, 12
     COMBOBOX ID_CMB_LANGUAGE, 57, 23, 171, 400, CBS_DROPDOWNLIST | WS_TABSTOP
 
     GROUPBOX "Startup", 202, 6, 47, 235, 30
-    AUTOCHECKBOX "Launch on Windows startup", ID_CHK_STARTUP, 17, 59, 100, 12
+    AUTOCHECKBOX "Launch on Windows &startup", ID_CHK_STARTUP, 17, 59, 100, 12
 
     GROUPBOX "Preferences", 202, 6, 82, 235, 90
-    AUTOCHECKBOX "Append to log", ID_CHK_LOG_APPEND, 17, 95, 60, 10
-    AUTOCHECKBOX "Show script window", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
-    AUTOCHECKBOX "Silent connection", ID_CHK_SILENT, 17, 125, 200, 10
+    AUTOCHECKBOX "A&ppend to log", ID_CHK_LOG_APPEND, 17, 95, 60, 10
+    AUTOCHECKBOX "Show script &window", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
+    AUTOCHECKBOX "S&ilent connection", ID_CHK_SILENT, 17, 125, 200, 10
     LTEXT "Show Balloon", ID_TXT_BALLOON, 17, 140, 100, 10
-    AUTORADIOBUTTON "On connect", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "On connect/reconnect", ID_RB_BALLOON2, 86, 155, 90, 10
-    AUTORADIOBUTTON "Never", ID_RB_BALLOON0, 181, 155, 40, 10
+    AUTORADIOBUTTON "On &connect", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "On connect/&reconnect", ID_RB_BALLOON2, 86, 155, 90, 10
+    AUTORADIOBUTTON "&Never", ID_RB_BALLOON0, 181, 155, 40, 10
 END
 
 /* Advanced Dialog */
@@ -175,26 +175,26 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 BEGIN
     GROUPBOX "Configuration Files", 201, 6, 12, 235, 45
-    LTEXT "Folder:", ID_TXT_FOLDER, 17, 25, 32, 10
-    LTEXT "Extension:", ID_TXT_EXTENSION, 17, 40, 52, 10
+    LTEXT "&Folder:", ID_TXT_FOLDER, 17, 25, 32, 10
     EDITTEXT ID_EDT_CONFIG_DIR, 53, 23, 150, 12, ES_AUTOHSCROLL
+    LTEXT "&Extension:", ID_TXT_EXTENSION, 17, 40, 52, 10
     EDITTEXT ID_EDT_CONFIG_EXT, 53, 38, 25, 12, ES_AUTOHSCROLL
     PUSHBUTTON "…", ID_BTN_CONFIG_DIR, 208, 23, 25, 12
 
     GROUPBOX "Log Files", 202, 6, 62, 235, 30
-    LTEXT "Folder:", ID_TXT_FOLDER, 17, 74, 32, 10
+    LTEXT "F&older:", ID_TXT_FOLDER, 17, 74, 32, 10
     EDITTEXT ID_EDT_LOG_DIR, 53, 72, 150, 12, ES_AUTOHSCROLL
     PUSHBUTTON "…", ID_BTN_LOG_DIR, 208, 72, 25, 12
 
     GROUPBOX "Script Timeout", 201, 6, 97, 235, 60
-    LTEXT "Preconnect script timeout:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
-    LTEXT "Connect script timeout:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
-    LTEXT "Disconnect script timeout:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
+    LTEXT "&Preconnect script timeout:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
     EDITTEXT ID_EDT_PRECONNECT_TIMEOUT, 103, 108, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
+    LTEXT "&Connect script timeout:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
     EDITTEXT ID_EDT_CONNECT_TIMEOUT, 103, 123, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
+    LTEXT "&Disconnect script timeout:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
     EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 103, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
 
-    AUTOCHECKBOX "Service only", ID_CHK_SERVICE_ONLY, 6, 162, 100, 12
+    AUTOCHECKBOX "&Service only", ID_CHK_SERVICE_ONLY, 6, 162, 100, 12
 END
 
 /* About Dialog */
@@ -226,11 +226,11 @@ CAPTION "OpenVPN - Proxy Authentication"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "Username:", 201, 9, 8, 38, 10
+    LTEXT "&Username:", 201, 9, 8, 38, 10
     EDITTEXT ID_EDT_PROXY_USER, 49, 5, 94, 12, ES_AUTOHSCROLL
-    LTEXT "Password:", 202, 9, 26, 38, 10
+    LTEXT "&Password:", 202, 9, 26, 38, 10
     EDITTEXT ID_EDT_PROXY_PASS, 49, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    PUSHBUTTON "OK", IDOK, 58, 43, 40, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "&OK", IDOK, 58, 43, 40, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
 END
 
 STRINGTABLE
@@ -370,7 +370,7 @@ BEGIN
                   "--allow_service\t\t: 1=Show Service control menu.\n" \
                   "--allow_password\t\t: 1=Show Change Password menu item.\n" \
                   "--allow_proxy\t\t: 1=Show Proxy Settings menu.\n" \
-                  "--show_balloon\t\t: 0=Never, 1=At initial connect, 2=At every re-connect.\n" \
+                  "--show_balloon\t\t: 0=Never, 1=At initial connect, 2=At every reconnect.\n" \
                   "--service_only\t\t: 1=Enable Service Only mode.\n" \
                   "--silent_connection\t\t: 1=Do not show the status dialog while connecting or non-critical warnings at startup.\n" \
                   "--show_script_window\t: 0=Hide Script execution window, 1=Show it.\n" \
@@ -432,7 +432,7 @@ BEGIN
     IDS_ERR_SERVICE_START_FAILED "OpenVPN Service failed to start."
     IDS_ERR_OPEN_SCMGR "OpenSCManager failed (%d)"
     IDS_ERR_STOP_SERVICE "Failed to stop OpenVPN Service"
-    IDS_NFO_RESTARTED "OpenVPN Service Restarted."
+    IDS_NFO_RESTARTED "OpenVPN Service restarted."
     IDS_ERR_ACCESS_SERVICE_PIPE "Access to service pipe failed."
     IDS_ERR_WRITE_SERVICE_PIPE "Writing to service pipe failed."
     IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is not installed.\n"
