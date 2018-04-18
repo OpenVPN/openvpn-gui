@@ -71,7 +71,6 @@ typedef enum {
     suspending,
     suspended,
     resuming,
-    timedout
 } conn_state_t;
 
 /* Interactive Service IO parameters */

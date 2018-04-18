@@ -209,10 +209,9 @@ OnManagement(SOCKET sk, LPARAM lParam)
             else
             {
                 /* Connection to MI timed out. */
-                if (c->state != disconnected)
-                    c->state = timedout;
                 CloseManagement (c);
-                rtmsg_handler[stop_](c, "");
+                if (c->state != disconnected)
+                    rtmsg_handler[timeout_](c, "");
             }
         }
         else

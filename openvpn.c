@@ -1231,6 +1231,32 @@ OnPassword(connection_t *c, char *msg)
     }
 }
 
+/*
+ * Handle management connection timeout
+ */
+void
+OnTimeout(connection_t *c, UNUSED char *msg)
+{
+    /* Connection to management timed out -- keep trying unless killed
+     * by a startup error from service or from openvpn daemon process.
+     * The user can terminate by pressing disconnect.
+     */
+    if (o.silent_connection == 0)
+    {
+        SetForegroundWindow(c->hwndStatus);
+        ShowWindow(c->hwndStatus, SW_SHOW);
+    }
+    WriteStatusLog (c, L"GUI> ", LoadLocalizedString(IDS_NFO_CONN_TIMEOUT, c->log_path), false);
+    WriteStatusLog (c, L"GUI> ", L"Retrying. Press disconnect to abort", false);
+    c->state = connecting;
+    if (!OpenManagement(c))
+    {
+        MessageBoxEx(NULL, L"Failed to open management", _T(PACKAGE_NAME),
+                     MB_OK|MB_SETFOREGROUND|MB_ICONERROR, GetGUILanguage());
+        StopOpenVPN(c);
+    }
+    return;
+}
 
 /*
  * Handle exit of the OpenVPN process
@@ -1239,7 +1265,6 @@ void
 OnStop(connection_t *c, UNUSED char *msg)
 {
     UINT txt_id, msg_id;
-    TCHAR *msg_xtra;
     SetMenuStatus(c, disconnected);
 
     switch (c->state)
@@ -1267,13 +1292,9 @@ OnStop(connection_t *c, UNUSED char *msg)
     case resuming:
     case connecting:
     case reconnecting:
-    case timedout:
         /* We have failed to (re)connect */
         txt_id = c->state == reconnecting ? IDS_NFO_STATE_FAILED_RECONN : IDS_NFO_STATE_FAILED;
         msg_id = c->state == reconnecting ? IDS_NFO_RECONN_FAILED : IDS_NFO_CONN_FAILED;
-        msg_xtra = c->state == timedout ? c->log_path : c->config_name;
-        if (c->state == timedout)
-            msg_id = IDS_NFO_CONN_TIMEOUT;
 
         c->state = disconnecting;
         CheckAndSetTrayIcon();
@@ -1287,7 +1308,7 @@ OnStop(connection_t *c, UNUSED char *msg)
             SetForegroundWindow(c->hwndStatus);
             ShowWindow(c->hwndStatus, SW_SHOW);
         }
-        MessageBox(c->hwndStatus, LoadLocalizedString(msg_id, msg_xtra), _T(PACKAGE_NAME), MB_OK);
+        MessageBox(c->hwndStatus, LoadLocalizedString(msg_id, c->config_name), _T(PACKAGE_NAME), MB_OK);
         SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
         break;
 
@@ -1649,12 +1670,10 @@ OnService(connection_t *c, UNUSED char *msg)
             break;
         case ERROR_STARTUP_DATA:
             WriteStatusLog (c, prefix, L"OpenVPN not started due to previous errors", true);
-            c->state = timedout;   /* Force the popup message to include the log file name */
             OnStop (c, NULL);
             break;
         case ERROR_OPENVPN_STARTUP:
             WriteStatusLog (c, prefix, L"Check the log file for details", false);
-            c->state = timedout;   /* Force the popup message to include the log file name */
             OnStop(c, NULL);
             break;
         default:
@@ -1992,7 +2011,11 @@ ThreadOpenVPNStatus(void *p)
     SetWindowText(c->hwndStatus, LoadLocalizedString(IDS_NFO_CONNECTION_XXX, conn_name));
 
     if (!OpenManagement(c))
-        PostMessage(c->hwndStatus, WM_CLOSE, 0, 0);
+    {
+        MessageBoxEx(NULL, L"Failed to open management", _T(PACKAGE_NAME),
+                     MB_OK|MB_SETFOREGROUND|MB_ICONERROR, GetGUILanguage());
+        StopOpenVPN(c);
+    }
 
     /* Start the async read loop for service and set it as the wait event */
     if (c->iserv.hEvent)

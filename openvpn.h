@@ -43,6 +43,7 @@ void OnNeedStr(connection_t *, char *);
 void OnEcho(connection_t *, char *);
 void OnByteCount(connection_t *, char *);
 void OnInfoMsg(connection_t*, char*);
+void OnTimeout(connection_t *, char *);
 
 void ResetSavePasswords(connection_t *);
 
