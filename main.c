@@ -188,6 +188,7 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
       { echo_,     OnEcho },
       { bytecount_,OnByteCount },
       { infomsg_,  OnInfoMsg },
+      { timeout_,  OnTimeout },
       { 0,        NULL }
   };
   InitManagement(handler);
