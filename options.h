@@ -41,7 +41,8 @@ typedef struct connection connection_t;
  * including the option name itself.
  */
 #define MAX_PARMS           5   /* Max number of parameters per option */
-
+/* Menu ids are constructed as 12 bits for config number, 4 bits for action */
+#define MAX_CONFIGS         (1<<12)
 
 typedef enum {
     service_noaccess     = -1,
@@ -155,13 +156,16 @@ struct connection {
 /* All options used within OpenVPN GUI */
 typedef struct {
     /* Array of configs to autostart */
-    const TCHAR *auto_connect[MAX_CONFIGS];
+    const TCHAR **auto_connect;
 
     /* Connection parameters */
-    connection_t conn[MAX_CONFIGS];   /* Connection structure */
+    connection_t *conn;               /* Array of connection structure */
     config_group_t *groups;           /* Array of nodes defining the config groups tree */
     int num_configs;                  /* Number of configs */
+    int num_auto_connect;             /* Number of auto-connect configs */
     int num_groups;                   /* Number of config groups */
+    int max_configs;                  /* Current capacity of conn array */
+    int max_auto_connect;             /* Current capacity of auto_connect array */
     int max_groups;                   /* Current capacity of groups array */
 
     service_state_t service_state;    /* State of the OpenVPN Service */

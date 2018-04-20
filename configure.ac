@@ -49,12 +49,6 @@ AC_ARG_ENABLE(
 	[enable_password_change="yes"]
 )
 
-AC_ARG_VAR([MAX_CONFIGS], [specify the maximum number of configs @<:@default=50@:>@])
-if test -z "$MAX_CONFIGS"; then
-	MAX_CONFIGS=50
-fi
-AC_DEFINE_UNQUOTED([MAX_CONFIGS], [$MAX_CONFIGS], [Maximum number of config files supported.])
-
 case "$host" in
 	*-mingw*)
 		CPPFLAGS="${CPPFLAGS} -DWIN32_LEAN_AND_MEAN"

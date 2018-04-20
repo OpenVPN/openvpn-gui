@@ -80,7 +80,7 @@ VerifyAutoConnections()
 {
     int i;
 
-    for (i = 0; i < MAX_CONFIGS && o.auto_connect[i] != 0; i++)
+    for (i = 0; i < o.num_auto_connect; i++)
     {
         if (GetConnByName(o.auto_connect[i]) == NULL)
         {
