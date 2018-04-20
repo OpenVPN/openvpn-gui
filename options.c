@@ -215,6 +215,11 @@ add_option(options_t *options, int i, TCHAR **p)
         ++i;
         options->preconnectscript_timeout = _ttoi(p[1]);
     }
+    else if (streq(p[0], _T("config_menu_view")) && p[1])
+    {
+        ++i;
+        options->config_menu_view = _ttoi(p[1]);
+    }
     else if (streq(p[0], _T("command")) && p[1])
     {
         ++i;
