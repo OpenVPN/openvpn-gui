@@ -38,6 +38,7 @@
 #include "openvpn-gui-res.h"
 #include "localization.h"
 #include "misc.h"
+#include "assert.h"
 
 /* Popup Menus */
 HMENU hMenu;
@@ -47,17 +48,35 @@ HMENU hMenuService;
 NOTIFYICONDATA ni;
 extern options_t o;
 
+#define USE_NESTED_CONFIG_MENU ((o.config_menu_view == CONFIG_VIEW_AUTO && o.num_configs > 50)   \
+                                 || (o.config_menu_view == CONFIG_VIEW_NESTED))
 
 /* Create popup menus */
 void
 CreatePopupMenus()
 {
     int i;
+
+    /* We use groups[0].menu as the root menu, so,
+     * even if num_configs = 0, we want num_groups > 0.
+     * This is guaranteed as the root node is always defined.
+     */
+    assert(o.num_groups > 0);
+
     for (i = 0; i < o.num_configs; i++)
+    {
         hMenuConn[i] = CreatePopupMenu();
+    }
+    for (i = 0; i < o.num_groups; i++)
+    {
+        if (!o.groups[i].active)
+            continue;
+        o.groups[i].menu = CreatePopupMenu();
+        o.groups[i].children = 0; /* we have to recount this when assigning menu position index */
+    }
 
     hMenuService = CreatePopupMenu();
-    hMenu = CreatePopupMenu();
+    hMenu = o.groups[0].menu; /* the first group menu is also the root menu */
 
     if (o.num_configs == 1) {
         /* Create Main menu with actions */
@@ -91,13 +110,48 @@ CreatePopupMenus()
         AppendMenu(hMenu, MF_STRING ,IDM_SETTINGS, LoadLocalizedString(IDS_MENU_SETTINGS));
         AppendMenu(hMenu, MF_STRING ,IDM_CLOSE, LoadLocalizedString(IDS_MENU_CLOSE));
 
-        SetMenuStatus(&o.conn[0],  o.conn[0].state);
+        SetMenuStatusById(0,  o.conn[0].state);
     }
     else {
-        /* Create Main menu with all connections */
         int i;
+        /* construct the submenu tree first */
+        if (USE_NESTED_CONFIG_MENU)
+        {
+            /* i = 0 is the root menu and has no parent */
+            for (i = 1; i < o.num_groups; i++)
+            {
+                config_group_t *this = &o.groups[i];
+                config_group_t *parent = this->parent;
+
+                if (!this->active || !parent)
+                    continue;
+                AppendMenu(parent->menu, MF_POPUP, (UINT_PTR) this->menu, this->name);
+                this->pos = parent->children++;
+
+                PrintDebug(L"Submenu %d named %s added to parent %s with position %d",
+                        i, this->name, parent->name, this->pos);
+            }
+        }
+
+        /* add config file (connection) entries */
         for (i = 0; i < o.num_configs; i++)
-            AppendMenu(hMenu, MF_POPUP, (UINT_PTR) hMenuConn[i], o.conn[i].config_name);
+        {
+            connection_t *c = &o.conn[i];
+            config_group_t *parent = &o.groups[0]; /* by default config is added to the root */
+
+            if (USE_NESTED_CONFIG_MENU)
+            {
+                if (c->group) /* should be always true, but in case... */
+                     parent = c->group;
+            }
+
+            /* Add config to the current sub menu */
+            AppendMenu(parent->menu, MF_POPUP, (UINT_PTR) hMenuConn[i], c->config_name);
+            c->pos = parent->children++;
+
+            PrintDebug(L"Config %d named %s added to submenu %s with position %d",
+                        i, c->config_name, parent->name, c->pos);
+        }
 
         if (o.num_configs > 0)
             AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
@@ -134,7 +188,7 @@ CreatePopupMenus()
                 AppendMenu(hMenuConn[i], MF_STRING, IDM_PASSPHRASEMENU + i, LoadLocalizedString(IDS_MENU_PASSPHRASE));
 #endif
 
-            SetMenuStatus(&o.conn[i], o.conn[i].state);
+            SetMenuStatusById(i, o.conn[i].state);
         }
     }
 
@@ -152,6 +206,9 @@ DestroyPopupMenus()
 
     DestroyMenu(hMenuService);
     DestroyMenu(hMenu);
+
+    hMenuService = NULL;
+    hMenu = NULL;
 }
 
 
@@ -348,6 +405,22 @@ ShowTrayBalloon(TCHAR *infotitle_msg, TCHAR *info_msg)
 void
 SetMenuStatus(connection_t *c, conn_state_t state)
 {
+    int i;
+
+    for (i = 0; i < o.num_configs; ++i)
+    {
+        if (c == &o.conn[i])
+            break;
+    }
+    SetMenuStatusById(i, state);
+}
+
+void
+SetMenuStatusById(int i, conn_state_t state)
+{
+    connection_t *c = &o.conn[i];
+    BOOL checked = (state == connected || state == disconnecting);
+
     if (o.num_configs == 1)
     {
         if (state == disconnected)
@@ -378,15 +451,26 @@ SetMenuStatus(connection_t *c, conn_state_t state)
     }
     else
     {
-        int i;
-        for (i = 0; i < o.num_configs; ++i)
-        {
-            if (c == &o.conn[i])
-                break;
-        }
+        config_group_t *parent = &o.groups[0];
+        int pos = c->pos;
 
-        BOOL checked = (state == connected || state == disconnecting);
-        CheckMenuItem(hMenu, i, MF_BYPOSITION | (checked ? MF_CHECKED : MF_UNCHECKED));
+        if (USE_NESTED_CONFIG_MENU && c->group)
+            parent = c->group;
+
+        CheckMenuItem(parent->menu, pos, MF_BYPOSITION | (checked ? MF_CHECKED : MF_UNCHECKED));
+
+        PrintDebug(L"Setting state of config %s checked = %d, parent %s, pos %d",
+                    c->config_name, checked, (parent->id == 0)? L"Main Menu" : L"SubMenu", pos);
+
+        if (checked) /* also check all parent groups */
+        {
+            while (parent->parent)
+            {
+                pos = parent->pos;
+                parent = parent->parent;
+                CheckMenuItem(parent->menu, pos, MF_BYPOSITION | MF_CHECKED);
+            }
+        }
 
         if (state == disconnected)
         {
