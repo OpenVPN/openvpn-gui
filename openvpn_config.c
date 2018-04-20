@@ -112,7 +112,7 @@ AddConfigFileToList(int config, const TCHAR *filename, const TCHAR *config_dir)
 #endif
 
     /* Check if connection should be autostarted */
-    for (i = 0; i < MAX_CONFIGS && o.auto_connect[i]; ++i)
+    for (i = 0; i < o.num_auto_connect; ++i)
     {
         if (_tcsicmp(c->config_file, o.auto_connect[i]) == 0
             || _tcsicmp(c->config_name, o.auto_connect[i]) == 0)
@@ -265,10 +265,17 @@ BuildFileList0(const TCHAR *config_dir, int recurse_depth, config_group_t *group
     /* Loop over each config file in config dir */
     do
     {
-        if (o.num_configs >= MAX_CONFIGS)
+        if (!o.conn || o.num_configs == o.max_configs)
         {
-            ShowLocalizedMsg(IDS_ERR_MANY_CONFIGS, MAX_CONFIGS);
-            break;
+            o.max_configs += 50;
+            void *tmp = realloc(o.conn, sizeof(*o.conn)*o.max_configs);
+            if (!tmp)
+            {
+                o.max_configs -= 50;
+                FindClose(find_handle);
+                ErrorExit(1, L"Out of memory while scanning configs");
+            }
+            o.conn = tmp;
         }
 
         match_t match_type = match(&find_obj, o.ext_string);
@@ -359,6 +366,14 @@ BuildFileList()
 
     if (o.num_configs == 0 && issue_warnings)
         ShowLocalizedMsg(IDS_NFO_NO_CONFIGS, o.config_dir, o.global_config_dir);
+
+    /* More than MAX_CONFIGS are ignored in the menu listing */
+    if (o.num_configs > MAX_CONFIGS)
+    {
+        if (issue_warnings)
+            ShowLocalizedMsg(IDS_ERR_MANY_CONFIGS, o.num_configs);
+        o.num_configs = MAX_CONFIGS; /* menus don't work with more -- ignore the rest */
+    }
 
     ActivateConfigGroups();
 

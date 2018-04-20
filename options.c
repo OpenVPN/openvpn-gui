@@ -97,18 +97,22 @@ add_option(options_t *options, int i, TCHAR **p)
     else if (streq(p[0], _T("connect")) && p[1])
     {
         ++i;
-        static int auto_connect_nr = 0;
-        if (auto_connect_nr == MAX_CONFIGS)
+        if (!options->auto_connect || options->num_auto_connect == options->max_auto_connect)
         {
-            /* Too many configs */
-            ShowLocalizedMsg(IDS_ERR_MANY_CONFIGS, MAX_CONFIGS);
-            exit(1);
+            options->max_auto_connect += 10;
+            void *tmp = realloc(options->auto_connect, sizeof(wchar_t *)*options->max_auto_connect);
+            if (!tmp)
+            {
+                options->max_auto_connect -= 10;
+                ErrorExit(1, L"Out of memory while parsing command line");
+            }
+            options->auto_connect = tmp;
         }
-        options->auto_connect[auto_connect_nr++] = p[1];
+        options->auto_connect[options->num_auto_connect++] = p[1];
         /* Treat the first connect option to also mean --command connect profile.
          * This gets used if we are not the first instance.
          */
-        if (auto_connect_nr == 1)
+        if (options->num_auto_connect == 1)
         {
             options->action = WM_OVPN_START;
             options->action_arg = p[1];
