@@ -135,9 +135,81 @@ AddConfigFileToList(int config, const TCHAR *filename, const TCHAR *config_dir)
     }
 }
 
+#define FLAG_WARN_DUPLICATES        (0x1)
+#define FLAG_WARN_MAX_CONFIGS       (0x2)
+#define FLAG_ADD_CONFIG_GROUPS      (0x4)
 
+/*
+ * Create a new group with the given name as a child of the
+ * specified parent group and return pointer to the new group.
+ * If FLAG_ADD_CONFIG_GROUPS is not enabled, returns the
+ * parent itself.
+ */
+static config_group_t *
+NewConfigGroup(const wchar_t *name, config_group_t *parent, int flags)
+{
+    if (!(flags & FLAG_ADD_CONFIG_GROUPS))
+        return parent;
+
+    if (!o.groups || o.num_groups == o.max_groups)
+    {
+        o.max_groups += 10;
+        void *tmp = realloc(o.groups, sizeof(*o.groups)*o.max_groups);
+        if (!tmp)
+        {
+            o.max_groups -= 10;
+            ErrorExit(1, L"Out of memory while grouping configs");
+        }
+        o.groups = tmp;
+    }
+
+    config_group_t *cg = &o.groups[o.num_groups];
+    memset(cg, 0, sizeof(*cg));
+
+    _sntprintf_0(cg->name, L"%s", name);
+    cg->id = o.num_groups++;
+    cg->parent = parent;
+    cg->active = false; /* activated later if not empty */
+
+    return cg;
+}
+
+/*
+ * All groups that link at least one config to the root are
+ * enabled. Dangling entries with no terminal configs will stay
+ * disabled and are not displayed in the menu tree.
+ */
 static void
-BuildFileList0(const TCHAR *config_dir, int recurse_depth, bool warn_duplicates)
+ActivateConfigGroups(void)
+{
+    /* the root group is always active */
+    o.groups[0].active = true;
+
+    /* activate all groups that connect a config to the root */
+    for (int i = 0; i < o.num_configs; i++)
+    {
+        config_group_t *cg = o.conn[i].group;
+
+        while (cg)
+        {
+            cg->active = true;
+            cg = cg->parent;
+        }
+    }
+}
+
+/* Scan for configs in config_dir recursing down up to recurse_depth.
+ * Input: config_dir -- root of the directory to scan from
+ *        group      -- the group into which add the configs to
+ *        flags      -- enable warnings, use directory based
+ *                      grouping of configs etc.
+ * Currently configs in a directory are grouped together and group is
+ * a pointer to the current parent group in the global group array |o.groups|
+ * This may be recursively called until depth becomes 1 and each time
+ * the group is changed to that of the directory being recursed into.
+ */
+static void
+BuildFileList0(const TCHAR *config_dir, int recurse_depth, config_group_t *group, int flags)
 {
     WIN32_FIND_DATA find_obj;
     HANDLE find_handle;
@@ -163,13 +235,16 @@ BuildFileList0(const TCHAR *config_dir, int recurse_depth, bool warn_duplicates)
         {
             if (ConfigAlreadyExists(find_obj.cFileName))
             {
-                if (warn_duplicates)
+                if (flags & FLAG_WARN_DUPLICATES)
                     ShowLocalizedMsg(IDS_ERR_CONFIG_EXIST, find_obj.cFileName);
                 continue;
             }
 
             if (CheckReadAccess (config_dir, find_obj.cFileName))
-                AddConfigFileToList(o.num_configs++, find_obj.cFileName, config_dir);
+            {
+                AddConfigFileToList(o.num_configs, find_obj.cFileName, config_dir);
+                o.conn[o.num_configs++].group = group;
+            }
         }
     } while (FindNextFile(find_handle, &find_obj));
 
@@ -193,7 +268,9 @@ BuildFileList0(const TCHAR *config_dir, int recurse_depth, bool warn_duplicates)
             {
                 /* recurse into subdirectory */
                 _sntprintf_0(subdir_name, _T("%s\\%s"), config_dir, find_obj.cFileName);
-                BuildFileList0(subdir_name, recurse_depth - 1, warn_duplicates);
+                config_group_t *sub_group = NewConfigGroup(find_obj.cFileName, group, flags);
+
+                BuildFileList0(subdir_name, recurse_depth - 1, sub_group, flags);
             }
         }
     } while (FindNextFile(find_handle, &find_obj));
@@ -205,7 +282,9 @@ void
 BuildFileList()
 {
     static bool issue_warnings = true;
-    int recurse_depth = 2; /* read config_dir and sub-directories */
+    int recurse_depth = 4; /* read config_dir and 3 levels of sub-directories */
+    int flags = 0;
+    config_group_t *root = NULL;
 
     if (o.silent_connection)
         issue_warnings = false;
@@ -216,15 +295,31 @@ BuildFileList()
      * rescan to add any new one's found
      */
     if (CountConnState(disconnected) == o.num_configs)
+    {
         o.num_configs = 0;
+        o.num_groups = 0;
+        flags |= FLAG_ADD_CONFIG_GROUPS;
+        root = NewConfigGroup(L"User Profiles", NULL, flags);
+    }
+    else
+        root = &o.groups[0];
 
-    BuildFileList0 (o.config_dir, recurse_depth, issue_warnings);
+    if (issue_warnings)
+    {
+        flags |= FLAG_WARN_DUPLICATES | FLAG_WARN_MAX_CONFIGS;
+    }
+
+    BuildFileList0 (o.config_dir, recurse_depth, root, flags);
+
+    root = NewConfigGroup(L"System Profiles", root, flags);
 
     if (_tcscmp (o.global_config_dir, o.config_dir))
-        BuildFileList0 (o.global_config_dir, recurse_depth, issue_warnings);
+        BuildFileList0 (o.global_config_dir, recurse_depth, root, flags);
 
     if (o.num_configs == 0 && issue_warnings)
         ShowLocalizedMsg(IDS_NFO_NO_CONFIGS, o.config_dir, o.global_config_dir);
+
+    ActivateConfigGroups();
 
     issue_warnings = false;
 }

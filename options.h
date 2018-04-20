@@ -87,9 +87,29 @@ typedef struct {
 #define FLAG_SAVE_AUTH_PASS (1<<5)
 #define FLAG_DISABLE_SAVE_PASS (1<<6)
 
+#define CONFIG_VIEW_AUTO      (0)
+#define CONFIG_VIEW_FLAT      (1)
+#define CONFIG_VIEW_NESTED    (2)
+
 typedef struct {
     unsigned short major, minor, build, revision;
 } version_t;
+
+/* A node of config groups tree that can be navigated from the end
+ * node (where config file is attached) to the root. The nodes are stored
+ * as array (o.groups[]) with each node linked to its parent.
+ * Not a complete tree: only navigation from child to parent is supported
+ * which is enough for our purposes.
+ */
+typedef struct config_group {
+    int id;                      /* A unique id for the group */
+    wchar_t name[40];            /* Name of the group -- possibly truncated */
+    struct config_group *parent; /* Pointer to parent group */
+    BOOL active;                 /* Displayed in the menu if true -- used to prune empty groups */
+    int children;                /* Number of children groups and configs */
+    int pos;                     /* Index within the parent group -- used for rendering */
+    HMENU menu;                  /* Handle to menu entry for this group */
+} config_group_t;
 
 /* Connections parameters */
 struct connection {
@@ -105,6 +125,8 @@ struct connection {
     int failed_auth_attempts;       /* # of failed user-auth attempts */
     time_t connected_since;         /* Time when the connection was established */
     proxy_t proxy_type;             /* Set during querying proxy credentials */
+    config_group_t *group;          /* Pointer to the group this config belongs to */
+    int pos;                        /* Index of the config within its group */
 
     struct {
         SOCKET sk;
@@ -137,7 +159,10 @@ typedef struct {
 
     /* Connection parameters */
     connection_t conn[MAX_CONFIGS];   /* Connection structure */
+    config_group_t *groups;           /* Array of nodes defining the config groups tree */
     int num_configs;                  /* Number of configs */
+    int num_groups;                   /* Number of config groups */
+    int max_groups;                   /* Current capacity of groups array */
 
     service_state_t service_state;    /* State of the OpenVPN Service */
 
@@ -169,6 +194,7 @@ typedef struct {
     DWORD connectscript_timeout;        /* Connect Script execution timeout (sec) */
     DWORD disconnectscript_timeout;     /* Disconnect Script execution timeout (sec) */
     DWORD preconnectscript_timeout;     /* Preconnect Script execution timeout (sec) */
+    DWORD config_menu_view;             /* 0 for auto, 1 for original flat menu, 2 for hierarchical */
 
 #ifdef DEBUG
     FILE *debug_fp;

@@ -879,3 +879,20 @@ MsgToEventLog(WORD type, wchar_t *format, ...)
     msg[1] = buf;
     ReportEventW(o.event_log, type, 0, 0, NULL, 2, 0, msg, NULL);
 }
+
+void
+ErrorExit(int exit_code, const wchar_t *msg)
+{
+    if (msg)
+        MessageBoxExW(NULL, msg, TEXT(PACKAGE_NAME),
+                      MB_OK | MB_SETFOREGROUND|MB_ICONERROR, GetGUILanguage());
+    if (o.hWnd)
+    {
+        StopAllOpenVPN();
+        PostQuitMessage(exit_code);
+    }
+    else
+    {
+        exit(exit_code);
+    }
+}
