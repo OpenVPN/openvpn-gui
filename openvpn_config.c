@@ -178,12 +178,53 @@ NewConfigGroup(const wchar_t *name, config_group_t *parent, int flags)
  * All groups that link at least one config to the root are
  * enabled. Dangling entries with no terminal configs will stay
  * disabled and are not displayed in the menu tree.
+ * Also groups with single configs are squashed if the group
+ * and config names match --- this improves the display.
  */
 static void
 ActivateConfigGroups(void)
 {
     /* the root group is always active */
     o.groups[0].active = true;
+
+    /* count children of each group -- this includes groups
+     * and configs which have it as parent
+     */
+    for (int i = 0; i < o.num_configs; i++)
+    {
+        o.conn[i].group->children++;
+    }
+
+    for (int i = 1; i < o.num_groups; i++)
+    {
+        config_group_t *this = &o.groups[i];
+        if (this->parent) /* should be true as i = 0 is omitted */
+            this->parent->children++;
+
+        /* unless activated below the group stays inactive */
+        this->active = false;
+    }
+
+    /* Squash single config directories with name matching the config
+     * one depth up. This is done so that automatically imported configs
+     * which are added as a single config per directory are handled
+     * as if its in the parent directory. This encourages the
+     * practice of keeping each config and its  dependencies (certs,
+     * script etc.) in a separate directory, without making the menu structure
+     * too deeply nested.
+     */
+    for (int i = 0; i < o.num_configs; i++)
+    {
+        config_group_t *cg = o.conn[i].group;
+
+        /* if not root and has only this config as child -- squash it */
+        if (cg->parent && cg->children == 1
+            && !wcscmp(cg->name, o.conn[i].config_name))
+        {
+            cg->children--;
+            o.conn[i].group = cg->parent;
+        }
+    }
 
     /* activate all groups that connect a config to the root */
     for (int i = 0; i < o.num_configs; i++)
