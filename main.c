@@ -130,7 +130,7 @@ NotifyRunningInstance()
     }
     else
     {
-        PrintDebug(L"Instance 2: Previous instance not yet ready to accept comamnds");
+        PrintDebug(L"Instance 2: Previous instance not yet ready to accept commands");
         exit_code = OVPN_EXITCODE_NOTREADY;
     }
     PrintDebug(L"Instance 2: Returning exit code %d", exit_code);
