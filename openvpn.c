@@ -508,6 +508,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             else
             {
                 DeleteSavedAuthPass(param->c->config_name);
+                DeleteSavedUsername(param->c->config_name);
                 Button_SetCheck(GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), BST_UNCHECKED);
             }
             AutoCloseCancel(hwndDlg); /* user interrupt */
@@ -521,7 +522,6 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                     show_error_tip(GetDlgItem(hwndDlg, ID_EDT_AUTH_USER), LoadLocalizedString(IDS_ERR_INVALID_USERNAME_INPUT));
                     return 0;
                 }
-                SaveUsername(param->c->config_name, username);
             }
             if (GetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password, _countof(password)))
             {
@@ -533,6 +533,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 }
                 if ( param->c->flags & FLAG_SAVE_AUTH_PASS && wcslen(password) )
                 {
+                    SaveUsername(param->c->config_name, username);
                     SaveAuthPass(param->c->config_name, password);
                 }
                 SecureZeroMemory(password, sizeof(password));

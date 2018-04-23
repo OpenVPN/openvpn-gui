@@ -200,9 +200,7 @@ RecallAuthPass(const WCHAR *config_name, WCHAR *password)
 int
 SaveUsername(const WCHAR *config_name, const WCHAR *username)
 {
-    DWORD len = (wcslen(username) + 1) * sizeof(*username);
-    SetConfigRegistryValueBinary(config_name, AUTH_USER_DATA,(BYTE *) username, len);
-    return 1;
+    return save_encrypted(config_name, username, AUTH_USER_DATA);
 }
 /*
  * The buffer username should be have space for up to USER_PASS_LEN
@@ -212,13 +210,29 @@ int
 RecallUsername(const WCHAR *config_name, WCHAR *username)
 {
     DWORD capacity = USER_PASS_LEN * sizeof(WCHAR);
-    DWORD len;
-
-    len = GetConfigRegistryValue(config_name, AUTH_USER_DATA, (BYTE *) username,  capacity);
-    if (len == 0)
-        return 0;
-    username[USER_PASS_LEN-1] = L'\0';
-    return 1;
+    int retval;
+    retval = recall_encrypted(config_name, username, USER_PASS_LEN, AUTH_USER_DATA);
+    /* older versions saved username unencrypted -- try to read as plain text and migrate */
+    if (!retval)
+    {
+        DWORD len = GetConfigRegistryValue(config_name, AUTH_USER_DATA, (BYTE *) username,  capacity);
+        username[USER_PASS_LEN-1] = L'\0';
+        if (len > 0)
+        {
+            retval = 1;
+            /* re-save as encrypted or delete depending on password is saved or not */
+            if (IsAuthPassSaved(config_name))
+            {
+                SaveUsername(config_name, username); /* overwrites previous plain text value */
+            }
+            else
+            {
+                DeleteSavedUsername(config_name);
+                SecureZeroMemory(username, capacity);
+            }
+        }
+    }
+    return retval;
 }
 
 void
@@ -233,6 +247,12 @@ DeleteSavedAuthPass(const WCHAR *config_name)
     DeleteConfigRegistryValue(config_name, AUTH_PASS_DATA);
 }
 
+void
+DeleteSavedUsername(const WCHAR *config_name)
+{
+    DeleteConfigRegistryValue(config_name, AUTH_USER_DATA);
+}
+
 /* delete saved config-specific auth password and private key passphrase */
 void
 DeleteSavedPasswords(const WCHAR *config_name)
@@ -240,6 +260,7 @@ DeleteSavedPasswords(const WCHAR *config_name)
     DeleteConfigRegistryValue(config_name, KEY_PASS_DATA);
     DeleteConfigRegistryValue(config_name, AUTH_PASS_DATA);
     DeleteConfigRegistryValue(config_name, ENTROPY_DATA);
+    DeleteConfigRegistryValue(config_name, AUTH_USER_DATA);
 }
 
 /* check if auth password is saved */
