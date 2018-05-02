@@ -56,6 +56,7 @@ ID_ICO_DISCONNECTED  ICON  DISCARDABLE  "disconnected.ico"
 #include "openvpn-gui-res-se.rc"
 #include "openvpn-gui-res-tr.rc"
 #include "openvpn-gui-res-ua.rc"
+#include "openvpn-gui-res-zh-hans.rc"
 #include "openvpn-gui-res-zh-hant.rc"
 
 /* Version information and such */
