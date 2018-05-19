@@ -204,18 +204,25 @@ static void
 parse_assigned_ip(connection_t *c, const char *msg)
 {
     char *sep;
+    CLEAR(c->ip);
+    CLEAR(c->ipv6);
 
     /* extract local ipv4 address if available*/
-    c->ip[0] = L'\0';
     sep = strchr(msg, ',');
     if (sep == NULL)
         return;
 
     /* Convert the IP address to Unicode */
-    MultiByteToWideChar(CP_UTF8, 0, msg, sep-msg, c->ip, _countof(c->ip));
+    if (sep - msg > 0
+        && MultiByteToWideChar(CP_UTF8, 0, msg, sep-msg, c->ip, _countof(c->ip)-1) == 0)
+    {
+        WriteStatusLog(c, L"GUI> ", L"Failed to extract the assigned ipv4 address (error = %d)",
+                       GetLastError());
+        c->ip[0] = L'\0';
+    }
 
     /* extract local ipv6 address if available */
-    c->ipv6[0] = L'\0';
+
     /* skip 4 commas */
     for (int i = 0; i < 4 && sep; i++)
     {
@@ -226,7 +233,12 @@ parse_assigned_ip(connection_t *c, const char *msg)
 
     sep++; /* start of ipv6 address */
     /* Convert the IP address to Unicode */
-    MultiByteToWideChar(CP_UTF8, 0, sep, -1, c->ipv6, _countof(c->ipv6));
+    if (MultiByteToWideChar(CP_UTF8, 0, sep, -1, c->ipv6, _countof(c->ipv6)-1) == 0)
+    {
+        WriteStatusLog(c, L"GUI> ", L"Failed to extract the assigned ipv6 address (error = %d)",
+                       GetLastError());
+        c->ipv6[0] = L'\0';
+    }
 }
 
 /*
