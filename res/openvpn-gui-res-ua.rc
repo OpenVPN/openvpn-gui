@@ -80,7 +80,7 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_UKRAINIAN, SUBLANG_DEFAULT
 BEGIN
     LTEXT "", ID_TXT_DESCRIPTION, 6, 9, 208, 10
-    LTEXT "Response:", 0, 6, 30, 50, 10
+    LTEXT "Відповідь:", 0, 6, 30, 50, 10
     EDITTEXT ID_EDT_RESPONSE, 60, 27, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     PUSHBUTTON "OK", IDOK, 20, 51, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
     PUSHBUTTON "Скасувати", IDCANCEL, 90, 51, 52, 14
@@ -353,7 +353,7 @@ BEGIN
 
     IDS_NFO_USAGECAPTION "Спроба OpenVPN GUI"
     IDS_ERR_BAD_PARAMETER "Спроба робить із ""%s"" як --опція параметр, " \
-                      "но немає зпочатку '--'"
+                      "але немає напочатку '--'"
     IDS_ERR_BAD_OPTION "Помилка опций: нероспізнано опції або відсутні параметри: --%s\n" \
                    "Використувуйте openvpn-gui --help у пошуках дод. інформації."
 
