@@ -88,7 +88,7 @@
 #define ID_CMB_LANGUAGE                  231
 #define ID_TXT_LANGUAGE                  232
 #define ID_CHK_STARTUP                   233
-#define ID_CHK_SERVICE_ONLY              234
+/* historic: #define ID_CHK_SERVICE_ONLY              234 */
 #define ID_TXT_LOG_APPEND                235
 #define ID_CHK_LOG_APPEND                236
 #define ID_CHK_SILENT                    237
