@@ -479,7 +479,7 @@ validate_input(const WCHAR *input, const WCHAR *exclude)
     return (wcspbrk(input, exclude) == NULL);
 }
 
-/* Concatenate two wide strings with a separator */
+/* Concatenate two wide strings with a separator -- if either string is empty separator not added */
 void
 wcs_concat2(WCHAR *dest, int len, const WCHAR *src1, const WCHAR *src2, const WCHAR *sep)
 {
@@ -488,10 +488,12 @@ wcs_concat2(WCHAR *dest, int len, const WCHAR *src1, const WCHAR *src2, const WC
     if (!dest || len == 0)
         return;
 
-    if (src1 && src2 && src2[0])
+    if (src1 && src2 && src1[0] && src2[0])
         n = swprintf(dest, len, L"%s%s%s", src1, sep, src2);
-    else if (src1)
+    else if (src1 && src1[0])
         n = swprintf(dest, len, L"%s", src1);
+    else if (src2 && src2[0])
+        n = swprintf(dest, len, L"%s", src2);
 
     if (n < 0 || n >= len) /*swprintf failed */
         n = 0;

@@ -280,13 +280,11 @@ SetTrayIcon(conn_state_t state)
         _tcsncat(msg, LoadLocalizedString(IDS_TIP_CONNECTED_SINCE), _countof(msg) - _tcslen(msg) - 1);
         _tcsncat(msg, time, _countof(msg) - _tcslen(msg) - 1);
 
-        if ( _tcslen(c->ip) > 0) {
-            /* concatenate ipv4 and ipv6 addresses into one string */
-            WCHAR ip[64];
-            wcs_concat2(ip, _countof(ip), c->ip, c->ipv6, L", ");
-            WCHAR *assigned_ip = LoadLocalizedString(IDS_TIP_ASSIGNED_IP, ip);
-            _tcsncat(msg, assigned_ip, _countof(msg) - _tcslen(msg) - 1);
-        }
+        /* concatenate ipv4 and ipv6 addresses into one string */
+        WCHAR ip[64];
+        wcs_concat2(ip, _countof(ip), c->ip, c->ipv6, L", ");
+        WCHAR *assigned_ip = LoadLocalizedString(IDS_TIP_ASSIGNED_IP, ip);
+        _tcsncat(msg, assigned_ip, _countof(msg) - _tcslen(msg) - 1);
     }
 
     icon_id = ID_ICO_CONNECTING;
