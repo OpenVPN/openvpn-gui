@@ -50,6 +50,7 @@
 #include "access.h"
 #include "save_pass.h"
 #include "env_set.h"
+#include "script_security.h"
 
 extern options_t o;
 
@@ -1554,6 +1555,8 @@ OnNeedStr (connection_t *c, UNUSED char *msg)
 static void
 Cleanup (connection_t *c)
 {
+    lock_config_file(c, false); /* unlock */
+
     CloseManagement (c);
 
     free_dynamic_cr (c);
@@ -1775,7 +1778,10 @@ ThreadOpenVPNStatus(void *p)
     /* Create and Show Status Dialog */
     c->hwndStatus = CreateLocalizedDialogParam(ID_DLG_STATUS, StatusDialogFunc, (LPARAM) c);
     if (!c->hwndStatus)
+    {
+        Cleanup(c);
         return 1;
+    }
 
     CheckAndSetTrayIcon();
     SetMenuStatus(c, connecting);
@@ -1916,6 +1922,19 @@ StartOpenVPN(connection_t *c)
         inet_ntoa(c->manage.skaddr.sin_addr), ntohs(c->manage.skaddr.sin_port),
         (o.proxy_source != config ? _T("--management-query-proxy ") : _T("")));
 
+    /* append --script-security n to command line */
+    if (!o.disable_ssec_override)
+    {
+        lock_config_file(c, true);
+        int ssec_flag = get_script_security(c);
+        if (ssec_flag != SSEC_UNDEF)
+        {
+            TCHAR ssec[32];
+            _sntprintf_0(ssec, _T(" --script-security %d"), ssec_flag);
+            _tcsncat(cmdline, ssec, _countof(cmdline) - _tcslen(cmdline) - 1);
+        }
+    }
+
     /* Try to open the service pipe */
     if (!IsUserAdmin() && InitServiceIO (&c->iserv))
     {
@@ -1967,12 +1986,14 @@ StartOpenVPN(connection_t *c)
         {
             ShowLocalizedMsg(IDS_ERR_INIT_SEC_DESC);
             CloseHandle(c->exit_event);
+            lock_config_file(c, false); /* unlock */
             return FALSE;
         }
         if (!SetSecurityDescriptorDacl(&sd, TRUE, NULL, FALSE))
         {
             ShowLocalizedMsg(IDS_ERR_SET_SEC_DESC_ACL);
             CloseHandle(c->exit_event);
+            lock_config_file(c, false); /* unlock */
             return FALSE;
         }
 
@@ -1980,6 +2001,7 @@ StartOpenVPN(connection_t *c)
         if (!SetProcessPriority(&priority))
         {
             CloseHandle(c->exit_event);
+            lock_config_file(c, false); /* unlock */
             return FALSE;
         }
 
@@ -1988,6 +2010,7 @@ StartOpenVPN(connection_t *c)
         if (hNul == INVALID_HANDLE_VALUE)
         {
             CloseHandle(c->exit_event);
+            lock_config_file(c, false); /* unlock */
             return FALSE;
         }
 
@@ -2044,6 +2067,10 @@ out:
         CloseHandle(hStdInRead);
     if (hNul && hNul != INVALID_HANDLE_VALUE)
         CloseHandle(hNul);
+
+    if (!retval)
+        lock_config_file(c, false); /* unlock */
+
     return retval;
 }
 

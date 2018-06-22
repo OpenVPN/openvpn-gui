@@ -92,6 +92,7 @@ openvpn_gui_SOURCES = \
 	chartable.h \
 	save_pass.c save_pass.h \
 	env_set.c env_set.h \
+	script_security.c script_security.h \
 	openvpn-gui-res.h
 
 openvpn_gui_LDFLAGS = -mwindows

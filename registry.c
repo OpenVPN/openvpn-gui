@@ -60,6 +60,7 @@ struct regkey_int {
       {L"connectscript_timeout", &o.connectscript_timeout, 30},
       {L"disconnectscript_timeout", &o.disconnectscript_timeout, 10},
       {L"show_script_window", &o.show_script_window, 0},
+      {L"disable_ssec_override", &o.disable_ssec_override, 0},
       {L"service_only", &o.service_only, 0},
       {L"config_menu_view", &o.config_menu_view, CONFIG_VIEW_AUTO}
     };
@@ -486,4 +487,39 @@ DeleteConfigRegistryValue(const WCHAR *config_name, const WCHAR *name)
     RegCloseKey(regkey);
 
     return (status == ERROR_SUCCESS);
+}
+
+int
+GetConfigRegistryValueNumeric(const WCHAR *config_name, const TCHAR *name, DWORD *data)
+{
+    int ret = 0;
+    HKEY regkey;
+
+    if (!OpenConfigRegistryKey(config_name, &regkey, FALSE)) return 0;
+
+    ret = GetRegistryValueNumeric(regkey, name, data);
+
+    RegCloseKey(regkey);
+
+    return ret;
+}
+
+int
+SetConfigRegistryValueNumeric(const WCHAR *config_name, const TCHAR *name, DWORD data)
+{
+    int ret = 0;
+    HKEY regkey;
+
+    if (!OpenConfigRegistryKey(config_name, &regkey, FALSE)) return 0;
+
+    if (RegSetValueEx(regkey, name, 0, REG_DWORD, (PBYTE) &data, sizeof(data)) != ERROR_SUCCESS)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Error writing registry value <%s> for config <%s>",
+                      config_name, name);
+        ret = 1;
+    }
+
+    RegCloseKey(regkey);
+
+    return ret;
 }

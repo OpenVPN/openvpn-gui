@@ -155,6 +155,7 @@ struct connection {
     unsigned long long int bytes_in;
     unsigned long long int bytes_out;
     struct env_item *es;           /* Pointer to the head of config-specific env variables list */
+    HANDLE hfile;                  /* Config file handle used for locking */
 };
 
 /* All options used within OpenVPN GUI */
@@ -203,6 +204,7 @@ typedef struct {
     DWORD disconnectscript_timeout;     /* Disconnect Script execution timeout (sec) */
     DWORD preconnectscript_timeout;     /* Preconnect Script execution timeout (sec) */
     DWORD config_menu_view;             /* 0 for auto, 1 for original flat menu, 2 for hierarchical */
+    DWORD disable_ssec_override;        /* Disable script-security setting override */
 
 #ifdef DEBUG
     FILE *debug_fp;
