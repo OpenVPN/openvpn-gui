@@ -499,3 +499,124 @@ wcs_concat2(WCHAR *dest, int len, const WCHAR *src1, const WCHAR *src2, const WC
         n = 0;
     dest[n] = L'\0';
 }
+
+/* Initialize a hash context.
+ * The caller must release resources by calling
+ * md_ctx_free() when finished using the context.
+ *
+ * Returns 0 on success, a system error code on failure.
+ */
+DWORD
+md_ctx_init(struct md_ctx *ctx, ALG_ID alg)
+{
+    if (!CryptAcquireContext(&ctx->prov, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT))
+    {
+        ctx->prov = 0;
+        return GetLastError();
+    }
+    else if (!CryptCreateHash(ctx->prov, alg, 0, 0, &ctx->hash))
+    {
+        ctx->hash = 0;
+        CryptReleaseContext(ctx->prov, 0);
+        ctx->prov = 0;
+        return GetLastError();
+    }
+
+    return 0;
+}
+
+/* Release a hash context */
+void
+md_ctx_free(struct md_ctx *ctx)
+{
+    if (ctx && ctx->hash)
+        CryptDestroyHash(ctx->hash);
+
+    if (ctx && ctx->prov)
+        CryptReleaseContext(ctx->prov, 0);
+}
+
+/* Add data to a hash object. The context |ctx| must be previously initialized
+ * by a call to md_ctx_init().
+ * Returns 0 on success, a system error code on failure.
+ */
+DWORD
+md_update(struct md_ctx *ctx, const BYTE *data, DWORD len)
+{
+    DWORD err = 0;
+
+    if (!CryptHashData(ctx->hash, data, len, 0))
+        err = GetLastError();
+
+    return err;
+}
+
+/* Retrieve the hash from a hash context. Returns 0 on success, an error code on failure.
+ * On entry the buffer |digest| must have space for atleast |len| bytes. On return
+ * the hash is in |digest| and its length is in |len|.
+ */
+
+DWORD
+md_hashval(struct md_ctx *ctx, BYTE *digest, DWORD *digest_len)
+{
+    DWORD err = 0;
+
+    if (!CryptGetHashParam(ctx->hash, HP_HASHVAL, digest, digest_len, 0))
+    {
+        err = GetLastError();
+    }
+
+    return err;
+}
+
+/* Convenience function to hash a data buffer and return the hash */
+DWORD
+md_buffer(ALG_ID alg, const BYTE *data, DWORD len, BYTE *digest, DWORD *digest_len)
+{
+    struct md_ctx ctx = {0};
+    DWORD err = 0;
+
+    err = md_ctx_init(&ctx, alg);
+    if (err) return err;
+
+    err = md_update(&ctx, data, len);
+    if (!err)
+        err = md_hashval(&ctx, digest, digest_len);
+
+    md_ctx_free(&ctx);
+
+    return err;
+}
+
+/* Hash a file and return the hash. Use full path for the file name |fname| */
+DWORD
+md_file(ALG_ID alg, const wchar_t *fname, BYTE *digest, DWORD *digest_len)
+{
+    DWORD err = 0;
+    struct md_ctx ctx = {0};
+    BYTE buf[1024];
+    DWORD nread = 0;
+
+    err = md_ctx_init(&ctx, alg);
+    if (err) return err;
+
+    HANDLE hfile = CreateFile(fname, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
+                              FILE_FLAG_SEQUENTIAL_SCAN, NULL);
+    if (hfile == NULL || hfile == INVALID_HANDLE_VALUE)
+    {
+        md_ctx_free(&ctx);
+        return GetLastError();
+    }
+
+    while (ReadFile(hfile, buf, _countof(buf), &nread, NULL) && nread && !err)
+    {
+        err = md_update(&ctx, buf, nread);
+    }
+    if (!err)
+        err = md_hashval(&ctx, digest, digest_len);
+
+    md_ctx_free(&ctx);
+    CloseHandle(hfile);
+
+    return err;
+}

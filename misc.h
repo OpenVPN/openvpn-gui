@@ -22,6 +22,8 @@
 #ifndef MISC_H
 #define MISC_H
 
+#include <wincrypt.h>
+
 BOOL ManagementCommandFromInput(connection_t *, LPCSTR, HWND, int);
 BOOL ManagementCommandFromInputBase64(connection_t *, LPCSTR, HWND, int, int);
 
@@ -44,5 +46,24 @@ BOOL validate_input(const WCHAR *input, const WCHAR *exclude);
 /* Concatenate two wide strings with a separator */
 void wcs_concat2(WCHAR *dest, int len, const WCHAR *src1, const WCHAR *src2, const WCHAR *sep);
 void CloseSemaphore(HANDLE sem);
+
+/* digest context and functions */
+struct md_ctx {
+    HCRYPTPROV prov;
+    HCRYPTHASH hash;
+};
+
+DWORD md_ctx_init(struct md_ctx *ctx, ALG_ID alg);
+
+void md_ctx_free(struct md_ctx *ctx);
+
+DWORD md_update(struct md_ctx *ctx, const BYTE *data, DWORD data_len);
+
+DWORD md_hashval(struct md_ctx *ctx, BYTE *digest, DWORD *digest_len);
+
+DWORD md_buffer(ALG_ID alg, const BYTE *data, DWORD data_len, BYTE *digest, DWORD *digest_len);
+
+DWORD md_file(ALG_ID alg, const wchar_t *fname, BYTE *digest, DWORD *digest_len);
+
 
 #endif

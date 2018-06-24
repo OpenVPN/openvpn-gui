@@ -33,15 +33,6 @@
 #define MAX_HASHLEN 64
 #define HASHALG CALG_SHA1
 
-/* mock hash routine - to be replaced */
-DWORD
-md_file(UNUSED ALG_ID alg, UNUSED const wchar_t *fname, BYTE *digest, DWORD *digest_len)
-{
-    /* not implemented */
-    memset(digest, 0, *digest_len);
-    return 0;
-}
-
 /* Return the script_security setting that should override the
  * value in the config file.
  * If the config file has been modified since last time the
