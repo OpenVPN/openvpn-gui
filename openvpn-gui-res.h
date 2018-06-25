@@ -122,6 +122,14 @@
 
 /* Connections dialog */
 #define ID_DLG_CONNECTIONS               290
+#define ID_TXT_PATH                      291
+#define ID_EDT_DISPLAY_NAME              292
+#define ID_CHK_AUTH_USER                 293
+#define ID_CHK_AUTH_PASS                 294
+#define ID_CHK_KEY_PASS                  295
+#define ID_CMB_SCRIPT_SECURITY           296
+#define IDS_SCRIPT_NO_OVERRIDE           297
+#define IDS_ALLOW_SCRIPT_BUILT_IN        299
 
 /*
  * String Table Resources
@@ -154,6 +162,7 @@
 #define IDS_MENU_IMPORT                 1023
 #define IDS_MENU_CLEARPASS              1024
 #define IDS_MENU_RECONNECT              1025
+#define IDS_MENU_CONFIGURE              1026
 
 /* LogViewer Dialog */
 #define IDS_ERR_START_LOG_VIEWER        1101

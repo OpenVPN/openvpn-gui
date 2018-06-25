@@ -195,6 +195,31 @@ BEGIN
     EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 103, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
 END
 
+/* Connection specific options */
+ID_DLG_CONNECTIONS DIALOGEX 6, 18, 252, 218
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Connection profile configuration"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+BEGIN
+    GROUPBOX "Configuration File", 201, 6, 12, 235, 45
+    CONTROL "Path:", ID_TXT_PATH, "Static", SS_LEFTNOWORDWRAP, 17, 25, 225, 10
+    LTEXT "&Display Name:", 202, 17, 40, 50, 10
+    EDITTEXT ID_EDT_DISPLAY_NAME, 67, 38, 100, 12, ES_AUTOHSCROLL
+
+    GROUPBOX "Credentials", 203, 6, 62, 235, 45
+    AUTOCHECKBOX "Save &password", ID_CHK_AUTH_PASS, 17, 75, 90, 10
+    AUTOCHECKBOX "Save &username", ID_CHK_AUTH_USER, 115, 90, 90, 10
+    AUTOCHECKBOX "Save private &key password", ID_CHK_KEY_PASS, 17, 90, 110, 10
+
+    GROUPBOX "Security", 204, 6, 112, 235, 45
+    LTEXT "Allow &script execution", 205, 17, 125, 100, 10
+    COMBOBOX ID_CMB_SCRIPT_SECURITY, 17, 138, 200, 60, CBS_DROPDOWNLIST | WS_TABSTOP
+
+    PUSHBUTTON "&OK", IDOK, 132, 195, 50, 14
+    PUSHBUTTON "&Cancel", IDCANCEL, 192, 195, 50, 14
+END
+
 /* About Dialog */
 ID_DLG_ABOUT DIALOG 6, 18, 249, 104
 STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
@@ -261,6 +286,7 @@ BEGIN
     IDS_MENU_SERVICEONLY_STOP "Disconnect"
     IDS_MENU_SERVICEONLY_RESTART "Reconnect"
     IDS_MENU_ASK_STOP_SERVICE "Do you want to disconnect (Stop the OpenVPN Service)?"
+    IDS_MENU_CONFIGURE "Options"
 
     /* Logviewer - Resources */
     IDS_ERR_START_LOG_VIEWER "Error starting log-viewer: %s"
@@ -474,5 +500,9 @@ BEGIN
     IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds..."
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
     IDS_NFO_BYTECOUNT "Bytes in: %s  out: %s"
+
+    /* script security related */
+    IDS_ALLOW_SCRIPT_BUILT_IN "Built-in commands only (recommended)"
+    IDS_SCRIPT_NO_OVERRIDE    "Use config file setting (potentially unsafe)"
 
 END

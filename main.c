@@ -559,6 +559,9 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       if ( (LOWORD(wParam) >= IDM_CLEARPASSMENU) && (LOWORD(wParam) < IDM_CLEARPASSMENU + MAX_CONFIGS) ) {
         ResetSavePasswords(&o.conn[LOWORD(wParam) - IDM_CLEARPASSMENU]);
       }
+      if ( (LOWORD(wParam) >= IDM_CONFIGUREMENU) && (LOWORD(wParam) < IDM_CONFIGUREMENU + MAX_CONFIGS) ) {
+        ConfigOptions(&o.conn[LOWORD(wParam) - IDM_CONFIGUREMENU]);
+      }
 #ifndef DISABLE_CHANGE_PASSWORD
       if ( (LOWORD(wParam) >= IDM_PASSPHRASEMENU) && (LOWORD(wParam) < IDM_PASSPHRASEMENU + MAX_CONFIGS) ) {
         ShowChangePassphraseDialog(&o.conn[LOWORD(wParam) - IDM_PASSPHRASEMENU]);

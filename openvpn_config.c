@@ -3,7 +3,7 @@
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
  *                2010 Heiko Hund <heikoh@users.sf.net>
- *                2016 Selva Nair <selva.nair@gmail.com>
+ *                2016-2018 Selva Nair <selva.nair@gmail.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 #endif
 
 #include <windows.h>
+#include <windowsx.h>
 
 #include "main.h"
 #include "openvpn-gui-res.h"
@@ -35,6 +36,7 @@
 #include "misc.h"
 #include "passphrase.h"
 #include "openvpn_config.h"
+#include "script_security.h"
 
 typedef enum
 {
@@ -44,6 +46,8 @@ typedef enum
 } match_t;
 
 extern options_t o;
+
+static const wchar_t *cfgProp = L"config";
 
 static match_t
 match(const WIN32_FIND_DATA *find, const TCHAR *ext)
@@ -410,4 +414,119 @@ RecallConfigFlags(const connection_t *c)
     if (!GetConfigRegistryValueNumeric(c->config_name, L"flags", &flags))
         flags = 0;
     return flags;
+}
+
+/*
+ * DialogProc for connection specific options
+ */
+INT_PTR CALLBACK
+ConfigOptionsDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    wchar_t fname[MAX_PATH];
+    connection_t *c;
+    int ssec_flag;
+    HWND h;
+    struct {
+        int id;
+        int flag;
+    } ssec_data[] = {{IDS_ALLOW_SCRIPT_BUILT_IN, SSEC_BUILT_IN},
+                     {IDS_SCRIPT_NO_OVERRIDE, SSEC_UNDEF}};
+
+    switch (msg)
+    {
+        case WM_INITDIALOG:
+            c = (connection_t *) lParam;
+            SetProp(hwndDlg, cfgProp, (HANDLE) c);
+
+            wcs_concat2(fname, _countof(fname), c->config_dir, c->config_file, L"\\");
+            SetDlgItemText(hwndDlg, ID_TXT_PATH, fname);
+            SetDlgItemText(hwndDlg, ID_EDT_DISPLAY_NAME, c->config_name);
+
+            if (c->flags & FLAG_SAVE_AUTH_PASS)
+                Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_AUTH_PASS), BST_CHECKED);
+            if (c->flags & FLAG_SAVE_KEY_PASS)
+                Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_KEY_PASS), BST_CHECKED);
+
+            /* disable/hide items not yet user-editable */
+            SendDlgItemMessage(hwndDlg, ID_EDT_DISPLAY_NAME, EM_SETREADONLY, 1, 0);
+            ShowWindow(GetDlgItem(hwndDlg, ID_CHK_AUTH_USER), SW_HIDE);
+
+            h = GetDlgItem(hwndDlg, ID_CMB_SCRIPT_SECURITY);
+            ssec_flag = get_script_security(c);
+
+            for (size_t i = 0; i < _countof(ssec_data); i++)
+            {
+                int index = ComboBox_AddString(h, LoadLocalizedString(ssec_data[i].id));
+                ComboBox_SetItemData(h, index, ssec_data[i].flag);
+                if (ssec_flag == ssec_data[i].flag)
+                    ComboBox_SetCurSel(h, index);
+            }
+            SetFocus(h);
+
+            break;
+
+        case WM_COMMAND:
+            c = (connection_t *) GetProp(hwndDlg, cfgProp);
+            switch (LOWORD(wParam))
+            {
+                case IDOK:
+                    if (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_AUTH_PASS)) == BST_CHECKED)
+                    {
+                        if (!(c->flags & FLAG_SAVE_AUTH_PASS))
+                            c->flags |= FLAG_SAVE_AUTH_PASS;
+                    }
+                    else if (c->flags & FLAG_SAVE_AUTH_PASS)
+                    {
+                        c->flags &= ~FLAG_SAVE_AUTH_PASS;
+                        DeleteSavedAuthPass(c->config_name);
+                    }
+                    if (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_KEY_PASS)) == BST_CHECKED)
+                    {
+                        if (!(c->flags & FLAG_SAVE_KEY_PASS))
+                            c->flags |= FLAG_SAVE_KEY_PASS;
+                    }
+                    else if (c->flags & FLAG_SAVE_KEY_PASS)
+                    {
+                        c->flags &= ~FLAG_SAVE_KEY_PASS;
+                        DeleteSavedKeyPass(c->config_name);
+                    }
+                    /* toggling user name save not yet implemented */
+
+                    /* save flags in registry */
+                    PersistConfigFlags(c);
+
+                    /* set script security preference, if changed */
+                    {
+                        int sel = ComboBox_GetCurSel(GetDlgItem(hwndDlg, ID_CMB_SCRIPT_SECURITY));
+                        int ssec_flag = sel != CB_ERR ? ssec_data[sel].flag : ssec_default();
+
+                        if (ssec_flag != get_script_security(c))
+                            set_script_security(c, ssec_flag);
+                    }
+
+                    EndDialog(hwndDlg, LOWORD(wParam));
+                    return TRUE;
+
+                case IDCANCEL:
+                    EndDialog(hwndDlg, LOWORD(wParam));
+                    return TRUE;
+            }
+            break;
+
+        case WM_CLOSE:
+            EndDialog(hwndDlg, LOWORD(wParam));
+            return TRUE;
+
+        case WM_NCDESTROY:
+            RemoveProp(hwndDlg, cfgProp);
+            break;
+    }
+
+    return FALSE;
+}
+
+void
+ConfigOptions(connection_t *c)
+{
+    LocalizedDialogBoxParam(ID_DLG_CONNECTIONS, ConfigOptionsDialogFunc, (LPARAM) c);
 }

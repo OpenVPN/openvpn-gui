@@ -34,4 +34,7 @@ void PersistConfigFlags(const connection_t *c);
 /* recall config preference flags from registry */
 DWORD RecallConfigFlags(const connection_t *c);
 
+/* Open a dialog to edit connection specific options */
+void ConfigOptions(connection_t *c);
+
 #endif

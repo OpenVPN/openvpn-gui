@@ -95,7 +95,7 @@ CreatePopupMenus()
         AppendMenu(hMenu, MF_STRING, IDM_VIEWLOGMENU, LoadLocalizedString(IDS_MENU_VIEWLOG));
 
         AppendMenu(hMenu, MF_STRING, IDM_EDITMENU, LoadLocalizedString(IDS_MENU_EDITCONFIG));
-        AppendMenu(hMenu, MF_STRING, IDM_CLEARPASSMENU, LoadLocalizedString(IDS_MENU_CLEARPASS));
+        AppendMenu(hMenu, MF_STRING, IDM_CONFIGUREMENU, LoadLocalizedString(IDS_MENU_CONFIGURE));
 
 #ifndef DISABLE_CHANGE_PASSWORD
         if (o.conn[0].flags & FLAG_ALLOW_CHANGE_PASSPHRASE)
@@ -178,7 +178,7 @@ CreatePopupMenus()
             AppendMenu(hMenuConn[i], MF_STRING, IDM_VIEWLOGMENU + i, LoadLocalizedString(IDS_MENU_VIEWLOG));
 
             AppendMenu(hMenuConn[i], MF_STRING, IDM_EDITMENU + i, LoadLocalizedString(IDS_MENU_EDITCONFIG));
-            AppendMenu(hMenuConn[i], MF_STRING, IDM_CLEARPASSMENU + i, LoadLocalizedString(IDS_MENU_CLEARPASS));
+            AppendMenu(hMenuConn[i], MF_STRING, IDM_CONFIGUREMENU + i, LoadLocalizedString(IDS_MENU_CONFIGURE));
 
 #ifndef DISABLE_CHANGE_PASSWORD
             if (o.conn[i].flags & FLAG_ALLOW_CHANGE_PASSPHRASE)
@@ -441,10 +441,7 @@ SetMenuStatusById(int i, conn_state_t state)
             EnableMenuItem(hMenu, IDM_RECONNECTMENU, MF_GRAYED);
             EnableMenuItem(hMenu, IDM_STATUSMENU, MF_ENABLED);
         }
-        if (c->flags & (FLAG_SAVE_AUTH_PASS | FLAG_SAVE_KEY_PASS))
-            EnableMenuItem(hMenu, IDM_CLEARPASSMENU, MF_ENABLED);
-        else
-            EnableMenuItem(hMenu, IDM_CLEARPASSMENU, MF_GRAYED);
+        EnableMenuItem(hMenu, IDM_CONFIGUREMENU, MF_ENABLED);
     }
     else
     {
@@ -490,10 +487,7 @@ SetMenuStatusById(int i, conn_state_t state)
             EnableMenuItem(hMenuConn[i], IDM_RECONNECTMENU + i, MF_GRAYED);
             EnableMenuItem(hMenuConn[i], IDM_STATUSMENU + i, MF_ENABLED);
         }
-        if (c->flags & (FLAG_SAVE_AUTH_PASS | FLAG_SAVE_KEY_PASS))
-            EnableMenuItem(hMenuConn[i], IDM_CLEARPASSMENU + i, MF_ENABLED);
-        else
-            EnableMenuItem(hMenuConn[i], IDM_CLEARPASSMENU + i, MF_GRAYED);
+        EnableMenuItem(hMenuConn[i], IDM_CONFIGUREMENU + i, MF_ENABLED);
     }
 }
 
