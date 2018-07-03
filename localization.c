@@ -469,6 +469,8 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
             CheckRadioButton (hwndDlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON2);
         if (o.show_script_window)
             Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SHOW_SCRIPT_WIN), BST_CHECKED);
+        if (o.disable_ssec_override)
+            Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SSEC_OVERRIDE), BST_CHECKED);
 
         break;
 
@@ -496,6 +498,8 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
                 o.show_balloon = 1;
             o.show_script_window =
                 (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_SHOW_SCRIPT_WIN)) == BST_CHECKED);
+            o.disable_ssec_override =
+                (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_SSEC_OVERRIDE)) == BST_CHECKED);
 
             SaveRegistryKeys();
 
