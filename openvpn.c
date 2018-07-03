@@ -555,6 +555,10 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 ManagementCommandFromInputBase64(param->c, "password \"Auth\" \"SCRV1:%s:%s\"", hwndDlg, ID_EDT_AUTH_PASS, ID_EDT_AUTH_CHALLENGE);
             else
                 ManagementCommandFromInput(param->c, "password \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_PASS);
+
+            /* persist flags as save password option might have changed */
+            PersistConfigFlags(param->c);
+
             EndDialog(hwndDlg, LOWORD(wParam));
             return TRUE;
 
@@ -795,6 +799,10 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 SecureZeroMemory(passphrase, sizeof(passphrase));
             }
             ManagementCommandFromInput(c, "password \"Private Key\" \"%s\"", hwndDlg, ID_EDT_PASSPHRASE);
+
+            /* persist flags as save password option might have changed */
+            PersistConfigFlags(c);
+
             EndDialog(hwndDlg, LOWORD(wParam));
             return TRUE;
 

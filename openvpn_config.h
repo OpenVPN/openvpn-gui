@@ -23,8 +23,15 @@
 #define OPENVPN_CONFIG_H
 
 #include "main.h"
+#include "registry.h"
 
 void BuildFileList();
 bool ConfigFileOptionExist(int, const char *);
+
+/* save config preference flags in registry */
+void PersistConfigFlags(const connection_t *c);
+
+/* recall config preference flags from registry */
+DWORD RecallConfigFlags(const connection_t *c);
 
 #endif

@@ -34,6 +34,7 @@
 #include "save_pass.h"
 #include "misc.h"
 #include "passphrase.h"
+#include "openvpn_config.h"
 
 typedef enum
 {
@@ -105,6 +106,9 @@ AddConfigFileToList(int config, const TCHAR *filename, const TCHAR *config_dir)
     c->manage.skaddr.sin_family = AF_INET;
     c->manage.skaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
     c->manage.skaddr.sin_port = htons(25340 + config);
+
+    /* Load persisted flags from registry */
+    c->flags = (int)RecallConfigFlags(c);
 
 #ifndef DISABLE_CHANGE_PASSWORD
     if (CheckKeyFileWriteAccess (c))
@@ -389,4 +393,21 @@ BuildFileList()
     }
 
     issue_warnings = false;
+}
+
+/* Save config flags in registry */
+void
+PersistConfigFlags(const connection_t *c)
+{
+    SetConfigRegistryValueNumeric(c->config_name, L"flags", (DWORD) c->flags);
+}
+
+/* Recall config flags from registry */
+DWORD
+RecallConfigFlags(const connection_t *c)
+{
+    DWORD flags;
+    if (!GetConfigRegistryValueNumeric(c->config_name, L"flags", &flags))
+        flags = 0;
+    return flags;
 }
