@@ -155,7 +155,7 @@ BEGIN
     GROUPBOX "Opstarten", 202, 6, 47, 235, 30
     AUTOCHECKBOX "Opstarten met Windows", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "Voorkeuren", 202, 6, 82, 235, 90
+    GROUPBOX "Voorkeuren", 202, 6, 82, 235, 105
     AUTOCHECKBOX "Aan logbestand toevoegen", ID_CHK_LOG_APPEND, 17, 95, 200, 10
     AUTOCHECKBOX "Script-venster tonen", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "Stille verbinding", ID_CHK_SILENT, 17, 125, 200, 10
@@ -163,6 +163,7 @@ BEGIN
     AUTORADIOBUTTON "Bij verbinden", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Bij opnieuw verbinden", ID_RB_BALLOON2, 86, 155, 90, 10
     AUTORADIOBUTTON "Nooit", ID_RB_BALLOON0, 181, 155, 40, 10
+    AUTOCHECKBOX "Do not override &script security (unsafe)", ID_CHK_SSEC_OVERRIDE, 17, 170, 200, 10
 END
 
 /* Advanced Dialog */

@@ -156,7 +156,7 @@ BEGIN
     GROUPBOX "Запуск", 202, 6, 47, 235, 30
     AUTOCHECKBOX "Запускати при старті Windows", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "Налаштування", 202, 6, 82, 235, 90
+    GROUPBOX "Налаштування", 202, 6, 82, 235, 105
     AUTOCHECKBOX "Додати, а не перезаписувати журнал", ID_CHK_LOG_APPEND, 17, 95, 200, 10
     AUTOCHECKBOX "Показывати вікно виконання", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "«Тихе» підключення", ID_CHK_SILENT, 17, 125, 200, 10
@@ -164,6 +164,7 @@ BEGIN
     AUTORADIOBUTTON "Підключенні", ID_RB_BALLOON1, 20, 155, 62, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Під- та перепідключенні", ID_RB_BALLOON2, 85, 155, 100, 10
     AUTORADIOBUTTON "Ніколи", ID_RB_BALLOON0, 190, 155, 43, 10
+    AUTOCHECKBOX "Do not override &script security (unsafe)", ID_CHK_SSEC_OVERRIDE, 17, 170, 200, 10
 END
 
 /* Advanced Dialog */

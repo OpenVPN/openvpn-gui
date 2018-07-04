@@ -156,7 +156,7 @@ BEGIN
     GROUPBOX "Oppstart", 202, 6, 47, 235, 30
     AUTOCHECKBOX "Kjør automatisk når Windows starter", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "Innstillinger", 202, 6, 82, 235, 90
+    GROUPBOX "Innstillinger", 202, 6, 82, 235, 105
     AUTOCHECKBOX "Tilføy til eksisterende logg", ID_CHK_LOG_APPEND, 17, 95, 93, 10
     AUTOCHECKBOX "Vis scriptvindu", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "Skjul statusvindu ved tilkobling", ID_CHK_SILENT, 17, 125, 200, 10
@@ -164,6 +164,7 @@ BEGIN
     AUTORADIOBUTTON "Ved tilkobling", ID_RB_BALLOON1, 28, 155, 58, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Ved tilkobling/gjenoppkobling", ID_RB_BALLOON2, 87, 155, 103, 10
     AUTORADIOBUTTON "Aldri", ID_RB_BALLOON0, 200, 155, 27, 10
+    AUTOCHECKBOX "Do not override &script security (unsafe)", ID_CHK_SSEC_OVERRIDE, 17, 170, 200, 10
 END
 
 /* Advanced Dialog */

@@ -158,7 +158,7 @@ BEGIN
     GROUPBOX "시작 설정", 202, 6, 47, 235, 30
     AUTOCHECKBOX "Windows 시작 시에 실행", ID_CHK_STARTUP, 17, 59, 100, 12
 
-    GROUPBOX "환경 설정", 202, 6, 82, 235, 90
+    GROUPBOX "환경 설정", 202, 6, 82, 235, 105
     AUTOCHECKBOX "로그 파일에 추가", ID_CHK_LOG_APPEND, 17, 95, 200, 10
     AUTOCHECKBOX "스크립트 창 보기", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "연결 시 상태 대화 상자 표시하지 않기", ID_CHK_SILENT, 17, 125, 200, 10
@@ -166,6 +166,7 @@ BEGIN
     AUTORADIOBUTTON "연결 시", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "연결/재연결 시", ID_RB_BALLOON2, 86, 155, 88, 10
     AUTORADIOBUTTON "표시 안함", ID_RB_BALLOON0, 176, 155, 45, 10
+    AUTOCHECKBOX "Do not override &script security (unsafe)", ID_CHK_SSEC_OVERRIDE, 17, 170, 200, 10
 END
 
 /* Advanced Dialog */

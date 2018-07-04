@@ -157,7 +157,7 @@ BEGIN
     GROUPBOX "Spuštění", 202, 6, 47, 235, 30
     AUTOCHECKBOX "Spustit při startu Windows", ID_CHK_STARTUP, 17, 59, 100, 12
 
-    GROUPBOX "Volby", 202, 6, 82, 235, 90
+    GROUPBOX "Volby", 202, 6, 82, 235, 105
     AUTOCHECKBOX "Připojovat záznamy na konec logu", ID_CHK_LOG_APPEND, 17, 95, 130, 10
     AUTOCHECKBOX "Zobrazit okno skriptu", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "Tiché spojení", ID_CHK_SILENT, 17, 125, 200, 10
@@ -165,6 +165,7 @@ BEGIN
     AUTORADIOBUTTON "Při připojení", ID_RB_BALLOON1, 28, 155, 53, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Při připojení/obnovení spojení", ID_RB_BALLOON2, 86, 155, 115, 10
     AUTORADIOBUTTON "Nikdy", ID_RB_BALLOON0, 203, 155, 35, 10
+    AUTOCHECKBOX "Do not override &script security (unsafe)", ID_CHK_SSEC_OVERRIDE, 17, 170, 200, 10
 END
 
 /* Advanced Dialog */

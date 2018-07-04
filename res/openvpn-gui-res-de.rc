@@ -156,7 +156,7 @@ BEGIN
     GROUPBOX "Systemstart", 202, 6, 47, 235, 30
     AUTOCHECKBOX "Mit &Windows starten", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "Einstellungen", 202, 6, 82, 235, 90
+    GROUPBOX "Einstellungen", 202, 6, 82, 235, 105
     AUTOCHECKBOX "An &Log anhängen", ID_CHK_LOG_APPEND, 17, 95, 60, 10
     AUTOCHECKBOX "&Skriptfenster zeigen", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "Stille &Verbindung", ID_CHK_SILENT, 17, 125, 200, 10
@@ -164,6 +164,7 @@ BEGIN
     AUTORADIOBUTTON "Beim Verb&inden", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Beim Verbinden/&Erneut Verbinden", ID_RB_BALLOON2, 86, 155, 90, 10
     AUTORADIOBUTTON "&Nie", ID_RB_BALLOON0, 181, 155, 40, 10
+    AUTOCHECKBOX "Do not override &script security (unsafe)", ID_CHK_SSEC_OVERRIDE, 17, 170, 200, 10
 END
 
 /* Advanced Dialog */
