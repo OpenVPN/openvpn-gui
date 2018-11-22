@@ -1931,8 +1931,13 @@ StartOpenVPN(connection_t *c)
 
         c->hProcess = NULL;
         c->manage.password[sizeof(c->manage.password) - 1] = '\n';
-        _sntprintf_0(startup_info, _T("%s%c%s%c%.*S"), c->config_dir, _T('\0'),
-            options, _T('\0'), sizeof(c->manage.password), c->manage.password);
+
+        /* Ignore pushed route-method when service is in use */
+        const wchar_t *extra_options = L" --pull-filter ignore route-method";
+        size += wcslen(extra_options);
+
+        _sntprintf_0(startup_info, L"%s%c%s%s%c%.*S", c->config_dir, L'\0',
+            options, extra_options, L'\0', sizeof(c->manage.password), c->manage.password);
         c->manage.password[sizeof(c->manage.password) - 1] = '\0';
 
         if (!WritePipe(c->iserv.pipe, startup_info, size * sizeof (TCHAR)))
