@@ -141,15 +141,17 @@ AddConfigFileToList(int config, const TCHAR *filename, const TCHAR *config_dir)
 
 /*
  * Create a new group with the given name as a child of the
- * specified parent group and return pointer to the new group.
+ * specified parent group id and returns the id of the new group.
  * If FLAG_ADD_CONFIG_GROUPS is not enabled, returns the
  * parent itself.
  */
-static config_group_t *
-NewConfigGroup(const wchar_t *name, config_group_t *parent, int flags)
+static int
+NewConfigGroup(const wchar_t *name, int parent, int flags)
 {
     if (!(flags & FLAG_ADD_CONFIG_GROUPS))
+    {
         return parent;
+    }
 
     if (!o.groups || o.num_groups == o.max_groups)
     {
@@ -171,7 +173,7 @@ NewConfigGroup(const wchar_t *name, config_group_t *parent, int flags)
     cg->parent = parent;
     cg->active = false; /* activated later if not empty */
 
-    return cg;
+    return cg->id;
 }
 
 /*
@@ -187,19 +189,24 @@ ActivateConfigGroups(void)
     /* the root group is always active */
     o.groups[0].active = true;
 
+    /* children is a counter re-used for activation, menu indexing etc. -- reset before use */
+    for (int i = 0; i < o.num_groups; i++)
+        o.groups[i].children = 0;
+
     /* count children of each group -- this includes groups
      * and configs which have it as parent
      */
     for (int i = 0; i < o.num_configs; i++)
     {
-        o.conn[i].group->children++;
+        CONFIG_GROUP(&o.conn[i])->children++;
     }
 
     for (int i = 1; i < o.num_groups; i++)
     {
         config_group_t *this = &o.groups[i];
-        if (this->parent) /* should be true as i = 0 is omitted */
-            this->parent->children++;
+        config_group_t *parent = PARENT_GROUP(this);
+        if (parent) /* should be true as i = 0 is omitted */
+            parent->children++;
 
         /* unless activated below the group stays inactive */
         this->active = false;
@@ -215,10 +222,10 @@ ActivateConfigGroups(void)
      */
     for (int i = 0; i < o.num_configs; i++)
     {
-        config_group_t *cg = o.conn[i].group;
+        config_group_t *cg = CONFIG_GROUP(&o.conn[i]);
 
         /* if not root and has only this config as child -- squash it */
-        if (cg->parent && cg->children == 1
+        if (PARENT_GROUP(cg) && cg->children == 1
             && !wcscmp(cg->name, o.conn[i].config_name))
         {
             cg->children--;
@@ -229,12 +236,12 @@ ActivateConfigGroups(void)
     /* activate all groups that connect a config to the root */
     for (int i = 0; i < o.num_configs; i++)
     {
-        config_group_t *cg = o.conn[i].group;
+        config_group_t *cg = CONFIG_GROUP(&o.conn[i]);
 
         while (cg)
         {
             cg->active = true;
-            cg = cg->parent;
+            cg = PARENT_GROUP(cg);
         }
     }
 }
@@ -245,12 +252,12 @@ ActivateConfigGroups(void)
  *        flags      -- enable warnings, use directory based
  *                      grouping of configs etc.
  * Currently configs in a directory are grouped together and group is
- * a pointer to the current parent group in the global group array |o.groups|
+ * the id of the current group in the global group array |o.groups|
  * This may be recursively called until depth becomes 1 and each time
  * the group is changed to that of the directory being recursed into.
  */
 static void
-BuildFileList0(const TCHAR *config_dir, int recurse_depth, config_group_t *group, int flags)
+BuildFileList0(const TCHAR *config_dir, int recurse_depth, int group, int flags)
 {
     WIN32_FIND_DATA find_obj;
     HANDLE find_handle;
@@ -316,7 +323,7 @@ BuildFileList0(const TCHAR *config_dir, int recurse_depth, config_group_t *group
             {
                 /* recurse into subdirectory */
                 _sntprintf_0(subdir_name, _T("%s\\%s"), config_dir, find_obj.cFileName);
-                config_group_t *sub_group = NewConfigGroup(find_obj.cFileName, group, flags);
+                int sub_group = NewConfigGroup(find_obj.cFileName, group, flags);
 
                 BuildFileList0(subdir_name, recurse_depth - 1, sub_group, flags);
             }
@@ -332,7 +339,7 @@ BuildFileList()
     static bool issue_warnings = true;
     int recurse_depth = 4; /* read config_dir and 3 levels of sub-directories */
     int flags = 0;
-    config_group_t *root = NULL;
+    int root = 0;
 
     if (o.silent_connection)
         issue_warnings = false;
@@ -342,15 +349,15 @@ BuildFileList()
      * to make a new list. Else we keep all current configs and
      * rescan to add any new one's found
      */
-    if (CountConnState(disconnected) == o.num_configs)
+    if (!o.num_groups || CountConnState(disconnected) == o.num_configs)
     {
         o.num_configs = 0;
         o.num_groups = 0;
         flags |= FLAG_ADD_CONFIG_GROUPS;
-        root = NewConfigGroup(L"User Profiles", NULL, flags);
+        root = NewConfigGroup(L"ROOT", -1, flags); /* -1 indicates no parent */
     }
     else
-        root = &o.groups[0];
+        root = 0;
 
     if (issue_warnings)
     {
@@ -375,7 +382,11 @@ BuildFileList()
         o.num_configs = MAX_CONFIGS; /* menus don't work with more -- ignore the rest */
     }
 
-    ActivateConfigGroups();
+    /* if adding groups, activate non-empty ones */
+    if (flags &FLAG_ADD_CONFIG_GROUPS)
+    {
+        ActivateConfigGroups();
+    }
 
     issue_warnings = false;
 }

@@ -103,14 +103,18 @@ typedef struct {
  * which is enough for our purposes.
  */
 typedef struct config_group {
-    int id;                      /* A unique id for the group */
+    int id;                      /* A unique id for the group >= 0*/
     wchar_t name[40];            /* Name of the group -- possibly truncated */
-    struct config_group *parent; /* Pointer to parent group */
+    int parent;                  /* Id of parent group. -1 implies no parent */
     BOOL active;                 /* Displayed in the menu if true -- used to prune empty groups */
     int children;                /* Number of children groups and configs */
     int pos;                     /* Index within the parent group -- used for rendering */
     HMENU menu;                  /* Handle to menu entry for this group */
 } config_group_t;
+
+/* short hand for pointer to the group a config belongs to */
+#define CONFIG_GROUP(c) (&o.groups[(c)->group])
+#define PARENT_GROUP(cg) ((cg)->parent < 0 ? NULL : &o.groups[(cg)->parent])
 
 /* Connections parameters */
 struct connection {
@@ -126,7 +130,7 @@ struct connection {
     int failed_auth_attempts;       /* # of failed user-auth attempts */
     time_t connected_since;         /* Time when the connection was established */
     proxy_t proxy_type;             /* Set during querying proxy credentials */
-    config_group_t *group;          /* Pointer to the group this config belongs to */
+    int group;                      /* ID of the group this config belongs to */
     int pos;                        /* Index of the config within its group */
 
     struct {

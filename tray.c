@@ -48,26 +48,24 @@ HMENU hMenuService;
 NOTIFYICONDATA ni;
 extern options_t o;
 
-#define USE_NESTED_CONFIG_MENU ((o.config_menu_view == CONFIG_VIEW_AUTO && o.num_configs > 50)   \
+#define USE_NESTED_CONFIG_MENU ((o.config_menu_view == CONFIG_VIEW_AUTO && o.num_configs > 25)   \
                                  || (o.config_menu_view == CONFIG_VIEW_NESTED))
 
 /* Create popup menus */
 void
 CreatePopupMenus()
 {
-    int i;
-
     /* We use groups[0].menu as the root menu, so,
      * even if num_configs = 0, we want num_groups > 0.
      * This is guaranteed as the root node is always defined.
      */
     assert(o.num_groups > 0);
 
-    for (i = 0; i < o.num_configs; i++)
+    for (int i = 0; i < o.num_configs; i++)
     {
         hMenuConn[i] = CreatePopupMenu();
     }
-    for (i = 0; i < o.num_groups; i++)
+    for (int i = 0; i < o.num_groups; i++)
     {
         if (!o.groups[i].active)
             continue;
@@ -113,15 +111,14 @@ CreatePopupMenus()
         SetMenuStatusById(0,  o.conn[0].state);
     }
     else {
-        int i;
         /* construct the submenu tree first */
         if (USE_NESTED_CONFIG_MENU)
         {
             /* i = 0 is the root menu and has no parent */
-            for (i = 1; i < o.num_groups; i++)
+            for (int i = 1; i < o.num_groups; i++)
             {
                 config_group_t *this = &o.groups[i];
-                config_group_t *parent = this->parent;
+                config_group_t *parent = PARENT_GROUP(this);
 
                 if (!this->active || !parent)
                     continue;
@@ -134,16 +131,16 @@ CreatePopupMenus()
         }
 
         /* add config file (connection) entries */
-        for (i = 0; i < o.num_configs; i++)
+        for (int i = 0; i < o.num_configs; i++)
         {
             connection_t *c = &o.conn[i];
             config_group_t *parent = &o.groups[0]; /* by default config is added to the root */
 
             if (USE_NESTED_CONFIG_MENU)
             {
-                if (c->group) /* should be always true, but in case... */
-                     parent = c->group;
+                parent = CONFIG_GROUP(c);
             }
+            assert(parent);
 
             /* Add config to the current sub menu */
             AppendMenu(parent->menu, MF_POPUP, (UINT_PTR) hMenuConn[i], c->config_name);
@@ -169,7 +166,7 @@ CreatePopupMenus()
 
 
         /* Create popup menus for every connection */
-        for (i=0; i < o.num_configs; i++) {
+        for (int i = 0; i < o.num_configs; i++) {
             if (o.service_only == 0) {
                 AppendMenu(hMenuConn[i], MF_STRING, IDM_CONNECTMENU + i, LoadLocalizedString(IDS_MENU_CONNECT));
                 AppendMenu(hMenuConn[i], MF_STRING, IDM_DISCONNECTMENU + i, LoadLocalizedString(IDS_MENU_DISCONNECT));
@@ -454,8 +451,8 @@ SetMenuStatusById(int i, conn_state_t state)
         config_group_t *parent = &o.groups[0];
         int pos = c->pos;
 
-        if (USE_NESTED_CONFIG_MENU && c->group)
-            parent = c->group;
+        if (USE_NESTED_CONFIG_MENU && CONFIG_GROUP(c))
+            parent = CONFIG_GROUP(c);
 
         CheckMenuItem(parent->menu, pos, MF_BYPOSITION | (checked ? MF_CHECKED : MF_UNCHECKED));
 
@@ -464,10 +461,10 @@ SetMenuStatusById(int i, conn_state_t state)
 
         if (checked) /* also check all parent groups */
         {
-            while (parent->parent)
+            while (PARENT_GROUP(parent))
             {
                 pos = parent->pos;
-                parent = parent->parent;
+                parent = PARENT_GROUP(parent);
                 CheckMenuItem(parent->menu, pos, MF_BYPOSITION | MF_CHECKED);
             }
         }
