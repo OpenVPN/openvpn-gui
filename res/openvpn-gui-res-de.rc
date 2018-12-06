@@ -442,7 +442,7 @@ BEGIN
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Konnte den Pfad der Windows-Installation nicht ermitteln."
     IDS_ERR_GET_PROFILE_DIR "Konnte den Pfad zum Benutzerprofil nicht ermitteln."
-    IDS_ERR_GET_PROGRAM_DIR "Konnte "Pfad zum ""Programme""-Verzeichnis nicht ermitteln."
+    IDS_ERR_GET_PROGRAM_DIR "Konnte Pfad zum ""Programme""-Verzeichnis nicht ermitteln."
     IDS_ERR_OPEN_REGISTRY "Fehler beim Lesen des Registry-Schlüssels (HKLM\\SOFTWARE\\OpenVPN).\n " \
                           "OpenVPN ist vermutlich nicht installiert"
     IDS_ERR_READING_REGISTRY "Fehler beim Lesen des Registry-Schlüssels (HKLM\\SOFTWARE\\OpenVPN)."
