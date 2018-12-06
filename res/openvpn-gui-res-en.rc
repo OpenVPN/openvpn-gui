@@ -24,7 +24,7 @@
 ID_DLG_PASSPHRASE DIALOGEX 6, 18, 160, 83
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
 EXSTYLE WS_EX_TOPMOST
-CAPTION "OpenVPN - Private Key Password"
+CAPTION "OpenVPN – Private Key Password"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 BEGIN
@@ -56,7 +56,7 @@ END
 /* Auth Username/Password/Challenge Dialog */
 ID_DLG_AUTH_CHALLENGE DIALOG 6, 18, 160, 129
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
-CAPTION "OpenVPN - User Authentication"
+CAPTION "OpenVPN – User Authentication"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 BEGIN
@@ -76,7 +76,7 @@ END
 /* Challenge Response Dialog */
 ID_DLG_CHALLENGE_RESPONSE DIALOG 6, 18, 212, 72
 STYLE WS_SIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
-CAPTION "OpenVPN - Challenge Response"
+CAPTION "OpenVPN – Challenge Response"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 BEGIN
@@ -106,7 +106,7 @@ END
 /* Change Passphrase Dialog */
 ID_DLG_CHGPASS DIALOG 6, 18, 193, 82
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "OpenVPN - Change Private Key Passphrase"
+CAPTION "OpenVPN – Change Private Key Passphrase"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 BEGIN
@@ -154,6 +154,7 @@ BEGIN
     LTEXT "&Language:", ID_TXT_LANGUAGE, 17, 25, 52, 12
     COMBOBOX ID_CMB_LANGUAGE, 57, 23, 171, 400, CBS_DROPDOWNLIST | WS_TABSTOP
 
+												 
     GROUPBOX "Startup", 202, 6, 47, 235, 30
     AUTOCHECKBOX "Launch on Windows &startup", ID_CHK_STARTUP, 17, 59, 100, 12
 
@@ -203,15 +204,16 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, 0, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v" PACKAGE_VERSION_RESOURCE_STR " - A Windows GUI for OpenVPN\n" \
+    LTEXT "OpenVPN GUI v" PACKAGE_VERSION_RESOURCE_STR " – A Windows GUI for OpenVPN\n" \
           "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n" \
           "Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n" \
           "Copyright (C) 2012-" GUI_COPYRIGHT_YEAR_END " OpenVPN GUI contributors\n" \
           "https://github.com/OpenVPN/openvpn-gui/", 0, 36, 15, 206, 42
-    LTEXT "OpenVPN - An application to securely tunnel IP networks " \
+    LTEXT "OpenVPN – An application to securely tunnel IP networks " \
           "over a single TCP/UDP port, with support for SSL/TLS-based " \
           "session authentication and key exchange, packet " \
           "encryption, packet authentication, and packet compression.\n" \
+								  
           "\n" \
           "Copyright (C) 2002-" CORE_COPYRIGHT_YEAR_END " OpenVPN Technologies, Inc <info@openvpn.net>\n" \
           "https://openvpn.net/", 0, 8, 61, 240, 64
@@ -220,7 +222,7 @@ END
 /* Proxy Authentication Dialog */
 ID_DLG_PROXY_AUTH DIALOG 29, 23, 154, 65
 STYLE DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER
-CAPTION "OpenVPN - Proxy Authentication"
+CAPTION "OpenVPN – Proxy Authentication"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 BEGIN
@@ -236,7 +238,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 BEGIN
     IDS_LANGUAGE_NAME "English"
 
-    /* Tray - Resources */
+    /* Tray – Resources */
     IDS_TIP_DEFAULT "OpenVPN GUI "
     IDS_TIP_CONNECTED "\nConnected to: "
     IDS_TIP_CONNECTING "\nConnecting to: "
@@ -262,7 +264,7 @@ BEGIN
     IDS_MENU_SERVICEONLY_RESTART "Reconnect"
     IDS_MENU_ASK_STOP_SERVICE "Do you want to disconnect (Stop the OpenVPN Service)?"
 
-    /* Logviewer - Resources */
+    /* Logviewer – Resources */
     IDS_ERR_START_LOG_VIEWER "Error starting log-viewer: %s"
     IDS_ERR_START_CONF_EDITOR "Error starting config-editor: %s"
 
@@ -284,7 +286,7 @@ BEGIN
     IDS_ERR_STOP_SERV_OLD_VER "You cannot use OpenVPN GUI to start a connection while the OpenVPN Service is running (with OpenVPN 1.5/1.6). Stop OpenVPN Service first if you want to use OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "CreateEvent failed on exit event: %s"
     IDS_ERR_UNKNOWN_PRIORITY "Unknown priority name: %s"
-    IDS_ERR_LOG_APPEND_BOOL "Log file append flag (given as '%s') must be '0' or '1'"
+    IDS_ERR_LOG_APPEND_BOOL "Log file append flag (given as '%s') must be '0' or '1'."
     IDS_ERR_GET_MSIE_PROXY "Could not to get MSIE proxy settings."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor failed."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl failed."
@@ -326,7 +328,7 @@ BEGIN
                          "they reside in different folders."
     IDS_NFO_CONN_TIMEOUT "Connecting to management interface failed.\n" \
                          "View log file (%s) for more details."
-    /* main - Resources */
+    /* main – Resources */
     IDS_ERR_OPEN_DEBUG_FILE "Error opening debug file (%s) for output."
     IDS_ERR_CREATE_PATH "Could not create %s path:\n%s"
     IDS_ERR_LOAD_RICHED20 "Could not load RICHED20.DLL."
@@ -339,9 +341,9 @@ BEGIN
                                 "You will stay connected even if you exit OpenVPN GUI.\n\n" \
                                 "Do you want to proceed and exit OpenVPN GUI?"
 
-    /* options - Resources */
+    /* options – Resources */
     IDS_NFO_USAGE "--help\t\t\t: Show this message.\n" \
-                  "--connect cnn \t\t: Connect to ""cnn"" at startup. (extension must be included)\n" \
+                  "--connect cnn \t\t: Connect to ""cnn"" at startup.\n" \
                   "\t\t\t   Example: openvpn-gui --connect office.ovpn\n" \
                   "--command cmd [args]\t: Send a command to a running instance of the GUI\n" \
                   "Supported commands:\n"\
@@ -382,7 +384,7 @@ BEGIN
     IDS_ERR_BAD_OPTION "Options error: Unrecognized option or missing parameter(s): --%s\n" \
                    "Use openvpn-gui --help for more info."
 
-    /* passphrase - Resources */
+    /* passphrase – Resources */
     IDS_ERR_CREATE_PASS_THREAD "CreateThread to show ChangePassphrase dialog failed."
     IDS_NFO_CHANGE_PWD "Change Private Key Password (%s)"
     IDS_ERR_PWD_DONT_MATCH "The passwords you typed do not match. Try again."
@@ -410,25 +412,25 @@ BEGIN
                              "Please choose another one."
 
     /* settings */
-    IDS_SETTINGS_CAPTION "OpenVPN - Settings"
+    IDS_SETTINGS_CAPTION "OpenVPN – Settings"
 
     /* proxy */
     IDS_ERR_HTTP_PROXY_ADDRESS "You must specify a HTTP proxy address."
     IDS_ERR_HTTP_PROXY_PORT "You must specify a HTTP proxy port."
-    IDS_ERR_HTTP_PROXY_PORT_RANGE "You must specify a HTTP proxy port between 1-65535"
+    IDS_ERR_HTTP_PROXY_PORT_RANGE "You must specify a HTTP proxy port between 1 and 65535."
     IDS_ERR_SOCKS_PROXY_ADDRESS "You must specify a SOCKS proxy address."
     IDS_ERR_SOCKS_PROXY_PORT "You must specify a SOCKS proxy port."
-    IDS_ERR_SOCKS_PROXY_PORT_RANGE "You must specify a SOCKS proxy port between 1-65535"
+    IDS_ERR_SOCKS_PROXY_PORT_RANGE "You must specify a SOCKS proxy port between 1 and 65535."
     IDS_ERR_CREATE_REG_HKCU_KEY "Error creating ""HKEY_CURRENT_USER\\%s"" key."
     IDS_ERR_GET_TEMP_PATH "Error determining TempPath with GetTempPath(). Using ""C:\\"" instead."
 
     /* service */
-    IDS_ERR_OPEN_VPN_SERVICE "Failed to open ""OpenVPNService"""
-    IDS_ERR_START_SERVICE "Failed to start ""OpenVPNService"""
+    IDS_ERR_OPEN_VPN_SERVICE "Failed to open ""OpenVPNService""."
+    IDS_ERR_START_SERVICE "Failed to start ""OpenVPNService""."
     IDS_ERR_QUERY_SERVICE "Failed to query service status."
     IDS_ERR_SERVICE_START_FAILED "OpenVPN Service failed to start."
-    IDS_ERR_OPEN_SCMGR "OpenSCManager failed (%d)"
-    IDS_ERR_STOP_SERVICE "Failed to stop OpenVPN Service"
+    IDS_ERR_OPEN_SCMGR "OpenSCManager failed (%d)."
+    IDS_ERR_STOP_SERVICE "Failed to stop OpenVPN Service."
     IDS_NFO_RESTARTED "OpenVPN Service restarted."
     IDS_ERR_ACCESS_SERVICE_PIPE "Access to service pipe failed."
     IDS_ERR_WRITE_SERVICE_PIPE "Writing to service pipe failed."
@@ -464,14 +466,14 @@ BEGIN
     IDS_NFO_DELETE_PASS "Press OK to delete saved passwords for config ""%s"""
 
     /* Token password related */
-    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN - Token Password"
+    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – Token Password"
     IDS_NFO_TOKEN_PASSWORD_REQUEST "Input Password/PIN for Token '%S'"
 
-    IDS_NFO_AUTH_PASS_RETRY "Wrong credentials. Try again..."
-    IDS_NFO_KEY_PASS_RETRY  "Wrong password. Try again..."
+    IDS_NFO_AUTH_PASS_RETRY "Wrong credentials. Try again…"
+    IDS_NFO_KEY_PASS_RETRY  "Wrong password. Try again…"
     IDS_ERR_INVALID_PASSWORD_INPUT "Invalid character in password"
     IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
-    IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds..."
+    IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds…"
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
     IDS_NFO_BYTECOUNT "Bytes in: %s  out: %s"
 
