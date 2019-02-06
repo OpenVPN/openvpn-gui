@@ -62,10 +62,10 @@ FONT 9, "맑은 고딕"
 LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
 BEGIN
     LTEXT "사용자:", 0, 6, 9, 50, 10
-    LTEXT "암호:", 0, 6, 26, 50, 10
-    LTEXT "Response:", 0, 6, 60, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
+    LTEXT "암호:", 0, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    LTEXT "요청값:", 0, 6, 60, 50, 10
     LTEXT "", ID_TXT_AUTH_CHALLENGE, 6, 43, 148, 10
     EDITTEXT ID_EDT_AUTH_CHALLENGE, 60, 57, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     CHECKBOX "암호 저장", ID_CHK_SAVE_PASS, 6, 76, 100, 10
@@ -77,12 +77,12 @@ END
 /* Challenge Response Dialog */
 ID_DLG_CHALLENGE_RESPONSE DIALOG 6, 18, 212, 72
 STYLE WS_SIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
-CAPTION "OpenVPN - Challenge Response"
+CAPTION "OpenVPN - 자격증명"
 FONT 9, "맑은 고딕"
 LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
 BEGIN
     LTEXT "", ID_TXT_DESCRIPTION, 6, 9, 208, 10
-    LTEXT "Response:", 0, 6, 30, 50, 10
+    LTEXT "요청값:", 0, 6, 30, 50, 10
     EDITTEXT ID_EDT_RESPONSE, 60, 27, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     PUSHBUTTON "확인", IDOK, 25, 58, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
     PUSHBUTTON "취소", IDCANCEL, 85, 58, 52, 14
@@ -248,6 +248,7 @@ BEGIN
     IDS_MENU_CLOSE "종료"
     IDS_MENU_CONNECT "연결"
     IDS_MENU_DISCONNECT "연결 해제"
+    IDS_MENU_RECONNECT "재연결"
     IDS_MENU_STATUS "상태 보기"
     IDS_MENU_VIEWLOG "로그 보기"
     IDS_MENU_EDITCONFIG "설정 편집"
@@ -283,8 +284,8 @@ BEGIN
     IDS_ERR_UNKNOWN_PRIORITY "Unknown priority name: %s"
     IDS_ERR_LOG_APPEND_BOOL "로그 파일의 '%s'로 지정된 추가 플래그는 '0'또는 '1'이어야합니다."
     IDS_ERR_GET_MSIE_PROXY "MSIE 프락시 설정을 가져올 수 없습니다."
-    IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor failed."
-    IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl failed."
+    IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor 실패"
+    IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl 실패"
     IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe on hOutputWrite failed."
     IDS_ERR_CREATE_PIPE_INPUT "CreatePipe on hInputRead failed."
     IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle on hOutputRead failed."
@@ -339,6 +340,16 @@ BEGIN
     IDS_NFO_USAGE "--help\t\t\t: 이 메시지 보기.\n" \
                   "--connect cnn \t\t: 시작 시에 ""cnn""에 연결. (확장자를 포함해야 함)\n" \
                   "\t\t\t   예: openvpn-gui --connect office.ovpn\n" \
+                  "--command cmd [args]\t: 실행중인 GUI 인스턴스에 명령 보내기\n" \
+                  "지원되는 명령:\n"\
+                  "    connect cnn            \t: ""cnn"" 설정으로 연결\n"\
+                  "    disconnect cnn         \t: ""cnn"" 설정 연결 해제\n"\
+                  "    reconnect cnn          \t: ""cnn"" 설정 재연결\n"\
+                  "    disconnect_all         \t: 연결된 모든 설정을 해제\n"\
+                  "    exit                 \t\t: 실행중인 GUI 인스턴스 종료 (확인을 물어봄)\n"\
+                  "    status cnn           \t\t: 연결 되어 있는 ""cnn"" 설정의 상태를 표시\n"\
+                  "    silent_connection [0|1]\t: silent_connection 플래그를 on(1) 또는 off(0)로 설정\n"\
+                  "\t\t\t예제: openvpn-gui.exe --command disconnect myconfig\n"\
                   "\n" \
                   "각 옵션은 레지스트리 설정보다 우선 합니다:\n" \
                   "--exe_path\t\t: openvpn.exe 경로.\n" \
@@ -406,7 +417,7 @@ BEGIN
     IDS_ERR_SOCKS_PROXY_PORT "SOCKS proxy 포트 설정이 필요 합니다."
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "SOCKS proxy 포트는 1-65535 범위로 해야 합니다."
     IDS_ERR_CREATE_REG_HKCU_KEY """HKEY_CURRENT_USER\\%s"" key를 생성하지 못했습니다."
-    IDS_ERR_GET_TEMP_PATH "Error determining TempPath with GetTempPath(). Using ""C:\\"" instead."
+    IDS_ERR_GET_TEMP_PATH "GenTempPath()로 TempPath를 결정하는 중 오류가 발생헀습니다. ""C:\\""를 대신 사용합니다."
 
     /* service */
     IDS_ERR_OPEN_VPN_SERVICE """OpenVPNService"" 열기를 실패 했습니다."
@@ -453,4 +464,11 @@ BEGIN
     IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN - 토큰 암호"
     IDS_NFO_TOKEN_PASSWORD_REQUEST "'%S' 토큰에 대한 암호/핀을 입력 하십시오."
 
+    IDS_NFO_AUTH_PASS_RETRY "사용자 또는 암호 오류. 재시도 하십시오."
+    IDS_NFO_KEY_PASS_RETRY  "암호 오류. 재입력 하십시오."
+    IDS_ERR_INVALID_PASSWORD_INPUT "암호에 잘못된 문자가 있습니다."
+    IDS_ERR_INVALID_USERNAME_INPUT "사용자 이름에 잘못된 문자가 있습니다."
+    IDS_NFO_AUTO_CONNECT    "%u초 후 자동으로 연결..."
+    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI 가 이미 실행 중입니다. 시작하려면 작업 표시줄의 아이콘을 마우스 우클릭 하십시오."
+    IDS_NFO_BYTECOUNT "수신 바이트: %s  전송 바이트: %s"
 END
