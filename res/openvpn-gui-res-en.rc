@@ -505,5 +505,10 @@ BEGIN
     /* script security related */
     IDS_ALLOW_SCRIPT_BUILT_IN "Built-in commands only (recommended)"
     IDS_SCRIPT_NO_OVERRIDE    "Use config file setting (potentially unsafe)"
+    IDS_ERR_SCRIPT_OVERRIDE "External scripts are disabled for this connection as a security measure. "\
+                            "If you must allow such scripts, open the connection specific ""Options"" " \
+                            "menu and select to use config-file setting for ""Allow script execution"". "\
+                            "Note that this is potentially unsafe unless you trust the origin of "\
+                            "this connection profile."
 
 END

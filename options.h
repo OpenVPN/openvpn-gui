@@ -156,6 +156,7 @@ struct connection {
     unsigned long long int bytes_out;
     struct env_item *es;           /* Pointer to the head of config-specific env variables list */
     HANDLE hfile;                  /* Config file handle used for locking */
+    wchar_t last_error[512];
 };
 
 /* All options used within OpenVPN GUI */

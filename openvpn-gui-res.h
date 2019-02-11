@@ -130,6 +130,7 @@
 #define ID_CMB_SCRIPT_SECURITY           296
 #define IDS_SCRIPT_NO_OVERRIDE           297
 #define IDS_ALLOW_SCRIPT_BUILT_IN        299
+#define IDS_ERR_SCRIPT_OVERRIDE          300
 
 /*
  * String Table Resources

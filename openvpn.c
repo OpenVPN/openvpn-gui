@@ -136,6 +136,28 @@ OnHold(connection_t *c, UNUSED char *msg)
     ManagementCommand(c, "hold release", NULL, regular);
 }
 
+/* Save last fatal error from OpenVPN -- possibly translated or reworded */
+static void
+SaveLastError(connection_t *c, const char *msg)
+{
+    /* If we have enforced script security and there is script error, translate/re-word the error */
+    if (get_script_security(c) != SSEC_UNDEF
+        && strstr(msg, "'--script-security 2' or higher is required to call user-defined scripts"))
+    {
+        _sntprintf_0(c->last_error, LoadLocalizedString(IDS_ERR_SCRIPT_OVERRIDE));
+    }
+    else
+    {
+        _sntprintf_0(c->last_error, L"%S", msg);
+    }
+}
+
+static void
+ClearLastError(connection_t *c)
+{
+    c->last_error[0] = L'\0';
+}
+
 /*
  * Handle a log line from the OpenVPN management interface
  * Format <TIMESTAMP>,<FLAGS>,<MESSAGE>
@@ -198,6 +220,11 @@ OnLogLine(connection_t *c, char *line)
     SendMessage(logWnd, EM_REPLACESEL, FALSE, (LPARAM) datetime);
     SendMessage(logWnd, EM_SETTEXTEX, (WPARAM) &ste, (LPARAM) message);
     SendMessage(logWnd, EM_REPLACESEL, FALSE, (LPARAM) _T("\n"));
+
+    if (memchr(flags, 'N', flag_size) || memchr(flags, 'F', flag_size))
+    {
+        SaveLastError(c, message);
+    }
 }
 
 /* expect ipv4,remote,port,,,ipv6 */
@@ -1105,6 +1132,7 @@ OnStop(connection_t *c, UNUSED char *msg)
     UINT txt_id, msg_id;
     TCHAR *msg_xtra;
     SetMenuStatus(c, disconnected);
+    wchar_t err_msg[512];
 
     switch (c->state)
     {
@@ -1123,8 +1151,10 @@ OnStop(connection_t *c, UNUSED char *msg)
             SetForegroundWindow(c->hwndStatus);
             ShowWindow(c->hwndStatus, SW_SHOW);
         }
-        MessageBox(c->hwndStatus, LoadLocalizedString(IDS_NFO_CONN_TERMINATED, c->config_file),
-                   _T(PACKAGE_NAME), MB_OK);
+        _sntprintf_0(err_msg, L"%s\n\n%s",
+                     LoadLocalizedString(IDS_NFO_CONN_TERMINATED, c->config_file), c->last_error);
+        MessageBox(c->hwndStatus, err_msg, _T(PACKAGE_NAME), MB_OK);
+        ClearLastError(c);
         SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
         break;
 
@@ -1151,7 +1181,10 @@ OnStop(connection_t *c, UNUSED char *msg)
             SetForegroundWindow(c->hwndStatus);
             ShowWindow(c->hwndStatus, SW_SHOW);
         }
-        MessageBox(c->hwndStatus, LoadLocalizedString(msg_id, msg_xtra), _T(PACKAGE_NAME), MB_OK);
+        _sntprintf_0(err_msg, L"%s\n\n%s",
+                     LoadLocalizedString(msg_id, msg_xtra), c->last_error);
+        MessageBox(c->hwndStatus, err_msg, _T(PACKAGE_NAME), MB_OK);
+        ClearLastError(c);
         SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
         break;
 
