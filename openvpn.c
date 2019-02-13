@@ -141,8 +141,9 @@ static void
 SaveLastError(connection_t *c, const char *msg)
 {
     /* If we have enforced script security and there is script error, translate/re-word the error */
-    if (get_script_security(c) != SSEC_UNDEF
-        && strstr(msg, "'--script-security 2' or higher is required to call user-defined scripts"))
+    if (!o.disable_ssec_override
+        && get_script_security(c) != SSEC_UNDEF
+        && strstr(msg, "disallowed by script-security setting"))
     {
         _sntprintf_0(c->last_error, LoadLocalizedString(IDS_ERR_SCRIPT_OVERRIDE));
     }
