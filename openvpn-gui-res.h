@@ -304,6 +304,8 @@
 #define IDS_ERR_IMPORT_EXISTS           1901
 #define IDS_ERR_IMPORT_FAILED           1902
 #define IDS_NFO_IMPORT_SUCCESS          1903
+#define IDS_NFO_IMPORT_OVERWRITE        1904
+#define IDS_ERR_IMPORT_SOURCE           1905
 
 /* Save password related messages */
 #define IDS_NFO_DELETE_PASS             2001
