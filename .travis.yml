@@ -1,5 +1,5 @@
 sudo: required
-dist: trusty
+dist: xenial
 
 os: linux
 language: cpp
@@ -12,38 +12,32 @@ env:
 matrix:
   fast_finish: true
   include:
-    - compiler: ": Win32"
+    - compiler: gcc
       env: CHOST=i686-w64-mingw32 CONFIG=""
-    - compiler: ": Win64"
+    - compiler: gcc
       env: CHOST=x86_64-w64-mingw32 CONFIG=""
-    - compiler: ": Win32"
+    - compiler: gcc
       env: CHOST=i686-w64-mingw32 CONFIG="--disable-password-change"
-    - compiler: ": Win64"
+    - compiler: gcc
       env: CHOST=x86_64-w64-mingw32 CONFIG="--disable-password-change"
   exclude:
     - compiler: gcc
 
 addons:
   apt:
-    packages: [ cppcheck ]
-
-install:
-    - sudo apt-add-repository "deb http://archive.ubuntu.com/ubuntu xenial main universe"
-    - sudo apt-get update
-    - sudo apt-get -y install dpkg gcc-mingw-w64
+    packages: [ gcc-mingw-w64 ]
 
 before_script:
     - unset CC; unset CXX
 
 script:
-    - cppcheck --force --enable=warning,missingInclude --error-exitcode=1 . >build.log 2>&1 || (cat build.log && exit 1)
     - if [[ $CONFIG != *"--disable-password-change"* ]]; then . .travis-build-openssl.sh; fi
     - autoreconf -i -v
     - ./configure --prefix=/ --libdir=/lib --host=$CHOST --build=x86_64-pc-linux-gnu --program-prefix='' $CONFIG && make
 # build from tarball
     - make distdir=dist dist && tar xvf dist.tar.gz && cd dist
     - ./configure --prefix=/ --libdir=/lib --host=$CHOST --build=x86_64-pc-linux-gnu --program-prefix='' $CONFIG && make
-    
+
 cache:
   directories:
   - download-cache
