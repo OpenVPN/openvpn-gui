@@ -330,7 +330,7 @@ process_setenv(connection_t *c, UNUSED time_t timestamp, const char *msg)
 
     msg += strlen("setenv ");    /* character following "setenv" */
     msg += strspn(msg, " \t");   /* skip leading space */
-    if (!msg || msg[0] == '\0')
+    if (msg[0] == '\0')
     {
         WriteStatusLog(c, L"GUI> ", L"Error: Name empty in echo setenv", false);
         return;
