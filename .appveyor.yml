@@ -1,5 +1,9 @@
 version: "cygwin-{build}"
 
+skip_commits:
+  files:
+    - .travis.yml
+
 environment:
   matrix:
     - ARCH: x86
