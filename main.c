@@ -454,7 +454,7 @@ HandleCopyDataMessage(const COPYDATASTRUCT *copy_data)
             ForceForegroundWindow(o.hWnd);
         RestartOpenVPN(c);
     }
-    else if(copy_data->dwData == WM_OVPN_SHOWSTATUS && c->hwndStatus && c)
+    else if(copy_data->dwData == WM_OVPN_SHOWSTATUS && c && c->hwndStatus)
     {
         ForceForegroundWindow(o.hWnd);
         ShowWindow(c->hwndStatus, SW_SHOW);
