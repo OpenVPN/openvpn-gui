@@ -871,8 +871,11 @@ MsgToEventLog(WORD type, wchar_t *format, ...)
 
     va_list args;
     va_start(args, format);
-    if (vswprintf(buf, size-1, format, args) == -1)
-        return;
+    int nchar = vswprintf(buf, size-1, format, args);
+    va_end(args);
+
+    if (nchar == -1) return;
+
     buf[size - 1] = '\0';
 
     msg[0] = TEXT(PACKAGE_NAME);
