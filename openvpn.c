@@ -1196,7 +1196,7 @@ format_bytecount(wchar_t *buf, size_t len, unsigned long long c)
 
     if (c <= 1024)
     {
-        swprintf(buf, len, L"%I64u B", c, *s);
+        swprintf(buf, len, L"%I64u B", c);
         buf[len-1] = L'\0';
         return buf;
     }
