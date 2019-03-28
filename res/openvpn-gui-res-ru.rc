@@ -249,6 +249,7 @@ BEGIN
     IDS_MENU_CLOSE "Выход"
     IDS_MENU_CONNECT "Подключиться"
     IDS_MENU_DISCONNECT "Отключиться"
+    IDS_MENU_RECONNECT "Переподключиться"
     IDS_MENU_STATUS "Отобразить состояние"
     IDS_MENU_VIEWLOG "Показать журнал"
     IDS_MENU_EDITCONFIG "Редактировать конфигурацию"
