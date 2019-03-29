@@ -53,6 +53,12 @@ FindResourceLang(PTSTR resType, PTSTR resId, LANGID langId)
     if (res)
         return res;
 
+    /* try to find the resource in the default sublanguage */
+    LANGID defLangId = MAKELANGID(PRIMARYLANGID(langId), SUBLANG_DEFAULT);
+    res = FindResourceEx(o.hInstance, resType, resId, defLangId);
+    if (res)
+        return res;
+
     /* try to find the resource in the default language */
     res = FindResourceEx(o.hInstance, resType, resId, fallbackLangId);
     if (res)
