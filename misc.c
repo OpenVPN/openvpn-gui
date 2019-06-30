@@ -499,3 +499,13 @@ wcs_concat2(WCHAR *dest, int len, const WCHAR *src1, const WCHAR *src2, const WC
         n = 0;
     dest[n] = L'\0';
 }
+
+void
+CloseHandleEx(LPHANDLE handle)
+{
+    if (handle && *handle && *handle != INVALID_HANDLE_VALUE)
+    {
+        CloseHandle(*handle);
+        *handle = INVALID_HANDLE_VALUE;
+    }
+}

@@ -2022,6 +2022,9 @@ StartOpenVPN(connection_t *c)
             goto out;
         }
 
+        CloseHandleEx(&hStdInRead);
+        CloseHandleEx(&hNul);
+
         /* Pass management password to OpenVPN process */
         c->manage.password[sizeof(c->manage.password) - 1] = '\n';
         WriteFile(hStdInWrite, c->manage.password, sizeof(c->manage.password), &written, NULL);
@@ -2159,8 +2162,8 @@ ReadLineFromStdOut(HANDLE hStdOut, char *line, DWORD size)
 BOOL
 CheckVersion()
 {
-    HANDLE hStdOutRead;
-    HANDLE hStdOutWrite;
+    HANDLE hStdOutRead = NULL;
+    HANDLE hStdOutWrite = NULL;
     BOOL retval = FALSE;
     STARTUPINFO si;
     PROCESS_INFORMATION pi;
@@ -2217,19 +2220,23 @@ CheckVersion()
     si.hStdError = hStdOutWrite;
 
     /* Start OpenVPN to check version */
-    if (!CreateProcess(o.exe_path, cmdline, NULL, NULL, TRUE,
-                       CREATE_NO_WINDOW, NULL, pwd, &si, &pi))
+    bool success = CreateProcess(o.exe_path, cmdline, NULL, NULL, TRUE,
+                       CREATE_NO_WINDOW, NULL, pwd, &si, &pi);
+    if (!success)
     {
         ShowLocalizedMsg(IDS_ERR_CREATE_PROCESS, o.exe_path, cmdline, pwd);
+        goto out;
     }
-    else if (ReadLineFromStdOut(hStdOutRead, line, sizeof(line)))
+
+    CloseHandleEx(&hStdOutWrite);
+    CloseHandleEx(&pi.hThread);
+    CloseHandleEx(&pi.hProcess);
+
+    if (ReadLineFromStdOut(hStdOutRead, line, sizeof(line)))
     {
 #ifdef DEBUG
         PrintDebug(_T("VersionString: %S"), line);
 #endif
-        CloseHandle(pi.hThread);
-        CloseHandle(pi.hProcess);
-
         /* OpenVPN version 2.x */
         char *p = strstr(line, match_version);
         if (p)
@@ -2242,8 +2249,8 @@ CheckVersion()
     }
 
 out:
-    CloseHandle(hStdOutRead);
-    CloseHandle(hStdOutWrite);
+    CloseHandleEx(&hStdOutWrite);
+    CloseHandleEx(&hStdOutRead);
     return retval;
 }
 
