@@ -44,5 +44,7 @@ BOOL validate_input(const WCHAR *input, const WCHAR *exclude);
 /* Concatenate two wide strings with a separator */
 void wcs_concat2(WCHAR *dest, int len, const WCHAR *src1, const WCHAR *src2, const WCHAR *sep);
 void CloseSemaphore(HANDLE sem);
+/* Close a handle if not null or invalid */
+void CloseHandleEx(LPHANDLE h);
 
 #endif
