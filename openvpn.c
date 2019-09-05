@@ -470,6 +470,10 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             {
                 SendMessage(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS), EM_SETSEL, 0, MAKELONG(0,-1));
             }
+            else if (param->flags & FLAG_CR_TYPE_SCRV1)
+            {
+                SetFocus(GetDlgItem(hwndDlg, ID_EDT_AUTH_CHALLENGE));
+            }
             SecureZeroMemory(password, sizeof(password));
         }
         if (param->c->flags & FLAG_DISABLE_SAVE_PASS)
