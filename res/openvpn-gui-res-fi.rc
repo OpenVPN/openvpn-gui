@@ -247,6 +247,7 @@ BEGIN
     IDS_MENU_CLOSE "Poistu"
     IDS_MENU_CONNECT "Yhdistä"
     IDS_MENU_DISCONNECT "Katkaise yhteys"
+    IDS_MENU_RECONNECT "Yhdistä uudelleen"
     IDS_MENU_STATUS "Näytä tila"
     IDS_MENU_VIEWLOG "Näytä loki"
     IDS_MENU_EDITCONFIG "Muokkaa asetuksia"
