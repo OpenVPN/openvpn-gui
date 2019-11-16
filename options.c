@@ -268,6 +268,10 @@ add_option(options_t *options, int i, TCHAR **p)
         {
             options->action = WM_OVPN_EXIT;
         }
+        else if (streq(p[1], _T("rescan")))
+        {
+            options->action = WM_OVPN_RESCAN;
+        }
         else
         {
             ShowLocalizedMsg(IDS_ERR_BAD_OPTION, p[0]);

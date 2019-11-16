@@ -167,6 +167,9 @@ silent\_connection 0 \| 1
 exit
      Disconnect all active connections and terminate the GUI process
 
+rescan
+     Rescan the config folders for changes
+
 If no running instance of the GUI is found, these commands do nothing
 except for *--command connect config-name* which gets interpreted
 as *--connect config-name*
