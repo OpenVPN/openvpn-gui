@@ -208,6 +208,14 @@ DestroyPopupMenus()
     hMenu = NULL;
 }
 
+/* Rescan config folders and recreate popup menus */
+static void
+RecreatePopupMenus(void)
+{
+    DestroyPopupMenus();
+    BuildFileList();
+    CreatePopupMenus();
+}
 
 /*
  * Handle mouse clicks on tray icon
@@ -219,10 +227,7 @@ OnNotifyTray(LPARAM lParam)
 
     switch (lParam) {
     case WM_RBUTTONUP:
-        /* Recreate popup menus */
-        DestroyPopupMenus();
-        BuildFileList();
-        CreatePopupMenus();
+        RecreatePopupMenus();
 
         GetCursorPos(&pt);
         SetForegroundWindow(o.hWnd);
@@ -244,9 +249,7 @@ OnNotifyTray(LPARAM lParam)
         else {
             int disconnected_conns = CountConnState(disconnected);
 
-            DestroyPopupMenus();
-            BuildFileList();
-            CreatePopupMenus();
+            RecreatePopupMenus();
 
             /* Start connection if only one config exist */
             if (o.num_configs == 1 && o.conn[0].state == disconnected)
@@ -263,6 +266,11 @@ OnNotifyTray(LPARAM lParam)
                 }
             }
         }
+        break;
+
+    case WM_OVPN_RESCAN:
+        /* Rescan config folders and recreate popup menus */
+        RecreatePopupMenus();
         break;
     }
 }

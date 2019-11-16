@@ -481,6 +481,10 @@ HandleCopyDataMessage(const COPYDATASTRUCT *copy_data)
     {
         ShowTrayBalloon(L"", copy_data->lpData);
     }
+    else if (copy_data->dwData == WM_OVPN_RESCAN)
+    {
+        OnNotifyTray(WM_OVPN_RESCAN);
+    }
     else
     {
         MsgToEventLog(EVENTLOG_ERROR_TYPE,
