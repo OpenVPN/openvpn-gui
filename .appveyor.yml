@@ -6,21 +6,46 @@ skip_commits:
 
 environment:
   matrix:
-    - ARCH: x86
+    - BUILDSYSTEM: cygwin
+      ARCH: x86
       CYGWIN: C:\Cygwin
       CHOST: i686-w64-mingw32
       CC: i686-w64-mingw32-gcc
-    - ARCH: x86_64
+    - BUILDSYSTEM: cygwin
+      ARCH: x86_64
       CYGWIN: C:\Cygwin64
       CHOST: x86_64-w64-mingw32
       CC: x86_64-w64-mingw32-gcc
+    - BUILDSYSTEM: VS2019
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 
-build_script:
-  - "%CYGWIN%\\setup-%ARCH%.exe -g -q -P mingw64-i686-openssl,mingw64-x86_64-openssl,cygwin-devel"
-  - "%CYGWIN%\\bin\\bash -lc 'set -eux; cd /cygdrive/c/projects/%APPVEYOR_PROJECT_SLUG%; autoreconf -iv; ./configure --prefix=/ --libdir=/lib --host=$CHOST --build=i686-pc-cygwin --program-prefix=\'\'; make'"
-
-artifacts:
-  - path: openvpn-gui.exe
-
-on_failure:
-  - cmd: appveyor PushArtifact config.log
+for:
+  -
+    matrix:
+      only:
+        - BUILDSYSTEM: cygwin
+    build_script:
+      - "%CYGWIN%\\setup-%ARCH%.exe -g -q -P mingw64-i686-openssl,mingw64-x86_64-openssl,cygwin-devel"
+      - "%CYGWIN%\\bin\\bash -lc 'set -eux; cd /cygdrive/c/projects/%APPVEYOR_PROJECT_SLUG%; autoreconf -iv; ./configure --prefix=/ --libdir=/lib --host=$CHOST --build=i686-pc-cygwin --program-prefix=\'\'; make'"
+    artifacts:
+      - path: openvpn-gui.exe
+    on_failure:
+      - cmd: appveyor PushArtifact config.log
+  -
+    matrix:
+      only:
+        - BUILDSYSTEM: VS2019
+    install:
+      - cd C:\Tools\vcpkg
+      - git pull
+      - .\bootstrap-vcpkg.bat
+      - .\vcpkg integrate install
+      - .\vcpkg install openssl-windows:x64-windows"
+      - cd %APPVEYOR_BUILD_FOLDER%
+    cache: c:\tools\vcpkg\installed\
+    build:
+      project: openvpn-gui.sln
+    platform: x64
+    configuration: Debug
+    artifacts:
+      - path: x64/Debug/openvpn-gui.exe

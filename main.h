@@ -66,8 +66,13 @@
 #define false 0
 
 /* GCC function attributes */
+#ifdef _MSC_VER
+#define UNUSED
+#define NORETURN
+#else
 #define UNUSED __attribute__ ((unused))
 #define NORETURN __attribute__ ((noreturn))
+#endif
 
 #define PACKVERSION(major,minor) MAKELONG(minor,major)
 struct security_attributes
