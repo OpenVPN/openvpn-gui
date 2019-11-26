@@ -30,3 +30,7 @@ depcomp
 stamp-h1
 install-sh
 missing
+
+.vs
+x64
+Debug
