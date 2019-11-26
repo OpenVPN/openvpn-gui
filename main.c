@@ -31,7 +31,6 @@
 #include <shlwapi.h>
 #include <wtsapi32.h>
 #include <prsht.h>
-#include <pbt.h>
 #include <commdlg.h>
 
 #include "tray.h"
