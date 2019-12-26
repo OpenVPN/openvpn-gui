@@ -49,6 +49,15 @@ AC_ARG_ENABLE(
 	[enable_password_change="yes"]
 )
 
+AC_ARG_ENABLE(
+	[ovpn3],
+	[AS_HELP_STRING([--enable-ovpn3], [enable openvpn3 agent and client @<:@default=no@:>@])],
+	[
+		AC_DEFINE([ENABLE_OVPN3], 1, [Use openvpn3 agent instead of interactive service])
+		PKG_CHECK_MODULES([JSON], [json-c])
+	]
+)
+
 case "$host" in
 	*-mingw*)
 		CPPFLAGS="${CPPFLAGS} -DWIN32_LEAN_AND_MEAN"

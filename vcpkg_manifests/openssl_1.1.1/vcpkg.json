@@ -2,7 +2,8 @@
   "name": "openvpn-gui",
   "version-string": "0.0.1",
   "dependencies": [
-    "openssl"
+    "openssl",
+    "json-c"
   ],
   "builtin-baseline": "4b766c1cd17205e1b768c4fadfd5f867c1d0510e",
   "overrides": [
