@@ -271,6 +271,7 @@ OnManagement(SOCKET sk, LPARAM lParam)
             {
                 ManagementCommand(c, c->manage.password, NULL, regular);
                 *c->manage.password = '\0';
+
                 continue;
             }
 

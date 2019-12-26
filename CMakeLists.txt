@@ -1,3 +1,5 @@
+option(CLI_OVPN3 "Build ${PROJECT_NAME} with OpenVPN3 support" OFF)
+
 cmake_minimum_required(VERSION 3.10)
 
 if(NOT VCPKG_MANIFEST_DIR)
@@ -32,7 +34,7 @@ find_package(OpenSSL REQUIRED)
 
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG")
 
-target_link_libraries(${PROJECT_NAME}
+target_link_libraries(${PROJECT_NAME} PRIVATE
     OpenSSL::SSL
     Wtsapi32.lib
     Netapi32.lib
@@ -70,6 +72,16 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
     UNICODE
     WIN32_LEAN_AND_MEAN
     HAVE_CONFIG_H)
+
+if (${CLI_OVPN3})
+    find_package(json-c REQUIRED)
+
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        json-c::json-c)
+
+    target_compile_definitions(${PROJECT_NAME} PRIVATE
+        ENABLE_OVPN3)
+endif ()
 
 if(MSVC)
     # work around msvc generator Debug/Release directory ugliness, doesn't apply for Ninja

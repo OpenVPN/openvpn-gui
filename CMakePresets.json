@@ -64,6 +64,13 @@
             }
         },
         {
+            "name": "ovpn3",
+            "hidden": true,
+            "cacheVariables": {
+                "CLI_OVPN3": "ON"
+            }
+        },
+        {
             "name": "x64-debug-ossl3",
             "inherits": [ "base", "ossl3", "x64", "debug" ]
         },
@@ -110,6 +117,54 @@
         {
             "name": "x86-release-ossl1.1.1",
             "inherits": [ "base", "ossl1.1.1", "x86", "release" ]
+        },
+        {
+            "name": "x64-debug-ossl3-ovpn3",
+            "inherits": [ "x64-debug-ossl3", "ovpn3" ]
+        },
+        {
+            "name": "x64-debug-ossl1.1.1-ovpn3",
+            "inherits": [ "x64-debug-ossl1.1.1", "ovpn3" ]
+        },
+        {
+            "name": "arm64-debug-ossl3-ovpn3",
+            "inherits": [ "arm64-debug-ossl3", "ovpn3" ]
+        },
+        {
+            "name": "arm64-debug-ossl1.1.1-ovpn3",
+            "inherits": [ "arm64-debug-ossl1.1.1", "ovpn3" ]
+        },
+        {
+            "name": "x86-debug-ossl3-ovpn3",
+            "inherits": [ "x86-debug-ossl3", "ovpn3" ]
+        },
+        {
+            "name": "x86-debug-ossl1.1.1-ovpn3",
+            "inherits": [ "x86-debug-ossl1.1.1", "ovpn3" ]
+        },
+        {
+            "name": "x64-release-ossl3-ovpn3",
+            "inherits": [ "x64-release-ossl3", "ovpn3" ]
+        },
+        {
+            "name": "x64-release-ossl1.1.1-ovpn3",
+            "inherits": [ "x64-release-ossl1.1.1", "ovpn3" ]
+        },
+        {
+            "name": "arm64-release-ossl3-ovpn3",
+            "inherits": [ "arm64-release-ossl3", "ovpn3" ]
+        },
+        {
+            "name": "arm64-release-ossl1.1.1-ovpn3",
+            "inherits": [ "arm64-release-ossl1.1.1", "ovpn3" ]
+        },
+        {
+            "name": "x86-release-ossl3-ovpn3",
+            "inherits": [ "x86-release-ossl3", "ovpn3" ]
+        },
+        {
+            "name": "x86-release-ossl1.1.1-ovpn3",
+            "inherits": [ "x86-release-ossl1.1.1", "ovpn3" ]
         }
     ],
     "buildPresets": [
@@ -171,6 +226,67 @@
         {
             "name": "arm64-debug-ossl1.1.1",
             "configurePreset": "arm64-debug-ossl1.1.1",
+            "configuration": "Debug"
+        },
+
+        {
+            "name": "x64-release-ossl3-ovpn3",
+            "configurePreset": "x64-release-ossl3-ovpn3",
+            "configuration": "Release"
+        },
+        {
+            "name": "x64-release-ossl1.1.1-ovpn3",
+            "configurePreset": "x64-release-ossl1.1.1-ovpn3",
+            "configuration": "Release"
+        },
+        {
+            "name": "x86-release-ossl3-ovpn3",
+            "configurePreset": "x86-release-ossl3-ovpn3",
+            "configuration": "Release"
+        },
+        {
+            "name": "x86-release-ossl1.1.1-ovpn3",
+            "configurePreset": "x86-release-ossl1.1.1-ovpn3",
+            "configuration": "Release"
+        },
+        {
+            "name": "arm64-release-ossl3-ovpn3",
+            "configurePreset": "arm64-release-ossl3-ovpn3",
+            "configuration": "Release"
+        },
+        {
+            "name": "arm64-release-ossl1.1.1-ovpn3",
+            "configurePreset": "arm64-release-ossl1.1.1-ovpn3",
+            "configuration": "Release"
+        },
+        {
+            "name": "x64-debug-ossl3-ovpn3",
+            "configurePreset": "x64-debug-ossl3-ovpn3",
+            "configuration": "Debug"
+        },
+        {
+            "name": "x64-debug-ossl1.1.1-ovpn3",
+            "configurePreset": "x64-debug-ossl1.1.1-ovpn3",
+            "configuration": "Debug"
+        },
+        {
+            "name": "x86-debug-ossl3-ovpn3",
+            "configurePreset": "x86-debug-ossl3-ovpn3",
+            "configuration": "Debug"
+        },
+        {
+            "name": "x86-debug-ossl1.1.1-ovpn3",
+            "configurePreset": "x86-debug-ossl1.1.1-ovpn3",
+            "configuration": "Debug"
+        },
+        {
+            "name": "arm64-debug-ossl3-ovpn3",
+            "configurePreset": "arm64-debug-ossl3-ovpn3",
+            "configuration": "Debug"
+        },
+        {
+            "name": "arm64-debug-ossl1.1.1-ovpn3",
+            "configurePreset": "arm64-debug-ossl1.1.1-ovpn3",
             "configuration": "Debug"
         }
     ]

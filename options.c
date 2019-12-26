@@ -651,6 +651,9 @@ SaveAdvancedDlgParams (HWND hdlg)
     tmp = GetDlgItemInt (hdlg, ID_EDT_POPUP_MUTE, &status, FALSE);
     if (status) o.popup_mute_interval = tmp;
 
+    o.ovpn_engine = IsDlgButtonChecked(hdlg, ID_RB_ENGINE_OVPN3) ?
+        OPENVPN_ENGINE_OVPN3 : OPENVPN_ENGINE_OVPN2;
+
     SaveRegistryKeys ();
     ExpandOptions ();
 
@@ -680,6 +683,11 @@ LoadAdvancedDlgParams (HWND hdlg)
         CheckRadioButton (hdlg, ID_RB_BALLOON3, ID_RB_BALLOON4, ID_RB_BALLOON4);
     else
         CheckRadioButton (hdlg, ID_RB_BALLOON3, ID_RB_BALLOON4, ID_RB_BALLOON3);
+
+#ifdef ENABLE_OVPN3
+    CheckRadioButton(hdlg, ID_RB_ENGINE_OVPN2, ID_RB_ENGINE_OVPN3,
+        o.ovpn_engine == OPENVPN_ENGINE_OVPN3 ? ID_RB_ENGINE_OVPN3 : ID_RB_ENGINE_OVPN2);
+#endif
 }
 
 INT_PTR CALLBACK
