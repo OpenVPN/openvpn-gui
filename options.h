@@ -92,6 +92,9 @@ typedef struct {
 #define CONFIG_VIEW_FLAT      (1)
 #define CONFIG_VIEW_NESTED    (2)
 
+#define OPENVPN_ENGINE_OVPN2  (0)
+#define OPENVPN_ENGINE_OVPN3  (1)
+
 typedef struct {
     unsigned short major, minor, build, revision;
 } version_t;
@@ -203,6 +206,7 @@ typedef struct {
     DWORD disconnectscript_timeout;     /* Disconnect Script execution timeout (sec) */
     DWORD preconnectscript_timeout;     /* Preconnect Script execution timeout (sec) */
     DWORD config_menu_view;             /* 0 for auto, 1 for original flat menu, 2 for hierarchical */
+    DWORD ovpn_engine;                  /* 0 - openvpn2, 1 - openvpn3 */
 
 #ifdef DEBUG
     FILE *debug_fp;

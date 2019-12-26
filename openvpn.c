@@ -35,6 +35,10 @@
 #include <time.h>
 #include <commctrl.h>
 
+#ifdef ENABLE_OVPN3
+#include <json-c/json.h>
+#endif
+
 #include "tray.h"
 #include "main.h"
 #include "openvpn.h"
@@ -50,6 +54,9 @@
 #include "access.h"
 #include "save_pass.h"
 #include "env_set.h"
+
+#define OPENVPN_SERVICE_PIPE_NAME_OVPN2 L"\\\\.\\pipe\\openvpn\\service"
+#define OPENVPN_SERVICE_PIPE_NAME_OVPN3 L"\\\\.\\pipe\\ovpnagent"
 
 extern options_t o;
 
@@ -1316,7 +1323,8 @@ CloseServiceIO (service_io_t *s)
 static BOOL
 InitServiceIO (service_io_t *s)
 {
-    DWORD dwMode = PIPE_READMODE_MESSAGE;
+    DWORD dwMode = o.ovpn_engine == OPENVPN_ENGINE_OVPN3 ? PIPE_READMODE_BYTE : PIPE_READMODE_MESSAGE;
+
     CLEAR(*s);
 
     /* auto-reset event used for signalling i/o completion*/
@@ -1326,8 +1334,9 @@ InitServiceIO (service_io_t *s)
         return FALSE;
     }
 
-    s->pipe = CreateFile(_T("\\\\.\\pipe\\openvpn\\service"),
-                GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, NULL);
+    s->pipe = CreateFile (o.ovpn_engine == OPENVPN_ENGINE_OVPN3 ?
+                          OPENVPN_SERVICE_PIPE_NAME_OVPN3 : OPENVPN_SERVICE_PIPE_NAME_OVPN2,
+                          GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, NULL);
 
     if ( !s->pipe                                               ||
          s->pipe == INVALID_HANDLE_VALUE                        ||
@@ -1861,6 +1870,57 @@ SetProcessPriority(DWORD *priority)
     return TRUE;
 }
 
+#ifdef ENABLE_OVPN3
+inline static
+struct json_object* json_object_new_utf16_string(wchar_t *utf16)
+{
+    DWORD input_size = WideCharToMultiByte(CP_UTF8, 0, utf16, -1, NULL, 0, NULL, NULL);
+    struct json_object* jobj = NULL;
+    char *utf8 = malloc(input_size);
+    if (!utf8)
+    {
+        goto out;
+    }
+
+    WideCharToMultiByte(CP_UTF8, 0, utf16, -1, utf8, input_size, NULL, NULL);
+
+    jobj = json_object_new_string(utf8);
+    free(utf8);
+
+out:
+    return jobj;
+}
+
+static char* PrepareStartJsonRequest(connection_t *c, wchar_t *exit_event_name)
+{
+    const char *request_header = "POST /start HTTP/1.1\r\nContent-Type: application/json\r\nContent-Length: %zd\r\n\r\n";
+    json_object *jobj = json_object_new_object();
+
+    json_object_object_add(jobj, "config_file", json_object_new_utf16_string(c->config_file));
+    json_object_object_add(jobj, "config_dir", json_object_new_utf16_string(c->config_dir));
+    json_object_object_add(jobj, "exit_event_name", json_object_new_utf16_string(exit_event_name));
+    json_object_object_add(jobj, "management_password", json_object_new_string(c->manage.password));
+    json_object_object_add(jobj, "management_host", json_object_new_string(inet_ntoa(c->manage.skaddr.sin_addr)));
+    json_object_object_add(jobj, "management_port", json_object_new_int(ntohs(c->manage.skaddr.sin_port)));
+    json_object_object_add(jobj, "log", json_object_new_utf16_string(c->log_path));
+    json_object_object_add(jobj, "log-append", json_object_new_int(o.log_append));
+
+    const char *body = json_object_to_json_string(jobj);
+
+    char *request = calloc(1, strlen(request_header) + strlen(body) + 1);
+    if (request == NULL)
+    {
+        goto out;
+    }
+    sprintf(request, request_header, strlen(body));
+    strcat(request, body);
+
+out:
+    json_object_put(jobj);
+    return request;
+}
+#endif
+
 /*
  * Launch an OpenVPN process and the accompanying thread to monitor it
  */
@@ -1928,28 +1988,44 @@ StartOpenVPN(connection_t *c)
     /* Try to open the service pipe */
     if (!IsUserAdmin() && InitServiceIO (&c->iserv))
     {
-        DWORD size = _tcslen(c->config_dir) + _tcslen(options) + sizeof(c->manage.password) + 3;
-        TCHAR startup_info[1024];
+        BOOL res = FALSE;
 
-        if ( !AuthorizeConfig(c))
+        if (o.ovpn_engine == OPENVPN_ENGINE_OVPN3)
         {
-            CloseHandle(c->exit_event);
-            CloseServiceIO(&c->iserv);
-            goto out;
+#ifdef ENABLE_OVPN3
+            char *request = PrepareStartJsonRequest(c, exit_event_name);
+
+            res = (request != NULL) && WritePipe(c->iserv.pipe, request, strlen(request));
+            free(request);
+#endif
+        }
+        else
+        {
+            DWORD size = _tcslen(c->config_dir) + _tcslen(options) + sizeof(c->manage.password) + 3;
+            TCHAR startup_info[1024];
+
+            if (!AuthorizeConfig(c))
+            {
+                CloseHandle(c->exit_event);
+                CloseServiceIO(&c->iserv);
+                goto out;
+            }
+
+            c->hProcess = NULL;
+            c->manage.password[sizeof(c->manage.password) - 1] = '\n';
+
+            /* Ignore pushed route-method when service is in use */
+            const wchar_t* extra_options = L" --pull-filter ignore route-method";
+            size += wcslen(extra_options);
+
+            _sntprintf_0(startup_info, L"%s%c%s%s%c%.*S", c->config_dir, L'\0',
+                options, extra_options, L'\0', sizeof(c->manage.password), c->manage.password);
+            c->manage.password[sizeof(c->manage.password) - 1] = '\0';
+
+            res = WritePipe(c->iserv.pipe, startup_info, size * sizeof(TCHAR));
         }
 
-        c->hProcess = NULL;
-        c->manage.password[sizeof(c->manage.password) - 1] = '\n';
-
-        /* Ignore pushed route-method when service is in use */
-        const wchar_t *extra_options = L" --pull-filter ignore route-method";
-        size += wcslen(extra_options);
-
-        _sntprintf_0(startup_info, L"%s%c%s%s%c%.*S", c->config_dir, L'\0',
-            options, extra_options, L'\0', sizeof(c->manage.password), c->manage.password);
-        c->manage.password[sizeof(c->manage.password) - 1] = '\0';
-
-        if (!WritePipe(c->iserv.pipe, startup_info, size * sizeof (TCHAR)))
+        if (!res)
         {
             ShowLocalizedMsg (IDS_ERR_WRITE_SERVICE_PIPE);
             CloseHandle(c->exit_event);

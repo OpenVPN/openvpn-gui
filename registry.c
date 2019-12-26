@@ -61,7 +61,8 @@ struct regkey_int {
       {L"disconnectscript_timeout", &o.disconnectscript_timeout, 10},
       {L"show_script_window", &o.show_script_window, 0},
       {L"service_only", &o.service_only, 0},
-      {L"config_menu_view", &o.config_menu_view, CONFIG_VIEW_AUTO}
+      {L"config_menu_view", &o.config_menu_view, CONFIG_VIEW_AUTO},
+      {L"ovpn_engine", &o.ovpn_engine, OPENVPN_ENGINE_OVPN2}
     };
 
 static int

@@ -9,12 +9,18 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		DebugOvpn3|x64 = DebugOvpn3|x64
+		DebugOvpn3|x86 = DebugOvpn3|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{028B1211-5625-48F7-B2D7-98C2F1994A70}.Debug|x64.ActiveCfg = Debug|x64
 		{028B1211-5625-48F7-B2D7-98C2F1994A70}.Debug|x64.Build.0 = Debug|x64
 		{028B1211-5625-48F7-B2D7-98C2F1994A70}.Debug|x86.ActiveCfg = Debug|x64
 		{028B1211-5625-48F7-B2D7-98C2F1994A70}.Debug|x86.Build.0 = Debug|x64
+		{028B1211-5625-48F7-B2D7-98C2F1994A70}.DebugOvpn3|x64.ActiveCfg = DebugOvpn3|x64
+		{028B1211-5625-48F7-B2D7-98C2F1994A70}.DebugOvpn3|x64.Build.0 = DebugOvpn3|x64
+		{028B1211-5625-48F7-B2D7-98C2F1994A70}.DebugOvpn3|x86.ActiveCfg = DebugOvpn3|Win32
+		{028B1211-5625-48F7-B2D7-98C2F1994A70}.DebugOvpn3|x86.Build.0 = DebugOvpn3|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

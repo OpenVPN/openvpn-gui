@@ -118,6 +118,9 @@
 #define ID_EDT_PRECONNECT_TIMEOUT        282
 #define ID_EDT_CONNECT_TIMEOUT           283
 #define ID_EDT_DISCONNECT_TIMEOUT        284
+#define ID_RB_ENGINE_SELECTION           285
+#define ID_RB_ENGINE_OVPN2               286
+#define ID_RB_ENGINE_OVPN3               287
 
 /* Connections dialog */
 #define ID_DLG_CONNECTIONS               290

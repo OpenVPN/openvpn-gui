@@ -540,6 +540,9 @@ SaveAdvancedDlgParams (HWND hdlg)
     tmp = GetDlgItemInt (hdlg, ID_EDT_DISCONNECT_TIMEOUT, &status, FALSE);
     if (status && tmp > 0) o.disconnectscript_timeout = tmp;
 
+    o.ovpn_engine = IsDlgButtonChecked(hdlg, ID_RB_ENGINE_OVPN3) ?
+        OPENVPN_ENGINE_OVPN3 : OPENVPN_ENGINE_OVPN2;
+
     SaveRegistryKeys ();
     ExpandOptions ();
 
@@ -555,6 +558,14 @@ LoadAdvancedDlgParams (HWND hdlg)
     SetDlgItemInt (hdlg, ID_EDT_PRECONNECT_TIMEOUT, o.preconnectscript_timeout, FALSE);
     SetDlgItemInt (hdlg, ID_EDT_CONNECT_TIMEOUT, o.connectscript_timeout, FALSE);
     SetDlgItemInt (hdlg, ID_EDT_DISCONNECT_TIMEOUT, o.disconnectscript_timeout, FALSE);
+#ifdef ENABLE_OVPN3
+    CheckRadioButton(hdlg, ID_RB_ENGINE_OVPN2, ID_RB_ENGINE_OVPN3,
+        o.ovpn_engine == OPENVPN_ENGINE_OVPN3 ? ID_RB_ENGINE_OVPN3 : ID_RB_ENGINE_OVPN2);
+#else
+    ShowWindow(GetDlgItem(hdlg, ID_RB_ENGINE_SELECTION), SW_HIDE);
+    ShowWindow(GetDlgItem(hdlg, ID_RB_ENGINE_OVPN2), SW_HIDE);
+    ShowWindow(GetDlgItem(hdlg, ID_RB_ENGINE_OVPN3), SW_HIDE);
+#endif
 }
 
 INT_PTR CALLBACK
