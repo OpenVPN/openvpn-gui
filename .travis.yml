@@ -17,6 +17,10 @@ matrix:
     - compiler: gcc
       env: CHOST=x86_64-w64-mingw32 CONFIG=""
     - compiler: gcc
+      env: CHOST=i686-w64-mingw32 CONFIG="--enable-ovpn3"
+    - compiler: gcc
+      env: CHOST=x86_64-w64-mingw32 CONFIG="--enable-ovpn3"
+    - compiler: gcc
       env: CHOST=i686-w64-mingw32 CONFIG="--disable-password-change"
     - compiler: gcc
       env: CHOST=x86_64-w64-mingw32 CONFIG="--disable-password-change"
@@ -25,13 +29,14 @@ matrix:
 
 addons:
   apt:
-    packages: [ gcc-mingw-w64 ]
+    packages: [ gcc-mingw-w64, mingw-w64-tools, doxygen ]
 
 before_script:
     - unset CC; unset CXX
 
 script:
     - if [[ $CONFIG != *"--disable-password-change"* ]]; then . .travis-build-openssl.sh; fi
+    - if [[ $CONFIG == *"--enable-ovpn3"* ]]; then . .travis-build-jsonc.sh; fi
     - autoreconf -i -v
     - ./configure --prefix=/ --libdir=/lib --host=$CHOST --build=x86_64-pc-linux-gnu --program-prefix='' $CONFIG && make
 # build from tarball
