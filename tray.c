@@ -45,11 +45,31 @@ HMENU hMenu;
 HMENU hMenuConn[MAX_CONFIGS];
 HMENU hMenuService;
 
+HBITMAP hbmpConnecting;
+
 NOTIFYICONDATA ni;
 extern options_t o;
 
 #define USE_NESTED_CONFIG_MENU ((o.config_menu_view == CONFIG_VIEW_AUTO && o.num_configs > 25)   \
                                  || (o.config_menu_view == CONFIG_VIEW_NESTED))
+
+
+/* Create menu check bitmaps */
+static void
+CreateBitmaps()
+{
+    if (hbmpConnecting)
+        return;
+    int cx = GetSystemMetrics(SM_CXMENUCHECK);
+    int cy = GetSystemMetrics(SM_CYMENUCHECK);
+    if (!hbmpConnecting)
+    {
+        HICON icon = LoadLocalizedIconEx(ID_ICO_CONNECTING, cx, cy);
+        ICONINFO iconinfo;
+        GetIconInfo(icon, &iconinfo);
+        hbmpConnecting = iconinfo.hbmColor;
+    }
+}
 
 /* Create popup menus */
 void
@@ -60,6 +80,8 @@ CreatePopupMenus()
      * This is guaranteed as the root node is always defined.
      */
     assert(o.num_groups > 0);
+
+    CreateBitmaps();
 
     for (int i = 0; i < o.num_configs; i++)
     {
@@ -425,7 +447,10 @@ void
 SetMenuStatusById(int i, conn_state_t state)
 {
     connection_t *c = &o.conn[i];
-    BOOL checked = (state == connected || state == disconnecting);
+    int checked = 0;
+
+    if (state == connected || state == disconnecting) checked = 1;
+    else if (state != disconnected) checked = 2;
 
     if (o.num_configs == 1)
     {
@@ -463,6 +488,16 @@ SetMenuStatusById(int i, conn_state_t state)
         if (USE_NESTED_CONFIG_MENU && CONFIG_GROUP(c))
             parent = CONFIG_GROUP(c);
 
+        if (checked == 1)
+        {
+            /* Connected: use system-default check mark */
+            SetMenuItemBitmaps(parent->menu, pos,  MF_BYPOSITION, NULL, NULL);
+        }
+        else if (checked == 2)
+        {
+            /* Connecting: use our custom check mark */
+            SetMenuItemBitmaps(parent->menu, pos,  MF_BYPOSITION, NULL, hbmpConnecting);
+        }
         CheckMenuItem(parent->menu, pos, MF_BYPOSITION | (checked ? MF_CHECKED : MF_UNCHECKED));
 
         PrintDebug(L"Setting state of config %s checked = %d, parent %s, pos %d",

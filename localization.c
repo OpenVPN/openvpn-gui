@@ -242,7 +242,7 @@ ShowLocalizedMsg(const UINT stringId, ...)
     va_end(args);
 }
 
-static HICON
+HICON
 LoadLocalizedIconEx(const UINT iconId, int cxDesired, int cyDesired)
 {
     LANGID langId = GetGUILanguage();
