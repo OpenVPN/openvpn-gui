@@ -1343,7 +1343,7 @@ InitServiceIO (service_io_t *s)
 
 /*
  * Read-completion routine for interactive service pipe. Call with
- * err = 0, bytes = 0 to queue the first read request.
+ * err = 0, bytes = 0 to queue a new read request.
  */
 static void WINAPI
 HandleServiceIO (DWORD err, DWORD bytes, LPOVERLAPPED lpo)
@@ -1360,6 +1360,7 @@ HandleServiceIO (DWORD err, DWORD bytes, LPOVERLAPPED lpo)
         int nchars = bytes/sizeof(s->readbuf[0]);
         s->readbuf[nchars] = L'\0';
         SetEvent (s->hEvent);
+        return;
     }
     if (err)
     {
@@ -1369,7 +1370,7 @@ HandleServiceIO (DWORD err, DWORD bytes, LPOVERLAPPED lpo)
         return;
     }
 
-    /* queue next read request */
+    /* Otherwise queue next read request */
     ReadFileEx (s->pipe, s->readbuf, capacity, lpo, HandleServiceIO);
     /* Any error in the above call will get checked in next round */
 }
@@ -1415,12 +1416,16 @@ OnService(connection_t *c, UNUSED char *msg)
     DWORD err = 0;
     DWORD pid = 0;
     WCHAR *p, *buf, *next;
-    DWORD len;
     const WCHAR *prefix = L"IService> ";
 
-    len = wcslen (c->iserv.readbuf);
-    if (!len || (buf = wcsdup (c->iserv.readbuf)) == NULL)
-        return;
+    /*
+     * Duplicate the read buffer and queue the next read request
+     * by calling HandleServiceIO with err = 0, bytes = 0.
+     */
+    buf = wcsdup(c->iserv.readbuf);
+    HandleServiceIO(0, 0, (LPOVERLAPPED) &c->iserv);
+
+    if (buf == NULL) return;
 
     /* messages from the service are in the format "0x08x\n%s\n%s" */
     if (swscanf (buf, L"0x%08x\n", &err) != 1)
