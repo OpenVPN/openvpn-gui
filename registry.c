@@ -96,7 +96,8 @@ GetGlobalRegistryKeys()
       regkey = NULL;
       ShowLocalizedMsg(IDS_ERR_OPEN_REGISTRY);
     }
-  if (!regkey || !GetRegistryValue(regkey, _T(""), openvpn_path, _countof(openvpn_path)))
+  if (!regkey || !GetRegistryValue(regkey, _T(""), openvpn_path, _countof(openvpn_path))
+      || _tcslen(openvpn_path) == 0)
     {
       /* error reading registry value */
       if (regkey)
@@ -369,7 +370,10 @@ LONG GetRegistryValue(HKEY regkey, const TCHAR *name, TCHAR *data, DWORD len)
     return(0);
 
   data_len /= sizeof(*data);
-  data[data_len - 1] = L'\0'; /* REG_SZ strings are not guaranteed to be null-terminated */
+  if (data_len > 0)
+      data[data_len - 1] = L'\0'; /* REG_SZ strings are not guaranteed to be null-terminated */
+  else
+      data[0] = L'\0';
 
   return(data_len);
 
