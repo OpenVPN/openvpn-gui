@@ -85,7 +85,7 @@ add_option(options_t *options, int i, TCHAR **p)
     {
         TCHAR caption[200];
         TCHAR msg[USAGE_BUF_SIZE];
-        /* We only print help and exit: release the semapahore to allow another instance */
+        /* We only print help and exit: release the semaphore to allow another instance */
         CloseSemaphore(o.session_semaphore); /* OK to call even if semaphore is NULL */
         o.session_semaphore = NULL;
 
