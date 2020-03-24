@@ -350,7 +350,7 @@ BEGIN
                   "--log_dir\t\t\t: Pfad zum Verzeichnis, in welchem die Logdateien gespeichert werden sollen.\n" \
                   "--priority_string\t\t: Prioritätsnummer (Schauen Sie für mehr Informationen in install.txt nach).\n" \
                   "--append_string\t\t: 1=Logfile erweitern. 0=Überschreibe Logfile beim Verbinden.\n" \
-                  "--log_viewer\t\t: Pfad zum Lofile-Betrachter.\n" \
+                  "--log_viewer\t\t: Pfad zum Logdatei-Betrachter.\n" \
                   "--editor\t\t\t: Pfad zum Konfigurationseditor.\n" \
                   "--allow_edit\t\t: 1=Zeige Konfiguration-bearbeiten-Menü.\n" \
                   "--allow_service\t\t: 1=Zeige Dienstkontrollmenü.\n" \
