@@ -324,7 +324,7 @@ BEGIN
                          "nicht mehrere Konfigurationsdateien mit dem gleichen Namen haben, ausser sie " \
                          "liegen in unterschiedlichen Verzeichnissen."
     IDS_NFO_CONN_TIMEOUT "Die Verbindung zur Verwaltungsschnittstelle ist fehlgeschlagen.\n" \
-                         "Schauen Sie in die Log Datei (%s) für mehr Details."
+                         "Schauen Sie in die Logdatei (%s) für mehr Details."
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "Fehler beim Öffnen der Debugdatei (%s)."
     IDS_ERR_CREATE_PATH "Fehler beim Erstellen des %s Pfads:\n%s"
@@ -349,7 +349,7 @@ BEGIN
                   "--ext_string\t\t: Dateinamenerweiterung der Konfigurationsdatei.\n" \
                   "--log_dir\t\t\t: Pfad zum Verzeichnis, in welchem die Logdateien gespeichert werden sollen.\n" \
                   "--priority_string\t\t: Prioritätsnummer (Schauen Sie für mehr Informationen in install.txt nach).\n" \
-                  "--append_string\t\t: 1=Logfile erweitern. 0=Überschreibe Logfile beim Verbinden.\n" \
+                  "--append_string\t\t: 1=Logdatei erweitern. 0=Überschreibe Logdatei beim Verbinden.\n" \
                   "--log_viewer\t\t: Pfad zum Logdatei-Betrachter.\n" \
                   "--editor\t\t\t: Pfad zum Konfigurationseditor.\n" \
                   "--allow_edit\t\t: 1=Zeige Konfiguration-bearbeiten-Menü.\n" \
