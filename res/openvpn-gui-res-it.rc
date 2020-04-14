@@ -156,14 +156,14 @@ BEGIN
     GROUPBOX "Avvio", 202, 6, 47, 235, 30
     AUTOCHECKBOX "&Avvia all'apertura di Windows", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "Preferenze", 202, 6, 82, 235, 90
-    AUTOCHECKBOX "Aggiungi in coda al f&ile di log", ID_CHK_LOG_APPEND, 17, 95, 60, 10
+    GROUPBOX "Preferenze", 202, 6, 82, 235, 120
+    AUTOCHECKBOX "Aggiungi in coda al f&ile di log", ID_CHK_LOG_APPEND, 17, 95, 200, 10
     AUTOCHECKBOX "Mostra &finestra script", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "Connessione &silenziosa", ID_CHK_SILENT, 17, 125, 200, 10
-    LTEXT "Mostra notifica", ID_TXT_BALLOON, 17, 140, 100, 10
-    AUTORADIOBUTTON "Alla &connessione", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Alla connessione/&riconnessione", ID_RB_BALLOON2, 86, 155, 90, 10
-    AUTORADIOBUTTON "&Mai", ID_RB_BALLOON0, 181, 155, 40, 10
+    LTEXT "Mostra notifica", ID_TXT_BALLOON, 17, 140, 150, 10
+    AUTORADIOBUTTON "Alla &connessione", ID_RB_BALLOON1, 28, 155, 200, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Alla connessione/&riconnessione", ID_RB_BALLOON2, 28, 170, 200, 10
+    AUTORADIOBUTTON "&Mai", ID_RB_BALLOON0, 28, 185, 200, 10
 END
 
 /* Advanced Dialog */
@@ -186,12 +186,12 @@ BEGIN
     PUSHBUTTON "…", ID_BTN_LOG_DIR, 208, 72, 25, 12
 
     GROUPBOX "Timeout script", 201, 6, 97, 235, 60
-    LTEXT "Timeout script di &preconnessione:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
-    EDITTEXT ID_EDT_PRECONNECT_TIMEOUT, 103, 108, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
-    LTEXT "Timeout script di c&onnessione:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
-    EDITTEXT ID_EDT_CONNECT_TIMEOUT, 103, 123, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
-    LTEXT "Timeout script di &disconnessione:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
-    EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 103, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
+    LTEXT "Timeout script di &preconnessione:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 150, 10
+    EDITTEXT ID_EDT_PRECONNECT_TIMEOUT, 183, 108, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
+    LTEXT "Timeout script di c&onnessione:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 150, 10
+    EDITTEXT ID_EDT_CONNECT_TIMEOUT, 183, 123, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
+    LTEXT "Timeout script di &disconnessione:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 150, 10
+    EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 183, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
 END
 
 /* About Dialog */
