@@ -385,20 +385,6 @@ ResumeConnections()
 }
 
 /*
- * Set scale factor of windows in pixels. Scale = 100% for dpi = 96
- */
-static void
-dpi_setscale(UINT dpix)
-{
-    /* scale factor in percentage compared to the reference dpi of 96 */
-    if (dpix != 0)
-        o.dpi_scale = MulDiv(dpix, 100, 96);
-    else
-        o.dpi_scale = 100;
-    PrintDebug(L"DPI scale set to %u", o.dpi_scale);
-}
-
-/*
  * Get dpi of the system and set the scale factor.
  * The system dpi may be different from the per monitor dpi on
  * Win 8.1 later. We set dpi awareness to system-dpi level in the
@@ -423,7 +409,7 @@ dpi_initialize(void)
         dpix = 96;
     }
 
-    dpi_setscale(dpix);
+    DpiSetScale(&o, dpix);
 }
 
 static int
