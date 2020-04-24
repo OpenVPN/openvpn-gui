@@ -35,6 +35,10 @@
 #include <time.h>
 #include <commctrl.h>
 
+#ifndef WM_DPICHANGED
+#define WM_DPICHANGED 0x02E0
+#endif
+
 #include "tray.h"
 #include "main.h"
 #include "openvpn.h"
