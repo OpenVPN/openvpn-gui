@@ -1656,6 +1656,13 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         SetFocus(hLogWnd);
         return FALSE;
 
+    case WM_DPICHANGED:
+        DpiSetScale(&o, HIWORD(wParam));
+        RECT dlgRect;
+        GetClientRect(hwndDlg, &dlgRect);
+        RenderStatusWindow(hwndDlg, dlgRect.right, dlgRect.bottom);
+        return FALSE;
+
     case WM_SIZE:
         RenderStatusWindow(hwndDlg, LOWORD(lParam), HIWORD(lParam));
         InvalidateRect(hwndDlg, NULL, TRUE);
