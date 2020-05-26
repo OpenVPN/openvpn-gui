@@ -37,9 +37,6 @@
 #include <combaseapi.h>
 
 #include "options.h"
-
-#include <assert.h>
-
 #include "main.h"
 #include "openvpn-gui-res.h"
 #include "localization.h"
@@ -466,53 +463,66 @@ BrowseFolder (const WCHAR* initial_path, WCHAR* selected_path)
 
     // Create dialog
     initResult = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
-    assert(SUCCEEDED(initResult));
-    
+    if (FAILED(initResult))
+    {
+        return false;
+    }
+
     result = CoCreateInstance(&CLSID_FileOpenDialog, NULL, CLSCTX_ALL, &IID_IFileOpenDialog, &pfd);
-    assert(SUCCEEDED(result));
-
-    // Select folders, not files
+    if (SUCCEEDED(result))
     {
-        DWORD dwOptions;
-        result = pfd->lpVtbl->GetOptions(pfd, &dwOptions);
-        assert(SUCCEEDED(result));
-        dwOptions |= FOS_PICKFOLDERS;
-        result = pfd->lpVtbl->SetOptions(pfd, dwOptions);
-        assert(SUCCEEDED(result));
-    }
-
-    // Set initial path
-    {
-        IShellItem* psi;
-        result = SHCreateItemFromParsingName(initial_path, NULL, &IID_IShellItem, &psi);
-        if (SUCCEEDED(result))
+        // Select folders, not files
         {
-            pfd->lpVtbl->SetDefaultFolder(pfd, psi);
-            psi->lpVtbl->Release(psi);
+            DWORD dwOptions;
+            result = pfd->lpVtbl->GetOptions(pfd, &dwOptions);
+            if(SUCCEEDED(result))
+            {
+                dwOptions |= FOS_PICKFOLDERS;
+                result = pfd->lpVtbl->SetOptions(pfd, dwOptions);
+            }
         }
+
+        // Set initial path
+        {
+            IShellItem* psi;
+            result = SHCreateItemFromParsingName(initial_path, NULL, &IID_IShellItem, &psi);
+            if (SUCCEEDED(result))
+            {
+                pfd->lpVtbl->SetDefaultFolder(pfd, psi);
+                psi->lpVtbl->Release(psi);
+            }
+        }
+
+        // Show dialog and copy the selected file path if the user didn't cancel
+        dialogResult = pfd->lpVtbl->Show(pfd, NULL);
+        if (SUCCEEDED(dialogResult))
+        {
+            IShellItem* psi;
+            LPOLESTR path = NULL;
+
+            result = pfd->lpVtbl->GetResult(pfd, &psi);
+            if(SUCCEEDED(result))
+            {
+                result = psi->lpVtbl->GetDisplayName(psi, SIGDN_FILESYSPATH, &path);
+            }
+
+            if (SUCCEEDED(result))
+            {
+                wcsncpy_s(selected_path, MAX_PATH, path, MAX_PATH);
+                selected_path[MAX_PATH - 1] = 0;
+
+                CoTaskMemFree(path);
+
+                psi->lpVtbl->Release(psi);
+            }else
+            {
+                dialogResult = E_FAIL;
+            }
+        }
+
+        // Cleanup
+        pfd->lpVtbl->Release(pfd);
     }
-
-    // Show dialog and copy the selected file path if the user didn't cancel
-    dialogResult = pfd->lpVtbl->Show(pfd, NULL);
-    if (SUCCEEDED(dialogResult))
-    {
-        IShellItem* psi;
-        LPOLESTR path = NULL;
-
-        assert(SUCCEEDED(pfd->lpVtbl->GetResult(pfd, &psi)));
-        
-        assert(SUCCEEDED(psi->lpVtbl->GetDisplayName(psi, SIGDN_FILESYSPATH, &path)));
-
-        wcsncpy_s(selected_path, MAX_PATH, path, MAX_PATH);
-        selected_path[MAX_PATH - 1] = 0;
-
-        CoTaskMemFree(path);
-
-        psi->lpVtbl->Release(psi);
-    }
-
-    // Cleanup
-    pfd->lpVtbl->Release(pfd);
 
     if (initResult != RPC_E_CHANGED_MODE && SUCCEEDED(initResult))
     {
