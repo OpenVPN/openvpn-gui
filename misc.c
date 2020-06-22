@@ -220,43 +220,13 @@ ManagementCommandFromInputBase64(connection_t *c, LPCSTR fmt, HWND hDlg,int id, 
 {
     BOOL retval = FALSE;
     LPSTR input, input2, input_b64, input2_b64, cmd;
-    int input_len, input2_len, cmd_len, pos;
+    int input_len, input2_len, cmd_len;
 
     input_b64 = NULL;
     input2_b64 = NULL;
 
     GetDlgItemTextUtf8(hDlg, id, &input, &input_len);
     GetDlgItemTextUtf8(hDlg, id2, &input2, &input2_len);
-
-    /* Escape input if needed */
-    for (pos = 0; pos < input_len; ++pos)
-    {
-        if (input[pos] == '\\' || input[pos] == '"')
-        {
-            LPSTR buf = realloc(input, ++input_len + 1);
-            if (buf == NULL)
-                goto out;
-
-            input = buf;
-            memmove(input + pos + 1, input + pos, input_len - pos + 1);
-            input[pos] = '\\';
-            pos += 1;
-        }
-    }
-    for (pos = 0; pos < input2_len; ++pos)
-    {
-        if (input2[pos] == '\\' || input2[pos] == '"')
-        {
-            LPSTR buf = realloc(input2, ++input2_len + 1);
-            if (buf == NULL)
-                goto out;
-
-            input2 = buf;
-            memmove(input2 + pos + 1, input2 + pos, input2_len - pos + 1);
-            input2[pos] = '\\';
-            pos += 1;
-        }
-    }
 
     if (!Base64Encode(input, input_len, &input_b64))
         goto out;
