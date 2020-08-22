@@ -156,7 +156,7 @@ BEGIN
 
 												 
     GROUPBOX "Startup", 202, 6, 47, 235, 30
-    AUTOCHECKBOX "Launch on Windows &startup", ID_CHK_STARTUP, 17, 59, 100, 12
+    AUTOCHECKBOX "Launch on User &Logon", ID_CHK_STARTUP, 17, 59, 100, 12
 
     GROUPBOX "Preferences", 202, 6, 82, 235, 90
     AUTOCHECKBOX "A&ppend to log", ID_CHK_LOG_APPEND, 17, 95, 60, 10
