@@ -461,6 +461,8 @@ BEGIN
     IDS_ERR_IMPORT_FAILED "Fehler beim Importieren der Konfigurationsdatei. Der folgende Pfad konnte nicht erstellt werden:\n\n" \
                           "%s\n\nVergewissern Sie sich, dass Sie die erforderlichen Berechtigungen besitzen."
     IDS_NFO_IMPORT_SUCCESS "Die Konfigurationsdatei wurde erfolgreich importiert."
+    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
+    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "Drücken Sie OK um die gespeicherten Passwörter für die Konfiguration ""%s"" zu löschen."

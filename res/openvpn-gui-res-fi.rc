@@ -342,6 +342,16 @@ BEGIN
     IDS_NFO_USAGE "--help\t\t\t: Näytä tämä viesti.\n" \
                   "--connect cnn \t\t: Yhdistä kohteeseen ""cnn"" käynnistettäessä. Muista liittää tiedostopääte.\n" \
                   "\t\t\t   Esim.: openvpn-gui --connect toimisto.ovpn\n" \
+                  "--command cmd [args]\t: Send a command to a running instance of the GUI\n" \
+                  "Supported commands:\n"\
+                  "    connect cnn            \t: connect the config named ""cnn""\n"\
+                  "    disconnect cnn         \t: disconnect the config named ""cnn""\n"\
+                  "    reconnect cnn          \t: reconnect the config named ""cnn""\n"\
+                  "    disconnect_all         \t: disconnect all connected configs\n"\
+                  "    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n"\
+                  "    status cnn           \t\t: show the status window of config ""cnn"" if connected\n"\
+                  "    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n"\
+                  "\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n"\
                   "\n" \
                   "Rekisterin asetukset kumoavat valinnat:\n" \
                   "--exe_path\t\t: Polku openvpn.exe -tiedostoon.\n" \
@@ -429,6 +439,7 @@ BEGIN
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Virhe avattaessa Windows-kansiota."
+    IDS_ERR_GET_PROFILE_DIR "Error getting User Profile Directory."
     IDS_ERR_GET_PROGRAM_DIR "Virhe etsittäessä ""Program""-kansion sijaintia."
     IDS_ERR_OPEN_REGISTRY "Virhe luettaessa rekisteriavainta (HKLM\\SOFTWARE\\OpenVPN).\n " \
                           "OpenVPN:ää ei todennäköisesti ole asennettu."
@@ -448,6 +459,8 @@ BEGIN
     IDS_ERR_IMPORT_FAILED "Asetustiedoston tuonti epäonnistui. Polkua ei voitu luoda:\n\n" \
                           "%s\n\nVarmista, että sinulla on tarvittavat tiedosto-oikeudet."
     IDS_NFO_IMPORT_SUCCESS "Asetustiedoston tuonti onnistui."
+    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
+    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "Napsauta OK poistaaksesi asetustiedostoon ""%s"" liitetyt salasanat."
@@ -456,15 +469,12 @@ BEGIN
     IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN - Tokenin salasana"
     IDS_NFO_TOKEN_PASSWORD_REQUEST "Anna Salasana/PIN tokenille '%S'"
 
-
-
-
-
-
-
-
-
-
-
+    IDS_NFO_AUTH_PASS_RETRY "Wrong credentials. Try again…"
+    IDS_NFO_KEY_PASS_RETRY  "Wrong password. Try again…"
+    IDS_ERR_INVALID_PASSWORD_INPUT "Invalid character in password"
+    IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
+    IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds…"
+    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
+    IDS_NFO_BYTECOUNT "Bytes in: %s  out: %s"
 
 END

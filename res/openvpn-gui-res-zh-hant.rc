@@ -250,6 +250,7 @@ BEGIN
     IDS_MENU_CLOSE "離開"
     IDS_MENU_CONNECT "連線"
     IDS_MENU_DISCONNECT "斷線"
+    IDS_MENU_RECONNECT "Reconnect"
     IDS_MENU_STATUS "顯示狀態"
     IDS_MENU_VIEWLOG "顯示紀錄"
     IDS_MENU_EDITCONFIG "編輯設定檔"
@@ -343,6 +344,16 @@ BEGIN
     IDS_NFO_USAGE "--help\t\t\t: 顯示此訊息。\n" \
                   "--connect cnn \t\t: 啟動時連線至 ""cnn""。\n" \
                   "\t\t\t   舉例: openvpn-gui --connect office.ovpn\n" \
+                  "--command cmd [args]\t: Send a command to a running instance of the GUI\n" \
+                  "Supported commands:\n"\
+                  "    connect cnn            \t: connect the config named ""cnn""\n"\
+                  "    disconnect cnn         \t: disconnect the config named ""cnn""\n"\
+                  "    reconnect cnn          \t: reconnect the config named ""cnn""\n"\
+                  "    disconnect_all         \t: disconnect all connected configs\n"\
+                  "    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n"\
+                  "    status cnn           \t\t: show the status window of config ""cnn"" if connected\n"\
+                  "    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n"\
+                  "\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n"\
                   "\n" \
                   "可覆蓋系統登錄表設定的選項:\n" \
                   "--exe_path\t\t: openvpn.exe 的路徑。\n" \
@@ -448,6 +459,8 @@ BEGIN
     IDS_ERR_IMPORT_FAILED "檔案匯入失敗。無法建立下列路徑。\n\n" \
                           "%s\n\n請確定您有正確的系統權限。"
     IDS_NFO_IMPORT_SUCCESS "已成功匯入檔案。"
+    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
+    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "請按「確定」刪除「%s」連線設定檔的已存密碼。"
@@ -455,5 +468,13 @@ BEGIN
     /* Token password related */
     IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN - Token 密碼"
     IDS_NFO_TOKEN_PASSWORD_REQUEST "請輸入 Token「%S」的密碼或 PIN"
+
+    IDS_NFO_AUTH_PASS_RETRY "Wrong credentials. Try again…"
+    IDS_NFO_KEY_PASS_RETRY  "Wrong password. Try again…"
+    IDS_ERR_INVALID_PASSWORD_INPUT "Invalid character in password"
+    IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
+    IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds…"
+    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
+    IDS_NFO_BYTECOUNT "Bytes in: %s  out: %s"
 
 END

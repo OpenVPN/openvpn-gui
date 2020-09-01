@@ -438,6 +438,7 @@ BEGIN
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Errore nell'ottenere la cartella di Windows."
+    IDS_ERR_GET_PROFILE_DIR "Error getting User Profile Directory."
     IDS_ERR_GET_PROGRAM_DIR "Errore nell'ottenere la cartella ""Program""."
     IDS_ERR_OPEN_REGISTRY "Errore nell'apertura del registro in lettura (HKLM\\SOFTWARE\\OpenVPN).\n " \
                           "OpenVPN probabilmente non è installato"
@@ -457,6 +458,8 @@ BEGIN
     IDS_ERR_IMPORT_FAILED "Errore nell'importazione del file. Non ho potuto creare il percorso seguente:\n\n" \
                           "%s\n\nControlla di avere i permessi giusti."
     IDS_NFO_IMPORT_SUCCESS "File importato con successo."
+    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
+    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "Premi OK per cancellare le password salvate per la configurazione ""%s"""

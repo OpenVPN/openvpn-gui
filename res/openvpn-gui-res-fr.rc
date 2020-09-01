@@ -247,6 +247,7 @@ BEGIN
     IDS_MENU_CLOSE "Quitter"
     IDS_MENU_CONNECT "Connecter"
     IDS_MENU_DISCONNECT "Déconnecter"
+    IDS_MENU_RECONNECT "Reconnect"
     IDS_MENU_STATUS "Afficher le statut"
     IDS_MENU_VIEWLOG "Voir le log"
     IDS_MENU_EDITCONFIG "Editer la configuration"
@@ -266,7 +267,7 @@ BEGIN
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI ne permet pas plus de %d configurations. Contacter l'auteur si vous en avez besoin de plus."
-        IDS_NFO_NO_CONFIGS "Aucun profil de connexion lisible trouvé (fichiers de configuration).\n"\
+    IDS_NFO_NO_CONFIGS "Aucun profil de connexion lisible trouvé (fichiers de configuration).\n"\
                        "Utilisez le menu ""Importer fichier.."" ou copiez vos fichiers de configuration vers ""%s"" ou ""%s""."
     IDS_ERR_CONFIG_NOT_AUTHORIZED "À partir de cette connexion (%s) une adhésion est nécessaire au groupe "\
                                   """%s"". Contactez votre administrateur système.\n"
@@ -341,6 +342,16 @@ BEGIN
     IDS_NFO_USAGE "--help\t\t\t: Afficher ce message.\n" \
                   "--connect cnn \t\t: Connecte à ""cnn"" au démarrage. (l'extension doit être incluse)\n" \
                   "\t\t\t   Exemple: openvpn-gui --connect office.ovpn\n" \
+                  "--command cmd [args]\t: Send a command to a running instance of the GUI\n" \
+                  "Supported commands:\n"\
+                  "    connect cnn            \t: connect the config named ""cnn""\n"\
+                  "    disconnect cnn         \t: disconnect the config named ""cnn""\n"\
+                  "    reconnect cnn          \t: reconnect the config named ""cnn""\n"\
+                  "    disconnect_all         \t: disconnect all connected configs\n"\
+                  "    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n"\
+                  "    status cnn           \t\t: show the status window of config ""cnn"" if connected\n"\
+                  "    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n"\
+		  "\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n"\
                   "\n" \
                   "Options pour corriger la configuration de registre:\n" \
                   "--exe_path\t\t: Chemin vers openvpn.exe.\n" \
@@ -447,6 +458,8 @@ BEGIN
     IDS_ERR_IMPORT_FAILED "Impossible d'importer un fichier. Le chemin suivant n'a pas pu être créé.\n\n" \
                           "%s\n\nAssurez-vous d'avoir les bonnes autorisations."
     IDS_NFO_IMPORT_SUCCESS "Fichier importé avec succès."
+    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
+    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "Appuyez sur OK pour supprimer les mots de passe enregistrés pour config ""%s"""
@@ -457,5 +470,10 @@ BEGIN
 
     IDS_NFO_AUTH_PASS_RETRY "Nom d'utilisateur ou mot de passe incorrect. Réessayer..."
     IDS_NFO_KEY_PASS_RETRY  "Mauvais mot de passe. Réessayer..."
+    IDS_ERR_INVALID_PASSWORD_INPUT "Invalid character in password"
+    IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
+    IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds…"
+    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
+    IDS_NFO_BYTECOUNT "Bytes in: %s  out: %s"
 
 END

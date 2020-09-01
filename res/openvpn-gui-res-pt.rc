@@ -246,10 +246,12 @@ BEGIN
     IDS_MENU_CLOSE "Sair"
     IDS_MENU_CONNECT "Conectar"
     IDS_MENU_DISCONNECT "Desconectar"
+    IDS_MENU_RECONNECT "Reconnect"
     IDS_MENU_STATUS "Mostrar status"
     IDS_MENU_VIEWLOG "Visualizar log"
     IDS_MENU_EDITCONFIG "Editar configurações"
     IDS_MENU_PASSPHRASE "Alterar senha"
+    IDS_MENU_CLEARPASS  "Clear Saved Passwords"
     IDS_MENU_SERVICE_START "Iniciar"
     IDS_MENU_SERVICE_STOP "Parar"
     IDS_MENU_SERVICE_RESTART "Reiniciar"
@@ -266,6 +268,16 @@ BEGIN
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI não suporta mais do que %d configurações. Contate o autor se você necessita de mais."
     IDS_NFO_NO_CONFIGS "Nenhum perfil de conexão (arquivo de configuração) foi localizado.\n"\
                        "Use the ""Import File.."" menu or copy your config files to ""%s"" or ""%s""."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "Starting this connection (%s) requires membership in "\
+                                  """%s"" group. Contact your system administrator.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Starting this connection (%s) requires membership in "\
+                                  """%s"" group.\n\n"\
+                                  "Do you want to add yourself to this group?\n"\
+                                  "This action may prompt for administrative password or consent."
+    IDS_NFO_CONFIG_AUTH_PENDING   "Starting this connection (%s) requires membership in "\
+                                  """%s"" group.\n\n"\
+                                  "Please complete the previous authorization dialog."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Adding the user to ""%s"" group failed."
     IDS_ERR_ONE_CONN_OLD_VER "Você pode ter apenas uma conexão ativa enquanto estiver usando uma versão anterior a OpenVPN 2.0-beta6."
     IDS_ERR_STOP_SERV_OLD_VER "Você não pode usar o OpenVPN GUI para iniciar uma conexão enquanto o serviço OpenVPN estiver em execução (com OpenVPN 1.5/1.6). Pare o serviço OpenVPN primero se você quiser utilizar o OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "CreateEvent falhou no evento de saída: %s"
@@ -329,6 +341,16 @@ BEGIN
     IDS_NFO_USAGE "--help\t\t\t: Mostra esta mensagem.\n" \
                   "--connect cnn \t\t: Conecta a ""cnn"" no início. (extensão deve ser incluída)\n" \
                   "\t\t\t   Exemplo: openvpn-gui --connect escritorio.ovpn\n" \
+                  "--command cmd [args]\t: Send a command to a running instance of the GUI\n" \
+                  "Supported commands:\n"\
+                  "    connect cnn            \t: connect the config named ""cnn""\n"\
+                  "    disconnect cnn         \t: disconnect the config named ""cnn""\n"\
+                  "    reconnect cnn          \t: reconnect the config named ""cnn""\n"\
+                  "    disconnect_all         \t: disconnect all connected configs\n"\
+                  "    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n"\
+                  "    status cnn           \t\t: show the status window of config ""cnn"" if connected\n"\
+                  "    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n"\
+                  "\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n"\
                   "\n" \
                   "Opções para sobrescrever opções do registro:\n" \
                   "--exe_path\t\t: Caminho para openvpn.exe.\n" \
@@ -435,4 +457,22 @@ BEGIN
     IDS_ERR_IMPORT_FAILED "Falha ao importar o arquivo. O seguinte caminho não pôde ser criado.\n\n" \
                           "%s\n\nCertifique-se de que você possui as permissões necessárias."
     IDS_NFO_IMPORT_SUCCESS "Arquivo importado com sucesso."
+    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
+    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
+
+    /* save/delete password */
+    IDS_NFO_DELETE_PASS "Press OK to delete saved passwords for config ""%s"""
+
+    /* Token password related */
+    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – Token Password"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "Input Password/PIN for Token '%S'"
+
+    IDS_NFO_AUTH_PASS_RETRY "Wrong credentials. Try again…"
+    IDS_NFO_KEY_PASS_RETRY  "Wrong password. Try again…"
+    IDS_ERR_INVALID_PASSWORD_INPUT "Invalid character in password"
+    IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
+    IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds…"
+    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
+    IDS_NFO_BYTECOUNT "Bytes in: %s  out: %s"
+
 END
