@@ -243,14 +243,17 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\nPołączony od: "
     IDS_TIP_ASSIGNED_IP "\nPrzyznane IP: %s"
     IDS_MENU_SERVICE "Usługa OpenVPN"
+    IDS_MENU_IMPORT "Import file…"
     IDS_MENU_SETTINGS "Ustawienia…"
     IDS_MENU_CLOSE "Zakończ"
     IDS_MENU_CONNECT "Połącz"
     IDS_MENU_DISCONNECT "Rozłącz"
+    IDS_MENU_RECONNECT "Reconnect"
     IDS_MENU_STATUS "Pokaż Status"
     IDS_MENU_VIEWLOG "Pokaż Log"
     IDS_MENU_EDITCONFIG "Edytuj Konfigurację"
     IDS_MENU_PASSPHRASE "Zmień Hasło"
+    IDS_MENU_CLEARPASS  "Clear Saved Passwords"
     IDS_MENU_SERVICE_START "Uruchom"
     IDS_MENU_SERVICE_STOP "Zatrzymaj"
     IDS_MENU_SERVICE_RESTART "Uruchom Ponownie"
@@ -265,6 +268,18 @@ BEGIN
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI nie wspiera ilości konfiguracji większej niż %d. Proszę skontaktować się z autorem w przypadku takiej potrzeby."
+    IDS_NFO_NO_CONFIGS "No readable connection profiles (config files) found.\n"\
+                       "Use the ""Import File.."" menu or copy your config files to ""%s"" or ""%s""."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "Starting this connection (%s) requires membership in "\
+                                  """%s"" group. Contact your system administrator.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Starting this connection (%s) requires membership in "\
+                                  """%s"" group.\n\n"\
+                                  "Do you want to add yourself to this group?\n"\
+                                  "This action may prompt for administrative password or consent."
+    IDS_NFO_CONFIG_AUTH_PENDING   "Starting this connection (%s) requires membership in "\
+                                  """%s"" group.\n\n"\
+                                  "Please complete the previous authorization dialog."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Adding the user to ""%s"" group failed."
     IDS_ERR_ONE_CONN_OLD_VER "Możesz mieć jednocześnie tylko jedno aktywne połączenie kiedy używasz OpenVPN-a w wersji starszej niż 2.0-beta6."
     IDS_ERR_STOP_SERV_OLD_VER "Nie możesz nawiązać połączenia za pomocą OpenVPN GUI gdy uruchomiona jest usługa OpenVPN (dla OpenVPN-a 1.5/1.6). Zatrzymaj usługę OpenVPN jeśli chcesz użyć OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "Błąd podczas tworzenia zdarzenia wyjścia: %s"
@@ -311,6 +326,7 @@ BEGIN
                          "umieszczone są w innych katalogach."
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "Błąd otwarcia pliku debagu (%s)."
+    IDS_ERR_CREATE_PATH "Could not create %s path:\n%s"
     IDS_ERR_LOAD_RICHED20 "Błąd ładowania biblioteki RICHED20.DLL."
     IDS_ERR_SHELL_DLL_VERSION "Twoja wersja biblioteki shell32.dll jest za stara (0x%lx). Wymagana co najmniej wersja 5.0."
     IDS_NFO_SERVICE_STARTED "Usługa OpenVPN uruchomiona."
@@ -325,6 +341,16 @@ BEGIN
     IDS_NFO_USAGE "--help\t\t\t: Pokaż tę wiadomość.\n" \
                   "--connect cnn \t\t: Połącz z ""cnn"" na starcie. (rozszerzenie musi zostać podane jawnie)\n" \
                   "\t\t\t   Przykład: openvpn-gui --connect office.ovpn\n" \
+                  "--command cmd [args]\t: Send a command to a running instance of the GUI\n" \
+                  "Supported commands:\n"\
+                  "    connect cnn            \t: connect the config named ""cnn""\n"\
+                  "    disconnect cnn         \t: disconnect the config named ""cnn""\n"\
+                  "    reconnect cnn          \t: reconnect the config named ""cnn""\n"\
+                  "    disconnect_all         \t: disconnect all connected configs\n"\
+                  "    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n"\
+                  "    status cnn           \t\t: show the status window of config ""cnn"" if connected\n"\
+                  "    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n"\
+		  "\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n"\
                   "\n" \
                   "Opcje oddalające ustawienia rejestru:\n" \
                   "--exe_path\t\t: Ścieżka do openvpn.exe.\n" \
@@ -402,9 +428,16 @@ BEGIN
     IDS_ERR_OPEN_SCMGR "Błąd OpenSCManager'a(%d)"
     IDS_ERR_STOP_SERVICE "Nie udało się zatrzymać usługi OpenVPN."
     IDS_NFO_RESTARTED "Usługa OpenVPN uruchomiona ponownie."
+    IDS_ERR_ACCESS_SERVICE_PIPE "Access to service pipe failed."
+    IDS_ERR_WRITE_SERVICE_PIPE "Writing to service pipe failed."
+    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is not installed.\n"
+                                 "Tasks requiring administrative access may not work."
+    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" is not started.\n"
+                                 "Tasks requiring administrative access may not work."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Błąd przy pobieraniu nazwy katalogu systemowego Windows."
+    IDS_ERR_GET_PROFILE_DIR "Error getting User Profile Directory."
     IDS_ERR_GET_PROGRAM_DIR "Błąd przy pobieraniu nazwy katalogu ""Program""."
     IDS_ERR_OPEN_REGISTRY "Błąd przy otwieraniu do odczytu rejestru (HKLM\\SOFTWARE\\OpenVPN).\n " \
                       "Prawdopodobnie OpenVPN nie jest zainstalowany."
@@ -418,5 +451,29 @@ BEGIN
                        "z prawami administratora aby uaktualnić rejestr."
     IDS_ERR_READ_SET_KEY "Błąd odczytu/zmiany klucza rejestru ""%s""."
     IDS_ERR_WRITE_REGVALUE "Błąd zapisu rejestru ""HKEY_CURRENT_USER\\%s\\%s""."
+
+    /* importation */
+    IDS_ERR_IMPORT_EXISTS "A config named ""%s"" already exists."
+    IDS_ERR_IMPORT_FAILED "Failed to import file. The following path could not be created.\n\n" \
+                          "%s\n\nMake sure you have the right permissions."
+    IDS_NFO_IMPORT_SUCCESS "File imported successfully."
+    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
+    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
+
+    /* save/delete password */
+    IDS_NFO_DELETE_PASS "Press OK to delete saved passwords for config ""%s"""
+
+    /* Token password related */
+    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – Token Password"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "Input Password/PIN for Token '%S'"
+
+    IDS_NFO_AUTH_PASS_RETRY "Wrong credentials. Try again…"
+    IDS_NFO_KEY_PASS_RETRY  "Wrong password. Try again…"
+    IDS_ERR_INVALID_PASSWORD_INPUT "Invalid character in password"
+    IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
+    IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds…"
+    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
+    IDS_NFO_BYTECOUNT "Bytes in: %s  out: %s"
+
 END
 

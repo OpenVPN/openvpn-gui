@@ -248,6 +248,7 @@ BEGIN
     IDS_MENU_CLOSE "Ukončit"
     IDS_MENU_CONNECT "Připojit"
     IDS_MENU_DISCONNECT "Odpojit"
+    IDS_MENU_RECONNECT "Reconnect"
     IDS_MENU_STATUS "Zobrazit stav"
     IDS_MENU_VIEWLOG "Otevřít log"
     IDS_MENU_EDITCONFIG "Upravit konfiguraci"
@@ -342,6 +343,16 @@ BEGIN
     IDS_NFO_USAGE "--help\t\t\t: Zobrazí tuto zprávu.\n" \
                   "--connect cnn \t\t: Připojí se k ""cnn"" při spuštění. (musí být obsažena přípona souboru)\n" \
                   "\t\t\t   Příklad: openvpn-gui --connect office.ovpn\n" \
+                  "--command cmd [args]\t: Send a command to a running instance of the GUI\n" \
+                  "Supported commands:\n"\
+                  "    connect cnn            \t: connect the config named ""cnn""\n"\
+                  "    disconnect cnn         \t: disconnect the config named ""cnn""\n"\
+                  "    reconnect cnn          \t: reconnect the config named ""cnn""\n"\
+                  "    disconnect_all         \t: disconnect all connected configs\n"\
+                  "    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n"\
+                  "    status cnn           \t\t: show the status window of config ""cnn"" if connected\n"\
+                  "    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n"\
+                  "\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n"\
                   "\n" \
                   "Volby k použití explicitního nastavení namísto výchozího z registru:\n" \
                   "--exe_path\t\t: Cesta k openvpn.exe.\n" \
@@ -448,6 +459,8 @@ BEGIN
     IDS_ERR_IMPORT_FAILED "Nepodařilo se importovat konfigurační soubor. Následující cestu se nepodařilo vytvořit.\n\n" \
                           "%s\n\nUjistěte se prosím, že máte potřebná oprávnění."
     IDS_NFO_IMPORT_SUCCESS "Konfigurace úspěšně importována."
+    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
+    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "Stiskněte OK pro odstranění uložených hesel pro konfiguraci ""%s"""
@@ -455,5 +468,13 @@ BEGIN
     /* Token password related */
     IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN - Heslo tokenu"
     IDS_NFO_TOKEN_PASSWORD_REQUEST "Prosím zadejte heslo/PIN pro token '%S'"
+
+    IDS_NFO_AUTH_PASS_RETRY "Wrong credentials. Try again…"
+    IDS_NFO_KEY_PASS_RETRY  "Wrong password. Try again…"
+    IDS_ERR_INVALID_PASSWORD_INPUT "Invalid character in password"
+    IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
+    IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds…"
+    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
+    IDS_NFO_BYTECOUNT "Bytes in: %s  out: %s"
 
 END

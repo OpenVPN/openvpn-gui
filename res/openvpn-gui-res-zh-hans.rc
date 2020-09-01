@@ -459,6 +459,8 @@ BEGIN
     IDS_ERR_IMPORT_FAILED "文件导入失败。无法建立下列路径。\n\n" \
                           "%s\n\n请确定您有正确的系统权限。"
     IDS_NFO_IMPORT_SUCCESS "已成功导入文件。"
+    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
+    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "请按「确定」删除「%s」连接配置文件的已存密码。"

@@ -456,6 +456,8 @@ BEGIN
     IDS_ERR_IMPORT_FAILED "파일 불러오기 실패. 다음 경로를 생성할 수 없습니다.\n\n" \
                           "%s\n\n올바른 권한을 가지고 있는지 확인 해 보십시오."
     IDS_NFO_IMPORT_SUCCESS "파일 불러오기 성공."
+    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
+    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS """%s"" 설정의 저장된 암호를 삭제 하려면 확인을 누르십시오."

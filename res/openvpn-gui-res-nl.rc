@@ -457,6 +457,8 @@ BEGIN
     IDS_ERR_IMPORT_FAILED "Importeren bestand is mislukt. De onderstaande bestandsnaam kon niet gemaakt worden.\n\n" \
                           "%s\n\nControleer of de juiste rechten gebruikt worden."
     IDS_NFO_IMPORT_SUCCESS "Importeren bestand gelukt."
+    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
+    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "Klik op OK om alle opgeslagen wachtwoorden voor de configuratie ""%s"" te verwijderen"
@@ -471,5 +473,6 @@ BEGIN
     IDS_ERR_INVALID_USERNAME_INPUT "Ongeldig karakter in de gebruikersnaam"
     IDS_NFO_AUTO_CONNECT    "Automatisch verbinden over %u seconden..."
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI draait al. Klik met de rechtermuisknop op het tray icon om te starten."
+    IDS_NFO_BYTECOUNT "Bytes in: %s  out: %s"
 
 END

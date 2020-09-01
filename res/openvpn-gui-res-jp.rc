@@ -243,14 +243,17 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\n接続時間: "
     IDS_TIP_ASSIGNED_IP "\n割り当てられたIP: %s"
     IDS_MENU_SERVICE "OpenVPNサービス"
+    IDS_MENU_IMPORT "Import file…"
     IDS_MENU_SETTINGS "設定…"
     IDS_MENU_CLOSE "終了"
     IDS_MENU_CONNECT "接続"
     IDS_MENU_DISCONNECT "切断"
+    IDS_MENU_RECONNECT "Reconnect"
     IDS_MENU_STATUS "ステータスの表示"
     IDS_MENU_VIEWLOG "ログの表示"
     IDS_MENU_EDITCONFIG "設定の編集"
     IDS_MENU_PASSPHRASE "パスワード変更"
+    IDS_MENU_CLEARPASS  "Clear Saved Passwords"
     IDS_MENU_SERVICE_START "開始"
     IDS_MENU_SERVICE_STOP "停止"
     IDS_MENU_SERVICE_RESTART "再起動"
@@ -265,6 +268,18 @@ BEGIN
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUIは %d 以上の設定はサポートしていません。これ以上の設定が必要な場合は開発者に連絡してください。"
+    IDS_NFO_NO_CONFIGS "No readable connection profiles (config files) found.\n"\
+                       "Use the ""Import File.."" menu or copy your config files to ""%s"" or ""%s""."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "Starting this connection (%s) requires membership in "\
+                                  """%s"" group. Contact your system administrator.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Starting this connection (%s) requires membership in "\
+                                  """%s"" group.\n\n"\
+                                  "Do you want to add yourself to this group?\n"\
+                                  "This action may prompt for administrative password or consent."
+    IDS_NFO_CONFIG_AUTH_PENDING   "Starting this connection (%s) requires membership in "\
+                                  """%s"" group.\n\n"\
+                                  "Please complete the previous authorization dialog."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Adding the user to ""%s"" group failed."
     IDS_ERR_ONE_CONN_OLD_VER "OpenVPN 2.0-beta6 より古いバージョンでは、同時に使用できる接続は1つだけです。"
     IDS_ERR_STOP_SERV_OLD_VER "OpenVPNサービスが実行されているときには、OpenVPN GUI で接続を開始できません（OpenVPN 1.5/1.6）。OpenVPN GUIを使用する場合には先にOpenVPNサービスを停止してください。"
     IDS_ERR_CREATE_EVENT "CreateEvent failed on exit event: %s"
@@ -311,6 +326,7 @@ BEGIN
         
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "デバッグファイル (%s) を出力用に開くときにエラーが発生しました。"
+    IDS_ERR_CREATE_PATH "Could not create %s path:\n%s"
     IDS_ERR_LOAD_RICHED20 "RICHED20.DLL が読み込めません。"
     IDS_ERR_SHELL_DLL_VERSION "shell32.dll のバージョンが古いです (0x%lx). バージョン 5.0 以降に更新してください。"
     IDS_NFO_SERVICE_STARTED "OpenVPNサービスが開始されました。"
@@ -325,6 +341,16 @@ BEGIN
     IDS_NFO_USAGE "--help\t\t\t: このメッセージを表示する。\n" \
                   "--connect cnn \t\t: 起動時に ""cnn"" に接続する（拡張子も含める必要があります）。\n" \
                   "\t\t\t   例: openvpn-gui --connect office.ovpn\n" \
+                  "--command cmd [args]\t: Send a command to a running instance of the GUI\n" \
+                  "Supported commands:\n"\
+                  "    connect cnn            \t: connect the config named ""cnn""\n"\
+                  "    disconnect cnn         \t: disconnect the config named ""cnn""\n"\
+                  "    reconnect cnn          \t: reconnect the config named ""cnn""\n"\
+                  "    disconnect_all         \t: disconnect all connected configs\n"\
+                  "    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n"\
+                  "    status cnn           \t\t: show the status window of config ""cnn"" if connected\n"\
+                  "    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n"\
+		  "\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n"\
                   "\n" \
                   "各オプションはレジストリの設定に優先されます:\n" \
                   "--exe_path\t\t: openvpn.exeへのパス。\n" \
@@ -402,9 +428,16 @@ BEGIN
     IDS_ERR_OPEN_SCMGR "OpenSCManagerに失敗しました。 (%d)"
     IDS_ERR_STOP_SERVICE "OpenVPNサービスの停止に失敗しました。"
     IDS_NFO_RESTARTED "OpenVPNサービスを再起動しました。"
+    IDS_ERR_ACCESS_SERVICE_PIPE "Access to service pipe failed."
+    IDS_ERR_WRITE_SERVICE_PIPE "Writing to service pipe failed."
+    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is not installed.\n"
+                                 "Tasks requiring administrative access may not work."
+    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" is not started.\n"
+                                 "Tasks requiring administrative access may not work."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Windowsディレクトリが取得できませんでした。"
+    IDS_ERR_GET_PROFILE_DIR "Error getting User Profile Directory."
     IDS_ERR_GET_PROGRAM_DIR """Program""フォルダ名を取得できませんでした。"
     IDS_ERR_OPEN_REGISTRY  "レジストリ (HKLM\\SOFTWARE\\OpenVPN) が読み取れませんでした。\n " \
 			    "OpenVPNがインストールされていない可能性があります。"
@@ -417,4 +450,28 @@ BEGIN
     IDS_ERR_OPEN_WRITE_REG "レジストリの書き込みに失敗しました。レジストリの更新時にはアプリケーションを管理者権限で実行する必要があります。"
     IDS_ERR_READ_SET_KEY "レジストリ ""%s"" の読み取り/書き込みに失敗しました。" 
     IDS_ERR_WRITE_REGVALUE "レジストリ ""HKEY_CURRENT_USER\\%s\\%s"" への書き込みに失敗しました。"
+
+    /* importation */
+    IDS_ERR_IMPORT_EXISTS "A config named ""%s"" already exists."
+    IDS_ERR_IMPORT_FAILED "Failed to import file. The following path could not be created.\n\n" \
+                          "%s\n\nMake sure you have the right permissions."
+    IDS_NFO_IMPORT_SUCCESS "File imported successfully."
+    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
+    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
+
+    /* save/delete password */
+    IDS_NFO_DELETE_PASS "Press OK to delete saved passwords for config ""%s"""
+
+    /* Token password related */
+    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – Token Password"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "Input Password/PIN for Token '%S'"
+
+    IDS_NFO_AUTH_PASS_RETRY "Wrong credentials. Try again…"
+    IDS_NFO_KEY_PASS_RETRY  "Wrong password. Try again…"
+    IDS_ERR_INVALID_PASSWORD_INPUT "Invalid character in password"
+    IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
+    IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds…"
+    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
+    IDS_NFO_BYTECOUNT "Bytes in: %s  out: %s"
+
 END
