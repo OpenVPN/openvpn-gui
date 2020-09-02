@@ -243,14 +243,17 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\nЗ'єднано з такого часу: "
     IDS_TIP_ASSIGNED_IP "\n IP: %s"
     IDS_MENU_SERVICE "Служба OpenVPN"
+    IDS_MENU_IMPORT "Імпортувати файл…"
     IDS_MENU_SETTINGS "Конфігурація…"
     IDS_MENU_CLOSE "Вихід"
     IDS_MENU_CONNECT "З'эднати"
     IDS_MENU_DISCONNECT "Завершити з'єднання"
+    IDS_MENU_RECONNECT "Перепідключитись"
     IDS_MENU_STATUS "Відобразити статус"
     IDS_MENU_VIEWLOG "Відобразити записи із log-файла"
     IDS_MENU_EDITCONFIG "Редагувати конфігурацію"
     IDS_MENU_PASSPHRASE "Змінити пароль"
+    IDS_MENU_CLEARPASS  "Видалити збережені паролі"
     IDS_MENU_SERVICE_START "Стартувати сервіс"
     IDS_MENU_SERVICE_STOP "Зупинити сервіс"
     IDS_MENU_SERVICE_RESTART "Перестартувати сервіс"
@@ -265,6 +268,18 @@ BEGIN
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI не підтримує більш ніж %d конфігурацій. Будь-ласка, з'єднайтеся із автором, якщо вам потрібна більша кількість конфігурацій."
+    IDS_NFO_NO_CONFIGS "Профілів для підключення (файлів конфігурації) не знайдено.\n"\
+                       "Скористайтеся меню ""Імпортувати файл"" або скопіюйте свої конфігураційні файли в ""%s"" або в ""%s""."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "Запуск цього з’єднання (% s) вимагає членства в групі "\
+                                  """%s"". Зверніться до системного адміністратора.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Запуск цього з’єднання (% s) вимагає членства в групі "\
+                                  """%s""\n\n"\
+                                  "Ви хочете додати себе до цієї групи?\n"\
+                                  "Ця дія може вимагати пароля адміністратора системи або його згоди (підтвердження)."
+    IDS_NFO_CONFIG_AUTH_PENDING   "Запуск цього з’єднання (%s) вимагає членства в групі "\
+                                  """%s"".\n\n"\
+                                  "Будь ласка, заповніть попереднє діалогове вікно авторизації."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Неможливо додати користувача до групи ""%s""."
     IDS_ERR_ONE_CONN_OLD_VER "Одночасно ви маєте можливість використовувати тільки одне з'єднання, у версіях OpenVPN 2.0-beta6, або найнові"
     IDS_ERR_STOP_SERV_OLD_VER "Ви не маєте можливості використовувати OpenVPN GUI, щоб стартувати з'єднання, доки робить служба OpenVPN (с OpenVPN 1.5/1.6). Спочатку зупиніть службу OpenVPN, у випадку, коли ви бажаєте використати OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "Робоча помилка CreateEvent при вихіду: %s"
@@ -326,6 +341,16 @@ BEGIN
     IDS_NFO_USAGE "--help\t\t\t: Відобразити це повідомлення.\n" \
                   "--connect cnn \t\t: З'єднатися до ""cnn"" одночасно із запуском сервісу. (із розширінням)\n" \
                   "\t\t\t   Наприклад: openvpn-gui --connect office.ovpn\n" \
+                  "--command cmd [args]\t: Надіслати команду запущеному екземпляру графічного інтерфейсу\n" \
+                  "Команди, які можна використовувати:\n"\
+                  "    connect cnn            \t: підключити конфігурацію з іменем ""cnn""\n"\
+                  "    disconnect cnn         \t: відключити конфігурацію з іменем ""cnn""\n"\
+                  "    reconnect cnn          \t: повторно підключити конфігурацію з іменем ""cnn""\n"\
+                  "    disconnect_all         \t: відключити всі активні з'єднання\n"\
+                  "    exit                 \t\t: зупинити запущений екземпляр графічного інтерфейсу (може з'явитись підтвердження)\n"\
+                  "    status cnn           \t\t: показати вікно стану конфігурації ""cnn"", якщо з'єднання активне\n"\
+                  "    silent_connection [0|1]\t: щоб встановити режим silent_connection, вкажіть (1), Щоб вимкнути, вкажіть (0)\n"\
+		  "\t\t\tНаприклад: openvpn-gui.exe --command disconnect myconfig\n"\
                   "\n" \
                   "Опції спрямовані на переконфігурацію налаштувань реєстру:\n" \
                   "--exe_path\t\t: Розташування openvpn.exe.\n" \
@@ -412,6 +437,7 @@ BEGIN
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Помилка отримання розташування ""Windows""."
+    IDS_ERR_GET_PROFILE_DIR "Помилка отримання каталогу користувачів."
     IDS_ERR_GET_PROGRAM_DIR "Помилка отримання розташування ""Program Files""."
     IDS_ERR_OPEN_REGISTRY "Помилка перегляду реестру (HKLM\\SOFTWARE\\OpenVPN).\n " \
                       "OpenVPN, можливо, не встановлен."
@@ -432,11 +458,22 @@ BEGIN
     IDS_ERR_IMPORT_FAILED "Помилка імпорта файла. Путь %s не може бути створен.\n\n" \
                           "Перевірте, що в вас є необхідні права для цієї операції."
     IDS_NFO_IMPORT_SUCCESS "Імпорт файла успішно завершено."
+    IDS_NFO_IMPORT_OVERWRITE "Конфігурація з назвою ""%s"" вже існує. Замінити?"
+    IDS_ERR_IMPORT_SOURCE "Не вдається імпортувати файл <%s>, оскільки він уже є в глобальному або локальному каталозі конфігурації"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "Підтвердіть видалення збережених паролів для ""%s"""
 
+    /* Token password related */
+    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN - Пароль токену"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "Введіть пароль/PIN-код токену '%S'"
+
     IDS_NFO_AUTH_PASS_RETRY "Невірне ім'я користувача або пароль"
     IDS_NFO_KEY_PASS_RETRY "Невірний пароль"
+    IDS_ERR_INVALID_PASSWORD_INPUT "Невірний символ у паролі"
+    IDS_ERR_INVALID_USERNAME_INPUT "Невірний символ в імені користувача"
+    IDS_NFO_AUTO_CONNECT    "Автоматичне підключення через %u секунд…"
+    IDS_NFO_CLICK_HERE_TO_START "Графічний інтерфейс OpenVPN вже запущений. Клацніть правою кнопкою миші на піктограмі OpenVPN в лотку, щоб його запустити."
+    IDS_NFO_BYTECOUNT "Завантажено байт: %s Передано байт: %s"
 
 END
