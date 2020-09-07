@@ -27,6 +27,7 @@
 #endif
 
 #include <windows.h>
+#include <initguid.h>
 #include <windowsx.h>
 #include <prsht.h>
 #include <stdlib.h>
