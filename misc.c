@@ -341,6 +341,20 @@ ForceForegroundWindow(HWND hWnd)
 }
 
 /*
+ * Set scale factor of windows in pixels. Scale = 100% for dpi = 96
+ */
+void
+DpiSetScale(options_t* options, UINT dpix)
+{
+    /* scale factor in percentage compared to the reference dpi of 96 */
+    if (dpix != 0)
+        options->dpi_scale = MulDiv(dpix, 100, 96);
+    else
+        options->dpi_scale = 100;
+    PrintDebug(L"DPI scale set to %u", o.dpi_scale);
+}
+
+/*
  * Check user has admin rights
  * Taken from https://msdn.microsoft.com/en-us/library/windows/desktop/aa376389(v=vs.85).aspx
  * Returns true if the calling process token has the local Administrators group enabled

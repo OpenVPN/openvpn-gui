@@ -402,20 +402,6 @@ ProcessCommandLine(options_t *options, TCHAR *command_line)
     ExpandOptions ();
 }
 
-/*
- * Set scale factor of windows in pixels. Scale = 100% for dpi = 96
- */
-void
-DpiSetScale(options_t * options, UINT dpix)
-{
-    /* scale factor in percentage compared to the reference dpi of 96 */
-    if (dpix != 0)
-        o.dpi_scale = MulDiv(dpix, 100, 96);
-    else
-        o.dpi_scale = 100;
-    PrintDebug(L"DPI scale set to %u", o.dpi_scale);
-}
-
 /* Return num of connections with state = check */
 int
 CountConnState(conn_state_t check)
