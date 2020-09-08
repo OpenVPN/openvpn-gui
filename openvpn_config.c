@@ -306,7 +306,7 @@ BuildFileList0(const TCHAR *config_dir, int recurse_depth, int group, int flags)
     FindClose(find_handle);
 
     /* optionally loop over each subdir */
-    if (recurse_depth <= 1)
+    if (recurse_depth < 1)
         return;
 
     find_handle = FindFirstFile (find_string, &find_obj);
@@ -337,7 +337,7 @@ void
 BuildFileList()
 {
     static bool issue_warnings = true;
-    int recurse_depth = 4; /* read config_dir and 3 levels of sub-directories */
+    int recurse_depth = 20; /* maximum number of levels below config_dir to recurse into */
     int flags = 0;
     int root = 0;
 
