@@ -43,7 +43,14 @@
 <asmv3:application xmlns:asmv3="urn:schemas-microsoft-com:asm.v3">
     <asmv3:windowsSettings
          xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">
-        <dpiAware>true</dpiAware>
+        <!-- Per Monitor V1 [OS >= Windows 8.1] 
+         Values: False, True, Per-monitor, True/PM -->
+        <dpiAware xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">true/PM</dpiAware>
+            <!-- Per Monitor V1 [OS >= Windows 10 Anniversary Update (1607, 10.0.14393, Redstone 1)]
+         Values: Unaware, System, PerMonitor -->
+            <!-- Per Monitor V2 [OS >= Windows 10 Creators Update (1703, 10.0.15063, Redstone 2)]
+         Value: PerMonitorV2 -->
+        <dpiAwareness xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">PerMonitorV2, PerMonitor</dpiAwareness>
     </asmv3:windowsSettings>
 </asmv3:application>
 </assembly>

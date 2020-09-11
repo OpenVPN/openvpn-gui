@@ -35,6 +35,10 @@
 #include <time.h>
 #include <commctrl.h>
 
+#ifndef WM_DPICHANGED
+#define WM_DPICHANGED 0x02E0
+#endif
+
 #include "tray.h"
 #include "main.h"
 #include "openvpn.h"
@@ -1654,6 +1658,13 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         RenderStatusWindow(hwndDlg, rect.right, rect.bottom);
         /* Set focus on the LogWindow so it scrolls automatically */
         SetFocus(hLogWnd);
+        return FALSE;
+
+    case WM_DPICHANGED:
+        DpiSetScale(&o, HIWORD(wParam));
+        RECT dlgRect;
+        GetClientRect(hwndDlg, &dlgRect);
+        RenderStatusWindow(hwndDlg, dlgRect.right, dlgRect.bottom);
         return FALSE;
 
     case WM_SIZE:
