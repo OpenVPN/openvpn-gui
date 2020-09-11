@@ -27,6 +27,7 @@
 #endif
 
 #include <windows.h>
+#include <initguid.h>
 #include <windowsx.h>
 #include <prsht.h>
 #include <stdlib.h>
@@ -34,6 +35,7 @@
 #include <memory.h>
 #include <shlobj.h>
 #include <shlwapi.h>
+#include <combaseapi.h>
 
 #include "options.h"
 #include "main.h"
@@ -441,37 +443,77 @@ GetConnByName(const WCHAR *name)
     return NULL;
 }
 
-/* callback to set the initial value of folder browse selection */
-static int CALLBACK
-BrowseCallback (HWND h, UINT msg, UNUSED LPARAM l, LPARAM data)
-{
-    if (msg == BFFM_INITIALIZED)
-        SendMessage (h, BFFM_SETSELECTION, TRUE, data);
-
-    return 0;
-}
-
 static BOOL
-BrowseFolder (const WCHAR *initial_path, WCHAR *selected_path)
+BrowseFolder (const WCHAR* initial_path, WCHAR* selected_path, size_t selected_path_size)
 {
-    BOOL ret = false;
-    BROWSEINFO bi;
+    IFileOpenDialog* pfd;
+    HRESULT initResult, result, dialogResult;
 
-    CLEAR(bi);
-    bi.lpszTitle = L"Select folder...";
-    bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
-    bi.lpfn    = BrowseCallback;
-    bi.lParam  = (LPARAM) initial_path;
-
-    PIDLIST_ABSOLUTE idlist = SHBrowseForFolder (&bi);
-
-    if (idlist)
+    // Create dialog
+    initResult = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+    if (FAILED(initResult))
     {
-        ret = SHGetPathFromIDList (idlist, selected_path);
-        CoTaskMemFree (idlist);
+        return false;
     }
 
-    return ret;
+    result = CoCreateInstance(&CLSID_FileOpenDialog, NULL, CLSCTX_ALL, &IID_IFileOpenDialog, (void**)&pfd);
+    if (SUCCEEDED(result))
+    {
+        // Select folders, not files
+        DWORD dwOptions;
+        result = pfd->lpVtbl->GetOptions(pfd, &dwOptions);
+        if (SUCCEEDED(result))
+        {
+            dwOptions |= FOS_PICKFOLDERS;
+            result = pfd->lpVtbl->SetOptions(pfd, dwOptions);
+        }
+
+        // Set initial path
+        IShellItem* psi;
+        result = SHCreateItemFromParsingName(initial_path, NULL, &IID_IShellItem, (void**)&psi);
+        if (SUCCEEDED(result))
+        {
+            pfd->lpVtbl->SetFolder(pfd, psi);
+            psi->lpVtbl->Release(psi);
+        }
+
+        // Show dialog and copy the selected file path if the user didn't cancel
+        dialogResult = pfd->lpVtbl->Show(pfd, NULL);
+        if (SUCCEEDED(dialogResult))
+        {
+            IShellItem* psi;
+            LPOLESTR path = NULL;
+
+            result = pfd->lpVtbl->GetResult(pfd, &psi);
+            if(SUCCEEDED(result))
+            {
+                result = psi->lpVtbl->GetDisplayName(psi, SIGDN_FILESYSPATH, &path);
+            }
+
+            if (SUCCEEDED(result))
+            {
+                wcsncpy_s(selected_path, selected_path_size, path, wcslen(path));
+
+                CoTaskMemFree(path);
+
+                psi->lpVtbl->Release(psi);
+            }
+            else
+            {
+                dialogResult = E_FAIL;
+            }
+        }
+
+        // Cleanup
+        pfd->lpVtbl->Release(pfd);
+    }
+
+    if (initResult != RPC_E_CHANGED_MODE && SUCCEEDED(initResult))
+    {
+        CoUninitialize(); //All successful CoInitializeEx calls must be balanced by a corresponding CoUninitialize
+    }
+
+    return SUCCEEDED(dialogResult);
 }
 
 static BOOL
@@ -577,13 +619,13 @@ AdvancedSettingsDlgProc (HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lP
 
         case ID_BTN_CONFIG_DIR:
             GetDlgItemText (hwndDlg, ID_EDT_CONFIG_DIR, path, _countof(path));
-            if (BrowseFolder (path, path))
+            if (BrowseFolder (path, path, _countof(path)))
                 SetDlgItemText (hwndDlg, ID_EDT_CONFIG_DIR, path);
             break;
 
         case ID_BTN_LOG_DIR:
             GetDlgItemText (hwndDlg, ID_EDT_LOG_DIR, path, _countof(path));
-            if (BrowseFolder (path, path))
+            if (BrowseFolder (path, path, _countof(path)))
                 SetDlgItemText (hwndDlg, ID_EDT_LOG_DIR, path);
             break;
         }
