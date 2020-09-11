@@ -32,6 +32,7 @@ BOOL strbegins(const char *str, const char *begin);
 BOOL wcsbegins(LPCWSTR, LPCWSTR);
 
 BOOL ForceForegroundWindow(HWND);
+void DpiSetScale(options_t*, UINT dpix);
 
 BOOL IsUserAdmin(VOID);
 HANDLE InitSemaphore (WCHAR *);
