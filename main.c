@@ -28,6 +28,7 @@
 #endif
 
 #include <windows.h>
+#include <versionhelpers.h>
 #include <shlwapi.h>
 #include <wtsapi32.h>
 #include <prsht.h>
@@ -263,7 +264,7 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
     exit(1);
   }
 
-  if (!IsUserAdmin() && strtod(o.ovpn_version, NULL) > 2.3 && !o.silent_connection)
+  if ((!IsUserAdmin() || IsWindows7OrGreater()) && strtod(o.ovpn_version, NULL) > 2.3 && !o.silent_connection)
     CheckIServiceStatus(TRUE);
 
   BuildFileList();

@@ -27,6 +27,7 @@
 
 #include <windows.h>
 #include <windowsx.h>
+#include <versionhelpers.h>
 #include <tchar.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -1937,7 +1938,7 @@ StartOpenVPN(connection_t *c)
         (o.proxy_source != config ? _T("--management-query-proxy ") : _T("")));
 
     /* Try to open the service pipe */
-    if (!IsUserAdmin() && InitServiceIO (&c->iserv))
+    if ((!IsUserAdmin() || IsWindows7OrGreater()) && InitServiceIO (&c->iserv))
     {
         DWORD size = _tcslen(c->config_dir) + _tcslen(options) + sizeof(c->manage.password) + 3;
         TCHAR startup_info[1024];
