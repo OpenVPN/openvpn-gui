@@ -151,6 +151,11 @@ add_option(options_t *options, int i, TCHAR **p)
         ++i;
         options->log_append = _ttoi(p[1]) ? 1 : 0;
     }
+    else if ((streq(p[0], _T("iservice_admin"))) && p[1])
+    {
+        ++i;
+        options->iservice_admin = _ttoi(p[1]) ? 1 : 0;
+    }
     else if (streq(p[0], _T("log_viewer")) && p[1])
     {
         ++i;

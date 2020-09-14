@@ -54,6 +54,7 @@ struct regkey_int {
     DWORD value;
 } regkey_int[] = {
       {L"log_append", &o.log_append, 0},
+      {L"iservice_admin", &o.iservice_admin, 1},
       {L"show_balloon", &o.show_balloon, 1},
       {L"silent_connection", &o.silent_connection, 0},
       {L"preconnectscript_timeout", &o.preconnectscript_timeout, 10},
