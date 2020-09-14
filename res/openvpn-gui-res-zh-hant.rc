@@ -159,14 +159,15 @@ BEGIN
     GROUPBOX "啟動", 202, 6, 47, 235, 30
     AUTOCHECKBOX "在 Windows 開機時執行", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "偏好設定", 202, 6, 82, 235, 90
+    GROUPBOX "偏好設定", 202, 6, 82, 235, 105
     AUTOCHECKBOX "附加記錄檔", ID_CHK_LOG_APPEND, 17, 95, 60, 10
     AUTOCHECKBOX "顯示指令碼視窗", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "寧靜連線", ID_CHK_SILENT, 17, 125, 200, 10
-    LTEXT "顯示通知氣球", ID_TXT_BALLOON, 17, 140, 100, 10
-    AUTORADIOBUTTON "連上線時", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "連上線、重新連線時", ID_RB_BALLOON2, 86, 155, 90, 10
-    AUTORADIOBUTTON "永不顯示", ID_RB_BALLOON0, 181, 155, 50, 10
+    AUTOCHECKBOX "Always use interactive service", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
+    LTEXT "顯示通知氣球", ID_TXT_BALLOON, 17, 155, 100, 10
+    AUTORADIOBUTTON "連上線時", ID_RB_BALLOON1, 28, 170, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "連上線、重新連線時", ID_RB_BALLOON2, 86, 170, 90, 10
+    AUTORADIOBUTTON "永不顯示", ID_RB_BALLOON0, 181, 170, 50, 10
 END
 
 /* Advanced Dialog */
@@ -437,6 +438,8 @@ BEGIN
                                  "需要管理員權限的任務可能無法正常執行。"
     IDS_ERR_NOTSTARTED_ISERVICE  "未啟動「OpenVPNServiceInteractive」。\n"
                                  "需要管理員權限的任務可能無法正常執行。"
+    IDS_ERR_NOTSTARTED_ISERVICE_ADM  "未啟動「OpenVPNServiceInteractive」。\n"
+                                     "Wintun driver will not work."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "取得 Windows 目錄時發生錯誤。"

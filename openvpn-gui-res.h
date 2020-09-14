@@ -97,6 +97,7 @@
 #define ID_RB_BALLOON1                   240
 #define ID_RB_BALLOON2                   241
 #define ID_CHK_SHOW_SCRIPT_WIN           242
+#define ID_CHK_ALWAYS_USE_ISERVICE       243
 
 /* Proxy Auth Dialog */
 #define ID_DLG_PROXY_AUTH                250
@@ -283,6 +284,7 @@
 #define IDS_ERR_WRITE_SERVICE_PIPE      1710
 #define IDS_ERR_NOTSTARTED_ISERVICE     1711
 #define IDS_ERR_INSTALL_ISERVICE        1712
+#define IDS_ERR_NOTSTARTED_ISERVICE_ADM 1713
 
 /* Registry Related */
 #define IDS_ERR_GET_WINDOWS_DIR         1801

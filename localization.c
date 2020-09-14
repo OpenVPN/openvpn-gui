@@ -467,6 +467,8 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
             Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_LOG_APPEND), BST_CHECKED);
         if (o.silent_connection)
             Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SILENT), BST_CHECKED);
+        if (o.iservice_admin)
+            Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_ALWAYS_USE_ISERVICE), BST_CHECKED);
         if (o.show_balloon == 0)
             CheckRadioButton (hwndDlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON0);
         else if (o.show_balloon == 1)
@@ -494,6 +496,8 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
                 (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_LOG_APPEND)) == BST_CHECKED);
             o.silent_connection =
                 (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_SILENT)) == BST_CHECKED);
+            o.iservice_admin =
+                (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_ALWAYS_USE_ISERVICE)) == BST_CHECKED);
             if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON0))
                 o.show_balloon = 0;
             else if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON2))

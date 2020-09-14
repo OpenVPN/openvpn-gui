@@ -154,7 +154,7 @@ BEGIN
     LTEXT "Spr&ache:", ID_TXT_LANGUAGE, 17, 25, 29, 12
     COMBOBOX ID_CMB_LANGUAGE, 51, 23, 177, 400, CBS_DROPDOWNLIST | WS_TABSTOP
 
-    GROUPBOX "Einstellungen", 202, 6, 82, 235, 90
+    GROUPBOX "Einstellungen", 202, 6, 82, 235, 105
     GROUPBOX "Systemstart", 202, 6, 47, 235, 30
     AUTOCHECKBOX "Mit &Windows starten", ID_CHK_STARTUP, 17, 59, 200, 12
 
@@ -162,10 +162,11 @@ BEGIN
     AUTOCHECKBOX "An &Log anhängen", ID_CHK_LOG_APPEND, 17, 95, 60, 10
     AUTOCHECKBOX "&Skriptfenster zeigen", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "Stille &Verbindung", ID_CHK_SILENT, 17, 125, 200, 10
-    LTEXT "Zeige Benachrichtigung", ID_TXT_BALLOON, 17, 140, 100, 10
-    AUTORADIOBUTTON "Beim Verb&inden", ID_RB_BALLOON1, 28, 155, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Beim Verbinden/&erneut Verbinden", ID_RB_BALLOON2, 86, 155, 90, 10
-    AUTORADIOBUTTON "&Nie", ID_RB_BALLOON0, 181, 155, 40, 10
+    AUTOCHECKBOX "Interactive Service immer verwenden", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
+    LTEXT "Zeige Benachrichtigung", ID_TXT_BALLOON, 17, 155, 100, 10
+    AUTORADIOBUTTON "Beim Verb&inden", ID_RB_BALLOON1, 28, 170, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Beim Verbinden/&erneut Verbinden", ID_RB_BALLOON2, 86, 170, 90, 10
+    AUTORADIOBUTTON "&Nie", ID_RB_BALLOON0, 181, 170, 40, 10
 END
 
 /* Advanced Dialog */
@@ -438,6 +439,8 @@ BEGIN
                                  "Aufgaben, die administrativen Zugriff benötigen, funktionieren möglicherweise nicht."
     IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" wurde nicht gestartet.\n"
                                  "Aufgaben, die administrativen Zugriff benötigen, funktionieren möglicherweise nicht."
+    IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" wurde nicht gestartet.\n"
+                                     "Wintun-Treiber kann nicht verwendet werden."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Konnte den Pfad der Windows-Installation nicht ermitteln."

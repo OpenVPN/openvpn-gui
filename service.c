@@ -32,6 +32,7 @@
 #include "options.h"
 #include "scripts.h"
 #include "main.h"
+#include "misc.h"
 #include "openvpn-gui-res.h"
 #include "localization.h"
 
@@ -283,7 +284,12 @@ CheckIServiceStatus(BOOL warn)
     {
         /* warn that iservice is not started */
         if (warn)
-            ShowLocalizedMsg(IDS_ERR_NOTSTARTED_ISERVICE);
+        {
+            if (IsUserAdmin())
+                ShowLocalizedMsg(IDS_ERR_NOTSTARTED_ISERVICE_ADM);
+            else
+                ShowLocalizedMsg(IDS_ERR_NOTSTARTED_ISERVICE);
+        }
         goto out;
     }
     ret = true;
