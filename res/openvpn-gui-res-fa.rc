@@ -3,6 +3,7 @@
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
  *                2009 Heiko Hund <heikoh@users.sf.net>
+ *                2020 Mohammad Javidi <m.javidii@yahoo.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -24,9 +25,9 @@
 ID_DLG_PASSPHRASE DIALOGEX 6, 18, 160, 83
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
 EXSTYLE WS_EX_TOPMOST
-CAPTION "OpenVPN – Private Key Password"
+CAPTION "OpenVPN – رمز کلید خصوصی"
 FONT 8, "Microsoft Sans Serif"
-LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+LANGUAGE LANG_PERSIAN, SUBLANG_DEFAULT
 BEGIN
     LTEXT "Enter &Password:", 201, 6, 6, 100, 10
     EDITTEXT ID_EDT_PASSPHRASE, 6, 17, 107, 12, ES_PASSWORD | ES_AUTOHSCROLL
