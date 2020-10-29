@@ -29,7 +29,7 @@ CAPTION "OpenVPN – رمز کلید خصوصی"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FARSI, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "رمز عبور را وارد کنید :D", 201, 6, 6, 100, 10
+    LTEXT "رمز عبور را وارد کنید :", 201, 6, 6, 100, 10
     EDITTEXT ID_EDT_PASSPHRASE, 6, 17, 107, 12, ES_PASSWORD | ES_AUTOHSCROLL
     CHECKBOX "نگه داشتن رمز عبور", ID_CHK_SAVE_PASS, 6, 33, 100, 10
     PUSHBUTTON "بسیار خوب", IDOK, 20, 49, 50, 14
@@ -44,9 +44,9 @@ EXSTYLE WS_EX_TOPMOST
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FARSI, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "نام کاربری :D", 0, 6, 9, 50, 10
+    LTEXT "نام کاربری :", 0, 6, 9, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
-    LTEXT "رمز عبور :D", 0, 6, 26, 50, 10
+    LTEXT "رمز عبور :", 0, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     CHECKBOX "نگه داشتن رمز عبور", ID_CHK_SAVE_PASS, 6, 42, 100, 10
     PUSHBUTTON "بسیار خوب", IDOK, 20, 58, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_DISABLED
@@ -61,11 +61,11 @@ CAPTION "OpenVPN – احراز هویت کاربر"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FARSI, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "نام کاربری :D", 0, 6, 9, 50, 10
+    LTEXT "نام کاربری :", 0, 6, 9, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
-    LTEXT "رمز عبور :D", 0, 6, 26, 50, 10
+    LTEXT "رمز عبور :", 0, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    LTEXT "پاسخ :D", 0, 6, 60, 50, 10
+    LTEXT "پاسخ :", 0, 6, 60, 50, 10
     LTEXT "", ID_TXT_AUTH_CHALLENGE, 6, 43, 148, 10
     EDITTEXT ID_EDT_AUTH_CHALLENGE, 60, 57, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     CHECKBOX "نگه داشتن رمز عبور", ID_CHK_SAVE_PASS, 6, 76, 100, 10
@@ -82,7 +82,7 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FARSI, SUBLANG_DEFAULT
 BEGIN
     LTEXT "", ID_TXT_DESCRIPTION, 6, 9, 208, 10
-    LTEXT "پاسخ :D", 0, 6, 30, 50, 10
+    LTEXT "پاسخ :", 0, 6, 30, 50, 10
     EDITTEXT ID_EDT_RESPONSE, 60, 27, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     PUSHBUTTON "بسیار خوب", IDOK, 20, 51, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
     PUSHBUTTON "لغو", IDCANCEL, 90, 51, 52, 14
@@ -111,11 +111,11 @@ CAPTION "OpenVPN – تغییر عبارت عبور کلید خصوصی"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FARSI, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "رمز عبور قبلی :D", 171, 6, 9, 85, 10
+    LTEXT "رمز عبور قبلی :", 171, 6, 9, 85, 10
     EDITTEXT ID_EDT_PASS_CUR, 95, 6, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    LTEXT "رمز عبور جدید :D", 172, 6, 26, 85, 10
+    LTEXT "رمز عبور جدید :", 172, 6, 26, 85, 10
     EDITTEXT ID_EDT_PASS_NEW, 95, 23, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    LTEXT "تکرار - رمز عبور جدید :D", 173, 6, 42, 85, 10
+    LTEXT "تکرار - رمز عبور جدید :", 173, 6, 42, 85, 10
     EDITTEXT ID_EDT_PASS_NEW2, 95, 39, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
     PUSHBUTTON "بسار خوب", IDOK, 40, 59, 50, 14
     PUSHBUTTON "لغو", IDCANCEL, 103, 59, 50, 14
@@ -228,9 +228,9 @@ CAPTION "OpenVPN – احراز هویت پروکسی"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FARSI, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "نام کاربری :D", 201, 9, 8, 38, 10
+    LTEXT "نام کاربری :", 201, 9, 8, 38, 10
     EDITTEXT ID_EDT_PROXY_USER, 49, 5, 94, 12, ES_AUTOHSCROLL
-    LTEXT "رمز عبور :D", 202, 9, 26, 38, 10
+    LTEXT "رمز عبور :", 202, 9, 26, 38, 10
     EDITTEXT ID_EDT_PROXY_PASS, 49, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     PUSHBUTTON "بسیار خوب", IDOK, 58, 43, 40, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
 END
