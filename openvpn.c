@@ -1662,6 +1662,12 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
         /* Set size and position of controls */
         RECT rect;
+        GetWindowRect(hwndDlg, &rect);
+        /* Move the window by upto 100 random pixels to avoid all
+         * status windows fall on top of each other.
+         */
+        SetWindowPos(hwndDlg, HWND_TOP, rect.left + rand()%100,
+                     rect.top + rand()%100, 0, 0, SWP_NOSIZE);
         GetClientRect(hwndDlg, &rect);
         RenderStatusWindow(hwndDlg, rect.right, rect.bottom);
         /* Set focus on the LogWindow so it scrolls automatically */
@@ -1793,6 +1799,7 @@ ThreadOpenVPNStatus(void *p)
     HANDLE wait_event;
 
     CLEAR (msg);
+    srand(time(NULL));
 
     /* Cut of extention from config filename. */
     _tcsncpy(conn_name, c->config_file, _countof(conn_name));

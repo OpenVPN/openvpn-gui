@@ -254,14 +254,15 @@ OnNotifyTray(LPARAM lParam)
             /* Start connection if only one config exist */
             if (o.num_configs == 1 && o.conn[0].state == disconnected)
                     StartOpenVPN(&o.conn[0]);
-            else if (disconnected_conns == o.num_configs - 1) {
-                /* Show status window if only one connection is running */
+            /* show the status window of all connected/connecting profiles upto a max of 10 */
+            else if (disconnected_conns < o.num_configs) {
                 int i;
+                int num_shown = 0;
                 for (i = 0; i < o.num_configs; i++) {
                     if (o.conn[i].state != disconnected) {
                         ShowWindow(o.conn[i].hwndStatus, SW_SHOW);
                         SetForegroundWindow(o.conn[i].hwndStatus);
-                        break;
+                        if (++num_shown >= 10) break;
                     }
                 }
             }
