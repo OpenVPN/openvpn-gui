@@ -46,6 +46,7 @@ ID_ICO_DISCONNECTED  ICON  DISCARDABLE  "disconnected.ico"
 #include "openvpn-gui-res-dk.rc"
 #include "openvpn-gui-res-en.rc"
 #include "openvpn-gui-res-es.rc"
+#include "openvpn-gui-res-fa.rc"
 #include "openvpn-gui-res-fi.rc"
 #include "openvpn-gui-res-fr.rc"
 #include "openvpn-gui-res-it.rc"
@@ -78,6 +79,7 @@ BEGIN
             , LANG_DANISH,      1200
             , LANG_ENGLISH,     1200
             , LANG_SPANISH,     1200
+            , LANG_FARSI,       1200
             , LANG_FINNISH,     1200
             , LANG_FRENCH,      1200
             , LANG_ITALIAN,     1200
