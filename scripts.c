@@ -226,16 +226,31 @@ RunDisconnectScript(connection_t *c, int run_as_service)
     if (!run_as_service)
         SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_DISCONN_SCRIPT));
 
+    // Create the filename of the logfile
+    TCHAR script_log_filename[MAX_PATH];
+    _sntprintf_0(script_log_filename, _T("%s\\%s_down.log"), o.log_dir, c->config_name);
+
+    // Create the log file
+    SECURITY_ATTRIBUTES sa;
+    CLEAR(sa);
+    sa.nLength = sizeof(SECURITY_ATTRIBUTES);
+    sa.lpSecurityDescriptor = NULL;
+    sa.bInheritHandle = TRUE;
+
+    HANDLE logfile_handle = CreateFile(script_log_filename, GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE,
+                                       &sa, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
     CLEAR(si);
     CLEAR(pi);
 
     /* fill in STARTUPINFO struct */
     GetStartupInfo(&si);
     si.cb = sizeof(si);
-    si.dwFlags = 0;
+    si.dwFlags = STARTF_USESTDHANDLES;
     si.wShowWindow = SW_SHOWDEFAULT;
     si.hStdInput = NULL;
-    si.hStdOutput = NULL;
+    si.hStdOutput = logfile_handle;
+    si.hStdError = logfile_handle;
 
     /* make an env array with confg specific env appended to the process's env */
     WCHAR *env = c->es ? merge_env_block(c->es) : NULL;
@@ -263,4 +278,6 @@ out:
     free(env);
     CloseHandle(pi.hThread);
     CloseHandle(pi.hProcess);
+    if (logfile_handle != NULL)
+        CloseHandle(logfile_handle);
 }
