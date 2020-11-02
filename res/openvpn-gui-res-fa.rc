@@ -156,13 +156,13 @@ BEGIN
     COMBOBOX ID_CMB_LANGUAGE, 57, 23, 171, 400, CBS_DROPDOWNLIST | WS_TABSTOP
 
 												 
-    GROUPBOX "شروع به کار - SU", 202, 6, 47, 235, 30
+    GROUPBOX "شروع به کار", 202, 6, 47, 235, 30
     AUTOCHECKBOX "شروع به کار - وقتی کاربر وارد شد", ID_CHK_STARTUP, 17, 59, 100, 12
 
-    GROUPBOX "تنظیمات - Pre", 202, 6, 82, 235, 105
+    GROUPBOX "تنظیمات", 202, 6, 82, 235, 105
     AUTOCHECKBOX "چسباندن به گزارشات", ID_CHK_LOG_APPEND, 17, 95, 60, 10
     AUTOCHECKBOX "نمایش پنجره اسکریپت", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
-    AUTOCHECKBOX "بی صدا متصل شدن", ID_CHK_SILENT, 17, 125, 200, 10
+    AUTOCHECKBOX "بی صدا(اعلان) متصل شدن", ID_CHK_SILENT, 17, 125, 200, 10
     AUTOCHECKBOX "همیشه از خدمات تعاملی استفاده کنید", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
     LTEXT "نمایش اطلاع رسانی ها", ID_TXT_BALLOON, 17, 155, 100, 10
     AUTORADIOBUTTON "وقت متصل بودن", ID_RB_BALLOON1, 28, 170, 50, 10, WS_GROUP | WS_TABSTOP
@@ -177,19 +177,19 @@ CAPTION "پیشرفته"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FARSI, SUBLANG_DEFAULT
 BEGIN
-    GROUPBOX "سند تنظیمات - CF", 201, 6, 12, 235, 45
+    GROUPBOX "سند تنظیمات", 201, 6, 12, 235, 45
     LTEXT "پوشه :", ID_TXT_FOLDER, 17, 25, 32, 10
     EDITTEXT ID_EDT_CONFIG_DIR, 53, 23, 150, 12, ES_AUTOHSCROLL
     LTEXT "پسوند :", ID_TXT_EXTENSION, 17, 40, 52, 10
     EDITTEXT ID_EDT_CONFIG_EXT, 53, 38, 25, 12, ES_AUTOHSCROLL
     PUSHBUTTON "…", ID_BTN_CONFIG_DIR, 208, 23, 25, 12
 
-    GROUPBOX "سند گزارشات - Log", 202, 6, 62, 235, 30
+    GROUPBOX "سند گزارشات", 202, 6, 62, 235, 30
     LTEXT "پوشه :", ID_TXT_FOLDER, 17, 74, 32, 10
     EDITTEXT ID_EDT_LOG_DIR, 53, 72, 150, 12, ES_AUTOHSCROLL
     PUSHBUTTON "…", ID_BTN_LOG_DIR, 208, 72, 25, 12
 
-    GROUPBOX "اسکریپت ایست - t.out", 201, 6, 97, 235, 60
+    GROUPBOX "اسکریپت ایست", 201, 6, 97, 235, 60
     LTEXT "اسکریپت ایست از قبل متصل شده :", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
     EDITTEXT ID_EDT_PRECONNECT_TIMEOUT, 103, 108, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     LTEXT "اتصال اسکریپت ایست :", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
