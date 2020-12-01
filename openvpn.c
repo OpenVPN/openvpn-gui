@@ -324,12 +324,19 @@ OnStateChange(connection_t *c, char *data)
                 c->failed_psw_attempts++;
         }
 
-        c->state = reconnecting;
-        CheckAndSetTrayIcon();
+        // We change the state to reconnecting only if there was a prior successful connection.
+        if (c->state == connected)
+        {
+            c->state = reconnecting;
 
-        SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_RECONNECTING));
-        SetDlgItemTextW(c->hwndStatus, ID_TXT_IP, L"");
-        SetStatusWinIcon(c->hwndStatus, ID_ICO_CONNECTING);
+            // Update the tray icon
+            CheckAndSetTrayIcon();
+
+            // And the texts in the status window
+            SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_RECONNECTING));
+            SetDlgItemTextW(c->hwndStatus, ID_TXT_IP, L"");
+            SetStatusWinIcon(c->hwndStatus, ID_ICO_CONNECTING);
+        }
     }
 }
 
