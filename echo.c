@@ -25,12 +25,15 @@
 
 #include <windows.h>
 #include <wchar.h>
+#include <richedit.h>
 #include "main.h"
 #include "options.h"
 #include "misc.h"
 #include "openvpn.h"
 #include "echo.h"
 #include "tray.h"
+#include "openvpn-gui-res.h"
+#include "localization.h"
 
 /* echo msg types */
 #define ECHO_MSG_WINDOW (1)
@@ -48,12 +51,18 @@ static HWND echo_msg_window;
 /* Forward declarations */
 static void
 AddMessageBoxText(HWND hwnd, const wchar_t *text, const wchar_t *title, BOOL show);
+static INT_PTR CALLBACK
+MessageDialogFunc(HWND hwnd, UINT msg, UNUSED WPARAM wParam, LPARAM lParam);
 
 void
 echo_msg_init(void)
 {
-    /* TODO: create a message box and save handle in echo_msg_window */
-    return;
+    echo_msg_window = CreateLocalizedDialogParam(ID_DLG_MESSAGE, MessageDialogFunc, (LPARAM) 0);
+
+    if (!echo_msg_window)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Error creating echo message window.");
+    }
 }
 
 /* compute a digest of the message and add it to the msg struct */
@@ -242,6 +251,114 @@ echo_msg_clear(connection_t *c, BOOL clear_history)
 static void
 AddMessageBoxText(HWND hwnd, const wchar_t *text, const wchar_t *title, BOOL show)
 {
-    /* Not implemented */
-    return;
+    HWND hmsg = GetDlgItem(hwnd, ID_TXT_MESSAGE);
+
+    /* Start adding new message at the top */
+    SendMessage(hmsg, EM_SETSEL, 0, 0);
+
+    CHARFORMATW cfm = { .cbSize = sizeof(CHARFORMATW)};
+    if (title && wcslen(title))
+    {
+        /* Increase font size and set font color for title of the message */
+        SendMessage(hmsg, EM_GETCHARFORMAT, SCF_DEFAULT, (LPARAM) &cfm);
+        cfm.dwMask = CFM_SIZE|CFM_COLOR;
+        cfm.yHeight = MulDiv(cfm.yHeight, 4, 3); /* scale up by 1.33: 12 pt if default is 9 pt */
+        cfm.crTextColor = RGB(0, 0x33, 0x99);
+        cfm.dwEffects = 0;
+
+        SendMessage(hmsg, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM) &cfm);
+        SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM) title);
+        SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM) L"\n");
+    }
+
+    /* Revert to default font and set the text */
+    SendMessage(hmsg, EM_GETCHARFORMAT, SCF_DEFAULT, (LPARAM) &cfm);
+    SendMessage(hmsg, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM) &cfm);
+    if (text)
+    {
+        SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM) text);
+        SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM) L"\n");
+    }
+
+    /* Select top of the message and scroll to there */
+    SendMessage(hmsg, EM_SETSEL, 0, 0);
+    SendMessage(hmsg, EM_SCROLLCARET, 0, 0);
+
+    if (show)
+    {
+        SetForegroundWindow(hwnd);
+        ShowWindow(hwnd, SW_SHOW);
+    }
+}
+
+/* A modeless message box.
+ * Use AddMessageBoxText to add content and display
+ * the window. On WM_CLOSE the window is hidden, not destroyed.
+ */
+static INT_PTR CALLBACK
+MessageDialogFunc(HWND hwnd, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
+{
+    HICON hIcon;
+    HWND hmsg;
+    const UINT top_margin = DPI_SCALE(16);
+    const UINT side_margin = DPI_SCALE(20);
+
+    switch (msg)
+    {
+    case WM_INITDIALOG:
+        hIcon = LoadLocalizedIcon(ID_ICO_APP);
+        if (hIcon) {
+            SendMessage(hwnd, WM_SETICON, (WPARAM) (ICON_SMALL), (LPARAM) (hIcon));
+            SendMessage(hwnd, WM_SETICON, (WPARAM) (ICON_BIG), (LPARAM) (hIcon));
+        }
+        hmsg = GetDlgItem(hwnd, ID_TXT_MESSAGE);
+        SetWindowText(hwnd, L"OpenVPN Messages");
+        SendMessage(hmsg, EM_SETMARGINS, EC_LEFTMARGIN|EC_RIGHTMARGIN,
+                         MAKELPARAM(side_margin, side_margin));
+
+        /* Position the window close to top right corner of the screen */
+        RECT rc;
+        GetWindowRect(hwnd, &rc);
+        OffsetRect(&rc, -rc.left, -rc.top);
+        int ox = GetSystemMetrics(SM_CXSCREEN); /* screen size along x */
+        ox -= rc.right + DPI_SCALE(rand()%50 + 25);
+        int oy = DPI_SCALE(rand()%50 + 25);
+        SetWindowPos(hwnd, HWND_TOP, ox > 0 ? ox:0, oy, 0, 0, SWP_NOSIZE);
+
+        return TRUE;
+
+    case WM_SIZE:
+        hmsg = GetDlgItem(hwnd, ID_TXT_MESSAGE);
+        /* leave some space as top margin */
+        SetWindowPos(hmsg, NULL, 0, top_margin, LOWORD(lParam), HIWORD(lParam)-top_margin, 0);
+        InvalidateRect(hwnd, NULL, TRUE);
+        break;
+
+    /* set the whole client area background to white */
+    case WM_CTLCOLORDLG:
+    case WM_CTLCOLORSTATIC:
+        return (INT_PTR) GetStockObject(WHITE_BRUSH);
+        break;
+
+    case WM_COMMAND:
+        if (LOWORD(wParam) == ID_TXT_MESSAGE)
+        {
+            /* The caret is distracting in a readonly msg box: hide it when we get focus */
+            if (HIWORD(wParam) == EN_SETFOCUS)
+            {
+                HideCaret((HWND)lParam);
+            }
+            else if (HIWORD(wParam) == EN_KILLFOCUS)
+            {
+                ShowCaret((HWND)lParam);
+            }
+        }
+        break;
+
+    case WM_CLOSE:
+        ShowWindow(hwnd, SW_HIDE);
+        return TRUE;
+    }
+
+    return 0;
 }

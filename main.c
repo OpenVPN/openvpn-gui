@@ -165,6 +165,7 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
   /* a session local semaphore to detect second instance */
   HANDLE session_semaphore = InitSemaphore(L"Local\\"PACKAGE_NAME);
 
+  srand(time(NULL));
   /* try to lock the semaphore, else we are not the first instance */
   if (session_semaphore &&
       WaitForSingleObject(session_semaphore, 200) != WAIT_OBJECT_0)
