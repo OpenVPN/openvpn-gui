@@ -280,6 +280,13 @@ config_menu_view
 
     2: Force nested menu
 
+disable_popup_messages
+    If set to 1 echo messages are ignored
+
+popup_mute_interval
+    Amount of time in hours for which repeated echo messages are not displayed.
+    Defaults to 24 hours.
+
 management_port_offset
     The management interface port is chosen as this offset plus a connection specific index.
     Allowed values: 1 to 61000, defaults to 25340.
