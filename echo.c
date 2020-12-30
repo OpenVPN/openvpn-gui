@@ -53,7 +53,8 @@ static HWND echo_msg_window;
 
 /* Forward declarations */
 static void
-AddMessageBoxText(HWND hwnd, const wchar_t *text, const wchar_t *title, BOOL show);
+AddMessageBoxText(HWND hwnd, const wchar_t *text, const wchar_t *title, const wchar_t *from);
+
 static INT_PTR CALLBACK
 MessageDialogFunc(HWND hwnd, UINT msg, UNUSED WPARAM wParam, LPARAM lParam);
 
@@ -258,10 +259,20 @@ echo_msg_display(connection_t *c, time_t timestamp, const char *title, int type)
     }
     if (type == ECHO_MSG_WINDOW)
     {
+
         HWND h = echo_msg_window;
         if (h)
         {
-            AddMessageBoxText(h, c->echo_msg.text, c->echo_msg.title, true);
+            wchar_t from[256];
+            _sntprintf_0(from, L"From: %s %s", c->config_name, _wctime(&timestamp));
+
+	    /* strip \n added by _wctime */
+	    if (wcslen(from) > 0)
+	        from[wcslen(from)-1] = L'\0';
+
+            AddMessageBoxText(h, c->echo_msg.text, c->echo_msg.title, from);
+            SetForegroundWindow(h);
+            ShowWindow(h, SW_SHOW);
         }
     }
     else /* notify */
@@ -393,21 +404,46 @@ OnEnLinkNotify(HWND UNUSED hwnd, ENLINK *el)
     return 0;
 }
 
-/* Add new message to the message box window and optionally show it */
+/* Add new message to the message box window */
 static void
-AddMessageBoxText(HWND hwnd, const wchar_t *text, const wchar_t *title, BOOL show)
+AddMessageBoxText(HWND hwnd, const wchar_t *text, const wchar_t *title, const wchar_t *from)
 {
     HWND hmsg = GetDlgItem(hwnd, ID_TXT_MESSAGE);
 
     /* Start adding new message at the top */
     SendMessage(hmsg, EM_SETSEL, 0, 0);
 
-    CHARFORMATW cfm = { .cbSize = sizeof(CHARFORMATW)};
+    CHARFORMATW cfm = {.cbSize = sizeof(CHARFORMATW) };
+
+    /* save current alignment */
+    PARAFORMAT pf = {.cbSize = sizeof(PARAFORMAT) };
+    SendMessage(hmsg, EM_GETPARAFORMAT, 0, (LPARAM) &pf);
+    WORD pf_align_saved = pf.dwMask & PFM_ALIGNMENT ? pf.wAlignment : PFA_LEFT;
+    pf.dwMask |= PFM_ALIGNMENT;
+
+    if (from && wcslen(from))
+    {
+        /* Change font to italics */
+        SendMessage(hmsg, EM_GETCHARFORMAT, SCF_DEFAULT, (LPARAM) &cfm);
+        cfm.dwMask |= CFM_ITALIC;
+        cfm.dwEffects |= CFE_ITALIC;
+
+        SendMessage(hmsg, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM) &cfm);
+       /* Align to right */
+        pf.wAlignment = PFA_RIGHT;
+        SendMessage(hmsg, EM_SETPARAFORMAT, 0, (LPARAM) &pf);
+        SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM) from);
+        SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM) L"\n");
+    }
+
+    pf.wAlignment = PFA_LEFT;
+    SendMessage(hmsg, EM_SETPARAFORMAT, 0, (LPARAM) &pf);
+
     if (title && wcslen(title))
     {
         /* Increase font size and set font color for title of the message */
         SendMessage(hmsg, EM_GETCHARFORMAT, SCF_DEFAULT, (LPARAM) &cfm);
-        cfm.dwMask = CFM_SIZE|CFM_COLOR;
+        cfm.dwMask |= CFM_SIZE|CFM_COLOR;
         cfm.yHeight = MulDiv(cfm.yHeight, 4, 3); /* scale up by 1.33: 12 pt if default is 9 pt */
         cfm.crTextColor = RGB(0, 0x33, 0x99);
         cfm.dwEffects = 0;
@@ -425,16 +461,13 @@ AddMessageBoxText(HWND hwnd, const wchar_t *text, const wchar_t *title, BOOL sho
         SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM) text);
         SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM) L"\n");
     }
+    /* revert alignment */
+    pf.wAlignment = pf_align_saved;
+    SendMessage(hmsg, EM_SETPARAFORMAT, 0, (LPARAM) &pf);
 
     /* Select top of the message and scroll to there */
     SendMessage(hmsg, EM_SETSEL, 0, 0);
     SendMessage(hmsg, EM_SCROLLCARET, 0, 0);
-
-    if (show)
-    {
-        SetForegroundWindow(hwnd);
-        ShowWindow(hwnd, SW_SHOW);
-    }
 }
 
 /* A modeless message box.
