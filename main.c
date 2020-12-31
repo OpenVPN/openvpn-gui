@@ -576,7 +576,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       }     
       if (LOWORD(wParam) == IDM_SERVICE_RESTART) MyReStartService();
       break;
-	    
+
     case WM_CLOSE:
       CloseApplication(hwnd);
       break;
