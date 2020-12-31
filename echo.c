@@ -259,20 +259,12 @@ echo_msg_display(connection_t *c, time_t timestamp, const char *title, int type)
     }
     if (type == ECHO_MSG_WINDOW)
     {
-
-        HWND h = echo_msg_window;
-        if (h)
+        DWORD_PTR res;
+        UINT timeout = 5000; /* msec */
+        if (echo_msg_window
+            && SendMessageTimeout(echo_msg_window, WM_OVPN_ECHOMSG, 0, (LPARAM) c, SMTO_BLOCK, timeout, &res) == 0)
         {
-            wchar_t from[256];
-            _sntprintf_0(from, L"From: %s %s", c->config_name, _wctime(&timestamp));
-
-	    /* strip \n added by _wctime */
-	    if (wcslen(from) > 0)
-	        from[wcslen(from)-1] = L'\0';
-
-            AddMessageBoxText(h, c->echo_msg.text, c->echo_msg.title, from);
-            SetForegroundWindow(h);
-            ShowWindow(h, SW_SHOW);
+            WriteStatusLog(c, L"GUI> Failed to display echo message: ", c->echo_msg.title, false);
         }
     }
     else /* notify */
@@ -534,6 +526,25 @@ MessageDialogFunc(HWND hwnd, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
             {
                 ShowCaret((HWND)lParam);
             }
+        }
+        break;
+
+    /* Must be sent with lParam = connection pointer
+     * Adds the current echo message and shows the window.
+     */
+    case WM_OVPN_ECHOMSG:
+        {
+            connection_t *c = (connection_t *) lParam;
+            wchar_t from[256];
+            _sntprintf_0(from, L"From: %s %s", c->config_name, _wctime(&c->echo_msg.fp.timestamp));
+
+            /* strip \n added by _wctime */
+            if (wcslen(from) > 0)
+                from[wcslen(from)-1] = L'\0';
+
+            AddMessageBoxText(hwnd, c->echo_msg.text, c->echo_msg.title, from);
+            SetForegroundWindow(hwnd);
+            ShowWindow(hwnd, SW_SHOW);
         }
         break;
 
