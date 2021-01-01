@@ -561,6 +561,17 @@ CheckAdvancedDlgParams (HWND hdlg)
                     L"Option error", MB_OK);
         return false;
     }
+
+    BOOL status;
+    int tmp = GetDlgItemInt (hdlg, ID_EDT_MGMT_PORT, &status, FALSE);
+    /* Restrict the port offset to sensible range -- port used is this + upto ~4000 as connection index */
+    if (!status || (tmp < 1 || tmp > 61000))
+    {
+        MessageBox (NULL, L"Specified port is not valid (must be n the range 1 to 61000)",
+                    L"Option error", MB_OK);
+        return false;
+    }
+
     return true;
 }
 
@@ -596,6 +607,9 @@ SaveAdvancedDlgParams (HWND hdlg)
     tmp = GetDlgItemInt (hdlg, ID_EDT_DISCONNECT_TIMEOUT, &status, FALSE);
     if (status && tmp > 0) o.disconnectscript_timeout = tmp;
 
+    tmp = GetDlgItemInt (hdlg, ID_EDT_MGMT_PORT, &status, FALSE);
+    if (status) o.mgmt_port_offset = tmp;
+
     SaveRegistryKeys ();
     ExpandOptions ();
 
@@ -611,6 +625,13 @@ LoadAdvancedDlgParams (HWND hdlg)
     SetDlgItemInt (hdlg, ID_EDT_PRECONNECT_TIMEOUT, o.preconnectscript_timeout, FALSE);
     SetDlgItemInt (hdlg, ID_EDT_CONNECT_TIMEOUT, o.connectscript_timeout, FALSE);
     SetDlgItemInt (hdlg, ID_EDT_DISCONNECT_TIMEOUT, o.disconnectscript_timeout, FALSE);
+    SetDlgItemInt (hdlg, ID_EDT_MGMT_PORT, o.mgmt_port_offset, FALSE);
+    if (o.config_menu_view == 0)
+        CheckRadioButton (hdlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON0);
+    else if (o.config_menu_view == 1)
+        CheckRadioButton (hdlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON1);
+    else if (o.config_menu_view == 2)
+        CheckRadioButton (hdlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON2);
 }
 
 INT_PTR CALLBACK
@@ -623,6 +644,8 @@ AdvancedSettingsDlgProc (HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lP
     case WM_INITDIALOG:
         /* Limit extension editbox to 4 chars. */
         SendMessage (GetDlgItem(hwndDlg, ID_EDT_CONFIG_EXT), EM_SETLIMITTEXT, 4, 0);
+        /* Limit management port editbox to 5 chars */
+        SendMessage(GetDlgItem(hwndDlg, ID_EDT_MGMT_PORT), EM_SETLIMITTEXT, 5, 0);
         /* Populate UI */
         LoadAdvancedDlgParams (hwndDlg);
         break;
@@ -658,6 +681,12 @@ AdvancedSettingsDlgProc (HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lP
             SetWindowLongPtr (hwndDlg, DWLP_MSGRESULT, status? PSNRET_NOERROR:PSNRET_INVALID);
             return TRUE;
         }
+        if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON2))
+            o.config_menu_view = 2;
+        else if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON1))
+            o.config_menu_view = 1;
+        else
+            o.config_menu_view = 0;
         break;
     }
 

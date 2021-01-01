@@ -104,7 +104,7 @@ AddConfigFileToList(int config, const TCHAR *filename, const TCHAR *config_dir)
     c->manage.sk = INVALID_SOCKET;
     c->manage.skaddr.sin_family = AF_INET;
     c->manage.skaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
-    c->manage.skaddr.sin_port = htons(25340 + config);
+    c->manage.skaddr.sin_port = htons(o.mgmt_port_offset + config);
 
 #ifndef DISABLE_CHANGE_PASSWORD
     if (CheckKeyFileWriteAccess (c))

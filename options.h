@@ -209,6 +209,7 @@ typedef struct {
     DWORD config_menu_view;             /* 0 for auto, 1 for original flat menu, 2 for hierarchical */
     DWORD disable_popup_messages;       /* set nonzero to suppress all echo msg messages */
     DWORD popup_mute_interval;          /* Interval in hours to suppress repeated echo messages */
+    DWORD mgmt_port_offset;             /* management interface port = this offset + index of connection profile */
 
 #ifdef DEBUG
     FILE *debug_fp;
