@@ -280,6 +280,10 @@ config_menu_view
 
     2: Force nested menu
 
+management_port_offset
+    The management interface port is chosen as this offset plus a connection specific index.
+    Allowed values: 1 to 61000, defaults to 25340.
+
 All of these registry options are also available as cmd-line options.
 Use "openvpn-gui --help" for more info about cmd-line options.
 
