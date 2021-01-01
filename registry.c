@@ -65,6 +65,7 @@ struct regkey_int {
       {L"config_menu_view", &o.config_menu_view, CONFIG_VIEW_AUTO},
       {L"popup_mute_interval", &o.popup_mute_interval, 24},
       {L"disable_popup_messages", &o.disable_popup_messages, 0},
+      {L"management_port_offset", &o.mgmt_port_offset, 25340},
     };
 
 static int
@@ -192,6 +193,10 @@ GetRegistryKeys ()
     {
         ShowLocalizedMsg(IDS_ERR_PRECONN_SCRIPT_TIMEOUT);
         o.preconnectscript_timeout = 10;
+    }
+    if (o.mgmt_port_offset < 1 || o.mgmt_port_offset > 61000)
+    {
+        o.mgmt_port_offset = 25340;
     }
 
     ExpandOptions ();

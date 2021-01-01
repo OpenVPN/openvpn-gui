@@ -119,6 +119,7 @@
 #define ID_EDT_PRECONNECT_TIMEOUT        282
 #define ID_EDT_CONNECT_TIMEOUT           283
 #define ID_EDT_DISCONNECT_TIMEOUT        284
+#define ID_EDT_MGMT_PORT                 285
 
 /* Connections dialog */
 #define ID_DLG_CONNECTIONS               290
