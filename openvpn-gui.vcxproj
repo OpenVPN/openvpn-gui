@@ -117,7 +117,7 @@
       <PreprocessorDefinitions>HAVE_CONFIG_H;_MSC_VER</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>Netapi32.lib;Wtsapi32.lib;Comctl32.lib;Secur32.lib;Ws2_32.lib;Crypt32.lib;Shlwapi.lib;Winhttp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Netapi32.lib;Wtsapi32.lib;Comctl32.lib;Secur32.lib;Ws2_32.lib;Crypt32.lib;Shlwapi.lib;Winhttp.lib;Msimg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>copy config-msvc.h config.h</Command>
@@ -132,7 +132,7 @@
       <PreprocessorDefinitions>_INC_MATH;WIN32_LEAN_AND_MEAN;UNICODE;_UNICODE;_CRT_NON_CONFORMING_WCSTOK;HAVE_CONFIG_H</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Netapi32.lib;Wtsapi32.lib;Comctl32.lib;Secur32.lib;Ws2_32.lib;Crypt32.lib;Shlwapi.lib;Winhttp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Netapi32.lib;Wtsapi32.lib;Comctl32.lib;Secur32.lib;Ws2_32.lib;Crypt32.lib;Shlwapi.lib;Winhttp.lib;Msimg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

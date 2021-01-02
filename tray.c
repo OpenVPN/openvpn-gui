@@ -66,8 +66,46 @@ CreateBitmaps()
     {
         HICON icon = LoadLocalizedIconEx(ID_ICO_CONNECTING, cx, cy);
         ICONINFO iconinfo;
-        GetIconInfo(icon, &iconinfo);
-        hbmpConnecting = iconinfo.hbmColor;
+
+        if (!GetIconInfo(icon, &iconinfo))
+        {
+            MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Error loading ID_ICO_CONNECTING.");
+            return;
+        }
+
+        /* Make a color bitmap with transparency for use as a
+         * checkmark for indicating the connecting state. We do this
+         * by combining the mask bitmap in the icon with its image bitmap.
+         * These bitmaps are created by the GetIconInfo call.
+         */
+
+        /* Create two DCs for drawing the images in memory */
+        HDC maskDC = CreateCompatibleDC(NULL), imgDC = CreateCompatibleDC(NULL);
+        if (!maskDC || !imgDC)
+        {
+            DeleteObject(iconinfo.hbmMask);
+            DeleteObject(iconinfo.hbmColor);
+            if (maskDC) DeleteDC(maskDC);
+            if (imgDC) DeleteDC(imgDC);
+            return;
+        }
+
+        /* Load the image and mask bitmaps into the DCs saving the default one's */
+        HBITMAP def1 = (HBITMAP) SelectObject(imgDC, iconinfo.hbmColor);
+        HBITMAP def2 = (HBITMAP) SelectObject(maskDC, iconinfo.hbmMask);
+
+        /* Transfer bit blocks from mask to image -- transparent color is black */
+        TransparentBlt(imgDC, 0, 0, cx, cy, maskDC, 0, 0, cx, cy, RGB(0, 0, 0));
+
+        /* Save the result and restore the default bitmaps back in the DC */
+        hbmpConnecting = (HBITMAP) SelectObject(imgDC, def1);
+        SelectObject(maskDC, def2);
+
+        /* We don't need the mask bitmap -- free it */
+        DeleteObject(iconinfo.hbmMask);
+
+        DeleteDC(imgDC);
+        DeleteDC(maskDC);
     }
 }
 
