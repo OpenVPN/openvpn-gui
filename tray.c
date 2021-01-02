@@ -55,21 +55,75 @@ extern options_t o;
                                  || (o.config_menu_view == CONFIG_VIEW_NESTED))
 
 
-/* Create menu check bitmaps */
 static void
-CreateBitmaps()
+DeleteMenuBitmaps(void)
 {
-    if (hbmpConnecting)
-        return;
+    if (hbmpConnecting) {
+        DeleteObject(hbmpConnecting);
+        hbmpConnecting = NULL;
+    }
+}
+
+/* Create bitmaps for menu items. Currently only the connecting checkmark.
+ *
+ * Make a color bitmap from the connecting icon for use as a checkmark
+ * for indicating the connecting state. We do this by replacing
+ * the icon colour bitmap pixels in the background region with the menu
+ * color (COLOR_MENU)
+ */
+static void
+CreateMenuBitmaps(void)
+{
+
+    DeleteMenuBitmaps();
+
     int cx = GetSystemMetrics(SM_CXMENUCHECK);
     int cy = GetSystemMetrics(SM_CYMENUCHECK);
-    if (!hbmpConnecting)
+    HICON icon = LoadLocalizedIconEx(ID_ICO_CONNECTING, cx, cy);
+    ICONINFO iconinfo;
+
+    if (!icon || !GetIconInfo(icon, &iconinfo))
     {
-        HICON icon = LoadLocalizedIconEx(ID_ICO_CONNECTING, cx, cy);
-        ICONINFO iconinfo;
-        GetIconInfo(icon, &iconinfo);
-        hbmpConnecting = iconinfo.hbmColor;
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Error loading ID_ICO_CONNECTING.");
+        return;
     }
+
+    /* Create two DCs for drawing/accessing the images in memory */
+    HDC maskDC = CreateCompatibleDC(NULL), imgDC = CreateCompatibleDC(NULL);
+    if (!maskDC || !imgDC)
+    {
+        DeleteObject(iconinfo.hbmMask);
+        DeleteObject(iconinfo.hbmColor);
+        if (maskDC) DeleteDC(maskDC);
+        if (imgDC) DeleteDC(imgDC);
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Error creating DCs for drawing");
+        return;
+    }
+
+    /* Load the image and mask bitmaps into the DCs saving the default one's */
+    HBITMAP def1 = (HBITMAP) SelectObject(imgDC, iconinfo.hbmColor);
+    HBITMAP def2 = (HBITMAP) SelectObject(maskDC, iconinfo.hbmMask);
+
+    /* White mask pixels mark the background region */
+    COLORREF ref = RGB(255, 255, 255);
+    COLORREF bg = GetSysColor(COLOR_MENU);
+
+    for (int x = 0; x < cx; x++) {
+        for (int y = 0; y < cy; y++) {
+            if (GetPixel(maskDC, x, y) == ref)
+                SetPixel(imgDC, x, y, bg);
+        }
+    }
+
+    /* Save the result and restore the default bitmaps back in the DC */
+    hbmpConnecting = (HBITMAP) SelectObject(imgDC, def1);
+    SelectObject(maskDC, def2);
+
+    /* We don't need the mask bitmap -- free it */
+    DeleteObject(iconinfo.hbmMask);
+
+    DeleteDC(imgDC);
+    DeleteDC(maskDC);
 }
 
 /*
@@ -105,7 +159,7 @@ CreatePopupMenus()
 
     AllocateConnectionMenu();
 
-    CreateBitmaps();
+    CreateMenuBitmaps();
     MENUINFO minfo = {.cbSize = sizeof(MENUINFO)};
 
     for (int i = 0; i < o.num_configs; i++)
