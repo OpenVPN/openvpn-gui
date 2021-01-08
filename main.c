@@ -49,6 +49,7 @@
 #include "manage.h"
 #include "misc.h"
 #include "save_pass.h"
+#include "echo.h"
 
 #ifndef DISABLE_CHANGE_PASSWORD
 #include <openssl/evp.h>
@@ -164,6 +165,7 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
   /* a session local semaphore to detect second instance */
   HANDLE session_semaphore = InitSemaphore(L"Local\\"PACKAGE_NAME);
 
+  srand(time(NULL));
   /* try to lock the semaphore, else we are not the first instance */
   if (session_semaphore &&
       WaitForSingleObject(session_semaphore, 200) != WAIT_OBJECT_0)
@@ -510,6 +512,8 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       ChangeWindowMessageFilterEx(hwnd, WM_COPYDATA, MSGFLT_ALLOW, NULL);
 #endif
 
+      echo_msg_init();
+
       CreatePopupMenus();	/* Create popup menus */  
       ShowTrayIcon();
       if (o.service_only)
@@ -572,7 +576,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       }     
       if (LOWORD(wParam) == IDM_SERVICE_RESTART) MyReStartService();
       break;
-	    
+
     case WM_CLOSE:
       CloseApplication(hwnd);
       break;

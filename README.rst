@@ -137,6 +137,11 @@ Disconnect  If a file named "xxx_down.bat" exist in the config folder
             where xxx is the same as your OpenVPN config file name,
             this will be executed BEFORE the OpenVPN tunnel is closed.
 
+The outputs of these scripts are redirected to "xxx_pre.log",
+"xxx_up.log" and "xxx_down.log" respectively. These log
+files are created in the ``log_dir`` and over-written during
+each evocation.
+
 Send Commands to a Running Instance of OpenVPN GUI
 **************************************************
 
@@ -267,6 +272,13 @@ show_balloon
     1: Show balloon after initial connection is established
 
     2: Show balloon even after re-connects
+
+config_menu_view
+    0: Use a hierarchical (nested) display of config menu reflecting the directory sturcture of config files if the number of configs exceed 25, else use a flat display
+
+    1: Force flat menu
+
+    2: Force nested menu
 
 All of these registry options are also available as cmd-line options.
 Use "openvpn-gui --help" for more info about cmd-line options.

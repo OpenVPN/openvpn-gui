@@ -33,6 +33,7 @@ typedef struct connection connection_t;
 #include <lmcons.h>
 
 #include "manage.h"
+#include "echo.h"
 
 #define MAX_NAME (UNLEN + 1)
 
@@ -87,6 +88,7 @@ typedef struct {
 #define FLAG_SAVE_KEY_PASS  (1<<4)
 #define FLAG_SAVE_AUTH_PASS (1<<5)
 #define FLAG_DISABLE_SAVE_PASS (1<<6)
+#define FLAG_DISABLE_ECHO_MSG  (1<<7)
 
 #define CONFIG_VIEW_AUTO      (0)
 #define CONFIG_VIEW_FLAT      (1)
@@ -155,6 +157,7 @@ struct connection {
     unsigned long long int bytes_in;
     unsigned long long int bytes_out;
     struct env_item *es;           /* Pointer to the head of config-specific env variables list */
+    struct echo_msg echo_msg;      /* Message echo-ed from server or client config and related data */
 };
 
 /* All options used within OpenVPN GUI */
@@ -204,6 +207,8 @@ typedef struct {
     DWORD disconnectscript_timeout;     /* Disconnect Script execution timeout (sec) */
     DWORD preconnectscript_timeout;     /* Preconnect Script execution timeout (sec) */
     DWORD config_menu_view;             /* 0 for auto, 1 for original flat menu, 2 for hierarchical */
+    DWORD disable_popup_messages;       /* set nonzero to suppress all echo msg messages */
+    DWORD popup_mute_interval;          /* Interval in hours to suppress repeated echo messages */
 
 #ifdef DEBUG
     FILE *debug_fp;
@@ -233,6 +238,7 @@ INT_PTR CALLBACK ScriptSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LP
 INT_PTR CALLBACK ConnectionSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK AdvancedSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 void DisableSavePasswords(connection_t *);
+void DisablePopupMessages(connection_t *);
 
 void ExpandOptions(void);
 int CompareStringExpanded(const WCHAR *str1, const WCHAR *str2);

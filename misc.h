@@ -22,6 +22,8 @@
 #ifndef MISC_H
 #define MISC_H
 
+#include <wincrypt.h>
+
 BOOL ManagementCommandFromInput(connection_t *, LPCSTR, HWND, int);
 BOOL ManagementCommandFromInputBase64(connection_t *, LPCSTR, HWND, int, int);
 
@@ -47,5 +49,23 @@ void wcs_concat2(WCHAR *dest, int len, const WCHAR *src1, const WCHAR *src2, con
 void CloseSemaphore(HANDLE sem);
 /* Close a handle if not null or invalid */
 void CloseHandleEx(LPHANDLE h);
+
+/* Decode url encoded charcters in src and return the result as a newly
+ * allocated string. Returns NULL on error.
+ */
+char *url_decode(const char *src);
+
+/* digest functions */
+typedef struct md_ctx {
+     HCRYPTPROV prov;
+     HCRYPTHASH hash;
+} md_ctx;
+
+DWORD md_init(md_ctx *ctx, ALG_ID hash_type);
+DWORD md_update(md_ctx *ctx, const BYTE *data, size_t size);
+DWORD md_final(md_ctx *ctx, BYTE *md);
+
+/* Open specified http/https URL using ShellExecute. */
+BOOL open_url(const wchar_t *url);
 
 #endif

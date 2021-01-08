@@ -123,6 +123,10 @@
 /* Connections dialog */
 #define ID_DLG_CONNECTIONS               290
 
+/* Message Dialog */
+#define ID_DLG_MESSAGE                   300
+#define ID_TXT_MESSAGE                   301
+
 /*
  * String Table Resources
  */

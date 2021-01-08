@@ -55,6 +55,7 @@
 #include "access.h"
 #include "save_pass.h"
 #include "env_set.h"
+#include "echo.h"
 
 extern options_t o;
 
@@ -324,12 +325,20 @@ OnStateChange(connection_t *c, char *data)
                 c->failed_psw_attempts++;
         }
 
-        c->state = reconnecting;
-        CheckAndSetTrayIcon();
+        echo_msg_clear(c, false); /* do not clear history */
+        // We change the state to reconnecting only if there was a prior successful connection.
+        if (c->state == connected)
+        {
+            c->state = reconnecting;
 
-        SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_RECONNECTING));
-        SetDlgItemTextW(c->hwndStatus, ID_TXT_IP, L"");
-        SetStatusWinIcon(c->hwndStatus, ID_ICO_CONNECTING);
+            // Update the tray icon
+            CheckAndSetTrayIcon();
+
+            // And the texts in the status window
+            SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_RECONNECTING));
+            SetDlgItemTextW(c->hwndStatus, ID_TXT_IP, L"");
+            SetStatusWinIcon(c->hwndStatus, ID_ICO_CONNECTING);
+        }
     }
 }
 
@@ -984,6 +993,10 @@ OnEcho(connection_t *c, char *msg)
     {
         process_setenv(c, timestamp, msg);
     }
+    else if (strbegins(msg, "msg"))
+    {
+        echo_msg_process(c, timestamp, msg);
+    }
     else
     {
         wchar_t errmsg[256];
@@ -1573,6 +1586,7 @@ Cleanup (connection_t *c)
     free_dynamic_cr (c);
     env_item_del_all(c->es);
     c->es = NULL;
+    echo_msg_clear(c, true); /* clear history */
 
     if (c->hProcess)
         CloseHandle (c->hProcess);
@@ -1655,6 +1669,12 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
         /* Set size and position of controls */
         RECT rect;
+        GetWindowRect(hwndDlg, &rect);
+        /* Move the window by upto 100 random pixels to avoid all
+         * status windows fall on top of each other.
+         */
+        SetWindowPos(hwndDlg, HWND_TOP, rect.left + rand()%100,
+                     rect.top + rand()%100, 0, 0, SWP_NOSIZE);
         GetClientRect(hwndDlg, &rect);
         RenderStatusWindow(hwndDlg, rect.right, rect.bottom);
         /* Set focus on the LogWindow so it scrolls automatically */
@@ -1786,6 +1806,7 @@ ThreadOpenVPNStatus(void *p)
     HANDLE wait_event;
 
     CLEAR (msg);
+    srand(time(NULL));
 
     /* Cut of extention from config filename. */
     _tcsncpy(conn_name, c->config_file, _countof(conn_name));
@@ -1817,6 +1838,9 @@ ThreadOpenVPNStatus(void *p)
 
     if (o.silent_connection == 0)
         ShowWindow(c->hwndStatus, SW_SHOW);
+
+    /* Load echo msg histroy from registry */
+    echo_msg_load(c);
 
     /* Run the message loop for the status window */
     while (WM_QUIT != msg.message)
