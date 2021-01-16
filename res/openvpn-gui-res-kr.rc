@@ -162,7 +162,7 @@ BEGIN
     AUTOCHECKBOX "로그 파일에 추가", ID_CHK_LOG_APPEND, 17, 95, 200, 10
     AUTOCHECKBOX "스크립트 창 보기", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "연결 시 상태 대화 상자 표시하지 않기", ID_CHK_SILENT, 17, 125, 200, 10
-    AUTOCHECKBOX "Always use interactive service", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
+    AUTOCHECKBOX "항상 대화형 서비스 사용", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
     LTEXT "풍선말 보기", ID_TXT_BALLOON, 17, 155, 100, 10
     AUTORADIOBUTTON "연결 시", ID_RB_BALLOON1, 28, 170, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "연결/재연결 시", ID_RB_BALLOON2, 86, 170, 88, 10
@@ -281,18 +281,18 @@ BEGIN
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP """%s"" group에 사용자 추가를 실패했습니다."
     IDS_ERR_ONE_CONN_OLD_VER "OpenVPN 2.0-beta6 이전 버전에서는 2개 이상의 동시 연결을 지원하지 않습니다."
     IDS_ERR_STOP_SERV_OLD_VER "OpenVPN 1.5/1.6을 사용할 경우, OpenVPN 서비스가 구동되고 있으면 OpenVPN GUI을 이용하여 연결을 할 수 없습니다. OpenVPN GUI를 사용하려면, 먼저 OpenVPN 서비스를 중지 시키십시오."
-    IDS_ERR_CREATE_EVENT "CreateEvent failed on exit event: %s"
-    IDS_ERR_UNKNOWN_PRIORITY "Unknown priority name: %s"
-    IDS_ERR_LOG_APPEND_BOOL "로그 파일의 '%s'로 지정된 추가 플래그는 '0'또는 '1'이어야합니다."
-    IDS_ERR_GET_MSIE_PROXY "MSIE 프락시 설정을 가져올 수 없습니다."
+    IDS_ERR_CREATE_EVENT "exit 이벤트에서 CreateEvent 실패: %s"
+    IDS_ERR_UNKNOWN_PRIORITY "알 수없는 우선 순위 이름: %s"
+    IDS_ERR_LOG_APPEND_BOOL "로그 파일의 '%s'로 지정된 추가 플래그는 '0' 또는 '1' 이어야 합니다."
+    IDS_ERR_GET_MSIE_PROXY "MSIE Proxy 설정을 가져올 수 없습니다."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor 실패"
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl 실패"
-    IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe on hOutputWrite failed."
-    IDS_ERR_CREATE_PIPE_INPUT "CreatePipe on hInputRead failed."
-    IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle on hOutputRead failed."
-    IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite failed."
-    IDS_ERR_CREATE_PROCESS "CreateProcess failed, exe='%s' cmdline='%s' dir='%s'"
-    IDS_ERR_CREATE_THREAD_STATUS "CreateThread to show Status window Failed."
+    IDS_ERR_CREATE_PIPE_OUTPUT "hOutputWrite에서 CreatePipe가 실패되었습니다."
+    IDS_ERR_CREATE_PIPE_INPUT "hInputRead에서 CreatePipe가 실패되었습니다."
+    IDS_ERR_DUP_HANDLE_OUT_READ "hOutputRead에서 DuplicateHandle가 실패되었습니다."
+    IDS_ERR_DUP_HANDLE_IN_WRITE "hInputWrite에서 DuplicateHandle가 실패되었습니다."
+    IDS_ERR_CREATE_PROCESS "CreateProcess 실패, exe='%s' cmdline='%s' dir='%s'"
+    IDS_ERR_CREATE_THREAD_STATUS "상태창을 보기 위한 CreateThread가 실패되었습니다."
     IDS_NFO_STATE_WAIT_TERM "현재 상태: OpenVPN 종료 대기 중…"
     IDS_NFO_STATE_CONNECTED "현재 상태: 연결됨"
     IDS_NFO_NOW_CONNECTED "%s 접속이 연결 되었습니다."
@@ -308,10 +308,10 @@ BEGIN
     IDS_NFO_RECONN_FAILED "%s 재접속에 실패했습니다."
     IDS_NFO_STATE_SUSPENDED "현재 상태: 대기 중"
     IDS_ERR_READ_STDOUT_PIPE "OpenVPN 표준 출력 파이프를 읽는 중 오류가 발생했습니다."
-    IDS_ERR_CREATE_EDIT_LOGWINDOW "Creating RichEdit LogWindow Failed!!"
-    IDS_ERR_SET_SIZE "Set Size failed!"
+    IDS_ERR_CREATE_EDIT_LOGWINDOW "RichEdit LogWindow 생성을 실패했습니다!!"
+    IDS_ERR_SET_SIZE "크기 설정 실패!"
     IDS_ERR_AUTOSTART_CONF "요청된 자동 시작 설정을 찾을 수 없습니다: %s"
-    IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe on hInputRead failed."
+    IDS_ERR_CREATE_PIPE_IN_READ "hInputRead에서 CreatePipe가 실패되었습니다."
     IDS_NFO_STATE_CONNECTING "현재 상태: 접속 중"
     IDS_NFO_CONNECTION_XXX "OpenVPN 접속 (%s)"
     IDS_NFO_STATE_CONN_SCRIPT "현재 상태: 연결 스크립트 실행 중"
@@ -375,13 +375,13 @@ BEGIN
                   "--preconnectscript_timeout\t: 연결 전 스크립트 종료 대기 시간\n"
 
     IDS_NFO_USAGECAPTION "OpenVPN GUI 사용법"
-    IDS_ERR_BAD_PARAMETER "I'm trying to parse ""%s"" as an --option parameter " \
-                      "but I don't see a leading '--'"
+    IDS_ERR_BAD_PARAMETER """%s""를 --option 파라미터로 구문 분석하려고 하지만, " \
+                      "'--' 로 선행되지 않고 있습니다."
     IDS_ERR_BAD_OPTION "옵션 오류: 잘못된 옵션 또는 옵션값 누락: --%s\n" \
                    "자세한 사항은 openvpn-gui --help 명령을 참조 하십시오."
 
     /* passphrase - Resources */
-    IDS_ERR_CREATE_PASS_THREAD "CreateThread to show ChangePassphrase dialog failed."
+    IDS_ERR_CREATE_PASS_THREAD "ChangePassphrase 대화 상자를 표시하기 위한 CreateThread가 실패 되었습니다."
     IDS_NFO_CHANGE_PWD "(%s) 개인키 암호 변경"
     IDS_ERR_PWD_DONT_MATCH "입력한 암호가 일치하지 않습니다. 다시 입력 하십시오."
     IDS_ERR_PWD_TO_SHORT "새 암호는 %d글자 보다 길어야 합니다."
@@ -428,14 +428,14 @@ BEGIN
     IDS_ERR_OPEN_SCMGR "OpenSCManager 오류 (%d)"
     IDS_ERR_STOP_SERVICE "OpenVPN Service를 중지할 수 없습니다."
     IDS_NFO_RESTARTED "OpenVPN Service를 재시작 했습니다."
-    IDS_ERR_ACCESS_SERVICE_PIPE "Access to service pipe failed."
-    IDS_ERR_WRITE_SERVICE_PIPE "Writing to service pipe failed."
-    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is not installed.\n"
-                                 "Tasks requiring administrative access may not work."
-    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" is not started.\n"
-                                 "Tasks requiring administrative access may not work."
-    IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" is not started.\n"
-                                     "Wintun driver will not work."
+    IDS_ERR_ACCESS_SERVICE_PIPE "서비스 파이프 접근 실패."
+    IDS_ERR_WRITE_SERVICE_PIPE "서비스 파이프에 쓰기 실패."
+    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" 기능이 설치되지 않앗습니다.\n"
+                                 "관리자 권한이 필요한 작업은 하지 못할 수 있습니다."
+    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" 기능을 시작하지 못했습니다.\n"
+                                 "관리자 권한이 필요한 작업은 하지 못할 수 있습니다."
+    IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" 기능을 시작하지못했습니다.\n"
+                                     "Wintun 드라이버가 동작하지 않게 됩니다."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Windows 디렉토리 경로를 알 수 없습니다."
@@ -459,8 +459,8 @@ BEGIN
     IDS_ERR_IMPORT_FAILED "파일 불러오기 실패. 다음 경로를 생성할 수 없습니다.\n\n" \
                           "%s\n\n올바른 권한을 가지고 있는지 확인 해 보십시오."
     IDS_NFO_IMPORT_SUCCESS "파일 불러오기 성공."
-    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
-    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
+    IDS_NFO_IMPORT_OVERWRITE """%s"" 설정 이름은 이미 존재 합니다. 변경 하겠습니까?"
+    IDS_ERR_IMPORT_SOURCE "전역 또는 로컬 설정 디렉토리에 이미 존재하는 <%s> 파일을 불러오기 할 수 없습니다."
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS """%s"" 설정의 저장된 암호를 삭제 하려면 확인을 누르십시오."
