@@ -111,6 +111,8 @@
 #define ID_RB_BALLOON2                   241
 #define ID_CHK_SHOW_SCRIPT_WIN           242
 #define ID_CHK_ALWAYS_USE_ISERVICE       243
+#define ID_RB_BALLOON3                   244
+#define ID_RB_BALLOON4                   245
 
 /* Proxy Auth Dialog */
 #define ID_DLG_PROXY_AUTH                250
@@ -134,6 +136,7 @@
 #define ID_EDT_DISCONNECT_TIMEOUT        284
 #define ID_EDT_MGMT_PORT                 285
 #define ID_TXT_FOLDER1                   286
+#define ID_EDT_POPUP_MUTE                287
 
 /* Connections dialog */
 #define ID_DLG_CONNECTIONS               290
