@@ -586,6 +586,14 @@ CheckAdvancedDlgParams (HWND hdlg)
         return false;
     }
 
+    tmp = GetDlgItemInt (hdlg, ID_EDT_POPUP_MUTE, &status, FALSE);
+    if (!status || tmp < 0)
+    {
+        MessageBox (NULL, L"Specified mute interval is not valid (must be a positive integer)",
+                    L"Option error", MB_OK);
+        return false;
+    }
+
     return true;
 }
 
@@ -624,6 +632,9 @@ SaveAdvancedDlgParams (HWND hdlg)
     tmp = GetDlgItemInt (hdlg, ID_EDT_MGMT_PORT, &status, FALSE);
     if (status) o.mgmt_port_offset = tmp;
 
+    tmp = GetDlgItemInt (hdlg, ID_EDT_POPUP_MUTE, &status, FALSE);
+    if (status) o.popup_mute_interval = tmp;
+
     SaveRegistryKeys ();
     ExpandOptions ();
 
@@ -640,12 +651,19 @@ LoadAdvancedDlgParams (HWND hdlg)
     SetDlgItemInt (hdlg, ID_EDT_CONNECT_TIMEOUT, o.connectscript_timeout, FALSE);
     SetDlgItemInt (hdlg, ID_EDT_DISCONNECT_TIMEOUT, o.disconnectscript_timeout, FALSE);
     SetDlgItemInt (hdlg, ID_EDT_MGMT_PORT, o.mgmt_port_offset, FALSE);
+    SetDlgItemInt (hdlg, ID_EDT_POPUP_MUTE, o.popup_mute_interval, FALSE);
     if (o.config_menu_view == 0)
         CheckRadioButton (hdlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON0);
     else if (o.config_menu_view == 1)
         CheckRadioButton (hdlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON1);
     else if (o.config_menu_view == 2)
         CheckRadioButton (hdlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON2);
+
+    /* BALLOON3 sets echo msg display to  auto, BALLOON4 to never */
+    if (o.disable_popup_messages)
+        CheckRadioButton (hdlg, ID_RB_BALLOON3, ID_RB_BALLOON4, ID_RB_BALLOON4);
+    else
+        CheckRadioButton (hdlg, ID_RB_BALLOON3, ID_RB_BALLOON4, ID_RB_BALLOON3);
 }
 
 INT_PTR CALLBACK
@@ -699,8 +717,12 @@ AdvancedSettingsDlgProc (HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lP
             o.config_menu_view = 2;
         else if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON1))
             o.config_menu_view = 1;
-        else
+        else if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON0))
             o.config_menu_view = 0;
+        else if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON3))
+            o.disable_popup_messages = 0;
+        else if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON4))
+            o.disable_popup_messages = 1;
         break;
     }
 
