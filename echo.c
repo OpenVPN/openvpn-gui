@@ -224,7 +224,7 @@ echo_msg_append(connection_t *c, time_t UNUSED timestamp, const char *msg, BOOL 
         WriteStatusLog(c, L"GUI> ", L"Error: out of memory while processing echo msg", false);
         goto out;
     }
-    swprintf(s + c->echo_msg.txtlen, len - c->echo_msg.txtlen,  L"%s%s", wmsg, eol);
+    _snwprintf(s + c->echo_msg.txtlen, len - c->echo_msg.txtlen,  L"%s%s", wmsg, eol);
 
     s[len-1] = L'\0';
     c->echo_msg.text = s;

@@ -1218,7 +1218,7 @@ format_bytecount(wchar_t *buf, size_t len, unsigned long long c)
 
     if (c <= 1024)
     {
-        swprintf(buf, len, L"%I64u B", c);
+        _snwprintf(buf, len, L"%I64u B", c);
         buf[len-1] = L'\0';
         return buf;
     }
@@ -1227,7 +1227,7 @@ format_bytecount(wchar_t *buf, size_t len, unsigned long long c)
         x /= 1024.0;
         s++;
     }
-    swprintf(buf, len, L"%I64u (%.1f %hs)", c, x, *s);
+    _snwprintf(buf, len, L"%I64u (%.1f %hs)", c, x, *s);
     buf[len-1] = L'\0';
 
     return buf;

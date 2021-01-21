@@ -469,11 +469,11 @@ wcs_concat2(WCHAR *dest, int len, const WCHAR *src1, const WCHAR *src2, const WC
         return;
 
     if (src1 && src2 && src1[0] && src2[0])
-        n = swprintf(dest, len, L"%s%s%s", src1, sep, src2);
+        n = _snwprintf(dest, len, L"%s%s%s", src1, sep, src2);
     else if (src1 && src1[0])
-        n = swprintf(dest, len, L"%s", src1);
+        n = _snwprintf(dest, len, L"%s", src1);
     else if (src2 && src2[0])
-        n = swprintf(dest, len, L"%s", src2);
+        n = _snwprintf(dest, len, L"%s", src2);
 
     if (n < 0 || n >= len) /*swprintf failed */
         n = 0;
