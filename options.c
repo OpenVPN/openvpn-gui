@@ -490,7 +490,7 @@ static BOOL
 BrowseFolder (const WCHAR* initial_path, WCHAR* selected_path, size_t selected_path_size)
 {
     IFileOpenDialog* pfd;
-    HRESULT initResult, result, dialogResult;
+    HRESULT initResult, result, dialogResult = E_FAIL;
 
     // Create dialog
     initResult = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
