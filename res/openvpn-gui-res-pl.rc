@@ -25,13 +25,13 @@
 ID_DLG_PASSPHRASE DIALOGEX 6, 18, 160, 83
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
 EXSTYLE WS_EX_TOPMOST
-CAPTION "OpenVPN"
+CAPTION "OpenVPN - hasło klucza prywatnego"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 BEGIN
     LTEXT "Hasło:", 201, 6, 6, 100, 10
     EDITTEXT ID_EDT_PASSPHRASE, 6, 17, 107, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 33, 100, 10
+    CHECKBOX "Zapisz hasło", ID_CHK_SAVE_PASS, 6, 33, 100, 10
     PUSHBUTTON "OK", IDOK, 20, 49, 50, 14
     PUSHBUTTON "Anuluj", IDCANCEL, 90, 49, 50, 14
     LTEXT "", ID_TXT_WARNING, 6, 65, 100, 10
@@ -48,7 +48,7 @@ BEGIN
     LTEXT "Hasło:", 0, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 42, 100, 10
+    CHECKBOX "Zapisz hasło", ID_CHK_SAVE_PASS, 6, 42, 100, 10
     PUSHBUTTON "OK", IDOK, 20, 58, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_DISABLED
     PUSHBUTTON "Anuluj", IDCANCEL, 90, 58, 52, 14
     LTEXT "", ID_TXT_WARNING, 6, 80, 150, 10
@@ -57,18 +57,18 @@ END
 /* Auth Username/Password/Challenge Dialog */
 ID_DLG_AUTH_CHALLENGE DIALOG 6, 18, 160, 129
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
-CAPTION "OpenVPN - User Authentication"
+CAPTION "OpenVPN - Uwierzytelnienie użytkownika"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 BEGIN
     LTEXT "Użytkownik:", 0, 6, 9, 50, 10
     LTEXT "Hasło:", 0, 6, 26, 50, 10
-    LTEXT "Response:", 0, 6, 60, 50, 10
+    LTEXT "Odpowiedź:", 0, 6, 60, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     LTEXT "", ID_TXT_AUTH_CHALLENGE, 6, 43, 148, 10
     EDITTEXT ID_EDT_AUTH_CHALLENGE, 60, 57, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 76, 100, 10
+    CHECKBOX "Zapisz hasło", ID_CHK_SAVE_PASS, 6, 76, 100, 10
     PUSHBUTTON "OK", IDOK, 20, 92, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
     PUSHBUTTON "Anuluj", IDCANCEL, 90, 92, 52, 14
     LTEXT "", ID_TXT_WARNING, 6, 108, 150, 10
@@ -77,12 +77,12 @@ END
 /* Challenge Response Dialog */
 ID_DLG_CHALLENGE_RESPONSE DIALOG 6, 18, 212, 72
 STYLE WS_SIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
-CAPTION "OpenVPN - Challenge Response"
+CAPTION "OpenVPN - Odpowiedź"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 BEGIN
     LTEXT "", ID_TXT_DESCRIPTION, 6, 9, 208, 10
-    LTEXT "Response:", 0, 6, 30, 50, 10
+    LTEXT "Odpowiedź:", 0, 6, 30, 50, 10
     EDITTEXT ID_EDT_RESPONSE, 60, 27, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     PUSHBUTTON "OK", IDOK, 20, 51, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
     PUSHBUTTON "Anuluj", IDCANCEL, 90, 51, 52, 14
@@ -100,20 +100,20 @@ BEGIN
     LTEXT "OpenVPN GUI 11.y.0.0/2.4.x", ID_TXT_VERSION, 220, 175, 150, 10
     LTEXT "", ID_TXT_IP, 20, 160, 300, 10
     PUSHBUTTON "Rozłącz", ID_DISCONNECT, 50, 190, 50, 14
-    PUSHBUTTON "Poł. Ponownie", ID_RESTART, 150, 190, 50, 14
+    PUSHBUTTON "Poł. ponownie", ID_RESTART, 150, 190, 50, 14
     PUSHBUTTON "Ukryj", ID_HIDE, 100, 190, 50, 14
 END
 
 /* Change Passphrase Dialog */
 ID_DLG_CHGPASS DIALOG 6, 18, 193, 82
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "OpenVPN - Zmiana Hasła"
+CAPTION "OpenVPN - Zmiana hasła klucza prywatnego"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "Stare Hasło:", 171, 6, 9, 85, 10
-    LTEXT "Nowe Hasło:", 172, 6, 26, 85, 10
-    LTEXT "Potwierdź Nowe Hasło:", 173, 6, 42, 85, 10
+    LTEXT "Stare hasło:", 171, 6, 9, 85, 10
+    LTEXT "Nowe hasło:", 172, 6, 26, 85, 10
+    LTEXT "Potwierdź nowe hasło:", 173, 6, 42, 85, 10
     EDITTEXT ID_EDT_PASS_CUR, 95, 6, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
     EDITTEXT ID_EDT_PASS_NEW, 95, 23, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
     EDITTEXT ID_EDT_PASS_NEW2, 95, 39, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
@@ -133,9 +133,9 @@ BEGIN
     GROUPBOX "   ", 201, 6, 46, 235, 52
     AUTORADIOBUTTON "Użyj ustawień z pliku konfiguracyjnego OpenVPN-a", ID_RB_PROXY_OPENVPN, \
                     13, 16, 200, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Użyj ustawień programu Internet Explorer", \
+    AUTORADIOBUTTON "Użyj ustawień systemowych proxy", \
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
-    AUTORADIOBUTTON "Konfiguracja Ręczna", ID_RB_PROXY_MANUAL, 13, 46, 79, 10
+    AUTORADIOBUTTON "Konfiguracja ręczna", ID_RB_PROXY_MANUAL, 13, 46, 79, 10
     AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "SOCKS Proxy", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
     LTEXT "Adres:", ID_TXT_PROXY_ADDRESS, 20, 77, 32, 10
@@ -151,38 +151,38 @@ CAPTION "Ogólne"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 BEGIN
-    GROUPBOX "Interfejs Użytkownika", 201, 6, 12, 235, 30
+    GROUPBOX "Interfejs użytkownika", 201, 6, 12, 235, 30
     LTEXT "Język:", ID_TXT_LANGUAGE, 17, 25, 52, 12
     COMBOBOX ID_CMB_LANGUAGE, 42, 23, 186, 400, CBS_DROPDOWNLIST | WS_TABSTOP
-    GROUPBOX "Startup", 202, 6, 47, 235, 30
-    AUTOCHECKBOX "Launch on Windows startup", ID_CHK_STARTUP, 17, 59, 200, 12
+    GROUPBOX "Uruchamianie", 202, 6, 47, 235, 30
+    AUTOCHECKBOX "Uruchamiaj po zalogowaniu się użytkownika", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "Preferences", 202, 6, 82, 235, 105
-    AUTOCHECKBOX "Append to log", ID_CHK_LOG_APPEND, 17, 95, 60, 10
-    AUTOCHECKBOX "Show script window", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
-    AUTOCHECKBOX "Silent connection", ID_CHK_SILENT, 17, 125, 200, 10
-    AUTOCHECKBOX "Always use interactive service", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
-    LTEXT "Show Balloon", ID_TXT_BALLOON, 17, 155, 100, 10
-    AUTORADIOBUTTON "On connect", ID_RB_BALLOON1, 28, 170, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "On connect/reconnect", ID_RB_BALLOON2, 86, 170, 90, 10
-    AUTORADIOBUTTON "Never", ID_RB_BALLOON0, 181, 170, 40, 10
+    GROUPBOX "Preferencje", 202, 6, 82, 235, 105
+    AUTOCHECKBOX "Dodaj do dziennika", ID_CHK_LOG_APPEND, 17, 95, 60, 10
+    AUTOCHECKBOX "Pokaż okno skryptu", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
+    AUTOCHECKBOX "Połączenie dyskretne", ID_CHK_SILENT, 17, 125, 200, 10
+    AUTOCHECKBOX "Zawsze używaj usługi interaktywnej", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
+    LTEXT "Pokaż powiadomienie", ID_TXT_BALLOON, 17, 155, 100, 10
+    AUTORADIOBUTTON "Przy połączeniu", ID_RB_BALLOON1, 28, 170, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Przy połączeniu/rozłączeniu", ID_RB_BALLOON2, 86, 170, 90, 10
+    AUTORADIOBUTTON "Nigdy", ID_RB_BALLOON0, 181, 170, 40, 10
 END
 
 /* Advanced Dialog */
 ID_DLG_ADVANCED DIALOGEX 6, 18, 252, 218
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "Advanced"
+CAPTION "Zaawansowane"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 BEGIN
-    GROUPBOX "Configuration Files", 201, 6, 12, 235, 45
+    GROUPBOX "Pliki konfiguracyjne", 201, 6, 12, 235, 45
     LTEXT "Folder:", ID_TXT_FOLDER, 17, 25, 32, 10
-    LTEXT "Extension:", ID_TXT_EXTENSION, 17, 40, 52, 10
+    LTEXT "Rozszerzenie:", ID_TXT_EXTENSION, 17, 40, 52, 10
     EDITTEXT ID_EDT_CONFIG_DIR, 53, 23, 150, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_CONFIG_EXT, 53, 38, 25, 12, ES_AUTOHSCROLL
     PUSHBUTTON "…", ID_BTN_CONFIG_DIR, 208, 23, 25, 12
 
-    GROUPBOX "Log Files", 202, 6, 62, 235, 30
+    GROUPBOX "Pliki dziennika", 202, 6, 62, 235, 30
     LTEXT "Folder:", ID_TXT_FOLDER, 17, 74, 32, 10
     EDITTEXT ID_EDT_LOG_DIR, 53, 72, 150, 12, ES_AUTOHSCROLL
     PUSHBUTTON "…", ID_BTN_LOG_DIR, 208, 72, 25, 12
@@ -199,7 +199,7 @@ END
 /* About Dialog */
 ID_DLG_ABOUT DIALOG 6, 18, 249, 104
 STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "O Programie"
+CAPTION "O programie"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 BEGIN
@@ -221,7 +221,7 @@ END
 /* Proxy Authentication Dialog */
 ID_DLG_PROXY_AUTH DIALOG 29, 23, 154, 65
 STYLE DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER
-CAPTION "OpenVPN - Autentykacja Proxy"
+CAPTION "OpenVPN - Uwierzytelnienie Proxy"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 BEGIN
@@ -242,51 +242,51 @@ BEGIN
     IDS_TIP_CONNECTED "\nPołączony z: "
     IDS_TIP_CONNECTING "\nŁączenie z: "
     IDS_TIP_CONNECTED_SINCE "\nPołączony od: "
-    IDS_TIP_ASSIGNED_IP "\nPrzyznane IP: %s"
+    IDS_TIP_ASSIGNED_IP "\nPrzyznany IP: %s"
     IDS_MENU_SERVICE "Usługa OpenVPN"
-    IDS_MENU_IMPORT "Import file…"
+    IDS_MENU_IMPORT "Importuj plik…"
     IDS_MENU_SETTINGS "Ustawienia…"
     IDS_MENU_CLOSE "Zakończ"
     IDS_MENU_CONNECT "Połącz"
     IDS_MENU_DISCONNECT "Rozłącz"
-    IDS_MENU_RECONNECT "Reconnect"
-    IDS_MENU_STATUS "Pokaż Status"
-    IDS_MENU_VIEWLOG "Pokaż Log"
-    IDS_MENU_EDITCONFIG "Edytuj Konfigurację"
-    IDS_MENU_PASSPHRASE "Zmień Hasło"
-    IDS_MENU_CLEARPASS  "Clear Saved Passwords"
+    IDS_MENU_RECONNECT "Poł. ponownie"
+    IDS_MENU_STATUS "Pokaż status"
+    IDS_MENU_VIEWLOG "Pokaż dziennik"
+    IDS_MENU_EDITCONFIG "Edytuj konfigurację"
+    IDS_MENU_PASSPHRASE "Zmień hasło"
+    IDS_MENU_CLEARPASS  "Wyczyść zapisane hasła"
     IDS_MENU_SERVICE_START "Uruchom"
     IDS_MENU_SERVICE_STOP "Zatrzymaj"
-    IDS_MENU_SERVICE_RESTART "Uruchom Ponownie"
+    IDS_MENU_SERVICE_RESTART "Uruchom ponownie"
     IDS_MENU_SERVICEONLY_START "Połącz"
     IDS_MENU_SERVICEONLY_STOP "Rozłącz"
-    IDS_MENU_SERVICEONLY_RESTART "Połącz Ponownie"
-    IDS_MENU_ASK_STOP_SERVICE "Czy chcesz się rozłączyć(zatrzymać usługę OpenVPN)?"
+    IDS_MENU_SERVICEONLY_RESTART "Poł. ponownie"
+    IDS_MENU_ASK_STOP_SERVICE "Czy chcesz się rozłączyć (zatrzymać usługę OpenVPN)?"
 
     /* Logviewer - Resources */
-    IDS_ERR_START_LOG_VIEWER "Błąd podczas uruchamiania przeglądarki logów: %s"
+    IDS_ERR_START_LOG_VIEWER "Błąd podczas uruchamiania przeglądarki dziennika: %s"
     IDS_ERR_START_CONF_EDITOR "Błąd podczas uruchamiania edytora konfiguracji: %s"
 
     /* OpenVPN */
-    IDS_ERR_MANY_CONFIGS "OpenVPN GUI nie wspiera ilości konfiguracji większej niż %d. Proszę skontaktować się z autorem w przypadku takiej potrzeby."
-    IDS_NFO_NO_CONFIGS "No readable connection profiles (config files) found.\n"\
-                       "Use the ""Import File.."" menu or copy your config files to ""%s"" or ""%s""."
-    IDS_ERR_CONFIG_NOT_AUTHORIZED "Starting this connection (%s) requires membership in "\
-                                  """%s"" group. Contact your system administrator.\n"
-    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Starting this connection (%s) requires membership in "\
-                                  """%s"" group.\n\n"\
-                                  "Do you want to add yourself to this group?\n"\
-                                  "This action may prompt for administrative password or consent."
-    IDS_NFO_CONFIG_AUTH_PENDING   "Starting this connection (%s) requires membership in "\
-                                  """%s"" group.\n\n"\
-                                  "Please complete the previous authorization dialog."
-    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Adding the user to ""%s"" group failed."
+    IDS_ERR_MANY_CONFIGS "OpenVPN GUI nie obsługuje więcej niż %d plików konfiguracyjnych. Proszę skontaktować się z autorem w przypadku takiej potrzeby."
+    IDS_NFO_NO_CONFIGS "Brak profili połączeń (plików konfiguracyjnych) możliwych do użycia.\n"\
+                       "Użyj opcji ""Importuj plik…"" z menu lub skopiuj plik konfiguracyjny do ""%s"" lub ""%s""."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "Uruchomienie tego połączenia (%s) wymaga przynależności do "\
+                                  "grupy ""%s"". Skontaktuj się z administratorem.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Uruchomienie tego połączenia (%s) wymaga przynależności do "\
+                                  "grupy ""%s"".\n\n"\
+                                  "Czy chcesz dodać siebie do tej grupy?\n"\
+                                  "Ta czynność może wymagać hasła administratora lub jego zgody."
+    IDS_NFO_CONFIG_AUTH_PENDING   "Uruchomienie tego połączenia (%s) wymaga przynależności do "\
+                                  "grupy ""%s"".\n\n"\
+                                  "Proszę uzupełnić poprzednie okno autoryzacji."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Dodawanie użytkownika do grupy ""%s"" zakończone niepowodzeniem."
     IDS_ERR_ONE_CONN_OLD_VER "Możesz mieć jednocześnie tylko jedno aktywne połączenie kiedy używasz OpenVPN-a w wersji starszej niż 2.0-beta6."
     IDS_ERR_STOP_SERV_OLD_VER "Nie możesz nawiązać połączenia za pomocą OpenVPN GUI gdy uruchomiona jest usługa OpenVPN (dla OpenVPN-a 1.5/1.6). Zatrzymaj usługę OpenVPN jeśli chcesz użyć OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "Błąd podczas tworzenia zdarzenia wyjścia: %s"
     IDS_ERR_UNKNOWN_PRIORITY "Nieznana nazwa priorytetu: %s"
-    IDS_ERR_LOG_APPEND_BOOL "Flaga dopisywania zdarzeń do pliku logów (podana jako '%s') musi mieć postać '0' lub '1'"
-    IDS_ERR_GET_MSIE_PROXY "Błąd podczas pobierania ustawień Proxy programu Internet Explorer."
+    IDS_ERR_LOG_APPEND_BOOL "Flaga dopisywania zdarzeń do pliku dziennika (podana jako '%s') musi mieć postać '0' lub '1'"
+    IDS_ERR_GET_MSIE_PROXY "Błąd podczas pobierania ustawień systemowych proxy."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor zakończone niepowodzeniem."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl zakończone niepowodzeniem."
     IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe dla hOutputWrite zakończone niepowodzeniem."
@@ -295,29 +295,29 @@ BEGIN
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle dla hInputWrite zakończone niepowodzeniem."
     IDS_ERR_CREATE_PROCESS "Utworzenie procesu zakończone niepowodzeniem, exe='%s' cmdline='%s' dir='%s'"
     IDS_ERR_CREATE_THREAD_STATUS "Utworzenie wątku dla okna statusu zakończone niepowodzeniem."
-    IDS_NFO_STATE_WAIT_TERM "Stan Obecny: Oczekiwanie na zakończenie OpenVPN-a…"
-    IDS_NFO_STATE_CONNECTED "Stan Obecny: Połączony"
+    IDS_NFO_STATE_WAIT_TERM "Stan obecny: Oczekiwanie na zakończenie OpenVPN-a…"
+    IDS_NFO_STATE_CONNECTED "Stan obecny: Połączony"
     IDS_NFO_NOW_CONNECTED "%s jest teraz połączony."
-    IDS_NFO_ASSIGN_IP "Przyznane IP: %s"
+    IDS_NFO_ASSIGN_IP "Przyznany IP: %s"
     IDS_ERR_CERT_EXPIRED "Połączenie nie jest możliwe z powodu wygaśnięcia certyfikatu lub błędnie ustawionego czasu systemowego."
     IDS_ERR_CERT_NOT_YET_VALID "Połączenie nie jest możliwe ponieważ certyfikat jest jeszcze nieważny. Sprawdź poprawność ustawienia czasu systemowego."
-    IDS_NFO_STATE_RECONNECTING "Stan Obecny: Ponowne Łączenie"
-    IDS_NFO_STATE_DISCONNECTED "Stan Obecny: Rozłączony"
+    IDS_NFO_STATE_RECONNECTING "Stan obecny: Ponowne łączenie"
+    IDS_NFO_STATE_DISCONNECTED "Stan obecny: Rozłączony"
     IDS_NFO_CONN_TERMINATED "Połączenie z %s zostało zakończone."
-    IDS_NFO_STATE_FAILED "Stan Obecny: Połączenie nie powiodło się"
+    IDS_NFO_STATE_FAILED "Stan obecny: Połączenie nie powiodło się"
     IDS_NFO_CONN_FAILED "Połączenie z %s nie powiodło się."
-    IDS_NFO_STATE_FAILED_RECONN "Stan Obecny: Ponowne połączenie nie powiodło się"
+    IDS_NFO_STATE_FAILED_RECONN "Stan obecny: Ponowne połączenie nie powiodło się"
     IDS_NFO_RECONN_FAILED "Ponowne połączenie z %s nie powiodło się."
-    IDS_NFO_STATE_SUSPENDED "Stan Obecny: Zawieszone"
+    IDS_NFO_STATE_SUSPENDED "Stan obecny: Zawieszone"
     IDS_ERR_READ_STDOUT_PIPE "Błąd podczas czytania z OpenVPN StdOut Pipe."
-    IDS_ERR_CREATE_EDIT_LOGWINDOW "Błąd podczas tworzenia okna logów!!"
+    IDS_ERR_CREATE_EDIT_LOGWINDOW "Błąd podczas tworzenia okna dziennika!!"
     IDS_ERR_SET_SIZE "Ustawienie rozmiaru nie powiodło się!"
     IDS_ERR_AUTOSTART_CONF "Brak pliku konfiguracyjnego dla żądanego połączenia automatycznego: %s"
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe dla hInputRead zakończone niepowodzeniem."
-    IDS_NFO_STATE_CONNECTING "Stan Obecny: Łączenie"
+    IDS_NFO_STATE_CONNECTING "Stan obecny: Łączenie"
     IDS_NFO_CONNECTION_XXX "Połączenie OpenVPN (%s)"
-    IDS_NFO_STATE_CONN_SCRIPT "Stan Obecny: Uruchomiono skrypt połączenia"
-    IDS_NFO_STATE_DISCONN_SCRIPT "Stan Obecny: Uruchomiono skrypt rozłączenia"
+    IDS_NFO_STATE_CONN_SCRIPT "Stan obecny: Uruchomiono skrypt połączenia"
+    IDS_NFO_STATE_DISCONN_SCRIPT "Stan obecny: Uruchomiono skrypt rozłączenia"
     IDS_ERR_RUN_CONN_SCRIPT "Błąd podczas wykonywania skryptu połączenia: %s"
     IDS_ERR_GET_EXIT_CODE "Błąd podczas pobierania kodu wyjścia skryptu połączenia (%s)"
     IDS_ERR_CONN_SCRIPT_FAILED "Błąd skryptu połączenia. (kod wyjścia=%ld)"
@@ -326,8 +326,8 @@ BEGIN
                          "mieć kilku plików konfiguracyjnych o tej samej nazwie, nawet jeśli " \
                          "umieszczone są w innych katalogach."
     /* main - Resources */
-    IDS_ERR_OPEN_DEBUG_FILE "Błąd otwarcia pliku debagu (%s)."
-    IDS_ERR_CREATE_PATH "Could not create %s path:\n%s"
+    IDS_ERR_OPEN_DEBUG_FILE "Błąd otwarcia pliku debugowania (%s)."
+    IDS_ERR_CREATE_PATH "Błąd utworzenia ścieżki %s :\n%s"
     IDS_ERR_LOAD_RICHED20 "Błąd ładowania biblioteki RICHED20.DLL."
     IDS_ERR_SHELL_DLL_VERSION "Twoja wersja biblioteki shell32.dll jest za stara (0x%lx). Wymagana co najmniej wersja 5.0."
     IDS_NFO_SERVICE_STARTED "Usługa OpenVPN uruchomiona."
@@ -382,10 +382,10 @@ BEGIN
                    "Użyj openvpn-gui --help aby uzyskać więcej informacji."
 
     /* passphrase - Resources */
-    IDS_ERR_CREATE_PASS_THREAD "Utworzenie wątku w celu wyświetlenia dialogu zmiany hasła nie powiodło się."
-    IDS_NFO_CHANGE_PWD "Zmiana Hasła (%s)"
-    IDS_ERR_PWD_DONT_MATCH "Podane hasła są różne. Spróbuj ponownie."
-    IDS_ERR_PWD_TO_SHORT "Minimalna ilość znaków w nowym haśle to: %d."
+    IDS_ERR_CREATE_PASS_THREAD "Utworzenie wątku w celu wyświetlenia okna dialogowego zmiany hasła nie powiodło się."
+    IDS_NFO_CHANGE_PWD "Zmiana hasła (%s)"
+    IDS_ERR_PWD_DONT_MATCH "Podane hasła nie pasują. Spróbuj ponownie."
+    IDS_ERR_PWD_TO_SHORT "Hasło musi składać się przynajmniej z %d znaków."
     IDS_NFO_EMPTY_PWD "Czy na pewno ustawić puste hasło?"
     IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Nieznany format pliku klucza."
     IDS_ERR_OPEN_PRIVATE_KEY_FILE "Błąd podczas otwierania pliku klucza prywatnego (%s)."
@@ -395,7 +395,7 @@ BEGIN
     IDS_NFO_PWD_CHANGED "Twoje hasło zostało zmienione."
     IDS_ERR_READ_PKCS12 "Błąd odczytu pliku PKCS #12(%s)."
     IDS_ERR_CREATE_PKCS12 "Błąd podczas tworzenia nowego obiektu PKCS #12. Zmiana hasła nie powiodła się."
-    IDS_ERR_OPEN_CONFIG "Błąd podczas otwierania do odczytu pliku konfiguracyjnego: (%s)"
+    IDS_ERR_OPEN_CONFIG "Nie można odczytać pliku konfiguracyjnego: (%s)"
     IDS_ERR_ONLY_ONE_KEY_OPTION "Opcja ""key"" w pliku konfiguracyjnym może być zdefiniowana najwyżej jeden raz."
     IDS_ERR_ONLY_KEY_OR_PKCS12 "Opcje ""key"" i ""pkcs12"" nie mogą być zdefiniowane jednocześnie."
     IDS_ERR_ONLY_ONE_PKCS12_OPTION "Opcja ""pkcs12"" może być zdefiniowana najwyżej jeden raz."
@@ -405,7 +405,7 @@ BEGIN
     IDS_ERR_AUTH_USERNAME2STDIN "Błąd przy przekazywaniu nazwy użytkownika do wejścia standardowego."
     IDS_ERR_AUTH_PASSWORD2STDIN "Błąd przy przekazywaniu hasła do wejścia standardowego."
     IDS_ERR_CR2STDIN "Błąd przy przekazywaniu CR do wejścia standardowego."
-    IDS_ERR_INVALID_CHARS_IN_PSW "Twoje nowe hasło zawiera niedozwolone znaki. " \
+    IDS_ERR_INVALID_CHARS_IN_PSW "Twoje nowe hasło zawiera nieprawidłowe znaki. " \
                              "Proszę podać inne hasło."
 
     /* settings */
@@ -429,20 +429,20 @@ BEGIN
     IDS_ERR_OPEN_SCMGR "Błąd OpenSCManager'a(%d)"
     IDS_ERR_STOP_SERVICE "Nie udało się zatrzymać usługi OpenVPN."
     IDS_NFO_RESTARTED "Usługa OpenVPN uruchomiona ponownie."
-    IDS_ERR_ACCESS_SERVICE_PIPE "Access to service pipe failed."
-    IDS_ERR_WRITE_SERVICE_PIPE "Writing to service pipe failed."
-    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is not installed.\n"
-                                 "Tasks requiring administrative access may not work."
-    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" is not started.\n"
-                                 "Tasks requiring administrative access may not work."
-    IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" is not started.\n"
-                                     "Wintun driver will not work."
+    IDS_ERR_ACCESS_SERVICE_PIPE "Nie udało się uzyskać dostępu do service pipe."
+    IDS_ERR_WRITE_SERVICE_PIPE "Nie udało się zapisać do service pipe."
+    IDS_ERR_INSTALL_ISERVICE     "Usługa ""OpenVPNServiceInteractive"" nie jest zainstalowana..\n"
+                                 "Do wykonania zadania wymagane są uprawnienia administracyjne."
+    IDS_ERR_NOTSTARTED_ISERVICE  "Usługa ""OpenVPNServiceInteractive"" nie jest uruchomiona.\n"
+                                 "Do wykonania zadania wymagane są uprawnienia administracyjne."
+    IDS_ERR_NOTSTARTED_ISERVICE_ADM  "Usługa ""OpenVPNServiceInteractive"" nie jest uruchomiona.\n"
+                                     "Sterownik Wintun nie działa."
 
     /* registry */
-    IDS_ERR_GET_WINDOWS_DIR "Błąd przy pobieraniu nazwy katalogu systemowego Windows."
-    IDS_ERR_GET_PROFILE_DIR "Error getting User Profile Directory."
-    IDS_ERR_GET_PROGRAM_DIR "Błąd przy pobieraniu nazwy katalogu ""Program""."
-    IDS_ERR_OPEN_REGISTRY "Błąd przy otwieraniu do odczytu rejestru (HKLM\\SOFTWARE\\OpenVPN).\n " \
+    IDS_ERR_GET_WINDOWS_DIR "Błąd podczas pobierania nazwy katalogu systemowego Windows."
+    IDS_ERR_GET_PROFILE_DIR "Błąd podczas pobierania katalogu Profilu użytkownika."
+    IDS_ERR_GET_PROGRAM_DIR "Błąd podczas pobierania nazwy katalogu ""Program""."
+    IDS_ERR_OPEN_REGISTRY "Błąd podczas otwierania do odczytu rejestru (HKLM\\SOFTWARE\\OpenVPN).\n " \
                       "Prawdopodobnie OpenVPN nie jest zainstalowany."
     IDS_ERR_READING_REGISTRY "Błąd odczytu wartości rejestru (HKLM\\SOFTWARE\\OpenVPN)."
     IDS_ERR_PASSPHRASE_ATTEMPTS "Wartość rejestru ""passphrase_attempts"" musi być numerem pomiędzy 1 a 9."
@@ -456,27 +456,27 @@ BEGIN
     IDS_ERR_WRITE_REGVALUE "Błąd zapisu rejestru ""HKEY_CURRENT_USER\\%s\\%s""."
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS "A config named ""%s"" already exists."
-    IDS_ERR_IMPORT_FAILED "Failed to import file. The following path could not be created.\n\n" \
-                          "%s\n\nMake sure you have the right permissions."
-    IDS_NFO_IMPORT_SUCCESS "File imported successfully."
-    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
-    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
+    IDS_ERR_IMPORT_EXISTS "Konfiguracja o nazwie ""%s"" już istnieje."
+    IDS_ERR_IMPORT_FAILED "Nie udało się zaimportować pliku. Nie można utworzyć następującej ścieżki.\n\n" \
+                          "%s\n\nUpewnij się, że posiadasz właściwe uprawnienia."
+    IDS_NFO_IMPORT_SUCCESS "Plik został zaimportowany."
+    IDS_NFO_IMPORT_OVERWRITE "Konfiguracja o nazwie ""%s"" już istnieje. Czy chcesz ją zamienić?"
+    IDS_ERR_IMPORT_SOURCE "Nie można zaimportować pliku <%s> ponieważistnieje on już w globalnym lub lokalnym katalogu konfiguracji"
 
     /* save/delete password */
-    IDS_NFO_DELETE_PASS "Press OK to delete saved passwords for config ""%s"""
+    IDS_NFO_DELETE_PASS "Naciśnij OK aby usunąć zapisane hasła dla konfiguracji ""%s"""
 
     /* Token password related */
-    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – Token Password"
-    IDS_NFO_TOKEN_PASSWORD_REQUEST "Input Password/PIN for Token '%S'"
+    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – Hasło tokena"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "Wprowadź hasło/PIN dla tokena '%S'"
 
-    IDS_NFO_AUTH_PASS_RETRY "Wrong credentials. Try again…"
-    IDS_NFO_KEY_PASS_RETRY  "Wrong password. Try again…"
-    IDS_ERR_INVALID_PASSWORD_INPUT "Invalid character in password"
-    IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
-    IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds…"
-    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
-    IDS_NFO_BYTECOUNT "Bytes in: %s  out: %s"
+    IDS_NFO_AUTH_PASS_RETRY "Nieprawidłowe dane uwierzytelniające. Spróbuj ponownie…"
+    IDS_NFO_KEY_PASS_RETRY  "Nieprawidłowe hasło. Spróbuj ponownie…"
+    IDS_ERR_INVALID_PASSWORD_INPUT "Nieprawidłowy znak w haśle"
+    IDS_ERR_INVALID_USERNAME_INPUT "Nieprawidłowy znak w nazwie użytkownika"
+    IDS_NFO_AUTO_CONNECT    "Automatycznie połączenie za %u sek…"
+    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI jest już uruchomiony. Kliknij prawym przyciskiem myszy na ikonę w pasku zadań aby rozpocząć."
+    IDS_NFO_BYTECOUNT "Bajtów pobranych: %s  wysłanych: %s"
 
 END
 
