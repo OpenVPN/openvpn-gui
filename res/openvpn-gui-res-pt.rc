@@ -29,7 +29,7 @@ LANGUAGE LANG_PORTUGUESE, SUBLANG_DEFAULT
 BEGIN
     LTEXT "Digite a senha:", 201, 6, 6, 100, 10
     EDITTEXT ID_EDT_PASSPHRASE, 6, 17, 107, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 33, 100, 10
+    CHECKBOX "Salvar senha", ID_CHK_SAVE_PASS, 6, 33, 100, 10
     PUSHBUTTON "OK", IDOK, 20, 49, 50, 14
     PUSHBUTTON "Cancelar", IDCANCEL, 90, 49, 50, 14
     LTEXT "", ID_TXT_WARNING, 6, 65, 100, 10
@@ -46,7 +46,7 @@ BEGIN
     LTEXT "Senha:", 0, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 42, 100, 10
+    CHECKBOX "Salvar senha", ID_CHK_SAVE_PASS, 6, 42, 100, 10
     PUSHBUTTON "OK", IDOK, 20, 58, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_DISABLED
     PUSHBUTTON "Cancelar", IDCANCEL, 90, 58, 52, 14
     LTEXT "", ID_TXT_WARNING, 6, 80, 150, 10
@@ -66,7 +66,7 @@ BEGIN
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     LTEXT "", ID_TXT_AUTH_CHALLENGE, 6, 43, 148, 10
     EDITTEXT ID_EDT_AUTH_CHALLENGE, 60, 57, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 76, 100, 10
+    CHECKBOX "Salvar senha", ID_CHK_SAVE_PASS, 6, 76, 100, 10
     PUSHBUTTON "OK", IDOK, 20, 92, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
     PUSHBUTTON "Cancelar", IDCANCEL, 90, 92, 52, 14
     LTEXT "", ID_TXT_WARNING, 6, 108, 150, 10
@@ -75,12 +75,12 @@ END
 /* Challenge Response Dialog */
 ID_DLG_CHALLENGE_RESPONSE DIALOG 6, 18, 212, 72
 STYLE WS_SIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
-CAPTION "OpenVPN - Challenge Response"
+CAPTION "OpenVPN - Resposta do Desafio"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_PORTUGUESE, SUBLANG_DEFAULT
 BEGIN
     LTEXT "", ID_TXT_DESCRIPTION, 6, 9, 208, 10
-    LTEXT "Response:", 0, 6, 30, 50, 10
+    LTEXT "Resposta:", 0, 6, 30, 50, 10
     EDITTEXT ID_EDT_RESPONSE, 60, 27, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     PUSHBUTTON "OK", IDOK, 20, 51, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
     PUSHBUTTON "Cancelar", IDCANCEL, 90, 51, 52, 14
@@ -111,7 +111,7 @@ LANGUAGE LANG_PORTUGUESE, SUBLANG_DEFAULT
 BEGIN
     LTEXT "Senha antiga:", 171, 6, 9, 85, 10
     LTEXT "Nova senha:", 172, 6, 26, 85, 10
-    LTEXT "Confime a nova senha:", 173, 6, 42, 85, 10
+    LTEXT "Confirme a nova senha:", 173, 6, 42, 85, 10
     EDITTEXT ID_EDT_PASS_CUR, 95, 6, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
     EDITTEXT ID_EDT_PASS_NEW, 95, 23, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
     EDITTEXT ID_EDT_PASS_NEW2, 95, 39, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
@@ -134,8 +134,8 @@ BEGIN
     AUTORADIOBUTTON "Usar configurações do Internet Explorer", \
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
     AUTORADIOBUTTON "Configuração manual", ID_RB_PROXY_MANUAL, 13, 46, 80, 10
-    AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "SOCKS Proxy", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
+    AUTORADIOBUTTON "Proxy HTTP", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Proxy SOCKS", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
     LTEXT "Endereço:", ID_TXT_PROXY_ADDRESS, 20, 77, 37, 10
     RTEXT "Porta:", ID_TXT_PROXY_PORT, 167, 77, 24, 10
     EDITTEXT ID_EDT_PROXY_ADDRESS, 58, 75, 108, 12, ES_AUTOHSCROLL
@@ -155,52 +155,52 @@ BEGIN
     GROUPBOX "Inicialização", 202, 6, 47, 235, 30
     AUTOCHECKBOX "Executar ao iniciar o Windows", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "Preferences", 202, 6, 82, 235, 105
-    AUTOCHECKBOX "Append to log", ID_CHK_LOG_APPEND, 17, 95, 60, 10
-    AUTOCHECKBOX "Show script window", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
-    AUTOCHECKBOX "Silent connection", ID_CHK_SILENT, 17, 125, 200, 10
-    AUTOCHECKBOX "Always use interactive service", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
-    LTEXT "Show Balloon", ID_TXT_BALLOON, 17, 155, 100, 10
-    AUTORADIOBUTTON "On connect", ID_RB_BALLOON1, 28, 170, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "On connect/reconnect", ID_RB_BALLOON2, 86, 170, 90, 10
-    AUTORADIOBUTTON "Never", ID_RB_BALLOON0, 181, 170, 40, 10
+    GROUPBOX "Preferências", 202, 6, 82, 235, 105
+    AUTOCHECKBOX "Anexar ao log", ID_CHK_LOG_APPEND, 17, 95, 60, 10
+    AUTOCHECKBOX "Mostrar janela de script", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
+    AUTOCHECKBOX "Conexão silenciosa", ID_CHK_SILENT, 17, 125, 200, 10
+    AUTOCHECKBOX "Sempre usar serviço interativo", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
+    LTEXT "Mostrar Notificação", ID_TXT_BALLOON, 17, 155, 100, 10
+    AUTORADIOBUTTON "Ao conectar", ID_RB_BALLOON1, 28, 170, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Ao conectar/desconectar", ID_RB_BALLOON2, 86, 170, 90, 10
+    AUTORADIOBUTTON "Nunca", ID_RB_BALLOON0, 181, 170, 40, 10
 END
 
 /* Advanced Dialog */
 ID_DLG_ADVANCED DIALOGEX 6, 18, 252, 235
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "Advanced"
+CAPTION "Avançado"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_PORTUGUESE, SUBLANG_DEFAULT
 BEGIN
-    GROUPBOX "Configuration Files", 201, 6, 12, 235, 45
-    LTEXT "Folder:", ID_TXT_FOLDER, 17, 25, 32, 10
-    LTEXT "Extension:", ID_TXT_EXTENSION, 17, 40, 52, 10
+    GROUPBOX "Arquivos de Configuração", 201, 6, 12, 235, 45
+    LTEXT "Pasta:", ID_TXT_FOLDER, 17, 25, 32, 10
+    LTEXT "Extensão:", ID_TXT_EXTENSION, 17, 40, 52, 10
     EDITTEXT ID_EDT_CONFIG_DIR, 53, 23, 150, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_CONFIG_EXT, 53, 38, 25, 12, ES_AUTOHSCROLL
     PUSHBUTTON "…", ID_BTN_CONFIG_DIR, 208, 23, 25, 12
 
-    GROUPBOX "Log Files", 202, 6, 62, 235, 30
-    LTEXT "Folder:", ID_TXT_FOLDER, 17, 74, 32, 10
+    GROUPBOX "Arquivos de Log", 202, 6, 62, 235, 30
+    LTEXT "Pasta:", ID_TXT_FOLDER, 17, 74, 32, 10
     EDITTEXT ID_EDT_LOG_DIR, 53, 72, 150, 12, ES_AUTOHSCROLL
     PUSHBUTTON "…", ID_BTN_LOG_DIR, 208, 72, 25, 12
 
-    GROUPBOX "Script Timeout", 203, 6, 97, 235, 60
-    LTEXT "Preconnect script timeout:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
-    LTEXT "Connect script timeout:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
-    LTEXT "Disconnect script timeout:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
+    GROUPBOX "Tempo Limite do Script", 203, 6, 97, 235, 60
+    LTEXT "Tempo limite do script de pré-conexão:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
+    LTEXT "Tempo limite do script de conexão:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
+    LTEXT "Tempo limite do script de desconexão:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
     EDITTEXT ID_EDT_PRECONNECT_TIMEOUT, 103, 108, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_CONNECT_TIMEOUT, 103, 123, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 103, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
 
-    GROUPBOX "Management interface", 204, 6, 163, 235, 30
-    LTEXT "Port offset:", 205, 17, 175, 75, 10
+    GROUPBOX "Interface de gestão", 204, 6, 163, 235, 30
+    LTEXT "Offset da porta:", 205, 17, 175, 75, 10
     EDITTEXT ID_EDT_MGMT_PORT, 103, 173, 30, 12, ES_AUTOHSCROLL
 
-    GROUPBOX "Config menu view", 206, 6, 198, 235, 30
-    AUTORADIOBUTTON "&Auto", ID_RB_BALLOON0, 28, 210, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "&Flat", ID_RB_BALLOON1, 88, 210, 50, 10
-    AUTORADIOBUTTON "&Nested", ID_RB_BALLOON2, 148, 210, 50, 10
+    GROUPBOX "Visualização do menu de configurações", 206, 6, 198, 235, 30
+    AUTORADIOBUTTON "&Automático", ID_RB_BALLOON0, 28, 210, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "&Plano", ID_RB_BALLOON1, 88, 210, 50, 10
+    AUTORADIOBUTTON "A&ninhado", ID_RB_BALLOON2, 148, 210, 50, 10
 END
 
 /* About Dialog */
@@ -211,15 +211,15 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_PORTUGUESE, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, 0, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v" PACKAGE_VERSION_RESOURCE_STR " - Uma GUI Windows para OpenVPN\n" \
+    LTEXT "OpenVPN GUI v" PACKAGE_VERSION_RESOURCE_STR " - Interface Windows para o OpenVPN\n" \
           "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n" \
           "Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n" \
-          "Copyright (C) 2012-" GUI_COPYRIGHT_YEAR_END " OpenVPN GUI contributors\n" \
+          "Copyright (C) 2012-" GUI_COPYRIGHT_YEAR_END " Colaboradores do OpenVPN GUI\n" \
           "https://github.com/OpenVPN/openvpn-gui/", 0, 36, 15, 206, 42
-    LTEXT "OpenVPN - An application to securely tunnel IP networks " \
-          "over a single TCP/UDP port, with support for SSL/TLS-based " \
-          "session authentication and key exchange, packet " \
-          "encryption, packet authentication, and packet compression.\n" \
+    LTEXT "OpenVPN - Um aplicativo para direcionar de forma segura os " \
+          "IPs de rede sobre uma única porta TCP/UDP, com suporte para " \
+          "autenticação de sessão e troca de chave, criptografia de pacotes, " \
+          "autenticação de pacotes e compressão de pacotes baseada em SSL/TLS.\n" \
           "\n" \
           "Copyright (C) 2002-" CORE_COPYRIGHT_YEAR_END " OpenVPN Technologies, Inc <info@openvpn.net>\n" \
           "https://openvpn.net/", 0, 8, 61, 240, 64
@@ -256,12 +256,12 @@ BEGIN
     IDS_MENU_CLOSE "Sair"
     IDS_MENU_CONNECT "Conectar"
     IDS_MENU_DISCONNECT "Desconectar"
-    IDS_MENU_RECONNECT "Reconnect"
+    IDS_MENU_RECONNECT "Reconectar"
     IDS_MENU_STATUS "Mostrar status"
     IDS_MENU_VIEWLOG "Visualizar log"
     IDS_MENU_EDITCONFIG "Editar configurações"
     IDS_MENU_PASSPHRASE "Alterar senha"
-    IDS_MENU_CLEARPASS  "Clear Saved Passwords"
+    IDS_MENU_CLEARPASS  "Limpar Senhas Salvas"
     IDS_MENU_SERVICE_START "Iniciar"
     IDS_MENU_SERVICE_STOP "Parar"
     IDS_MENU_SERVICE_RESTART "Reiniciar"
@@ -277,19 +277,19 @@ BEGIN
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI não suporta mais do que %d configurações. Contate o autor se você necessita de mais."
     IDS_NFO_NO_CONFIGS "Nenhum perfil de conexão (arquivo de configuração) foi localizado.\n"\
-                       "Use the ""Import File.."" menu or copy your config files to ""%s"" or ""%s""."
-    IDS_ERR_CONFIG_NOT_AUTHORIZED "Starting this connection (%s) requires membership in "\
-                                  """%s"" group. Contact your system administrator.\n"
-    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Starting this connection (%s) requires membership in "\
-                                  """%s"" group.\n\n"\
-                                  "Do you want to add yourself to this group?\n"\
-                                  "This action may prompt for administrative password or consent."
-    IDS_NFO_CONFIG_AUTH_PENDING   "Starting this connection (%s) requires membership in "\
-                                  """%s"" group.\n\n"\
-                                  "Please complete the previous authorization dialog."
-    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Adding the user to ""%s"" group failed."
+                       "Use o menu ""Importar Arquivo.."" ou copie os seus arquivos de configuração para ""%s"" ou ""%s""."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "Para iniciar esta conexão (%s), é necessário ser membro no "\
+                                  "grupo ""%s"". Contate o administrador do sistema.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Para iniciar esta conexão (%s), é necessário ser membro no "\
+                                  "grupo ""%s"".\n\n"\
+                                  "Você deseja se adicionar a este grupo?\n"\
+                                  "Esta ação pode solicitar a senha do administrador ou consentimento."
+    IDS_NFO_CONFIG_AUTH_PENDING   "Para iniciar esta conexão (%s), é necessário ser membro no "\
+                                  "grupo ""%s"".\n\n"\
+                                  "Por favor, complete o diálogo de autorização anterior."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Falha ao adicionar o usuário ao grupo ""%s""."
     IDS_ERR_ONE_CONN_OLD_VER "Você pode ter apenas uma conexão ativa enquanto estiver usando uma versão anterior a OpenVPN 2.0-beta6."
-    IDS_ERR_STOP_SERV_OLD_VER "Você não pode usar o OpenVPN GUI para iniciar uma conexão enquanto o serviço OpenVPN estiver em execução (com OpenVPN 1.5/1.6). Pare o serviço OpenVPN primero se você quiser utilizar o OpenVPN GUI."
+    IDS_ERR_STOP_SERV_OLD_VER "Você não pode usar o OpenVPN GUI para iniciar uma conexão enquanto o serviço OpenVPN estiver em execução (com OpenVPN 1.5/1.6). Pare o serviço OpenVPN primeiro se você quiser utilizar o OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "CreateEvent falhou no evento de saída: %s"
     IDS_ERR_UNKNOWN_PRIORITY "Nome de prioridade desconhecida: %s"
     IDS_ERR_LOG_APPEND_BOOL "Parâmetro ""adicionar ao arquivo de log"" (informado como '%s') deve ser '0' ou '1'"
@@ -319,12 +319,12 @@ BEGIN
     IDS_ERR_READ_STDOUT_PIPE "Erro lendo o pipe de stdout do OpenVPN."
     IDS_ERR_CREATE_EDIT_LOGWINDOW "Creating RichEdit LogWindow falhou!!"
     IDS_ERR_SET_SIZE "Set Size falhou!"
-    IDS_ERR_AUTOSTART_CONF "Impossível encontrar configurações para autoinício: %s"
+    IDS_ERR_AUTOSTART_CONF "Impossível encontrar configurações para início automático: %s"
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe em hInputRead falhou."
     IDS_NFO_STATE_CONNECTING "Estado atual: Conectando"
     IDS_NFO_CONNECTION_XXX "Conexão OpenVPN (%s)"
-    IDS_NFO_STATE_CONN_SCRIPT "Estado atual: Rodando script de conexão"
-    IDS_NFO_STATE_DISCONN_SCRIPT "Estado atual: Running script de desconexão"
+    IDS_NFO_STATE_CONN_SCRIPT "Estado atual: Executando script de conexão"
+    IDS_NFO_STATE_DISCONN_SCRIPT "Estado atual: Executando script de desconexão"
     IDS_ERR_RUN_CONN_SCRIPT "Erro ao executar o script de conexão: %s"
     IDS_ERR_GET_EXIT_CODE "Falha ao obter o código de saída do script de conexão (%s)"
     IDS_ERR_CONN_SCRIPT_FAILED "Script de conexão falhou. (exitcode=%ld)"
@@ -335,7 +335,7 @@ BEGIN
     IDS_NFO_CONN_TIMEOUT "A conexão com a interface de gerenciamento falhou.\n" \
                          "Consulte o arquivo de log (%s) para mais detalhes."
     /* main - Resources */
-    IDS_ERR_OPEN_DEBUG_FILE "Erro ao abrir arquivo de debug (%s) para saída."
+    IDS_ERR_OPEN_DEBUG_FILE "Erro ao abrir arquivo de depuração (%s) para saída."
     IDS_ERR_CREATE_PATH "Não foi possível criar o caminho %s:\n%s"
     IDS_ERR_LOAD_RICHED20 "Erro ao carregar RICHED20.DLL."
     IDS_ERR_SHELL_DLL_VERSION "Sua versão do shell32.dll é antiga (0x%lx). Você precisa de no mínimo da versão 5.0."
@@ -351,22 +351,22 @@ BEGIN
     IDS_NFO_USAGE "--help\t\t\t: Mostra esta mensagem.\n" \
                   "--connect cnn \t\t: Conecta a ""cnn"" no início. (extensão deve ser incluída)\n" \
                   "\t\t\t   Exemplo: openvpn-gui --connect escritorio.ovpn\n" \
-                  "--command cmd [args]\t: Send a command to a running instance of the GUI\n" \
+                  "--command cmd [args]\t: Envia um comando para uma instância em execução do GUI\n" \
                   "Supported commands:\n"\
-                  "    connect cnn            \t: connect the config named ""cnn""\n"\
-                  "    disconnect cnn         \t: disconnect the config named ""cnn""\n"\
-                  "    reconnect cnn          \t: reconnect the config named ""cnn""\n"\
-                  "    disconnect_all         \t: disconnect all connected configs\n"\
-                  "    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n"\
-                  "    status cnn           \t\t: show the status window of config ""cnn"" if connected\n"\
-                  "    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n"\
-                  "\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n"\
+                  "    connect cnn            \t: conecta a configuração nomeada ""cnn""\n"\
+                  "    disconnect cnn         \t: desconecta a configuração nomeada ""cnn""\n"\
+                  "    reconnect cnn          \t: reconecta a configuração nomeada ""cnn""\n"\
+                  "    disconnect_all         \t: desconecta todas as configurações conectadas\n"\
+                  "    exit                 \t\t: encerra a instância em execução do GUI (pode solicitar por confirmação)\n"\
+                  "    status cnn           \t\t: mostra a janela de status da configuração ""cnn"", se conectado\n"\
+                  "    silent_connection [0|1]\t: define o sinalizador silent_connection em ligado (1) ou desligado (0)\n"\
+                  "\t\t\tExemplo: openvpn-gui.exe --command disconnect myconfig\n"\
                   "\n" \
                   "Opções para sobrescrever opções do registro:\n" \
                   "--exe_path\t\t: Caminho para openvpn.exe.\n" \
-                  "--config_dir\t\t: Caminho para o diretório dos arquivos de configuração.\n" \
+                  "--config_dir\t\t: Caminho para a pasta dos arquivos de configuração.\n" \
                   "--ext_string\t\t: Extensão dos arquivos de configuração.\n" \
-                  "--log_dir\t\t\t: Caminho para o diretório onde os logs serão salvos.\n" \
+                  "--log_dir\t\t\t: Caminho para a pasta onde os logs serão salvos.\n" \
                   "--priority_string\t\t: String de prioridade (Ver install.txt para mais informações).\n" \
                   "--append_string\t\t: 1=Adicionar ao arquivo de log. 0=Truncar o arquivo de log quando conectando.\n" \
                   "--log_viewer\t\t: Caminho para Visualizador de log.\n" \
@@ -381,11 +381,11 @@ BEGIN
                   "--show_script_window\t: 0=Esconder janela de execução de script, 1=Mostrar.\n" \
                   "--passphrase_attempts\t: Número de tentativas de digitação de senha.\n" \
                   "--connectscript_timeout\t: Tempo de espera para o connect script terminar.\n" \
-                  "--disconnectscript_timeout\t: Tempo de espera para o disconnect script terminar.\n" \
-                  "--preconnectscript_timeout\t: Tempo de espera para o preconnect script terminar.\n"
+                  "--disconnectscript_timeout\t: Tempo de espera para o script de desconexão terminar.\n" \
+                  "--preconnectscript_timeout\t: Tempo de espera para o script de pré-conexão terminar.\n"
 
     IDS_NFO_USAGECAPTION "Uso do OpenVPN GUI"
-    IDS_ERR_BAD_PARAMETER "Tentando analisar ""%s"" como um --option parâmetro " \
+    IDS_ERR_BAD_PARAMETER "Tentando analisar ""%s"" como um parâmetro --option " \
                           "mas não foi encontrado '--' antes do parâmetro"
     IDS_ERR_BAD_OPTION "Erro: Parâmetro desconhecido ou parâmetro(s) faltando: --%s\n" \
                        "Use openvpn-gui --help para maiores informações."
@@ -445,12 +445,12 @@ BEGIN
     IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" não foi iniciado.\n"
                                  "Operações que requeiram acesso de administrador podem não funcionar."
     IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" não foi iniciado.\n"
-                                     "Wintun driver will not work."
+                                     "O driver Wintun não irá funcionar."
 
     /* registry */
-    IDS_ERR_GET_WINDOWS_DIR "Erro ao localizar o diretório do Windows."
-    IDS_ERR_GET_PROFILE_DIR "Erro ao localizar o diretório do perfil do usuário."
-    IDS_ERR_GET_PROGRAM_DIR "Erro ao localizar o diretório ""Program""."
+    IDS_ERR_GET_WINDOWS_DIR "Erro ao localizar a pasta do Windows."
+    IDS_ERR_GET_PROFILE_DIR "Erro ao localizar a pasta do perfil do usuário."
+    IDS_ERR_GET_PROGRAM_DIR "Erro ao localizar a pasta ""Program""."
     IDS_ERR_OPEN_REGISTRY "Erro abrindo registro para leitura (HKLM\\SOFTWARE\\OpenVPN).\n " \
                           "OpenVPN provavelmente não está instalado"
     IDS_ERR_READING_REGISTRY "Erro lendo valor da chave de registro (HKLM\\SOFTWARE\\OpenVPN)."
@@ -469,22 +469,22 @@ BEGIN
     IDS_ERR_IMPORT_FAILED "Falha ao importar o arquivo. O seguinte caminho não pôde ser criado.\n\n" \
                           "%s\n\nCertifique-se de que você possui as permissões necessárias."
     IDS_NFO_IMPORT_SUCCESS "Arquivo importado com sucesso."
-    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
-    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
+    IDS_NFO_IMPORT_OVERWRITE "Uma configuração nomeada ""%s"" já existe. Você deseja substituí-la?"
+    IDS_ERR_IMPORT_SOURCE "Não é possível importar o arquivo <%s>, pois ele já está na pasta de configurações global ou local"
 
     /* save/delete password */
-    IDS_NFO_DELETE_PASS "Press OK to delete saved passwords for config ""%s"""
+    IDS_NFO_DELETE_PASS "Pressione OK para excluir as senhas salvas para a configuração ""%s"""
 
     /* Token password related */
-    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – Token Password"
-    IDS_NFO_TOKEN_PASSWORD_REQUEST "Input Password/PIN for Token '%S'"
+    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – Senha de Token"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "Entre a Senha/PIN para o Token '%S'"
 
-    IDS_NFO_AUTH_PASS_RETRY "Wrong credentials. Try again…"
-    IDS_NFO_KEY_PASS_RETRY  "Wrong password. Try again…"
-    IDS_ERR_INVALID_PASSWORD_INPUT "Invalid character in password"
-    IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
-    IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds…"
-    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
-    IDS_NFO_BYTECOUNT "Bytes in: %s  out: %s"
+    IDS_NFO_AUTH_PASS_RETRY "Credenciais incorretas. Tente novamente…"
+    IDS_NFO_KEY_PASS_RETRY  "Senha incorreta. Tente novamente…"
+    IDS_ERR_INVALID_PASSWORD_INPUT "Caractere inválido na senha"
+    IDS_ERR_INVALID_USERNAME_INPUT "Caractere inválido no nome de usuário"
+    IDS_NFO_AUTO_CONNECT    "Conectando automaticamente em %u segundos…"
+    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI já está em execução. Clique direito no ícone da área de notificação para iniciar."
+    IDS_NFO_BYTECOUNT "Bytes recebidos: %s  enviados: %s"
 
 END
