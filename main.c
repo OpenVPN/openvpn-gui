@@ -488,6 +488,8 @@ HandleCopyDataMessage(const COPYDATASTRUCT *copy_data)
 LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
   static UINT s_uTaskbarRestart;
+  int conn_id = 0;
+  MENUINFO minfo = {.cbSize = sizeof(MENUINFO)};
 
   switch (message) {
     case WM_CREATE:       
@@ -532,49 +534,65 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       HandleCopyDataMessage((COPYDATASTRUCT*) lParam);
       return TRUE; /* lets the sender free copy_data */
 
-    case WM_COMMAND:
-      if ( (LOWORD(wParam) >= IDM_CONNECTMENU) && (LOWORD(wParam) < IDM_CONNECTMENU + MAX_CONFIGS) ) {
-        StartOpenVPN(&o.conn[LOWORD(wParam) - IDM_CONNECTMENU]);
-      }
-      if ( (LOWORD(wParam) >= IDM_DISCONNECTMENU) && (LOWORD(wParam) < IDM_DISCONNECTMENU + MAX_CONFIGS) ) {
-        StopOpenVPN(&o.conn[LOWORD(wParam) - IDM_DISCONNECTMENU]);
-      }
-      if ( (LOWORD(wParam) >= IDM_RECONNECTMENU) && (LOWORD(wParam) < IDM_RECONNECTMENU + MAX_CONFIGS) ) {
-        RestartOpenVPN(&o.conn[LOWORD(wParam) - IDM_RECONNECTMENU]);
-      }
-      if ( (LOWORD(wParam) >= IDM_STATUSMENU) && (LOWORD(wParam) < IDM_STATUSMENU + MAX_CONFIGS) ) {
-        ShowWindow(o.conn[LOWORD(wParam) - IDM_STATUSMENU].hwndStatus, SW_SHOW);
-      }
-      if ( (LOWORD(wParam) >= IDM_VIEWLOGMENU) && (LOWORD(wParam) < IDM_VIEWLOGMENU + MAX_CONFIGS) ) {
-        ViewLog(LOWORD(wParam) - IDM_VIEWLOGMENU);
-      }
-      if ( (LOWORD(wParam) >= IDM_EDITMENU) && (LOWORD(wParam) < IDM_EDITMENU + MAX_CONFIGS) ) {
-        EditConfig(LOWORD(wParam) - IDM_EDITMENU);
-      }
-      if ( (LOWORD(wParam) >= IDM_CLEARPASSMENU) && (LOWORD(wParam) < IDM_CLEARPASSMENU + MAX_CONFIGS) ) {
-        ResetSavePasswords(&o.conn[LOWORD(wParam) - IDM_CLEARPASSMENU]);
-      }
-#ifndef DISABLE_CHANGE_PASSWORD
-      if ( (LOWORD(wParam) >= IDM_PASSPHRASEMENU) && (LOWORD(wParam) < IDM_PASSPHRASEMENU + MAX_CONFIGS) ) {
-        ShowChangePassphraseDialog(&o.conn[LOWORD(wParam) - IDM_PASSPHRASEMENU]);
-      }
-#endif
+    case WM_MENUCOMMAND:
+      /* Get the menu item id and save it in wParam for use below */
+      wParam = GetMenuItemID((HMENU) lParam, wParam);
+
+      /* we first check global menu items which do not require a connnection index */
       if (LOWORD(wParam) == IDM_IMPORT) {
         ImportConfigFile();
       }
-      if (LOWORD(wParam) == IDM_SETTINGS) {
+      else if (LOWORD(wParam) == IDM_SETTINGS) {
         ShowSettingsDialog();
       }
-      if (LOWORD(wParam) == IDM_CLOSE) {
+      else if (LOWORD(wParam) == IDM_CLOSE) {
         CloseApplication(hwnd);
       }
-      if (LOWORD(wParam) == IDM_SERVICE_START) {
+      else if (LOWORD(wParam) == IDM_SERVICE_START) {
         MyStartService();
       }
-      if (LOWORD(wParam) == IDM_SERVICE_STOP) {
+      else if (LOWORD(wParam) == IDM_SERVICE_STOP) {
         MyStopService();
-      }     
-      if (LOWORD(wParam) == IDM_SERVICE_RESTART) MyReStartService();
+      }
+      else if (LOWORD(wParam) == IDM_SERVICE_RESTART) {
+        MyReStartService();
+      }
+      /* rest of the handlers require a connection id */
+      else {
+        minfo.fMask = MIM_MENUDATA;
+        GetMenuInfo((HMENU) lParam, &minfo);
+        conn_id = (INT) minfo.dwMenuData;
+        if (conn_id < 0 || conn_id >= o.num_configs) break; /* ignore invalid connection id */
+      }
+
+      /* reach here only if the command did not match any global items and a valid connection id is available */
+
+      if (LOWORD(wParam) == IDM_CONNECTMENU) {
+        StartOpenVPN(&o.conn[conn_id]);
+      }
+      else if (LOWORD(wParam) == IDM_DISCONNECTMENU) {
+        StopOpenVPN(&o.conn[conn_id]);
+      }
+      else if (LOWORD(wParam) == IDM_RECONNECTMENU) {
+        RestartOpenVPN(&o.conn[conn_id]);
+      }
+      else if (LOWORD(wParam) == IDM_STATUSMENU) {
+        ShowWindow(o.conn[conn_id].hwndStatus, SW_SHOW);
+      }
+      else if (LOWORD(wParam) == IDM_VIEWLOGMENU) {
+        ViewLog(conn_id);
+      }
+      else if (LOWORD(wParam) == IDM_EDITMENU) {
+        EditConfig(conn_id);
+      }
+      else if (LOWORD(wParam) == IDM_CLEARPASSMENU) {
+        ResetSavePasswords(&o.conn[conn_id]);
+      }
+#ifndef DISABLE_CHANGE_PASSWORD
+      else if (LOWORD(wParam) == IDM_PASSPHRASEMENU) {
+        ShowChangePassphraseDialog(&o.conn[conn_id]);
+      }
+#endif
       break;
 
     case WM_CLOSE:
