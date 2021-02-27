@@ -42,8 +42,6 @@ typedef struct connection connection_t;
  * including the option name itself.
  */
 #define MAX_PARMS           5   /* Max number of parameters per option */
-/* Menu ids are constructed as 12 bits for config number, 4 bits for action */
-#define MAX_CONFIGS         (1<<12)
 
 typedef enum {
     service_noaccess     = -1,

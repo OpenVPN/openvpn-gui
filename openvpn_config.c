@@ -403,6 +403,7 @@ BuildFileList()
     int recurse_depth = 20; /* maximum number of levels below config_dir to recurse into */
     int flags = 0;
     int root = 0;
+    int max_configs = (1<<16) - o.mgmt_port_offset;
 
     if (o.silent_connection)
         issue_warnings = false;
@@ -437,12 +438,12 @@ BuildFileList()
     if (o.num_configs == 0 && issue_warnings)
         ShowLocalizedMsg(IDS_NFO_NO_CONFIGS, o.config_dir, o.global_config_dir);
 
-    /* More than MAX_CONFIGS are ignored in the menu listing */
-    if (o.num_configs > MAX_CONFIGS)
+    /* More than max_configs are ignored in the menu listing */
+    if (o.num_configs > max_configs)
     {
         if (issue_warnings)
-            ShowLocalizedMsg(IDS_ERR_MANY_CONFIGS, o.num_configs);
-        o.num_configs = MAX_CONFIGS; /* menus don't work with more -- ignore the rest */
+            ShowLocalizedMsg(IDS_ERR_MANY_CONFIGS, max_configs);
+        o.num_configs = max_configs; /* management-port cant handle more -- ignore the rest */
     }
 
     /* if adding groups, activate non-empty ones */

@@ -42,7 +42,8 @@
 
 /* Popup Menus */
 HMENU hMenu;
-HMENU hMenuConn[MAX_CONFIGS];
+HMENU *hMenuConn;
+int hmenu_size = 0; /* allocated size of hMenuConn array */
 HMENU hMenuService;
 
 HBITMAP hbmpConnecting;
@@ -71,6 +72,27 @@ CreateBitmaps()
     }
 }
 
+/*
+ * Reallocate hMenuConn as required. In case of not enough memory,
+ * o.num_config is reset to max space available value so that the
+ * program can continue.
+ */
+void
+AllocateConnectionMenu()
+{
+    if (hmenu_size >= o.num_configs) return;
+    HMENU *tmp  = (HMENU *) realloc(hMenuConn, sizeof(HMENU)*(o.num_configs + 50));
+    if (tmp) {
+        hmenu_size = o.num_configs + 50;
+        hMenuConn = tmp;
+    }
+    else {
+        o.num_configs = hmenu_size;
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Allocation of hMenuConn failed. Ignoring configs beyond index = %d", o.num_configs);
+    }
+    return;
+}
+
 /* Create popup menus */
 void
 CreatePopupMenus()
@@ -81,11 +103,18 @@ CreatePopupMenus()
      */
     assert(o.num_groups > 0);
 
+    AllocateConnectionMenu();
+
     CreateBitmaps();
+    MENUINFO minfo = {.cbSize = sizeof(MENUINFO)};
 
     for (int i = 0; i < o.num_configs; i++)
     {
         hMenuConn[i] = CreatePopupMenu();
+        /* Save the connection index in the menu.*/
+        minfo.fMask = MIM_MENUDATA;
+        minfo.dwMenuData = i;
+        SetMenuInfo(hMenuConn[i], &minfo);
     }
     for (int i = 0; i < o.num_groups; i++)
     {
@@ -97,6 +126,12 @@ CreatePopupMenus()
 
     hMenuService = CreatePopupMenu();
     hMenu = o.groups[0].menu; /* the first group menu is also the root menu */
+
+    /* Set notify by position style for the top menu - gets automatically applied to sub-menus */
+    minfo.fMask = MIM_STYLE;
+    GetMenuInfo(hMenu, &minfo);
+    minfo.dwStyle |= MNS_NOTIFYBYPOS;
+    SetMenuInfo(hMenu, &minfo);
 
     if (o.num_configs == 1) {
         /* Create Main menu with actions */
@@ -190,21 +225,21 @@ CreatePopupMenus()
         /* Create popup menus for every connection */
         for (int i = 0; i < o.num_configs; i++) {
             if (o.service_only == 0) {
-                AppendMenu(hMenuConn[i], MF_STRING, IDM_CONNECTMENU + i, LoadLocalizedString(IDS_MENU_CONNECT));
-                AppendMenu(hMenuConn[i], MF_STRING, IDM_DISCONNECTMENU + i, LoadLocalizedString(IDS_MENU_DISCONNECT));
-                AppendMenu(hMenuConn[i], MF_STRING, IDM_RECONNECTMENU + i, LoadLocalizedString(IDS_MENU_RECONNECT));
-                AppendMenu(hMenuConn[i], MF_STRING, IDM_STATUSMENU + i, LoadLocalizedString(IDS_MENU_STATUS));
+                AppendMenu(hMenuConn[i], MF_STRING, IDM_CONNECTMENU, LoadLocalizedString(IDS_MENU_CONNECT));
+                AppendMenu(hMenuConn[i], MF_STRING, IDM_DISCONNECTMENU, LoadLocalizedString(IDS_MENU_DISCONNECT));
+                AppendMenu(hMenuConn[i], MF_STRING, IDM_RECONNECTMENU, LoadLocalizedString(IDS_MENU_RECONNECT));
+                AppendMenu(hMenuConn[i], MF_STRING, IDM_STATUSMENU, LoadLocalizedString(IDS_MENU_STATUS));
                 AppendMenu(hMenuConn[i], MF_SEPARATOR, 0, 0);
             }
 
-            AppendMenu(hMenuConn[i], MF_STRING, IDM_VIEWLOGMENU + i, LoadLocalizedString(IDS_MENU_VIEWLOG));
+            AppendMenu(hMenuConn[i], MF_STRING, IDM_VIEWLOGMENU, LoadLocalizedString(IDS_MENU_VIEWLOG));
 
-            AppendMenu(hMenuConn[i], MF_STRING, IDM_EDITMENU + i, LoadLocalizedString(IDS_MENU_EDITCONFIG));
-            AppendMenu(hMenuConn[i], MF_STRING, IDM_CLEARPASSMENU + i, LoadLocalizedString(IDS_MENU_CLEARPASS));
+            AppendMenu(hMenuConn[i], MF_STRING, IDM_EDITMENU, LoadLocalizedString(IDS_MENU_EDITCONFIG));
+            AppendMenu(hMenuConn[i], MF_STRING, IDM_CLEARPASSMENU, LoadLocalizedString(IDS_MENU_CLEARPASS));
 
 #ifndef DISABLE_CHANGE_PASSWORD
             if (o.conn[i].flags & FLAG_ALLOW_CHANGE_PASSPHRASE)
-                AppendMenu(hMenuConn[i], MF_STRING, IDM_PASSPHRASEMENU + i, LoadLocalizedString(IDS_MENU_PASSPHRASE));
+                AppendMenu(hMenuConn[i], MF_STRING, IDM_PASSPHRASEMENU, LoadLocalizedString(IDS_MENU_PASSPHRASE));
 #endif
 
             SetMenuStatusById(i, o.conn[i].state);
@@ -515,29 +550,29 @@ SetMenuStatusById(int i, conn_state_t state)
 
         if (state == disconnected)
         {
-            EnableMenuItem(hMenuConn[i], IDM_CONNECTMENU + i, MF_ENABLED);
-            EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU + i, MF_GRAYED);
-            EnableMenuItem(hMenuConn[i], IDM_RECONNECTMENU + i, MF_GRAYED);
-            EnableMenuItem(hMenuConn[i], IDM_STATUSMENU + i, MF_GRAYED);
+            EnableMenuItem(hMenuConn[i], IDM_CONNECTMENU, MF_ENABLED);
+            EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU, MF_GRAYED);
+            EnableMenuItem(hMenuConn[i], IDM_RECONNECTMENU, MF_GRAYED);
+            EnableMenuItem(hMenuConn[i], IDM_STATUSMENU, MF_GRAYED);
         }
         else if (state == connecting || state == resuming || state == connected)
         {
-            EnableMenuItem(hMenuConn[i], IDM_CONNECTMENU + i, MF_GRAYED);
-            EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU + i, MF_ENABLED);
-            EnableMenuItem(hMenuConn[i], IDM_RECONNECTMENU + i, MF_ENABLED);
-            EnableMenuItem(hMenuConn[i], IDM_STATUSMENU + i, MF_ENABLED);
+            EnableMenuItem(hMenuConn[i], IDM_CONNECTMENU, MF_GRAYED);
+            EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU, MF_ENABLED);
+            EnableMenuItem(hMenuConn[i], IDM_RECONNECTMENU, MF_ENABLED);
+            EnableMenuItem(hMenuConn[i], IDM_STATUSMENU, MF_ENABLED);
         }
         else if (state == disconnecting)
         {
-            EnableMenuItem(hMenuConn[i], IDM_CONNECTMENU + i, MF_GRAYED);
-            EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU + i, MF_GRAYED);
-            EnableMenuItem(hMenuConn[i], IDM_RECONNECTMENU + i, MF_GRAYED);
-            EnableMenuItem(hMenuConn[i], IDM_STATUSMENU + i, MF_ENABLED);
+            EnableMenuItem(hMenuConn[i], IDM_CONNECTMENU, MF_GRAYED);
+            EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU, MF_GRAYED);
+            EnableMenuItem(hMenuConn[i], IDM_RECONNECTMENU, MF_GRAYED);
+            EnableMenuItem(hMenuConn[i], IDM_STATUSMENU, MF_ENABLED);
         }
         if (c->flags & (FLAG_SAVE_AUTH_PASS | FLAG_SAVE_KEY_PASS))
-            EnableMenuItem(hMenuConn[i], IDM_CLEARPASSMENU + i, MF_ENABLED);
+            EnableMenuItem(hMenuConn[i], IDM_CLEARPASSMENU, MF_ENABLED);
         else
-            EnableMenuItem(hMenuConn[i], IDM_CLEARPASSMENU + i, MF_GRAYED);
+            EnableMenuItem(hMenuConn[i], IDM_CLEARPASSMENU, MF_GRAYED);
     }
 }
 
