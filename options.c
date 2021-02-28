@@ -294,6 +294,20 @@ add_option(options_t *options, int i, TCHAR **p)
     {
         options->disable_popup_messages = 1;
     }
+    else if (streq(p[0], _T("management_port_offset")) && p[1])
+    {
+        ++i;
+        int tmp = _wtoi(p[1]);
+        if (tmp < 1  || tmp > 61000)
+        {
+            MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Specified management port offset is not valid (must be in the range 1 to 61000). Ignored.");
+        }
+        else
+        {
+            options->mgmt_port_offset = tmp;
+        }
+    }
+
     else
     {
         /* Unrecognized option or missing parameter */
@@ -567,7 +581,7 @@ CheckAdvancedDlgParams (HWND hdlg)
     /* Restrict the port offset to sensible range -- port used is this + upto ~4000 as connection index */
     if (!status || (tmp < 1 || tmp > 61000))
     {
-        MessageBox (NULL, L"Specified port is not valid (must be n the range 1 to 61000)",
+        MessageBox (NULL, L"Specified port is not valid (must be in the range 1 to 61000)",
                     L"Option error", MB_OK);
         return false;
     }
