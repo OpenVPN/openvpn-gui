@@ -42,6 +42,9 @@ extern options_t o;
 #define ECHO_MSG_WINDOW (1)
 #define ECHO_MSG_NOTIFY (2)
 
+/* Old text in the window is deleted when content grows beyond this many lines */
+#define MAX_MSG_LINES 1000
+
 struct echo_msg_history {
     struct echo_msg_fp fp;
     struct echo_msg_history *next;
@@ -456,6 +459,19 @@ AddMessageBoxText(HWND hwnd, const wchar_t *text, const wchar_t *title, const wc
     /* revert alignment */
     pf.wAlignment = pf_align_saved;
     SendMessage(hmsg, EM_SETPARAFORMAT, 0, (LPARAM) &pf);
+
+    /* Remove lines from the window if it is getting full
+     * We allow the window to grow by upto 50 lines beyond a
+     * max value before truncating
+     */
+    int pos2 = SendMessage(hmsg, EM_GETLINECOUNT, 0, 0);
+    if (pos2 > MAX_MSG_LINES + 50)
+    {
+        int pos1 = SendMessage(hmsg, EM_LINEINDEX, MAX_MSG_LINES, 0);
+        SendMessage(hmsg, EM_SETSEL, pos1, -1);
+        SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM) _T(""));
+        PrintDebug(L"Text from character position %d to end removed", pos1);
+    }
 
     /* Select top of the message and scroll to there */
     SendMessage(hmsg, EM_SETSEL, 0, 0);
