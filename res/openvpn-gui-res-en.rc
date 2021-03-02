@@ -376,7 +376,7 @@ BEGIN
                   "    reconnect cnn          \t: reconnect the config named ""cnn""\n"\
                   "    disconnect_all         \t: disconnect all connected configs\n"\
                   "    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n"\
-                  "    status cnn           \t\t: show the status window of config ""cnn"" if connected\n"\
+                  "    status cnn             \t: show the status window of config ""cnn"" if connected\n"\
                   "    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n"\
 		  "\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n"\
                   "\n" \
@@ -395,12 +395,17 @@ BEGIN
                   "--allow_proxy\t\t: 1=Show Proxy Settings menu.\n" \
                   "--show_balloon\t\t: 0=Never, 1=At initial connect, 2=At every reconnect.\n" \
                   "--service_only\t\t: 1=Enable Service Only mode.\n" \
-                  "--silent_connection\t\t: 1=Do not show the status dialog while connecting or non-critical warnings at startup.\n" \
+                  "--silent_connection\t: 1=Do not show the status dialog while connecting or non-critical warnings at startup.\n" \
                   "--show_script_window\t: 0=Hide Script execution window, 1=Show it.\n" \
                   "--passphrase_attempts\t: Number of passphrase attempts to allow.\n" \
                   "--connectscript_timeout\t: Time to wait for connect script to finish.\n" \
                   "--disconnectscript_timeout\t: Time to wait for disconnect script to finish.\n" \
-                  "--preconnectscript_timeout\t: Time to wait for preconnect script to finish.\n"
+                  "--preconnectscript_timeout\t: Time to wait for preconnect script to finish.\n" \
+                  "--iservice_admin\t\t: 0=Do not use interactive service when started as admin (default is 1 for Windows 7 and newer)\n" \
+                  "--disable_popup_messages\t: Do not popup (i.e., show) the echo message window. Default is to show.\n" \
+                  "--popup_mute_interval\t: Time in hours for which a previously shown echo message is not re-displayed. Default=24 hours.\n" \
+                  "--management_port_offset\t: Offset value added to config index to determine the management port for a connection.\n" \
+                  "\t\t\t Must be in the range 1 to 61000. Maximum number of configs is limited by 65536 minus this value. Default=25340.\n"
 
     IDS_NFO_USAGECAPTION "OpenVPN GUI Usage"
     IDS_ERR_BAD_PARAMETER "I'm trying to parse ""%s"" as an --option parameter " \
