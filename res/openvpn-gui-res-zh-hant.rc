@@ -385,7 +385,13 @@ BEGIN
                   "--passphrase_attempts\t: 允許嘗試輸入密碼次數。\n" \
                   "--connectscript_timeout\t: 等待連線指令碼執行的時限。\n" \
                   "--disconnectscript_timeout\t: 等待斷線指令碼執行的時限。\n" \
-                  "--preconnectscript_timeout\t: 等待連線前指令碼執行的時限。\n"
+                  "--preconnectscript_timeout\t: Time to wait for preconnect script to finish.\n" \
+                  "--iservice_admin\t\t: 0=Do not use interactive service when started as admin (default is 1 for Windows 7 and newer)\n" \
+                  "--disable_popup_messages\t: Do not popup (i.e., show) the echo message window. Default is to show.\n" \
+                  "--popup_mute_interval\t: Time in hours for which a previously shown echo message is not re-displayed. Default=24 hours.\n" \
+                  "--management_port_offset\t: Offset value added to config index to determine the management port for a connection.\n" \
+                  "\t\t\t Must be in the range 1 to 61000. Maximum number of configs is limited by 65536 minus this value. Default=25340.\n"
+
 
     IDS_NFO_USAGECAPTION "OpenVPN GUI 使用方式"
     IDS_ERR_BAD_PARAMETER "嘗試將「%s」剖析成 --option 的參數，" \

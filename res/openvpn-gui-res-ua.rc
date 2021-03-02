@@ -382,7 +382,13 @@ BEGIN
                   "--passphrase_attempts\t: Кількість спроб вводу паролю.\n" \
                   "--connectscript_timeout\t: Час очікування завершення скрипта підключення.\n" \
                   "--disconnectscript_timeout\t: Час очікування завершення скрипта відключення.\n" \
-                  "--preconnectscript_timeout\t: Час очікування завершення скрипта до підключення.\n"
+                  "--preconnectscript_timeout\t: Time to wait for preconnect script to finish.\n" \
+                  "--iservice_admin\t\t: 0=Do not use interactive service when started as admin (default is 1 for Windows 7 and newer)\n" \
+                  "--disable_popup_messages\t: Do not popup (i.e., show) the echo message window. Default is to show.\n" \
+                  "--popup_mute_interval\t: Time in hours for which a previously shown echo message is not re-displayed. Default=24 hours.\n" \
+                  "--management_port_offset\t: Offset value added to config index to determine the management port for a connection.\n" \
+                  "\t\t\t Must be in the range 1 to 61000. Maximum number of configs is limited by 65536 minus this value. Default=25340.\n"
+
 
     IDS_NFO_USAGECAPTION "Спроба OpenVPN GUI"
     IDS_ERR_BAD_PARAMETER "Спроба запуску з ""%s"" як --опція параметр, " \
