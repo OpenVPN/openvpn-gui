@@ -330,7 +330,7 @@ BEGIN
     IDS_ERR_GET_EXIT_CODE "Impossible d'obtenir l'ExitCode du script de connexion (%s)"
     IDS_ERR_CONN_SCRIPT_FAILED "Le script de connexion à échoué. (code de sortie=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Le script de connexion à échoué. TimeOut après %d sec."
-    IDS_ERR_CONFIG_EXIST "Il éxiste déjà un fichier de configuration nommé '%s'. Vous ne pouvez " \
+    IDS_ERR_CONFIG_EXIST "Il existe déjà un fichier de configuration nommé '%s'. Vous ne pouvez " \
                          "pas avoir différentes configurations avec le même nom même s'ils " \
                          "ont placés dans un répertoire différent."
     IDS_NFO_CONN_TIMEOUT "La connexion à l'interface de gestion a échoué.\n" \
