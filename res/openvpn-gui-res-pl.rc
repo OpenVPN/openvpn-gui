@@ -166,7 +166,7 @@ CAPTION "Ogólne"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 BEGIN
-    GROUPBOX "Interfejs użytkownika", 201, 6, 12, 235, 30
+    GROUPBOX "Interface użytkownika", 201, 6, 12, 235, 30
     LTEXT "&Język:", ID_TXT_LANGUAGE, 17, 25, 52, 12
     COMBOBOX ID_CMB_LANGUAGE, 42, 23, 186, 400, CBS_DROPDOWNLIST | WS_TABSTOP
 
