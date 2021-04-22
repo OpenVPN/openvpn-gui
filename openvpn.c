@@ -642,6 +642,19 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         {
             SetDlgItemTextW(hwndDlg, ID_TXT_DESCRIPTION, wstr);
 
+            /* If response is not required show a message box with the challenge
+             * text and autosubmit an empty password (see management-notes.txt)
+             */
+            if ((param->flags & FLAG_CR_RESPONSE) == 0)
+            {
+                wchar_t title[256];
+                GetWindowTextW(hwndDlg, title, _countof(title));
+                if (MessageBox(param->c->hwndStatus, wstr, title, MB_OKCANCEL) == IDOK)
+                    SimulateButtonPress(hwndDlg, IDOK);
+                else
+                    SimulateButtonPress(hwndDlg, IDCANCEL);
+            }
+
             /* Set password echo on if needed */
             if (param->flags & FLAG_CR_ECHO)
                 SendMessage(GetDlgItem(hwndDlg, ID_EDT_RESPONSE), EM_SETPASSWORDCHAR, 0, 0);
@@ -1048,13 +1061,6 @@ OnPassword(connection_t *c, char *msg)
         if (chstr)
         {
             chstr += 5; /* beginning of dynamic CR string */
-
-            /* Check if a response is required: ie.,  starts with R or E,R */
-            if (strncmp (chstr, "R", 1) != 0 && strncmp (chstr, "E,R", 3) != 0)
-            {
-                PrintDebug(L"Got dynamic challenge request with no response required: <%S>", chstr);
-                return;
-            }
 
             /* Save the string for later processing during next Auth request */
             c->dynamic_cr = strdup(chstr);
