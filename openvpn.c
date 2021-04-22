@@ -664,6 +664,9 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         else
             SetForegroundWindow(hwndDlg);
 
+        /* disable OK button by default - not disabled in resources */
+        EnableWindow(GetDlgItem(hwndDlg, IDOK), FALSE);
+
         break;
 
     case WM_COMMAND:
@@ -672,6 +675,15 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         char *fmt;
         switch (LOWORD(wParam))
         {
+        case ID_EDT_RESPONSE:
+            if (HIWORD(wParam) == EN_UPDATE)
+            {
+                /* enable OK if response is non-empty */
+                BOOL enableOK = GetWindowTextLength((HWND) lParam);
+                EnableWindow(GetDlgItem(hwndDlg, IDOK), enableOK);
+            }
+            break;
+
         case IDOK:
             if (GetDlgItemTextW(hwndDlg, ID_EDT_RESPONSE, password, _countof(password))
                 && !validate_input(password, L"\n"))
@@ -782,6 +794,9 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             ForceForegroundWindow(hwndDlg);
         else
             SetForegroundWindow(hwndDlg);
+
+        /* disable OK button by default - not disabled in resources */
+        EnableWindow(GetDlgItem(hwndDlg, IDOK), FALSE);
         break;
 
     case WM_COMMAND:
@@ -796,6 +811,15 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             {
                 Button_SetCheck (GetDlgItem (hwndDlg, ID_CHK_SAVE_PASS), BST_UNCHECKED);
                 DeleteSavedKeyPass(c->config_name);
+            }
+            break;
+
+        case ID_EDT_PASSPHRASE:
+            if (HIWORD(wParam) == EN_UPDATE)
+            {
+                /* enable OK if response is non-empty */
+                BOOL enableOK = GetWindowTextLength((HWND) lParam);
+                EnableWindow(GetDlgItem(hwndDlg, IDOK), enableOK);
             }
             break;
 
