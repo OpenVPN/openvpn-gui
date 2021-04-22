@@ -519,15 +519,18 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         switch (LOWORD(wParam))
         {
         case ID_EDT_AUTH_USER:
+        case ID_EDT_AUTH_PASS:
+        case ID_EDT_AUTH_CHALLENGE:
             if (HIWORD(wParam) == EN_UPDATE)
             {
-                int len = Edit_GetTextLength((HWND) lParam);
-                EnableWindow(GetDlgItem(hwndDlg, IDOK), (len ? TRUE : FALSE));
+                /* enable OK button only if username and either password or response are filled */
+                BOOL enableOK = GetWindowTextLength(GetDlgItem(hwndDlg, ID_EDT_AUTH_USER))
+                                && (GetWindowTextLength(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS))
+                                    || ((param->flags & FLAG_CR_TYPE_SCRV1)
+                                        && GetWindowTextLength(GetDlgItem(hwndDlg, ID_EDT_AUTH_CHALLENGE)))
+                                   );
+                EnableWindow(GetDlgItem(hwndDlg, IDOK), enableOK);
             }
-            AutoCloseCancel(hwndDlg); /* user interrupt */
-            break;
-
-        case ID_EDT_AUTH_PASS:
             AutoCloseCancel(hwndDlg); /* user interrupt */
             break;
 
