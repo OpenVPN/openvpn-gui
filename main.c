@@ -175,17 +175,17 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
 
   /* Initialize handlers for manangement interface notifications */
   mgmt_rtmsg_handler handler[] = {
-      { ready,    OnReady },
-      { hold,     OnHold },
-      { log,      OnLogLine },
-      { state,    OnStateChange },
-      { password, OnPassword },
-      { proxy,    OnProxy },
-      { stop,     OnStop },
-      { needok,   OnNeedOk },
-      { needstr,  OnNeedStr },
-      { echo,     OnEcho },
-      { bytecount,OnByteCount },
+      { ready_,    OnReady },
+      { hold_,     OnHold },
+      { log_,      OnLogLine },
+      { state_,    OnStateChange },
+      { password_, OnPassword },
+      { proxy_,    OnProxy },
+      { stop_,     OnStop },
+      { needok_,   OnNeedOk },
+      { needstr_,  OnNeedStr },
+      { echo_,     OnEcho },
+      { bytecount_,OnByteCount },
       { 0,        NULL }
   };
   InitManagement(handler);

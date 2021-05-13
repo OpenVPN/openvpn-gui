@@ -25,18 +25,18 @@
 #include <winsock2.h>
 
 typedef enum {
-    ready,
-    stop,
-    bytecount,
-    echo,
-    hold,
-    log,
-    password,
-    proxy,
-    state,
-    needok,
-    needstr,
-    pkcs11_id_count,
+    ready_,
+    stop_,
+    bytecount_,
+    echo_,
+    hold_,
+    log_,
+    password_,
+    proxy_,
+    state_,
+    needok_,
+    needstr_,
+    pkcs11_id_count_,
     mgmt_rtmsg_type_max
 } mgmt_rtmsg_type;
 
