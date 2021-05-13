@@ -212,7 +212,7 @@ OnManagement(SOCKET sk, LPARAM lParam)
                 if (c->state != disconnected)
                     c->state = timedout;
                 CloseManagement (c);
-                rtmsg_handler[stop](c, "");
+                rtmsg_handler[stop_](c, "");
             }
         }
         else
@@ -282,55 +282,55 @@ OnManagement(SOCKET sk, LPARAM lParam)
                 pos = line + 1;
                 if (strncmp(pos, "LOG:", 4) == 0)
                 {
-                    if (rtmsg_handler[log])
-                        rtmsg_handler[log](c, pos + 4);
+                    if (rtmsg_handler[log_])
+                        rtmsg_handler[log_](c, pos + 4);
                 }
                 else if (strncmp(pos, "STATE:", 6) == 0)
                 {
-                    if (rtmsg_handler[state])
-                        rtmsg_handler[state](c, pos + 6);
+                    if (rtmsg_handler[state_])
+                        rtmsg_handler[state_](c, pos + 6);
                 }
                 else if (strncmp(pos, "HOLD:", 5) == 0)
                 {
-                    if (rtmsg_handler[hold])
-                        rtmsg_handler[hold](c, pos + 5);
+                    if (rtmsg_handler[hold_])
+                        rtmsg_handler[hold_](c, pos + 5);
                 }
                 else if (strncmp(pos, "PASSWORD:", 9) == 0)
                 {
-                    if (rtmsg_handler[password])
-                        rtmsg_handler[password](c, pos + 9);
+                    if (rtmsg_handler[password_])
+                        rtmsg_handler[password_](c, pos + 9);
                 }
                 else if (strncmp(pos, "PROXY:", 6) == 0)
                 {
-                    if (rtmsg_handler[proxy])
-                        rtmsg_handler[proxy](c, pos + 6);
+                    if (rtmsg_handler[proxy_])
+                        rtmsg_handler[proxy_](c, pos + 6);
                 }
                 else if (strncmp(pos, "INFO:", 5) == 0)
                 {
                     /* delay until management interface accepts input */
                     Sleep(100);
-                    if (rtmsg_handler[ready])
-                        rtmsg_handler[ready](c, pos + 5);
+                    if (rtmsg_handler[ready_])
+                        rtmsg_handler[ready_](c, pos + 5);
                 }
                 else if (strncmp(pos, "NEED-OK:", 8) == 0)
                 {
-                    if (rtmsg_handler[needok])
-                        rtmsg_handler[needok](c, pos + 8);
+                    if (rtmsg_handler[needok_])
+                        rtmsg_handler[needok_](c, pos + 8);
                 }
                 else if (strncmp(pos, "NEED-STR:", 9) == 0)
                 {
-                    if (rtmsg_handler[needstr])
-                        rtmsg_handler[needstr](c, pos + 9);
+                    if (rtmsg_handler[needstr_])
+                        rtmsg_handler[needstr_](c, pos + 9);
                 }
                 else if (strncmp(pos, "ECHO:", 5) == 0)
                 {
-                    if (rtmsg_handler[echo])
-                        rtmsg_handler[echo](c, pos + 5);
+                    if (rtmsg_handler[echo_])
+                        rtmsg_handler[echo_](c, pos + 5);
                 }
                 else if (strncmp(pos, "BYTECOUNT:", 10) == 0)
                 {
-                    if (rtmsg_handler[bytecount])
-                        rtmsg_handler[bytecount](c, pos + 10);
+                    if (rtmsg_handler[bytecount_])
+                        rtmsg_handler[bytecount_](c, pos + 10);
                 }
             }
             else if (c->manage.cmd_queue)
@@ -349,7 +349,7 @@ OnManagement(SOCKET sk, LPARAM lParam)
                     char buf[256];
                     _snprintf_0(buf, "%lld,N,Previous command sent to management failed: %s",
                                 (long long)time(NULL), line)
-                    rtmsg_handler[log](c, buf);
+                    rtmsg_handler[log_](c, buf);
 
                     if (cmd->handler)
                         cmd->handler(c, NULL);
@@ -374,8 +374,8 @@ OnManagement(SOCKET sk, LPARAM lParam)
 
     case FD_CLOSE:
         CloseManagement (c);
-        if (rtmsg_handler[stop])
-            rtmsg_handler[stop](c, "");
+        if (rtmsg_handler[stop_])
+            rtmsg_handler[stop_](c, "");
         break;
     }
 }
