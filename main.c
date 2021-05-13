@@ -492,7 +492,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
   MENUINFO minfo = {.cbSize = sizeof(MENUINFO)};
 
   switch (message) {
-    case WM_CREATE:       
+    case WM_CREATE:
 
       /* Save Window Handle */
       o.hWnd = hwnd;
@@ -516,7 +516,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
       echo_msg_init();
 
-      CreatePopupMenus();	/* Create popup menus */  
+      CreatePopupMenus();	/* Create popup menus */
       ShowTrayIcon();
       if (o.service_only)
         CheckServiceStatus();	// Check if service is running or not
@@ -525,7 +525,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         break;
       }
       break;
-    	
+
     case WM_NOTIFYICONTRAY:
       OnNotifyTray(lParam); 	// Manages message from tray
       break;
@@ -601,7 +601,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
     case WM_DESTROY:
       WTSUnRegisterSessionNotification(hwnd);
-      StopAllOpenVPN();	
+      StopAllOpenVPN();
       OnDestroyTray();          /* Remove Tray Icon and destroy menus */
       PostQuitMessage (0);	/* Send a WM_QUIT to the message queue */
       break;
@@ -634,7 +634,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
           ShowTrayIcon();
           CheckAndSetTrayIcon();
           break;
-        }      
+        }
       return DefWindowProc (hwnd, message, wParam, lParam);
   }
 
@@ -744,11 +744,11 @@ CloseApplication(HWND hwnd)
 void
 ImportConfigFile()
 {
-    
+
     TCHAR filter[2*_countof(o.ext_string)+5];
 
     _sntprintf_0(filter, _T("*.%s%c*.%s%c"), o.ext_string, _T('\0'), o.ext_string, _T('\0'));
-    
+
     OPENFILENAME fn;
     TCHAR source[MAX_PATH] = _T("");
 
@@ -765,7 +765,7 @@ ImportConfigFile()
     fn.Flags = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST;
     fn.lpstrDefExt = NULL;
 
-    if (GetOpenFileName(&fn)) 
+    if (GetOpenFileName(&fn))
     {
 
         TCHAR destination[MAX_PATH];
@@ -782,7 +782,7 @@ ImportConfigFile()
         _sntprintf_0(destination, _T("%s\\%s"), o.config_dir, fileName);
 
         destination[_tcslen(destination) - _tcslen(o.ext_string) - 1] = _T('\0');
-        
+
         if (EnsureDirExists(destination))
         {
 
@@ -841,19 +841,19 @@ DWORD GetDllVersion(LPCTSTR lpszDllName)
     HINSTANCE hinstDll;
     DWORD dwVersion = 0;
 
-    /* For security purposes, LoadLibrary should be provided with a 
+    /* For security purposes, LoadLibrary should be provided with a
        fully-qualified path to the DLL. The lpszDllName variable should be
        tested to ensure that it is a fully qualified path before it is used. */
     hinstDll = LoadLibrary(lpszDllName);
-	
+
     if(hinstDll)
     {
         DLLGETVERSIONPROC pDllGetVersion;
-        pDllGetVersion = (DLLGETVERSIONPROC)GetProcAddress(hinstDll, 
+        pDllGetVersion = (DLLGETVERSIONPROC)GetProcAddress(hinstDll,
                           "DllGetVersion");
 
         /* Because some DLLs might not implement this function, you
-        must test for it explicitly. Depending on the particular 
+        must test for it explicitly. Depending on the particular
         DLL, the lack of a DllGetVersion function can be a useful
         indicator of the version. */
 
