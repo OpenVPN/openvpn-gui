@@ -1,0 +1,45 @@
+# The name of our workflow
+name: Build
+on: [push, pull_request]
+
+jobs:
+  msvc:
+    strategy:
+      matrix:
+        arch: [amd64, amd64_arm64]
+
+    env:
+      # Indicates the location of the vcpkg as a Git submodule of the project repository.
+      VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+      SOLUTION_FILE_PATH: .
+      BUILD_CONFIGURATION: Release
+      buildDir: '${{ github.workspace }}/build'
+
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: lukka/get-cmake@latest
+    - uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: ${{ matrix.arch }}
+
+    - name: Restore from cache and install vcpkg
+      uses: lukka/run-vcpkg@v6
+      with:
+        setupOnly: true
+        vcpkgGitCommitId: 'a267ab118c09f56f3dae96c9a4b3410820ad2f0b'
+        additionalCachedPaths: ${{ env.buildDir }}/vcpkg_installed
+        appendedCacheKey: ${{ matrix.arch }}-${{ hashFiles( '**/vcpkg.json' ) }}
+
+    - name: Run CMake with vcpkg.json manifest
+      uses: lukka/run-cmake@v3
+      with:
+        useVcpkgToolchainFile: true
+        buildWithCMake: true
+        buildDirectory: ${{ env.buildDir }}
+        cmakeAppendedArgs: '-GNinja'
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: openvpn-gui ${{ matrix.arch }}
+        path: '${{ env.buildDir }}/openvpn-gui.exe'
