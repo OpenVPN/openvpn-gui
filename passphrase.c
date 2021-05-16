@@ -371,17 +371,18 @@ ChangePassphraseDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPARAM 
               break;
             }
 
-          /* Check minimum length of password */
-          if (NewPasswordLengh(hwndDlg) < MIN_PASSWORD_LEN)
+          /* Confirm if the new password is empty. */
+          if (NewPasswordLengh(hwndDlg) == 0)
+            {
+               if (ShowLocalizedMsgEx(MB_YESNO, _T(PACKAGE_NAME), IDS_NFO_EMPTY_PWD) == IDNO)
+                  break;
+            }
+          /* Else check minimum length of password */
+          else if (NewPasswordLengh(hwndDlg) < MIN_PASSWORD_LEN)
             {
               ShowLocalizedMsg(IDS_ERR_PWD_TO_SHORT, MIN_PASSWORD_LEN);
               break;
             }
-
-          /* Confirm if the new password is empty. */
-          if (NewPasswordLengh(hwndDlg) == 0
-          && ShowLocalizedMsgEx(MB_YESNO, _T(PACKAGE_NAME), IDS_NFO_EMPTY_PWD) == IDNO)
-            break;
 
           GetDlgItemText(hwndDlg, ID_TXT_KEYFILE, keyfile, _countof(keyfile) - 1);
           keyfile_format=GetDlgItemInt(hwndDlg, ID_TXT_KEYFORMAT, &Translated, FALSE);
