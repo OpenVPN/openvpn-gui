@@ -131,9 +131,9 @@ FONT 9, "맑은 고딕"
 LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
 BEGIN
     GROUPBOX "   ", 201, 6, 46, 235, 52
-    AUTORADIOBUTTON "OpenVPN 설정 사용", ID_RB_PROXY_OPENVPN, \
+    AUTORADIOBUTTON "OpenVPN 설정 사용", ID_RB_PROXY_OPENVPN,
                     13, 16, 200, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "시스템 Proxy 설정 사용", \
+    AUTORADIOBUTTON "시스템 Proxy 설정 사용",
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
     AUTORADIOBUTTON "수동 설정", ID_RB_PROXY_MANUAL, 13, 46, 44, 10
     AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
@@ -214,17 +214,17 @@ FONT 9, "맑은 고딕"
 LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, 0, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v" PACKAGE_VERSION_RESOURCE_STR " - A Windows GUI for OpenVPN\n" \
-          "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n" \
-          "Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n" \
-          "Copyright (C) 2012-" GUI_COPYRIGHT_YEAR_END " OpenVPN GUI contributors\n" \
-          "https://github.com/OpenVPN/openvpn-gui/", 0, 36, 15, 206, 42
-    LTEXT "OpenVPN - SSL/TLS 기반의 세션 인증, 키 교환, 패킷 암호화, "\
-          "패킷 인증 및 패킷 압축을 지원하여 단일 TCP/UDP 포트를 통해 " \
-          "IP 네트워크를 안전하게 터널링하는 응용 프로그램 입니다.\n" \
-          "\n" \
-          "Copyright (C) 2002-" CORE_COPYRIGHT_YEAR_END " OpenVPN Technologies, Inc <info@openvpn.net>\n" \
-          "https://openvpn.net/", 0, 8, 61, 240, 64
+    LTEXT "OpenVPN GUI v%s - A Windows GUI for OpenVPN\n\
+Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
+Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
+Copyright (C) 2012-2021 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
+    LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_TXT_VERSION, 36, 55, 206, 42
+    LTEXT "OpenVPN - SSL/TLS 기반의 세션 인증, 키 교환, 패킷 암호화, \
+패킷 인증 및 패킷 압축을 지원하여 단일 TCP/UDP 포트를 통해 \
+IP 네트워크를 안전하게 터널링하는 응용 프로그램 입니다.\n\
+\n", 0, 8, 70, 240, 64
+    LTEXT "Copyright (C) 2002-2021 OpenVPN Technologies, Inc <info@openvpn.net>\n\
+https://openvpn.net/", 0, 8, 106, 240, 64
 END
 
 /* Proxy Authentication Dialog */
@@ -278,15 +278,15 @@ BEGIN
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI는 %d config 이상의 설정은 지원하지 않습니다. 더이상 설정이 필요한 경우 개발자에게 연락 하십시오."
-    IDS_NFO_NO_CONFIGS "설정 파일이 없습니다.\n" \
-                       """파일 불러오기.."" 메뉴를 이용하거나 설정 파일을 ""%s"" 또는 ""%s""로 복사 하십시오."
-    IDS_ERR_CONFIG_NOT_AUTHORIZED "이 연결(%s)을 시작하기 위하여 ""%s"" 그룹 권한이 필요합니다." \
-                                  "시스템 관리자에게 문의 하십시오.\n"
-    IDS_ERR_CONFIG_TRY_AUTHORIZE  "이 연결(%s)을 시작하기 위하여 ""%s"" 그룹 권한이 필요합니다.\n\n" \
-                                  "자신을 이 그룹에 추가하겠습니까?\n" \
-                                  "이 작업은 관리자 암호 또는 동의를 요구할 수 있습니다."
-    IDS_NFO_CONFIG_AUTH_PENDING   "이 연결(%s)을 시작하기 위하여 ""%s"" 그룹 권한이 필요합니다.\n\n" \
-                                  "이전의 인증 대화 상자를 완료 하십시오."
+    IDS_NFO_NO_CONFIGS "설정 파일이 없습니다.\n\
+""파일 불러오기.."" 메뉴를 이용하거나 설정 파일을 ""%s"" 또는 ""%s""로 복사 하십시오."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "이 연결(%s)을 시작하기 위하여 ""%s"" 그룹 권한이 필요합니다.\
+시스템 관리자에게 문의 하십시오.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "이 연결(%s)을 시작하기 위하여 ""%s"" 그룹 권한이 필요합니다.\n\n\
+자신을 이 그룹에 추가하겠습니까?\n\
+이 작업은 관리자 암호 또는 동의를 요구할 수 있습니다."
+    IDS_NFO_CONFIG_AUTH_PENDING   "이 연결(%s)을 시작하기 위하여 ""%s"" 그룹 권한이 필요합니다.\n\n\
+이전의 인증 대화 상자를 완료 하십시오."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP """%s"" group에 사용자 추가를 실패했습니다."
     IDS_ERR_ONE_CONN_OLD_VER "OpenVPN 2.0-beta6 이전 버전에서는 2개 이상의 동시 연결을 지원하지 않습니다."
     IDS_ERR_STOP_SERV_OLD_VER "OpenVPN 1.5/1.6을 사용할 경우, OpenVPN 서비스가 구동되고 있으면 OpenVPN GUI을 이용하여 연결을 할 수 없습니다. OpenVPN GUI를 사용하려면, 먼저 OpenVPN 서비스를 중지 시키십시오."
@@ -329,10 +329,10 @@ BEGIN
     IDS_ERR_GET_EXIT_CODE "연결 스크립트(%s)의 종료코드를 받아오지 못함"
     IDS_ERR_CONN_SCRIPT_FAILED "연결 스크립트 실패. (종료코드=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "연결 스크립트 실패. %d초 경과 되었습니다."
-    IDS_ERR_CONFIG_EXIST "'%s' 설정 파일이 이미 존재 합니다. 비록 경로가 다르더라도 " \
-                         "동일한 설정 파일 이름은 사용할 수 없습니다."
-    IDS_NFO_CONN_TIMEOUT "관리 인터페이스 연결에 실패했습니다.\n" \
-                         "자세한 사항은 로그파일(%s)을 참조 하십시오."
+    IDS_ERR_CONFIG_EXIST "'%s' 설정 파일이 이미 존재 합니다. 비록 경로가 다르더라도 \
+동일한 설정 파일 이름은 사용할 수 없습니다."
+    IDS_NFO_CONN_TIMEOUT "관리 인터페이스 연결에 실패했습니다.\n\
+자세한 사항은 로그파일(%s)을 참조 하십시오."
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "디버그 파일(%s)을 출력할 수 없습니다."
     IDS_ERR_CREATE_PATH "%s 생성 실패:\n%s"
@@ -340,60 +340,60 @@ BEGIN
     IDS_ERR_SHELL_DLL_VERSION "shell32.dll version이 오래되었습니다(0x%lx). 5.0 이상이 필요 합니다."
     IDS_NFO_SERVICE_STARTED "OpenVPN Service가 시작 되었습니다."
     IDS_NFO_SERVICE_STOPPED "OpenVPN Service가 중지 되었습니다."
-    IDS_NFO_ACTIVE_CONN_EXIT "OpenVPN GUI을 종료하면 현재 연결되어 있는 접속이 중단 됩니다." \
-                             "\n\n그래도 종료 하겠습니까?"
-    IDS_NFO_SERVICE_ACTIVE_EXIT "현재 접속 중 입니다. (OpenVPN Service가 실행 중 입니다.) " \
-                                "OpenVPN GUI를 종료 하더라도, 접속은 중단되지 않습니다.\n\n" \
-                                "OpenVPN GUI를 이대로 종료 하겠습니까?"
+    IDS_NFO_ACTIVE_CONN_EXIT "OpenVPN GUI을 종료하면 현재 연결되어 있는 접속이 중단 됩니다.\
+\n\n그래도 종료 하겠습니까?"
+    IDS_NFO_SERVICE_ACTIVE_EXIT "현재 접속 중 입니다. (OpenVPN Service가 실행 중 입니다.) \
+OpenVPN GUI를 종료 하더라도, 접속은 중단되지 않습니다.\n\n\
+OpenVPN GUI를 이대로 종료 하겠습니까?"
 
     /* options - Resources */
-    IDS_NFO_USAGE "--help\t\t\t: 이 메시지 보기.\n" \
-                  "--connect cnn \t\t: 시작 시에 ""cnn""에 연결. (확장자를 포함해야 함)\n" \
-                  "\t\t\t   예: openvpn-gui --connect office.ovpn\n" \
-                  "--command cmd [args]\t: 실행중인 GUI 인스턴스에 명령 보내기\n" \
-                  "지원되는 명령:\n"\
-                  "    connect cnn            \t: ""cnn"" 설정으로 연결\n"\
-                  "    disconnect cnn         \t: ""cnn"" 설정 연결 해제\n"\
-                  "    reconnect cnn          \t: ""cnn"" 설정 재연결\n"\
-                  "    disconnect_all         \t: 연결된 모든 설정을 해제\n"\
-                  "    exit                 \t\t: 실행중인 GUI 인스턴스 종료 (확인을 물어봄)\n"\
-                  "    status cnn           \t\t: 연결 되어 있는 ""cnn"" 설정의 상태를 표시\n"\
-                  "    silent_connection [0|1]\t: silent_connection 플래그를 on(1) 또는 off(0)로 설정\n"\
-                  "\t\t\t예제: openvpn-gui.exe --command disconnect myconfig\n"\
-                  "\n" \
-                  "각 옵션은 레지스트리 설정보다 우선 합니다:\n" \
-                  "--exe_path\t\t: openvpn.exe 경로.\n" \
-                  "--config_dir\t\t: 설정 파일을 찾을 디렉토리 경로\n" \
-                  "--ext_string\t\t: 설정 파일 확장자\n" \
-                  "--log_dir\t\t\t: 로그 파일 저장 경로\n" \
-                  "--priority_string\t\t: 우선 순위 (자세한 내용은 install.txt 참조)\n" \
-                  "--append_string\t\t: 1=로그 파일에 추가. 0=연결할 떄 마다 재작성.\n" \
-                  "--log_viewer\t\t: 로그 뷰어 경로\n" \
-                  "--editor\t\t\t: 설정 편집기 경로\n" \
-                  "--allow_edit\t\t: 1=설정 편집 메뉴 표시\n" \
-                  "--allow_service\t\t: 1=서비스 메뉴 표시\n" \
-                  "--allow_password\t\t: 1=암호 변경 메뉴 표시\n" \
-                  "--allow_proxy\t\t: 1=프락시 설정 메뉴 표시\n" \
-                  "--show_balloon\t\t: 0=표시 안함, 1=접속 시, 2=모든 접속/재접속 시.\n" \
-                  "--service_only\t\t: 1=서비스 전용 모드를 사용\n" \
-                  "--silent_connection\t\t: 1=연결시 상태 표시 대화 상자를 표시하지 않습니다.\n" \
-                  "--show_script_window\t: 0=스크립트 실행창 숨김, 1=보기.\n" \
-                  "--passphrase_attempts\t: 암호 입력 시도 회수\n" \
-                  "--connectscript_timeout\t: 연결 스크립트 종료 대기 시간\n" \
-                  "--disconnectscript_timeout\t: 연결 해제 스크립트 종료 대기 시간\n" \
-                  "--preconnectscript_timeout\t: Time to wait for preconnect script to finish.\n" \
-                  "--iservice_admin\t\t: 0=Do not use interactive service when started as admin (default is 1 for Windows 7 and newer)\n" \
-                  "--disable_popup_messages\t: Do not popup (i.e., show) the echo message window. Default is to show.\n" \
-                  "--popup_mute_interval\t: Time in hours for which a previously shown echo message is not re-displayed. Default=24 hours.\n" \
-                  "--management_port_offset\t: Offset value added to config index to determine the management port for a connection.\n" \
-                  "\t\t\t Must be in the range 1 to 61000. Maximum number of configs is limited by 65536 minus this value. Default=25340.\n"
+    IDS_NFO_USAGE "--help\t\t\t: 이 메시지 보기.\n\
+--connect cnn \t\t: 시작 시에 ""cnn""에 연결. (확장자를 포함해야 함)\n\
+\t\t\t   예: openvpn-gui --connect office.ovpn\n\
+--command cmd [args]\t: 실행중인 GUI 인스턴스에 명령 보내기\n\
+지원되는 명령:\n\
+    connect cnn            \t: ""cnn"" 설정으로 연결\n\
+    disconnect cnn         \t: ""cnn"" 설정 연결 해제\n\
+    reconnect cnn          \t: ""cnn"" 설정 재연결\n\
+    disconnect_all         \t: 연결된 모든 설정을 해제\n\
+    exit                 \t\t: 실행중인 GUI 인스턴스 종료 (확인을 물어봄)\n\
+    status cnn           \t\t: 연결 되어 있는 ""cnn"" 설정의 상태를 표시\n\
+    silent_connection [0|1]\t: silent_connection 플래그를 on(1) 또는 off(0)로 설정\n\
+\t\t\t예제: openvpn-gui.exe --command disconnect myconfig\n\
+\n\
+각 옵션은 레지스트리 설정보다 우선 합니다:\n\
+--exe_path\t\t: openvpn.exe 경로.\n\
+--config_dir\t\t: 설정 파일을 찾을 디렉토리 경로\n\
+--ext_string\t\t: 설정 파일 확장자\n\
+--log_dir\t\t\t: 로그 파일 저장 경로\n\
+--priority_string\t\t: 우선 순위 (자세한 내용은 install.txt 참조)\n\
+--append_string\t\t: 1=로그 파일에 추가. 0=연결할 떄 마다 재작성.\n\
+--log_viewer\t\t: 로그 뷰어 경로\n\
+--editor\t\t\t: 설정 편집기 경로\n\
+--allow_edit\t\t: 1=설정 편집 메뉴 표시\n\
+--allow_service\t\t: 1=서비스 메뉴 표시\n\
+--allow_password\t\t: 1=암호 변경 메뉴 표시\n\
+--allow_proxy\t\t: 1=프락시 설정 메뉴 표시\n\
+--show_balloon\t\t: 0=표시 안함, 1=접속 시, 2=모든 접속/재접속 시.\n\
+--service_only\t\t: 1=서비스 전용 모드를 사용\n\
+--silent_connection\t\t: 1=연결시 상태 표시 대화 상자를 표시하지 않습니다.\n\
+--show_script_window\t: 0=스크립트 실행창 숨김, 1=보기.\n\
+--passphrase_attempts\t: 암호 입력 시도 회수\n\
+--connectscript_timeout\t: 연결 스크립트 종료 대기 시간\n\
+--disconnectscript_timeout\t: 연결 해제 스크립트 종료 대기 시간\n\
+--preconnectscript_timeout\t: Time to wait for preconnect script to finish.\n\
+--iservice_admin\t\t: 0=Do not use interactive service when started as admin (default is 1 for Windows 7 and newer)\n\
+--disable_popup_messages\t: Do not popup (i.e., show) the echo message window. Default is to show.\n\
+--popup_mute_interval\t: Time in hours for which a previously shown echo message is not re-displayed. Default=24 hours.\n\
+--management_port_offset\t: Offset value added to config index to determine the management port for a connection.\n\
+\t\t\t Must be in the range 1 to 61000. Maximum number of configs is limited by 65536 minus this value. Default=25340.\n"
 
 
     IDS_NFO_USAGECAPTION "OpenVPN GUI 사용법"
-    IDS_ERR_BAD_PARAMETER "I'm trying to parse ""%s"" as an --option parameter " \
-                      "but I don't see a leading '--'"
-    IDS_ERR_BAD_OPTION "옵션 오류: 잘못된 옵션 또는 옵션값 누락: --%s\n" \
-                   "자세한 사항은 openvpn-gui --help 명령을 참조 하십시오."
+    IDS_ERR_BAD_PARAMETER "I'm trying to parse ""%s"" as an --option parameter \
+but I don't see a leading '--'"
+    IDS_ERR_BAD_OPTION "옵션 오류: 잘못된 옵션 또는 옵션값 누락: --%s\n\
+자세한 사항은 openvpn-gui --help 명령을 참조 하십시오."
 
     /* passphrase - Resources */
     IDS_ERR_CREATE_PASS_THREAD "CreateThread to show ChangePassphrase dialog failed."
@@ -419,8 +419,8 @@ BEGIN
     IDS_ERR_AUTH_USERNAME2STDIN "사용자 이름을 표준 입력으로 보낼 수 없습니다."
     IDS_ERR_AUTH_PASSWORD2STDIN "암호를 표준 입력으로 보낼 수 없습니다."
     IDS_ERR_CR2STDIN "CR을 표준 입력으로 보낼 수 없습니다."
-    IDS_ERR_INVALID_CHARS_IN_PSW "새 암호에 사용 할 수 없는 문자가 포함 되었습니다. " \
-                             "다른 문자를 사용 하십시오."
+    IDS_ERR_INVALID_CHARS_IN_PSW "새 암호에 사용 할 수 없는 문자가 포함 되었습니다. \
+다른 문자를 사용 하십시오."
 
     /* settings */
     IDS_SETTINGS_CAPTION "OpenVPN - 설정"
@@ -445,34 +445,34 @@ BEGIN
     IDS_NFO_RESTARTED "OpenVPN Service를 재시작 했습니다."
     IDS_ERR_ACCESS_SERVICE_PIPE "Access to service pipe failed."
     IDS_ERR_WRITE_SERVICE_PIPE "Writing to service pipe failed."
-    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is not installed.\n"
-                                 "Tasks requiring administrative access may not work."
-    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" is not started.\n"
-                                 "Tasks requiring administrative access may not work."
-    IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" is not started.\n"
-                                     "Wintun driver will not work."
+    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is not installed.\n\
+Tasks requiring administrative access may not work."
+    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" is not started.\n\
+Tasks requiring administrative access may not work."
+    IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" is not started.\n\
+Wintun driver will not work."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Windows 디렉토리 경로를 알 수 없습니다."
     IDS_ERR_GET_PROFILE_DIR "사용자 프로파일 디렉토리를 알 수 없습니다."
     IDS_ERR_GET_PROGRAM_DIR """Program"" 폴더 이름을 알 수 없습니다."
-    IDS_ERR_OPEN_REGISTRY "레지스트리 (HKLM\\SOFTWARE\\OpenVPN)의 값을 읽을 수 없습니다.\n " \
-                      "OpenVPN이 설치 되어 있지 않은 것 같습니다."
+    IDS_ERR_OPEN_REGISTRY "레지스트리 (HKLM\\SOFTWARE\\OpenVPN)의 값을 읽을 수 없습니다.\n \
+OpenVPN이 설치 되어 있지 않은 것 같습니다."
     IDS_ERR_READING_REGISTRY "레지스트리(HKLM\\SOFTWARE\\OpenVPN) 값을 읽을 수 없습니다.."
     IDS_ERR_PASSPHRASE_ATTEMPTS "레지스트리 ""passphrase_attempts"" 값은 1부터 9 사이여야 합니다."
     IDS_ERR_CONN_SCRIPT_TIMEOUT "레지스트리 ""connectscript_timeout"" 값은 0부터 99 사이어야 합니다."
     IDS_ERR_DISCONN_SCRIPT_TIMEOUT "레지스트리 ""disconnectscript_timeout"" 값은 1부터 99 사이어야 합니다."
     IDS_ERR_PRECONN_SCRIPT_TIMEOUT "레지스트리 ""preconnectscript_timeout"" 값은 1부터 99 사이어야 합니다."
     IDS_ERR_CREATE_REG_KEY "HKLM\\SOFTWARE\\OpenVPN-GUI 키를 만들 수 없습니다.."
-    IDS_ERR_OPEN_WRITE_REG "레지스트리에 기록할 수 없습니다. 레지스트리를 업데이트 하려면 " \
-                       "Administrator 권한으로 이 프로그램을 실행해야 합니다."
+    IDS_ERR_OPEN_WRITE_REG "레지스트리에 기록할 수 없습니다. 레지스트리를 업데이트 하려면 \
+Administrator 권한으로 이 프로그램을 실행해야 합니다."
     IDS_ERR_READ_SET_KEY "레지스트리 ""%s""키 읽기/쓰기를 할 수 없습니다."
     IDS_ERR_WRITE_REGVALUE "레지스트리 ""HKEY_CURRENT_USER\\%s\\%s"" 값을 기록할 수 없습니다."
 
     /* importation */
     IDS_ERR_IMPORT_EXISTS """%s"" 설정 파일은 이미 존재 합니다."
-    IDS_ERR_IMPORT_FAILED "파일 불러오기 실패. 다음 경로를 생성할 수 없습니다.\n\n" \
-                          "%s\n\n올바른 권한을 가지고 있는지 확인 해 보십시오."
+    IDS_ERR_IMPORT_FAILED "파일 불러오기 실패. 다음 경로를 생성할 수 없습니다.\n\n\
+%s\n\n올바른 권한을 가지고 있는지 확인 해 보십시오."
     IDS_NFO_IMPORT_SUCCESS "파일 불러오기 성공."
     IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
     IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"

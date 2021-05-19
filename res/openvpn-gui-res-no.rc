@@ -130,9 +130,9 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_NORWEGIAN, SUBLANG_DEFAULT
 BEGIN
     GROUPBOX "   ", 201, 6, 46, 235, 52
-    AUTORADIOBUTTON "Bruk innstillinger fra OpenVPNs konfigurasjonsfil", ID_RB_PROXY_OPENVPN, \
+    AUTORADIOBUTTON "Bruk innstillinger fra OpenVPNs konfigurasjonsfil", ID_RB_PROXY_OPENVPN,
                     13, 16, 200, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Bruk innstillinger fra Internet Explorer", \
+    AUTORADIOBUTTON "Bruk innstillinger fra Internet Explorer",
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
     AUTORADIOBUTTON "Manuell konfigurering", ID_RB_PROXY_MANUAL, 13, 46, 81, 10
     AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
@@ -212,18 +212,18 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_NORWEGIAN, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, 0, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v" PACKAGE_VERSION_RESOURCE_STR " - Et Windows-grensesnitt mot OpenVPN\n" \
-          "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n" \
-          "Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n" \
-          "Copyright (C) 2012-" GUI_COPYRIGHT_YEAR_END " OpenVPN GUI contributors\n" \
-          "https://github.com/OpenVPN/openvpn-gui/", 0, 36, 15, 206, 50
-    LTEXT "OpenVPN - En applikasjon for sikker kommunikasjon mellom nettverk over en usikker " \
-          "kommunikasjonskanal på én enkelt port, med støtte for SSL/TLS-basert " \
-          "sesjonsautentisering og nøkkelhåndtering, pakkekryptering,  " \
-          "-autentisering og -komprimering.\n" \
-          "\n" \
-          "Copyright (C) 2002-" CORE_COPYRIGHT_YEAR_END " OpenVPN Technologies, Inc <info@openvpn.net>\n" \
-          "https://openvpn.net/", 0, 8, 70, 240, 64
+    LTEXT "OpenVPN GUI v%s - Et Windows-grensesnitt mot OpenVPN\n\
+Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
+Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
+Copyright (C) 2012-2021 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
+    LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_TXT_VERSION, 36, 55, 206, 50
+    LTEXT "OpenVPN - En applikasjon for sikker kommunikasjon mellom nettverk over en usikker \
+kommunikasjonskanal på én enkelt port, med støtte for SSL/TLS-basert \
+sesjonsautentisering og nøkkelhåndtering, pakkekryptering,  \
+-autentisering og -komprimering.\n\
+\n", 0, 8, 70, 240, 64
+    LTEXT "Copyright (C) 2002-2021 OpenVPN Technologies, Inc <info@openvpn.net>\n\
+https://openvpn.net/", 0, 8, 106, 240, 64
 END
 
 /* Proxy Authentication Dialog */
@@ -278,14 +278,14 @@ BEGIN
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "Du kan ikke ha flere enn %d konfigurasjonsfiler. Kontakt utvikleren av OpenVPN GUI om du har behov for å håndtere flere filer."
     IDS_NFO_NO_CONFIGS "Ingen lesbare tilkoblingsprofiler (konfigurasjonsfiler) funnet"
-    IDS_ERR_CONFIG_NOT_AUTHORIZED "For å starte tilkoblingen (%s) kreves medlemskap i gruppen ""%s"". "\
-                                  "Kontakt din systemadministrator for hjelp med dette.\n"
-    IDS_ERR_CONFIG_TRY_AUTHORIZE  "For å starte tilkoblingen (%s) kreves medlemskap i gruppen ""%s"".\n\n"\
-                                  "Vil du gjøre din brukerkonto medlem av denne gruppen?\n"\
-                                  "Du kan bli spurt om administrator-rettigheter for å utføre denne endringen."
-    IDS_NFO_CONFIG_AUTH_PENDING   "Starting this connection (%s) requires membership in "\
-                                  """%s"" group.\n\n"\
-                                  "Please complete the previous authorization dialog."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "For å starte tilkoblingen (%s) kreves medlemskap i gruppen ""%s"". \
+Kontakt din systemadministrator for hjelp med dette.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "For å starte tilkoblingen (%s) kreves medlemskap i gruppen ""%s"".\n\n\
+Vil du gjøre din brukerkonto medlem av denne gruppen?\n\
+Du kan bli spurt om administrator-rettigheter for å utføre denne endringen."
+    IDS_NFO_CONFIG_AUTH_PENDING   "Starting this connection (%s) requires membership in \
+""%s"" group.\n\n\
+Please complete the previous authorization dialog."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Adding the user to ""%s"" group failed."
     IDS_ERR_ONE_CONN_OLD_VER "Du kan bare bruke én enkelt tilkobling av gangen med eldre versjoner av OpenVPN enn 2.0-beta6."
     IDS_ERR_STOP_SERV_OLD_VER "Du kan ikke koble til med OpenVPN GUI når OpenVPN-tjenesten kjører. (kun OpenVPN 1.5/1.6). Stopp tjenesten først om du vil benytte OpenVPN GUI."
@@ -328,8 +328,8 @@ BEGIN
     IDS_ERR_GET_EXIT_CODE "En feil oppsto da avslutningskode fra følgende skript skulle hentes: %s"
     IDS_ERR_CONN_SCRIPT_FAILED "Tilkoblingsskriptet feilet. (avslutningskode=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Tilkoblingsskriptet fikk tidsavbrudd etter %d sekunder."
-    IDS_ERR_CONFIG_EXIST "Det finnes allerede en konfigurasjonsfil med navnet '%s'. Du kan ikke ha flere " \
-                         "konfigurasjonsfiler med samme navn, selv om de ligger i ulike kataloger."
+    IDS_ERR_CONFIG_EXIST "Det finnes allerede en konfigurasjonsfil med navnet '%s'. Du kan ikke ha flere \
+konfigurasjonsfiler med samme navn, selv om de ligger i ulike kataloger."
 
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "Feil under åpning av feilsøkingsfil. (%s)"
@@ -339,57 +339,57 @@ BEGIN
     IDS_NFO_SERVICE_STARTED "OpenVPN-tjenesten startet."
     IDS_NFO_SERVICE_STOPPED "OpenVPN-tjenesten stoppet."
     IDS_NFO_ACTIVE_CONN_EXIT "Aktive tilkoblinger vil bli avbrutt om du avslutter OpenVPN GUI.\n\nVil du avslutte?"
-    IDS_NFO_SERVICE_ACTIVE_EXIT "Du er tilkoblet med OpenVPN (OpenVPN-tjenesten kjører). " \
-                                "Aktive tilkoblinger vil forbli tilkoblet om du avslutter OpenVPN GUI.\n\n" \
-                                "Vil du avslutte?"
+    IDS_NFO_SERVICE_ACTIVE_EXIT "Du er tilkoblet med OpenVPN (OpenVPN-tjenesten kjører). \
+Aktive tilkoblinger vil forbli tilkoblet om du avslutter OpenVPN GUI.\n\n\
+Vil du avslutte?"
 
     /* options - Resources */
-    IDS_NFO_USAGE "--help\t\t\t: Vis dene meldingen.\n" \
-                  "--connect cnn \t\t: Koble til ""cnn"" ved oppstart. (filetternavn må være med)\n" \
-                  "\t\t\t   Eksempel: openvpn-gui --connect office.ovpn\n" \
-                  "--command cmd [args]\t: Send a command to a running instance of the GUI\n" \
-                  "Supported commands:\n"\
-                  "    connect cnn            \t: connect the config named ""cnn""\n"\
-                  "    disconnect cnn         \t: disconnect the config named ""cnn""\n"\
-                  "    reconnect cnn          \t: reconnect the config named ""cnn""\n"\
-                  "    disconnect_all         \t: disconnect all connected configs\n"\
-                  "    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n"\
-                  "    status cnn           \t\t: show the status window of config ""cnn"" if connected\n"\
-                  "    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n"\
-		  "\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n"\
-                  "\n" \
-                  "Parametere som vil overstyre innstillinger gjort i registeret:\n" \
-                  "--exe_path\t\t: Sti til openvpn.exe.\n" \
-                  "--config_dir\t\t: Sti til mappe for konfigurasjonsfiler.\n" \
-                  "--log_dir\t\t\t: Sti til mappe for loggfiler.\n" \
-                  "--priority_string\t\t: Prioritet på OpenVPN prosesser (Se install.txt for detaljer).\n" \
-                  "--append_string\t\t: 1=Behold gammel logg. 0=Tøm loggfil ved ny tilkobling.\n" \
-                  "--log_viewer\t\t: Sti til program for å vise loggfiler.\n" \
-                  "--editor\t\t\t: Sti til program for å endre konfigurasjonsfiler.\n" \
-                  "--allow_edit\t\t: 1=Vis 'Endre innstillinger' i menyen.\n" \
-                  "--allow_service\t\t: 1=Vis 'OpenVPN-tjenesten' i menyen.\n" \
-                  "--allow_password\t\t: 1=Vis 'Endre passord' i menyen.\n" \
-                  "--allow_proxy\t\t: 1=Vis 'Proxy-innstillinger' i menyen.\n" \
-                  "--show_balloon\t\t: 0=Aldri, 1=under tilkobling, 2=Ved hver til- og gjenoppkobling.\n" \
-                  "--service_only\t\t: 1=Kjør kun som bakgrunnstjeneste.\n" \
-                  "--silent_connection\t\t: 1=Skjul statusvindu ved tilkobling.\n" \
-                  "--show_script_window\t: 0=Skjul skriptvindu, 1=Vis skriptvindu.\n" \
-                  "--passphrase_attempts\t: Antall tilkoblingsforsøk.\n" \
-                  "--connectscript_timeout\t: Tidsavbrudd for skript etter tilkobling.\n" \
-                  "--disconnectscript_timeout\t: Tidsavbrudd for skript etter frakobling.\n" \
-                  "--preconnectscript_timeout\t: Time to wait for preconnect script to finish.\n" \
-                  "--iservice_admin\t\t: 0=Do not use interactive service when started as admin (default is 1 for Windows 7 and newer)\n" \
-                  "--disable_popup_messages\t: Do not popup (i.e., show) the echo message window. Default is to show.\n" \
-                  "--popup_mute_interval\t: Time in hours for which a previously shown echo message is not re-displayed. Default=24 hours.\n" \
-                  "--management_port_offset\t: Offset value added to config index to determine the management port for a connection.\n" \
-                  "\t\t\t Must be in the range 1 to 61000. Maximum number of configs is limited by 65536 minus this value. Default=25340.\n"
+    IDS_NFO_USAGE "--help\t\t\t: Vis dene meldingen.\n\
+--connect cnn \t\t: Koble til ""cnn"" ved oppstart. (filetternavn må være med)\n\
+\t\t\t   Eksempel: openvpn-gui --connect office.ovpn\n\
+--command cmd [args]\t: Send a command to a running instance of the GUI\n\
+Supported commands:\n\
+    connect cnn            \t: connect the config named ""cnn""\n\
+    disconnect cnn         \t: disconnect the config named ""cnn""\n\
+    reconnect cnn          \t: reconnect the config named ""cnn""\n\
+    disconnect_all         \t: disconnect all connected configs\n\
+    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n\
+    status cnn           \t\t: show the status window of config ""cnn"" if connected\n\
+    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n\
+\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n\
+\n\
+Parametere som vil overstyre innstillinger gjort i registeret:\n\
+--exe_path\t\t: Sti til openvpn.exe.\n\
+--config_dir\t\t: Sti til mappe for konfigurasjonsfiler.\n\
+--log_dir\t\t\t: Sti til mappe for loggfiler.\n\
+--priority_string\t\t: Prioritet på OpenVPN prosesser (Se install.txt for detaljer).\n\
+--append_string\t\t: 1=Behold gammel logg. 0=Tøm loggfil ved ny tilkobling.\n\
+--log_viewer\t\t: Sti til program for å vise loggfiler.\n\
+--editor\t\t\t: Sti til program for å endre konfigurasjonsfiler.\n\
+--allow_edit\t\t: 1=Vis 'Endre innstillinger' i menyen.\n\
+--allow_service\t\t: 1=Vis 'OpenVPN-tjenesten' i menyen.\n\
+--allow_password\t\t: 1=Vis 'Endre passord' i menyen.\n\
+--allow_proxy\t\t: 1=Vis 'Proxy-innstillinger' i menyen.\n\
+--show_balloon\t\t: 0=Aldri, 1=under tilkobling, 2=Ved hver til- og gjenoppkobling.\n\
+--service_only\t\t: 1=Kjør kun som bakgrunnstjeneste.\n\
+--silent_connection\t\t: 1=Skjul statusvindu ved tilkobling.\n\
+--show_script_window\t: 0=Skjul skriptvindu, 1=Vis skriptvindu.\n\
+--passphrase_attempts\t: Antall tilkoblingsforsøk.\n\
+--connectscript_timeout\t: Tidsavbrudd for skript etter tilkobling.\n\
+--disconnectscript_timeout\t: Tidsavbrudd for skript etter frakobling.\n\
+--preconnectscript_timeout\t: Time to wait for preconnect script to finish.\n\
+--iservice_admin\t\t: 0=Do not use interactive service when started as admin (default is 1 for Windows 7 and newer)\n\
+--disable_popup_messages\t: Do not popup (i.e., show) the echo message window. Default is to show.\n\
+--popup_mute_interval\t: Time in hours for which a previously shown echo message is not re-displayed. Default=24 hours.\n\
+--management_port_offset\t: Offset value added to config index to determine the management port for a connection.\n\
+\t\t\t Must be in the range 1 to 61000. Maximum number of configs is limited by 65536 minus this value. Default=25340.\n"
 
 
     IDS_NFO_USAGECAPTION "OpenVPN GUI bruk"
-    IDS_ERR_BAD_PARAMETER "Forsøkte å tolke ""%s"" som et --option parameter, " \
-                          "men kunne ikke finne innledende '--'"
-    IDS_ERR_BAD_OPTION "Ukjent parameter eller manglende argument: --%s\n" \
-                       "Kjør openvpn-gui --help for hjelp."
+    IDS_ERR_BAD_PARAMETER "Forsøkte å tolke ""%s"" som et --option parameter, \
+men kunne ikke finne innledende '--'"
+    IDS_ERR_BAD_OPTION "Ukjent parameter eller manglende argument: --%s\n\
+Kjør openvpn-gui --help for hjelp."
 
     /* passphrase - Resources */
     IDS_ERR_CREATE_PASS_THREAD "Det oppsto en feil under åpning av dialogboksen for endring av passord."
@@ -440,12 +440,12 @@ BEGIN
     IDS_NFO_RESTARTED "OpenVPN-tjenesten ble startet på nytt."
     IDS_ERR_ACCESS_SERVICE_PIPE "Klarte ikke få tilgang til bakgrunnstjenestens datakanal (service pipe)."
     IDS_ERR_WRITE_SERVICE_PIPE "Klarte ikke skrive til bakgrunnstjenestens datakanal (service pipe)."
-    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" er ikke installert.\n"
-                                 "Denne oppgaven fungerer kanskje ikke uten administrator-rettigheter."
-    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" er ikke startet.\n"
-                                 "Denne oppgaven fungerer kanskje ikke uten administrator-rettigheter."
-    IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" er ikke startet.\n"
-                                     "Wintun driver will not work."
+    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" er ikke installert.\n\
+Denne oppgaven fungerer kanskje ikke uten administrator-rettigheter."
+    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" er ikke startet.\n\
+Denne oppgaven fungerer kanskje ikke uten administrator-rettigheter."
+    IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" er ikke startet.\n\
+Wintun driver will not work."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Kunne ikke finne mappen hvor Windows er installert."
@@ -464,8 +464,8 @@ BEGIN
 
     /* importation */
     IDS_ERR_IMPORT_EXISTS "En konfigurasjon med navnet ""%s"" eksisterer allerede."
-    IDS_ERR_IMPORT_FAILED "En feil oppsto under importeringen. Kunne ikke opprette filstien:\n\n" \
-                          "%s\n\nDet kan hende du trenger administrator-rettigheter for å importere filer."
+    IDS_ERR_IMPORT_FAILED "En feil oppsto under importeringen. Kunne ikke opprette filstien:\n\n\
+%s\n\nDet kan hende du trenger administrator-rettigheter for å importere filer."
     IDS_NFO_IMPORT_SUCCESS "Importeringen var vellykket."
     IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
     IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"

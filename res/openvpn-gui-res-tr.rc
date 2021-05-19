@@ -131,9 +131,9 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_TURKISH, SUBLANG_DEFAULT
 BEGIN
     GROUPBOX "   ", 201, 6, 46, 235, 52
-    AUTORADIOBUTTON "OpenVPN konfigürasyon dosyasını kullan", ID_RB_PROXY_OPENVPN, \
+    AUTORADIOBUTTON "OpenVPN konfigürasyon dosyasını kullan", ID_RB_PROXY_OPENVPN,
                     13, 16, 200, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Sistem Proxy ayarlarını kullan", \
+    AUTORADIOBUTTON "Sistem Proxy ayarlarını kullan",
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
     AUTORADIOBUTTON "Elle Ayarlama", ID_RB_PROXY_MANUAL, 13, 46, 59, 10
     AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
@@ -213,18 +213,18 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_TURKISH, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, 0, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v" PACKAGE_VERSION_RESOURCE_STR " - OpenVPN için Windows Arayüzü\n" \
-          "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n" \
-          "Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n" \
-          "Copyright (C) 2012-" GUI_COPYRIGHT_YEAR_END " OpenVPN GUI contributors\n" \
-          "https://github.com/OpenVPN/openvpn-gui/", 0, 36, 15, 206, 42
-    LTEXT "OpenVPN - SSL/TLS tabanlı güvenli oturumlar, anahtar doğrulama " \
-          "paket şifreleme, paket sıkıştırma ve paket doğrulama işlemlerini " \
-          "tek bir TCP/UDP portu üzerinden güvenli IP tünelleri oluşturarak " \
-          "yapabilen bir uygulamadır.\n" \
-          "\n" \
-          "Copyright (C) 2002-" CORE_COPYRIGHT_YEAR_END " OpenVPN Technologies, Inc <info@openvpn.net>\n" \
-          "https://openvpn.net/", 0, 8, 61, 240, 64
+    LTEXT "OpenVPN GUI v%s - OpenVPN için Windows Arayüzü\n\
+Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
+Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
+Copyright (C) 2012-2021 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
+    LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_TXT_VERSION, 36, 55, 206, 42
+    LTEXT "OpenVPN - SSL/TLS tabanlı güvenli oturumlar, anahtar doğrulama \
+paket şifreleme, paket sıkıştırma ve paket doğrulama işlemlerini \
+tek bir TCP/UDP portu üzerinden güvenli IP tünelleri oluşturarak \
+yapabilen bir uygulamadır.\n\
+\n", 0, 8, 70, 240, 64
+    LTEXT "Copyright (C) 2002-2021 OpenVPN Technologies, Inc <info@openvpn.net>\n\
+https://openvpn.net/", 0, 8, 106, 240, 64
 END
 
 /* Proxy Authentication Dialog */
@@ -278,17 +278,17 @@ BEGIN
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI %d den fazla konfigürasyonu desteklemiyor. Eğer daha fazlasına ihtiyacınız varsa lütfen hak sahibi ile görüşün."
-    IDS_NFO_NO_CONFIGS "No readable connection profiles (config files) found.\n"\
-                       "Use the ""Import File.."" menu or copy your config files to ""%s"" or ""%s""."
-    IDS_ERR_CONFIG_NOT_AUTHORIZED "Starting this connection (%s) requires membership in "\
-                                  """%s"" group. Contact your system administrator.\n"
-    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Starting this connection (%s) requires membership in "\
-                                  """%s"" group.\n\n"\
-                                  "Do you want to add yourself to this group?\n"\
-                                  "This action may prompt for administrative password or consent."
-    IDS_NFO_CONFIG_AUTH_PENDING   "Starting this connection (%s) requires membership in "\
-                                  """%s"" group.\n\n"\
-                                  "Please complete the previous authorization dialog."
+    IDS_NFO_NO_CONFIGS "No readable connection profiles (config files) found.\n\
+Use the ""Import File.."" menu or copy your config files to ""%s"" or ""%s""."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "Starting this connection (%s) requires membership in \
+""%s"" group. Contact your system administrator.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Starting this connection (%s) requires membership in \
+""%s"" group.\n\n\
+Do you want to add yourself to this group?\n\
+This action may prompt for administrative password or consent."
+    IDS_NFO_CONFIG_AUTH_PENDING   "Starting this connection (%s) requires membership in \
+""%s"" group.\n\n\
+Please complete the previous authorization dialog."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Adding the user to ""%s"" group failed."
     IDS_ERR_ONE_CONN_OLD_VER "OpenVPN 2.0-beta6 sürümünden daha eski bir versiyon açıkken, aynı anda sadece bir bağlantı açabilirsiniz!"
     IDS_ERR_STOP_SERV_OLD_VER "OpenVPN servisi çalışırken (OpenVPN ver.1.5/1.6) OpenVPN GUI ile bağlantı yapamazsınız. OpenVPN GUI yi kullanacaksanız, öncelikle OpenVPN servisini durdurmanız gerekmektedir."
@@ -331,9 +331,9 @@ BEGIN
     IDS_ERR_GET_EXIT_CODE "Bağlantı betiğinde ExitCode çalıştırılamadı: (%s)"
     IDS_ERR_CONN_SCRIPT_FAILED "Bağlantı betiği başarısız oldu. (exitcode=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Bağlantı betiği başarısız oldu. %d saniyede timeout oldu."
-    IDS_ERR_CONFIG_EXIST "Zaten '%s' ismi ile kayıtlı bir ayar dosyası mevcut. " \
-                         "Ayrı klasörlerde olmadığı sürece, aynı isimle ayar dosyası "\
-				 "kayıt edemezsiniz."
+    IDS_ERR_CONFIG_EXIST "Zaten '%s' ismi ile kayıtlı bir ayar dosyası mevcut. \
+Ayrı klasörlerde olmadığı sürece, aynı isimle ayar dosyası \
+kayıt edemezsiniz."
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "Debug dosyası açılırken hata oluştu (%s)"
     IDS_ERR_CREATE_PATH "Could not create %s path:\n%s"
@@ -341,60 +341,60 @@ BEGIN
     IDS_ERR_SHELL_DLL_VERSION "Sistemde bulunan shell32.dll verdsiyonu eski. (0x%lx). En az 5.0 versiyonuna sahip olmalısınız."
     IDS_NFO_SERVICE_STARTED "OpenVPN Servisi başlatıldı."
     IDS_NFO_SERVICE_STOPPED "OpenVPN Service durduruldu."
-    IDS_NFO_ACTIVE_CONN_EXIT "OpenVPN GUI ' yi kapatırsanız, açık olan bağlantılarınız sonlandırılacaktır." \
-                             "\n\nÇıkmak istediğinize emin misiniz?"
-    IDS_NFO_SERVICE_ACTIVE_EXIT "Şu an bağlısınız(OpenVPN Servisi çalışıyor). " \
-                                "OpenVPN GUI yi kapatsanız dahi bağlantı devam edecek.\n\n" \
-                                "OpenVPN GUI den çıkmak istiyor musunuz?"
+    IDS_NFO_ACTIVE_CONN_EXIT "OpenVPN GUI ' yi kapatırsanız, açık olan bağlantılarınız sonlandırılacaktır.\
+\n\nÇıkmak istediğinize emin misiniz?"
+    IDS_NFO_SERVICE_ACTIVE_EXIT "Şu an bağlısınız(OpenVPN Servisi çalışıyor). \
+OpenVPN GUI yi kapatsanız dahi bağlantı devam edecek.\n\n\
+OpenVPN GUI den çıkmak istiyor musunuz?"
 
     /* options - Resources */
-    IDS_NFO_USAGE "--help\t\t\t: Yardım mesajını gözter.\n" \
-                  "--connect cnn \t\t: Başlangıçta otomatik olarak ""cnn"" e bağlan. (uzantılar dahil edilmelidir.)\n" \
-                  "\t\t\t   Örnek: openvpn-gui --connect office.ovpn\n" \
-                  "--command cmd [args]\t: Send a command to a running instance of the GUI\n" \
-                  "Supported commands:\n"\
-                  "    connect cnn            \t: connect the config named ""cnn""\n"\
-                  "    disconnect cnn         \t: disconnect the config named ""cnn""\n"\
-                  "    reconnect cnn          \t: reconnect the config named ""cnn""\n"\
-                  "    disconnect_all         \t: disconnect all connected configs\n"\
-                  "    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n"\
-                  "    status cnn           \t\t: show the status window of config ""cnn"" if connected\n"\
-                  "    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n"\
-                  "\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n"\
-                  "\n" \
-                  "Registry ayarları için:\n" \
-                  "--exe_path\t\t: openvpn.exe yolu.\n" \
-                  "--config_dir\t\t: Ayar dosyalarının bulunduğu dizini belirtmek için.\n" \
-                  "--ext_string\t\t: Config dosyalarının uzantıları.\n" \
-                  "--log_dir\t\t\t: Günlük dosyalarının kayıt edileceği dizini belirtmek için.\n" \
-                  "--priority_string\t\t: Öncelik belirleme ifadesi (Daha fazla bilgi için install.txt dosyasına bakınız).\n" \
-                  "--append_string\t\t: 1=Log dosyasının sonuna ekle. 0=Bağlantı sırasında log dosyasını sil ve üzerine yaz.\n" \
-                  "--log_viewer\t\t: Log görüntüleyicinin yolu.\n" \
-                  "--editor\t\t\t: Ayar editörünün yolu.\n" \
-                  "--allow_edit\t\t: 1=Ayarlar menüsünü göster.\n" \
-                  "--allow_service\t\t: 1=Servis Kontrol menüsünü göster.\n" \
-                  "--allow_password\t\t: 1=Şifre değiştirme menü öğesini göster.\n" \
-                  "--allow_proxy\t\t: 1=Proxy Ayarları menüsünü gözter.\n" \
-                  "--show_balloon\t\t: 0=Hiç bir zaman, 1=Bağlantı yapılırken, 2=Bağlantı her yeniden yapıldığında.\n" \
-                  "--service_only\t\t: 1=Sadece servis çalışsın, arayüz gösterilmesin.\n" \
-                  "--silent_connection\t\t: 1=Bağlantı sırasında durum diyaloğu görünmesin.\n" \
-                  "--show_script_window\t: 0=Betik çalıştırma penceresi görünmesin, 1=Betik çalıştırma penceresi görünsün.\n" \
-                  "--passphrase_attempts\t: Kaç defa şifre giriş denemesi yapılabilir.\n" \
-                  "--connectscript_timeout\t: Bağlantı betiğinin çalışma süresi.\n" \
-                  "--disconnectscript_timeout\t: Bağlantı kesme betiğinin çalışma süresi.\n" \
-                  "--preconnectscript_timeout\t: Time to wait for preconnect script to finish.\n" \
-                  "--iservice_admin\t\t: 0=Do not use interactive service when started as admin (default is 1 for Windows 7 and newer)\n" \
-                  "--disable_popup_messages\t: Do not popup (i.e., show) the echo message window. Default is to show.\n" \
-                  "--popup_mute_interval\t: Time in hours for which a previously shown echo message is not re-displayed. Default=24 hours.\n" \
-                  "--management_port_offset\t: Offset value added to config index to determine the management port for a connection.\n" \
-                  "\t\t\t Must be in the range 1 to 61000. Maximum number of configs is limited by 65536 minus this value. Default=25340.\n"
+    IDS_NFO_USAGE "--help\t\t\t: Yardım mesajını gözter.\n\
+--connect cnn \t\t: Başlangıçta otomatik olarak ""cnn"" e bağlan. (uzantılar dahil edilmelidir.)\n\
+\t\t\t   Örnek: openvpn-gui --connect office.ovpn\n\
+--command cmd [args]\t: Send a command to a running instance of the GUI\n\
+Supported commands:\n\
+    connect cnn            \t: connect the config named ""cnn""\n\
+    disconnect cnn         \t: disconnect the config named ""cnn""\n\
+    reconnect cnn          \t: reconnect the config named ""cnn""\n\
+    disconnect_all         \t: disconnect all connected configs\n\
+    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n\
+    status cnn           \t\t: show the status window of config ""cnn"" if connected\n\
+    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n\
+\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n\
+\n\
+Registry ayarları için:\n\
+--exe_path\t\t: openvpn.exe yolu.\n\
+--config_dir\t\t: Ayar dosyalarının bulunduğu dizini belirtmek için.\n\
+--ext_string\t\t: Config dosyalarının uzantıları.\n\
+--log_dir\t\t\t: Günlük dosyalarının kayıt edileceği dizini belirtmek için.\n\
+--priority_string\t\t: Öncelik belirleme ifadesi (Daha fazla bilgi için install.txt dosyasına bakınız).\n\
+--append_string\t\t: 1=Log dosyasının sonuna ekle. 0=Bağlantı sırasında log dosyasını sil ve üzerine yaz.\n\
+--log_viewer\t\t: Log görüntüleyicinin yolu.\n\
+--editor\t\t\t: Ayar editörünün yolu.\n\
+--allow_edit\t\t: 1=Ayarlar menüsünü göster.\n\
+--allow_service\t\t: 1=Servis Kontrol menüsünü göster.\n\
+--allow_password\t\t: 1=Şifre değiştirme menü öğesini göster.\n\
+--allow_proxy\t\t: 1=Proxy Ayarları menüsünü gözter.\n\
+--show_balloon\t\t: 0=Hiç bir zaman, 1=Bağlantı yapılırken, 2=Bağlantı her yeniden yapıldığında.\n\
+--service_only\t\t: 1=Sadece servis çalışsın, arayüz gösterilmesin.\n\
+--silent_connection\t\t: 1=Bağlantı sırasında durum diyaloğu görünmesin.\n\
+--show_script_window\t: 0=Betik çalıştırma penceresi görünmesin, 1=Betik çalıştırma penceresi görünsün.\n\
+--passphrase_attempts\t: Kaç defa şifre giriş denemesi yapılabilir.\n\
+--connectscript_timeout\t: Bağlantı betiğinin çalışma süresi.\n\
+--disconnectscript_timeout\t: Bağlantı kesme betiğinin çalışma süresi.\n\
+--preconnectscript_timeout\t: Time to wait for preconnect script to finish.\n\
+--iservice_admin\t\t: 0=Do not use interactive service when started as admin (default is 1 for Windows 7 and newer)\n\
+--disable_popup_messages\t: Do not popup (i.e., show) the echo message window. Default is to show.\n\
+--popup_mute_interval\t: Time in hours for which a previously shown echo message is not re-displayed. Default=24 hours.\n\
+--management_port_offset\t: Offset value added to config index to determine the management port for a connection.\n\
+\t\t\t Must be in the range 1 to 61000. Maximum number of configs is limited by 65536 minus this value. Default=25340.\n"
 
 
     IDS_NFO_USAGECAPTION "OpenVPN GUI Kullanımı"
-    IDS_ERR_BAD_PARAMETER " ""%s"" ifadesini --seçenek parametre olarak ayırmaya çalışıyorum " \
-                      "fakat şu ifadeleri göremedim '--'"
-    IDS_ERR_BAD_OPTION "Seçenek hatası: Bilinmeyen bir parametre girişi yaptınız: --%s\n" \
-                   "Daha fazla bilgi için komut satırında openvpn-gui --help ifadesini kullanın."
+    IDS_ERR_BAD_PARAMETER " ""%s"" ifadesini --seçenek parametre olarak ayırmaya çalışıyorum \
+fakat şu ifadeleri göremedim '--'"
+    IDS_ERR_BAD_OPTION "Seçenek hatası: Bilinmeyen bir parametre girişi yaptınız: --%s\n\
+Daha fazla bilgi için komut satırında openvpn-gui --help ifadesini kullanın."
 
     /* passphrase - Resources */
     IDS_ERR_CREATE_PASS_THREAD "Şifre değiştirme diyaloğunu başlatma olayı başarısız oldu."
@@ -420,8 +420,8 @@ BEGIN
     IDS_ERR_AUTH_USERNAME2STDIN "Standart girişten kullanıcı adınız okunurken hata oluştu."
     IDS_ERR_AUTH_PASSWORD2STDIN "Standart girişten şifreniz ile giriş yapılırken hata oluştu."
     IDS_ERR_CR2STDIN "Error passing CR to stdin."
-    IDS_ERR_INVALID_CHARS_IN_PSW "Yeni şifreniz geçersiz karakterler içeriyor. " \
-                             "Lütfen yeni bir tane seçiniz."
+    IDS_ERR_INVALID_CHARS_IN_PSW "Yeni şifreniz geçersiz karakterler içeriyor. \
+Lütfen yeni bir tane seçiniz."
 
     /* settings */
     IDS_SETTINGS_CAPTION "OpenVPN - Ayarlar"
@@ -446,34 +446,34 @@ BEGIN
     IDS_NFO_RESTARTED "OpenVPN Servisi başlatıldı."
     IDS_ERR_ACCESS_SERVICE_PIPE "Access to service pipe failed."
     IDS_ERR_WRITE_SERVICE_PIPE "Writing to service pipe failed."
-    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is not installed.\n"
-                                 "Tasks requiring administrative access may not work."
-    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" is not started.\n"
-                                 "Tasks requiring administrative access may not work."
-    IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" is not started.\n"
-                                     "Wintun driver will not work."
+    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is not installed.\n\
+Tasks requiring administrative access may not work."
+    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" is not started.\n\
+Tasks requiring administrative access may not work."
+    IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" is not started.\n\
+Wintun driver will not work."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Windows dizinine erişim başarısız oldu."
     IDS_ERR_GET_PROFILE_DIR "Error getting User Profile Directory."
     IDS_ERR_GET_PROGRAM_DIR """Program"" dizine erişim başarısız oldu ."
-    IDS_ERR_OPEN_REGISTRY "Registry açılamadı(HKLM\\SOFTWARE\\OpenVPN).\n " \
-                      "Muhtemelen OpenVPN yüklü değil."
+    IDS_ERR_OPEN_REGISTRY "Registry açılamadı(HKLM\\SOFTWARE\\OpenVPN).\n \
+Muhtemelen OpenVPN yüklü değil."
     IDS_ERR_READING_REGISTRY "Registry anahtarı okunurken başarısız oldu (HKLM\\SOFTWARE\\OpenVPN)."
     IDS_ERR_PASSPHRASE_ATTEMPTS "Registry anahtarı ""passphrase_attempts"" 1 ile 9 arasında bir değer almalı."
     IDS_ERR_CONN_SCRIPT_TIMEOUT "Registry anahtarı ""connectscript_timeout"" 0 ile 99 arasında bir değer almalı."
     IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Registry anahtarı ""disconnectscript_timeout"" 1 ile 99 arasında bir değer almalı."
     IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Registry anahtarı ""preconnectscript_timeout"" 1 ile 99 arasında bir değer almalı."
     IDS_ERR_CREATE_REG_KEY "HKLM\\SOFTWARE\\OpenVPN-GUI anahtarı oluşturulamadı."
-    IDS_ERR_OPEN_WRITE_REG "Windows Registry açılmadı. Registry' i açabilmek için " \
-                       "sistem yönetici haklarına sahip olmanız gerekmektedir.."
+    IDS_ERR_OPEN_WRITE_REG "Windows Registry açılmadı. Registry' i açabilmek için \
+sistem yönetici haklarına sahip olmanız gerekmektedir.."
     IDS_ERR_READ_SET_KEY """%s"" anahtarı ayarlanırken hata oluştu."
     IDS_ERR_WRITE_REGVALUE """HKEY_CURRENT_USER\\%s\\%s"" anahtarı yazılırken hata oluştu."
 
     /* importation */
     IDS_ERR_IMPORT_EXISTS "A config named ""%s"" already exists."
-    IDS_ERR_IMPORT_FAILED "Failed to import file. The following path could not be created.\n\n" \
-                          "%s\n\nMake sure you have the right permissions."
+    IDS_ERR_IMPORT_FAILED "Failed to import file. The following path could not be created.\n\n\
+%s\n\nMake sure you have the right permissions."
     IDS_NFO_IMPORT_SUCCESS "File imported successfully."
     IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
     IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"

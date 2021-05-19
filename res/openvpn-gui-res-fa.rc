@@ -131,9 +131,9 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FARSI, SUBLANG_DEFAULT
 BEGIN
     GROUPBOX "   ", 201, 6, 46, 235, 52
-    AUTORADIOBUTTON "به کار گیری OpenVPN سند کانفیگ تنظیمات", ID_RB_PROXY_OPENVPN, \
+    AUTORADIOBUTTON "به کار گیری OpenVPN سند کانفیگ تنظیمات", ID_RB_PROXY_OPENVPN,
                     13, 16, 200, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "به کار گیری تنظیمات پروکسی سیستم", \
+    AUTORADIOBUTTON "به کار گیری تنظیمات پروکسی سیستم",
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
     AUTORADIOBUTTON "تنظیم دستی", ID_RB_PROXY_MANUAL, 13, 46, 79, 10
     AUTORADIOBUTTON "پروکسی نوع HTTP", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
@@ -215,19 +215,18 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FARSI, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, 0, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v" PACKAGE_VERSION_RESOURCE_STR " – یک رابط کاربر گرفیکی برای کانکشن OpenVPN\n" \
-          "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n" \
-          "Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n" \
-          "Copyright (C) 2012-" GUI_COPYRIGHT_YEAR_END " OpenVPN GUI مشارکت کنندگان\n" \
-          "https://github.com/OpenVPN/openvpn-gui/", 0, 36, 15, 206, 42
-    LTEXT "OpenVPN – برنامه ای برای تونل ایمن شبکه های آی پی " \
-          "با پشتیبانی از پورت های : TCP/UDP , به همراه SSL/TLS-based " \
-          "جلسه احراز هویت و تغییر کلید و بسته ها " \
-          "رمز نگاری و بسته احراز هویت و بسته فشرده سازی.\n" \
-								  
-          "\n" \
-          "Copyright (C) 2002-" CORE_COPYRIGHT_YEAR_END " شرکت،تکنولوژی OpenVPN <info@openvpn.net>\n" \
-          "https://openvpn.net/", 0, 8, 61, 240, 64
+    LTEXT "OpenVPN GUI v%s – یک رابط کاربر گرفیکی برای کانکشن OpenVPN\n\
+Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
+Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
+Copyright (C) 2012-2021 OpenVPN GUI مشارکت کنندگان\n", ID_TXT_VERSION, 36, 15, 206, 50
+    LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_TXT_VERSION, 36, 55, 206, 42
+    LTEXT "OpenVPN – برنامه ای برای تونل ایمن شبکه های آی پی \
+با پشتیبانی از پورت های : TCP/UDP , به همراه SSL/TLS-based \
+جلسه احراز هویت و تغییر کلید و بسته ها \
+رمز نگاری و بسته احراز هویت و بسته فشرده سازی.\n\
+\n", 0, 8, 70, 240, 64
+    LTEXT "Copyright (C) 2002-2021 شرکت،تکنولوژی OpenVPN <info@openvpn.net>\n\
+https://openvpn.net/", 0, 8, 106, 240, 64
 END
 
 /* Proxy Authentication Dialog */
@@ -281,17 +280,17 @@ BEGIN
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI پشتیبانی نمی کند بیشتر از %d پیکربندی. لطفا برای اطلاعات بیشتر با مدیر تماس بگیرید."
-    IDS_NFO_NO_CONFIGS "پروفایل اتصال قابل خواندن نیست (فایل پیکربندی) شناخته شد.\n"\
-                       "به کار ببرید ""وارد کردن سند"" در منو را یا کپی کنید فایل کانفیگ را در ""%s"" or ""%s""."
-    IDS_ERR_CONFIG_NOT_AUTHORIZED "این اتصال شروع شد (%s) نیاز دارد به عضویت در گروه"\
-                                  """%s"" .با مدیر سیستم خود تماس بگیرید\n"
-    IDS_ERR_CONFIG_TRY_AUTHORIZE  "این اتصال شروع شد (%s) نیاز دارد به عضویت در گروه"\
-                                  """%s"" .\n\n"\
-                                  "می خواهی اضافه کنی خودت به این گروه?\n"\
-                                  "این فعالیت می تواند نیاز به پسورد یا رضایت مدیر داشته باشد."
-    IDS_NFO_CONFIG_AUTH_PENDING   "این اتصال شروع شد (%s) نیاز مند عضویت در گروه "\
-                                  """%s"" .\n\n"\
-                                  "لطفا احراز هویت قبلی را کامل کنید."
+    IDS_NFO_NO_CONFIGS "پروفایل اتصال قابل خواندن نیست (فایل پیکربندی) شناخته شد.\n\
+به کار ببرید ""وارد کردن سند"" در منو را یا کپی کنید فایل کانفیگ را در ""%s"" or ""%s""."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "این اتصال شروع شد (%s) نیاز دارد به عضویت در گروه\
+""%s"" .با مدیر سیستم خود تماس بگیرید\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "این اتصال شروع شد (%s) نیاز دارد به عضویت در گروه\
+""%s"" .\n\n\
+می خواهی اضافه کنی خودت به این گروه?\n\
+این فعالیت می تواند نیاز به پسورد یا رضایت مدیر داشته باشد."
+    IDS_NFO_CONFIG_AUTH_PENDING   "این اتصال شروع شد (%s) نیاز مند عضویت در گروه \
+""%s"" .\n\n\
+لطفا احراز هویت قبلی را کامل کنید."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "اضافه کردن کاربر به گروه با خطا مواجه شد ""%s"" ."
     IDS_ERR_ONE_CONN_OLD_VER "تو فقط می توانی یک اتصال را باز نگه داری در یک زمان وقتی به کار می بری ورژن قدیمی از OpenVPN than 2.0-beta6."
     IDS_ERR_STOP_SERV_OLD_VER "شما نمیتوانید به کار ببرید OpenVPN GUI را برای شروع یک اتصال وقتی که OpenVPN Service باز است (در OpenVPN 1.5/1.6). اول OpenVPN Service را متوقف کنید اگر میخواهید OpenVPN GUI را استفاده کنید. (GUI -> محیط گرافیکی)"
@@ -334,11 +333,11 @@ BEGIN
     IDS_ERR_GET_EXIT_CODE "شکست در گرفتن ExitCode از اسکریپت اتصال (%s)"
     IDS_ERR_CONN_SCRIPT_FAILED "اتصال اسکریپت شکست خود. (exitcode=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "اتصال اسکریپت شکست خورد. TimeOut بعد %d ثانیه."
-    IDS_ERR_CONFIG_EXIST "در حال حاضر یک فایل پیکربندی به نام '%s' وجود دارد. تو نمی توانی " \
-                         "چندین فایل پیکربندی با همان نام داشته باشید, حتی اگر " \
-                         "آنها در پوشه های مختلفی باشند."
-    IDS_NFO_CONN_TIMEOUT "اتصال به رابط مدیریت انجام نشد.\n" \
-                         "فایل گزارش را ببینید - لاگ فایل (%s) برای جزئیات بیشتر."
+    IDS_ERR_CONFIG_EXIST "در حال حاضر یک فایل پیکربندی به نام '%s' وجود دارد. تو نمی توانی \
+چندین فایل پیکربندی با همان نام داشته باشید, حتی اگر \
+آنها در پوشه های مختلفی باشند."
+    IDS_NFO_CONN_TIMEOUT "اتصال به رابط مدیریت انجام نشد.\n\
+فایل گزارش را ببینید - لاگ فایل (%s) برای جزئیات بیشتر."
     /* main – Resources */
     IDS_ERR_OPEN_DEBUG_FILE "خطای باز کردن فایل dbug (%s) برای خروجی."
     IDS_ERR_CREATE_PATH "نتوانستم بسازم %s مسیر:\n%s"
@@ -346,60 +345,60 @@ BEGIN
     IDS_ERR_SHELL_DLL_VERSION "shell32.dll شما نسخه اش پایینتر از (0x%lx) است. تو نیاز به نسخه بالا تر داری -نسخه آخر 5.0."
     IDS_NFO_SERVICE_STARTED "خدمت OpenVPN آغاز شد."
     IDS_NFO_SERVICE_STOPPED "خدمت OpenVPN پایان یافت."
-    IDS_NFO_ACTIVE_CONN_EXIT "هنوز اتصالات فعال وجود دارد که در صورت خروج بسته خواهد شد - OpenVPN GUI." \
-                             "\n\nشما مطمئن هستید میخواهید خارج شوید?"
-    IDS_NFO_SERVICE_ACTIVE_EXIT "شما فعلا متصل هستید (سرویس OpenVPN در حالت اجراست). " \
-                                "شما می توانید متصل بمانید حتی اگر از OpenVPN GUI خارج شدید.\n\n" \
-                                "شما می خواهید پروسه خارج شدن رو انجام بدهید - OpenVPN GUI?"
+    IDS_NFO_ACTIVE_CONN_EXIT "هنوز اتصالات فعال وجود دارد که در صورت خروج بسته خواهد شد - OpenVPN GUI.\
+\n\nشما مطمئن هستید میخواهید خارج شوید?"
+    IDS_NFO_SERVICE_ACTIVE_EXIT "شما فعلا متصل هستید (سرویس OpenVPN در حالت اجراست). \
+شما می توانید متصل بمانید حتی اگر از OpenVPN GUI خارج شدید.\n\n\
+شما می خواهید پروسه خارج شدن رو انجام بدهید - OpenVPN GUI?"
 
     /* options – Resources */
-    IDS_NFO_USAGE "--help\t\t\t: Show this message.\n" \
-                  "--connect cnn \t\t: Connect to ""cnn"" at startup.\n" \
-                  "\t\t\t   Example: openvpn-gui --connect office.ovpn\n" \
-                  "--command cmd [args]\t: Send a command to a running instance of the GUI\n" \
-                  "Supported commands:\n"\
-                  "    connect cnn            \t: connect the config named ""cnn""\n"\
-                  "    disconnect cnn         \t: disconnect the config named ""cnn""\n"\
-                  "    reconnect cnn          \t: reconnect the config named ""cnn""\n"\
-                  "    disconnect_all         \t: disconnect all connected configs\n"\
-                  "    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n"\
-                  "    status cnn           \t\t: show the status window of config ""cnn"" if connected\n"\
-                  "    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n"\
-		  "\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n"\
-                  "\n" \
-                  "Options to override registry settings:\n" \
-                  "--exe_path\t\t: Path to openvpn.exe.\n" \
-                  "--config_dir\t\t: Path to dir to search for config files in.\n" \
-                  "--ext_string\t\t: Extension on config files.\n" \
-                  "--log_dir\t\t\t: Path to dir where log files will be saved.\n" \
-                  "--priority_string\t\t: Priority string (See install.txt for more info).\n" \
-                  "--append_string\t\t: 1=Append to log file. 0=Truncate logfile when connecting.\n" \
-                  "--log_viewer\t\t: Path to log viewer.\n" \
-                  "--editor\t\t\t: Path to config editor.\n" \
-                  "--allow_edit\t\t: 1=Show Edit Config menu item.\n" \
-                  "--allow_service\t\t: 1=Show Service control menu.\n" \
-                  "--allow_password\t\t: 1=Show Change Password menu item.\n" \
-                  "--allow_proxy\t\t: 1=Show Proxy Settings menu.\n" \
-                  "--show_balloon\t\t: 0=Never, 1=At initial connect, 2=At every reconnect.\n" \
-                  "--service_only\t\t: 1=Enable Service Only mode.\n" \
-                  "--silent_connection\t\t: 1=Do not show the status dialog while connecting or non-critical warnings at startup.\n" \
-                  "--show_script_window\t: 0=Hide Script execution window, 1=Show it.\n" \
-                  "--passphrase_attempts\t: Number of passphrase attempts to allow.\n" \
-                  "--connectscript_timeout\t: Time to wait for connect script to finish.\n" \
-                  "--disconnectscript_timeout\t: Time to wait for disconnect script to finish.\n" \
-                  "--preconnectscript_timeout\t: Time to wait for preconnect script to finish.\n" \
-                  "--iservice_admin\t\t: 0=Do not use interactive service when started as admin (default is 1 for Windows 7 and newer)\n" \
-                  "--disable_popup_messages\t: Do not popup (i.e., show) the echo message window. Default is to show.\n" \
-                  "--popup_mute_interval\t: Time in hours for which a previously shown echo message is not re-displayed. Default=24 hours.\n" \
-                  "--management_port_offset\t: Offset value added to config index to determine the management port for a connection.\n" \
-                  "\t\t\t Must be in the range 1 to 61000. Maximum number of configs is limited by 65536 minus this value. Default=25340.\n"
+    IDS_NFO_USAGE "--help\t\t\t: Show this message.\n\
+--connect cnn \t\t: Connect to ""cnn"" at startup.\n\
+\t\t\t   Example: openvpn-gui --connect office.ovpn\n\
+--command cmd [args]\t: Send a command to a running instance of the GUI\n\
+Supported commands:\n\
+    connect cnn            \t: connect the config named ""cnn""\n\
+    disconnect cnn         \t: disconnect the config named ""cnn""\n\
+    reconnect cnn          \t: reconnect the config named ""cnn""\n\
+    disconnect_all         \t: disconnect all connected configs\n\
+    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n\
+    status cnn           \t\t: show the status window of config ""cnn"" if connected\n\
+    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n\
+\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n\
+\n\
+Options to override registry settings:\n\
+--exe_path\t\t: Path to openvpn.exe.\n\
+--config_dir\t\t: Path to dir to search for config files in.\n\
+--ext_string\t\t: Extension on config files.\n\
+--log_dir\t\t\t: Path to dir where log files will be saved.\n\
+--priority_string\t\t: Priority string (See install.txt for more info).\n\
+--append_string\t\t: 1=Append to log file. 0=Truncate logfile when connecting.\n\
+--log_viewer\t\t: Path to log viewer.\n\
+--editor\t\t\t: Path to config editor.\n\
+--allow_edit\t\t: 1=Show Edit Config menu item.\n\
+--allow_service\t\t: 1=Show Service control menu.\n\
+--allow_password\t\t: 1=Show Change Password menu item.\n\
+--allow_proxy\t\t: 1=Show Proxy Settings menu.\n\
+--show_balloon\t\t: 0=Never, 1=At initial connect, 2=At every reconnect.\n\
+--service_only\t\t: 1=Enable Service Only mode.\n\
+--silent_connection\t\t: 1=Do not show the status dialog while connecting or non-critical warnings at startup.\n\
+--show_script_window\t: 0=Hide Script execution window, 1=Show it.\n\
+--passphrase_attempts\t: Number of passphrase attempts to allow.\n\
+--connectscript_timeout\t: Time to wait for connect script to finish.\n\
+--disconnectscript_timeout\t: Time to wait for disconnect script to finish.\n\
+--preconnectscript_timeout\t: Time to wait for preconnect script to finish.\n\
+--iservice_admin\t\t: 0=Do not use interactive service when started as admin (default is 1 for Windows 7 and newer)\n\
+--disable_popup_messages\t: Do not popup (i.e., show) the echo message window. Default is to show.\n\
+--popup_mute_interval\t: Time in hours for which a previously shown echo message is not re-displayed. Default=24 hours.\n\
+--management_port_offset\t: Offset value added to config index to determine the management port for a connection.\n\
+\t\t\t Must be in the range 1 to 61000. Maximum number of configs is limited by 65536 minus this value. Default=25340.\n"
 
 
     IDS_NFO_USAGECAPTION "OpenVPN GUI Usage"
-    IDS_ERR_BAD_PARAMETER "I'm trying to parse ""%s"" as an --option parameter " \
-                      "but I don't see a leading '--'"
-    IDS_ERR_BAD_OPTION "Options error: Unrecognized option or missing parameter(s): --%s\n" \
-                   "Use openvpn-gui --help for more info."
+    IDS_ERR_BAD_PARAMETER "I'm trying to parse ""%s"" as an --option parameter \
+but I don't see a leading '--'"
+    IDS_ERR_BAD_OPTION "Options error: Unrecognized option or missing parameter(s): --%s\n\
+Use openvpn-gui --help for more info."
 
     /* passphrase – Resources */
     IDS_ERR_CREATE_PASS_THREAD "CreateThread to show ChangePassphrase dialog failed."
@@ -425,8 +424,8 @@ BEGIN
     IDS_ERR_AUTH_USERNAME2STDIN "Error passing auth username to stdin."
     IDS_ERR_AUTH_PASSWORD2STDIN "Error passing auth password to stdin."
     IDS_ERR_CR2STDIN "Error passing CR to stdin."
-    IDS_ERR_INVALID_CHARS_IN_PSW "Your new password contains non-valid characters. " \
-                             "Please choose another one."
+    IDS_ERR_INVALID_CHARS_IN_PSW "Your new password contains non-valid characters. \
+Please choose another one."
 
     /* settings */
     IDS_SETTINGS_CAPTION "OpenVPN – Settings"
@@ -451,34 +450,34 @@ BEGIN
     IDS_NFO_RESTARTED "OpenVPN Service restarted."
     IDS_ERR_ACCESS_SERVICE_PIPE "Access to service pipe failed."
     IDS_ERR_WRITE_SERVICE_PIPE "Writing to service pipe failed."
-    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is not installed.\n"
-                                 "Wintun driver and tasks requiring administrative access may not work."
-    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" is not started.\n"
-                                 "Wintun driver and tasks requiring administrative access may not work."
-    IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" is not started.\n"
-                                     "Wintun driver will not work."
+    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is not installed.\n\
+Wintun driver and tasks requiring administrative access may not work."
+    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" is not started.\n\
+Wintun driver and tasks requiring administrative access may not work."
+    IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" is not started.\n\
+Wintun driver will not work."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Error getting Windows Directory."
     IDS_ERR_GET_PROFILE_DIR "Error getting User Profile Directory."
     IDS_ERR_GET_PROGRAM_DIR "Error getting ""Program"" folder name."
-    IDS_ERR_OPEN_REGISTRY "Error opening registry for reading (HKLM\\SOFTWARE\\OpenVPN).\n " \
-                      "OpenVPN is probably not installed"
+    IDS_ERR_OPEN_REGISTRY "Error opening registry for reading (HKLM\\SOFTWARE\\OpenVPN).\n \
+OpenVPN is probably not installed"
     IDS_ERR_READING_REGISTRY "Error reading registry value (HKLM\\SOFTWARE\\OpenVPN)."
     IDS_ERR_PASSPHRASE_ATTEMPTS "Registry value ""passphrase_attempts"" must be a number between 1 and 9."
     IDS_ERR_CONN_SCRIPT_TIMEOUT "Registry value ""connectscript_timeout"" must be a number between 0 and 99."
     IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Registry value ""disconnectscript_timeout"" must be a number between 1 and 99."
     IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Registry value ""preconnectscript_timeout"" must be a number between 1 and 99."
     IDS_ERR_CREATE_REG_KEY "Error creating HKLM\\SOFTWARE\\OpenVPN-GUI key."
-    IDS_ERR_OPEN_WRITE_REG "Failed to open the registry for writing. You need to run this application " \
-                       "once as Administrator to update the registry."
+    IDS_ERR_OPEN_WRITE_REG "Failed to open the registry for writing. You need to run this application \
+once as Administrator to update the registry."
     IDS_ERR_READ_SET_KEY "Error reading and setting registry key ""%s""."
     IDS_ERR_WRITE_REGVALUE "Error writing registry value ""HKEY_CURRENT_USER\\%s\\%s""."
 
     /* importation */
     IDS_ERR_IMPORT_EXISTS "A config named ""%s"" already exists."
-    IDS_ERR_IMPORT_FAILED "Failed to import file. The following path could not be created.\n\n" \
-                          "%s\n\nMake sure you have the right permissions."
+    IDS_ERR_IMPORT_FAILED "Failed to import file. The following path could not be created.\n\n\
+%s\n\nMake sure you have the right permissions."
     IDS_NFO_IMPORT_SUCCESS "File imported successfully."
     IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
     IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
