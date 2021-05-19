@@ -130,9 +130,9 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
 BEGIN
     GROUPBOX "   ", 201, 6, 46, 235, 52
-    AUTORADIOBUTTON "Použít nastavení z konfiguračního souboru OpenVPN", ID_RB_PROXY_OPENVPN, \
+    AUTORADIOBUTTON "Použít nastavení z konfiguračního souboru OpenVPN", ID_RB_PROXY_OPENVPN,
                     13, 16, 200, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Použít systémové nastavení proxy", \
+    AUTORADIOBUTTON "Použít systémové nastavení proxy",
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
     AUTORADIOBUTTON "Ruční konfigurace", ID_RB_PROXY_MANUAL, 13, 46, 79, 10
     AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
@@ -213,18 +213,18 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, 0, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v" PACKAGE_VERSION_RESOURCE_STR " - GUI pro OpenVPN ve Windows\n" \
-          "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n" \
-          "Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n" \
-          "Copyright (C) 2012-" GUI_COPYRIGHT_YEAR_END " OpenVPN GUI přispěvatelé\n" \
-          "https://github.com/OpenVPN/openvpn-gui/", 0, 36, 15, 206, 42
-    LTEXT "OpenVPN - Aplikace pro vytváření bezpečných tunelů sítí IP " \
-          "přes jediný port TCP/UDP s podporou SSL/TLS autentifikace sezení " \
-          "a výměn klíčů, šifrování paketů, autentifikace paketů " \
-          "a komprese paketů.\n" \
-          "\n" \
-          "Copyright (C) 2002-" CORE_COPYRIGHT_YEAR_END " OpenVPN Technologies, Inc <info@openvpn.net>\n" \
-          "https://openvpn.net/", 0, 8, 61, 240, 64
+    LTEXT "OpenVPN GUI v%s - GUI pro OpenVPN ve Windows\n\
+Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
+Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
+Copyright (C) 2012-2021 OpenVPN GUI přispěvatelé\n", ID_TXT_VERSION, 36, 15, 206, 50
+    LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_TXT_VERSION, 36, 55, 206, 42
+    LTEXT "OpenVPN - Aplikace pro vytváření bezpečných tunelů sítí IP \
+přes jediný port TCP/UDP s podporou SSL/TLS autentifikace sezení \
+a výměn klíčů, šifrování paketů, autentifikace paketů \
+a komprese paketů.\n\
+\n", 0, 8, 70, 240, 64
+    LTEXT "Copyright (C) 2002-2021 OpenVPN Technologies, Inc <info@openvpn.net>\n\
+https://openvpn.net/", 0, 8, 106, 240, 64
 END
 
 /* Proxy Authentication Dialog */
@@ -278,17 +278,17 @@ BEGIN
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI nepodporuje více než %d konfigurací. Prosím kontaktujte autora, pokud jich potřebujete více."
-    IDS_NFO_NO_CONFIGS "Nebyly nalezeny žádné soubory konfigurací spojení.\n"\
-                       "Použijte volbu menu ""Import souboru konfigurace…"" nebo zkopírujte konfigurační soubory do ""%s"" nebo ""%s""."
-    IDS_ERR_CONFIG_NOT_AUTHORIZED "Vytvoření tohoto spojení (%s) vyžaduje členství ve skupině "\
-                                  """%s"". Kontaktujte svého správce systému.\n"
-    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Vytvoření tohoto spojení (%s) vyžaduje členství ve skupině "\
-                                  """%s"".\n\n"\
-                                  "Chcete se přidat do této skupiny?\n"\
-                                  "Tato akce může vyžadovat svolení nebo heslo správce."
-    IDS_NFO_CONFIG_AUTH_PENDING   "Vytvoření tohoto spojení (%s) vyžaduje členství ve skupině "\
-                                  """%s"".\n\n"\
-                                  "Prosím dokončete předchozí autorizační dialog."
+    IDS_NFO_NO_CONFIGS "Nebyly nalezeny žádné soubory konfigurací spojení.\n\
+Použijte volbu menu ""Import souboru konfigurace…"" nebo zkopírujte konfigurační soubory do ""%s"" nebo ""%s""."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "Vytvoření tohoto spojení (%s) vyžaduje členství ve skupině \
+""%s"". Kontaktujte svého správce systému.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Vytvoření tohoto spojení (%s) vyžaduje členství ve skupině \
+""%s"".\n\n\
+Chcete se přidat do této skupiny?\n\
+Tato akce může vyžadovat svolení nebo heslo správce."
+    IDS_NFO_CONFIG_AUTH_PENDING   "Vytvoření tohoto spojení (%s) vyžaduje členství ve skupině \
+""%s"".\n\n\
+Prosím dokončete předchozí autorizační dialog."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Přidání uživatele do skupiny ""%s"" nebylo úspěšné."
     IDS_ERR_ONE_CONN_OLD_VER "V případě, že používáte OpenVPN starší než verze 2.0-beta6, můžete mít aktivní pouze jedno spojení."
     IDS_ERR_STOP_SERV_OLD_VER "Není možno použít OpenVPN GUI pro vytvoření spojení, pokud již běží služba OpenVPN (verze OpenVPN 1.5/1.6). Prosím zastavte nejprve službu OpenVPN."
@@ -331,11 +331,11 @@ BEGIN
     IDS_ERR_GET_EXIT_CODE "Nepodařilo se získat ExitCode skriptu při připojení (%s)"
     IDS_ERR_CONN_SCRIPT_FAILED "Skript při připojení selhal. (exitcode=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Skript při připojení selhal. Čas spojení vypršel po %ds."
-    IDS_ERR_CONFIG_EXIST "Konfigurační soubor s názvem '%s' již existuje. Je nutné jeden z konfiguračních " \
-                         "souborů stejného názvu přejmenovat, i když se " \
-                         "nachází v jiné složce."
-    IDS_NFO_CONN_TIMEOUT "Připojení k rozhraní správy selhalo.\n" \
-                         "Více informací najdete v logu (%s)."
+    IDS_ERR_CONFIG_EXIST "Konfigurační soubor s názvem '%s' již existuje. Je nutné jeden z konfiguračních \
+souborů stejného názvu přejmenovat, i když se \
+nachází v jiné složce."
+    IDS_NFO_CONN_TIMEOUT "Připojení k rozhraní správy selhalo.\n\
+Více informací najdete v logu (%s)."
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "Nelze otevřít soubor pro zápis ladění (%s)."
     IDS_ERR_CREATE_PATH "Nepodařilo se vytvořit %s složku:\n%s"
@@ -343,54 +343,54 @@ BEGIN
     IDS_ERR_SHELL_DLL_VERSION "Verze vaší knihovny shell32.dll je příliš nízká (0x%lx). Potřebujete verzi 5.0 nebo novější."
     IDS_NFO_SERVICE_STARTED "Služba OpenVPN spuštěna."
     IDS_NFO_SERVICE_STOPPED "Služba OpenVPN zastavena."
-    IDS_NFO_ACTIVE_CONN_EXIT "Některá spojení jsou stále aktivní. Pokud OpenVPN GUI ukončíte, budou přerušena." \
-                             "\n\nOpravdu chcete aplikaci ukončit?"
-    IDS_NFO_SERVICE_ACTIVE_EXIT "Některá spojení jsou stále aktivní. Díky běžící službě OpenVPN " \
-                                "zůstanete připojeni, i když ukončíte OpenVPN GUI.\n\n" \
-                                "Chcete pokračovat a aplikaci ukončit?"
+    IDS_NFO_ACTIVE_CONN_EXIT "Některá spojení jsou stále aktivní. Pokud OpenVPN GUI ukončíte, budou přerušena.\
+\n\nOpravdu chcete aplikaci ukončit?"
+    IDS_NFO_SERVICE_ACTIVE_EXIT "Některá spojení jsou stále aktivní. Díky běžící službě OpenVPN \
+zůstanete připojeni, i když ukončíte OpenVPN GUI.\n\n\
+Chcete pokračovat a aplikaci ukončit?"
 
     /* options - Resources */
-    IDS_NFO_USAGE "--help\t\t\t: Zobrazí tuto zprávu.\n" \
-                  "--connect cnn \t\t: Připojí se k ""cnn"" při spuštění. (musí být obsažena přípona souboru)\n" \
-                  "\t\t\t   Příklad: openvpn-gui --connect office.ovpn\n" \
-                  "--command cmd [args]\t: Send a command to a running instance of the GUI\n" \
-                  "Supported commands:\n"\
-                  "    connect cnn            \t: connect the config named ""cnn""\n"\
-                  "    disconnect cnn         \t: disconnect the config named ""cnn""\n"\
-                  "    reconnect cnn          \t: reconnect the config named ""cnn""\n"\
-                  "    disconnect_all         \t: disconnect all connected configs\n"\
-                  "    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n"\
-                  "    status cnn           \t\t: show the status window of config ""cnn"" if connected\n"\
-                  "    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n"\
-                  "\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n"\
-                  "\n" \
-                  "Volby k použití explicitního nastavení namísto výchozího z registru:\n" \
-                  "--exe_path\t\t: Cesta k openvpn.exe.\n" \
-                  "--config_dir\t\t: Cesta ke složce, kde se mají hledat konfigurační soubory.\n" \
-                  "--ext_string\t\t: Přípona konfiguračních souborů.\n" \
-                  "--log_dir\t\t\t: Cesta ke složce s logy.\n" \
-                  "--priority_string\t\t: Upravená priorita (více info v install.txt).\n" \
-                  "--append_string\t\t: 1=Zapisovat na konec logu. 0=Přepisovat log při připojování.\n" \
-                  "--log_viewer\t\t: Cesta k nástroji pro zobrazení logu.\n" \
-                  "--editor\t\t\t: Cesta k nástroji pro úpravu konfigurace.\n" \
-                  "--allow_edit\t\t: 1=Zobrazit položku Upravit konfiguraci v menu.\n" \
-                  "--allow_service\t\t: 1=Zobrazit možnosti ovládání služby v menu.\n" \
-                  "--allow_password\t\t: 1=Zobrazit položku Změnit heslo v menu.\n" \
-                  "--allow_proxy\t\t: 1=Zobrazit nastavení proxy v menu.\n" \
-                  "--show_balloon\t\t: Ukazovat upozornění: 0=Nikdy, 1=Při připojení, 2=Při připojení/obnovení spojení.\n" \
-                  "--service_only\t\t: 1=Ovládat pouze službu systému.\n" \
-                  "--silent_connection\t\t: 1=Nezobrazovat stav při připojování ani nekritická varování při spuštění.\n" \
-                  "--show_script_window\t: 0=Nezobrazovat okno skriptu, 1=Zobrazit okno skriptu.\n" \
-                  "--passphrase_attempts\t: Počet možných pokusů o zadání hesla.\n" \
-                  "--connectscript_timeout\t: Časový limit skriptu v průběhu připojování.\n" \
-                  "--disconnectscript_timeout\t: Časový limit skriptu při odpojování.\n" \
-                  "--preconnectscript_timeout\t: Časový limit skriptu před připojením.\n"
+    IDS_NFO_USAGE "--help\t\t\t: Zobrazí tuto zprávu.\n\
+--connect cnn \t\t: Připojí se k ""cnn"" při spuštění. (musí být obsažena přípona souboru)\n\
+\t\t\t   Příklad: openvpn-gui --connect office.ovpn\n\
+--command cmd [args]\t: Send a command to a running instance of the GUI\n\
+Supported commands:\n\
+    connect cnn            \t: connect the config named ""cnn""\n\
+    disconnect cnn         \t: disconnect the config named ""cnn""\n\
+    reconnect cnn          \t: reconnect the config named ""cnn""\n\
+    disconnect_all         \t: disconnect all connected configs\n\
+    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n\
+    status cnn           \t\t: show the status window of config ""cnn"" if connected\n\
+    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n\
+\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n\
+\n\
+Volby k použití explicitního nastavení namísto výchozího z registru:\n\
+--exe_path\t\t: Cesta k openvpn.exe.\n\
+--config_dir\t\t: Cesta ke složce, kde se mají hledat konfigurační soubory.\n\
+--ext_string\t\t: Přípona konfiguračních souborů.\n\
+--log_dir\t\t\t: Cesta ke složce s logy.\n\
+--priority_string\t\t: Upravená priorita (více info v install.txt).\n\
+--append_string\t\t: 1=Zapisovat na konec logu. 0=Přepisovat log při připojování.\n\
+--log_viewer\t\t: Cesta k nástroji pro zobrazení logu.\n\
+--editor\t\t\t: Cesta k nástroji pro úpravu konfigurace.\n\
+--allow_edit\t\t: 1=Zobrazit položku Upravit konfiguraci v menu.\n\
+--allow_service\t\t: 1=Zobrazit možnosti ovládání služby v menu.\n\
+--allow_password\t\t: 1=Zobrazit položku Změnit heslo v menu.\n\
+--allow_proxy\t\t: 1=Zobrazit nastavení proxy v menu.\n\
+--show_balloon\t\t: Ukazovat upozornění: 0=Nikdy, 1=Při připojení, 2=Při připojení/obnovení spojení.\n\
+--service_only\t\t: 1=Ovládat pouze službu systému.\n\
+--silent_connection\t\t: 1=Nezobrazovat stav při připojování ani nekritická varování při spuštění.\n\
+--show_script_window\t: 0=Nezobrazovat okno skriptu, 1=Zobrazit okno skriptu.\n\
+--passphrase_attempts\t: Počet možných pokusů o zadání hesla.\n\
+--connectscript_timeout\t: Časový limit skriptu v průběhu připojování.\n\
+--disconnectscript_timeout\t: Časový limit skriptu při odpojování.\n\
+--preconnectscript_timeout\t: Časový limit skriptu před připojením.\n"
 
     IDS_NFO_USAGECAPTION "Použití OpenVPN GUI"
-    IDS_ERR_BAD_PARAMETER "Parametr ""%s"" nebyl úspěšně zpracován, " \
-                      "zkuste před něj dát '--'."
-    IDS_ERR_BAD_OPTION "Nepovolená hodnota: Neznámá volba nebo chybějící parametr: --%s\n" \
-                   "Použijte openvpn-gui --help pro více informací."
+    IDS_ERR_BAD_PARAMETER "Parametr ""%s"" nebyl úspěšně zpracován, \
+zkuste před něj dát '--'."
+    IDS_ERR_BAD_OPTION "Nepovolená hodnota: Neznámá volba nebo chybějící parametr: --%s\n\
+Použijte openvpn-gui --help pro více informací."
 
     /* passphrase - Resources */
     IDS_ERR_CREATE_PASS_THREAD "Selhal CreateThread při vytváření dialogu Změna hesla privátního klíče."
@@ -416,8 +416,8 @@ BEGIN
     IDS_ERR_AUTH_USERNAME2STDIN "Došlo k chybě při předávání uživatelského jména do příkazové řádky."
     IDS_ERR_AUTH_PASSWORD2STDIN "Došlo k chybě při předávání hesla do příkazové řádky."
     IDS_ERR_CR2STDIN "Došlo k chybě při předávání odpovědi na výzvu do příkazové řádky."
-    IDS_ERR_INVALID_CHARS_IN_PSW "Vaše nové heslo obsahuje neplatné znaky. " \
-                             "Prosím zadejte jiné."
+    IDS_ERR_INVALID_CHARS_IN_PSW "Vaše nové heslo obsahuje neplatné znaky. \
+Prosím zadejte jiné."
 
     /* settings */
     IDS_SETTINGS_CAPTION "OpenVPN - Nastavení"
@@ -442,34 +442,34 @@ BEGIN
     IDS_NFO_RESTARTED "Služba OpenVPN byla restartována."
     IDS_ERR_ACCESS_SERVICE_PIPE "Přístup k pipe služby selhal."
     IDS_ERR_WRITE_SERVICE_PIPE "Zápis do pipe služby selhal."
-    IDS_ERR_INSTALL_ISERVICE     "Služba ""OpenVPNServiceInteractive"" není nainstalována.\n"
-                                 "Úlohy vyžadující oprávnění správce nemusí fungovat."
-    IDS_ERR_NOTSTARTED_ISERVICE  "Služba ""OpenVPNServiceInteractive"" není spuštěna.\n"
-                                 "Úlohy vyžadující oprávnění správce nemusí fungovat."
-    IDS_ERR_NOTSTARTED_ISERVICE_ADM  "Služba ""OpenVPNServiceInteractive"" není spuštěna.\n"
-                                     "Wintun driver will not work."
+    IDS_ERR_INSTALL_ISERVICE     "Služba ""OpenVPNServiceInteractive"" není nainstalována.\n\
+Úlohy vyžadující oprávnění správce nemusí fungovat."
+    IDS_ERR_NOTSTARTED_ISERVICE  "Služba ""OpenVPNServiceInteractive"" není spuštěna.\n\
+Úlohy vyžadující oprávnění správce nemusí fungovat."
+    IDS_ERR_NOTSTARTED_ISERVICE_ADM  "Služba ""OpenVPNServiceInteractive"" není spuštěna.\n\
+Wintun driver will not work."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Nepodařilo se získat umístění složky Windows."
     IDS_ERR_GET_PROFILE_DIR "Nepodařilo se získat umístění složky uživatelského profilu."
     IDS_ERR_GET_PROGRAM_DIR "Nepodařilo se získat umístění složky ""Program""."
-    IDS_ERR_OPEN_REGISTRY "Nepodařilo se otevřít klíč registru ke čtení (HKLM\\SOFTWARE\\OpenVPN).\n " \
-                      "OpenVPN pravděpodobně není nainstalováno."
+    IDS_ERR_OPEN_REGISTRY "Nepodařilo se otevřít klíč registru ke čtení (HKLM\\SOFTWARE\\OpenVPN).\n \
+OpenVPN pravděpodobně není nainstalováno."
     IDS_ERR_READING_REGISTRY "Došlo k chybě při čtení hodnoty z registru (HKLM\\SOFTWARE\\OpenVPN)."
     IDS_ERR_PASSPHRASE_ATTEMPTS "Hodnota ""passphrase_attempts"" v registru musí být číslo mezi 1 a 9."
     IDS_ERR_CONN_SCRIPT_TIMEOUT "Hodnota ""connectscript_timeout"" v registru musí být číslo mezi 0 a 99."
     IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Hodnota ""disconnectscript_timeout"" v registru musí být číslo mezi 1 a 99."
     IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Hodnota ""preconnectscript_timeout"" v registru musí být číslo mezi 1 a 99."
     IDS_ERR_CREATE_REG_KEY "Nepodařilo se vytvořit klíč HKLM\\SOFTWARE\\OpenVPN-GUI."
-    IDS_ERR_OPEN_WRITE_REG "Nepodařilo se otevřít registr pro zápis. Je nutné spustit aplikaci " \
-                       "jednou jako správce, aby se registr aktualizoval."
+    IDS_ERR_OPEN_WRITE_REG "Nepodařilo se otevřít registr pro zápis. Je nutné spustit aplikaci \
+jednou jako správce, aby se registr aktualizoval."
     IDS_ERR_READ_SET_KEY "Došlo k chybě při čtení a zápisu klíče registru ""%s""."
     IDS_ERR_WRITE_REGVALUE "Došlo k chybě při zápisu hodnoty registru ""HKCU\\%s\\%s""."
 
     /* importation */
     IDS_ERR_IMPORT_EXISTS "Konfigurace s názvem ""%s"" již existuje."
-    IDS_ERR_IMPORT_FAILED "Nepodařilo se importovat konfigurační soubor. Následující cestu se nepodařilo vytvořit.\n\n" \
-                          "%s\n\nUjistěte se prosím, že máte potřebná oprávnění."
+    IDS_ERR_IMPORT_FAILED "Nepodařilo se importovat konfigurační soubor. Následující cestu se nepodařilo vytvořit.\n\n\
+%s\n\nUjistěte se prosím, že máte potřebná oprávnění."
     IDS_NFO_IMPORT_SUCCESS "Konfigurace úspěšně importována."
     IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
     IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"

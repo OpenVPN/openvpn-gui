@@ -129,9 +129,9 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_DUTCH, SUBLANG_DEFAULT
 BEGIN
     GROUPBOX "   ", 201, 6, 46, 235, 52
-    AUTORADIOBUTTON "Proxyinstellingen van OpenVPN configuratiebestand gebruiken", ID_RB_PROXY_OPENVPN, \
+    AUTORADIOBUTTON "Proxyinstellingen van OpenVPN configuratiebestand gebruiken", ID_RB_PROXY_OPENVPN,
                     13, 16, 210, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Proxyinstellingen van systeem gebruiken", \
+    AUTORADIOBUTTON "Proxyinstellingen van systeem gebruiken",
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
     AUTORADIOBUTTON "Handmatige configuratie", ID_RB_PROXY_MANUAL, 13, 46, 90, 10
     AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
@@ -213,19 +213,18 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_DUTCH, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, 0, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v" PACKAGE_VERSION_RESOURCE_STR " - Een Windows GUI voor OpenVPN\n" \
-          "Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n" \
-          "Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n" \
-          "Copyright (C) 2012-" GUI_COPYRIGHT_YEAR_END " OpenVPN GUI contributors\n" \
-          "https://github.com/OpenVPN/openvpn-gui/", 0, 36, 15, 206, 42
-    LTEXT "OpenVPN - Een programma om veilig IP-netwerken te tunnelen " \
-          "over een enkele TCP/UDP poort, met ondersteuning voor SSL/TLS-gebaseerde " \
-          "sessie-authenticatie en sleuteluitwisseling, pakketversleuteling, " \
-          "pakket-authenticatie en pakketcompressie.\n" \
-								  
-          "\n" \
-          "Copyright (C) 2002-" CORE_COPYRIGHT_YEAR_END " OpenVPN Technologies, Inc <info@openvpn.net>\n" \
-          "https://openvpn.net/", 0, 8, 61, 240, 64
+    LTEXT "OpenVPN GUI v%s - Een Windows GUI voor OpenVPN\n\
+Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
+Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
+Copyright (C) 2012-2021 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
+    LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_TXT_VERSION, 36, 55, 206, 42
+    LTEXT "OpenVPN - Een programma om veilig IP-netwerken te tunnelen \
+over een enkele TCP/UDP poort, met ondersteuning voor SSL/TLS-gebaseerde \
+sessie-authenticatie en sleuteluitwisseling, pakketversleuteling, \
+pakket-authenticatie en pakketcompressie.\n\
+\n", 0, 8, 70, 240, 64
+    LTEXT "Copyright (C) 2002-2021 OpenVPN Technologies, Inc <info@openvpn.net>\n\
+https://openvpn.net/", 0, 8, 106, 240, 64
 END
 
 /* Proxy Authentication Dialog */
@@ -279,17 +278,17 @@ BEGIN
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI ondersteunt niet meer dan %d configuraties. Neem contact op met de auteur indien u er meer wenst."
-    IDS_NFO_NO_CONFIGS "Geen leesbare verbindingsprofielen (config files) gevonden.\n"\
-                       "Gebruik het menu ""Bestand importeren…"" of kopieer uw configuratiebestanden naar ""%s"" of ""%s""."
-    IDS_ERR_CONFIG_NOT_AUTHORIZED "Het maken van deze verbinding (%s) vereist lidmaatschap van\n"\
-                                  "de groep ""%s"". Neem contact op met de systeembeheerder.\n"
-    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Het maken van deze verbinding (%s) vereist lidmaatschap van\n"\
-                                  "de groep ""%s"".\n\n"\
-                                  "Wilt u uzelf toevoegen aan deze groep?\n"\
-                                  "Tijdens deze actie kan er om het administratorwachtwoord gevraagd worden."
-    IDS_NFO_CONFIG_AUTH_PENDING   "Het maken van deze verbinding (%s) vereist lidmaatschap van\n"\
-                                  "de groep ""%s"".\n\n"\
-                                  "Vul het voorgaande autorisatiescherm volledig in."
+    IDS_NFO_NO_CONFIGS "Geen leesbare verbindingsprofielen (config files) gevonden.\n\
+Gebruik het menu ""Bestand importeren…"" of kopieer uw configuratiebestanden naar ""%s"" of ""%s""."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "Het maken van deze verbinding (%s) vereist lidmaatschap van\n\
+de groep ""%s"". Neem contact op met de systeembeheerder.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Het maken van deze verbinding (%s) vereist lidmaatschap van\n\
+de groep ""%s"".\n\n\
+Wilt u uzelf toevoegen aan deze groep?\n\
+Tijdens deze actie kan er om het administratorwachtwoord gevraagd worden."
+    IDS_NFO_CONFIG_AUTH_PENDING   "Het maken van deze verbinding (%s) vereist lidmaatschap van\n\
+de groep ""%s"".\n\n\
+Vul het voorgaande autorisatiescherm volledig in."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Toevoegen van de gebruiker aan de groep ""%s"" is mislukt."
     IDS_ERR_ONE_CONN_OLD_VER "Er kan maar één verbinding per OpenVPN-client gestart worden met versies ouder dan OpenVPN 2.0-beta6."
     IDS_ERR_STOP_SERV_OLD_VER "De OpenVPN GUI kan niet gestart worden als de OpenVPN Service actief is. (OpenVPN 1.5/1.6). Stop eerst de OpenVPN Service indien u de OpenVPN GUI wenst te gebruiken."
@@ -332,11 +331,11 @@ BEGIN
     IDS_ERR_GET_EXIT_CODE "Kan ExitCode niet uitlezen voor Connect Script (%s)"
     IDS_ERR_CONN_SCRIPT_FAILED "Connect Script mislukt. (exitcode=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Connect Script mislukt. TimeOut na %d sec."
-    IDS_ERR_CONFIG_EXIST "Er bestaat al een configuratie '%s'. Elke configuratie " \
-                         "moet een unieke naam hebben, ook als " \
-                         "ze in verschillende mappen bewaard worden."
-    IDS_NFO_CONN_TIMEOUT "Verbinden met management interface mislukt.\n" \
-                         "Bekijk logbestand (%s) voor meer informatie."
+    IDS_ERR_CONFIG_EXIST "Er bestaat al een configuratie '%s'. Elke configuratie \
+moet een unieke naam hebben, ook als \
+ze in verschillende mappen bewaard worden."
+    IDS_NFO_CONN_TIMEOUT "Verbinden met management interface mislukt.\n\
+Bekijk logbestand (%s) voor meer informatie."
     /* main – Resources */
     IDS_ERR_OPEN_DEBUG_FILE "Fout tijdens schrijven naar debug-log (%s)."
     IDS_ERR_CREATE_PATH "Kan het %s pad niet aanmaken:\n%s"
@@ -344,60 +343,60 @@ BEGIN
     IDS_ERR_SHELL_DLL_VERSION "De shell32.dll versie is te oud (0x%lx). Minstens versie 5.0 is vereist."
     IDS_NFO_SERVICE_STARTED "OpenVPN Service gestart."
     IDS_NFO_SERVICE_STOPPED "OpenVPN Service gestopt."
-    IDS_NFO_ACTIVE_CONN_EXIT "Er zijn nog actieve connecties die verbroken zullen worden indien OpenVPN GUI afgesloten wordt." \
-                             "\n\nBent u zeker dan u wilt afsluiten?"
-    IDS_NFO_SERVICE_ACTIVE_EXIT "Er is momenteel een actieve verbinding (OpenVPN services is gestart). " \
-                                "De verbinding blijft actief ook als OpenVPN GUI afgesloten wordt.\n\n" \
-                                "OpenVPN GUI afsluiten?"
+    IDS_NFO_ACTIVE_CONN_EXIT "Er zijn nog actieve connecties die verbroken zullen worden indien OpenVPN GUI afgesloten wordt.\
+\n\nBent u zeker dan u wilt afsluiten?"
+    IDS_NFO_SERVICE_ACTIVE_EXIT "Er is momenteel een actieve verbinding (OpenVPN services is gestart). \
+De verbinding blijft actief ook als OpenVPN GUI afgesloten wordt.\n\n\
+OpenVPN GUI afsluiten?"
 
     /* options – Resources */
-    IDS_NFO_USAGE "--help\t\t\t: Toon dit bericht.\n" \
-                  "--connect cnn \t\t: Met ""cnn"" verbinden tijdens opstarten (extensie moet opgegeven worden).\n" \
-                  "\t\t\t   Voorbeeld: openvpn-gui --connect office.ovpn\n" \
-                  "--command cmd [args]\t: Een commando naar een draaiende instantie van de GUI versturen\n" \
-                  "Ondersteunde commando's:\n"\
-                  "    connect cnn            \t: de configuratie met de naam ""cnn"" verbinden\n"\
-                  "    disconnect cnn         \t: de verbinding van de configuratie met de naam ""cnn"" verbreken\n"\
-                  "    reconnect cnn          \t: de configuratie met de naam ""cnn"" opnieuw verbinden\n"\
-                  "    disconnect_all         \t: de verbinding van alle verbonden configuraties verbreken\n"\
-                  "    exit                 \t\t: de huidige instantie van de GUI afsluiten (er kan om bevestiging gevraagd worden)\n"\
-                  "    status cnn           \t\t: het status-scherm van de configuratie ""cnn"" laten zien als de verbinding is gemaakt\n"\
-                  "    silent_connection [0|1]\t: de vlag ""silent_connection"" aan- (1) of uitzetten (0)\n"\
-		  "\t\t\tVoorbeeld: openvpn-gui.exe --command disconnect myconfig\n"\
-                  "\n" \
-                  "Instellingen die de registerinstellingen overschrijven:\n" \
-                  "--exe_path\t\t: Pad naar openvpn.exe.\n" \
-                  "--config_dir\t\t: Pad naar map met configuratiebestanden.\n" \
-                  "--ext_string\t\t: Extensies voor de configuratiebestanden.\n" \
-                  "--log_dir\t\t\t: Pad naar de map waar de logbestanden bewaard worden.\n" \
-                  "--priority_string\t\t: Prioriteitsstring (Zie install.txt voor meer info).\n" \
-                  "--append_string\t\t: 1=Toevoegen aan logbestand. 0=Overschrijf logbestand tijdens verbinden.\n" \
-                  "--log_viewer\t\t: Pad naar de logviewer.\n" \
-                  "--editor\t\t\t: Pad naar de configuratie-editor.\n" \
-                  "--allow_edit\t\t: 1=Menu-item ""Configuratie bewerken"" weergeven.\n" \
-                  "--allow_service\t\t: 1=Servicecontrole menu-items weergeven.\n" \
-                  "--allow_password\t\t: 1=""Wachtwoord wijzigen"" menu-item weergeven.\n" \
-                  "--allow_proxy\t\t: 1=Menu ""Proxyinstellingen"" weergeven.\n" \
-                  "--show_balloon\t\t: 0=Nooit, 1=Tijdens eerste verbinding, 2=Bij elke herverbinding.\n" \
-                  "--service_only\t\t: 1=Service Only modus activeren.\n" \
-                  "--silent_connection\t\t: 1=Het status-venster tijdens het verbinden verbergen.\n" \
-                  "--show_script_window\t: 0=Het script uitvoer-venster verbergen, 1=Weergeven.\n" \
-                  "--passphrase_attempts\t: Aantal wachtwoordpogingen.\n" \
-                  "--connectscript_timeout\t: Timeout voor uitvoer van Connect Script.\n" \
-                  "--disconnectscript_timeout\t: Timeout voor uitvoer van Disconnect Script.\n" \
-                  "--preconnectscript_timeout\t: Time to wait for preconnect script to finish.\n" \
-                  "--iservice_admin\t\t: 0=Do not use interactive service when started as admin (default is 1 for Windows 7 and newer)\n" \
-                  "--disable_popup_messages\t: Do not popup (i.e., show) the echo message window. Default is to show.\n" \
-                  "--popup_mute_interval\t: Time in hours for which a previously shown echo message is not re-displayed. Default=24 hours.\n" \
-                  "--management_port_offset\t: Offset value added to config index to determine the management port for a connection.\n" \
-                  "\t\t\t Must be in the range 1 to 61000. Maximum number of configs is limited by 65536 minus this value. Default=25340.\n"
+    IDS_NFO_USAGE "--help\t\t\t: Toon dit bericht.\n\
+--connect cnn \t\t: Met ""cnn"" verbinden tijdens opstarten (extensie moet opgegeven worden).\n\
+\t\t\t   Voorbeeld: openvpn-gui --connect office.ovpn\n\
+--command cmd [args]\t: Een commando naar een draaiende instantie van de GUI versturen\n\
+Ondersteunde commando's:\n\
+    connect cnn            \t: de configuratie met de naam ""cnn"" verbinden\n\
+    disconnect cnn         \t: de verbinding van de configuratie met de naam ""cnn"" verbreken\n\
+    reconnect cnn          \t: de configuratie met de naam ""cnn"" opnieuw verbinden\n\
+    disconnect_all         \t: de verbinding van alle verbonden configuraties verbreken\n\
+    exit                 \t\t: de huidige instantie van de GUI afsluiten (er kan om bevestiging gevraagd worden)\n\
+    status cnn           \t\t: het status-scherm van de configuratie ""cnn"" laten zien als de verbinding is gemaakt\n\
+    silent_connection [0|1]\t: de vlag ""silent_connection"" aan- (1) of uitzetten (0)\n\
+\t\t\tVoorbeeld: openvpn-gui.exe --command disconnect myconfig\n\
+\n\
+Instellingen die de registerinstellingen overschrijven:\n\
+--exe_path\t\t: Pad naar openvpn.exe.\n\
+--config_dir\t\t: Pad naar map met configuratiebestanden.\n\
+--ext_string\t\t: Extensies voor de configuratiebestanden.\n\
+--log_dir\t\t\t: Pad naar de map waar de logbestanden bewaard worden.\n\
+--priority_string\t\t: Prioriteitsstring (Zie install.txt voor meer info).\n\
+--append_string\t\t: 1=Toevoegen aan logbestand. 0=Overschrijf logbestand tijdens verbinden.\n\
+--log_viewer\t\t: Pad naar de logviewer.\n\
+--editor\t\t\t: Pad naar de configuratie-editor.\n\
+--allow_edit\t\t: 1=Menu-item ""Configuratie bewerken"" weergeven.\n\
+--allow_service\t\t: 1=Servicecontrole menu-items weergeven.\n\
+--allow_password\t\t: 1=""Wachtwoord wijzigen"" menu-item weergeven.\n\
+--allow_proxy\t\t: 1=Menu ""Proxyinstellingen"" weergeven.\n\
+--show_balloon\t\t: 0=Nooit, 1=Tijdens eerste verbinding, 2=Bij elke herverbinding.\n\
+--service_only\t\t: 1=Service Only modus activeren.\n\
+--silent_connection\t\t: 1=Het status-venster tijdens het verbinden verbergen.\n\
+--show_script_window\t: 0=Het script uitvoer-venster verbergen, 1=Weergeven.\n\
+--passphrase_attempts\t: Aantal wachtwoordpogingen.\n\
+--connectscript_timeout\t: Timeout voor uitvoer van Connect Script.\n\
+--disconnectscript_timeout\t: Timeout voor uitvoer van Disconnect Script.\n\
+--preconnectscript_timeout\t: Time to wait for preconnect script to finish.\n\
+--iservice_admin\t\t: 0=Do not use interactive service when started as admin (default is 1 for Windows 7 and newer)\n\
+--disable_popup_messages\t: Do not popup (i.e., show) the echo message window. Default is to show.\n\
+--popup_mute_interval\t: Time in hours for which a previously shown echo message is not re-displayed. Default=24 hours.\n\
+--management_port_offset\t: Offset value added to config index to determine the management port for a connection.\n\
+\t\t\t Must be in the range 1 to 61000. Maximum number of configs is limited by 65536 minus this value. Default=25340.\n"
 
 
     IDS_NFO_USAGECAPTION "OpenVPN GUI Opties"
-    IDS_ERR_BAD_PARAMETER "Ik probeer ""%s"" te interpreteren als een --option parameter " \
-                      "maar kan geen '--'-prefix vinden."
-    IDS_ERR_BAD_OPTION "Fout in Opties: Onbekende optie of ontbrekende parameter: --%s\n" \
-                   "Gebruik openvpn-gui --help voor meer informatie."
+    IDS_ERR_BAD_PARAMETER "Ik probeer ""%s"" te interpreteren als een --option parameter \
+maar kan geen '--'-prefix vinden."
+    IDS_ERR_BAD_OPTION "Fout in Opties: Onbekende optie of ontbrekende parameter: --%s\n\
+Gebruik openvpn-gui --help voor meer informatie."
 
     /* passphrase – Resources */
     IDS_ERR_CREATE_PASS_THREAD "CreateThread om ChangePassphrase venster aan te maken is mislukt."
@@ -423,8 +422,8 @@ BEGIN
     IDS_ERR_AUTH_USERNAME2STDIN "Fout bij doorgeven gebruikersnaam aan stdin."
     IDS_ERR_AUTH_PASSWORD2STDIN "Fout bij doorgeven wachtwoord aan stdin."
     IDS_ERR_CR2STDIN "Fout bij doorgeven CR aan stdin."
-    IDS_ERR_INVALID_CHARS_IN_PSW "Het nieuwe wachtwoord bevat niet-toegestane tekens. " \
-                             "Kies een nieuw wachtwoord."
+    IDS_ERR_INVALID_CHARS_IN_PSW "Het nieuwe wachtwoord bevat niet-toegestane tekens. \
+Kies een nieuw wachtwoord."
 
     /* settings */
     IDS_SETTINGS_CAPTION "OpenVPN - Instellingen"
@@ -449,34 +448,34 @@ BEGIN
     IDS_NFO_RESTARTED "OpenVPN Service Herstart."
     IDS_ERR_ACCESS_SERVICE_PIPE "Toegang tot service pipe mislukt."
     IDS_ERR_WRITE_SERVICE_PIPE "Schrijven naar service pipe mislukt."
-    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is niet geinstalleerd.\n"
-                                 "Wintun driver en taken die administratieve rechten vereisen werken mogelijk niet."
-    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" is niet gestart.\n"
-                                 "Wintun driver en taken die administratieve rechten vereisen werken mogelijk niet."
-    IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" is niet gestart.\n"
-                                     "Wintun driver wil niet werken."
+    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is niet geinstalleerd.\n\
+Wintun driver en taken die administratieve rechten vereisen werken mogelijk niet."
+    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" is niet gestart.\n\
+Wintun driver en taken die administratieve rechten vereisen werken mogelijk niet."
+    IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" is niet gestart.\n\
+Wintun driver wil niet werken."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Fout tijdens opvragen Windows-map."
     IDS_ERR_GET_PROFILE_DIR "Fout tijdens opvragen Gebruikersprofiel-map."
     IDS_ERR_GET_PROGRAM_DIR "Fout tijdens opvragen ""Program"" map naam."
-    IDS_ERR_OPEN_REGISTRY "Fout tijdens lezen van register (HKLM\\SOFTWARE\\OpenVPN).\n " \
-                      "OpenVPN is waarschijnlijk niet geïnstalleerd"
+    IDS_ERR_OPEN_REGISTRY "Fout tijdens lezen van register (HKLM\\SOFTWARE\\OpenVPN).\n \
+OpenVPN is waarschijnlijk niet geïnstalleerd"
     IDS_ERR_READING_REGISTRY "Fout tijdens lezen van registersleutel (HKLM\\SOFTWARE\\OpenVPN)."
     IDS_ERR_PASSPHRASE_ATTEMPTS "Registersleutel ""passphrase_attempts"" moet een waarde tussen 1 en 9 bevatten."
     IDS_ERR_CONN_SCRIPT_TIMEOUT "Registersleutel ""connectscript_timeout"" moet een waarde tussen 0 en 99 bevatten."
     IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Registersleutel ""disconnectscript_timeout"" moet een waarde tussen 1 en 99 bevatten."
     IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Registersleutel ""preconnectscript_timeout"" moet een waarde tussen 1 en 99 bevatten."
     IDS_ERR_CREATE_REG_KEY "Fout tijdens aanmaken van HKLM\\SOFTWARE\\OpenVPN-GUI sleutel."
-    IDS_ERR_OPEN_WRITE_REG "Fout tijdens het schrijven naar het register. Voer deze applicatie één keer uit als Administrator " \
-                       "om de registerinstellingen te updaten."
+    IDS_ERR_OPEN_WRITE_REG "Fout tijdens het schrijven naar het register. Voer deze applicatie één keer uit als Administrator \
+om de registerinstellingen te updaten."
     IDS_ERR_READ_SET_KEY "Fout tijdens lezen en instellen van registersleutel ""%s""."
     IDS_ERR_WRITE_REGVALUE "Fout tijdens schrijven van registersleutel ""HKEY_CURRENT_USER\\%s\\%s""."
 
     /* importation */
     IDS_ERR_IMPORT_EXISTS "Een configuratie met de naam ""%s"" bestaat al."
-    IDS_ERR_IMPORT_FAILED "Importeren bestand is mislukt. De onderstaande bestandsnaam kon niet gemaakt worden.\n\n" \
-                          "%s\n\nControleer of de juiste rechten gebruikt worden."
+    IDS_ERR_IMPORT_FAILED "Importeren bestand is mislukt. De onderstaande bestandsnaam kon niet gemaakt worden.\n\n\
+%s\n\nControleer of de juiste rechten gebruikt worden."
     IDS_NFO_IMPORT_SUCCESS "Importeren bestand gelukt."
     IDS_NFO_IMPORT_OVERWRITE "Een configuratie met de naam ""%s"" bestaat al. Wilt u deze vervangen?"
     IDS_ERR_IMPORT_SOURCE "Het bestand <%s> kan niet worden geïmporteerd omdat het al in de globale of lokale configuratiemap bestaat"
