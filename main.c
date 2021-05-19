@@ -646,9 +646,17 @@ static INT_PTR CALLBACK
 AboutDialogFunc(UNUSED HWND hDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
 {
   LPPSHNOTIFY psn;
-  if (msg == WM_NOTIFY) {
-    psn = (LPPSHNOTIFY) lParam;
-    if (psn->hdr.code == (UINT) PSN_APPLY)
+  wchar_t tmp1[256], tmp2[256];
+  switch (msg) {
+    case WM_INITDIALOG:
+      if (GetDlgItemText(hDlg, ID_TXT_VERSION, tmp1, _countof(tmp1))) {
+        _sntprintf_0(tmp2, tmp1, TEXT(PACKAGE_VERSION_RESOURCE_STR));
+        SetDlgItemText(hDlg, ID_TXT_VERSION, tmp2);
+      }
+      break;
+    case WM_NOTIFY:
+      psn = (LPPSHNOTIFY) lParam;
+      if (psn->hdr.code == (UINT) PSN_APPLY)
         return TRUE;
   }
   return FALSE;
