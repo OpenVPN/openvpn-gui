@@ -30,10 +30,15 @@
 
 /* About Dialog */
 #define ID_DLG_ABOUT                     100
+#define ID_ICON_ABOUT                    110
+#define ID_LTEXT_ABOUT2                  122
+#define ID_LTEXT_ABOUT3                  123
+#define ID_LTEXT_ABOUT4                  124
 
 /* Ask for Passphrase Dialog */
 #define ID_DLG_PASSPHRASE                150
 #define ID_EDT_PASSPHRASE                151
+#define ID_LTEXT_PASSWORD                152
 
 /* Status Dialog */
 #define ID_DLG_STATUS                    160
@@ -65,6 +70,8 @@
 #define ID_EDT_AUTH_CHALLENGE            185
 #define ID_CHK_SAVE_PASS                 186
 #define ID_TXT_WARNING                   187
+#define ID_LTEXT_USERNAME                188
+#define ID_LTEXT_RESPONSE                189
 
 /* Challenege Response Dialog */
 #define ID_DLG_CHALLENGE_RESPONSE        190
@@ -73,6 +80,12 @@
 
 /* Proxy Settings Dialog */
 #define ID_DLG_PROXY                     200
+#define ID_GROUPBOX1                     201
+#define ID_GROUPBOX2                     202
+#define ID_GROUPBOX3                     203
+#define ID_GROUPBOX4                     204
+#define ID_LTEXT_PORT_OFFSET             205
+#define ID_GROUPBOX5                     206
 #define ID_RB_PROXY_OPENVPN              210
 #define ID_RB_PROXY_MSIE                 211
 #define ID_RB_PROXY_MANUAL               212
@@ -120,6 +133,7 @@
 #define ID_EDT_CONNECT_TIMEOUT           283
 #define ID_EDT_DISCONNECT_TIMEOUT        284
 #define ID_EDT_MGMT_PORT                 285
+#define ID_TXT_FOLDER1                   286
 
 /* Connections dialog */
 #define ID_DLG_CONNECTIONS               290
