@@ -43,8 +43,8 @@ EXSTYLE WS_EX_TOPMOST
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FINNISH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "Käyttäjänimi:", 0, 6, 9, 50, 10
-    LTEXT "Salasana:", 0, 6, 26, 50, 10
+    LTEXT "Käyttäjänimi:", ID_LTEXT_USERNAME, 6, 9, 50, 10
+    LTEXT "Salasana:", ID_LTEXT_PASSWORD, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     CHECKBOX "Tallenna salasana", ID_CHK_SAVE_PASS, 6, 42, 100, 10
@@ -60,9 +60,9 @@ CAPTION "OpenVPN - Käyttäjän todennus"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FINNISH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "Käyttäjänimi:", 0, 6, 9, 50, 10
-    LTEXT "Salasana:", 0, 6, 26, 50, 10
-    LTEXT "Vastaus:", 0, 6, 60, 50, 10
+    LTEXT "Käyttäjänimi:", ID_LTEXT_USERNAME, 6, 9, 50, 10
+    LTEXT "Salasana:", ID_LTEXT_PASSWORD, 6, 26, 50, 10
+    LTEXT "Vastaus:", ID_LTEXT_RESPONSE, 6, 60, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     LTEXT "", ID_TXT_AUTH_CHALLENGE, 6, 43, 148, 10
@@ -81,7 +81,7 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FINNISH, SUBLANG_DEFAULT
 BEGIN
     LTEXT "", ID_TXT_DESCRIPTION, 6, 9, 208, 10
-    LTEXT "Vastaus:", 0, 6, 30, 50, 10
+    LTEXT "Vastaus:", ID_LTEXT_RESPONSE, 6, 30, 50, 10
     EDITTEXT ID_EDT_RESPONSE, 60, 27, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     PUSHBUTTON "OK", IDOK, 20, 51, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
     PUSHBUTTON "Peruuta", IDCANCEL, 90, 51, 52, 14
@@ -156,7 +156,7 @@ BEGIN
     GROUPBOX "Käynnistäminen", 202, 6, 47, 235, 30
     AUTOCHECKBOX "Käynnistä Windowsiin kirjautuessa", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "Valinnat", 202, 6, 82, 235, 105
+    GROUPBOX "Valinnat", ID_GROUPBOX3, 6, 82, 235, 105
     AUTOCHECKBOX "Lisää lokitiedostoon", ID_CHK_LOG_APPEND, 17, 95, 200, 10
     AUTOCHECKBOX "Näytä komentosarjaikkuna", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "Yhdistä taustalla", ID_CHK_SILENT, 17, 125, 200, 10
@@ -182,7 +182,7 @@ BEGIN
     PUSHBUTTON "…", ID_BTN_CONFIG_DIR, 208, 23, 25, 12
 
     GROUPBOX "Lokitiedostot", 202, 6, 62, 235, 30
-    LTEXT "Kansio:", ID_TXT_FOLDER, 17, 74, 32, 10
+    LTEXT "Kansio:", ID_TXT_FOLDER1, 17, 74, 32, 10
     EDITTEXT ID_EDT_LOG_DIR, 53, 72, 150, 12, ES_AUTOHSCROLL
     PUSHBUTTON "…", ID_BTN_LOG_DIR, 208, 72, 25, 12
 
@@ -211,19 +211,19 @@ CAPTION "Tietoja"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FINNISH, SUBLANG_DEFAULT
 BEGIN
-    ICON ID_ICO_APP, 0, 8, 16, 21, 20
+    ICON ID_ICO_APP, ID_ICON_ABOUT, 8, 16, 21, 20
     LTEXT "OpenVPN GUI v%s - Graafinen käyttöliittymä OpenVPN:lle\n\
 Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
 Copyright (C) 2012-2021 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
-    LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_TXT_VERSION, 36, 55, 206, 42
+    LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_LTEXT_ABOUT2, 36, 55, 206, 42
     LTEXT "OpenVPN mahdollistaa IP-verkkojen yhdistämisen toisiinsa \
 suojatulla TCP/UDP-yhteydellä. Se tukee mm. SSL/TLS\
 -pohjaista istuntojen todennusta ja avainten vaihtoa \
 sekä pakettien salausta, todennusta ja pakkausta.\n\
-\n", 0, 8, 70, 240, 64
+\n", ID_LTEXT_ABOUT3, 8, 70, 240, 64
     LTEXT "Copyright (C) 2002-2021 OpenVPN Technologies, Inc <info@openvpn.net>\n\
-https://openvpn.net/", 0, 8, 106, 240, 64
+https://openvpn.net/", ID_LTEXT_ABOUT4, 8, 106, 240, 64
 END
 
 /* Proxy Authentication Dialog */
