@@ -219,7 +219,7 @@ Copyright (C) 2012-2021 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206
     LTEXT "OpenVPN - Una aplicación para tunelizar de forma segura redes IP \
 contra un puerto TCP/UDP, con soporte para autenticación de sesión basada \
 en SSL/TLS e intercambio de claves, encriptación de paquetes, con \
-encriptación de paquetes y compresión de paquetes opcional.\n\
+compresión de paquetes opcional.\n\
 \n", ID_LTEXT_ABOUT3, 8, 70, 240, 64
     LTEXT "Copyright (C) 2002-2021 OpenVPN Technologies, Inc <info@openvpn.net>\n\
 https://openvpn.net/", ID_LTEXT_ABOUT4, 8, 106, 240, 64
