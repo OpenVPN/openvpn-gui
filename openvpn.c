@@ -1282,6 +1282,25 @@ void OnByteCount(connection_t *c, char *msg)
 }
 
 /*
+ * Handle INFOMSG from OpenVPN. At the moment in only handles
+ * "OPEN_URL:<url>" message used by web-based extra authentication.
+ */
+void OnInfoMsg(connection_t* c, char* msg)
+{
+    PrintDebug(L"OnInfoMsg with msg = %S", msg);
+
+    if (strbegins(msg, "OPEN_URL:"))
+    {
+        wchar_t* url = Widen(msg + 9);
+        if (!open_url(url))
+        {
+            WriteStatusLog(c, L"GUI> ", L"Error: failed to open url from info msg", false);
+        }
+        free(url);
+    }
+}
+
+/*
  * Break a long line into shorter segments
  */
 static WCHAR *
@@ -1986,7 +2005,7 @@ StartOpenVPN(connection_t *c)
 
     /* Construct command line -- put log first */
     _sntprintf_0(cmdline, _T("openvpn --log%s \"%s\" --config \"%s\" "
-        "--setenv IV_GUI_VER \"%S\" --service %s 0 --auth-retry interact "
+        "--setenv IV_GUI_VER \"%S\" --setenv IV_SSO openurl --service %s 0 --auth-retry interact "
         "--management %S %hd stdin --management-query-passwords %s"
         "--management-hold"),
         (o.log_append ? _T("-append") : _T("")), c->log_path,

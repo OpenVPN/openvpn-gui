@@ -186,6 +186,7 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
       { needstr_,  OnNeedStr },
       { echo_,     OnEcho },
       { bytecount_,OnByteCount },
+      { infomsg_,  OnInfoMsg },
       { 0,        NULL }
   };
   InitManagement(handler);
