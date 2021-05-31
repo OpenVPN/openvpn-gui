@@ -332,6 +332,11 @@ OnManagement(SOCKET sk, LPARAM lParam)
                     if (rtmsg_handler[bytecount_])
                         rtmsg_handler[bytecount_](c, pos + 10);
                 }
+                else if (strncmp(pos, "INFOMSG:", 8) == 0)
+                {
+                    if (rtmsg_handler[infomsg_])
+                        rtmsg_handler[infomsg_](c, pos + 8);
+                }
             }
             else if (c->manage.cmd_queue)
             {
