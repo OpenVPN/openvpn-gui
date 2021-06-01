@@ -217,7 +217,7 @@ out:
  * Generate a management command from double user inputs and send it
  */
 BOOL
-ManagementCommandFromInputBase64(connection_t *c, LPCSTR fmt, HWND hDlg,int id, int id2)
+ManagementCommandFromTwoInputsBase64(connection_t *c, LPCSTR fmt, HWND hDlg,int id, int id2)
 {
     BOOL retval = FALSE;
     LPSTR input, input2, input_b64, input2_b64, cmd;
@@ -263,6 +263,48 @@ out:
         memset(input2, 'x', input2_len);
         SetDlgItemTextA(hDlg, id2, input2);
         free(input2);
+    }
+
+    return retval;
+}
+
+/*
+ * Generate a management command from base64-encoded user inputs and send it
+ */
+BOOL
+ManagementCommandFromInputBase64(connection_t* c, LPCSTR fmt, HWND hDlg, int id)
+{
+    BOOL retval = FALSE;
+    LPSTR input, input_b64, cmd;
+    int input_len, cmd_len;
+
+    input_b64 = NULL;
+
+    GetDlgItemTextUtf8(hDlg, id, &input, &input_len);
+
+    if (!Base64Encode(input, input_len, &input_b64))
+        goto out;
+
+    cmd_len = strlen(input_b64) + strlen(fmt);
+    cmd = malloc(cmd_len);
+    if (cmd)
+    {
+        snprintf(cmd, cmd_len, fmt, input_b64);
+        retval = ManagementCommand(c, cmd, NULL, regular);
+        free(cmd);
+    }
+
+out:
+    /* Clear buffers with potentially secret content */
+    if (input_b64)
+        memset(input_b64, 0, strlen(input_b64));
+    free(input_b64);
+
+    if (input_len)
+    {
+        memset(input, 'x', input_len);
+        SetDlgItemTextA(hDlg, id, input);
+        free(input);
     }
 
     return retval;

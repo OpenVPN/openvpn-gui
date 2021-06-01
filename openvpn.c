@@ -64,13 +64,14 @@ TerminateOpenVPN(connection_t *c);
 
 const TCHAR *cfgProp = _T("conn");
 
-#define FLAG_CR_TYPE_SCRV1 0x1    /* static challenege */
-#define FLAG_CR_TYPE_CRV1  0x2    /* dynamic challenege */
-#define FLAG_CR_ECHO       0x4    /* echo the response */
-#define FLAG_CR_RESPONSE   0x8    /* response needed */
-#define FLAG_PASS_TOKEN    0x10   /* PKCS11 token password needed */
-#define FLAG_STRING_PKCS11 0x20   /* PKCS11 id needed */
-#define FLAG_PASS_PKEY     0x40   /* Private key password needed */
+#define FLAG_CR_TYPE_SCRV1  0x1    /* static challenege */
+#define FLAG_CR_TYPE_CRV1   0x2    /* dynamic challenege */
+#define FLAG_CR_ECHO        0x4    /* echo the response */
+#define FLAG_CR_RESPONSE    0x8    /* response needed */
+#define FLAG_PASS_TOKEN     0x10   /* PKCS11 token password needed */
+#define FLAG_STRING_PKCS11  0x20   /* PKCS11 id needed */
+#define FLAG_PASS_PKEY      0x40   /* Private key password needed */
+#define FLAG_CR_TYPE_CRTEXT 0x80   /* crtext */
 
 typedef struct {
     connection_t *c;
@@ -572,7 +573,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             }
             ManagementCommandFromInput(param->c, "username \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_USER);
             if (param->flags & FLAG_CR_TYPE_SCRV1)
-                ManagementCommandFromInputBase64(param->c, "password \"Auth\" \"SCRV1:%s:%s\"", hwndDlg, ID_EDT_AUTH_PASS, ID_EDT_AUTH_CHALLENGE);
+                ManagementCommandFromTwoInputsBase64(param->c, "password \"Auth\" \"SCRV1:%s:%s\"", hwndDlg, ID_EDT_AUTH_PASS, ID_EDT_AUTH_CHALLENGE);
             else
                 ManagementCommandFromInput(param->c, "password \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_PASS);
             EndDialog(hwndDlg, LOWORD(wParam));
@@ -638,7 +639,7 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             EndDialog(hwndDlg, LOWORD(wParam));
             break;
         }
-        if (param->flags & FLAG_CR_TYPE_CRV1)
+        if (param->flags & FLAG_CR_TYPE_CRV1 || param->flags & FLAG_CR_TYPE_CRTEXT)
         {
             SetDlgItemTextW(hwndDlg, ID_TXT_DESCRIPTION, wstr);
 
@@ -704,6 +705,12 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 show_error_tip(GetDlgItem(hwndDlg, ID_EDT_RESPONSE), LoadLocalizedString(IDS_ERR_INVALID_PASSWORD_INPUT));
                 SecureZeroMemory(password, sizeof(password));
                 return 0;
+            }
+            if (param->flags & FLAG_CR_TYPE_CRTEXT)
+            {
+                ManagementCommandFromInputBase64(param->c, "cr-response %s", hwndDlg, ID_EDT_RESPONSE);
+                EndDialog(hwndDlg, LOWORD(wParam));
+                return TRUE;
             }
             if (param->flags & FLAG_CR_TYPE_CRV1)
             {
@@ -935,6 +942,47 @@ parse_dynamic_cr (const char *str, auth_param_t *param)
 
 out:
     free (p);
+    return ret;
+}
+
+/*
+ * Parse crtext string received from the server. Returns
+ * true on success. The caller must free param->str even on error.
+ */
+static BOOL
+parse_crtext (const char* str, auth_param_t* param)
+{
+    BOOL ret = FALSE;
+    char* token[2] = { 0 };
+    char* p = strdup(str);
+
+    int i;
+    char* p1;
+
+    if (!param || !p) goto out;
+
+    /* expected: str = "E,R:challenge_str" */
+    for (i = 0, p1 = p; i < 2; ++i, p1 = NULL)
+    {
+        token[i] = strtok(p1, ":"); /* strtok is thread-safe on Windows */
+        if (!token[i])
+        {
+            WriteStatusLog(param->c, L"GUI> ", L"Error parsing crtext string", false);
+            goto out;
+        }
+    }
+
+    param->flags |= FLAG_CR_TYPE_CRTEXT;
+    param->flags |= strchr(token[0], 'E') ? FLAG_CR_ECHO : 0;
+    param->flags |= strchr(token[0], 'R') ? FLAG_CR_RESPONSE : 0;
+    param->str = strdup(token[1]);
+    if (!param->str)
+        goto out;
+
+    ret = TRUE;
+
+out:
+    free(p);
     return ret;
 }
 
@@ -1282,8 +1330,9 @@ void OnByteCount(connection_t *c, char *msg)
 }
 
 /*
- * Handle INFOMSG from OpenVPN. At the moment in only handles
- * "OPEN_URL:<url>" message used by web-based extra authentication.
+ * Handle INFOMSG from OpenVPN. At the moment it handles
+ * OPEN_URL:<url> and CR_TEXT:<flags>:<challenge-str> messages
+ * used by two-step authentication.
  */
 void OnInfoMsg(connection_t* c, char* msg)
 {
@@ -1297,6 +1346,25 @@ void OnInfoMsg(connection_t* c, char* msg)
             WriteStatusLog(c, L"GUI> ", L"Error: failed to open url from info msg", false);
         }
         free(url);
+    }
+    else if (strbegins(msg, "CR_TEXT:"))
+    {
+        auth_param_t* param = (auth_param_t*)calloc(1, sizeof(auth_param_t));
+        if (!param)
+        {
+            WriteStatusLog(c, L"GUI> ", L"Error: Out of memory - ignoring CR_TEXT request", false);
+            return;
+        }
+        param->c = c;
+
+        if (!parse_crtext(msg + 8, param))
+        {
+            WriteStatusLog(c, L"GUI> ", L"Error parsing crtext string", FALSE);
+
+            free_auth_param(param);
+            return;
+        }
+        LocalizedDialogBoxParam(ID_DLG_CHALLENGE_RESPONSE, GenericPassDialogFunc, (LPARAM)param);
     }
 }
 
@@ -2005,7 +2073,7 @@ StartOpenVPN(connection_t *c)
 
     /* Construct command line -- put log first */
     _sntprintf_0(cmdline, _T("openvpn --log%s \"%s\" --config \"%s\" "
-        "--setenv IV_GUI_VER \"%S\" --setenv IV_SSO openurl --service %s 0 --auth-retry interact "
+        "--setenv IV_GUI_VER \"%S\" --setenv IV_SSO openurl,crtext --service %s 0 --auth-retry interact "
         "--management %S %hd stdin --management-query-passwords %s"
         "--management-hold"),
         (o.log_append ? _T("-append") : _T("")), c->log_path,
