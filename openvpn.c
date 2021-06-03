@@ -650,7 +650,7 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             {
                 wchar_t title[256];
                 GetWindowTextW(hwndDlg, title, _countof(title));
-                if (MessageBox(param->c->hwndStatus, wstr, title, MB_OKCANCEL) == IDOK)
+                if (MessageBoxExW(NULL, wstr, title, MB_OKCANCEL|MB_SETFOREGROUND|MB_TOPMOST, GetGUILanguage()) == IDOK)
                     SimulateButtonPress(hwndDlg, IDOK);
                 else
                     SimulateButtonPress(hwndDlg, IDCANCEL);
@@ -708,7 +708,7 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             }
             if (param->flags & FLAG_CR_TYPE_CRTEXT)
             {
-                ManagementCommandFromInputBase64(param->c, "cr-response %s", hwndDlg, ID_EDT_RESPONSE);
+                ManagementCommandFromInputBase64(param->c, "cr-response \"%s\"", hwndDlg, ID_EDT_RESPONSE);
                 EndDialog(hwndDlg, LOWORD(wParam));
                 return TRUE;
             }
