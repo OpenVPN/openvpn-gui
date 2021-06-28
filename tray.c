@@ -43,6 +43,7 @@
 /* Popup Menus */
 HMENU hMenu;
 HMENU *hMenuConn;
+HMENU hMenuImport;
 int hmenu_size = 0; /* allocated size of hMenuConn array */
 HMENU hMenuService;
 
@@ -215,7 +216,11 @@ CreatePopupMenus()
 
         AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
 
-        AppendMenu(hMenu, MF_STRING, IDM_IMPORT, LoadLocalizedString(IDS_MENU_IMPORT));
+        hMenuImport = CreatePopupMenu();
+        AppendMenu(hMenu, MF_POPUP, (UINT_PTR) hMenuImport, LoadLocalizedString(IDS_MENU_IMPORT));
+        AppendMenu(hMenuImport, MF_STRING, IDM_IMPORT_FILE, LoadLocalizedString(IDS_MENU_IMPORT_FILE));
+        AppendMenu(hMenuImport, MF_STRING, IDM_IMPORT_AS, LoadLocalizedString(IDS_MENU_IMPORT_AS));
+
         AppendMenu(hMenu, MF_STRING ,IDM_SETTINGS, LoadLocalizedString(IDS_MENU_SETTINGS));
         AppendMenu(hMenu, MF_STRING ,IDM_CLOSE, LoadLocalizedString(IDS_MENU_CLOSE));
 
@@ -271,10 +276,13 @@ CreatePopupMenus()
             AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
         }
 
-        AppendMenu(hMenu, MF_STRING, IDM_IMPORT, LoadLocalizedString(IDS_MENU_IMPORT));
+        hMenuImport = CreatePopupMenu();
+        AppendMenu(hMenu, MF_POPUP, (UINT_PTR) hMenuImport, LoadLocalizedString(IDS_MENU_IMPORT));
+        AppendMenu(hMenuImport, MF_STRING, IDM_IMPORT_FILE, LoadLocalizedString(IDS_MENU_IMPORT_FILE));
+        AppendMenu(hMenuImport, MF_STRING, IDM_IMPORT_AS, LoadLocalizedString(IDS_MENU_IMPORT_AS));
+
         AppendMenu(hMenu, MF_STRING, IDM_SETTINGS, LoadLocalizedString(IDS_MENU_SETTINGS));
         AppendMenu(hMenu, MF_STRING, IDM_CLOSE, LoadLocalizedString(IDS_MENU_CLOSE));
-
 
         /* Create popup menus for every connection */
         for (int i = 0; i < o.num_configs; i++) {
@@ -313,9 +321,11 @@ DestroyPopupMenus()
         DestroyMenu(hMenuConn[i]);
 
     DestroyMenu(hMenuService);
+    DestroyMenu(hMenuImport);
     DestroyMenu(hMenu);
 
     hMenuService = NULL;
+    hMenuImport = NULL;
     hMenu = NULL;
 }
 

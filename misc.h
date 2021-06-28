@@ -24,6 +24,8 @@
 
 #include <wincrypt.h>
 
+#include "options.h"
+
 BOOL ManagementCommandFromInput(connection_t *, LPCSTR, HWND, int);
 BOOL ManagementCommandFromTwoInputsBase64(connection_t*, LPCSTR, HWND, int, int);
 BOOL ManagementCommandFromInputBase64(connection_t *, LPCSTR, HWND, int);

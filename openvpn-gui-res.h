@@ -145,6 +145,10 @@
 #define ID_DLG_MESSAGE                   300
 #define ID_TXT_MESSAGE                   301
 
+#define ID_DLG_URL_PROFILE_IMPORT        400
+#define ID_EDT_URL                       401
+#define ID_CHK_AUTOLOGIN                 402
+
 /*
  * String Table Resources
  */
@@ -176,6 +180,8 @@
 #define IDS_MENU_IMPORT                 1023
 #define IDS_MENU_CLEARPASS              1024
 #define IDS_MENU_RECONNECT              1025
+#define IDS_MENU_IMPORT_AS              1026
+#define IDS_MENU_IMPORT_FILE            1027
 
 /* LogViewer Dialog */
 #define IDS_ERR_START_LOG_VIEWER        1101
