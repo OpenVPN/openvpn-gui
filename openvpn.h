@@ -23,6 +23,8 @@
 #ifndef OPENVPN_H
 #define OPENVPN_H
 
+#include "options.h"
+
 BOOL StartOpenVPN(connection_t *);
 void StopOpenVPN(connection_t *);
 void SuspendOpenVPN(int config);

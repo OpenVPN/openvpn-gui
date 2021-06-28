@@ -152,7 +152,7 @@ BEGIN
     GROUPBOX "Interfaccia utente", 201, 6, 12, 235, 30
     LTEXT "&Lingua:", ID_TXT_LANGUAGE, 17, 25, 52, 12
     COMBOBOX ID_CMB_LANGUAGE, 43, 23, 185, 400, CBS_DROPDOWNLIST | WS_TABSTOP
-    
+
     GROUPBOX "Avvio", 202, 6, 47, 235, 30
     AUTOCHECKBOX "&Avvia all'apertura di Windows", ID_CHK_STARTUP, 17, 59, 200, 12
 
@@ -225,7 +225,7 @@ Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
 Copyright (C) 2012-2021 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
     LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_LTEXT_ABOUT2, 36, 55, 206, 50
-          
+
     LTEXT "OpenVPN - Un'applicazione che permette di creare tunnel sicuri su reti IP \
 con una singola porta TCP/UDP, con il supporto basato sull'autenticazione e lo scambio \
 di chiavi SSL/TLS, cifratura, autenticazione e compressione dei pacchetti.\n\
@@ -248,6 +248,24 @@ BEGIN
     PUSHBUTTON "&OK", IDOK, 58, 43, 40, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
 END
 
+/* URL Profile Import Dialog */
+ID_DLG_URL_PROFILE_IMPORT DIALOG 6, 18, 160, 95
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFOREGROUND
+CAPTION "Import Profile from Access Server"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_ITALIAN, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "U&RL:", 201, 6, 9, 50, 10
+    EDITTEXT ID_EDT_URL, 60, 6, 94, 12, ES_AUTOHSCROLL
+    LTEXT "&Username:", 202, 6, 26, 50, 10
+    EDITTEXT ID_EDT_AUTH_USER, 60, 23, 94, 12, ES_AUTOHSCROLL
+    LTEXT "&Password:", ID_LTEXT_PASSWORD, 6, 42, 50, 10
+    EDITTEXT ID_EDT_AUTH_PASS, 60, 40, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    AUTOCHECKBOX "&Autologin", ID_CHK_AUTOLOGIN, 6, 59, 100, 10
+    PUSHBUTTON "&OK", IDOK, 20, 76, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "&Cancel", IDCANCEL, 90, 76, 52, 14
+END
+
 STRINGTABLE
 LANGUAGE LANG_ITALIAN, SUBLANG_DEFAULT
 BEGIN
@@ -260,7 +278,9 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\nConnesso da: "
     IDS_TIP_ASSIGNED_IP "\nIP assegnato: %s"
     IDS_MENU_SERVICE "Servizio OpenVPN"
-    IDS_MENU_IMPORT "Importa file…"
+    IDS_MENU_IMPORT "Import"
+    IDS_MENU_IMPORT_AS "Import from Access Server…"
+    IDS_MENU_IMPORT_FILE "Importa file…"
     IDS_MENU_SETTINGS "Impostazioni…"
     IDS_MENU_CLOSE "Esci"
     IDS_MENU_CONNECT "Connetti"
@@ -478,7 +498,7 @@ OpenVPN probabilmente non è installato"
 una volta che l'amministratore ha aggiornato il registro."
     IDS_ERR_READ_SET_KEY "Errore nella lettura e modifica della chiave di registro ""%s""."
     IDS_ERR_WRITE_REGVALUE "Errore nella scrittura del valore di registro ""HKEY_CURRENT_USER\\%s\\%s""."
-    
+
     /* importation */
     IDS_ERR_IMPORT_EXISTS "Esiste già una configurazione con il nome ""%s""."
     IDS_ERR_IMPORT_FAILED "Errore nell'importazione del file. Non ho potuto creare il percorso seguente:\n\n\
@@ -501,5 +521,5 @@ una volta che l'amministratore ha aggiornato il registro."
     IDS_NFO_AUTO_CONNECT    "Connessione automatica tra %u secondi..."
     IDS_NFO_CLICK_HERE_TO_START "L'interfaccia OpenVPN è già in esecuzione. Clicca con il tasto destro sull'icona nell'area di notifica per cominciare."
     IDS_NFO_BYTECOUNT "Byte in: %s out: %s"
-    
+
 END

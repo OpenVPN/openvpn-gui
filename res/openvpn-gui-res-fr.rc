@@ -152,7 +152,7 @@ BEGIN
     GROUPBOX "Interface utilisateur", 201, 6, 12, 235, 30
     LTEXT "Langue:", ID_TXT_LANGUAGE, 17, 25, 52, 12
     COMBOBOX ID_CMB_LANGUAGE, 47, 23, 181, 400, CBS_DROPDOWNLIST | WS_TABSTOP
-    
+
     GROUPBOX "Démarrage", 202, 6, 47, 235, 30
     AUTOCHECKBOX "Lancer au démarrage de Windows", ID_CHK_STARTUP, 17, 59, 200, 12
 
@@ -248,6 +248,24 @@ BEGIN
     PUSHBUTTON "OK", IDOK, 58, 43, 40, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
 END
 
+/* URL Profile Import Dialog */
+ID_DLG_URL_PROFILE_IMPORT DIALOG 6, 18, 160, 95
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFOREGROUND
+CAPTION "Import Profile from Access Server"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_FRENCH, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "U&RL:", 201, 6, 9, 50, 10
+    EDITTEXT ID_EDT_URL, 60, 6, 94, 12, ES_AUTOHSCROLL
+    LTEXT "&Username:", 202, 6, 26, 50, 10
+    EDITTEXT ID_EDT_AUTH_USER, 60, 23, 94, 12, ES_AUTOHSCROLL
+    LTEXT "&Password:", ID_LTEXT_PASSWORD, 6, 42, 50, 10
+    EDITTEXT ID_EDT_AUTH_PASS, 60, 40, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    AUTOCHECKBOX "&Autologin", ID_CHK_AUTOLOGIN, 6, 59, 100, 10
+    PUSHBUTTON "&OK", IDOK, 20, 76, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "&Cancel", IDCANCEL, 90, 76, 52, 14
+END
+
 STRINGTABLE
 LANGUAGE LANG_FRENCH, SUBLANG_DEFAULT
 BEGIN
@@ -260,7 +278,9 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\nConnecté depuis: "
     IDS_TIP_ASSIGNED_IP "\nAdresse IP assignée: %s"
     IDS_MENU_SERVICE "OpenVPN Service"
-    IDS_MENU_IMPORT "Importer fichier…"
+    IDS_MENU_IMPORT "Import"
+    IDS_MENU_IMPORT_AS "Import from Access Server…"
+    IDS_MENU_IMPORT_FILE "Importer fichier…"
     IDS_MENU_SETTINGS "Configuration…"
     IDS_MENU_CLOSE "Quitter"
     IDS_MENU_CONNECT "Connecter"
@@ -478,7 +498,7 @@ OpenVPN n'est probablement pas installé."
 en tant qu'Administrator pour mettre à jour la base de registre."
     IDS_ERR_READ_SET_KEY "Impossible de lire et modifier la clé de registre ""%s""."
     IDS_ERR_WRITE_REGVALUE "Impossible d'écrire la valeur de registre ""HKEY_CURRENT_USER\\%s\\%s""."
-    
+
     /* importation */
     IDS_ERR_IMPORT_EXISTS "Une configuration nommée ""%s"" existe déjà."
     IDS_ERR_IMPORT_FAILED "Impossible d'importer un fichier. Le chemin suivant n'a pas pu être créé.\n\n\

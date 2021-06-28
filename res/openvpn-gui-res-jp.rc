@@ -249,6 +249,24 @@ BEGIN
     PUSHBUTTON "OK(&O)", IDOK, 58, 43, 40, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
 END
 
+/* URL Profile Import Dialog */
+ID_DLG_URL_PROFILE_IMPORT DIALOG 6, 18, 160, 95
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFOREGROUND
+CAPTION "Import Profile from Access Server"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "U&RL:", 201, 6, 9, 50, 10
+    EDITTEXT ID_EDT_URL, 60, 6, 94, 12, ES_AUTOHSCROLL
+    LTEXT "&Username:", 202, 6, 26, 50, 10
+    EDITTEXT ID_EDT_AUTH_USER, 60, 23, 94, 12, ES_AUTOHSCROLL
+    LTEXT "&Password:", ID_LTEXT_PASSWORD, 6, 42, 50, 10
+    EDITTEXT ID_EDT_AUTH_PASS, 60, 40, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    AUTOCHECKBOX "&Autologin", ID_CHK_AUTOLOGIN, 6, 59, 100, 10
+    PUSHBUTTON "&OK", IDOK, 20, 76, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "&Cancel", IDCANCEL, 90, 76, 52, 14
+END
+
 STRINGTABLE
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 BEGIN
@@ -261,7 +279,9 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\n接続時間: "
     IDS_TIP_ASSIGNED_IP "\n割り当てられたIP: %s"
     IDS_MENU_SERVICE "OpenVPNサービス"
-    IDS_MENU_IMPORT "ファイルのインポート..."
+    IDS_MENU_IMPORT "Import"
+    IDS_MENU_IMPORT_AS "Import from Access Server..."
+    IDS_MENU_IMPORT_FILE "ファイルのインポート..."
     IDS_MENU_SETTINGS "設定..."
     IDS_MENU_CLOSE "終了"
     IDS_MENU_CONNECT "接続"
@@ -343,7 +363,7 @@ BEGIN
 別フォルダでも同じ名前で複数の設定ファイルを使用することはできません。"
     IDS_NFO_CONN_TIMEOUT "管理インターフェイスに接続できませんでした。\n\
 ログファイル (%s) を確認してください。"
-		
+
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "デバッグファイル (%s) を出力用に開くときにエラーが発生しました。"
     IDS_ERR_CREATE_PATH "%s を作成できませんでした。パス:\n%s"
@@ -476,7 +496,7 @@ OpenVPNがインストールされていない可能性があります。"
     IDS_ERR_PRECONN_SCRIPT_TIMEOUT "レジストリ ""preconnectscript_timeout"" の値は 1-99 の範囲内である必要があります。"
     IDS_ERR_CREATE_REG_KEY "キー HKLM\\SOFTWARE\\OpenVPN-GUI の作成に失敗しました。"
     IDS_ERR_OPEN_WRITE_REG "レジストリの書き込みに失敗しました。レジストリの更新時にはアプリケーションを管理者権限で実行する必要があります。"
-    IDS_ERR_READ_SET_KEY "レジストリ ""%s"" の読み取り/書き込みに失敗しました。" 
+    IDS_ERR_READ_SET_KEY "レジストリ ""%s"" の読み取り/書き込みに失敗しました。"
     IDS_ERR_WRITE_REGVALUE "レジストリ ""HKEY_CURRENT_USER\\%s\\%s"" への書き込みに失敗しました。"
 
     /* importation */
