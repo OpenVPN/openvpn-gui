@@ -27,7 +27,9 @@ add_executable(${PROJECT_NAME} WIN32
     res/openvpn-gui-res.rc)
 
 find_package(OpenSSL REQUIRED)
-target_link_libraries(${PROJECT_NAME} OpenSSL::SSL
+
+target_link_libraries(${PROJECT_NAME}
+    OpenSSL::SSL
     Wtsapi32.lib
     Netapi32.lib
     ws2_32.lib
@@ -40,7 +42,8 @@ target_link_libraries(${PROJECT_NAME} OpenSSL::SSL
     Shell32.lib
     Gdi32.lib
     Comdlg32.lib
-    Ole32.lib)
+    Ole32.lib
+    Wininet.lib)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 

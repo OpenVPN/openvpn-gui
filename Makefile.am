@@ -94,6 +94,7 @@ openvpn_gui_SOURCES = \
 	save_pass.c save_pass.h \
 	env_set.c env_set.h \
 	echo.c echo.h \
+	as.c as.h \
 	openvpn-gui-res.h
 
 openvpn_gui_LDFLAGS = -mwindows
@@ -108,7 +109,8 @@ openvpn_gui_LDADD = \
 	-lnetapi32 \
 	-lole32 \
 	-lshlwapi \
-	-lsecur32
+	-lsecur32 \
+	-lwininet
 
 openvpn-gui-res.o: $(openvpn_gui_RESOURCES) $(srcdir)/openvpn-gui-res.h
 	$(RCCOMPILE) -i $< -o $@

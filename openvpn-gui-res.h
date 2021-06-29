@@ -148,6 +148,7 @@
 #define ID_DLG_URL_PROFILE_IMPORT        400
 #define ID_EDT_URL                       401
 #define ID_CHK_AUTOLOGIN                 402
+#define IDS_ERR_URL_IMPORT_PROFILE       403
 
 /*
  * String Table Resources

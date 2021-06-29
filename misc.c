@@ -122,11 +122,7 @@ Base64Decode(const char *input, char **output)
     return len;
 }
 
-/*
- * Helper function to convert UCS-2 text from a dialog item to UTF-8.
- * Caller must free *str if *len != 0.
- */
-static BOOL
+BOOL
 GetDlgItemTextUtf8(HWND hDlg, int id, LPSTR *str, int *len)
 {
     int ucs2_len, utf8_len;
