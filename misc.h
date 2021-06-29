@@ -73,4 +73,11 @@ BOOL open_url(const wchar_t *url);
 
 void ImportConfigFile(const TCHAR* path);
 
+/*
+ * Helper function to convert UCS-2 text from a dialog item to UTF-8.
+ * Caller must free *str if *len != 0.
+ */
+BOOL
+GetDlgItemTextUtf8(HWND hDlg, int id, LPSTR* str, int* len);
+
 #endif
