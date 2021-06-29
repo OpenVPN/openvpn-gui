@@ -31,11 +31,13 @@
 #include <malloc.h>
 #include <shellapi.h>
 
+#include "localization.h"
 #include "options.h"
 #include "manage.h"
 #include "main.h"
 #include "misc.h"
 #include "main.h"
+#include "openvpn-gui-res.h"
 
 /*
  * Helper function to do base64 conversion through CryptoAPI
@@ -401,7 +403,7 @@ DpiSetScale(options_t* options, UINT dpix)
  * Check user has admin rights
  * Taken from https://msdn.microsoft.com/en-us/library/windows/desktop/aa376389(v=vs.85).aspx
  * Returns true if the calling process token has the local Administrators group enabled
- * in its SID.  Assumes the caller is not impersonating and has access to open its own 
+ * in its SID.  Assumes the caller is not impersonating and has access to open its own
  * process token.
  */
 BOOL IsUserAdmin(VOID)
@@ -631,4 +633,52 @@ open_url(const wchar_t *url)
         return false;
     }
     return true;
+}
+
+extern options_t o;
+
+void
+ImportConfigFile(const TCHAR* source)
+{
+    TCHAR fileName[MAX_PATH] = _T("");
+    TCHAR ext[MAX_PATH] = _T("");
+    _wsplitpath(source, NULL, NULL, fileName, ext);
+
+    /* check if the source points to the config_dir */
+    if (wcsncmp(source, o.global_config_dir, wcslen(o.global_config_dir)) == 0
+        || wcsncmp(source, o.config_dir, wcslen(o.config_dir)) == 0)
+    {
+        ShowLocalizedMsg(IDS_ERR_IMPORT_SOURCE, source);
+        return;
+    }
+
+    TCHAR destination[MAX_PATH];
+    _sntprintf_0(destination, _T("%s\\%s"), o.config_dir, fileName);
+
+    if (EnsureDirExists(destination))
+    {
+        _sntprintf_0(destination, _T("%s\\%s.%s"), destination, fileName, o.ext_string);
+
+        bool  no_overwrite = TRUE;
+        while (!CopyFile(source, destination, no_overwrite))
+        {
+            if (GetLastError() != ERROR_FILE_EXISTS || !no_overwrite)
+            {
+                MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Copy file <%s> to <%s> failed (error = %lu)",
+                    source, destination, GetLastError());
+                ShowLocalizedMsg(IDS_ERR_IMPORT_FAILED, destination);
+                return;
+            }
+
+            /* A file with same name exists. Ask the user whether to replace or not. */
+            if (ShowLocalizedMsgEx(MB_YESNO, _T(PACKAGE_NAME), IDS_NFO_IMPORT_OVERWRITE, fileName) == IDNO)
+                return;
+
+            /* try again with overwrite allowed */
+            no_overwrite = FALSE;
+        }
+        ShowLocalizedMsg(IDS_NFO_IMPORT_SUCCESS);
+        return;
+    }
+    ShowLocalizedMsg(IDS_ERR_IMPORT_FAILED, destination);
 }

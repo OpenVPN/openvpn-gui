@@ -65,7 +65,7 @@
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
 static void ShowSettingsDialog();
 void CloseApplication(HWND hwnd);
-void ImportConfigFile();
+void ImportConfigFileFromDisk();
 void ImportConfigFromAS();
 
 /*  Class name and window title  */
@@ -543,7 +543,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
       /* we first check global menu items which do not require a connnection index */
       if (LOWORD(wParam) == IDM_IMPORT_FILE) {
-        ImportConfigFile();
+        ImportConfigFileFromDisk();
       }
       else if (LOWORD(wParam) == IDM_IMPORT_AS) {
         ImportConfigFromAS();
@@ -756,9 +756,8 @@ CloseApplication(HWND hwnd)
 }
 
 void
-ImportConfigFile()
+ImportConfigFileFromDisk()
 {
-
     TCHAR filter[2*_countof(o.ext_string)+5];
 
     _sntprintf_0(filter, _T("*.%s%c*.%s%c"), o.ext_string, _T('\0'), o.ext_string, _T('\0'));
@@ -781,49 +780,7 @@ ImportConfigFile()
 
     if (GetOpenFileName(&fn))
     {
-
-        TCHAR destination[MAX_PATH];
-        PTCHAR fileName = source + fn.nFileOffset;
-
-        /* check if the source points to the config_dir */
-        if (wcsncmp(source, o.global_config_dir, wcslen(o.global_config_dir)) == 0
-            || wcsncmp(source, o.config_dir, wcslen(o.config_dir)) == 0)
-        {
-            ShowLocalizedMsg(IDS_ERR_IMPORT_SOURCE, source);
-            return;
-        }
-
-        _sntprintf_0(destination, _T("%s\\%s"), o.config_dir, fileName);
-
-        destination[_tcslen(destination) - _tcslen(o.ext_string) - 1] = _T('\0');
-
-        if (EnsureDirExists(destination))
-        {
-
-            _sntprintf_0(destination, _T("%s\\%s"), destination, fileName);
-
-            bool  no_overwrite = TRUE;
-            while(!CopyFile(source, destination, no_overwrite))
-            {
-                if (GetLastError() != ERROR_FILE_EXISTS || !no_overwrite)
-                {
-                    MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Copy file <%s> to <%s> failed (error = %lu)",
-                                  source, destination, GetLastError());
-                    ShowLocalizedMsg(IDS_ERR_IMPORT_FAILED, destination);
-                    return;
-                }
-
-                /* A file with same name exists. Ask the user whether to replace or not. */
-                if (ShowLocalizedMsgEx(MB_YESNO, _T(PACKAGE_NAME), IDS_NFO_IMPORT_OVERWRITE, fileName) == IDNO)
-                    return;
-
-                /* try again with overwrite allowed */
-                no_overwrite = FALSE;
-            }
-            ShowLocalizedMsg(IDS_NFO_IMPORT_SUCCESS);
-            return;
-        }
-        ShowLocalizedMsg(IDS_ERR_IMPORT_FAILED, destination);
+        ImportConfigFile(source);
     }
 }
 
