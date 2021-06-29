@@ -71,4 +71,6 @@ DWORD md_final(md_ctx *ctx, BYTE *md);
 /* Open specified http/https URL using ShellExecute. */
 BOOL open_url(const wchar_t *url);
 
+void ImportConfigFile(const TCHAR* path);
+
 #endif
