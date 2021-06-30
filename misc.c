@@ -671,7 +671,7 @@ ImportConfigFile(const TCHAR* source)
             }
 
             /* A file with same name exists. Ask the user whether to replace or not. */
-            if (ShowLocalizedMsgEx(MB_YESNO, _T(PACKAGE_NAME), IDS_NFO_IMPORT_OVERWRITE, fileName) == IDNO)
+            if (ShowLocalizedMsgEx(MB_YESNO, NULL, _T(PACKAGE_NAME), IDS_NFO_IMPORT_OVERWRITE, fileName) == IDNO)
                 return;
 
             /* try again with overwrite allowed */

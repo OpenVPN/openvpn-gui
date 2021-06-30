@@ -215,19 +215,19 @@ LoadLocalizedStringBuf(PTSTR buffer, int bufferSize, const UINT stringId, ...)
 
 
 static int
-__ShowLocalizedMsgEx(const UINT type, LPCTSTR caption, const UINT stringId, va_list args)
+__ShowLocalizedMsgEx(const UINT type, HANDLE parent, LPCTSTR caption, const UINT stringId, va_list args)
 {
-    return MessageBoxEx(NULL, __LoadLocalizedString(stringId, args), caption,
+    return MessageBoxEx(parent, __LoadLocalizedString(stringId, args), caption,
         type | MB_SETFOREGROUND, GetGUILanguage());
 }
 
 
 int
-ShowLocalizedMsgEx(const UINT type, LPCTSTR caption, const UINT stringId, ...)
+ShowLocalizedMsgEx(const UINT type, HANDLE parent, LPCTSTR caption, const UINT stringId, ...)
 {
     va_list args;
     va_start(args, stringId);
-    int result = __ShowLocalizedMsgEx(type, caption, stringId, args);
+    int result = __ShowLocalizedMsgEx(type, parent, caption, stringId, args);
     va_end(args);
     return result;
 }
@@ -238,7 +238,7 @@ ShowLocalizedMsg(const UINT stringId, ...)
 {
     va_list args;
     va_start(args, stringId);
-    __ShowLocalizedMsgEx(MB_OK, _T(PACKAGE_NAME), stringId, args);
+    __ShowLocalizedMsgEx(MB_OK, NULL, _T(PACKAGE_NAME), stringId, args);
     va_end(args);
 }
 

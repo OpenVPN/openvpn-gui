@@ -739,7 +739,7 @@ CloseApplication(HWND hwnd)
     int i;
 
     if (o.service_state == service_connected
-    && ShowLocalizedMsgEx(MB_YESNO, _T("Exit OpenVPN"), IDS_NFO_SERVICE_ACTIVE_EXIT) == IDNO)
+    && ShowLocalizedMsgEx(MB_YESNO, NULL, _T("Exit OpenVPN"), IDS_NFO_SERVICE_ACTIVE_EXIT) == IDNO)
             return;
 
     for (i = 0; i < o.num_configs; i++)
@@ -748,7 +748,7 @@ CloseApplication(HWND hwnd)
             continue;
 
         /* Ask for confirmation if still connected */
-        if (ShowLocalizedMsgEx(MB_YESNO, _T("Exit OpenVPN"), IDS_NFO_ACTIVE_CONN_EXIT) == IDNO)
+        if (ShowLocalizedMsgEx(MB_YESNO, NULL, _T("Exit OpenVPN"), IDS_NFO_ACTIVE_CONN_EXIT) == IDNO)
             return;
     }
 

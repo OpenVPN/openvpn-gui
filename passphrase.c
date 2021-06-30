@@ -374,7 +374,7 @@ ChangePassphraseDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPARAM 
           /* Confirm if the new password is empty. */
           if (NewPasswordLengh(hwndDlg) == 0)
             {
-               if (ShowLocalizedMsgEx(MB_YESNO, _T(PACKAGE_NAME), IDS_NFO_EMPTY_PWD) == IDNO)
+               if (ShowLocalizedMsgEx(MB_YESNO, NULL, _T(PACKAGE_NAME), IDS_NFO_EMPTY_PWD) == IDNO)
                   break;
             }
           /* Else check minimum length of password */
@@ -674,11 +674,11 @@ ChangePassphraseThread(LPVOID data)
       ExitThread(1);
     }
 
-  /* Show ChangePassphrase Dialog */  
+  /* Show ChangePassphrase Dialog */
   hwndChangePSW = CreateLocalizedDialog(ID_DLG_CHGPASS, ChangePassphraseDialogFunc);
   if (!hwndChangePSW)
     ExitThread(1);
-  SetDlgItemText(hwndChangePSW, ID_TXT_KEYFILE, keyfilename); 
+  SetDlgItemText(hwndChangePSW, ID_TXT_KEYFILE, keyfilename);
   SetDlgItemInt(hwndChangePSW, ID_TXT_KEYFORMAT, (UINT) keyfile_format, FALSE);
 
   SetWindowText(hwndChangePSW, LoadLocalizedString(IDS_NFO_CHANGE_PWD, conn_name));
