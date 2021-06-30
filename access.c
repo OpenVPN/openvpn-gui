@@ -260,7 +260,7 @@ AuthorizeConfig(const connection_t *c)
         return FALSE;
     }
     /* semaphore locked -- relase before return */
-    res = ShowLocalizedMsgEx(MB_YESNO|MB_ICONWARNING, TEXT(PACKAGE_NAME),
+    res = ShowLocalizedMsgEx(MB_YESNO|MB_ICONWARNING, NULL, TEXT(PACKAGE_NAME),
                              IDS_ERR_CONFIG_TRY_AUTHORIZE, c->config_name,
                              o.ovpn_admin_group);
     if (res == IDYES)

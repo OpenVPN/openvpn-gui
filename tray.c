@@ -363,7 +363,7 @@ OnNotifyTray(LPARAM lParam)
                 MyStartService();
             }
             else if (o.service_state == service_connected
-            && ShowLocalizedMsgEx(MB_YESNO, _T(PACKAGE_NAME), IDS_MENU_ASK_STOP_SERVICE) == IDYES) {
+            && ShowLocalizedMsgEx(MB_YESNO, NULL, _T(PACKAGE_NAME), IDS_MENU_ASK_STOP_SERVICE) == IDYES) {
                 MyStopService();
             }
         }

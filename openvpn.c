@@ -2454,7 +2454,7 @@ out:
 void
 ResetSavePasswords(connection_t *c)
 {
-    if (ShowLocalizedMsgEx(MB_OKCANCEL, TEXT(PACKAGE_NAME), IDS_NFO_DELETE_PASS, c->config_name) == IDCANCEL)
+    if (ShowLocalizedMsgEx(MB_OKCANCEL, NULL, TEXT(PACKAGE_NAME), IDS_NFO_DELETE_PASS, c->config_name) == IDCANCEL)
         return;
     DeleteSavedPasswords(c->config_name);
     c->flags &= ~(FLAG_SAVE_KEY_PASS | FLAG_SAVE_AUTH_PASS);

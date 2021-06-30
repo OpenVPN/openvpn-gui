@@ -26,7 +26,7 @@ int LocalizedTime(const time_t, LPTSTR, size_t);
 PTSTR LoadLocalizedString(const UINT, ...);
 int LoadLocalizedStringBuf(PTSTR, const int, const UINT, ...);
 void ShowLocalizedMsg(const UINT, ...);
-int ShowLocalizedMsgEx(const UINT, LPCTSTR, const UINT, ...);
+int ShowLocalizedMsgEx(const UINT, HANDLE, LPCTSTR, const UINT, ...);
 HICON LoadLocalizedIconEx(const UINT, int cx, int cy);
 HICON LoadLocalizedIcon(const UINT);
 HICON LoadLocalizedSmallIcon(const UINT);
