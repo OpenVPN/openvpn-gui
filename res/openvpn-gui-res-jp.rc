@@ -3,7 +3,7 @@
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
  *                2009 Heiko Hund <heikoh@users.sf.net>
- *                2011 Taro Yamazaki <taro@plum-systems.co.jp>
+ *                2011-2021 Taro Yamazaki <taro@plum-systems.co.jp>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -30,11 +30,11 @@ CAPTION "OpenVPN"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "パスワード:", 201, 6, 6, 100, 10
+    LTEXT "パスワード(&P):", 201, 6, 6, 100, 10
     EDITTEXT ID_EDT_PASSPHRASE, 6, 17, 107, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 33, 100, 10
-    PUSHBUTTON "OK", IDOK, 20, 49, 50, 14
-    PUSHBUTTON "キャンセル", IDCANCEL, 90, 49, 50, 14
+    CHECKBOX "パスワードを保存(&S)", ID_CHK_SAVE_PASS, 6, 33, 100, 10
+    PUSHBUTTON "OK(&O)", IDOK, 20, 49, 50, 14
+    PUSHBUTTON "キャンセル(&C)", IDCANCEL, 90, 49, 50, 14
     LTEXT "", ID_TXT_WARNING, 6, 65, 100, 10
 END
 
@@ -45,47 +45,47 @@ EXSTYLE WS_EX_TOPMOST
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "ユーザー名:", ID_LTEXT_USERNAME, 6, 9, 50, 10
-    LTEXT "パスワード:", ID_LTEXT_PASSWORD, 6, 26, 50, 10
+    LTEXT "ユーザー名(&U):", ID_LTEXT_USERNAME, 6, 9, 50, 10
+    LTEXT "パスワード(&P):", ID_LTEXT_PASSWORD, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 42, 100, 10
-    PUSHBUTTON "OK", IDOK, 20, 58, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_DISABLED
-    PUSHBUTTON "キャンセル", IDCANCEL, 90, 58, 52, 14
+    CHECKBOX "パスワードを保存(&S)", ID_CHK_SAVE_PASS, 6, 42, 100, 10
+    PUSHBUTTON "OK(&O)", IDOK, 20, 58, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "キャンセル(&C)", IDCANCEL, 90, 58, 52, 14
     LTEXT "", ID_TXT_WARNING, 6, 80, 150, 10
 END
 
 /* Auth Username/Password/Challenge Dialog */
 ID_DLG_AUTH_CHALLENGE DIALOG 6, 18, 160, 129
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
-CAPTION "OpenVPN - User Authentication"
+CAPTION "OpenVPN - ユーザー認証"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "ユーザー名:", ID_LTEXT_USERNAME, 6, 9, 50, 10
-    LTEXT "パスワード:", ID_LTEXT_PASSWORD, 6, 26, 50, 10
-    LTEXT "Response:", ID_LTEXT_RESPONSE, 6, 60, 50, 10
+    LTEXT "ユーザー名(&U):", ID_LTEXT_USERNAME, 6, 9, 50, 10
+    LTEXT "パスワード(&P):", ID_LTEXT_PASSWORD, 6, 26, 50, 10
+    LTEXT "レスポンス(&R):", ID_LTEXT_RESPONSE, 6, 60, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     LTEXT "", ID_TXT_AUTH_CHALLENGE, 6, 43, 148, 10
     EDITTEXT ID_EDT_AUTH_CHALLENGE, 60, 57, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 76, 100, 10
-    PUSHBUTTON "OK", IDOK, 20, 92, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
-    PUSHBUTTON "キャンセル", IDCANCEL, 90, 92, 52, 14
+    CHECKBOX "パスワードを保存(&S)", ID_CHK_SAVE_PASS, 6, 76, 100, 10
+    PUSHBUTTON "OK(&O)", IDOK, 20, 92, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "キャンセル(&C)", IDCANCEL, 90, 92, 52, 14
     LTEXT "", ID_TXT_WARNING, 6, 108, 150, 10
 END
 /* Challenge Response Dialog */
 ID_DLG_CHALLENGE_RESPONSE DIALOG 6, 18, 212, 72
 STYLE WS_SIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
-CAPTION "OpenVPN - Challenge Response"
+CAPTION "OpenVPN - チャレンジ/レスポンス"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 BEGIN
     LTEXT "", ID_TXT_DESCRIPTION, 6, 9, 208, 10
-    LTEXT "Response:", ID_LTEXT_RESPONSE, 6, 30, 50, 10
+    LTEXT "レスポンス(&R):", ID_LTEXT_RESPONSE, 6, 30, 50, 10
     EDITTEXT ID_EDT_RESPONSE, 60, 27, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    PUSHBUTTON "OK", IDOK, 20, 51, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
-    PUSHBUTTON "キャンセル", IDCANCEL, 90, 51, 52, 14
+    PUSHBUTTON "OK(&O)", IDOK, 20, 51, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "キャンセル(&C)", IDCANCEL, 90, 51, 52, 14
 END
 
 /* Status Dialog */
@@ -95,30 +95,30 @@ CAPTION "OpenVPN"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "接続中…", ID_TXT_STATUS, 20, 5, 200, 10
+    LTEXT "接続中...", ID_TXT_STATUS, 20, 5, 200, 10
     LTEXT "", ID_TXT_BYTECOUNT, 20, 175, 200, 10
     LTEXT "OpenVPN GUI 11.y.0.0/2.4.x", ID_TXT_VERSION, 220, 175, 150, 10
     LTEXT "", ID_TXT_IP, 20, 160, 300, 10
-    PUSHBUTTON "切断", ID_DISCONNECT, 50, 190, 50, 14
-    PUSHBUTTON "再接続", ID_RESTART, 150, 190, 50, 14
-    PUSHBUTTON "隠す", ID_HIDE, 100, 190, 50, 14
+    PUSHBUTTON "切断(&D)", ID_DISCONNECT, 50, 190, 50, 14
+    PUSHBUTTON "再接続(&R)", ID_RESTART, 150, 190, 50, 14
+    PUSHBUTTON "隠す(&H)", ID_HIDE, 100, 190, 50, 14
 END
 
 /* Change Passphrase Dialog */
 ID_DLG_CHGPASS DIALOG 6, 18, 193, 82
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "OpenVPN - パスフレーズの変更"
+CAPTION "OpenVPN - 秘密鍵パスフレーズの変更"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "古いパスワード:", 171, 6, 9, 85, 10
-    LTEXT "新しいパスワード:", 172, 6, 26, 85, 10
-    LTEXT "新しいパスワード（確認用）:", 173, 6, 42, 85, 10
+    LTEXT "古いパスワード(&O):", 171, 6, 9, 85, 10
+    LTEXT "新しいパスワード(&N):", 172, 6, 26, 85, 10
+    LTEXT "新しいパスワード（確認用）(&F):", 173, 6, 42, 85, 10
     EDITTEXT ID_EDT_PASS_CUR, 95, 6, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
     EDITTEXT ID_EDT_PASS_NEW, 95, 23, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
     EDITTEXT ID_EDT_PASS_NEW2, 95, 39, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    PUSHBUTTON "OK", IDOK, 40, 59, 50, 14
-    PUSHBUTTON "キャンセル", IDCANCEL, 103, 59, 50, 14
+    PUSHBUTTON "OK(&O)", IDOK, 40, 59, 50, 14
+    PUSHBUTTON "キャンセル(&C)", IDCANCEL, 103, 59, 50, 14
     LTEXT "", ID_TXT_KEYFORMAT, 0, 0, 0, 0
     LTEXT "", ID_TXT_KEYFILE, 0, 0, 0, 0
 END
@@ -131,15 +131,15 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 BEGIN
     GROUPBOX "   ", 201, 6, 46, 235, 52
-    AUTORADIOBUTTON "OpenVPN設定ファイルの設定を使用", ID_RB_PROXY_OPENVPN,
+    AUTORADIOBUTTON "OpenVPN設定ファイルの設定を使用(&C)", ID_RB_PROXY_OPENVPN,
                     13, 16, 200, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "システムのプロキシ設定を使用",
+    AUTORADIOBUTTON "システムのプロキシ設定を使用(&P)",
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
-    AUTORADIOBUTTON "手動設定", ID_RB_PROXY_MANUAL, 13, 46, 49, 10
-    AUTORADIOBUTTON "HTTPプロキシ", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "SOCKSプロキシ", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
-    LTEXT "アドレス:", ID_TXT_PROXY_ADDRESS, 20, 77, 32, 10
-    RTEXT "ポート:", ID_TXT_PROXY_PORT, 161, 77, 30, 10
+    AUTORADIOBUTTON "手動設定(&M)", ID_RB_PROXY_MANUAL, 13, 46, 49, 10
+    AUTORADIOBUTTON "HTTPプロキシ(&H)", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "SOCKSプロキシ(&S)", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
+    LTEXT "アドレス(&A):", ID_TXT_PROXY_ADDRESS, 20, 77, 32, 10
+    RTEXT "ポート(&O):", ID_TXT_PROXY_PORT, 161, 77, 30, 10
     EDITTEXT ID_EDT_PROXY_ADDRESS, 53, 75, 107, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_PROXY_PORT, 196, 75, 30, 12, ES_AUTOHSCROLL
 END
@@ -154,62 +154,62 @@ BEGIN
     GROUPBOX "ユーザーインターフェイス", 201, 6, 12, 235, 30
     LTEXT "言語:", ID_TXT_LANGUAGE, 17, 25, 52, 12
     COMBOBOX ID_CMB_LANGUAGE, 39, 23, 189, 400, CBS_DROPDOWNLIST | WS_TABSTOP
-    GROUPBOX "Startup", 202, 6, 47, 235, 30
-    AUTOCHECKBOX "Launch on Windows startup", ID_CHK_STARTUP, 17, 59, 200, 12
+    GROUPBOX "起動", 202, 6, 47, 235, 30
+    AUTOCHECKBOX "Windows起動時に開始(&L)", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "Preferences", ID_GROUPBOX3, 6, 82, 235, 105
-    AUTOCHECKBOX "ログファイルに追記", ID_CHK_LOG_APPEND, 17, 95, 200, 10
-    AUTOCHECKBOX "スクリプト実行ウィンドウを表示する", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
-    AUTOCHECKBOX "接続時にステータスダイアログを表示しない", ID_CHK_SILENT, 17, 125, 200, 10
-    AUTOCHECKBOX "Always use interactive service", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
-    LTEXT "Show Balloon", ID_TXT_BALLOON, 17, 155, 100, 10
-    AUTORADIOBUTTON "初期接続時", ID_RB_BALLOON1, 22, 170, 60, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "毎回の接続時", ID_RB_BALLOON2, 96, 170, 90, 10
-    AUTORADIOBUTTON "表示しない", ID_RB_BALLOON0, 181, 170, 40, 10
+    GROUPBOX "設定", ID_GROUPBOX3, 6, 82, 235, 105
+    AUTOCHECKBOX "ログ追記モード(&A)", ID_CHK_LOG_APPEND, 17, 95, 200, 10
+    AUTOCHECKBOX "スクリプト実行ウィンドウを表示(&W)", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
+    AUTOCHECKBOX "サイレント接続モード(&S)", ID_CHK_SILENT, 17, 125, 200, 10
+    AUTOCHECKBOX "Interective Serviceを常に使用(&A)", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
+    LTEXT "バルーンの表示", ID_TXT_BALLOON, 17, 155, 100, 10
+    AUTORADIOBUTTON "接続時(&C)", ID_RB_BALLOON1, 22, 170, 60, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "接続/再接続時(&R)", ID_RB_BALLOON2, 96, 170, 90, 10
+    AUTORADIOBUTTON "表示しない(&N)", ID_RB_BALLOON0, 181, 170, 40, 10
 END
 
 /* Advanced Dialog */
 ID_DLG_ADVANCED DIALOGEX 6, 18, 252, 280
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "Advanced"
+CAPTION "詳細設定"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 BEGIN
     GROUPBOX "設定ファイル", 201, 6, 12, 235, 45
-    LTEXT "ディレクトリ:", ID_TXT_FOLDER, 17, 25, 52, 10
-    LTEXT "拡張子:", ID_TXT_EXTENSION, 17, 40, 52, 10
+    LTEXT "フォルダ(&F):", ID_TXT_FOLDER, 17, 25, 52, 10
+    LTEXT "拡張子(&E):", ID_TXT_EXTENSION, 17, 40, 52, 10
     EDITTEXT ID_EDT_CONFIG_DIR, 58, 23, 145, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_CONFIG_EXT, 58, 38, 25, 12, ES_AUTOHSCROLL
-    PUSHBUTTON "…", ID_BTN_CONFIG_DIR, 208, 23, 25, 12
+    PUSHBUTTON "...", ID_BTN_CONFIG_DIR, 208, 23, 25, 12
 
     GROUPBOX "ログファイル", 202, 6, 62, 235, 30
-    LTEXT "ディレクトリ:", ID_TXT_FOLDER1, 17, 74, 52, 10
+    LTEXT "フォルダ(&O):", ID_TXT_FOLDER1, 17, 74, 52, 10
     EDITTEXT ID_EDT_LOG_DIR, 58, 72, 145, 12, ES_AUTOHSCROLL
-    PUSHBUTTON "…", ID_BTN_LOG_DIR, 208, 72, 25, 12
+    PUSHBUTTON "...", ID_BTN_LOG_DIR, 208, 72, 25, 12
 
-    GROUPBOX "スクリプトの終了を待つ時間", 203, 6, 97, 235, 60
-    LTEXT "接続前スクリプト:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 120, 10
-    LTEXT "接続スクリプト:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 120, 10
-    LTEXT "切断スクリプト:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 120, 10
+    GROUPBOX "スクリプトタイムアウト", 203, 6, 97, 235, 60
+    LTEXT "接続前スクリプト(&P):", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 120, 10
+    LTEXT "接続スクリプト(&C):", ID_TXT_CONNECT_TIMEOUT, 17, 125, 120, 10
+    LTEXT "切断スクリプト(&D):", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 120, 10
     EDITTEXT ID_EDT_PRECONNECT_TIMEOUT, 143, 108, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_CONNECT_TIMEOUT, 143, 123, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 143, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
 
-    GROUPBOX "Management interface", 204, 6, 163, 235, 30
-    LTEXT "Port offset:", 205, 17, 175, 75, 10
+    GROUPBOX "管理インターフェイス", 204, 6, 163, 235, 30
+    LTEXT "ポートオフセット:", 205, 17, 175, 75, 10
     EDITTEXT ID_EDT_MGMT_PORT, 103, 173, 30, 12, ES_AUTOHSCROLL
 
-    GROUPBOX "Config menu view", 206, 6, 198, 235, 30
-    AUTORADIOBUTTON "&Auto", ID_RB_BALLOON0, 28, 210, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "&Flat", ID_RB_BALLOON1, 88, 210, 50, 10
-    AUTORADIOBUTTON "&Nested", ID_RB_BALLOON2, 148, 210, 50, 10
+    GROUPBOX "設定メニューの表示", 206, 6, 198, 235, 30
+    AUTORADIOBUTTON "自動(&A)", ID_RB_BALLOON0, 28, 210, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "フラット(&F)", ID_RB_BALLOON1, 88, 210, 50, 10
+    AUTORADIOBUTTON "ネスト(&N)", ID_RB_BALLOON2, 148, 210, 50, 10
 
-    GROUPBOX "Echo message display", 207, 6, 233, 235, 45
-    AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 245, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Ne&ver", ID_RB_BALLOON4, 88, 245, 50, 10
-    LTEXT "Repeated messages are muted for: ", 208, 17, 260, 125, 10
+    GROUPBOX "エコーメッセージの表示", 207, 6, 233, 235, 45
+    AUTORADIOBUTTON "自動(&A)", ID_RB_BALLOON3, 28, 245, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "表示しない(&V)", ID_RB_BALLOON4, 88, 245, 50, 10
+    LTEXT "繰り返しメッセージをミュート: ", 208, 17, 260, 125, 10
     EDITTEXT ID_EDT_POPUP_MUTE, 150, 258, 30, 12, ES_AUTOHSCROLL
-    LTEXT "hours", 209, 190, 260, 40, 10
+    LTEXT "時間", 209, 190, 260, 40, 10
 
 END
 
@@ -242,11 +242,11 @@ CAPTION "OpenVPN - プロキシ認証"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "ユーザー名:", 201, 9, 8, 38, 10
+    LTEXT "ユーザー名(&U):", 201, 9, 8, 38, 10
     EDITTEXT ID_EDT_PROXY_USER, 49, 5, 94, 12, ES_AUTOHSCROLL
-    LTEXT "パスワード:", 202, 9, 26, 38, 10
+    LTEXT "パスワード(&P):", 202, 9, 26, 38, 10
     EDITTEXT ID_EDT_PROXY_PASS, 49, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    PUSHBUTTON "OK", IDOK, 58, 43, 40, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "OK(&O)", IDOK, 58, 43, 40, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
 END
 
 STRINGTABLE
@@ -261,17 +261,17 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\n接続時間: "
     IDS_TIP_ASSIGNED_IP "\n割り当てられたIP: %s"
     IDS_MENU_SERVICE "OpenVPNサービス"
-    IDS_MENU_IMPORT "Import file…"
-    IDS_MENU_SETTINGS "設定…"
+    IDS_MENU_IMPORT "ファイルのインポート..."
+    IDS_MENU_SETTINGS "設定..."
     IDS_MENU_CLOSE "終了"
     IDS_MENU_CONNECT "接続"
     IDS_MENU_DISCONNECT "切断"
-    IDS_MENU_RECONNECT "Reconnect"
+    IDS_MENU_RECONNECT "再接続"
     IDS_MENU_STATUS "ステータスの表示"
     IDS_MENU_VIEWLOG "ログの表示"
     IDS_MENU_EDITCONFIG "設定の編集"
     IDS_MENU_PASSPHRASE "パスワード変更"
-    IDS_MENU_CLEARPASS  "Clear Saved Passwords"
+    IDS_MENU_CLEARPASS  "保存されたパスワードをクリア"
     IDS_MENU_SERVICE_START "開始"
     IDS_MENU_SERVICE_STOP "停止"
     IDS_MENU_SERVICE_RESTART "再起動"
@@ -285,24 +285,24 @@ BEGIN
     IDS_ERR_START_CONF_EDITOR "設定エディタの起動に失敗しました: %s"
 
     /* OpenVPN */
-    IDS_ERR_MANY_CONFIGS "OpenVPN GUIは %d 以上の設定はサポートしていません。これ以上の設定が必要な場合は開発者に連絡してください。"
-    IDS_NFO_NO_CONFIGS "No readable connection profiles (config files) found.\n\
-Use the ""Import File.."" menu or copy your config files to ""%s"" or ""%s""."
-    IDS_ERR_CONFIG_NOT_AUTHORIZED "Starting this connection (%s) requires membership in \
-""%s"" group. Contact your system administrator.\n"
-    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Starting this connection (%s) requires membership in \
-""%s"" group.\n\n\
-Do you want to add yourself to this group?\n\
-This action may prompt for administrative password or consent."
-    IDS_NFO_CONFIG_AUTH_PENDING   "Starting this connection (%s) requires membership in \
-""%s"" group.\n\n\
-Please complete the previous authorization dialog."
-    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Adding the user to ""%s"" group failed."
+    IDS_ERR_MANY_CONFIGS "OpenVPN GUIは %d 以上の設定はサポートしていません。上限以上の設定は無視されます。"
+    IDS_NFO_NO_CONFIGS "読み込める接続プロファイル（設定ファイル）がありません。\n\
+""ファイルのインポート.."" メニューを使用するか、設定ファイルを ""%s"" か ""%s"" にコピーしてください。"
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "この接続 (%s) を開始するには \
+""%s"" グループのメンバーである必要があります。システム管理者に連絡してください。\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "この接続 (%s) を開始するには \
+""%s"" グループのメンバーである必要があります。\n\n\
+このグループに追加しますか？\n\
+この操作を実行するには、管理用パスワードの入力や確認が必要な場合があります。"
+    IDS_NFO_CONFIG_AUTH_PENDING   "この接続 (%s) を開始するには \
+""%s"" グループのメンバーである必要があります。\n\n\
+認証処理を完了してください。"
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "グループ ""%s"" にユーザーを追加できませんでした。"
     IDS_ERR_ONE_CONN_OLD_VER "OpenVPN 2.0-beta6 より古いバージョンでは、同時に使用できる接続は1つだけです。"
     IDS_ERR_STOP_SERV_OLD_VER "OpenVPNサービスが実行されているときには、OpenVPN GUI で接続を開始できません（OpenVPN 1.5/1.6）。OpenVPN GUIを使用する場合には先にOpenVPNサービスを停止してください。"
     IDS_ERR_CREATE_EVENT "CreateEvent failed on exit event: %s"
     IDS_ERR_UNKNOWN_PRIORITY "Unknown priority name: %s"
-    IDS_ERR_LOG_APPEND_BOOL "ログファイルの追加フラグ（ '%s' が指定されています）は'0'か'1'である必要があります。"
+    IDS_ERR_LOG_APPEND_BOOL "ログファイルの追加フラグ ('%s' が指定されています) は'0'か'1'である必要があります。"
     IDS_ERR_GET_MSIE_PROXY "MSIEのプロキシ設定が取得できません。"
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor failed."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl failed."
@@ -312,7 +312,7 @@ Please complete the previous authorization dialog."
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite failed."
     IDS_ERR_CREATE_PROCESS "CreateProcess failed, exe='%s' cmdline='%s' dir='%s'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread to show Status window Failed."
-    IDS_NFO_STATE_WAIT_TERM "現在の状況: OpenVPNの終了を待機中…"
+    IDS_NFO_STATE_WAIT_TERM "現在の状況: OpenVPNの終了を待機中..."
     IDS_NFO_STATE_CONNECTED "現在の状況: 接続済み"
     IDS_NFO_NOW_CONNECTED "%s に接続しました。"
     IDS_NFO_ASSIGN_IP "割り当てられたIP: %s"
@@ -337,14 +337,16 @@ Please complete the previous authorization dialog."
     IDS_NFO_STATE_DISCONN_SCRIPT "現在の状況: 切断スクリプトを実行中"
     IDS_ERR_RUN_CONN_SCRIPT "接続スクリプトの実行に失敗: %s"
     IDS_ERR_GET_EXIT_CODE "接続スクリプトからの戻り値の取得に失敗 (%s)"
-    IDS_ERR_CONN_SCRIPT_FAILED "接続スクリプトに失敗しました。 (exitcode=%ld)"
-    IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "接続スクリプトに失敗しました。 %d 秒経過してタイムアウトしました。"
-    IDS_ERR_CONFIG_EXIST "既に '%s'. という名前の設定ファイルが存在しています。\
-別ディレクトリでも同じ名前での設定ファイルを複数格納することはできません。"
-        
+    IDS_ERR_CONN_SCRIPT_FAILED "接続スクリプトが実行できませんでした。 (exitcode=%ld)"
+    IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "接続スクリプトが実行できませんでした。 %d 秒経過してタイムアウトしました。"
+    IDS_ERR_CONFIG_EXIST "既に '%s' という名前の設定ファイルが存在しています。\
+別ディレクトリでも同じ名前で複数の設定ファイルを使用することはできません。"
+    IDS_NFO_CONN_TIMEOUT "管理インターフェイスに接続できませんでした。\n\
+ログファイル (%s) を確認してください。"
+		
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "デバッグファイル (%s) を出力用に開くときにエラーが発生しました。"
-    IDS_ERR_CREATE_PATH "Could not create %s path:\n%s"
+    IDS_ERR_CREATE_PATH "%s を作成できませんでした。パス:\n%s"
     IDS_ERR_LOAD_RICHED20 "RICHED20.DLL が読み込めません。"
     IDS_ERR_SHELL_DLL_VERSION "shell32.dll のバージョンが古いです (0x%lx). バージョン 5.0 以降に更新してください。"
     IDS_NFO_SERVICE_STARTED "OpenVPNサービスが開始されました。"
@@ -359,16 +361,16 @@ OpenVPN GUIをこのまま終了しますか？"
     IDS_NFO_USAGE "--help\t\t\t: このメッセージを表示する。\n\
 --connect cnn \t\t: 起動時に ""cnn"" に接続する（拡張子も含める必要があります）。\n\
 \t\t\t   例: openvpn-gui --connect office.ovpn\n\
---command cmd [args]\t: Send a command to a running instance of the GUI\n\
-Supported commands:\n\
-    connect cnn            \t: connect the config named ""cnn""\n\
-    disconnect cnn         \t: disconnect the config named ""cnn""\n\
-    reconnect cnn          \t: reconnect the config named ""cnn""\n\
-    disconnect_all         \t: disconnect all connected configs\n\
-    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n\
-    status cnn           \t\t: show the status window of config ""cnn"" if connected\n\
-    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n\
-\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n\
+--command cmd [args]\t: 実行中のOpenVPN GUIインスタンスにコマンドを送信する。\n\
+サポートされているコマンド:\n\
+    connect cnn            \t: 設定 ""cnn"" で接続する\n\
+    disconnect cnn         \t: 設定 ""cnn"" を切断する\n\
+    reconnect cnn          \t: 設定 ""cnn"" で再接続する\n\
+    disconnect_all         \t: 接続済みのすべての設定を切断する\n\
+    exit                 \t\t: OpenVPN GUIインスタンスを終了する（確認メッセージが表示されます）\n\
+    status cnn           \t\t: 設定 ""cnn"" のステータスウィンドウを表示（接続時のみ）\n\
+    silent_connection [0|1]\t: サイレント接続フラグをON (1) または OFF (0) 似設定する\n\
+\t\t\t例: openvpn-gui.exe --command disconnect myconfig\n\
 \n\
 各オプションはレジストリの設定に優先されます:\n\
 --exe_path\t\t: openvpn.exeへのパス。\n\
@@ -383,29 +385,29 @@ Supported commands:\n\
 --allow_service\t\t: 1=[サービス]メニューを表示する。\n\
 --allow_password\t\t: 1=[パスワードの変更]メニューを表示する。\n\
 --allow_proxy\t\t: 1=[プロキシ設定]メニューを表示する。\n\
---show_balloon\t\t: 0=表示しない, 1=初期接続時のみ, 2=毎回の接続時\n\
+--show_balloon\t\t: 0=表示しない, 1=接続時, 2=接続/再接続時\n\
 --service_only\t\t: 1=サービスのみのモードを有効にする。\n\
 --silent_connection\t\t: 1=接続時にステータス表示ダイアログを表示しない。\n\
 --show_script_window\t: 0=スクリプト実行ウィンドウを非表示にする。1=表示する。\n\
 --passphrase_attempts\t: パスフレーズの入力可能回数。\n\
 --connectscript_timeout\t: 接続スクリプトの終了を待つ時間。\n\
 --disconnectscript_timeout\t: 切断スクリプトの終了を待つ時間。\n\
---preconnectscript_timeout\t: Time to wait for preconnect script to finish.\n\
---iservice_admin\t\t: 0=Do not use interactive service when started as admin (default is 1 for Windows 7 and newer)\n\
---disable_popup_messages\t: Do not popup (i.e., show) the echo message window. Default is to show.\n\
---popup_mute_interval\t: Time in hours for which a previously shown echo message is not re-displayed. Default=24 hours.\n\
---management_port_offset\t: Offset value added to config index to determine the management port for a connection.\n\
-\t\t\t Must be in the range 1 to 61000. Maximum number of configs is limited by 65536 minus this value. Default=25340.\n"
+--preconnectscript_timeout\t: 接続前スクリプトの待機時間。\n\
+--iservice_admin\t\t: 0=管理者で実行している場合はInteractive Serviceを使用しない（Windows 7以降の場合は既定値は 1）。\n\
+--disable_popup_messages\t: メッセージ表示ウィンドウでのポップアップを抑止する。既定値は表示する。\n\
+--popup_mute_interval\t: 以前に表示されたメッセージを再表示するまでの時間。既定値は24時間。\n\
+--management_port_offset\t: 接続ごとに管理コンソール用ポート番号に加算するオフセット値。\n\
+\t\t\t この値は1-61000の間で設定してください（最大値は 65536 からこの値を引いた値です）。既定値は 25340 です。\n"
 
 
     IDS_NFO_USAGECAPTION "OpenVPN GUIの使い方"
-    IDS_ERR_BAD_PARAMETER "I'm trying to parse ""%s"" as an --option parameter \
-but I don't see a leading '--'"
-    IDS_ERR_BAD_OPTION "Options error: Unrecognized option or missing parameter(s): --%s\n\
-Use openvpn-gui --help for more info."
+    IDS_ERR_BAD_PARAMETER """%s"" を --option パラメータとしてパースしようとしましたが\
+先頭の '--'がありません。"
+    IDS_ERR_BAD_OPTION "オプションエラー: 認識できないパラメータか、パラメータが不足しています。--%s\n\
+openvpn-gui --help を参照してください。"
 
     /* passphrase - Resources */
-    IDS_ERR_CREATE_PASS_THREAD "CreateThread to show ChangePassphrase dialog failed."
+    IDS_ERR_CREATE_PASS_THREAD "ChangePassphraseダイアログを表示するためのCreateThread似失敗しました。"
     IDS_NFO_CHANGE_PWD "パスワード変更 (%s)"
     IDS_ERR_PWD_DONT_MATCH "入力されたパスワードが一致していません。再試行してください。"
     IDS_ERR_PWD_TO_SHORT "新しいパスワードは %d 文字以上で設定してください。"
@@ -452,18 +454,18 @@ Use openvpn-gui --help for more info."
     IDS_ERR_OPEN_SCMGR "OpenSCManagerに失敗しました。 (%d)"
     IDS_ERR_STOP_SERVICE "OpenVPNサービスの停止に失敗しました。"
     IDS_NFO_RESTARTED "OpenVPNサービスを再起動しました。"
-    IDS_ERR_ACCESS_SERVICE_PIPE "Access to service pipe failed."
-    IDS_ERR_WRITE_SERVICE_PIPE "Writing to service pipe failed."
-    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is not installed.\n\
-Tasks requiring administrative access may not work."
-    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" is not started.\n\
-Tasks requiring administrative access may not work."
-    IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" is not started.\n\
-Wintun driver will not work."
+    IDS_ERR_ACCESS_SERVICE_PIPE "サービスパイプへのアクセスに失敗しました。"
+    IDS_ERR_WRITE_SERVICE_PIPE "サービスパイプへの書き込みに失敗しました。"
+    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" がインストールされていません。\n\
+管理者権限で実行すると動作する可能性があります。"
+    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" が開始されていません。\n\
+管理者権限で実行すると動作する可能性があります。"
+    IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" が開始されていません。\n\
+Wintunドライバは動作しません。"
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Windowsディレクトリが取得できませんでした。"
-    IDS_ERR_GET_PROFILE_DIR "Error getting User Profile Directory."
+    IDS_ERR_GET_PROFILE_DIR "ユーザープロファイルディレクトリが取得できません。"
     IDS_ERR_GET_PROGRAM_DIR """Program""フォルダ名を取得できませんでした。"
     IDS_ERR_OPEN_REGISTRY  "レジストリ (HKLM\\SOFTWARE\\OpenVPN) が読み取れませんでした。\n \
 OpenVPNがインストールされていない可能性があります。"
@@ -478,26 +480,26 @@ OpenVPNがインストールされていない可能性があります。"
     IDS_ERR_WRITE_REGVALUE "レジストリ ""HKEY_CURRENT_USER\\%s\\%s"" への書き込みに失敗しました。"
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS "A config named ""%s"" already exists."
-    IDS_ERR_IMPORT_FAILED "Failed to import file. The following path could not be created.\n\n\
-%s\n\nMake sure you have the right permissions."
-    IDS_NFO_IMPORT_SUCCESS "File imported successfully."
-    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
-    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
+    IDS_ERR_IMPORT_EXISTS "設定 ""%s"" は既に存在しています。"
+    IDS_ERR_IMPORT_FAILED "ファイルがインポートできません。以下のパスは作成されませんでした。\n\n\
+%s\n\n適切な権限があることを確認してください。"
+    IDS_NFO_IMPORT_SUCCESS "ファイルが正しくインポートされました。"
+    IDS_NFO_IMPORT_OVERWRITE "設定 ""%s"" は既に存在しています。上書きしますか？"
+    IDS_ERR_IMPORT_SOURCE "<%s> はグローバル/ローカル設定ディレクトリにあるためインポートできません。"
 
     /* save/delete password */
-    IDS_NFO_DELETE_PASS "Press OK to delete saved passwords for config ""%s"""
+    IDS_NFO_DELETE_PASS "設定 ""%s"" の保存されたパスワードを削除するには OK を押してください。"
 
     /* Token password related */
-    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – Token Password"
-    IDS_NFO_TOKEN_PASSWORD_REQUEST "Input Password/PIN for Token '%S'"
+    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – トークンパスワード"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "トークン '%S' のパスワード/PINを入力してください。"
 
-    IDS_NFO_AUTH_PASS_RETRY "Wrong credentials. Try again…"
-    IDS_NFO_KEY_PASS_RETRY  "Wrong password. Try again…"
-    IDS_ERR_INVALID_PASSWORD_INPUT "Invalid character in password"
-    IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
-    IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds…"
-    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
-    IDS_NFO_BYTECOUNT "Bytes in: %s  out: %s"
+    IDS_NFO_AUTH_PASS_RETRY "認証情報が正しくありません。もう一度試行してください..."
+    IDS_NFO_KEY_PASS_RETRY  "パスワードが正しくありません。もう一度試行してください..."
+    IDS_ERR_INVALID_PASSWORD_INPUT "パスワードで使用できない文字です"
+    IDS_ERR_INVALID_USERNAME_INPUT "ユーザー名で使用できない文字です"
+    IDS_NFO_AUTO_CONNECT    "%u 秒で自動的に再接続します…"
+    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI は既に実行されています。トレイアイコンを右クリックして開始してください。"
+    IDS_NFO_BYTECOUNT "バイト数 受信: %s  送信: %s"
 
 END
