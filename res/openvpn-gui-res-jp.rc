@@ -369,7 +369,7 @@ OpenVPN GUIをこのまま終了しますか？"
     disconnect_all         \t: 接続済みのすべての設定を切断する\n\
     exit                 \t\t: OpenVPN GUIインスタンスを終了する（確認メッセージが表示されます）\n\
     status cnn           \t\t: 設定 ""cnn"" のステータスウィンドウを表示（接続時のみ）\n\
-    silent_connection [0|1]\t: サイレント接続フラグをON (1) または OFF (0) 似設定する\n\
+    silent_connection [0|1]\t: サイレント接続フラグをON (1) または OFF (0) に設定する\n\
 \t\t\t例: openvpn-gui.exe --command disconnect myconfig\n\
 \n\
 各オプションはレジストリの設定に優先されます:\n\
@@ -401,7 +401,7 @@ OpenVPN GUIをこのまま終了しますか？"
 
 
     IDS_NFO_USAGECAPTION "OpenVPN GUIの使い方"
-    IDS_ERR_BAD_PARAMETER """%s"" を --option パラメータとしてパースしようとしましたが\
+    IDS_ERR_BAD_PARAMETER """%s"" を --option パラメータとしてパースしようとしましたが \
 先頭の '--'がありません。"
     IDS_ERR_BAD_OPTION "オプションエラー: 認識できないパラメータか、パラメータが不足しています。--%s\n\
 openvpn-gui --help を参照してください。"
@@ -467,7 +467,7 @@ Wintunドライバは動作しません。"
     IDS_ERR_GET_WINDOWS_DIR "Windowsディレクトリが取得できませんでした。"
     IDS_ERR_GET_PROFILE_DIR "ユーザープロファイルディレクトリが取得できません。"
     IDS_ERR_GET_PROGRAM_DIR """Program""フォルダ名を取得できませんでした。"
-    IDS_ERR_OPEN_REGISTRY  "レジストリ (HKLM\\SOFTWARE\\OpenVPN) が読み取れませんでした。\n \
+    IDS_ERR_OPEN_REGISTRY  "レジストリ (HKLM\\SOFTWARE\\OpenVPN) が読み取れませんでした。\n\
 OpenVPNがインストールされていない可能性があります。"
     IDS_ERR_READING_REGISTRY "レジストリ (HKLM\\SOFTWARE\\OpenVPN) の値が読み取れませんでした。"
     IDS_ERR_PASSPHRASE_ATTEMPTS "レジストリ ""passphrase_attempts"" の値は 1-9 の範囲内である必要があります。"
