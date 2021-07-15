@@ -340,7 +340,7 @@ BEGIN
     IDS_ERR_CONN_SCRIPT_FAILED "接続スクリプトが実行できませんでした。 (exitcode=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "接続スクリプトが実行できませんでした。 %d 秒経過してタイムアウトしました。"
     IDS_ERR_CONFIG_EXIST "既に '%s' という名前の設定ファイルが存在しています。\
-別ディレクトリでも同じ名前で複数の設定ファイルを使用することはできません。"
+別フォルダでも同じ名前で複数の設定ファイルを使用することはできません。"
     IDS_NFO_CONN_TIMEOUT "管理インターフェイスに接続できませんでした。\n\
 ログファイル (%s) を確認してください。"
 		
@@ -374,9 +374,9 @@ OpenVPN GUIをこのまま終了しますか？"
 \n\
 各オプションはレジストリの設定に優先されます:\n\
 --exe_path\t\t: openvpn.exeへのパス。\n\
---config_dir\t\t: 設定ファイルを検索するディレクトリへのパス。\n\
+--config_dir\t\t: 設定ファイルを検索するフォルダへのパス。\n\
 --ext_string\t\t: 設定ファイルの拡張子。\n\
---log_dir\t\t\t: ログファイルが保存されるディレクトリへのパス。\n\
+--log_dir\t\t\t: ログファイルが保存されるフォルダへのパス。\n\
 --priority_string\t\t: 優先順位（詳細についてはinstall.txtを参照）。\n\
 --append_string\t\t: 1=ログファイルに追記。0=接続ごとに再作成。\n\
 --log_viewer\t\t: ログビューアへのパス。\n\
@@ -444,7 +444,7 @@ openvpn-gui --help を参照してください。"
     IDS_ERR_SOCKS_PROXY_PORT "SOCKSプロキシのポートを設定する必要があります。"
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "SOCKSプロキシのポートとして設定できるのは 1-65535 の範囲内です。"
     IDS_ERR_CREATE_REG_HKCU_KEY """HKEY_CURRENT_USER\\%s"" キーの作成時にエラーが発生しました。"
-    IDS_ERR_GET_TEMP_PATH "GetTempPath()で一時ディレクトリが取得できませんでした。""C:\\"" を使用します。"
+    IDS_ERR_GET_TEMP_PATH "GetTempPath()で一時フォルダが取得できませんでした。""C:\\"" を使用します。"
 
     /* service */
     IDS_ERR_OPEN_VPN_SERVICE """OpenVPNService"" のオープンに失敗しました。"
@@ -457,15 +457,15 @@ openvpn-gui --help を参照してください。"
     IDS_ERR_ACCESS_SERVICE_PIPE "サービスパイプへのアクセスに失敗しました。"
     IDS_ERR_WRITE_SERVICE_PIPE "サービスパイプへの書き込みに失敗しました。"
     IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" がインストールされていません。\n\
-管理者権限で実行すると動作する可能性があります。"
+Wintunドライバおよび管理者権限が必要な処理は動作しません。"
     IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" が開始されていません。\n\
-管理者権限で実行すると動作する可能性があります。"
+Wintunドライバおよび管理者権限が必要な処理は動作しません。"
     IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" が開始されていません。\n\
 Wintunドライバは動作しません。"
 
     /* registry */
-    IDS_ERR_GET_WINDOWS_DIR "Windowsディレクトリが取得できませんでした。"
-    IDS_ERR_GET_PROFILE_DIR "ユーザープロファイルディレクトリが取得できません。"
+    IDS_ERR_GET_WINDOWS_DIR "Windowsフォルダが取得できませんでした。"
+    IDS_ERR_GET_PROFILE_DIR "ユーザープロファイルフォルダが取得できません。"
     IDS_ERR_GET_PROGRAM_DIR """Program""フォルダ名を取得できませんでした。"
     IDS_ERR_OPEN_REGISTRY  "レジストリ (HKLM\\SOFTWARE\\OpenVPN) が読み取れませんでした。\n\
 OpenVPNがインストールされていない可能性があります。"
@@ -485,7 +485,7 @@ OpenVPNがインストールされていない可能性があります。"
 %s\n\n適切な権限があることを確認してください。"
     IDS_NFO_IMPORT_SUCCESS "ファイルが正しくインポートされました。"
     IDS_NFO_IMPORT_OVERWRITE "設定 ""%s"" は既に存在しています。上書きしますか？"
-    IDS_ERR_IMPORT_SOURCE "<%s> はグローバル/ローカル設定ディレクトリにあるためインポートできません。"
+    IDS_ERR_IMPORT_SOURCE "<%s> はグローバル/ローカル設定フォルダにあるためインポートできません。"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "設定 ""%s"" の保存されたパスワードを削除するには OK を押してください。"
