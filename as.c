@@ -200,6 +200,75 @@ DownloadProfileContent(HANDLE hWnd, HINTERNET hRequest, char** pbuf, size_t* psi
     return TRUE;
 }
 
+/*
+ * DialogProc for challenge-response
+ */
+INT_PTR CALLBACK
+CRDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    auth_param_t * param = NULL;
+
+    switch (msg) {
+        case WM_INITDIALOG:
+            param = (auth_param_t*)lParam;
+            SetProp(hwndDlg, cfgProp, (HANDLE)param);
+
+            WCHAR *wstr = Widen(param->str);
+            if (!wstr) {
+                EndDialog(hwndDlg, LOWORD(wParam));
+                break;
+            }
+            SetDlgItemTextW(hwndDlg, ID_TXT_DESCRIPTION, wstr);
+            free(wstr);
+
+            /* Set password echo on if needed */
+            if (param->flags & FLAG_CR_ECHO)
+                SendMessage(GetDlgItem(hwndDlg, ID_EDT_RESPONSE), EM_SETPASSWORDCHAR, 0, 0);
+
+            SetForegroundWindow(hwndDlg);
+
+            /* disable OK button by default - not disabled in resources */
+            EnableWindow(GetDlgItem(hwndDlg, IDOK), FALSE);
+            break;
+
+        case WM_COMMAND:
+            param = (auth_param_t*)GetProp(hwndDlg, cfgProp);
+
+            switch (LOWORD(wParam)) {
+            case ID_EDT_RESPONSE:
+                if (HIWORD(wParam) == EN_UPDATE) {
+                    /* enable OK if response is non-empty */
+                    BOOL enableOK = GetWindowTextLength((HWND)lParam);
+                    EnableWindow(GetDlgItem(hwndDlg, IDOK), enableOK);
+                }
+                break;
+
+                case IDOK: {
+                    int len = 0;
+                    GetDlgItemTextUtf8(hwndDlg, ID_EDT_RESPONSE, &param->cr_response, &len);
+                    EndDialog(hwndDlg, LOWORD(wParam));
+                }
+                return TRUE;
+
+                case IDCANCEL:
+                    EndDialog(hwndDlg, LOWORD(wParam));
+                    return TRUE;
+            }
+            break;
+
+        case WM_CLOSE:
+            EndDialog(hwndDlg, LOWORD(wParam));
+            return TRUE;
+
+        case WM_NCDESTROY:
+            param = (auth_param_t*)GetProp(hwndDlg, cfgProp);
+            RemoveProp(hwndDlg, cfgProp);
+            break;
+    }
+
+    return FALSE;
+}
+
 /**
  * Download profile from AS and save it to a special-named temp file
  *
@@ -287,10 +356,10 @@ again:
                 if (err == ERROR_INTERNET_SEC_CERT_REV_FAILED) {
                     DWORD flags;
                     DWORD len = sizeof(flags);
-                    InternetQueryOption(hRequest, INTERNET_OPTION_SECURITY_FLAGS, (LPVOID)&flags, &len);
+                    InternetQueryOptionW(hRequest, INTERNET_OPTION_SECURITY_FLAGS, (LPVOID)&flags, &len);
 
                     flags |= SECURITY_FLAG_IGNORE_REVOCATION;
-                    InternetSetOption(hRequest, INTERNET_OPTION_SECURITY_FLAGS, &flags, sizeof(flags));
+                    InternetSetOptionW(hRequest, INTERNET_OPTION_SECURITY_FLAGS, &flags, sizeof(flags));
                     goto again;
                 }
 
@@ -306,18 +375,46 @@ again:
     }
 
     /* get http status code */
-    DWORD statusCode = 0;
+    DWORD status_code = 0;
     DWORD length = sizeof(DWORD);
-    HttpQueryInfoW(hRequest, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, &statusCode, &length, NULL);
-    if (statusCode != 200) {
-        ShowLocalizedMsgEx(MB_OK, hWnd, _T(PACKAGE_NAME), IDS_ERR_URL_IMPORT_PROFILE, statusCode, "HTTP error");
-        goto done;
-    }
+    HttpQueryInfoW(hRequest, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, &status_code, &length, NULL);
+
+    size_t size = 0;
 
     /* download profile content */
-    size_t size = 0;
-    if (!DownloadProfileContent(hWnd, hRequest, &buf, &size))
+    if ((status_code == 200) || (status_code == 401)) {
+        if (!DownloadProfileContent(hWnd, hRequest, &buf, &size))
+            goto done;
+
+        char* msg_begin = strstr(buf, "<Message>CRV1:");
+        char* msg_end = strstr(buf, "</Message>");
+        if ((status_code == 401) && msg_begin && msg_end) {
+            *msg_end = '\0';
+            auth_param_t* param = (auth_param_t*)calloc(1, sizeof(auth_param_t));
+            if (!param)
+                goto done;
+
+            if (parse_dynamic_cr(msg_begin + 14, param)) {
+                /* prompt user for dynamic challenge */
+                INT_PTR res = LocalizedDialogBoxParam(ID_DLG_CHALLENGE_RESPONSE, CRDialogFunc, (LPARAM)param);
+                if (res == IDOK)
+                    _snprintf_0(password, "CRV1::%s::%s", param->id, param->cr_response);
+
+                free_auth_param(param);
+
+                if (res == IDOK)
+                    goto again;
+            }
+            else {
+                free_auth_param(param);
+            }
+        }
+    }
+
+    if (status_code != 200) {
+        ShowLocalizedMsgEx(MB_OK, hWnd, _T(PACKAGE_NAME), IDS_ERR_URL_IMPORT_PROFILE, status_code, L"HTTP error");
         goto done;
+    }
 
     WCHAR name[MAX_PATH] = {0};
     WCHAR* wbuf = Widen(buf);
