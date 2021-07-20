@@ -64,24 +64,7 @@ TerminateOpenVPN(connection_t *c);
 
 const TCHAR *cfgProp = _T("conn");
 
-#define FLAG_CR_TYPE_SCRV1  0x1    /* static challenege */
-#define FLAG_CR_TYPE_CRV1   0x2    /* dynamic challenege */
-#define FLAG_CR_ECHO        0x4    /* echo the response */
-#define FLAG_CR_RESPONSE    0x8    /* response needed */
-#define FLAG_PASS_TOKEN     0x10   /* PKCS11 token password needed */
-#define FLAG_STRING_PKCS11  0x20   /* PKCS11 id needed */
-#define FLAG_PASS_PKEY      0x40   /* Private key password needed */
-#define FLAG_CR_TYPE_CRTEXT 0x80   /* crtext */
-
-typedef struct {
-    connection_t *c;
-    unsigned int flags;
-    char *str;
-    char *id;
-    char *user;
-} auth_param_t;
-
-static void
+void
 free_auth_param (auth_param_t *param)
 {
     if (!param)
@@ -89,6 +72,7 @@ free_auth_param (auth_param_t *param)
     free (param->str);
     free (param->id);
     free (param->user);
+    free (param->cr_response);
     free (param);
 }
 
@@ -929,7 +913,7 @@ free_dynamic_cr (connection_t *c)
  * true on success. The caller must free param->str and param->id
  * even on error.
  */
-static BOOL
+BOOL
 parse_dynamic_cr (const char *str, auth_param_t *param)
 {
     BOOL ret = FALSE;
@@ -1430,6 +1414,9 @@ WrapLine (WCHAR *line)
 void
 WriteStatusLog (connection_t *c, const WCHAR *prefix, const WCHAR *line, BOOL fileio)
 {
+    /* this can be called without connection (AS profile import), so do nothing in this case */
+    if (!c) return;
+
     HWND logWnd = GetDlgItem(c->hwndStatus, ID_EDT_LOG);
     FILE *log_fd;
     time_t now;
