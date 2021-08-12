@@ -249,6 +249,20 @@ parse_assigned_ip(connection_t *c, const char *msg)
 }
 
 /*
+ * Send a custom message to Window hwnd when state changes
+ * hwnd : handle of the window to which the message is sent
+ * lParam : pointer to the state string (char *) received from
+ *          OpenVPN daemon (e., "CONNECTED")
+ * The function signature matches callback for EnumThreadWindows.
+ */
+BOOL
+NotifyStateChange(HWND hwnd, LPARAM lParam)
+{
+    SendMessage(hwnd, WM_OVPN_STATE, 0, lParam);
+    return TRUE;
+}
+
+/*
  * Handle a state change notification from the OpenVPN management interface
  * Format <TIMESTAMP>,<STATE>,[<MESSAGE>],[<LOCAL_IP>][,<REMOTE_IP>]
  */
@@ -273,6 +287,9 @@ OnStateChange(connection_t *c, char *data)
     if (pos == NULL)
         return;
     *pos = '\0';
+
+    /* notify the all windows in the thread of state change */
+    EnumThreadWindows(GetCurrentThreadId(), NotifyStateChange, (LPARAM) state);
 
     if (strcmp(state, "CONNECTED") == 0)
     {
@@ -764,6 +781,20 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         }
         break;
 
+    case WM_OVPN_STATE: /* state change message is received from OpenVPN daemon */
+        /*
+         * AUTH_PENDING immediately transitions to GET_CONFIG until
+         * auth succeeds or connection restarts/aborts.
+         * Close the CR_TEXT dialog if state changes to anything
+         * other than GET_CONFIG. The state is in lParam.
+         */
+        param = (auth_param_t *) GetProp(hwndDlg, cfgProp);
+        if ((param->flags & FLAG_CR_TYPE_CRTEXT)
+            && strcmp((const char *) lParam, "GET_CONFIG"))
+        {
+            EndDialog(hwndDlg, LOWORD(wParam));
+        }
+        return TRUE;
     case WM_CLOSE:
         EndDialog(hwndDlg, LOWORD(wParam));
         return TRUE;
