@@ -914,9 +914,12 @@ parse_dynamic_cr (const char *str, auth_param_t *param)
     if (!param || !p) goto out;
 
     /* expected: str = "E,R:challenge_id:user_b64:challenge_str" */
+    const char *delim = ":";
     for (i = 0, p1 = p; i < 4; ++i, p1 = NULL)
     {
-        token[i] = strtok (p1, ":"); /* strtok is thread-safe on Windows */
+        if (i == 3)
+            delim = "" ; /* take the entire trailing string as the challenge */
+        token[i] = strtok (p1, delim); /* strtok is thread-safe on Windows */
         if (!token[i])
         {
             WriteStatusLog(param->c, L"GUI> ", L"Error parsing dynamic challenge string", false);
@@ -955,22 +958,21 @@ parse_crtext (const char* str, auth_param_t* param)
     BOOL ret = FALSE;
     char* token[2] = { 0 };
     char* p = strdup(str);
-
-    int i;
     char* p1;
 
     if (!param || !p) goto out;
 
     /* expected: str = "E,R:challenge_str" */
-    for (i = 0, p1 = p; i < 2; ++i, p1 = NULL)
+    token[0] = p;
+    p1 = strchr(p, ':');
+    if (!p1)
     {
-        token[i] = strtok(p1, ":"); /* strtok is thread-safe on Windows */
-        if (!token[i])
-        {
-            WriteStatusLog(param->c, L"GUI> ", L"Error parsing crtext string", false);
-            goto out;
-        }
+        WriteStatusLog(param->c, L"GUI> ", L"Error parsing crtext challenge string", false);
+        goto out;
     }
+
+    *p1 = '\0';
+    token[1] = p1 + 1;
 
     param->flags |= FLAG_CR_TYPE_CRTEXT;
     param->flags |= strchr(token[0], 'E') ? FLAG_CR_ECHO : 0;
