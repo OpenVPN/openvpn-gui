@@ -660,19 +660,6 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         {
             SetDlgItemTextW(hwndDlg, ID_TXT_DESCRIPTION, wstr);
 
-            /* If response is not required show a message box with the challenge
-             * text and autosubmit an empty password (see management-notes.txt)
-             */
-            if ((param->flags & FLAG_CR_RESPONSE) == 0)
-            {
-                wchar_t title[256];
-                GetWindowTextW(hwndDlg, title, _countof(title));
-                if (MessageBoxExW(NULL, wstr, title, MB_OKCANCEL|MB_SETFOREGROUND|MB_TOPMOST, GetGUILanguage()) == IDOK)
-                    SimulateButtonPress(hwndDlg, IDOK);
-                else
-                    SimulateButtonPress(hwndDlg, IDCANCEL);
-            }
-
             /* Set password echo on if needed */
             if (param->flags & FLAG_CR_ECHO)
                 SendMessage(GetDlgItem(hwndDlg, ID_EDT_RESPONSE), EM_SETPASSWORDCHAR, 0, 0);
@@ -695,8 +682,18 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         else
             SetForegroundWindow(hwndDlg);
 
-        /* disable OK button by default - not disabled in resources */
-        EnableWindow(GetDlgItem(hwndDlg, IDOK), FALSE);
+        /* If response is not required hide the response field */
+        if ((param->flags & FLAG_CR_TYPE_CRV1 || param->flags & FLAG_CR_TYPE_CRTEXT)
+            && !(param->flags & FLAG_CR_RESPONSE))
+        {
+            ShowWindow(GetDlgItem(hwndDlg, ID_LTEXT_RESPONSE), SW_HIDE);
+            ShowWindow(GetDlgItem(hwndDlg, ID_EDT_RESPONSE), SW_HIDE);
+        }
+        else
+        {
+            /* disable OK button until response is filled-in */
+            EnableWindow(GetDlgItem(hwndDlg, IDOK), FALSE);
+        }
 
         break;
 
