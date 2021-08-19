@@ -255,7 +255,7 @@ parse_assigned_ip(connection_t *c, const char *msg)
  *          OpenVPN daemon (e., "CONNECTED")
  * The function signature matches callback for EnumThreadWindows.
  */
-BOOL
+BOOL CALLBACK
 NotifyStateChange(HWND hwnd, LPARAM lParam)
 {
     SendMessage(hwnd, WM_OVPN_STATE, 0, lParam);
