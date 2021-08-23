@@ -336,6 +336,7 @@ again:
     /* handle cert errors */
     /* https://www.betaarchive.com/wiki/index.php/Microsoft_KB_Archive/182888 */
     if (!HttpSendRequestW(hRequest, NULL, 0, NULL, 0)) {
+#ifdef DEBUG
         DWORD err = GetLastError();
         if ((err == ERROR_INTERNET_INVALID_CA) ||
             (err == ERROR_INTERNET_SEC_CERT_CN_INVALID) ||
@@ -369,7 +370,7 @@ again:
             else
                 goto done;
         }
-
+#endif
         ShowWinInetError(hWnd);
         goto done;
     }
