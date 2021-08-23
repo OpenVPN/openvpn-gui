@@ -28,6 +28,8 @@ add_executable(${PROJECT_NAME} WIN32
 
 find_package(OpenSSL REQUIRED)
 
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG")
+
 target_link_libraries(${PROJECT_NAME}
     OpenSSL::SSL
     Wtsapi32.lib
