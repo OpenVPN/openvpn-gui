@@ -648,33 +648,42 @@ ImportConfigFile(const TCHAR* source)
         return;
     }
 
-    TCHAR destination[MAX_PATH];
-    _sntprintf_0(destination, _T("%s\\%s"), o.config_dir, fileName);
+    WCHAR destination[MAX_PATH+1];
+    bool no_overwrite = TRUE;
 
-    if (EnsureDirExists(destination))
+    /* profile name must be unique: check whether a config by same name exists */
+    connection_t *c = GetConnByName(fileName);
+    if (c && wcsncmp(c->config_dir, o.config_dir, wcslen(o.config_dir)) == 0)
     {
-        _sntprintf_0(destination, _T("%s\\%s.%s"), destination, fileName, o.ext_string);
-
-        bool  no_overwrite = TRUE;
-        while (!CopyFile(source, destination, no_overwrite))
+        /* Ask the user whether to replace the profile or not. */
+        if (ShowLocalizedMsgEx(MB_YESNO, NULL, _T(PACKAGE_NAME), IDS_NFO_IMPORT_OVERWRITE, fileName) == IDNO)
         {
-            if (GetLastError() != ERROR_FILE_EXISTS || !no_overwrite)
-            {
-                MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Copy file <%s> to <%s> failed (error = %lu)",
-                    source, destination, GetLastError());
-                ShowLocalizedMsg(IDS_ERR_IMPORT_FAILED, destination);
-                return;
-            }
-
-            /* A file with same name exists. Ask the user whether to replace or not. */
-            if (ShowLocalizedMsgEx(MB_YESNO, NULL, _T(PACKAGE_NAME), IDS_NFO_IMPORT_OVERWRITE, fileName) == IDNO)
-                return;
-
-            /* try again with overwrite allowed */
-            no_overwrite = FALSE;
+            return;
         }
-        ShowLocalizedMsg(IDS_NFO_IMPORT_SUCCESS);
-        return;
+        no_overwrite = FALSE;
+        swprintf(destination, MAX_PATH, L"%ls\\%ls", c->config_dir, c->config_file);
     }
-    ShowLocalizedMsg(IDS_ERR_IMPORT_FAILED, destination);
+    else
+    {
+        WCHAR dest_dir[MAX_PATH+1];
+        swprintf(dest_dir, MAX_PATH, L"%ls\\%ls", o.config_dir, fileName);
+        dest_dir[MAX_PATH] = L'\0';
+        if (!EnsureDirExists(dest_dir))
+        {
+            ShowLocalizedMsg(IDS_ERR_IMPORT_FAILED, dest_dir);
+            return;
+        }
+        swprintf(destination, MAX_PATH, L"%ls\\%ls.%ls", dest_dir, fileName, o.ext_string);
+    }
+    destination[MAX_PATH] = L'\0';
+
+    if (!CopyFile(source, destination, no_overwrite))
+    {
+       MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Copy file <%ls> to <%ls> failed (error = %lu)",
+                     source, destination, GetLastError());
+       ShowLocalizedMsg(IDS_ERR_IMPORT_FAILED, destination);
+       return;
+    }
+
+    ShowLocalizedMsg(IDS_NFO_IMPORT_SUCCESS);
 }
