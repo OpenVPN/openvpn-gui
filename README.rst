@@ -175,6 +175,9 @@ exit
 rescan
      Rescan the config folders for changes
 
+import ``path``
+     Import the config file pointed to by ``path``.
+
 If no running instance of the GUI is found, these commands do nothing
 except for *--command connect config-name* which gets interpreted
 as *--connect config-name*

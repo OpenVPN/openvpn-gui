@@ -253,6 +253,10 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
   {
       PrintDebug(L"Instance 1: Called with --command connect xxx. Treating it as --connect xxx");
   }
+  else if (o.action == WM_OVPN_IMPORT)
+  {
+     ; /* pass -- import is handled after Window initialization */
+  }
   else if (o.action)
   {
       MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Called with --command when no previous instance available");
@@ -274,6 +278,7 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
     CheckIServiceStatus(TRUE);
 
   BuildFileList();
+
   if (!VerifyAutoConnections()) {
     exit(1);
   }
@@ -464,11 +469,10 @@ HandleCopyDataMessage(const COPYDATASTRUCT *copy_data)
     {
         CloseApplication(o.hWnd);
     }
-    /* Not yet implemented
-    else if(copy_data->dwData == WM_OVPN_IMPORT)
+    else if(copy_data->dwData == WM_OVPN_IMPORT && str)
     {
+        ImportConfigFile(str);
     }
-    */
     else if (copy_data->dwData == WM_OVPN_NOTIFY)
     {
         ShowTrayBalloon(L"", copy_data->lpData);
@@ -523,6 +527,13 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       ShowTrayIcon();
       if (o.service_only)
         CheckServiceStatus();	// Check if service is running or not
+
+      /* if '--import' was specified, do it now */
+      if (o.action == WM_OVPN_IMPORT && o.action_arg)
+      {
+        ImportConfigFile(o.action_arg);
+      }
+
       if (!AutoStartConnections()) {
         SendMessage(hwnd, WM_CLOSE, 0, 0);
         break;

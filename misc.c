@@ -37,6 +37,7 @@
 #include "main.h"
 #include "misc.h"
 #include "main.h"
+#include "openvpn_config.h"
 #include "openvpn-gui-res.h"
 
 /*
@@ -641,10 +642,16 @@ ImportConfigFile(const TCHAR* source)
     _wsplitpath(source, NULL, NULL, fileName, ext);
 
     /* check if the source points to the config_dir */
-    if (wcsncmp(source, o.global_config_dir, wcslen(o.global_config_dir)) == 0
-        || wcsncmp(source, o.config_dir, wcslen(o.config_dir)) == 0)
+    if (wcsnicmp(source, o.global_config_dir, wcslen(o.global_config_dir)) == 0
+        || wcsnicmp(source, o.config_dir, wcslen(o.config_dir)) == 0)
     {
         ShowLocalizedMsg(IDS_ERR_IMPORT_SOURCE, source);
+        return;
+    }
+    /* Ensure the source exists and is readable */
+    if (!CheckFileAccess(source, GENERIC_READ))
+    {
+        ShowLocalizedMsg(IDS_ERR_IMPORT_ACCESS, source);
         return;
     }
 
@@ -653,7 +660,7 @@ ImportConfigFile(const TCHAR* source)
 
     /* profile name must be unique: check whether a config by same name exists */
     connection_t *c = GetConnByName(fileName);
-    if (c && wcsncmp(c->config_dir, o.config_dir, wcslen(o.config_dir)) == 0)
+    if (c && wcsnicmp(c->config_dir, o.config_dir, wcslen(o.config_dir)) == 0)
     {
         /* Ask the user whether to replace the profile or not. */
         if (ShowLocalizedMsgEx(MB_YESNO, NULL, _T(PACKAGE_NAME), IDS_NFO_IMPORT_OVERWRITE, fileName) == IDNO)
@@ -686,4 +693,6 @@ ImportConfigFile(const TCHAR* source)
     }
 
     ShowLocalizedMsg(IDS_NFO_IMPORT_SUCCESS);
+    /* rescan file list after import */
+    BuildFileList();
 }
