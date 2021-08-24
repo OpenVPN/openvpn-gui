@@ -120,6 +120,15 @@ add_option(options_t *options, int i, TCHAR **p)
             options->action_arg = p[1];
         }
     }
+    else if (streq(p[0], L"import") && p[1])
+    {
+        ++i;
+        /* This is interpreted directly or as a command depending
+         * on we are the first instance or not. So, set as an action.
+         */
+        options->action = WM_OVPN_IMPORT;
+        options->action_arg = p[1];
+    }
     else if (streq(p[0], _T("exe_path")) && p[1])
     {
         ++i;
@@ -259,6 +268,12 @@ add_option(options_t *options, int i, TCHAR **p)
         {
             ++i;
             options->action = WM_OVPN_SHOWSTATUS;
+            options->action_arg = p[2];
+        }
+        else if (streq(p[1], L"import") && p[2])
+        {
+            ++i;
+            options->action = WM_OVPN_IMPORT;
             options->action_arg = p[2];
         }
         else if (streq(p[1], _T("silent_connection")))
