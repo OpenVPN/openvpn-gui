@@ -387,6 +387,7 @@ OpenVPN GUI를 이대로 종료 하겠습니까?"
     exit                 \t\t: 실행중인 GUI 인스턴스 종료 (확인을 물어봄)\n\
     status cnn           \t\t: 연결 되어 있는 ""cnn"" 설정의 상태를 표시\n\
     silent_connection [0|1]\t: silent_connection 플래그를 on(1) 또는 off(0)로 설정\n\
+    import path          \t\t: Import the config file pointed to by path\n\
 \t\t\t예제: openvpn-gui.exe --command disconnect myconfig\n\
 \n\
 각 옵션은 레지스트리 설정보다 우선 합니다:\n\
@@ -504,6 +505,7 @@ Administrator 권한으로 이 프로그램을 실행해야 합니다."
     IDS_NFO_IMPORT_SUCCESS "파일 불러오기 성공."
     IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
     IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
+    IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS """%s"" 설정의 저장된 암호를 삭제 하려면 확인을 누르십시오."

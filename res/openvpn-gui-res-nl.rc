@@ -390,6 +390,7 @@ Ondersteunde commando's:\n\
     exit                 \t\t: de huidige instantie van de GUI afsluiten (er kan om bevestiging gevraagd worden)\n\
     status cnn           \t\t: het status-scherm van de configuratie ""cnn"" laten zien als de verbinding is gemaakt\n\
     silent_connection [0|1]\t: de vlag ""silent_connection"" aan- (1) of uitzetten (0)\n\
+    import path          \t\t: Import the config file pointed to by path\n\
 \t\t\tVoorbeeld: openvpn-gui.exe --command disconnect myconfig\n\
 \n\
 Instellingen die de registerinstellingen overschrijven:\n\
@@ -507,6 +508,7 @@ om de registerinstellingen te updaten."
     IDS_NFO_IMPORT_SUCCESS "Importeren bestand gelukt."
     IDS_NFO_IMPORT_OVERWRITE "Een configuratie met de naam ""%s"" bestaat al. Wilt u deze vervangen?"
     IDS_ERR_IMPORT_SOURCE "Het bestand <%s> kan niet worden geïmporteerd omdat het al in de globale of lokale configuratiemap bestaat"
+    IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "Klik op OK om alle opgeslagen wachtwoorden voor de configuratie ""%s"" te verwijderen"

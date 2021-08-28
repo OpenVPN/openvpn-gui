@@ -389,6 +389,7 @@ Supported commands:\n\
     exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n\
     status cnn           \t\t: show the status window of config ""cnn"" if connected\n\
     silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n\
+    import path          \t\t: Import the config file pointed to by path\n\
 \t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n\
 \n\
 Опции для переназначения настроек реестра:\n\
@@ -506,6 +507,7 @@ OpenVPN, возможно, не установлен."
     IDS_NFO_IMPORT_SUCCESS "Импорт файла успешно завершен."
     IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
     IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
+    IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "Подтвердите удаление сохраненных паролей для ""%s"""

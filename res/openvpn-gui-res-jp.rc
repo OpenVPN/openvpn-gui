@@ -390,6 +390,7 @@ OpenVPN GUIをこのまま終了しますか？"
     exit                 \t\t: OpenVPN GUIインスタンスを終了する（確認メッセージが表示されます）\n\
     status cnn           \t\t: 設定 ""cnn"" のステータスウィンドウを表示（接続時のみ）\n\
     silent_connection [0|1]\t: サイレント接続フラグをON (1) または OFF (0) に設定する\n\
+    import path          \t\t: Import the config file pointed to by path\n\
 \t\t\t例: openvpn-gui.exe --command disconnect myconfig\n\
 \n\
 各オプションはレジストリの設定に優先されます:\n\
@@ -506,6 +507,7 @@ OpenVPNがインストールされていない可能性があります。"
     IDS_NFO_IMPORT_SUCCESS "ファイルが正しくインポートされました。"
     IDS_NFO_IMPORT_OVERWRITE "設定 ""%s"" は既に存在しています。上書きしますか？"
     IDS_ERR_IMPORT_SOURCE "<%s> はグローバル/ローカル設定フォルダにあるためインポートできません。"
+    IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "設定 ""%s"" の保存されたパスワードを削除するには OK を押してください。"

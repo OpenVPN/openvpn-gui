@@ -388,6 +388,7 @@ Supported commands:\n\
     exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n\
     status cnn           \t\t: show the status window of config ""cnn"" if connected\n\
     silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n\
+    import path          \t\t: Import the config file pointed to by path\n\
 \t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n\
 \n\
 Opcje oddalające ustawienia rejestru:\n\
@@ -505,6 +506,7 @@ z prawami administratora aby uaktualnić rejestr."
     IDS_NFO_IMPORT_SUCCESS "Plik został zaimportowany."
     IDS_NFO_IMPORT_OVERWRITE "Konfiguracja o nazwie ""%s"" już istnieje. Czy chcesz ją zamienić?"
     IDS_ERR_IMPORT_SOURCE "Nie można zaimportować pliku <%s> ponieważistnieje on już w globalnym lub lokalnym katalogu konfiguracji"
+    IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "Naciśnij OK aby usunąć zapisane hasła dla konfiguracji ""%s"""
