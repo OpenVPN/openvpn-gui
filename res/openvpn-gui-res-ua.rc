@@ -388,6 +388,7 @@ BEGIN
     exit                 \t\t: зупинити запущений екземпляр графічного інтерфейсу (може з'явитись підтвердження)\n\
     status cnn           \t\t: показати вікно стану конфігурації ""cnn"", якщо з'єднання активне\n\
     silent_connection [0|1]\t: щоб встановити режим silent_connection, вкажіть (1), Щоб вимкнути, вкажіть (0)\n\
+    import path          \t\t: Import the config file pointed to by path\n\
 \t\t\tНаприклад: openvpn-gui.exe --command disconnect myconfig\n\
 \n\
 Опції спрямовані на переконфігурацію налаштувань реєстру:\n\
@@ -506,6 +507,7 @@ OpenVPN, можливо, не встановлений."
     IDS_NFO_IMPORT_SUCCESS "Імпорт файла успішно завершено."
     IDS_NFO_IMPORT_OVERWRITE "Конфігурація з назвою ""%s"" вже існує. Замінити?"
     IDS_ERR_IMPORT_SOURCE "Не вдається імпортувати файл <%s>, оскільки він уже є в глобальному або локальному каталозі конфігурації"
+    IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "Підтвердіть видалення збережених паролів для ""%s"""

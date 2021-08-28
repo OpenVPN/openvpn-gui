@@ -391,6 +391,7 @@ BEGIN
     exit                 \t\t: 退出所有运行中的实例 (可能需要确认)\n\
     status cnn           \t\t: 如果已连接,显示配置""cnn""的状态\n\
     silent_connection [0|1]\t: 设置静默连接开启 (1) 或者关闭 (0)\n\
+    import path          \t\t: Import the config file pointed to by path\n\
 \t\t\t例如: openvpn-gui.exe --command disconnect myconfig\n\
 \n\
 可覆盖系统注册表设定的选项:\n\
@@ -507,6 +508,7 @@ Wintun driver will not work."
     IDS_NFO_IMPORT_SUCCESS "已成功导入文件。"
     IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
     IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
+    IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "请按「确定」删除「%s」连接配置文件的已存密码。"
