@@ -548,6 +548,9 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       else if (LOWORD(wParam) == IDM_IMPORT_AS) {
         ImportConfigFromAS();
       }
+      else if (LOWORD(wParam) == IDM_IMPORT_URL) {
+        ImportConfigFromURL();
+      }
       else if (LOWORD(wParam) == IDM_SETTINGS) {
         ShowSettingsDialog();
       }
