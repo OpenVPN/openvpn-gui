@@ -44,7 +44,7 @@
  * Profile name is either (sorted in priority order):
  * - value of OVPN_ACCESS_SERVER_FRIENDLY_NAME
  * - value of OVPN_ACCESS_SERVER_PROFILE
- * - URL
+ * - specified default_name
  *
  * @param profile profile content
  * @param default_name default name for profile if it doesn't contain name
@@ -88,9 +88,10 @@ ExtractProfileName(const WCHAR *profile, const WCHAR *default_name, WCHAR *out_n
     out_name[out_name_length - 1] = L'\0';
 
     /* sanitize profile name */
+    const char *reserved = "<>:\"/\\|?*;"; /* remap these and ascii 1 to 31 */
     while (*out_name) {
         wchar_t c = *out_name;
-        if (c == L'<' || c == L'>' || c == L':' || c == L'\"' || c == L'/' || c == L'\\' || c == L'|' || c == L'?' || c == L'*')
+        if (c < 32 || strchr(reserved, c))
             *out_name = L'_';
         ++out_name;
     }
@@ -111,6 +112,7 @@ struct UrlComponents
 {
     int port;
     WCHAR host[URL_LEN];
+    WCHAR path[URL_LEN];
     bool https;
 };
 
@@ -124,27 +126,33 @@ ParseUrl(const WCHAR *url, struct UrlComponents* comps)
 {
     ZeroMemory(comps, sizeof(struct UrlComponents));
 
-    int domain_off = 0;
     comps->port = 443;
     comps->https = true;
     if (wcsbegins(url, L"http://")) {
-        domain_off = 7;
+        url += 7;
     } else if (wcsbegins(url, L"https://")) {
-        domain_off = 8;
+        url +=8;
     }
 
-    WCHAR* strport = wcsstr(url + domain_off, L":");
+    WCHAR *strport = wcsstr(url, L":");
+    WCHAR *pathptr = wcsstr(url, L"/");
     if (strport) {
-        WCHAR* end;
-        wcsncpy(comps->host, url + domain_off, strport - url - domain_off);
-        comps->port = wcstol(strport + 1, &end, 10);
+        wcsncpy_s(comps->host, URL_LEN, url, strport - url);
+        comps->port = wcstol(strport + 1, NULL, 10);
     }
-    else {
-        wcscpy(comps->host, url + domain_off);
+    else if (pathptr)
+    {
+        wcsncpy_s(comps->host, URL_LEN, url, pathptr - url);
+    }
+    else
+    {
+        wcsncpy_s(comps->host, URL_LEN, url, _TRUNCATE);
     }
 
-    if (comps->host[wcslen(comps->host) - 1] == L'/')
-        comps->host[wcslen(comps->host) - 1] = L'\0';
+    if (pathptr)
+    {
+        wcsncpy_s(comps->path, URL_LEN, pathptr + 1, _TRUNCATE);
+    }
 }
 
 /**
@@ -270,19 +278,38 @@ CRDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 }
 
 /**
- * Download profile from AS and save it to a special-named temp file
+ * Construct the REST URL for AS profile
+ *
+ * @param host AS hostname, entered by user, might contain protocol and port
+ * @param autologin should autologin profile be used
+ * @param comps  Pointer to UrlComponents. Value assigned by this function.
+ */
+static void
+GetASUrl(const WCHAR *host, bool autologin, struct UrlComponents *comps)
+{
+
+    ParseUrl(host, comps);
+
+    swprintf(comps->path, URL_LEN, L"/rest/%ls?tls-cryptv2=1&action=import", autologin ? L"GetAutologin" : L"GetUserlogin");
+    comps->path[URL_LEN - 1] = L'\0';
+}
+
+/**
+ * Download profile from a generic URL and save it to a temp file
  *
  * @param hWnd handle of window which initiated download
- * @param host AS hostname, entered by user, might contain protocol and port
+ * @param comps pointer to struct UrlComponents describing the URL
  * @param username UTF-8 encoded username used for HTTP basic auth
  * @param password UTF-8 encoded password used for HTTP basic auth
- * @param autologin should autologin profile be used
  * @param out_path full path to where profile is downloaded. Value assigned by this function.
  * @param out_path_size number of elements in out_path arrray
+ *
+ * Filename in out_path is parsed from tags in received data
+ * with the url hostname as a fallback.
  */
-BOOL
-DownloadProfile(HANDLE hWnd, const WCHAR *host, const char *username, const char *password_orig,
-    BOOL autologin, WCHAR *out_path, size_t out_path_size)
+static BOOL
+DownloadProfile(HANDLE hWnd, const struct UrlComponents *comps, const char *username,
+                const char *password_orig, WCHAR *out_path, size_t out_path_size)
 {
     HANDLE hInternet = NULL;
     HANDLE hConnect = NULL;
@@ -290,9 +317,9 @@ DownloadProfile(HANDLE hWnd, const WCHAR *host, const char *username, const char
     BOOL result = FALSE;
     char* buf = NULL;
 
+    /* need to make copy of password to use it for dynamic response */
     char password[USER_PASS_LEN] = { 0 };
-    strncpy(password, password_orig, USER_PASS_LEN - 1);
-    password[USER_PASS_LEN - 1] = '\0';
+    strncpy_s(password, _countof(password), password_orig, _TRUNCATE);
 
     hInternet = InternetOpenW(L"openvpn-gui/1.0", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
     if (!hInternet) {
@@ -300,22 +327,18 @@ DownloadProfile(HANDLE hWnd, const WCHAR *host, const char *username, const char
         goto done;
     }
 
-    struct UrlComponents comps = { 0 };
-    ParseUrl(host, &comps);
-
     /* wait cursor will be automatically reverted later */
     SetCursor(LoadCursorW(0, IDC_WAIT));
 
-    hConnect = InternetConnectW(hInternet, comps.host, comps.port, NULL, NULL, INTERNET_SERVICE_HTTP, 0, 0);
+    hConnect = InternetConnectW(hInternet, comps->host, comps->port, NULL, NULL, INTERNET_SERVICE_HTTP, 0, 0);
     if (!hConnect) {
         ShowWinInetError(hWnd);
         goto done;
     }
 
-    WCHAR obj_name[URL_LEN] = { 0 };
-    swprintf(obj_name, URL_LEN, L"/rest/%ls?tls-cryptv2=1&action=import", autologin ? L"GetAutologin" : L"GetUserlogin");
-    obj_name[URL_LEN - 1] = L'\0';
-    hRequest = HttpOpenRequestW(hConnect, NULL, obj_name, NULL, NULL, NULL, comps.https ? INTERNET_FLAG_SECURE : 0, 0);
+    DWORD req_flags = INTERNET_FLAG_RELOAD; /* load from server, do not use cached data */
+    req_flags |= comps->https ? INTERNET_FLAG_SECURE : 0;
+    hRequest = HttpOpenRequestW(hConnect, NULL, comps->path, NULL, NULL, NULL, req_flags, 0);
     if (!hRequest) {
         ShowWinInetError(hWnd);
         goto done;
@@ -423,7 +446,7 @@ again:
         MessageBoxW(hWnd, L"Failed to convert profile content to wchar", _T(PACKAGE_NAME), MB_OK);
         goto done;
     }
-    ExtractProfileName(wbuf, comps.host, name, MAX_PATH);
+    ExtractProfileName(wbuf, comps->host, name, MAX_PATH);
     free(wbuf);
 
     /* save profile content into tmp file */
@@ -460,38 +483,53 @@ done:
     return result;
 }
 
+typedef enum {
+   server_as = 1,
+   server_generic = 2
+} server_type_t;
+
 INT_PTR CALLBACK
 ImportProfileFromURLDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     WCHAR url[URL_LEN] = {0};
     BOOL autologin = FALSE;
+    server_type_t type;
 
     switch (msg)
     {
     case WM_INITDIALOG:
+        type = (server_type_t) lParam;
+        SetProp(hwndDlg, cfgProp, (HANDLE)lParam);
         SetStatusWinIcon(hwndDlg, ID_ICO_APP);
 
-        /* disable OK button by default - not disabled in resources */
+        if (type == server_generic)
+        {
+            /* Change window title and hide autologin checkbox */
+            SetWindowTextW(hwndDlg, LoadLocalizedString(IDS_MENU_IMPORT_URL));
+            ShowWindow(GetDlgItem(hwndDlg, ID_CHK_AUTOLOGIN), SW_HIDE);
+        }
+        /* disable OK button until required data is filled in */
         EnableWindow(GetDlgItem(hwndDlg, IDOK), FALSE);
 
         break;
 
     case WM_COMMAND:
+        type = (server_type_t) GetProp(hwndDlg, cfgProp);
         switch (LOWORD(wParam))
         {
         case ID_EDT_AUTH_USER:
         case ID_EDT_AUTH_PASS:
         case ID_EDT_URL:
             if (HIWORD(wParam) == EN_UPDATE) {
-                /* enable OK button only if url and username are filled */
+                /* enable OK button only if url and username (for AS only) are filled */
                 BOOL enableOK = GetWindowTextLengthW(GetDlgItem(hwndDlg, ID_EDT_URL))
-                    && GetWindowTextLengthW(GetDlgItem(hwndDlg, ID_EDT_AUTH_USER));
+                    && (type == server_generic
+                        || GetWindowTextLengthW(GetDlgItem(hwndDlg, ID_EDT_AUTH_USER)));
                 EnableWindow(GetDlgItem(hwndDlg, IDOK), enableOK);
             }
             break;
 
         case IDOK:
-            autologin = IsDlgButtonChecked(hwndDlg, ID_CHK_AUTOLOGIN) == BST_CHECKED;
 
             GetDlgItemTextW(hwndDlg, ID_EDT_URL, url, _countof(url));
 
@@ -504,7 +542,18 @@ ImportProfileFromURLDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
             GetDlgItemTextUtf8(hwndDlg, ID_EDT_AUTH_PASS, &password, &password_len);
 
             WCHAR path[MAX_PATH + 1] = { 0 };
-            BOOL downloaded = DownloadProfile(hwndDlg, url, username, password, autologin, path, _countof(path));
+            struct UrlComponents comps = {0};
+            if (type == server_as)
+            {
+
+                autologin = IsDlgButtonChecked(hwndDlg, ID_CHK_AUTOLOGIN) == BST_CHECKED;
+                GetASUrl(url, autologin, &comps);
+            }
+            else
+            {
+                ParseUrl(url, &comps);
+            }
+            BOOL downloaded = DownloadProfile(hwndDlg, &comps, username, password, path, _countof(path));
 
             if (username_len != 0)
                 free(username);
@@ -540,5 +589,10 @@ ImportProfileFromURLDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
 
 void ImportConfigFromAS()
 {
-    LocalizedDialogBoxParam(ID_DLG_URL_PROFILE_IMPORT, ImportProfileFromURLDialogFunc, 0);
+    LocalizedDialogBoxParam(ID_DLG_URL_PROFILE_IMPORT, ImportProfileFromURLDialogFunc, (LPARAM) server_as);
+}
+
+void ImportConfigFromURL()
+{
+    LocalizedDialogBoxParam(ID_DLG_URL_PROFILE_IMPORT, ImportProfileFromURLDialogFunc, (LPARAM) server_generic);
 }

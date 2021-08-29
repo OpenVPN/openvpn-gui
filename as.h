@@ -20,3 +20,4 @@
  */
 
 void ImportConfigFromAS();
+void ImportConfigFromURL();

@@ -183,6 +183,7 @@
 #define IDS_MENU_RECONNECT              1025
 #define IDS_MENU_IMPORT_AS              1026
 #define IDS_MENU_IMPORT_FILE            1027
+#define IDS_MENU_IMPORT_URL             1028
 
 /* LogViewer Dialog */
 #define IDS_ERR_START_LOG_VIEWER        1101
