@@ -328,6 +328,11 @@ DownloadProfile(HANDLE hWnd, const struct UrlComponents *comps, const char *user
         goto done;
     }
 
+    /* Calls to connect and receive block: set timeouts that are not too long */
+    unsigned long timeout = 30000; /* 30 seconds */
+    InternetSetOption(hInternet, INTERNET_OPTION_CONNECT_TIMEOUT, &timeout, sizeof(timeout));
+    InternetSetOption(hInternet, INTERNET_OPTION_RECEIVE_TIMEOUT, &timeout, sizeof(timeout));
+
     /* wait cursor will be automatically reverted later */
     SetCursor(LoadCursorW(0, IDC_WAIT));
 
