@@ -113,6 +113,7 @@ struct UrlComponents
     int port;
     WCHAR host[URL_LEN];
     WCHAR path[URL_LEN];
+    char content_type[256];
     bool https;
 };
 
@@ -440,6 +441,20 @@ again:
         goto done;
     }
 
+    /* check content-type if specified */
+    if (strlen(comps->content_type) > 0)
+    {
+        char tmp[256];
+        DWORD len = sizeof(tmp);
+        BOOL res = HttpQueryInfoA(hRequest, HTTP_QUERY_CONTENT_TYPE, tmp, &len, NULL);
+        if (!res || stricmp(comps->content_type, tmp))
+        {
+            ShowLocalizedMsgEx(MB_OK, hWnd, _T(PACKAGE_NAME), IDS_ERR_URL_IMPORT_PROFILE, 0,
+                               L"HTTP content-type mismatch");
+            goto done;
+        }
+    }
+
     WCHAR name[MAX_PATH] = {0};
     WCHAR* wbuf = Widen(buf);
     if (!wbuf) {
@@ -552,6 +567,8 @@ ImportProfileFromURLDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
             else
             {
                 ParseUrl(url, &comps);
+                strncpy_s(comps.content_type, _countof(comps.content_type),
+                          "application/x-openvpn-profile", _TRUNCATE);
             }
             BOOL downloaded = DownloadProfile(hwndDlg, &comps, username, password, path, _countof(path));
 
