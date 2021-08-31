@@ -322,6 +322,12 @@ DownloadProfile(HANDLE hWnd, const struct UrlComponents *comps, const char *user
     char password[USER_PASS_LEN] = { 0 };
     strncpy_s(password, _countof(password), password_orig, _TRUNCATE);
 
+    /* empty password causes reuse of previously cached value -- set it to some character */
+    if (strlen(password) == 0)
+    {
+        password[0] = 'x';
+    }
+
     hInternet = InternetOpenW(L"openvpn-gui/1.0", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
     if (!hInternet) {
         ShowWinInetError(hWnd);
@@ -491,6 +497,9 @@ done:
     if (buf)
         free(buf);
 
+    /* wipe the password */
+    SecureZeroMemory(password, sizeof(password));
+
     if (hRequest)
         InternetCloseHandle(hRequest);
 
@@ -541,10 +550,9 @@ ImportProfileFromURLDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
         case ID_EDT_AUTH_PASS:
         case ID_EDT_URL:
             if (HIWORD(wParam) == EN_UPDATE) {
-                /* enable OK button only if url and username (for AS only) are filled */
+                /* enable OK button only if url and username are filled */
                 BOOL enableOK = GetWindowTextLengthW(GetDlgItem(hwndDlg, ID_EDT_URL))
-                    && (type == server_generic
-                        || GetWindowTextLengthW(GetDlgItem(hwndDlg, ID_EDT_AUTH_USER)));
+                    && GetWindowTextLengthW(GetDlgItem(hwndDlg, ID_EDT_AUTH_USER));
                 EnableWindow(GetDlgItem(hwndDlg, IDOK), enableOK);
             }
             break;
@@ -577,11 +585,14 @@ ImportProfileFromURLDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
             }
             BOOL downloaded = DownloadProfile(hwndDlg, &comps, username, password, path, _countof(path));
 
-            if (username_len != 0)
+            if (username_len > 0)
                 free(username);
 
-            if (password_len != 0)
+            if (password_len > 0)
+            {
+                SecureZeroMemory(password, strlen(password));
                 free(password);
+            }
 
             if (downloaded) {
                 EndDialog(hwndDlg, LOWORD(wParam));
