@@ -88,10 +88,10 @@ ExtractProfileName(const WCHAR *profile, const WCHAR *default_name, WCHAR *out_n
     out_name[out_name_length - 1] = L'\0';
 
     /* sanitize profile name */
-    const char *reserved = "<>:\"/\\|?*;"; /* remap these and ascii 1 to 31 */
+    const WCHAR *reserved = L"<>:\"/\\|?*;"; /* remap these and ascii 1 to 31 */
     while (*out_name) {
         wchar_t c = *out_name;
-        if (c < 32 || strchr(reserved, c))
+        if (c < 32 || wcschr(reserved, c))
             *out_name = L'_';
         ++out_name;
     }
