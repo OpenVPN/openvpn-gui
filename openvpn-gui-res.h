@@ -153,6 +153,11 @@
 #define ID_CHK_AUTOLOGIN                 402
 #define IDS_ERR_URL_IMPORT_PROFILE       403
 
+/* pkcs11-id query dialog */
+#define ID_DLG_PKCS11_QUERY              450
+#define ID_LVW_PKCS11                    451
+#define ID_TXT_PKCS11                    452
+
 /*
  * String Table Resources
  */
@@ -359,6 +364,13 @@
 /* Invalid input errors */
 #define IDS_ERR_INVALID_PASSWORD_INPUT  2152
 #define IDS_ERR_INVALID_USERNAME_INPUT  2153
+
+/* pkcs11 related */
+#define IDS_ERR_NO_PKCS11               2160
+#define IDS_ERR_SELECT_PKCS11           2161
+#define IDS_CERT_DISPLAYNAME            2162
+#define IDS_CERT_ISSUER                 2163
+#define IDS_CERT_NOTAFTER               2164
 
 /* Timer IDs */
 #define IDT_STOP_TIMER                  2500  /* Timer used to trigger force termination */

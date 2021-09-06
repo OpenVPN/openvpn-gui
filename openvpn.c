@@ -60,6 +60,7 @@
 #include "save_pass.h"
 #include "env_set.h"
 #include "echo.h"
+#include "pkcs11.h"
 
 #define OPENVPN_SERVICE_PIPE_NAME_OVPN2 L"\\\\.\\pipe\\openvpn\\service"
 #define OPENVPN_SERVICE_PIPE_NAME_OVPN3 L"\\\\.\\pipe\\ovpnagent"
@@ -1758,6 +1759,12 @@ out:
 void
 OnNeedStr (connection_t *c, UNUSED char *msg)
 {
+    if (strstr(msg, "Need 'pkcs11-id-request'"))
+    {
+        msg = strstr(msg, "MSG:");
+        OnPkcs11(c, msg ? msg + 4 : "");
+        return;
+    }
     WriteStatusLog (c, L"GUI> ", L"Error: Received NEED-STR message -- not implemented", false);
 }
 
@@ -1773,6 +1780,7 @@ Cleanup (connection_t *c)
     env_item_del_all(c->es);
     c->es = NULL;
     echo_msg_clear(c, true); /* clear history */
+    pkcs11_list_clear(&c->pkcs11_list);
 
     if (c->hProcess)
         CloseHandle (c->hProcess);
