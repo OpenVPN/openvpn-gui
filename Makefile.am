@@ -95,6 +95,7 @@ openvpn_gui_SOURCES = \
 	env_set.c env_set.h \
 	echo.c echo.h \
 	as.c as.h \
+	pkcs11.c pkcs11.h \
 	openvpn-gui-res.h
 
 openvpn_gui_LDFLAGS = -mwindows

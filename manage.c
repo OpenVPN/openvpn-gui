@@ -337,6 +337,17 @@ OnManagement(SOCKET sk, LPARAM lParam)
                     if (rtmsg_handler[infomsg_])
                         rtmsg_handler[infomsg_](c, pos + 8);
                 }
+                else if (strncmp(pos, "PKCS11ID", 8) == 0
+                         && c->manage.cmd_queue)
+                {
+                    /* This is not a real-time message, but unfortunately implemented
+                     * in the core as one. Work around by handling the response here.
+                     */
+                    mgmt_cmd_t *cmd = c->manage.cmd_queue;
+                    if (cmd->handler)
+                        cmd->handler(c, line);
+                    UnqueueCommand(c);
+                }
             }
             else if (c->manage.cmd_queue)
             {

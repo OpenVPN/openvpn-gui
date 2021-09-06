@@ -34,6 +34,7 @@ typedef struct connection connection_t;
 
 #include "manage.h"
 #include "echo.h"
+#include "pkcs11.h"
 
 #define MAX_NAME (UNLEN + 1)
 
@@ -158,6 +159,7 @@ struct connection {
     unsigned long long int bytes_out;
     struct env_item *es;           /* Pointer to the head of config-specific env variables list */
     struct echo_msg echo_msg;      /* Message echo-ed from server or client config and related data */
+    struct pkcs11_list pkcs11_list;
 };
 
 /* All options used within OpenVPN GUI */

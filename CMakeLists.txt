@@ -28,6 +28,7 @@ add_executable(${PROJECT_NAME} WIN32
     tray.c
     viewlog.c
     as.c
+    pkcs11.c
     res/openvpn-gui-res.rc)
 
 find_package(OpenSSL REQUIRED)
