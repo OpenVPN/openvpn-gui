@@ -223,7 +223,7 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_TRADITIONAL
 BEGIN
     ICON ID_ICO_APP, ID_ICON_ABOUT, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v%s - OpenVPN 的 Windows 圖形化介面\n\
+    LTEXT "OpenVPN GUI v%ls - OpenVPN 的 Windows 圖形化介面\n\
 版權所有 (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 版權所有 (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
 版權所有 (C) 2012-2021 OpenVPN GUI 貢獻者\n", ID_TXT_VERSION, 36, 15, 206, 50
@@ -279,7 +279,7 @@ BEGIN
     IDS_TIP_CONNECTED "\n已連線至: "
     IDS_TIP_CONNECTING "\n正在連線至: "
     IDS_TIP_CONNECTED_SINCE "\n連線自: "
-    IDS_TIP_ASSIGNED_IP "\n配發 IP: %s"
+    IDS_TIP_ASSIGNED_IP "\n配發 IP: %ls"
     IDS_MENU_SERVICE "OpenVPN 服務"
     IDS_MENU_IMPORT "Import"
     IDS_MENU_IMPORT_AS "Import from Access Server…"
@@ -304,28 +304,28 @@ BEGIN
     IDS_MENU_ASK_STOP_SERVICE "您想要斷線（停止 OpenVPN 服務）嗎？"
 
     /* Logviewer - Resources */
-    IDS_ERR_START_LOG_VIEWER "記錄檔檢視器啟動失敗: %s"
-    IDS_ERR_START_CONF_EDITOR "設定檔編輯器啟動失敗: %s"
+    IDS_ERR_START_LOG_VIEWER "記錄檔檢視器啟動失敗: %ls"
+    IDS_ERR_START_CONF_EDITOR "設定檔編輯器啟動失敗: %ls"
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI 不支援超過 %d 組連線設定檔。若您有需要，請聯繫作者。"
     IDS_NFO_NO_CONFIGS "沒有找到可讀取的連線設定檔。\n\
-請使用選單的「匯入設定檔…」，或將設定檔複製到「%s」或「%s」。"
-    IDS_ERR_CONFIG_NOT_AUTHORIZED "啟動此連線 (%s) 必須要有「%s」群組的成員資格。\
+請使用選單的「匯入設定檔…」，或將設定檔複製到「%ls」或「%ls」。"
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "啟動此連線 (%ls) 必須要有「%ls」群組的成員資格。\
 請連絡您的系統管理員。\n"
-    IDS_ERR_CONFIG_TRY_AUTHORIZE  "啟動此連線 (%s) 必須要有「%s」群組的成員資格。\
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "啟動此連線 (%ls) 必須要有「%ls」群組的成員資格。\
 \n\n\
 您想要把自己加入到此群組嗎？\n\
 可能需要輸入管理密碼或管理員同意才能進行此行為。"
-    IDS_NFO_CONFIG_AUTH_PENDING   "啟動此連線 (%s) 必須要有「%s」群組的成員資格。\
+    IDS_NFO_CONFIG_AUTH_PENDING   "啟動此連線 (%ls) 必須要有「%ls」群組的成員資格。\
 \n\n\
 請完成先前的授權對話窗。"
-    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "將使用者加入至「%s」群組失敗。"
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "將使用者加入至「%ls」群組失敗。"
     IDS_ERR_ONE_CONN_OLD_VER "若您使用 OpenVPN 2.0-beta6 以前的舊版本，同時僅能有一個連線。"
     IDS_ERR_STOP_SERV_OLD_VER "OpenVPN 1.5/1.6 的服務執行中時，將無法使用 OpenVPN GUI 進行連線。若您想使用 OpenVPN GUI，請先停止 OpenVPN 服務。"
-    IDS_ERR_CREATE_EVENT "發生結束事件時 CreateEvent 失敗: %s"
-    IDS_ERR_UNKNOWN_PRIORITY "未知的優先權名稱: %s"
-    IDS_ERR_LOG_APPEND_BOOL "附加記錄檔的旗標（例如「%s」）必須為「0」或「1」"
+    IDS_ERR_CREATE_EVENT "發生結束事件時 CreateEvent 失敗: %ls"
+    IDS_ERR_UNKNOWN_PRIORITY "未知的優先權名稱: %ls"
+    IDS_ERR_LOG_APPEND_BOOL "附加記錄檔的旗標（例如「%ls」）必須為「0」或「1」"
     IDS_ERR_GET_MSIE_PROXY "無法取得 MSIE 的 Proxy 設定。"
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor 失敗。"
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl 失敗。"
@@ -333,42 +333,42 @@ BEGIN
     IDS_ERR_CREATE_PIPE_INPUT "建立 hInputRead 管道失敗。"
     IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle on hOutputRead 失敗。"
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite 失敗。"
-    IDS_ERR_CREATE_PROCESS "CreateProcess 失敗，exe=「%s」 cmdline=「%s」 dir=「%s」"
+    IDS_ERR_CREATE_PROCESS "CreateProcess 失敗，exe=「%ls」 cmdline=「%ls」 dir=「%ls」"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread 以顯示狀態視窗時失敗。"
     IDS_NFO_STATE_WAIT_TERM "目前狀態: 等待中止 OpenVPN…"
     IDS_NFO_STATE_CONNECTED "目前狀態: 已連線"
-    IDS_NFO_NOW_CONNECTED "已連線至 %s。"
-    IDS_NFO_ASSIGN_IP "配發 IP: %s"
+    IDS_NFO_NOW_CONNECTED "已連線至 %ls。"
+    IDS_NFO_ASSIGN_IP "配發 IP: %ls"
     IDS_ERR_CERT_EXPIRED "您的憑證已過期，或是系統時間不正確，無法連線。"
     IDS_ERR_CERT_NOT_YET_VALID "您的憑證尚未生效，無法連線。請檢查您的系統時間是否正確。"
     IDS_NFO_STATE_RECONNECTING "目前狀態: 重新連線中"
     IDS_NFO_STATE_DISCONNECTED "目前狀態: 已斷線"
-    IDS_NFO_CONN_TERMINATED "%s 連線已中斷。"
+    IDS_NFO_CONN_TERMINATED "%ls 連線已中斷。"
     IDS_NFO_STATE_FAILED "目前狀態: 連線失敗"
-    IDS_NFO_CONN_FAILED "%s 連線失敗。"
+    IDS_NFO_CONN_FAILED "%ls 連線失敗。"
     IDS_NFO_STATE_FAILED_RECONN "目前狀態: 重新連線失敗"
-    IDS_NFO_RECONN_FAILED "%s 重新連線失敗。"
+    IDS_NFO_RECONN_FAILED "%ls 重新連線失敗。"
     IDS_NFO_STATE_SUSPENDED "目前狀態: 已暫停"
     IDS_ERR_READ_STDOUT_PIPE "無法從 OpenVPN StdOut 管道讀取。"
     IDS_ERR_CREATE_EDIT_LOGWINDOW "建立 RichEdit 紀錄視窗失敗！"
     IDS_ERR_SET_SIZE "設定大小失敗！"
-    IDS_ERR_AUTOSTART_CONF "無法找到指定的自動連線設定檔: %s"
+    IDS_ERR_AUTOSTART_CONF "無法找到指定的自動連線設定檔: %ls"
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe on hInputRead 失敗。"
     IDS_NFO_STATE_CONNECTING "目前狀態: 連線中"
-    IDS_NFO_CONNECTION_XXX "OpenVPN 連線 (%s)"
+    IDS_NFO_CONNECTION_XXX "OpenVPN 連線 (%ls)"
     IDS_NFO_STATE_CONN_SCRIPT "目前狀態: 正在執行連線指令碼"
     IDS_NFO_STATE_DISCONN_SCRIPT "目前狀態: 正在執行斷線指令碼"
-    IDS_ERR_RUN_CONN_SCRIPT "執行連線指令碼時發生錯誤: %s"
-    IDS_ERR_GET_EXIT_CODE "無法取得連線指令碼的 ExitCode (%s)"
+    IDS_ERR_RUN_CONN_SCRIPT "執行連線指令碼時發生錯誤: %ls"
+    IDS_ERR_GET_EXIT_CODE "無法取得連線指令碼的 ExitCode (%ls)"
     IDS_ERR_CONN_SCRIPT_FAILED "連線指令碼執行失敗。（退出碼為 %ld）"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "連線指令碼執行失敗，執行超過 %d 已逾時。"
-    IDS_ERR_CONFIG_EXIST "已有名為「%s」的連線設定檔。即使連線設定檔存在不同資料夾，\
+    IDS_ERR_CONFIG_EXIST "已有名為「%ls」的連線設定檔。即使連線設定檔存在不同資料夾，\
 您也不得使用相同名稱。"
     IDS_NFO_CONN_TIMEOUT "連限至管理介面失敗。\n\
-請檢視記錄檔 (%s) 取得更多詳細資訊。"
+請檢視記錄檔 (%ls) 取得更多詳細資訊。"
     /* main - Resources */
-    IDS_ERR_OPEN_DEBUG_FILE "開啟除錯文件 (%s) 時失敗。"
-    IDS_ERR_CREATE_PATH "無法建立 %s 路徑:\n%s"
+    IDS_ERR_OPEN_DEBUG_FILE "開啟除錯文件 (%ls) 時失敗。"
+    IDS_ERR_CREATE_PATH "無法建立 %ls 路徑:\n%ls"
     IDS_ERR_LOAD_RICHED20 "無法載入 RICHED20.DLL。"
     IDS_ERR_SHELL_DLL_VERSION "您的 shell32.dll 版本太舊 (0x%lx)，需要至少 5.0 版本或更新版。"
     IDS_NFO_SERVICE_STARTED "已啟動 OpenVPN 服務。"
@@ -424,26 +424,26 @@ Supported commands:\n\
 
 
     IDS_NFO_USAGECAPTION "OpenVPN GUI 使用方式"
-    IDS_ERR_BAD_PARAMETER "嘗試將「%s」剖析成 --option 的參數，\
+    IDS_ERR_BAD_PARAMETER "嘗試將「%ls」剖析成 --option 的參數，\
 但沒看到參數前面的「--」"
-    IDS_ERR_BAD_OPTION "選項錯誤: 無法識別選項，或缺少參數: --%s\n\
+    IDS_ERR_BAD_OPTION "選項錯誤: 無法識別選項，或缺少參數: --%ls\n\
 使用 openvpn-gui --help 取得更多資訊。"
 
     /* passphrase - Resources */
     IDS_ERR_CREATE_PASS_THREAD "CreateThread 以顯示變更密碼對話框失敗。"
-    IDS_NFO_CHANGE_PWD "變更私鑰密碼 (%s)"
+    IDS_NFO_CHANGE_PWD "變更私鑰密碼 (%ls)"
     IDS_ERR_PWD_DONT_MATCH "您輸入的密碼不符合，請再試一次。"
     IDS_ERR_PWD_TO_SHORT "您的新密碼必須要有至少 %d 字元長。"
     IDS_NFO_EMPTY_PWD "您確定要使用空白密碼嗎？"
     IDS_ERR_UNKNOWN_KEYFILE_FORMAT "未知格式的金鑰檔案。"
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "開啟私鑰檔案 (%s) 時發生錯誤。"
+    IDS_ERR_OPEN_PRIVATE_KEY_FILE "開啟私鑰檔案 (%ls) 時發生錯誤。"
     IDS_ERR_OLD_PWD_INCORRECT "舊密碼不正確。"
-    IDS_ERR_OPEN_WRITE_KEY "無法開啟私鑰檔案進行寫入 (%s)。"
-    IDS_ERR_WRITE_NEW_KEY "寫入新私鑰檔案時發生錯誤 (%s)。"
+    IDS_ERR_OPEN_WRITE_KEY "無法開啟私鑰檔案進行寫入 (%ls)。"
+    IDS_ERR_WRITE_NEW_KEY "寫入新私鑰檔案時發生錯誤 (%ls)。"
     IDS_NFO_PWD_CHANGED "您的密碼已經變更。"
-    IDS_ERR_READ_PKCS12 "讀取 PKCS #12 檔案時發生錯誤 (%s)。"
+    IDS_ERR_READ_PKCS12 "讀取 PKCS #12 檔案時發生錯誤 (%ls)。"
     IDS_ERR_CREATE_PKCS12 "無法建立新的 PKCS #12 物件，密碼變更失敗。"
-    IDS_ERR_OPEN_CONFIG "無法讀取連線設定檔: (%s)"
+    IDS_ERR_OPEN_CONFIG "無法讀取連線設定檔: (%ls)"
     IDS_ERR_ONLY_ONE_KEY_OPTION "您的連線設定檔中不能包含超過一個「key」選項。"
     IDS_ERR_ONLY_KEY_OR_PKCS12 "您的連線設定檔中不能同時包含「key」和「pkcs12」選項。"
     IDS_ERR_ONLY_ONE_PKCS12_OPTION "您的連線設定檔中不能包含超過一個「pkcs12」選項。"
@@ -466,7 +466,7 @@ Supported commands:\n\
     IDS_ERR_SOCKS_PROXY_ADDRESS "您必須指定 SOCKS Proxy 地址。"
     IDS_ERR_SOCKS_PROXY_PORT "您必須指定 SOCKS Proxy 通訊埠。"
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "您必須指定在 1-65535 之間的 SOCKS Proxy 通訊埠"
-    IDS_ERR_CREATE_REG_HKCU_KEY "「HKEY_CURRENT_USER\\%s」登錄機碼建立失敗。"
+    IDS_ERR_CREATE_REG_HKCU_KEY "「HKEY_CURRENT_USER\\%ls」登錄機碼建立失敗。"
     IDS_ERR_GET_TEMP_PATH "使用 GetTempPath() 決定 TempPath 時發生錯誤。改用「C:\\」。"
 
     /* service */
@@ -499,24 +499,24 @@ Wintun driver will not work."
     IDS_ERR_PRECONN_SCRIPT_TIMEOUT "系統登錄值「preconnectscript_timeout」必須為 1 到 99 之間的數字。"
     IDS_ERR_CREATE_REG_KEY "建立 HKLM\\SOFTWARE\\OpenVPN-GUI 機碼時發生錯誤。"
     IDS_ERR_OPEN_WRITE_REG "無法開啟系統登錄檔進行寫入，您必須以管理員身分執行此應用程式更新註冊表。"
-    IDS_ERR_READ_SET_KEY "讀取並設定系統登錄機碼「%s」時發生錯誤。"
-    IDS_ERR_WRITE_REGVALUE "讀取系統登錄值「HKEY_CURRENT_USER\\%s\\%s」時發生錯誤。"
+    IDS_ERR_READ_SET_KEY "讀取並設定系統登錄機碼「%ls」時發生錯誤。"
+    IDS_ERR_WRITE_REGVALUE "讀取系統登錄值「HKEY_CURRENT_USER\\%ls\\%ls」時發生錯誤。"
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS "已有名為「%s」的連線設定檔。"
+    IDS_ERR_IMPORT_EXISTS "已有名為「%ls」的連線設定檔。"
     IDS_ERR_IMPORT_FAILED "檔案匯入失敗。無法建立下列路徑。\n\n\
-%s\n\n請確定您有正確的系統權限。"
+%ls\n\n請確定您有正確的系統權限。"
     IDS_NFO_IMPORT_SUCCESS "已成功匯入檔案。"
-    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
-    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
+    IDS_NFO_IMPORT_OVERWRITE "A config named ""%ls"" already exists. Do you want to replace it?"
+    IDS_ERR_IMPORT_SOURCE "Cannot import file <%ls> as it is already in the global or local config directory"
     IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
 
     /* save/delete password */
-    IDS_NFO_DELETE_PASS "請按「確定」刪除「%s」連線設定檔的已存密碼。"
+    IDS_NFO_DELETE_PASS "請按「確定」刪除「%ls」連線設定檔的已存密碼。"
 
     /* Token password related */
     IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN - Token 密碼"
-    IDS_NFO_TOKEN_PASSWORD_REQUEST "請輸入 Token「%S」的密碼或 PIN"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "請輸入 Token「%hs」的密碼或 PIN"
 
     IDS_NFO_AUTH_PASS_RETRY "Wrong credentials. Try again…"
     IDS_NFO_KEY_PASS_RETRY  "Wrong password. Try again…"
@@ -524,6 +524,6 @@ Wintun driver will not work."
     IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
     IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds…"
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
-    IDS_NFO_BYTECOUNT "Bytes in: %s  out: %s"
+    IDS_NFO_BYTECOUNT "Bytes in: %ls  out: %ls"
 
 END

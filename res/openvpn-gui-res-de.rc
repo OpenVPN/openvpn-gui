@@ -222,7 +222,7 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, ID_ICON_ABOUT, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v%s – Eine grafische Benutzeroberfläche für OpenVPN\n\
+    LTEXT "OpenVPN GUI v%ls – Eine grafische Benutzeroberfläche für OpenVPN\n\
 Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
 Copyright (C) 2012-2021 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
@@ -279,7 +279,7 @@ BEGIN
     IDS_TIP_CONNECTED "\nVerbunden mit: "
     IDS_TIP_CONNECTING "\nVerbinden mit: "
     IDS_TIP_CONNECTED_SINCE "\nVerbunden seit: "
-    IDS_TIP_ASSIGNED_IP "\nZugewiesene IP: %s"
+    IDS_TIP_ASSIGNED_IP "\nZugewiesene IP: %ls"
     IDS_MENU_SERVICE "OpenVPN-Dienst"
     IDS_MENU_IMPORT "Import"
     IDS_MENU_IMPORT_AS "Import from Access Server…"
@@ -304,28 +304,28 @@ BEGIN
     IDS_MENU_ASK_STOP_SERVICE "Möchten Sie die Verbindung trennen (beendet den OpenVPN-Dienst)?"
 
     /* Logviewer – Resources */
-    IDS_ERR_START_LOG_VIEWER "Fehler beim Starten der Log-Anzeige: %s"
-    IDS_ERR_START_CONF_EDITOR "Fehler beim Starten des Konfigurations-Editors: %s"
+    IDS_ERR_START_LOG_VIEWER "Fehler beim Starten der Log-Anzeige: %ls"
+    IDS_ERR_START_CONF_EDITOR "Fehler beim Starten des Konfigurations-Editors: %ls"
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI unterstützt nicht mehr als %d Konfigurationen. Bitte kontaktieren Sie bei Bedarf den Autor."
     IDS_NFO_NO_CONFIGS "Keine lesbaren Konfigurations-Profile (Konfigurationsdateien) gefunden.\n\
-Benutzen Sie das ""Datei importieren…"" Menü oder kopieren Sie Ihre Konfigurationsdateien nach ""%s"" oder ""%s""."
-    IDS_ERR_CONFIG_NOT_AUTHORIZED "Zum Starten dieser Verbindung (%s) müssen Sie Mitglied in der\
-Gruppe ""%s"" sein. Kontaktieren Sie Ihren Systemadministrator.\n"
-    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Zum Starten dieser Verbindung (%s) müssen Sie Mitglied in der\
-Gruppe ""%s"" sein.\n\n\
+Benutzen Sie das ""Datei importieren…"" Menü oder kopieren Sie Ihre Konfigurationsdateien nach ""%ls"" oder ""%ls""."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "Zum Starten dieser Verbindung (%ls) müssen Sie Mitglied in der\
+Gruppe ""%ls"" sein. Kontaktieren Sie Ihren Systemadministrator.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Zum Starten dieser Verbindung (%ls) müssen Sie Mitglied in der\
+Gruppe ""%ls"" sein.\n\n\
 Möchten Sie sich selbst zu dieser Gruppe hinzufügen?\n\
 Möglicherweise benötigen Sie hierfür das Passwort oder die Zustimmung eines Administrators."
-    IDS_NFO_CONFIG_AUTH_PENDING   "Zum Starten dieser Verbindung (%s) müssen Sie Mitglied in der\
-Gruppe ""%s"" sein.\n\n\
+    IDS_NFO_CONFIG_AUTH_PENDING   "Zum Starten dieser Verbindung (%ls) müssen Sie Mitglied in der\
+Gruppe ""%ls"" sein.\n\n\
 Bitte vervollständigen Sie den vorhergehenden Autorisierungsdialog."
-    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Hinzufügen des Benutzers zur Gruppe ""%s"" ist fehlgeschlagen."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Hinzufügen des Benutzers zur Gruppe ""%ls"" ist fehlgeschlagen."
     IDS_ERR_ONE_CONN_OLD_VER "Sie können nur eine Verbindung zur gleichen Zeit aufbauen, wenn Sie einen ältere Version als 2.0-beta6 von OpenVPN verwenden."
     IDS_ERR_STOP_SERV_OLD_VER "Sie können OpenVPN GUI nicht zum Starten einer Verbindung nutzen, während der OpenVPN-Dienst läuft (mit OpenVPN 1.5/1.6). Beenden Sie den OpenVPN-Dienst, bevor Sie OpenVPN GUI nutzen."
-    IDS_ERR_CREATE_EVENT "CreateEvent fehlgeschlagen beim Beenden. Event: %s"
-    IDS_ERR_UNKNOWN_PRIORITY "Unbekannte Priorität: %s"
-    IDS_ERR_LOG_APPEND_BOOL "Logdatei-Anhängen-Flag (aktuell '%s') muss '0' oder '1' sein."
+    IDS_ERR_CREATE_EVENT "CreateEvent fehlgeschlagen beim Beenden. Event: %ls"
+    IDS_ERR_UNKNOWN_PRIORITY "Unbekannte Priorität: %ls"
+    IDS_ERR_LOG_APPEND_BOOL "Logdatei-Anhängen-Flag (aktuell '%ls') muss '0' oder '1' sein."
     IDS_ERR_GET_MSIE_PROXY "Konnte die MSIE-Proxy-Einstellungen nicht übernehmen."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor fehlgeschlagen."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl fehlgeschlagen."
@@ -333,43 +333,43 @@ Bitte vervollständigen Sie den vorhergehenden Autorisierungsdialog."
     IDS_ERR_CREATE_PIPE_INPUT "CreatePipe on hInputRead fehlgeschlagen."
     IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle on hOutputRead fehlgeschlagen."
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite fehlgeschlagen."
-    IDS_ERR_CREATE_PROCESS "CreateProcess fehlgeschlagen, exe='%s' cmdline='%s' dir='%s'"
+    IDS_ERR_CREATE_PROCESS "CreateProcess fehlgeschlagen, exe='%ls' cmdline='%ls' dir='%ls'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread zum Anzeigen des Status-Fensters ist fehlgeschlagen."
     IDS_NFO_STATE_WAIT_TERM "Aktueller Status: Wartet bis OpenVPN beendet ist…"
     IDS_NFO_STATE_CONNECTED "Aktueller Status: Verbunden"
-    IDS_NFO_NOW_CONNECTED "%s ist nun verbunden."
-    IDS_NFO_ASSIGN_IP "Zugewiesene IP: %s"
+    IDS_NFO_NOW_CONNECTED "%ls ist nun verbunden."
+    IDS_NFO_ASSIGN_IP "Zugewiesene IP: %ls"
     IDS_ERR_CERT_EXPIRED "Es konnte keine Verbindung hergestellt werden, weil Ihr Zertifikat abgelaufen ist oder die Systemzeit nicht korrekt eingestellt ist."
     IDS_ERR_CERT_NOT_YET_VALID "Es konnte keine Verbindung hergestellt werden, weil Ihr Zertifikat noch nicht gültig ist. Bitte überprüfen Sie Ihre Systemzeit."
     IDS_NFO_STATE_RECONNECTING "Aktueller Status: Erneut verbinden"
     IDS_NFO_STATE_DISCONNECTED "Aktueller Status: Getrennt"
-    IDS_NFO_CONN_TERMINATED "Verbindung zu %s wurde getrennt."
+    IDS_NFO_CONN_TERMINATED "Verbindung zu %ls wurde getrennt."
     IDS_NFO_STATE_FAILED "Aktueller Status: Konnte Verbindung nicht herstellen"
-    IDS_NFO_CONN_FAILED "Verbindung zu %s ist fehlgeschlagen."
+    IDS_NFO_CONN_FAILED "Verbindung zu %ls ist fehlgeschlagen."
     IDS_NFO_STATE_FAILED_RECONN "Aktueller Status: Konnte Verbindung nicht erneut herstellen."
-    IDS_NFO_RECONN_FAILED "Erneutes Verbinden zu %s ist fehlgeschlagen."
+    IDS_NFO_RECONN_FAILED "Erneutes Verbinden zu %ls ist fehlgeschlagen."
     IDS_NFO_STATE_SUSPENDED "Aktueller Status: Unterbrochen"
     IDS_ERR_READ_STDOUT_PIPE "Fehler beim Lesen der OpenVPN StdOut Pipe."
     IDS_ERR_CREATE_EDIT_LOGWINDOW "Erstellen des RichEdit LogWindow fehlgeschlagen!"
     IDS_ERR_SET_SIZE "Setzen der Größe ist fehlgeschlagen!"
-    IDS_ERR_AUTOSTART_CONF "Kann gewünschte Konfigurationsdatei für Autostart nicht finden: %s"
+    IDS_ERR_AUTOSTART_CONF "Kann gewünschte Konfigurationsdatei für Autostart nicht finden: %ls"
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe on hInputRead fehlgeschlagen."
     IDS_NFO_STATE_CONNECTING "Aktueller Status: Verbinden"
-    IDS_NFO_CONNECTION_XXX "OpenVPN Verbindung (%s)"
+    IDS_NFO_CONNECTION_XXX "OpenVPN Verbindung (%ls)"
     IDS_NFO_STATE_CONN_SCRIPT "Aktueller Status: Verbindungsskript läuft"
     IDS_NFO_STATE_DISCONN_SCRIPT "Aktueller Status: Trennungsskript läuft"
-    IDS_ERR_RUN_CONN_SCRIPT "Fehler beim Ausführen des Verbindungsskripts: %s"
-    IDS_ERR_GET_EXIT_CODE "Fehler beim Erfassen des Exit-Codes des Verbinungsskripts (%s)"
+    IDS_ERR_RUN_CONN_SCRIPT "Fehler beim Ausführen des Verbindungsskripts: %ls"
+    IDS_ERR_GET_EXIT_CODE "Fehler beim Erfassen des Exit-Codes des Verbinungsskripts (%ls)"
     IDS_ERR_CONN_SCRIPT_FAILED "Verbindungsskript fehlgeschlagen. (Exitcode=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Verbindungsskript fehlgeschlagen. Abgebrochen nach %d Sekunden."
-    IDS_ERR_CONFIG_EXIST "Es existiert bereits eine Konfigurationsdatei mit dem Namen '%s'. Sie könnnen \
+    IDS_ERR_CONFIG_EXIST "Es existiert bereits eine Konfigurationsdatei mit dem Namen '%ls'. Sie könnnen \
 nicht mehrere Konfigurationsdateien mit dem gleichen Namen haben, außer sie \
 liegen in unterschiedlichen Verzeichnissen."
     IDS_NFO_CONN_TIMEOUT "Die Verbindung zur Verwaltungsschnittstelle ist fehlgeschlagen.\n\
-Konsultieren Sie die Log-Datei (%s) für weitere Informationen."
+Konsultieren Sie die Log-Datei (%ls) für weitere Informationen."
     /* main – Resources */
-    IDS_ERR_OPEN_DEBUG_FILE "Fehler beim Öffnen der Debugdatei (%s)."
-    IDS_ERR_CREATE_PATH "Fehler beim Erstellen des %s Pfads:\n%s"
+    IDS_ERR_OPEN_DEBUG_FILE "Fehler beim Öffnen der Debugdatei (%ls)."
+    IDS_ERR_CREATE_PATH "Fehler beim Erstellen des %ls Pfads:\n%ls"
     IDS_ERR_LOAD_RICHED20 "Kann RICHED20.DLL nicht laden."
     IDS_ERR_SHELL_DLL_VERSION "Die shell32.dll Versionsnummer ist zu niedrig (0x%lx). Es muss mindestens Version 5.0 installiert sein."
     IDS_NFO_SERVICE_STARTED "OpenVPN-Dienst gestartet."
@@ -425,26 +425,26 @@ Option zum Überschreiben der Registry Einstellungen:\n\
 
 
     IDS_NFO_USAGECAPTION "OpenVPN GUI Verwendung"
-    IDS_ERR_BAD_PARAMETER "Es wurde versucht, ""%s"" als einen Parameter zu parsen, es \
+    IDS_ERR_BAD_PARAMETER "Es wurde versucht, ""%ls"" als einen Parameter zu parsen, es \
 konnte jedoch kein '--' am Anfang des Parameters gefunden werden."
-    IDS_ERR_BAD_OPTION "Fehler: Unbekannte Option oder fehlende(r) Parameter: --%s\n\
+    IDS_ERR_BAD_OPTION "Fehler: Unbekannte Option oder fehlende(r) Parameter: --%ls\n\
 Geben Sie 'openvpn-gui --help' für mehr Informationen ein."
 
     /* passphrase – Resources */
     IDS_ERR_CREATE_PASS_THREAD "CreateThread, welcher den ChangePassphrase Dialog anzeigt, ist fehlgeschlagen."
-    IDS_NFO_CHANGE_PWD "Passwort ändern (%s)"
+    IDS_NFO_CHANGE_PWD "Passwort ändern (%ls)"
     IDS_ERR_PWD_DONT_MATCH "Das eingegebene Passwort ist falsch. Bitte versuchen Sie es erneut."
     IDS_ERR_PWD_TO_SHORT "Das neue Passwort muss mindestens %d Zeichen lang sein."
     IDS_NFO_EMPTY_PWD "Sind Sie sicher, dass Sie ein LEERES Passwort setzen möchten?"
     IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Unbekanntes Schlüsseldatei Format."
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Fehler beim Öffnen des privaten Schlüssels (%s)."
+    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Fehler beim Öffnen des privaten Schlüssels (%ls)."
     IDS_ERR_OLD_PWD_INCORRECT "Das alte Passwort ist falsch."
-    IDS_ERR_OPEN_WRITE_KEY "Fehler beim Öffnen des privaten Schlüssels (%s)."
-    IDS_ERR_WRITE_NEW_KEY "Fehler beim Schreiben eines neuen privaten Schlüssel (%s)."
+    IDS_ERR_OPEN_WRITE_KEY "Fehler beim Öffnen des privaten Schlüssels (%ls)."
+    IDS_ERR_WRITE_NEW_KEY "Fehler beim Schreiben eines neuen privaten Schlüssel (%ls)."
     IDS_NFO_PWD_CHANGED "Ihr Passwort wurde geändert."
-    IDS_ERR_READ_PKCS12 "Fehler beim Lesen der PKCS #12 Datei (%s)."
+    IDS_ERR_READ_PKCS12 "Fehler beim Lesen der PKCS #12 Datei (%ls)."
     IDS_ERR_CREATE_PKCS12 "Fehler beim Erstellen eines neuen PKCS #12 Objekts. Das Ändern des Passworts ist fehlgeschlagen."
-    IDS_ERR_OPEN_CONFIG "Die Konfigurationsdatei konnte nicht geöffnet werden: (%s)"
+    IDS_ERR_OPEN_CONFIG "Die Konfigurationsdatei konnte nicht geöffnet werden: (%ls)"
     IDS_ERR_ONLY_ONE_KEY_OPTION "Sie können nicht mehr als eine ""key"" Optionen in Ihrer Konfiguration verwenden."
     IDS_ERR_ONLY_KEY_OR_PKCS12 "Sie können nicht beide ""key"" und ""pkcs12"" Optionen in Ihrer Konfiguration verwenden."
     IDS_ERR_ONLY_ONE_PKCS12_OPTION "Sie können nicht mehr als eine ""pkcs12"" Option in Ihrer Konfiguration verwenden."
@@ -467,7 +467,7 @@ Bitte verwenden Sie ein anderes Passwort."
     IDS_ERR_SOCKS_PROXY_ADDRESS "Sie müssen eine SOCKS-Proxy-Adresse festlegen."
     IDS_ERR_SOCKS_PROXY_PORT "Sie müssen einen SOCKS-Proxy-Port festlegen."
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "Sie müssen einen SOCKS-Proxy-Port zwischen 1 und 65535 festlegen."
-    IDS_ERR_CREATE_REG_HKCU_KEY "Fehler beim Erstellen des ""HKEY_CURRENT_USER\\%s"" Schlüssels."
+    IDS_ERR_CREATE_REG_HKCU_KEY "Fehler beim Erstellen des ""HKEY_CURRENT_USER\\%ls"" Schlüssels."
     IDS_ERR_GET_TEMP_PATH "Fehler beim Erkennen des TempPath mit GetTempPath(). Verwende stattdessen ""C:\\"""
 
     /* service */
@@ -501,24 +501,24 @@ OpenVPN ist vermutlich nicht installiert"
     IDS_ERR_CREATE_REG_KEY "Fehler beim Erstellen des Registry-Schlüssels HKLM\\SOFTWARE\\OpenVPN-GUI."
     IDS_ERR_OPEN_WRITE_REG "Fehler beim Öffnen der Registry. Sie müssen diese Anwendung einmal \
 als Administrator ausführen, um die Registry zu aktualisieren."
-    IDS_ERR_READ_SET_KEY "Fehler beim Lesen und Setzen des Registry-Schlüssels ""%s""."
-    IDS_ERR_WRITE_REGVALUE "Fehler beim Schreiben des Registry-Schlüssels ""HKEY_CURRENT_USER\\%s\\%s""."
+    IDS_ERR_READ_SET_KEY "Fehler beim Lesen und Setzen des Registry-Schlüssels ""%ls""."
+    IDS_ERR_WRITE_REGVALUE "Fehler beim Schreiben des Registry-Schlüssels ""HKEY_CURRENT_USER\\%ls\\%ls""."
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS "Eine Konfigurationsdatei namens ""%s"" existiert bereits."
+    IDS_ERR_IMPORT_EXISTS "Eine Konfigurationsdatei namens ""%ls"" existiert bereits."
     IDS_ERR_IMPORT_FAILED "Fehler beim Importieren der Konfigurationsdatei. Der folgende Pfad konnte nicht erstellt werden:\n\n\
-%s\n\nVergewissern Sie sich, dass Sie die erforderlichen Berechtigungen besitzen."
+%ls\n\nVergewissern Sie sich, dass Sie die erforderlichen Berechtigungen besitzen."
     IDS_NFO_IMPORT_SUCCESS "Die Konfigurationsdatei wurde erfolgreich importiert."
-    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
-    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
+    IDS_NFO_IMPORT_OVERWRITE "A config named ""%ls"" already exists. Do you want to replace it?"
+    IDS_ERR_IMPORT_SOURCE "Cannot import file <%ls> as it is already in the global or local config directory"
     IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
 
     /* save/delete password */
-    IDS_NFO_DELETE_PASS "Drücken Sie OK um die gespeicherten Passwörter für die Konfiguration ""%s"" zu löschen."
+    IDS_NFO_DELETE_PASS "Drücken Sie OK um die gespeicherten Passwörter für die Konfiguration ""%ls"" zu löschen."
 
     /* Token password related */
     IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – Token Passwort"
-    IDS_NFO_TOKEN_PASSWORD_REQUEST "Geben Sie ein Passwort/PIN für das Token '%S' ein"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "Geben Sie ein Passwort/PIN für das Token '%hs' ein"
 
     IDS_NFO_AUTH_PASS_RETRY "Falscher Benutzername oder Passwort. Erneut versuchen…"
     IDS_NFO_KEY_PASS_RETRY  "Falsches Passwort. Erneut versuchen…"
@@ -526,6 +526,6 @@ als Administrator ausführen, um die Registry zu aktualisieren."
     IDS_ERR_INVALID_USERNAME_INPUT "Unzulässiges Zeichen im Benutzername"
     IDS_NFO_AUTO_CONNECT    "Verbindet automatisch in %u Sekunden…"
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI läuft bereits. Klicken Sie rechts auf das Symbol in der Taskleiste, um die Anwendung zu starten."
-    IDS_NFO_BYTECOUNT "Bytes eingehend: %s  ausgehend: %s"
+    IDS_NFO_BYTECOUNT "Bytes eingehend: %ls  ausgehend: %ls"
 
 END

@@ -221,7 +221,7 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_TURKISH, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, ID_ICON_ABOUT, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v%s - OpenVPN için Windows Arayüzü\n\
+    LTEXT "OpenVPN GUI v%ls - OpenVPN için Windows Arayüzü\n\
 Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
 Copyright (C) 2012-2021 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
@@ -277,7 +277,7 @@ BEGIN
     IDS_TIP_CONNECTED "\nBağlanıldı: "
     IDS_TIP_CONNECTING "\nBağlanılıyor: "
     IDS_TIP_CONNECTED_SINCE "\nBağlanıldı: "
-    IDS_TIP_ASSIGNED_IP "\nBağlanılan IP: %s"
+    IDS_TIP_ASSIGNED_IP "\nBağlanılan IP: %ls"
     IDS_MENU_SERVICE "OpenVPN Servisi"
     IDS_MENU_IMPORT "Import"
     IDS_MENU_IMPORT_AS "Import from Access Server…"
@@ -302,28 +302,28 @@ BEGIN
     IDS_MENU_ASK_STOP_SERVICE "Bağlantıyı koparmak istediğinize emin misiniz ? (OpenVPN Servisini Durdurur)?"
 
     /* Logviewer - Resources */
-    IDS_ERR_START_LOG_VIEWER "Olay görüntüleyici başlarken hata oluştu: %s"
-    IDS_ERR_START_CONF_EDITOR "Ayar editörü başlarken hata oluştu: %s"
+    IDS_ERR_START_LOG_VIEWER "Olay görüntüleyici başlarken hata oluştu: %ls"
+    IDS_ERR_START_CONF_EDITOR "Ayar editörü başlarken hata oluştu: %ls"
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI %d den fazla konfigürasyonu desteklemiyor. Eğer daha fazlasına ihtiyacınız varsa lütfen hak sahibi ile görüşün."
     IDS_NFO_NO_CONFIGS "No readable connection profiles (config files) found.\n\
-Use the ""Import File.."" menu or copy your config files to ""%s"" or ""%s""."
-    IDS_ERR_CONFIG_NOT_AUTHORIZED "Starting this connection (%s) requires membership in \
-""%s"" group. Contact your system administrator.\n"
-    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Starting this connection (%s) requires membership in \
-""%s"" group.\n\n\
+Use the ""Import File.."" menu or copy your config files to ""%ls"" or ""%ls""."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "Starting this connection (%ls) requires membership in \
+""%ls"" group. Contact your system administrator.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Starting this connection (%ls) requires membership in \
+""%ls"" group.\n\n\
 Do you want to add yourself to this group?\n\
 This action may prompt for administrative password or consent."
-    IDS_NFO_CONFIG_AUTH_PENDING   "Starting this connection (%s) requires membership in \
-""%s"" group.\n\n\
+    IDS_NFO_CONFIG_AUTH_PENDING   "Starting this connection (%ls) requires membership in \
+""%ls"" group.\n\n\
 Please complete the previous authorization dialog."
-    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Adding the user to ""%s"" group failed."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Adding the user to ""%ls"" group failed."
     IDS_ERR_ONE_CONN_OLD_VER "OpenVPN 2.0-beta6 sürümünden daha eski bir versiyon açıkken, aynı anda sadece bir bağlantı açabilirsiniz!"
     IDS_ERR_STOP_SERV_OLD_VER "OpenVPN servisi çalışırken (OpenVPN ver.1.5/1.6) OpenVPN GUI ile bağlantı yapamazsınız. OpenVPN GUI yi kullanacaksanız, öncelikle OpenVPN servisini durdurmanız gerekmektedir."
-    IDS_ERR_CREATE_EVENT "Çıkılırken hata oluştu: %s"
-    IDS_ERR_UNKNOWN_PRIORITY "Bilinmeyen öncelik ismi: %s"
-    IDS_ERR_LOG_APPEND_BOOL "Günlük dosyası ekleme değeri('%s') olarak verilmiş.'0' veya '1' olmalıdır."
+    IDS_ERR_CREATE_EVENT "Çıkılırken hata oluştu: %ls"
+    IDS_ERR_UNKNOWN_PRIORITY "Bilinmeyen öncelik ismi: %ls"
+    IDS_ERR_LOG_APPEND_BOOL "Günlük dosyası ekleme değeri('%ls') olarak verilmiş.'0' veya '1' olmalıdır."
     IDS_ERR_GET_MSIE_PROXY "MSIE (Internet Explorer) proxy ayarlarına erişilemiyor."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor hatası."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl hatası."
@@ -331,41 +331,41 @@ Please complete the previous authorization dialog."
     IDS_ERR_CREATE_PIPE_INPUT "CreatePipe on hInputRead hatası."
     IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle on hOutputRead hatası."
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite hatası."
-    IDS_ERR_CREATE_PROCESS "CreateProcess hatası, exe='%s' cmdline='%s' dir='%s'"
+    IDS_ERR_CREATE_PROCESS "CreateProcess hatası, exe='%ls' cmdline='%ls' dir='%ls'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread anında durum penceresi gösterilemedi hatası."
     IDS_NFO_STATE_WAIT_TERM "Geçerli Durum: OpenVPN' in kapanması bekleniyor…"
     IDS_NFO_STATE_CONNECTED "Geçerli Durum: Bağlandı"
-    IDS_NFO_NOW_CONNECTED "%s şu an bağlı."
-    IDS_NFO_ASSIGN_IP "Atanan IP: %s"
+    IDS_NFO_NOW_CONNECTED "%ls şu an bağlı."
+    IDS_NFO_ASSIGN_IP "Atanan IP: %ls"
     IDS_ERR_CERT_EXPIRED "Sertifikanız veya sistem tarih/zaman ayarlarınız geçersiz olduğundan bağlantı sağlanamadı."
     IDS_ERR_CERT_NOT_YET_VALID "Sertifikanız geçersiz olduğundan bağlantı sağlanamadı. Sistem zamanınızın doğruluğunu kontrol edin."
     IDS_NFO_STATE_RECONNECTING "Geçerli Durum: Yeniden Bağlanılıyor"
     IDS_NFO_STATE_DISCONNECTED "Geçerli Durum: Bağlantı Kesildi"
-    IDS_NFO_CONN_TERMINATED "%s ile olan bağlantı kesildi. "
+    IDS_NFO_CONN_TERMINATED "%ls ile olan bağlantı kesildi. "
     IDS_NFO_STATE_FAILED "Geçerli Durum: Bağlantı sağlanamadı."
-    IDS_NFO_CONN_FAILED "%s ile bağlantı kurulamadı"
+    IDS_NFO_CONN_FAILED "%ls ile bağlantı kurulamadı"
     IDS_NFO_STATE_FAILED_RECONN "Geçerli Durum: Bağlantı sağlanamadı"
-    IDS_NFO_RECONN_FAILED "%s ile yeniden bağlantı sağlanırken hata oluştu."
+    IDS_NFO_RECONN_FAILED "%ls ile yeniden bağlantı sağlanırken hata oluştu."
     IDS_NFO_STATE_SUSPENDED "Geçerli Durum: Beklemede"
     IDS_ERR_READ_STDOUT_PIPE "OpenVPN StdOut Pipe okunurken hata oluştu."
     IDS_ERR_CREATE_EDIT_LOGWINDOW "Günlük dosyası oluşturulurken hata oluştu!!"
     IDS_ERR_SET_SIZE "Boyut ayarlanırken hata oluştu!"
-    IDS_ERR_AUTOSTART_CONF "İstenilen konfigürasyon dosyası yeniden başlatılırken hata oluştu.: %s"
+    IDS_ERR_AUTOSTART_CONF "İstenilen konfigürasyon dosyası yeniden başlatılırken hata oluştu.: %ls"
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe on hInputRead başarısız oldu!."
     IDS_NFO_STATE_CONNECTING "Geçerli Durum: Bağlanıyor!"
-    IDS_NFO_CONNECTION_XXX "OpenVPN Bağlantısı (%s)"
+    IDS_NFO_CONNECTION_XXX "OpenVPN Bağlantısı (%ls)"
     IDS_NFO_STATE_CONN_SCRIPT "Geçerli Durum: Bağlantı betiği çalıştırılıyor"
     IDS_NFO_STATE_DISCONN_SCRIPT "Geçerli Durum: Bağlantıyı koparmak için betik çalıştırılıyor"
-    IDS_ERR_RUN_CONN_SCRIPT "Bağlantı betiği çalıştırma hatası: %s"
-    IDS_ERR_GET_EXIT_CODE "Bağlantı betiğinde ExitCode çalıştırılamadı: (%s)"
+    IDS_ERR_RUN_CONN_SCRIPT "Bağlantı betiği çalıştırma hatası: %ls"
+    IDS_ERR_GET_EXIT_CODE "Bağlantı betiğinde ExitCode çalıştırılamadı: (%ls)"
     IDS_ERR_CONN_SCRIPT_FAILED "Bağlantı betiği başarısız oldu. (exitcode=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Bağlantı betiği başarısız oldu. %d saniyede timeout oldu."
-    IDS_ERR_CONFIG_EXIST "Zaten '%s' ismi ile kayıtlı bir ayar dosyası mevcut. \
+    IDS_ERR_CONFIG_EXIST "Zaten '%ls' ismi ile kayıtlı bir ayar dosyası mevcut. \
 Ayrı klasörlerde olmadığı sürece, aynı isimle ayar dosyası \
 kayıt edemezsiniz."
     /* main - Resources */
-    IDS_ERR_OPEN_DEBUG_FILE "Debug dosyası açılırken hata oluştu (%s)"
-    IDS_ERR_CREATE_PATH "Could not create %s path:\n%s"
+    IDS_ERR_OPEN_DEBUG_FILE "Debug dosyası açılırken hata oluştu (%ls)"
+    IDS_ERR_CREATE_PATH "Could not create %ls path:\n%ls"
     IDS_ERR_LOAD_RICHED20 "RICHED20.DLL yüklenemedi."
     IDS_ERR_SHELL_DLL_VERSION "Sistemde bulunan shell32.dll verdsiyonu eski. (0x%lx). En az 5.0 versiyonuna sahip olmalısınız."
     IDS_NFO_SERVICE_STARTED "OpenVPN Servisi başlatıldı."
@@ -421,26 +421,26 @@ Registry ayarları için:\n\
 
 
     IDS_NFO_USAGECAPTION "OpenVPN GUI Kullanımı"
-    IDS_ERR_BAD_PARAMETER " ""%s"" ifadesini --seçenek parametre olarak ayırmaya çalışıyorum \
+    IDS_ERR_BAD_PARAMETER " ""%ls"" ifadesini --seçenek parametre olarak ayırmaya çalışıyorum \
 fakat şu ifadeleri göremedim '--'"
-    IDS_ERR_BAD_OPTION "Seçenek hatası: Bilinmeyen bir parametre girişi yaptınız: --%s\n\
+    IDS_ERR_BAD_OPTION "Seçenek hatası: Bilinmeyen bir parametre girişi yaptınız: --%ls\n\
 Daha fazla bilgi için komut satırında openvpn-gui --help ifadesini kullanın."
 
     /* passphrase - Resources */
     IDS_ERR_CREATE_PASS_THREAD "Şifre değiştirme diyaloğunu başlatma olayı başarısız oldu."
-    IDS_NFO_CHANGE_PWD "Şifre Değiştir (%s)"
+    IDS_NFO_CHANGE_PWD "Şifre Değiştir (%ls)"
     IDS_ERR_PWD_DONT_MATCH "Girdiğiniz şifreler eşleşmiyor."
     IDS_ERR_PWD_TO_SHORT "yeni şifreniz en az %d karakter uzunluğunda olmalıdır."
     IDS_NFO_EMPTY_PWD "Boş bir şifreyi kullanmak istediğinize gerçekten emin misiniz?"
     IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Bilinmeyen anahtar dosyası biçimi."
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "private key açılırken hata oluştu(%s)."
+    IDS_ERR_OPEN_PRIVATE_KEY_FILE "private key açılırken hata oluştu(%ls)."
     IDS_ERR_OLD_PWD_INCORRECT "Yanlış şifre girdiniz."
-    IDS_ERR_OPEN_WRITE_KEY "private key dosyası yazılırken hata oluştu (%s)."
-    IDS_ERR_WRITE_NEW_KEY "Yeni private key dosyası yazılırken hata oluştu (%s)."
+    IDS_ERR_OPEN_WRITE_KEY "private key dosyası yazılırken hata oluştu (%ls)."
+    IDS_ERR_WRITE_NEW_KEY "Yeni private key dosyası yazılırken hata oluştu (%ls)."
     IDS_NFO_PWD_CHANGED "Şifreniz değiştirildi."
-    IDS_ERR_READ_PKCS12 "PKCS #12 dosyası okunurken hata oluştu (%s)."
+    IDS_ERR_READ_PKCS12 "PKCS #12 dosyası okunurken hata oluştu (%ls)."
     IDS_ERR_CREATE_PKCS12 "Yeni PKCS #12 oluşturulurken hata oluştu. Yeni şifre dosyası oluşturulamadı."
-    IDS_ERR_OPEN_CONFIG "Ayar dosyası okuma için açılamadı: (%s)"
+    IDS_ERR_OPEN_CONFIG "Ayar dosyası okuma için açılamadı: (%ls)"
     IDS_ERR_ONLY_ONE_KEY_OPTION "Ayar dosyasında birden fazla anahtar ""key"" belirtemezsiniz."
     IDS_ERR_ONLY_KEY_OR_PKCS12 "Ayarlarınızda aynı anda anahtar ""key"" ve pkcs12 ""pkcs12"" seçimlerini kullanamazsınız."
     IDS_ERR_ONLY_ONE_PKCS12_OPTION "Ayar dosyanızda birden fazla pkcs12 ""pkcs12"" seçimi bulunduramazsınız."
@@ -463,7 +463,7 @@ Lütfen yeni bir tane seçiniz."
     IDS_ERR_SOCKS_PROXY_ADDRESS "Bir SOCKS proxy adresi girmelisiniz."
     IDS_ERR_SOCKS_PROXY_PORT "Bir SOCKS proxy port u girmelisiniz."
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "1 ila 65535 arasında bir SOCKS proxy port numarası girmelisiniz."
-    IDS_ERR_CREATE_REG_HKCU_KEY """HKEY_CURRENT_USER\\%s"" anahtarı oluşturulurken hata oluştu."
+    IDS_ERR_CREATE_REG_HKCU_KEY """HKEY_CURRENT_USER\\%ls"" anahtarı oluşturulurken hata oluştu."
     IDS_ERR_GET_TEMP_PATH "GetTempPath() ile TempPath aranırken hata oluştu. ""C:\\"" kullanılacak."
 
     /* service */
@@ -497,24 +497,24 @@ Muhtemelen OpenVPN yüklü değil."
     IDS_ERR_CREATE_REG_KEY "HKLM\\SOFTWARE\\OpenVPN-GUI anahtarı oluşturulamadı."
     IDS_ERR_OPEN_WRITE_REG "Windows Registry açılmadı. Registry' i açabilmek için \
 sistem yönetici haklarına sahip olmanız gerekmektedir.."
-    IDS_ERR_READ_SET_KEY """%s"" anahtarı ayarlanırken hata oluştu."
-    IDS_ERR_WRITE_REGVALUE """HKEY_CURRENT_USER\\%s\\%s"" anahtarı yazılırken hata oluştu."
+    IDS_ERR_READ_SET_KEY """%ls"" anahtarı ayarlanırken hata oluştu."
+    IDS_ERR_WRITE_REGVALUE """HKEY_CURRENT_USER\\%ls\\%ls"" anahtarı yazılırken hata oluştu."
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS "A config named ""%s"" already exists."
+    IDS_ERR_IMPORT_EXISTS "A config named ""%ls"" already exists."
     IDS_ERR_IMPORT_FAILED "Failed to import file. The following path could not be created.\n\n\
-%s\n\nMake sure you have the right permissions."
+%ls\n\nMake sure you have the right permissions."
     IDS_NFO_IMPORT_SUCCESS "File imported successfully."
-    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
-    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
+    IDS_NFO_IMPORT_OVERWRITE "A config named ""%ls"" already exists. Do you want to replace it?"
+    IDS_ERR_IMPORT_SOURCE "Cannot import file <%ls> as it is already in the global or local config directory"
     IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
 
     /* save/delete password */
-    IDS_NFO_DELETE_PASS "Press OK to delete saved passwords for config ""%s"""
+    IDS_NFO_DELETE_PASS "Press OK to delete saved passwords for config ""%ls"""
 
     /* Token password related */
     IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – Token Password"
-    IDS_NFO_TOKEN_PASSWORD_REQUEST "Input Password/PIN for Token '%S'"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "Input Password/PIN for Token '%hs'"
 
     IDS_NFO_AUTH_PASS_RETRY "Wrong credentials. Try again…"
     IDS_NFO_KEY_PASS_RETRY  "Wrong password. Try again…"
@@ -522,6 +522,6 @@ sistem yönetici haklarına sahip olmanız gerekmektedir.."
     IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
     IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds…"
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
-    IDS_NFO_BYTECOUNT "Bytes in: %s  out: %s"
+    IDS_NFO_BYTECOUNT "Bytes in: %ls  out: %ls"
 
 END

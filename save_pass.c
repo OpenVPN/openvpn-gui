@@ -76,13 +76,13 @@ get_entropy(const WCHAR *config_name, char *e, int sz, BOOL generate)
     if (len > 0)
     {
         e[len-1] = '\0';
-        PrintDebug(L"Got entropy from registry: %S (len = %d)", e, len);
+        PrintDebug(L"Got entropy from registry: %hs (len = %d)", e, len);
         return;
     }
     else if (generate && GetRandomPassword(e, sz))
     {
         e[sz-1] = '\0';
-        PrintDebug(L"Created new entropy string : %S", e);
+        PrintDebug(L"Created new entropy string : %hs", e);
         if (SetConfigRegistryValueBinary(config_name, ENTROPY_DATA, (BYTE *)e, sz))
             return;
     }
@@ -167,7 +167,7 @@ recall_encrypted(const WCHAR *config_name, WCHAR *password, DWORD capacity, cons
         retval = 1;
     }
     else
-        PrintDebug(L"recall_encrypted: saved '%s' too long (len = %d bytes)", name, len);
+        PrintDebug(L"recall_encrypted: saved '%ls' too long (len = %d bytes)", name, len);
 
     SecureZeroMemory(out, len);
     LocalFree(out);

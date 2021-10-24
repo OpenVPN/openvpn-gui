@@ -89,8 +89,8 @@ GetGlobalRegistryKeys()
   }
 
   /* set default editor and log_viewer as a fallback for opening config/log files */
-  _sntprintf_0(o.editor, L"%s\\%s", windows_dir, L"System32\\notepad.exe");
-  _sntprintf_0(o.log_viewer, L"%s", o.editor);
+  _sntprintf_0(o.editor, L"%ls\\%ls", windows_dir, L"System32\\notepad.exe");
+  _sntprintf_0(o.log_viewer, L"%ls", o.editor);
 
   /* Get path to OpenVPN installation. */
   if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, _T("SOFTWARE\\OpenVPN"), 0, KEY_READ, &regkey)
@@ -107,7 +107,7 @@ GetGlobalRegistryKeys()
       if (regkey)
           ShowLocalizedMsg(IDS_ERR_READING_REGISTRY);
       /* Use a sane default value */
-      _sntprintf_0(openvpn_path, _T("%s"), _T("C:\\Program Files\\OpenVPN\\"));
+      _sntprintf_0(openvpn_path, _T("%ls"), _T("C:\\Program Files\\OpenVPN\\"));
     }
   if (openvpn_path[_tcslen(openvpn_path) - 1] != _T('\\'))
     _tcscat(openvpn_path, _T("\\"));
@@ -116,7 +116,7 @@ GetGlobalRegistryKeys()
   if (!regkey || !GetRegistryValue(regkey, _T("config_dir"), o.global_config_dir, _countof(o.global_config_dir)))
     {
       /* use default = openvpnpath\config */
-      _sntprintf_0(o.global_config_dir, _T("%sconfig"), openvpn_path);
+      _sntprintf_0(o.global_config_dir, _T("%lsconfig"), openvpn_path);
     }
 
   if (!regkey || !GetRegistryValue(regkey, _T("ovpn_admin_group"), o.ovpn_admin_group, _countof(o.ovpn_admin_group)))
@@ -126,7 +126,7 @@ GetGlobalRegistryKeys()
 
   if (!regkey || !GetRegistryValue(regkey, _T("exe_path"), o.exe_path, _countof(o.exe_path)))
     {
-      _sntprintf_0(o.exe_path, _T("%sbin\\openvpn.exe"), openvpn_path);
+      _sntprintf_0(o.exe_path, _T("%lsbin\\openvpn.exe"), openvpn_path);
     }
 
   if (!regkey || !GetRegistryValue(regkey, _T("priority"), o.priority_string, _countof(o.priority_string)))
@@ -162,10 +162,10 @@ GetRegistryKeys ()
             /* no value found in registry, use the default */
             wcsncpy (regkey_str[i].var, regkey_str[i].value, regkey_str[i].len);
             regkey_str[i].var[regkey_str[i].len-1] = L'\0';
-            PrintDebug(L"default: %s = %s", regkey_str[i].name, regkey_str[i].var);
+            PrintDebug(L"default: %ls = %ls", regkey_str[i].name, regkey_str[i].var);
         }
         else
-            PrintDebug(L"from registry: %s = %s", regkey_str[i].name, regkey_str[i].var);
+            PrintDebug(L"from registry: %ls = %ls", regkey_str[i].name, regkey_str[i].var);
     }
 
     for (i = 0 ; i < (int) _countof (regkey_int); ++i)
@@ -175,10 +175,10 @@ GetRegistryKeys ()
         {
             /* no value found in registry, use the default */
             *regkey_int[i].var = regkey_int[i].value;
-            PrintDebug(L"default: %s = %lu", regkey_int[i].name, *regkey_int[i].var);
+            PrintDebug(L"default: %ls = %lu", regkey_int[i].name, *regkey_int[i].var);
         }
         else
-            PrintDebug(L"from registry: %s = %lu", regkey_int[i].name, *regkey_int[i].var);
+            PrintDebug(L"from registry: %ls = %lu", regkey_int[i].name, *regkey_int[i].var);
     }
 
     if ( status == ERROR_SUCCESS)
@@ -280,7 +280,7 @@ SetRegistryVersion (const version_t *v)
         RegCloseKey(regkey);
     }
     else
-       PrintDebug (L"Eror opening/creating 'HKCU\\%s' registry key", GUI_REGKEY_HKCU);
+       PrintDebug (L"Eror opening/creating 'HKCU\\%ls' registry key", GUI_REGKEY_HKCU);
     return ret;
 }
 
@@ -324,7 +324,7 @@ MigrateNilingsKeys()
         RegCloseKey (regkey_proxy);
     }
     else
-        PrintDebug (L"Error creating key 'proxy' in HKCU\\%s", GUI_REGKEY_HKCU);
+        PrintDebug (L"Error creating key 'proxy' in HKCU\\%ls", GUI_REGKEY_HKCU);
 
     RegCloseKey (regkey);
     RegCloseKey (regkey_nilings);
@@ -429,7 +429,7 @@ static int
 OpenConfigRegistryKey(const WCHAR *config_name, HKEY *regkey, BOOL create)
 {
     DWORD status;
-    const WCHAR fmt[] = L"SOFTWARE\\OpenVPN-GUI\\configs\\%s";
+    const WCHAR fmt[] = L"SOFTWARE\\OpenVPN-GUI\\configs\\%ls";
     int count = (wcslen(config_name) + wcslen(fmt) + 1);
     WCHAR *name = malloc(count * sizeof(WCHAR));
 

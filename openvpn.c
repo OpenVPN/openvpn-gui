@@ -82,7 +82,7 @@ AppendTextToCaption (HANDLE hwnd, const WCHAR *str)
     WCHAR old[256];
     WCHAR new[256];
     GetWindowTextW (hwnd, old, _countof(old));
-    _sntprintf_0 (new, L"%s (%s)", old, str);
+    _sntprintf_0 (new, L"%ls (%ls)", old, str);
     SetWindowText (hwnd, new);
 }
 
@@ -741,7 +741,7 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             if (fmt)
             {
                 sprintf(fmt, template, param->id);
-                PrintDebug(L"Send passwd to mgmt with format: '%S'", fmt);
+                PrintDebug(L"Send passwd to mgmt with format: '%hs'", fmt);
                 ManagementCommandFromInput(param->c, fmt, hwndDlg, ID_EDT_RESPONSE);
                 free (fmt);
             }
@@ -1026,7 +1026,7 @@ parse_input_request (const char *msg, auth_param_t *param)
     if (!token[3] || !*token[3]) /* use id as the description if none provided */
         token[3] = token[1];
 
-    PrintDebug (L"Tokens: '%S' '%S' '%S' '%S'", token[0], token[1],
+    PrintDebug (L"Tokens: '%hs' '%hs' '%hs' '%hs'", token[0], token[1],
                 token[2], token[3]);
 
     if (strcmp (token[0], "Need") != 0)
@@ -1052,14 +1052,14 @@ parse_input_request (const char *msg, auth_param_t *param)
     if (param->str == NULL)
         goto out;
 
-    PrintDebug (L"parse_input_request: id = '%S' str = '%S' flags = %u",
+    PrintDebug (L"parse_input_request: id = '%hs' str = '%hs' flags = %u",
                 param->id, param->str, param->flags);
     ret = TRUE;
 
 out:
     free (p);
     if (!ret)
-        PrintDebug (L"Error parsing password/string request msg: <%S>", msg);
+        PrintDebug (L"Error parsing password/string request msg: <%hs>", msg);
     return ret;
 }
 
@@ -1072,7 +1072,7 @@ OnEcho(connection_t *c, char *msg)
 {
     time_t timestamp = strtoul(msg, NULL, 10); /* openvpn prints these as %u */
 
-    PrintDebug(L"OnEcho with msg = %S", msg);
+    PrintDebug(L"OnEcho with msg = %hs", msg);
     if (!(msg = strchr(msg, ',')))
     {
         PrintDebug(L"OnEcho: msg format not recognized");
@@ -1113,7 +1113,7 @@ OnEcho(connection_t *c, char *msg)
 void
 OnPassword(connection_t *c, char *msg)
 {
-    PrintDebug(L"OnPassword with msg = %S", msg);
+    PrintDebug(L"OnPassword with msg = %hs", msg);
     if (strncmp(msg, "Verification Failed", 19) == 0)
     {
         /* If the failure is due to dynamic challenge save the challenge string */
@@ -1129,7 +1129,7 @@ OnPassword(connection_t *c, char *msg)
             if (c->dynamic_cr && (chstr =  strstr (c->dynamic_cr, "']")) != NULL)
                 *chstr = '\0';
 
-            PrintDebug(L"Got dynamic challenge: <%S>", c->dynamic_cr);
+            PrintDebug(L"Got dynamic challenge: <%hs>", c->dynamic_cr);
         }
 
         return;
@@ -1350,7 +1350,7 @@ void OnByteCount(connection_t *c, char *msg)
  */
 void OnInfoMsg(connection_t* c, char* msg)
 {
-    PrintDebug(L"OnInfoMsg with msg = %S", msg);
+    PrintDebug(L"OnInfoMsg with msg = %hs", msg);
 
     if (strbegins(msg, "OPEN_URL:"))
     {
@@ -1446,7 +1446,7 @@ WriteStatusLog (connection_t *c, const WCHAR *prefix, const WCHAR *line, BOOL fi
     log_fd = _tfopen (c->log_path, TEXT("at+,ccs=UTF-8"));
     if (log_fd)
     {
-        fwprintf (log_fd, L"%s%s%s\n", datetime, prefix, line);
+        fwprintf (log_fd, L"%ls%ls%ls\n", datetime, prefix, line);
         fclose (log_fd);
     }
 }
@@ -1801,7 +1801,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
         /* display version string as "OpenVPN GUI gui_version/core_version" */
         wchar_t version[256];
-        _sntprintf_0(version, L"%S %S/%S", PACKAGE_NAME, PACKAGE_VERSION_RESOURCE_STR, o.ovpn_version)
+        _sntprintf_0(version, L"%hs %hs/%hs", PACKAGE_NAME, PACKAGE_VERSION_RESOURCE_STR, o.ovpn_version)
         SetDlgItemText(hwndDlg, ID_TXT_VERSION, version);
 
         /* Set size and position of controls */
@@ -2064,7 +2064,7 @@ StartOpenVPN(connection_t *c)
         }
         return FALSE;
     }
-    PrintDebug(L"Starting openvpn on config %s", c->config_name);
+    PrintDebug(L"Starting openvpn on config %ls", c->config_name);
 
     RunPreconnectScript(c);
 
@@ -2089,9 +2089,9 @@ StartOpenVPN(connection_t *c)
     GetRandomPassword(c->manage.password, sizeof(c->manage.password) - 1);
 
     /* Construct command line -- put log first */
-    _sntprintf_0(cmdline, _T("openvpn --log%s \"%s\" --config \"%s\" "
-        "--setenv IV_GUI_VER \"%S\" --setenv IV_SSO openurl,crtext --service %s 0 --auth-retry interact "
-        "--management %S %hd stdin --management-query-passwords %s"
+    _sntprintf_0(cmdline, _T("openvpn --log%ls \"%ls\" --config \"%ls\" "
+        "--setenv IV_GUI_VER \"%hs\" --setenv IV_SSO openurl,crtext --service %ls 0 --auth-retry interact "
+        "--management %hs %hd stdin --management-query-passwords %ls"
         "--management-hold"),
         (o.log_append ? _T("-append") : _T("")), c->log_path,
         c->config_file, PACKAGE_STRING, exit_event_name,
@@ -2119,7 +2119,7 @@ StartOpenVPN(connection_t *c)
         const wchar_t *extra_options = L" --pull-filter ignore route-method";
         size += wcslen(extra_options);
 
-        _sntprintf_0(startup_info, L"%s%c%s%s%c%.*S", c->config_dir, L'\0',
+        _sntprintf_0(startup_info, L"%ls%lc%ls%ls%lc%.*hs", c->config_dir, L'\0',
             options, extra_options, L'\0', sizeof(c->manage.password), c->manage.password);
         c->manage.password[sizeof(c->manage.password) - 1] = '\0';
 
@@ -2258,9 +2258,9 @@ TerminateOpenVPN (connection_t *c)
     {
         retval = TerminateProcess (c->hProcess, 1);
         if (retval)
-            PrintDebug (L"Openvpn Process for config '%s' terminated", c->config_name);
+            PrintDebug (L"Openvpn Process for config '%ls' terminated", c->config_name);
         else
-            PrintDebug (L"Failed to terminate openvpn Process for config '%s'", c->config_name);
+            PrintDebug (L"Failed to terminate openvpn Process for config '%ls'", c->config_name);
     }
     else
         PrintDebug(L"In TerminateOpenVPN: Process is not active");
@@ -2418,7 +2418,7 @@ CheckVersion()
     if (ReadLineFromStdOut(hStdOutRead, line, sizeof(line)))
     {
 #ifdef DEBUG
-        PrintDebug(_T("VersionString: %S"), line);
+        PrintDebug(_T("VersionString: %hs"), line);
 #endif
         /* OpenVPN version 2.x */
         char *p = strstr(line, match_version);

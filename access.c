@@ -101,7 +101,7 @@ GetBuiltinAdminGroupName (WCHAR *name, DWORD nlen)
         b = LookupAccountSidW(NULL, admin_sid, name, &nlen, domain, &dlen, &su);
     }
 #ifdef DEBUG
-        PrintDebug (L"builtin admin group name = %s", name);
+        PrintDebug (L"builtin admin group name = %ls", name);
 #endif
 
     free (admin_sid);
@@ -123,7 +123,7 @@ AddUserToGroup (const WCHAR *group)
     WCHAR *params = NULL;
 
     /* command: cmd.exe, params: /c net.exe group /add & net.exe group user /add */
-    const WCHAR *fmt = L"/c %s localgroup \"%s\" /add & %s localgroup \"%s\" \"%s\" /add";
+    const WCHAR *fmt = L"/c %ls localgroup \"%ls\" /add & %ls localgroup \"%ls\" \"%ls\" /add";
     DWORD size;
     DWORD status;
     BOOL retval = FALSE;
@@ -137,7 +137,7 @@ AddUserToGroup (const WCHAR *group)
     if (wcspbrk(group, reject) != NULL)
     {
 #ifdef DEBUG
-        PrintDebug (L"AddUSerToGroup: illegal characters in group name: '%s'.", group);
+        PrintDebug (L"AddUSerToGroup: illegal characters in group name: '%ls'.", group);
 #endif
         return retval;
     }
@@ -151,10 +151,10 @@ AddUserToGroup (const WCHAR *group)
     {
         syspath[size-1] = L'\0';
         size = _countof(cmd);
-        _snwprintf(cmd, size, L"%s\\%s", syspath, L"cmd.exe");
+        _snwprintf(cmd, size, L"%ls\\%ls", syspath, L"cmd.exe");
         cmd[size-1] = L'\0';
         size = _countof(netcmd);
-        _snwprintf(netcmd, size, L"%s\\%s", syspath, L"net.exe");
+        _snwprintf(netcmd, size, L"%ls\\%ls", syspath, L"net.exe");
         netcmd[size-1] = L'\0';
     }
     size = (wcslen(fmt) + wcslen(username) + 2*wcslen(group) + 2*wcslen(netcmd)+ 1);
@@ -170,10 +170,10 @@ AddUserToGroup (const WCHAR *group)
 
 #ifdef DEBUG
     if (status == (DWORD) -1)
-        PrintDebug(L"RunAsAdmin: failed to execute the command [%s %s] : error = 0x%x",
+        PrintDebug(L"RunAsAdmin: failed to execute the command [%ls %ls] : error = 0x%x",
                     cmd, params, GetLastError());
     else if (status)
-        PrintDebug(L"RunAsAdmin: command [%s %s] returned exit_code = %lu",
+        PrintDebug(L"RunAsAdmin: command [%ls %ls] returned exit_code = %lu",
                     cmd, params, status);
 #endif
 
@@ -224,7 +224,7 @@ AuthorizeConfig(const connection_t *c)
     else
         admin_group = L"Administrators";
 
-    PrintDebug(L"Authorized groups: '%s', '%s'", admin_group, o.ovpn_admin_group);
+    PrintDebug(L"Authorized groups: '%ls', '%ls'", admin_group, o.ovpn_admin_group);
 
     if (CheckConfigPath(c->config_dir))
         return TRUE;
@@ -296,7 +296,7 @@ LookupSID(const WCHAR *name, PSID sid, DWORD sid_size)
 
     if (!LookupAccountName(NULL, name, sid, &sid_size, domain, &dlen, &su))
     {
-        PrintDebug(L"LookupSID failed for '%s'", name);
+        PrintDebug(L"LookupSID failed for '%ls'", name);
         return FALSE;
     }
     return TRUE;
@@ -394,9 +394,9 @@ IsUserInGroup(PSID sid, const PTOKEN_GROUPS token_groups, const WCHAR *group_nam
     } while (err == ERROR_MORE_DATA && nloop++ < 100);
 
     if (err != NERR_Success && err != NERR_GroupNotFound)
-        PrintDebug(L"NetLocalGroupGetMembers for group '%s' failed: error = %lu", group_name, err);
+        PrintDebug(L"NetLocalGroupGetMembers for group '%ls' failed: error = %lu", group_name, err);
     if (ret)
-        PrintDebug(L"User is in group '%s'", group_name);
+        PrintDebug(L"User is in group '%ls'", group_name);
     return ret;
 }
 

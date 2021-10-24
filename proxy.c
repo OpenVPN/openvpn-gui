@@ -266,7 +266,7 @@ SaveProxySettings(HWND hwndDlg)
     }
 
     /* Open Registry for writing */
-    _sntprintf_0(proxy_subkey, _T("%s\\proxy"), GUI_REGKEY_HKCU);
+    _sntprintf_0(proxy_subkey, _T("%ls\\proxy"), GUI_REGKEY_HKCU);
     if (RegCreateKeyEx(HKEY_CURRENT_USER, proxy_subkey, 0, _T(""), REG_OPTION_NON_VOLATILE,
                        KEY_WRITE, NULL, &regkey, &dwDispos) != ERROR_SUCCESS)
     {
@@ -297,7 +297,7 @@ GetProxyRegistrySettings()
     TCHAR proxy_subkey[MAX_PATH];
 
     /* Open Registry for reading */
-    _sntprintf_0(proxy_subkey, _T("%s\\proxy"), GUI_REGKEY_HKCU);
+    _sntprintf_0(proxy_subkey, _T("%ls\\proxy"), GUI_REGKEY_HKCU);
     status = RegOpenKeyEx(HKEY_CURRENT_USER, proxy_subkey, 0, KEY_READ, &regkey);
     if (status != ERROR_SUCCESS)
         return;
@@ -433,11 +433,11 @@ QueryWindowsProxySettings(const url_scheme scheme, LPCSTR host)
             WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
         if (session)
         {
-            int size = _snwprintf(NULL, 0, L"%s://%S", UrlSchemeStr(scheme), host) + 1;
+            int size = _snwprintf(NULL, 0, L"%ls://%hs", UrlSchemeStr(scheme), host) + 1;
             LPWSTR url = malloc(size * sizeof(WCHAR));
             if (url)
             {
-                _snwprintf(url, size, L"%s://%S", UrlSchemeStr(scheme), host);
+                _snwprintf(url, size, L"%ls://%hs", UrlSchemeStr(scheme), host);
 
                 LPWSTR old_proxy = proxy;
                 WINHTTP_PROXY_INFO proxy_info;

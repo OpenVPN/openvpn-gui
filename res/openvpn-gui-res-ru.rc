@@ -222,7 +222,7 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, ID_ICON_ABOUT, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v%s - графический интерфейс OpenVPN для Windows\n\
+    LTEXT "OpenVPN GUI v%ls - графический интерфейс OpenVPN для Windows\n\
 Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
 Copyright (C) 2012-2021 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
@@ -278,7 +278,7 @@ BEGIN
     IDS_TIP_CONNECTED "\nПодключен к: "
     IDS_TIP_CONNECTING "\nПодключение к: "
     IDS_TIP_CONNECTED_SINCE "\nПодключен с: "
-    IDS_TIP_ASSIGNED_IP "\nНазначенный IP: %s"
+    IDS_TIP_ASSIGNED_IP "\nНазначенный IP: %ls"
     IDS_MENU_SERVICE "Служба OpenVPN"
     IDS_MENU_IMPORT "Импорт"
     IDS_MENU_IMPORT_AS "Import from Access Server…"
@@ -303,28 +303,28 @@ BEGIN
     IDS_MENU_ASK_STOP_SERVICE "Вы хотите отключиться (остановить службу OpenVPN)?"
 
     /* Logviewer - Resources */
-    IDS_ERR_START_LOG_VIEWER "Ошибка запуска просмотрщика журнала: %s"
-    IDS_ERR_START_CONF_EDITOR "Ошибка запуска редактора конфигурации: %s"
+    IDS_ERR_START_LOG_VIEWER "Ошибка запуска просмотрщика журнала: %ls"
+    IDS_ERR_START_CONF_EDITOR "Ошибка запуска редактора конфигурации: %ls"
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI не поддерживает более %d конфигураций. Пожалуйста, свяжитесь с автором, если вам нужно больше."
     IDS_NFO_NO_CONFIGS "Файлы конфигурации не найдены.\n\
-Воспользуйтесь пунктом «Импорт конфигурации…» или скопируйте файлы в ""%s"" или ""%s""."
-    IDS_ERR_CONFIG_NOT_AUTHORIZED "Для запуска данного подключения (%s) требуется членство в группе\n\
-""%s"". Свяжитесь с вашим системным администратором.\n"
-    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Для запуска данного подключения (%s) требуется членство в группе\n\
-""%s"".\n\n\
+Воспользуйтесь пунктом «Импорт конфигурации…» или скопируйте файлы в ""%ls"" или ""%ls""."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "Для запуска данного подключения (%ls) требуется членство в группе\n\
+""%ls"". Свяжитесь с вашим системным администратором.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Для запуска данного подключения (%ls) требуется членство в группе\n\
+""%ls"".\n\n\
 Хотите добавить вашу учетную запись в эту группу?\n\
 Данное действие может потребовать ввод пароля администратора."
-    IDS_NFO_CONFIG_AUTH_PENDING   "Для запуска данного подключения (%s) требуется членство в группе\n\
-""%s"".\n\n\
+    IDS_NFO_CONFIG_AUTH_PENDING   "Для запуска данного подключения (%ls) требуется членство в группе\n\
+""%ls"".\n\n\
 Пожалуйста, сначала закройте предыдущий диалог авторизации."
-    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Ошибка добавления учетной записи в группу ""%s""."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Ошибка добавления учетной записи в группу ""%ls""."
     IDS_ERR_ONE_CONN_OLD_VER "Одновременно вы можете использовать только одно соединение, если вы используете OpenVPN версии старее 2.0-beta6."
     IDS_ERR_STOP_SERV_OLD_VER "Вы не можете использовать OpenVPN GUI для запуска подключения, пока запущена служба OpenVPN (с OpenVPN 1.5/1.6). Сначала остановите службу OpenVPN, если хотите использовать OpenVPN GUI."
-    IDS_ERR_CREATE_EVENT "Ошибка выполнения CreateEvent при выходе: %s"
-    IDS_ERR_UNKNOWN_PRIORITY "Неизвестное название приоритета: %s"
-    IDS_ERR_LOG_APPEND_BOOL "Флаг добавления к файлу журнала (данный как'%s') должен быть '0' или '1'"
+    IDS_ERR_CREATE_EVENT "Ошибка выполнения CreateEvent при выходе: %ls"
+    IDS_ERR_UNKNOWN_PRIORITY "Неизвестное название приоритета: %ls"
+    IDS_ERR_LOG_APPEND_BOOL "Флаг добавления к файлу журнала (данный как'%ls') должен быть '0' или '1'"
     IDS_ERR_GET_MSIE_PROXY "Не удалось получить настройки прокси Internet Explorer."
     IDS_ERR_INIT_SEC_DESC "Ошибка выполнения InitializeSecurityDescriptor."
     IDS_ERR_SET_SEC_DESC_ACL "Ошибка выполнения SetSecurityDescriptorDacl."
@@ -332,41 +332,41 @@ BEGIN
     IDS_ERR_CREATE_PIPE_INPUT "Ошибка выполнения CreatePipe при hInputRead."
     IDS_ERR_DUP_HANDLE_OUT_READ "Ошибка выполнения DuplicateHandle при hOutputRead."
     IDS_ERR_DUP_HANDLE_IN_WRITE "Ошибка выполнения DuplicateHandle при hInputWrite."
-    IDS_ERR_CREATE_PROCESS "Ошибка выполнения CreateProcess, exe='%s' cmdline='%s' dir='%s'"
+    IDS_ERR_CREATE_PROCESS "Ошибка выполнения CreateProcess, exe='%ls' cmdline='%ls' dir='%ls'"
     IDS_ERR_CREATE_THREAD_STATUS "Ошибка выполнения CreateThread при отображении окна состояния."
     IDS_NFO_STATE_WAIT_TERM "Текущее состояние: ожидание завершения работы OpenVPN…"
     IDS_NFO_STATE_CONNECTED "Текущее состояние: подключено"
-    IDS_NFO_NOW_CONNECTED "%s сейчас подключено."
-    IDS_NFO_ASSIGN_IP "Назначенный IP: %s"
+    IDS_NFO_NOW_CONNECTED "%ls сейчас подключено."
+    IDS_NFO_ASSIGN_IP "Назначенный IP: %ls"
     IDS_ERR_CERT_EXPIRED "Невозможно подключиться, так как срок действия вашего сертификата истёк или системное время некорректно."
     IDS_ERR_CERT_NOT_YET_VALID "Невозможно подключиться, так как ваш сертификат ещё не действителен. Проверьте правильность установки системного времени."
     IDS_NFO_STATE_RECONNECTING "Текущее состояние: переподключение"
     IDS_NFO_STATE_DISCONNECTED "Текущее состояние: отключено"
-    IDS_NFO_CONN_TERMINATED "Соединение с %s было прервано."
+    IDS_NFO_CONN_TERMINATED "Соединение с %ls было прервано."
     IDS_NFO_STATE_FAILED "Текущее состояние: ошибка подключения"
-    IDS_NFO_CONN_FAILED "Не удалось подключиться к %s."
+    IDS_NFO_CONN_FAILED "Не удалось подключиться к %ls."
     IDS_NFO_STATE_FAILED_RECONN "Текущее состояние: ошибка переподключения"
-    IDS_NFO_RECONN_FAILED "Не удалось переподключиться к %s."
+    IDS_NFO_RECONN_FAILED "Не удалось переподключиться к %ls."
     IDS_NFO_STATE_SUSPENDED "Текущее состояние: приостановлено"
     IDS_ERR_READ_STDOUT_PIPE "Ошибка чтения из стандартного ввода OpenVPN."
     IDS_ERR_CREATE_EDIT_LOGWINDOW "Не удалось создать RichEdit LogWindow!"
     IDS_ERR_SET_SIZE "Не удалось установить размер!"
-    IDS_ERR_AUTOSTART_CONF "Не удалось найти запрошенный файл конфигурации для автозапуска: %s"
+    IDS_ERR_AUTOSTART_CONF "Не удалось найти запрошенный файл конфигурации для автозапуска: %ls"
     IDS_ERR_CREATE_PIPE_IN_READ "Не удалось выполнить CreatePipe при hInputRead."
     IDS_NFO_STATE_CONNECTING "Текущее состояние: подключение"
-    IDS_NFO_CONNECTION_XXX "Соединение OpenVPN (%s)"
+    IDS_NFO_CONNECTION_XXX "Соединение OpenVPN (%ls)"
     IDS_NFO_STATE_CONN_SCRIPT "Текущее состояние: запуск скрипта подключения"
     IDS_NFO_STATE_DISCONN_SCRIPT "Текущее состояние: запуск скрипта отключения"
-    IDS_ERR_RUN_CONN_SCRIPT "Ошибка запуска скрипта подключения: %s"
-    IDS_ERR_GET_EXIT_CODE "Ошибка получения кода выхода (ExitCode) скрипта подключения (%s)"
+    IDS_ERR_RUN_CONN_SCRIPT "Ошибка запуска скрипта подключения: %ls"
+    IDS_ERR_GET_EXIT_CODE "Ошибка получения кода выхода (ExitCode) скрипта подключения (%ls)"
     IDS_ERR_CONN_SCRIPT_FAILED "Ошибка выполнения скрипта подключения. (exitcode=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Ошибка выполнения скрипта подключения. Истекло время ожидания после %d сек."
-    IDS_ERR_CONFIG_EXIST "Уже существует файл конфигурации с названием '%s'. Вы не можете \
+    IDS_ERR_CONFIG_EXIST "Уже существует файл конфигурации с названием '%ls'. Вы не можете \
 иметь несколько файлов конфигурации с одним именем, даже если \
 они находятся в разных папках."
     /* main - Resources */
-    IDS_ERR_OPEN_DEBUG_FILE "Ошибка открытия файла отладки (%s) для вывода."
-    IDS_ERR_CREATE_PATH "Невозможно создать %s путь:\n%s"
+    IDS_ERR_OPEN_DEBUG_FILE "Ошибка открытия файла отладки (%ls) для вывода."
+    IDS_ERR_CREATE_PATH "Невозможно создать %ls путь:\n%ls"
     IDS_ERR_LOAD_RICHED20 "Не удалось загрузить RICHED20.DLL."
     IDS_ERR_SHELL_DLL_VERSION "Ваша версия shell32.dll слишком старая (0x%lx). Вам необходима как минимум версия 5.0."
     IDS_NFO_SERVICE_STARTED "Служба OpenVPN запущена."
@@ -422,26 +422,26 @@ Supported commands:\n\
 
 
     IDS_NFO_USAGECAPTION "Использование OpenVPN GUI"
-    IDS_ERR_BAD_PARAMETER "Не удалось обработать строку ""%s"", которая была интерпретирована как опция вида ""--опция параметр"". \
+    IDS_ERR_BAD_PARAMETER "Не удалось обработать строку ""%ls"", которая была интерпретирована как опция вида ""--опция параметр"". \
 Если это не опция, поставьте '--' перед этой строкой."
-    IDS_ERR_BAD_OPTION "Ошибка опций: нераспознанная опция или отсутствующий параметр(ы): --%s\n\
+    IDS_ERR_BAD_OPTION "Ошибка опций: нераспознанная опция или отсутствующий параметр(ы): --%ls\n\
 Используйте openvpn-gui --help для доп. информации."
 
     /* passphrase - Resources */
     IDS_ERR_CREATE_PASS_THREAD "Не удалось выполнить CreateThread для отображения диалога ChangePassphrase."
-    IDS_NFO_CHANGE_PWD "Смена пароля (%s)"
+    IDS_NFO_CHANGE_PWD "Смена пароля (%ls)"
     IDS_ERR_PWD_DONT_MATCH "Введённые вами пароли не совпадают. Попробуйте снова."
     IDS_ERR_PWD_TO_SHORT "Ваш новый пароль должен быть длиной как минимум %d символов."
     IDS_NFO_EMPTY_PWD "Вы уверены, что хотите установить ПУСТОЙ пароль?"
     IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Неизвестный формат файла ключа."
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Ошибка открытия файла личного ключа (%s)."
+    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Ошибка открытия файла личного ключа (%ls)."
     IDS_ERR_OLD_PWD_INCORRECT "Старый пароль неверен."
-    IDS_ERR_OPEN_WRITE_KEY "Ошибка открытия файла личного ключа для записи (%s)."
-    IDS_ERR_WRITE_NEW_KEY "Ошибка записи файла нового личного ключа (%s)."
+    IDS_ERR_OPEN_WRITE_KEY "Ошибка открытия файла личного ключа для записи (%ls)."
+    IDS_ERR_WRITE_NEW_KEY "Ошибка записи файла нового личного ключа (%ls)."
     IDS_NFO_PWD_CHANGED "Ваш пароль был изменён."
-    IDS_ERR_READ_PKCS12 "Ошибка чтения файла PKCS #12 (%s)."
+    IDS_ERR_READ_PKCS12 "Ошибка чтения файла PKCS #12 (%ls)."
     IDS_ERR_CREATE_PKCS12 "Ошибка создания нового объекта PKCS #12. Пароль сменить не удалось."
-    IDS_ERR_OPEN_CONFIG "Не удалось открыть файл конфигурации для чтения: (%s)"
+    IDS_ERR_OPEN_CONFIG "Не удалось открыть файл конфигурации для чтения: (%ls)"
     IDS_ERR_ONLY_ONE_KEY_OPTION "В вашей конфигурации не может быть более одной опции ""key""."
     IDS_ERR_ONLY_KEY_OR_PKCS12 "В вашей конфигурации не могут одновременно находиться опции ""key"" и ""pkcs12""."
     IDS_ERR_ONLY_ONE_PKCS12_OPTION "В вашей конфигурации не может быть более одной опции ""pkcs12""."
@@ -464,7 +464,7 @@ Supported commands:\n\
     IDS_ERR_SOCKS_PROXY_ADDRESS "Вы должны указать адрес SOCKS-прокси."
     IDS_ERR_SOCKS_PROXY_PORT "Вы должны указать порт SOCKS-прокси."
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "Вы должны указать порт SOCKS-прокси в диапазоне 1-65535"
-    IDS_ERR_CREATE_REG_HKCU_KEY "Ошибка создания ключа ""HKEY_CURRENT_USER\\%s""."
+    IDS_ERR_CREATE_REG_HKCU_KEY "Ошибка создания ключа ""HKEY_CURRENT_USER\\%ls""."
     IDS_ERR_GET_TEMP_PATH "Ошибка определения TempPath с помощью GetTempPath(). Вместо этого использую ""C:\\""."
 
     /* service */
@@ -498,24 +498,24 @@ OpenVPN, возможно, не установлен."
     IDS_ERR_CREATE_REG_KEY "Ошибка создания ключа HKLM\\SOFTWARE\\OpenVPN-GUI."
     IDS_ERR_OPEN_WRITE_REG "Не удалось открыть реестр для записи. Вам необходимо запустить это приложение \
 однократно с правами администратора, чтобы обновить реестр."
-    IDS_ERR_READ_SET_KEY "Ошибка чтения и установки значения ключа ""%s""."
-    IDS_ERR_WRITE_REGVALUE "Ошибка записи значения реестра ""HKEY_CURRENT_USER\\%s\\%s""."
+    IDS_ERR_READ_SET_KEY "Ошибка чтения и установки значения ключа ""%ls""."
+    IDS_ERR_WRITE_REGVALUE "Ошибка записи значения реестра ""HKEY_CURRENT_USER\\%ls\\%ls""."
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS "Файл конфигурации ""%s"" уже существует."
-    IDS_ERR_IMPORT_FAILED "Ошибка импорта файла. Путь %s не может быть создан.\n\n\
+    IDS_ERR_IMPORT_EXISTS "Файл конфигурации ""%ls"" уже существует."
+    IDS_ERR_IMPORT_FAILED "Ошибка импорта файла. Путь %ls не может быть создан.\n\n\
 Убедитесь, что у вас есть необходимые привилегии для данного действия."
     IDS_NFO_IMPORT_SUCCESS "Импорт файла успешно завершен."
-    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
-    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
+    IDS_NFO_IMPORT_OVERWRITE "A config named ""%ls"" already exists. Do you want to replace it?"
+    IDS_ERR_IMPORT_SOURCE "Cannot import file <%ls> as it is already in the global or local config directory"
     IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
 
     /* save/delete password */
-    IDS_NFO_DELETE_PASS "Подтвердите удаление сохраненных паролей для ""%s"""
+    IDS_NFO_DELETE_PASS "Подтвердите удаление сохраненных паролей для ""%ls"""
 
     /* Token password related */
     IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – Token Password"
-    IDS_NFO_TOKEN_PASSWORD_REQUEST "Input Password/PIN for Token '%S'"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "Input Password/PIN for Token '%hs'"
 
     IDS_NFO_AUTH_PASS_RETRY "Неправильное имя пользователя или пароль"
     IDS_NFO_KEY_PASS_RETRY  "Неправильный пароль"
@@ -523,6 +523,6 @@ OpenVPN, возможно, не установлен."
     IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
     IDS_NFO_AUTO_CONNECT    "Автоматическое подключение через %u сек..."
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
-    IDS_NFO_BYTECOUNT "Bytes in: %s  out: %s"
+    IDS_NFO_BYTECOUNT "Bytes in: %ls  out: %ls"
 
 END

@@ -64,7 +64,7 @@ ExpandString (WCHAR *str, int max_len)
 
   if (len > max_len || len > (int) _countof(expanded_string))
   {
-      PrintDebug (L"Failed to expanded env vars in '%s'. String too long", str);
+      PrintDebug (L"Failed to expanded env vars in '%ls'. String too long", str);
       return;
   }
   wcsncpy (str, expanded_string, max_len);
@@ -178,22 +178,22 @@ add_option(options_t *options, int i, TCHAR **p)
     else if (streq(p[0], _T("allow_edit")) && p[1])
     {
         ++i;
-        PrintDebug (L"Deprecated option: '%s' ignored.", p[0]);
+        PrintDebug (L"Deprecated option: '%ls' ignored.", p[0]);
     }
     else if (streq(p[0], _T("allow_service")) && p[1])
     {
         ++i;
-        PrintDebug (L"Deprecated option: '%s' ignored.", p[0]);
+        PrintDebug (L"Deprecated option: '%ls' ignored.", p[0]);
     }
     else if (streq(p[0], _T("allow_password")) && p[1])
     {
         ++i;
-        PrintDebug (L"Deprecated option: '%s' ignored.", p[0]);
+        PrintDebug (L"Deprecated option: '%ls' ignored.", p[0]);
     }
     else if (streq(p[0], _T("allow_proxy")) && p[1])
     {
         ++i;
-        PrintDebug (L"Deprecated option: '%s' ignored.", p[0]);
+        PrintDebug (L"Deprecated option: '%ls' ignored.", p[0]);
     }
     else if (streq(p[0], _T("show_balloon")) && p[1])
     {
@@ -218,7 +218,7 @@ add_option(options_t *options, int i, TCHAR **p)
     else if (streq(p[0], _T("passphrase_attempts")) && p[1])
     {
         ++i;
-        PrintDebug (L"Deprecated option: '%s' ignored.", p[0]);
+        PrintDebug (L"Deprecated option: '%ls' ignored.", p[0]);
     }
     else if (streq(p[0], _T("connectscript_timeout")) && p[1])
     {
