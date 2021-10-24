@@ -222,7 +222,7 @@ FONT 9, "맑은 고딕"
 LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, ID_ICON_ABOUT, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v%s - A Windows GUI for OpenVPN\n\
+    LTEXT "OpenVPN GUI v%ls - A Windows GUI for OpenVPN\n\
 Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
 Copyright (C) 2012-2021 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
@@ -277,7 +277,7 @@ BEGIN
     IDS_TIP_CONNECTED "\n연결됨: "
     IDS_TIP_CONNECTING "\n연결중: "
     IDS_TIP_CONNECTED_SINCE "\n연결 시간: "
-    IDS_TIP_ASSIGNED_IP "\n할당된 IP: %s"
+    IDS_TIP_ASSIGNED_IP "\n할당된 IP: %ls"
     IDS_MENU_SERVICE "OpenVPN 서비스"
     IDS_MENU_IMPORT "Import"
     IDS_MENU_IMPORT_AS "Import from Access Server…"
@@ -302,26 +302,26 @@ BEGIN
     IDS_MENU_ASK_STOP_SERVICE "연결을 해제하겠습니까? (OpenVPN 서비스 중지)"
 
     /* Logviewer - Resources */
-    IDS_ERR_START_LOG_VIEWER "로그 뷰어 시작 실패: %s"
-    IDS_ERR_START_CONF_EDITOR "설정 편집기 시작 실패: %s"
+    IDS_ERR_START_LOG_VIEWER "로그 뷰어 시작 실패: %ls"
+    IDS_ERR_START_CONF_EDITOR "설정 편집기 시작 실패: %ls"
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI는 %d config 이상의 설정은 지원하지 않습니다. 더이상 설정이 필요한 경우 개발자에게 연락 하십시오."
     IDS_NFO_NO_CONFIGS "설정 파일이 없습니다.\n\
-""파일 불러오기.."" 메뉴를 이용하거나 설정 파일을 ""%s"" 또는 ""%s""로 복사 하십시오."
-    IDS_ERR_CONFIG_NOT_AUTHORIZED "이 연결(%s)을 시작하기 위하여 ""%s"" 그룹 권한이 필요합니다.\
+""파일 불러오기.."" 메뉴를 이용하거나 설정 파일을 ""%ls"" 또는 ""%ls""로 복사 하십시오."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "이 연결(%ls)을 시작하기 위하여 ""%ls"" 그룹 권한이 필요합니다.\
 시스템 관리자에게 문의 하십시오.\n"
-    IDS_ERR_CONFIG_TRY_AUTHORIZE  "이 연결(%s)을 시작하기 위하여 ""%s"" 그룹 권한이 필요합니다.\n\n\
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "이 연결(%ls)을 시작하기 위하여 ""%ls"" 그룹 권한이 필요합니다.\n\n\
 자신을 이 그룹에 추가하겠습니까?\n\
 이 작업은 관리자 암호 또는 동의를 요구할 수 있습니다."
-    IDS_NFO_CONFIG_AUTH_PENDING   "이 연결(%s)을 시작하기 위하여 ""%s"" 그룹 권한이 필요합니다.\n\n\
+    IDS_NFO_CONFIG_AUTH_PENDING   "이 연결(%ls)을 시작하기 위하여 ""%ls"" 그룹 권한이 필요합니다.\n\n\
 이전의 인증 대화 상자를 완료 하십시오."
-    IDS_ERR_ADD_USER_TO_ADMIN_GROUP """%s"" group에 사용자 추가를 실패했습니다."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP """%ls"" group에 사용자 추가를 실패했습니다."
     IDS_ERR_ONE_CONN_OLD_VER "OpenVPN 2.0-beta6 이전 버전에서는 2개 이상의 동시 연결을 지원하지 않습니다."
     IDS_ERR_STOP_SERV_OLD_VER "OpenVPN 1.5/1.6을 사용할 경우, OpenVPN 서비스가 구동되고 있으면 OpenVPN GUI을 이용하여 연결을 할 수 없습니다. OpenVPN GUI를 사용하려면, 먼저 OpenVPN 서비스를 중지 시키십시오."
-    IDS_ERR_CREATE_EVENT "CreateEvent failed on exit event: %s"
-    IDS_ERR_UNKNOWN_PRIORITY "Unknown priority name: %s"
-    IDS_ERR_LOG_APPEND_BOOL "로그 파일의 '%s'로 지정된 추가 플래그는 '0'또는 '1'이어야합니다."
+    IDS_ERR_CREATE_EVENT "CreateEvent failed on exit event: %ls"
+    IDS_ERR_UNKNOWN_PRIORITY "Unknown priority name: %ls"
+    IDS_ERR_LOG_APPEND_BOOL "로그 파일의 '%ls'로 지정된 추가 플래그는 '0'또는 '1'이어야합니다."
     IDS_ERR_GET_MSIE_PROXY "MSIE 프락시 설정을 가져올 수 없습니다."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor 실패"
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl 실패"
@@ -329,42 +329,42 @@ BEGIN
     IDS_ERR_CREATE_PIPE_INPUT "CreatePipe on hInputRead failed."
     IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle on hOutputRead failed."
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite failed."
-    IDS_ERR_CREATE_PROCESS "CreateProcess failed, exe='%s' cmdline='%s' dir='%s'"
+    IDS_ERR_CREATE_PROCESS "CreateProcess failed, exe='%ls' cmdline='%ls' dir='%ls'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread to show Status window Failed."
     IDS_NFO_STATE_WAIT_TERM "현재 상태: OpenVPN 종료 대기 중…"
     IDS_NFO_STATE_CONNECTED "현재 상태: 연결됨"
-    IDS_NFO_NOW_CONNECTED "%s 접속이 연결 되었습니다."
-    IDS_NFO_ASSIGN_IP "할당된 IP: %s"
+    IDS_NFO_NOW_CONNECTED "%ls 접속이 연결 되었습니다."
+    IDS_NFO_ASSIGN_IP "할당된 IP: %ls"
     IDS_ERR_CERT_EXPIRED "인증서가 만료 되었거나, 시스템 시간이 잘못 설정 되어 연결할 수 없습니다."
     IDS_ERR_CERT_NOT_YET_VALID "인증서의 유효기간 이전에 연결할 수 없습니다. 시스템 시간이 정확한지 확인해 보십시오."
     IDS_NFO_STATE_RECONNECTING "현재 상태: 재접속 중"
     IDS_NFO_STATE_DISCONNECTED "현재 상태: 연결 해제"
-    IDS_NFO_CONN_TERMINATED "%s 연결이 종료 되었습니다."
+    IDS_NFO_CONN_TERMINATED "%ls 연결이 종료 되었습니다."
     IDS_NFO_STATE_FAILED "현재 상태: 접속 실패"
-    IDS_NFO_CONN_FAILED "%s 접속에 실패했습니다."
+    IDS_NFO_CONN_FAILED "%ls 접속에 실패했습니다."
     IDS_NFO_STATE_FAILED_RECONN "현재 상태: 재접속 실패"
-    IDS_NFO_RECONN_FAILED "%s 재접속에 실패했습니다."
+    IDS_NFO_RECONN_FAILED "%ls 재접속에 실패했습니다."
     IDS_NFO_STATE_SUSPENDED "현재 상태: 대기 중"
     IDS_ERR_READ_STDOUT_PIPE "OpenVPN 표준 출력 파이프를 읽는 중 오류가 발생했습니다."
     IDS_ERR_CREATE_EDIT_LOGWINDOW "Creating RichEdit LogWindow Failed!!"
     IDS_ERR_SET_SIZE "Set Size failed!"
-    IDS_ERR_AUTOSTART_CONF "요청된 자동 시작 설정을 찾을 수 없습니다: %s"
+    IDS_ERR_AUTOSTART_CONF "요청된 자동 시작 설정을 찾을 수 없습니다: %ls"
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe on hInputRead failed."
     IDS_NFO_STATE_CONNECTING "현재 상태: 접속 중"
-    IDS_NFO_CONNECTION_XXX "OpenVPN 접속 (%s)"
+    IDS_NFO_CONNECTION_XXX "OpenVPN 접속 (%ls)"
     IDS_NFO_STATE_CONN_SCRIPT "현재 상태: 연결 스크립트 실행 중"
     IDS_NFO_STATE_DISCONN_SCRIPT "현재 상태: 연결 해제 스크립트 실행 중"
-    IDS_ERR_RUN_CONN_SCRIPT "연결 실행 스크립트 수행 중 오류: %s"
-    IDS_ERR_GET_EXIT_CODE "연결 스크립트(%s)의 종료코드를 받아오지 못함"
+    IDS_ERR_RUN_CONN_SCRIPT "연결 실행 스크립트 수행 중 오류: %ls"
+    IDS_ERR_GET_EXIT_CODE "연결 스크립트(%ls)의 종료코드를 받아오지 못함"
     IDS_ERR_CONN_SCRIPT_FAILED "연결 스크립트 실패. (종료코드=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "연결 스크립트 실패. %d초 경과 되었습니다."
-    IDS_ERR_CONFIG_EXIST "'%s' 설정 파일이 이미 존재 합니다. 비록 경로가 다르더라도 \
+    IDS_ERR_CONFIG_EXIST "'%ls' 설정 파일이 이미 존재 합니다. 비록 경로가 다르더라도 \
 동일한 설정 파일 이름은 사용할 수 없습니다."
     IDS_NFO_CONN_TIMEOUT "관리 인터페이스 연결에 실패했습니다.\n\
-자세한 사항은 로그파일(%s)을 참조 하십시오."
+자세한 사항은 로그파일(%ls)을 참조 하십시오."
     /* main - Resources */
-    IDS_ERR_OPEN_DEBUG_FILE "디버그 파일(%s)을 출력할 수 없습니다."
-    IDS_ERR_CREATE_PATH "%s 생성 실패:\n%s"
+    IDS_ERR_OPEN_DEBUG_FILE "디버그 파일(%ls)을 출력할 수 없습니다."
+    IDS_ERR_CREATE_PATH "%ls 생성 실패:\n%ls"
     IDS_ERR_LOAD_RICHED20 "RICHED20.DLL 로드를 실패 했습니다."
     IDS_ERR_SHELL_DLL_VERSION "shell32.dll version이 오래되었습니다(0x%lx). 5.0 이상이 필요 합니다."
     IDS_NFO_SERVICE_STARTED "OpenVPN Service가 시작 되었습니다."
@@ -420,26 +420,26 @@ OpenVPN GUI를 이대로 종료 하겠습니까?"
 
 
     IDS_NFO_USAGECAPTION "OpenVPN GUI 사용법"
-    IDS_ERR_BAD_PARAMETER "I'm trying to parse ""%s"" as an --option parameter \
+    IDS_ERR_BAD_PARAMETER "I'm trying to parse ""%ls"" as an --option parameter \
 but I don't see a leading '--'"
-    IDS_ERR_BAD_OPTION "옵션 오류: 잘못된 옵션 또는 옵션값 누락: --%s\n\
+    IDS_ERR_BAD_OPTION "옵션 오류: 잘못된 옵션 또는 옵션값 누락: --%ls\n\
 자세한 사항은 openvpn-gui --help 명령을 참조 하십시오."
 
     /* passphrase - Resources */
     IDS_ERR_CREATE_PASS_THREAD "CreateThread to show ChangePassphrase dialog failed."
-    IDS_NFO_CHANGE_PWD "(%s) 개인키 암호 변경"
+    IDS_NFO_CHANGE_PWD "(%ls) 개인키 암호 변경"
     IDS_ERR_PWD_DONT_MATCH "입력한 암호가 일치하지 않습니다. 다시 입력 하십시오."
     IDS_ERR_PWD_TO_SHORT "새 암호는 %d글자 보다 길어야 합니다."
     IDS_NFO_EMPTY_PWD "암호가 없는 상태로 설정하겠습니까?"
     IDS_ERR_UNKNOWN_KEYFILE_FORMAT "keyfile 형식을 알 수 없습니다."
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "개인키 파일(%s)을 열 수 없습니다."
+    IDS_ERR_OPEN_PRIVATE_KEY_FILE "개인키 파일(%ls)을 열 수 없습니다."
     IDS_ERR_OLD_PWD_INCORRECT "이전 암호가 맞지 않습니다."
-    IDS_ERR_OPEN_WRITE_KEY "개인키 파일(%s)을 저장 할 수 없습니다."
-    IDS_ERR_WRITE_NEW_KEY "새 개인키 파일(%s)를 저장 할 수 없습니다."
+    IDS_ERR_OPEN_WRITE_KEY "개인키 파일(%ls)을 저장 할 수 없습니다."
+    IDS_ERR_WRITE_NEW_KEY "새 개인키 파일(%ls)를 저장 할 수 없습니다."
     IDS_NFO_PWD_CHANGED "암호가 변경 되었습니다."
-    IDS_ERR_READ_PKCS12 "PKCS #12 파일(%s)을 읽을 수 없습니다."
+    IDS_ERR_READ_PKCS12 "PKCS #12 파일(%ls)을 읽을 수 없습니다."
     IDS_ERR_CREATE_PKCS12 "새로운 PKCS #12 개체를 생성할 수 없어, 암호 변경을 할 수 없습니다."
-    IDS_ERR_OPEN_CONFIG "설정 파일 읽기 오류: (%s)"
+    IDS_ERR_OPEN_CONFIG "설정 파일 읽기 오류: (%ls)"
     IDS_ERR_ONLY_ONE_KEY_OPTION "설정 파일에 ""key"" 옵션을 중복 지정 할 수 없습니다."
     IDS_ERR_ONLY_KEY_OR_PKCS12 "설정파일에 ""key""와 ""pkcs12"" 옵션을 동시에 지정 할 수 없습니다."
     IDS_ERR_ONLY_ONE_PKCS12_OPTION "설정 파일에 ""pkcs12"" 옵션을 중복 지정 할 수 없습니다."
@@ -462,7 +462,7 @@ but I don't see a leading '--'"
     IDS_ERR_SOCKS_PROXY_ADDRESS "SOCKS proxy 주소 설정이 필요 합니다."
     IDS_ERR_SOCKS_PROXY_PORT "SOCKS proxy 포트 설정이 필요 합니다."
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "SOCKS proxy 포트는 1-65535 범위로 해야 합니다."
-    IDS_ERR_CREATE_REG_HKCU_KEY """HKEY_CURRENT_USER\\%s"" key를 생성하지 못했습니다."
+    IDS_ERR_CREATE_REG_HKCU_KEY """HKEY_CURRENT_USER\\%ls"" key를 생성하지 못했습니다."
     IDS_ERR_GET_TEMP_PATH "GenTempPath()로 TempPath를 결정하는 중 오류가 발생헀습니다. ""C:\\""를 대신 사용합니다."
 
     /* service */
@@ -496,24 +496,24 @@ OpenVPN이 설치 되어 있지 않은 것 같습니다."
     IDS_ERR_CREATE_REG_KEY "HKLM\\SOFTWARE\\OpenVPN-GUI 키를 만들 수 없습니다.."
     IDS_ERR_OPEN_WRITE_REG "레지스트리에 기록할 수 없습니다. 레지스트리를 업데이트 하려면 \
 Administrator 권한으로 이 프로그램을 실행해야 합니다."
-    IDS_ERR_READ_SET_KEY "레지스트리 ""%s""키 읽기/쓰기를 할 수 없습니다."
-    IDS_ERR_WRITE_REGVALUE "레지스트리 ""HKEY_CURRENT_USER\\%s\\%s"" 값을 기록할 수 없습니다."
+    IDS_ERR_READ_SET_KEY "레지스트리 ""%ls""키 읽기/쓰기를 할 수 없습니다."
+    IDS_ERR_WRITE_REGVALUE "레지스트리 ""HKEY_CURRENT_USER\\%ls\\%ls"" 값을 기록할 수 없습니다."
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS """%s"" 설정 파일은 이미 존재 합니다."
+    IDS_ERR_IMPORT_EXISTS """%ls"" 설정 파일은 이미 존재 합니다."
     IDS_ERR_IMPORT_FAILED "파일 불러오기 실패. 다음 경로를 생성할 수 없습니다.\n\n\
-%s\n\n올바른 권한을 가지고 있는지 확인 해 보십시오."
+%ls\n\n올바른 권한을 가지고 있는지 확인 해 보십시오."
     IDS_NFO_IMPORT_SUCCESS "파일 불러오기 성공."
-    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
-    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
+    IDS_NFO_IMPORT_OVERWRITE "A config named ""%ls"" already exists. Do you want to replace it?"
+    IDS_ERR_IMPORT_SOURCE "Cannot import file <%ls> as it is already in the global or local config directory"
     IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
 
     /* save/delete password */
-    IDS_NFO_DELETE_PASS """%s"" 설정의 저장된 암호를 삭제 하려면 확인을 누르십시오."
+    IDS_NFO_DELETE_PASS """%ls"" 설정의 저장된 암호를 삭제 하려면 확인을 누르십시오."
 
     /* Token password related */
     IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN - 토큰 암호"
-    IDS_NFO_TOKEN_PASSWORD_REQUEST "'%S' 토큰에 대한 암호/핀을 입력 하십시오."
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "'%hs' 토큰에 대한 암호/핀을 입력 하십시오."
 
     IDS_NFO_AUTH_PASS_RETRY "사용자 또는 암호 오류. 재시도 하십시오."
     IDS_NFO_KEY_PASS_RETRY  "암호 오류. 재입력 하십시오."
@@ -521,5 +521,5 @@ Administrator 권한으로 이 프로그램을 실행해야 합니다."
     IDS_ERR_INVALID_USERNAME_INPUT "사용자 이름에 잘못된 문자가 있습니다."
     IDS_NFO_AUTO_CONNECT    "%u초 후 자동으로 연결..."
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI 가 이미 실행 중입니다. 시작하려면 작업 표시줄의 아이콘을 마우스 우클릭 하십시오."
-    IDS_NFO_BYTECOUNT "수신 바이트: %s  전송 바이트: %s"
+    IDS_NFO_BYTECOUNT "수신 바이트: %ls  전송 바이트: %ls"
 END

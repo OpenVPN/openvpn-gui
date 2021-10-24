@@ -220,7 +220,7 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ITALIAN, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, ID_ICON_ABOUT, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v%s - Interfaccia per Windows di OpenVPN\n\
+    LTEXT "OpenVPN GUI v%ls - Interfaccia per Windows di OpenVPN\n\
 Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
 Copyright (C) 2012-2021 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
@@ -276,7 +276,7 @@ BEGIN
     IDS_TIP_CONNECTED "\nConnesso a: "
     IDS_TIP_CONNECTING "\nConnessione in corso a: "
     IDS_TIP_CONNECTED_SINCE "\nConnesso da: "
-    IDS_TIP_ASSIGNED_IP "\nIP assegnato: %s"
+    IDS_TIP_ASSIGNED_IP "\nIP assegnato: %ls"
     IDS_MENU_SERVICE "Servizio OpenVPN"
     IDS_MENU_IMPORT "Import"
     IDS_MENU_IMPORT_AS "Import from Access Server…"
@@ -301,28 +301,28 @@ BEGIN
     IDS_MENU_ASK_STOP_SERVICE "Vuoi disconnetterti? (arrestando il servizio OpenVPN)?"
 
     /* Logviewer - Resources */
-    IDS_ERR_START_LOG_VIEWER "Errore nell'apertura del visualizzatore di log: %s"
-    IDS_ERR_START_CONF_EDITOR "Errore nell'apertura dell'editor di configurazione: %s"
+    IDS_ERR_START_LOG_VIEWER "Errore nell'apertura del visualizzatore di log: %ls"
+    IDS_ERR_START_CONF_EDITOR "Errore nell'apertura dell'editor di configurazione: %ls"
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI non supporta più di %d configurazioni. Contatta l'autore se hai bisogno che ne supporti di più."
     IDS_NFO_NO_CONFIGS "Nessun file di configurazione trovato.\n\
-Usa il menu ""Importa file.."" o copia i tuoi file in ""%s"" oppure ""%s""."
-    IDS_ERR_CONFIG_NOT_AUTHORIZED "L'avvio di questa connessione (%s) richiede di essere membro del \
-gruppo ""%s"". Contatta il tuo amministratore di sistema.\n"
-    IDS_ERR_CONFIG_TRY_AUTHORIZE  "L'avvio di questa connessione (%s) richiede di essere membro del \
-gruppo ""%s"".\n\n\
+Usa il menu ""Importa file.."" o copia i tuoi file in ""%ls"" oppure ""%ls""."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "L'avvio di questa connessione (%ls) richiede di essere membro del \
+gruppo ""%ls"". Contatta il tuo amministratore di sistema.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "L'avvio di questa connessione (%ls) richiede di essere membro del \
+gruppo ""%ls"".\n\n\
 Vuoi aggiungerti al gruppo?\n\
 Quest'azione può richiedere privilegi amministrativi."
-    IDS_NFO_CONFIG_AUTH_PENDING   "L'avvio di questa connessione (%s) richiede di essere membro del \
-gruppo ""%s"".\n\n\
+    IDS_NFO_CONFIG_AUTH_PENDING   "L'avvio di questa connessione (%ls) richiede di essere membro del \
+gruppo ""%ls"".\n\n\
 Completa la richiesta di autorizzazione precedente."
-    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Errore nell'aggiunta dell'utente al gruppo ""%s""."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Errore nell'aggiunta dell'utente al gruppo ""%ls""."
     IDS_ERR_ONE_CONN_OLD_VER "Puoi avere una sola connessione attiva alla volta quando usi una versione di OpenVPN più vecchia della 2.0-beta6."
     IDS_ERR_STOP_SERV_OLD_VER "Non puoi usare OpenVPN GUI per far partire una connessione mentre il servizio di OpenVPN è in funzionamento (con OpenVPN 1.5/1.6). Arresta il servizio di OpenVPN se vuoi usare OpenVPN GUI."
-    IDS_ERR_CREATE_EVENT "Il creatore di eventi è fallito all'uscita dell'evento: %s"
-    IDS_ERR_UNKNOWN_PRIORITY "Nome di priorità sconosciuto: %s"
-    IDS_ERR_LOG_APPEND_BOOL "Il file di log ha aggiunto un puntatore (dato come '%s') deve essere '0' o '1'"
+    IDS_ERR_CREATE_EVENT "Il creatore di eventi è fallito all'uscita dell'evento: %ls"
+    IDS_ERR_UNKNOWN_PRIORITY "Nome di priorità sconosciuto: %ls"
+    IDS_ERR_LOG_APPEND_BOOL "Il file di log ha aggiunto un puntatore (dato come '%ls') deve essere '0' o '1'"
     IDS_ERR_GET_MSIE_PROXY "Non riesco ad utilizzare la configurazione di MSIE per il proxy."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor fallito."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl fallito."
@@ -330,43 +330,43 @@ Completa la richiesta di autorizzazione precedente."
     IDS_ERR_CREATE_PIPE_INPUT "CreatePipe on hInputRead fallito."
     IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle on hOutputRead fallito."
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite fallito."
-    IDS_ERR_CREATE_PROCESS "CreateProcess fallito, exe='%s' cmdline='%s' dir='%s'"
+    IDS_ERR_CREATE_PROCESS "CreateProcess fallito, exe='%ls' cmdline='%ls' dir='%ls'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread fallito per visualizzare lo stato."
     IDS_NFO_STATE_WAIT_TERM "Stato corrente: In attesa che OpenVPN termini…"
     IDS_NFO_STATE_CONNECTED "Stato corrente: Connesso"
-    IDS_NFO_NOW_CONNECTED "%s è ora connesso."
-    IDS_NFO_ASSIGN_IP "IP assegnato: %s"
+    IDS_NFO_NOW_CONNECTED "%ls è ora connesso."
+    IDS_NFO_ASSIGN_IP "IP assegnato: %ls"
     IDS_ERR_CERT_EXPIRED "Non riesco a connettermi perché il tuo certificato è scaduto o l'orologio di sistema non è corretto."
     IDS_ERR_CERT_NOT_YET_VALID "Non riesco a connettermi perché il tuo certificato non è ancora valido. Assicurati che l'orologio di sistema sia corretto."
     IDS_NFO_STATE_RECONNECTING "Stato corrente: Riconnessione in corso"
     IDS_NFO_STATE_DISCONNECTED "Stato corrente: Disconnesso"
-    IDS_NFO_CONN_TERMINATED "La connessione a %s è terminata."
+    IDS_NFO_CONN_TERMINATED "La connessione a %ls è terminata."
     IDS_NFO_STATE_FAILED "Stato corrente: Connessione fallita"
-    IDS_NFO_CONN_FAILED "La connessione a %s è fallita."
+    IDS_NFO_CONN_FAILED "La connessione a %ls è fallita."
     IDS_NFO_STATE_FAILED_RECONN "Stato corrente: Riconnessione fallita"
-    IDS_NFO_RECONN_FAILED "La riconnessione a %s è fallita."
+    IDS_NFO_RECONN_FAILED "La riconnessione a %ls è fallita."
     IDS_NFO_STATE_SUSPENDED "Stato corrente: Sospeso"
     IDS_ERR_READ_STDOUT_PIPE "Errore in lettura dalla OpenVPN StdOut Pipe."
     IDS_ERR_CREATE_EDIT_LOGWINDOW "Creazione RichEdit LogWindow Fallita!!"
     IDS_ERR_SET_SIZE "Set Size fallita!"
-    IDS_ERR_AUTOSTART_CONF "Non riesco a trovare una configurazione per partire in automatico: %s"
+    IDS_ERR_AUTOSTART_CONF "Non riesco a trovare una configurazione per partire in automatico: %ls"
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe on hInputRead falito."
     IDS_NFO_STATE_CONNECTING "Stato corrente: Connessione in corso"
-    IDS_NFO_CONNECTION_XXX "Connessione OpenVPN (%s)"
+    IDS_NFO_CONNECTION_XXX "Connessione OpenVPN (%ls)"
     IDS_NFO_STATE_CONN_SCRIPT "Stato corrente: Avviato lo script di connessione"
     IDS_NFO_STATE_DISCONN_SCRIPT "Stato corrente: Avviato lo script di disconnessione"
-    IDS_ERR_RUN_CONN_SCRIPT "Errore durante il funzionamento dello script di connessione: %s"
-    IDS_ERR_GET_EXIT_CODE "Errore nel ExitCode dello script di connessione (%s)"
+    IDS_ERR_RUN_CONN_SCRIPT "Errore durante il funzionamento dello script di connessione: %ls"
+    IDS_ERR_GET_EXIT_CODE "Errore nel ExitCode dello script di connessione (%ls)"
     IDS_ERR_CONN_SCRIPT_FAILED "Fallito lo script di connessione. (exitcode=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Fallito lo script di connessione. TimeOut dopo %d sec."
-    IDS_ERR_CONFIG_EXIST "Esiste già un file di configurazione chiamato '%s'. Non puoi \
+    IDS_ERR_CONFIG_EXIST "Esiste già un file di configurazione chiamato '%ls'. Non puoi \
 avere file di configurazioni con lo stesso nome, \
 a meno che non risiedano in cartelle differenti."
     IDS_NFO_CONN_TIMEOUT "Connessione all'interfacia di gestione fallita.\n\
-Consulta il file di log (%s) per maggiori dettagli."
+Consulta il file di log (%ls) per maggiori dettagli."
     /* main - Resources */
-    IDS_ERR_OPEN_DEBUG_FILE "Errore nell'apertura del file di debug (%s) per l'output."
-    IDS_ERR_CREATE_PATH "Errore nella creazione del percorso %s:\n%s"
+    IDS_ERR_OPEN_DEBUG_FILE "Errore nell'apertura del file di debug (%ls) per l'output."
+    IDS_ERR_CREATE_PATH "Errore nella creazione del percorso %ls:\n%ls"
     IDS_ERR_LOAD_RICHED20 "Non riesco a caricare RICHED20.DLL."
     IDS_ERR_SHELL_DLL_VERSION "La versione del tuo shell32.dll è troppo vecchia (0x%lx). Hai bisogno almeno della versione 5.0."
     IDS_NFO_SERVICE_STARTED "Servizio OpenVPN avviato."
@@ -422,26 +422,26 @@ Opzioni per ignorare il registro di sistema:\n\
 
 
     IDS_NFO_USAGECAPTION "Utilizzo dell'interfaccia di OpenVPN"
-    IDS_ERR_BAD_PARAMETER "Sto tentando di analizzare ""%s"" come un parametro --option \
+    IDS_ERR_BAD_PARAMETER "Sto tentando di analizzare ""%ls"" come un parametro --option \
 ma non vedo all'inizio '--'"
-    IDS_ERR_BAD_OPTION "Errore sull'opzione: Opzione sconosciuta o Parametro(i) mancante: --%s\n\
+    IDS_ERR_BAD_OPTION "Errore sull'opzione: Opzione sconosciuta o Parametro(i) mancante: --%ls\n\
 Usa openvpn-gui --help per maggiori informazioni."
 
     /* passphrase - Resources */
     IDS_ERR_CREATE_PASS_THREAD "CreateThread visualizza la finestra ChangePassphrase è fallito."
-    IDS_NFO_CHANGE_PWD "Cambia password (%s)"
+    IDS_NFO_CHANGE_PWD "Cambia password (%ls)"
     IDS_ERR_PWD_DONT_MATCH "La password che hai digitato non corrisponde. Riprova."
     IDS_ERR_PWD_TO_SHORT "La tua nuova password deve essere lunga almeno %d caratteri."
     IDS_NFO_EMPTY_PWD "Sei sicuro di voler lasciare vuota la password?"
     IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Formato di chiave sconosciuto."
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Errore nell'apertura del file di chiave privata (%s)."
+    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Errore nell'apertura del file di chiave privata (%ls)."
     IDS_ERR_OLD_PWD_INCORRECT "La vecchia password è errata."
-    IDS_ERR_OPEN_WRITE_KEY "Errore nell'apertura in scrittura del file di chiave privata (%s)."
-    IDS_ERR_WRITE_NEW_KEY "Errore nella scrittura del file della nuova chiave privata (%s)."
+    IDS_ERR_OPEN_WRITE_KEY "Errore nell'apertura in scrittura del file di chiave privata (%ls)."
+    IDS_ERR_WRITE_NEW_KEY "Errore nella scrittura del file della nuova chiave privata (%ls)."
     IDS_NFO_PWD_CHANGED "La tua password è stata modificata."
-    IDS_ERR_READ_PKCS12 "Errore nella lettura del PKCS #12 file (%s)."
+    IDS_ERR_READ_PKCS12 "Errore nella lettura del PKCS #12 file (%ls)."
     IDS_ERR_CREATE_PKCS12 "Errore nella creazione del nuovo PKCS #12 oggetto. La modifica della password è fallita."
-    IDS_ERR_OPEN_CONFIG "Non posso aprire in lettura il file di configurazione: (%s)"
+    IDS_ERR_OPEN_CONFIG "Non posso aprire in lettura il file di configurazione: (%ls)"
     IDS_ERR_ONLY_ONE_KEY_OPTION "Non puoi avere più di una opzione ""key"" nella tua configurazione."
     IDS_ERR_ONLY_KEY_OR_PKCS12 "Non puoi avere entrambe le opzioni ""key"" e ""pkcs12"" nella tua configurazione."
     IDS_ERR_ONLY_ONE_PKCS12_OPTION "Non puoi avere più di una opzione ""pkcs12"" nella tua configurazione."
@@ -464,7 +464,7 @@ Per favore scegline un'altra."
     IDS_ERR_SOCKS_PROXY_ADDRESS "Devi specificare un indirizzo per il proxy SOCKS."
     IDS_ERR_SOCKS_PROXY_PORT "Devi specificare una porta per il proxy SOCKS."
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "Devi specificare una porta tra 1-65535 per il proxy SOCKS."
-    IDS_ERR_CREATE_REG_HKCU_KEY "Errore nella creazione della chiave ""HKEY_CURRENT_USER\\%s""."
+    IDS_ERR_CREATE_REG_HKCU_KEY "Errore nella creazione della chiave ""HKEY_CURRENT_USER\\%ls""."
     IDS_ERR_GET_TEMP_PATH "Errore nel determinare TempPath con GetTempPath(). Usa ""C:\\"" invece."
 
     /* service */
@@ -498,24 +498,24 @@ OpenVPN probabilmente non è installato"
     IDS_ERR_CREATE_REG_KEY "Errore nella creazione della chiave HKLM\\SOFTWARE\\OpenVPN-GUI."
     IDS_ERR_OPEN_WRITE_REG "Errore nell'apertura del registro in scrittura. Puoi far partire questa applicazione \
 una volta che l'amministratore ha aggiornato il registro."
-    IDS_ERR_READ_SET_KEY "Errore nella lettura e modifica della chiave di registro ""%s""."
-    IDS_ERR_WRITE_REGVALUE "Errore nella scrittura del valore di registro ""HKEY_CURRENT_USER\\%s\\%s""."
+    IDS_ERR_READ_SET_KEY "Errore nella lettura e modifica della chiave di registro ""%ls""."
+    IDS_ERR_WRITE_REGVALUE "Errore nella scrittura del valore di registro ""HKEY_CURRENT_USER\\%ls\\%ls""."
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS "Esiste già una configurazione con il nome ""%s""."
+    IDS_ERR_IMPORT_EXISTS "Esiste già una configurazione con il nome ""%ls""."
     IDS_ERR_IMPORT_FAILED "Errore nell'importazione del file. Non ho potuto creare il percorso seguente:\n\n\
-%s\n\nControlla di avere i permessi giusti."
+%ls\n\nControlla di avere i permessi giusti."
     IDS_NFO_IMPORT_SUCCESS "File importato con successo."
-    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
-    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
+    IDS_NFO_IMPORT_OVERWRITE "A config named ""%ls"" already exists. Do you want to replace it?"
+    IDS_ERR_IMPORT_SOURCE "Cannot import file <%ls> as it is already in the global or local config directory"
     IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
 
     /* save/delete password */
-    IDS_NFO_DELETE_PASS "Premi OK per cancellare le password salvate per la configurazione ""%s"""
+    IDS_NFO_DELETE_PASS "Premi OK per cancellare le password salvate per la configurazione ""%ls"""
 
     /* Token password related */
     IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN - Password Token"
-    IDS_NFO_TOKEN_PASSWORD_REQUEST "Inserisci la Password/PIN per il token '%S'"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "Inserisci la Password/PIN per il token '%hs'"
 
     IDS_NFO_AUTH_PASS_RETRY "Credenziali errate. Riprova..."
     IDS_NFO_KEY_PASS_RETRY  "Password errata. Riprova..."
@@ -523,6 +523,6 @@ una volta che l'amministratore ha aggiornato il registro."
     IDS_ERR_INVALID_USERNAME_INPUT "Carattere non valido nel nome utente"
     IDS_NFO_AUTO_CONNECT    "Connessione automatica tra %u secondi..."
     IDS_NFO_CLICK_HERE_TO_START "L'interfaccia OpenVPN è già in esecuzione. Clicca con il tasto destro sull'icona nell'area di notifica per cominciare."
-    IDS_NFO_BYTECOUNT "Byte in: %s out: %s"
+    IDS_NFO_BYTECOUNT "Byte in: %ls out: %ls"
 
 END

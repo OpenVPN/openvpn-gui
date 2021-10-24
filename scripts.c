@@ -53,7 +53,7 @@ RunPreconnectScript(connection_t *c)
 
     /* Cut off extention from config filename and add "_pre.bat" */
     int len = _tcslen(c->config_file) - _tcslen(o.ext_string) - 1;
-    _sntprintf_0(cmdline, _T("%s\\%.*s_pre.bat"), c->config_dir, len, c->config_file);
+    _sntprintf_0(cmdline, _T("%ls\\%.*ls_pre.bat"), c->config_dir, len, c->config_file);
 
     /* Return if no script exists */
     if (_tstat(cmdline, &st) == -1)
@@ -61,7 +61,7 @@ RunPreconnectScript(connection_t *c)
 
     // Create the filename of the logfile
     TCHAR script_log_filename[MAX_PATH];
-    _sntprintf_0(script_log_filename, _T("%s\\%s_pre.log"), o.log_dir, c->config_name);
+    _sntprintf_0(script_log_filename, _T("%ls\\%ls_pre.log"), o.log_dir, c->config_name);
 
     // Create the log file
     SECURITY_ATTRIBUTES sa;
@@ -124,7 +124,7 @@ RunConnectScript(connection_t *c, int run_as_service)
 
     /* Cut off extention from config filename and add "_up.bat" */
     int len = _tcslen(c->config_file) - _tcslen(o.ext_string) - 1;
-    _sntprintf_0(cmdline, _T("%s\\%.*s_up.bat"), c->config_dir, len, c->config_file);
+    _sntprintf_0(cmdline, _T("%ls\\%.*ls_up.bat"), c->config_dir, len, c->config_file);
 
     /* Return if no script exists */
     if (_tstat(cmdline, &st) == -1)
@@ -135,7 +135,7 @@ RunConnectScript(connection_t *c, int run_as_service)
 
     // Create the filename of the logfile
     TCHAR script_log_filename[MAX_PATH];
-    _sntprintf_0(script_log_filename, _T("%s\\%s_up.log"), o.log_dir, c->config_name);
+    _sntprintf_0(script_log_filename, _T("%ls\\%ls_up.log"), o.log_dir, c->config_name);
 
     // Create the log file
     SECURITY_ATTRIBUTES sa;
@@ -217,7 +217,7 @@ RunDisconnectScript(connection_t *c, int run_as_service)
 
     /* Cut off extention from config filename and add "_down.bat" */
     int len = _tcslen(c->config_file) - _tcslen(o.ext_string) - 1;
-    _sntprintf_0(cmdline, _T("%s\\%.*s_down.bat"), c->config_dir, len, c->config_file);
+    _sntprintf_0(cmdline, _T("%ls\\%.*ls_down.bat"), c->config_dir, len, c->config_file);
 
     /* Return if no script exists */
     if (_tstat(cmdline, &st) == -1)
@@ -228,7 +228,7 @@ RunDisconnectScript(connection_t *c, int run_as_service)
 
     // Create the filename of the logfile
     TCHAR script_log_filename[MAX_PATH];
-    _sntprintf_0(script_log_filename, _T("%s\\%s_down.log"), o.log_dir, c->config_name);
+    _sntprintf_0(script_log_filename, _T("%ls\\%ls_down.log"), o.log_dir, c->config_name);
 
     // Create the log file
     SECURITY_ATTRIBUTES sa;

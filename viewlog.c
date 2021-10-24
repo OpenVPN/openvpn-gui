@@ -60,9 +60,9 @@ void ViewLog(int config)
     return;
   else
     PrintDebug (L"Opening log file using ShellExecute with verb = open failed"
-                 " for config '%s' (status = %lu)", o.conn[config].config_name, status);
+                 " for config '%ls' (status = %lu)", o.conn[config].config_name, status);
 
-  _sntprintf_0(filename, _T("%s \"%s\""), o.log_viewer, o.conn[config].log_path);
+  _sntprintf_0(filename, _T("%ls \"%ls\""), o.log_viewer, o.conn[config].log_path);
 
   /* fill in STARTUPINFO struct */
   GetStartupInfo(&start_info);
@@ -108,7 +108,7 @@ void EditConfig(int config)
   CLEAR (sd);
 
   /* Try first using file association */
-  _sntprintf_0(filename, L"%s\\%s", o.conn[config].config_dir, o.conn[config].config_file);
+  _sntprintf_0(filename, L"%ls\\%ls", o.conn[config].config_dir, o.conn[config].config_file);
 
   CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE); /* Safe to init COM multiple times */
   status = ShellExecuteW (o.hWnd, L"open", filename, NULL, o.conn[config].config_dir, SW_SHOWNORMAL);
@@ -116,9 +116,9 @@ void EditConfig(int config)
     return;
   else
     PrintDebug (L"Opening config file using ShellExecute with verb = open failed"
-                 " for config '%s' (status = %lu)", o.conn[config].config_name, status);
+                 " for config '%ls' (status = %lu)", o.conn[config].config_name, status);
 
-  _sntprintf_0(filename, _T("%s \"%s\\%s\""), o.editor, o.conn[config].config_dir, o.conn[config].config_file);
+  _sntprintf_0(filename, _T("%ls \"%ls\\%ls\""), o.editor, o.conn[config].config_dir, o.conn[config].config_file);
 
   /* fill in STARTUPINFO struct */
   GetStartupInfo(&start_info);

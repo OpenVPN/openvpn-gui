@@ -221,7 +221,7 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, ID_ICON_ABOUT, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v%s - GUI pro OpenVPN ve Windows\n\
+    LTEXT "OpenVPN GUI v%ls - GUI pro OpenVPN ve Windows\n\
 Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
 Copyright (C) 2012-2021 OpenVPN GUI přispěvatelé\n", ID_TXT_VERSION, 36, 15, 206, 50
@@ -277,7 +277,7 @@ BEGIN
     IDS_TIP_CONNECTED "\nPřipojeno: "
     IDS_TIP_CONNECTING "\nPřipojování: "
     IDS_TIP_CONNECTED_SINCE "\nPřipojeno od: "
-    IDS_TIP_ASSIGNED_IP "\nPřiřazená IP: %s"
+    IDS_TIP_ASSIGNED_IP "\nPřiřazená IP: %ls"
     IDS_MENU_SERVICE "Služba OpenVPN"
     IDS_MENU_IMPORT "Import"
     IDS_MENU_IMPORT_AS "Import from Access Server…"
@@ -302,28 +302,28 @@ BEGIN
     IDS_MENU_ASK_STOP_SERVICE "Opravdu se chcete odpojit (Zastavit službu OpenVPN)?"
 
     /* Logviewer - Resources */
-    IDS_ERR_START_LOG_VIEWER "Došlo k chybě při spouštění nástroje pro zobrazení logu: %s"
-    IDS_ERR_START_CONF_EDITOR "Došlo k chybě při spouštění nástroje pro úpravu konfigurace: %s"
+    IDS_ERR_START_LOG_VIEWER "Došlo k chybě při spouštění nástroje pro zobrazení logu: %ls"
+    IDS_ERR_START_CONF_EDITOR "Došlo k chybě při spouštění nástroje pro úpravu konfigurace: %ls"
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI nepodporuje více než %d konfigurací. Prosím kontaktujte autora, pokud jich potřebujete více."
     IDS_NFO_NO_CONFIGS "Nebyly nalezeny žádné soubory konfigurací spojení.\n\
-Použijte volbu menu ""Import souboru konfigurace…"" nebo zkopírujte konfigurační soubory do ""%s"" nebo ""%s""."
-    IDS_ERR_CONFIG_NOT_AUTHORIZED "Vytvoření tohoto spojení (%s) vyžaduje členství ve skupině \
-""%s"". Kontaktujte svého správce systému.\n"
-    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Vytvoření tohoto spojení (%s) vyžaduje členství ve skupině \
-""%s"".\n\n\
+Použijte volbu menu ""Import souboru konfigurace…"" nebo zkopírujte konfigurační soubory do ""%ls"" nebo ""%ls""."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "Vytvoření tohoto spojení (%ls) vyžaduje členství ve skupině \
+""%ls"". Kontaktujte svého správce systému.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Vytvoření tohoto spojení (%ls) vyžaduje členství ve skupině \
+""%ls"".\n\n\
 Chcete se přidat do této skupiny?\n\
 Tato akce může vyžadovat svolení nebo heslo správce."
-    IDS_NFO_CONFIG_AUTH_PENDING   "Vytvoření tohoto spojení (%s) vyžaduje členství ve skupině \
-""%s"".\n\n\
+    IDS_NFO_CONFIG_AUTH_PENDING   "Vytvoření tohoto spojení (%ls) vyžaduje členství ve skupině \
+""%ls"".\n\n\
 Prosím dokončete předchozí autorizační dialog."
-    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Přidání uživatele do skupiny ""%s"" nebylo úspěšné."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Přidání uživatele do skupiny ""%ls"" nebylo úspěšné."
     IDS_ERR_ONE_CONN_OLD_VER "V případě, že používáte OpenVPN starší než verze 2.0-beta6, můžete mít aktivní pouze jedno spojení."
     IDS_ERR_STOP_SERV_OLD_VER "Není možno použít OpenVPN GUI pro vytvoření spojení, pokud již běží služba OpenVPN (verze OpenVPN 1.5/1.6). Prosím zastavte nejprve službu OpenVPN."
-    IDS_ERR_CREATE_EVENT "Selhala akce CreateEvent při ukončení události: %s"
-    IDS_ERR_UNKNOWN_PRIORITY "Neznámý název priority: %s"
-    IDS_ERR_LOG_APPEND_BOOL "Přepínač přidávání na konec logu (identifikovaný jako '%s') musí nabývat hodnot '0' nebo '1'"
+    IDS_ERR_CREATE_EVENT "Selhala akce CreateEvent při ukončení události: %ls"
+    IDS_ERR_UNKNOWN_PRIORITY "Neznámý název priority: %ls"
+    IDS_ERR_LOG_APPEND_BOOL "Přepínač přidávání na konec logu (identifikovaný jako '%ls') musí nabývat hodnot '0' nebo '1'"
     IDS_ERR_GET_MSIE_PROXY "Nepodařilo se načíst nastavení proxy z MSIE."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor selhal."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl selhal."
@@ -331,43 +331,43 @@ Prosím dokončete předchozí autorizační dialog."
     IDS_ERR_CREATE_PIPE_INPUT "CreatePipe na hInputRead selhal."
     IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle na hOutputRead selhal."
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle na hInputWrite selhal."
-    IDS_ERR_CREATE_PROCESS "CreateProcess selhal, exe='%s' cmdline='%s' dir='%s'"
+    IDS_ERR_CREATE_PROCESS "CreateProcess selhal, exe='%ls' cmdline='%ls' dir='%ls'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread k zobrazení stavu selhal."
     IDS_NFO_STATE_WAIT_TERM "Aktuální stav: Čekání, než se OpenVPN ukončí…"
     IDS_NFO_STATE_CONNECTED "Aktuální stav: Připojeno"
-    IDS_NFO_NOW_CONNECTED "%s je nyní připojeno."
-    IDS_NFO_ASSIGN_IP "Přiřazená IP: %s"
+    IDS_NFO_NOW_CONNECTED "%ls je nyní připojeno."
+    IDS_NFO_ASSIGN_IP "Přiřazená IP: %ls"
     IDS_ERR_CERT_EXPIRED "Spojení nelze navázat, protože certifikát expiroval, nebo není správně nastaven systémový čas."
     IDS_ERR_CERT_NOT_YET_VALID "Spojení nelze navázat, protože certifikát ještě není platný. Prosím zkontrolujte, že je správně nastaven systémový čas."
     IDS_NFO_STATE_RECONNECTING "Aktuální stav: Restartování"
     IDS_NFO_STATE_DISCONNECTED "Aktuální stav: Odpojeno"
-    IDS_NFO_CONN_TERMINATED "Připojení k %s bylo přerušeno."
+    IDS_NFO_CONN_TERMINATED "Připojení k %ls bylo přerušeno."
     IDS_NFO_STATE_FAILED "Aktuální stav: Nepodařilo se připojit"
-    IDS_NFO_CONN_FAILED "Připojování k %s selhalo."
+    IDS_NFO_CONN_FAILED "Připojování k %ls selhalo."
     IDS_NFO_STATE_FAILED_RECONN "Aktuální stav: Nepodařilo se restartovat"
-    IDS_NFO_RECONN_FAILED "Restartování spojení k %s selhalo."
+    IDS_NFO_RECONN_FAILED "Restartování spojení k %ls selhalo."
     IDS_NFO_STATE_SUSPENDED "Aktuální stav: Pozastaveno"
     IDS_ERR_READ_STDOUT_PIPE "Došlo k chybě při čtení z OpenVPN StdOut Pipe."
     IDS_ERR_CREATE_EDIT_LOGWINDOW "Došlo k chybě při vytváření okna s formátovaným logem."
     IDS_ERR_SET_SIZE "Selhalo nastavení velikosti."
-    IDS_ERR_AUTOSTART_CONF "Nebylo možné najít požadovanou konfiguraci k automatickému spojení: %s"
+    IDS_ERR_AUTOSTART_CONF "Nebylo možné najít požadovanou konfiguraci k automatickému spojení: %ls"
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe na hInputRead selhal."
     IDS_NFO_STATE_CONNECTING "Aktuální stav: Připojování"
-    IDS_NFO_CONNECTION_XXX "OpenVPN spojení (%s)"
+    IDS_NFO_CONNECTION_XXX "OpenVPN spojení (%ls)"
     IDS_NFO_STATE_CONN_SCRIPT "Aktuální stav: Spouštění skriptu při připojení"
     IDS_NFO_STATE_DISCONN_SCRIPT "Aktuální stav: Spouštění skriptu při odpojení"
-    IDS_ERR_RUN_CONN_SCRIPT "Došlo k chybě při při běhu skriptu při připojení: %s"
-    IDS_ERR_GET_EXIT_CODE "Nepodařilo se získat ExitCode skriptu při připojení (%s)"
+    IDS_ERR_RUN_CONN_SCRIPT "Došlo k chybě při při běhu skriptu při připojení: %ls"
+    IDS_ERR_GET_EXIT_CODE "Nepodařilo se získat ExitCode skriptu při připojení (%ls)"
     IDS_ERR_CONN_SCRIPT_FAILED "Skript při připojení selhal. (exitcode=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Skript při připojení selhal. Čas spojení vypršel po %ds."
-    IDS_ERR_CONFIG_EXIST "Konfigurační soubor s názvem '%s' již existuje. Je nutné jeden z konfiguračních \
+    IDS_ERR_CONFIG_EXIST "Konfigurační soubor s názvem '%ls' již existuje. Je nutné jeden z konfiguračních \
 souborů stejného názvu přejmenovat, i když se \
 nachází v jiné složce."
     IDS_NFO_CONN_TIMEOUT "Připojení k rozhraní správy selhalo.\n\
-Více informací najdete v logu (%s)."
+Více informací najdete v logu (%ls)."
     /* main - Resources */
-    IDS_ERR_OPEN_DEBUG_FILE "Nelze otevřít soubor pro zápis ladění (%s)."
-    IDS_ERR_CREATE_PATH "Nepodařilo se vytvořit %s složku:\n%s"
+    IDS_ERR_OPEN_DEBUG_FILE "Nelze otevřít soubor pro zápis ladění (%ls)."
+    IDS_ERR_CREATE_PATH "Nepodařilo se vytvořit %ls složku:\n%ls"
     IDS_ERR_LOAD_RICHED20 "Nepodařilo se načíst riched20.dll."
     IDS_ERR_SHELL_DLL_VERSION "Verze vaší knihovny shell32.dll je příliš nízká (0x%lx). Potřebujete verzi 5.0 nebo novější."
     IDS_NFO_SERVICE_STARTED "Služba OpenVPN spuštěna."
@@ -422,26 +422,26 @@ Volby k použití explicitního nastavení namísto výchozího z registru:\n\
 \t\t\t Must be in the range 1 to 61000. Maximum number of configs is limited by 65536 minus this value. Default=25340.\n"
 
     IDS_NFO_USAGECAPTION "Použití OpenVPN GUI"
-    IDS_ERR_BAD_PARAMETER "Parametr ""%s"" nebyl úspěšně zpracován, \
+    IDS_ERR_BAD_PARAMETER "Parametr ""%ls"" nebyl úspěšně zpracován, \
 zkuste před něj dát '--'."
-    IDS_ERR_BAD_OPTION "Nepovolená hodnota: Neznámá volba nebo chybějící parametr: --%s\n\
+    IDS_ERR_BAD_OPTION "Nepovolená hodnota: Neznámá volba nebo chybějící parametr: --%ls\n\
 Použijte openvpn-gui --help pro více informací."
 
     /* passphrase - Resources */
     IDS_ERR_CREATE_PASS_THREAD "Selhal CreateThread při vytváření dialogu Změna hesla privátního klíče."
-    IDS_NFO_CHANGE_PWD "Změna hesla privátního klíče (%s)"
+    IDS_NFO_CHANGE_PWD "Změna hesla privátního klíče (%ls)"
     IDS_ERR_PWD_DONT_MATCH "Zadaná hesla se neshodují. Zkuste to prosím znovu."
     IDS_ERR_PWD_TO_SHORT "Minimální délka hesla je %d znaků."
     IDS_NFO_EMPTY_PWD "Opravdu chcete nastavit prázdné heslo?"
     IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Neznámý formát souboru klíče."
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Došlo k chybě při načítání souboru privátního klíče (%s)."
+    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Došlo k chybě při načítání souboru privátního klíče (%ls)."
     IDS_ERR_OLD_PWD_INCORRECT "Staré heslo není správné."
-    IDS_ERR_OPEN_WRITE_KEY "Nepodařilo se zapsat do souboru privátního klíče (%s)."
-    IDS_ERR_WRITE_NEW_KEY "Nepodařilo se vytvořit nový soubor privátního klíče (%s)."
+    IDS_ERR_OPEN_WRITE_KEY "Nepodařilo se zapsat do souboru privátního klíče (%ls)."
+    IDS_ERR_WRITE_NEW_KEY "Nepodařilo se vytvořit nový soubor privátního klíče (%ls)."
     IDS_NFO_PWD_CHANGED "Vaše heslo bylo změněno."
-    IDS_ERR_READ_PKCS12 "Došlo k chybě při načítání souboru PKCS #12 (%s)."
+    IDS_ERR_READ_PKCS12 "Došlo k chybě při načítání souboru PKCS #12 (%ls)."
     IDS_ERR_CREATE_PKCS12 "Došlo k chybě při vytváření nového souboru PKCS #12. Změna hesla se nezdařila."
-    IDS_ERR_OPEN_CONFIG "Nepodařilo se otevřít konfigurační soubor ke čtení: (%s)"
+    IDS_ERR_OPEN_CONFIG "Nepodařilo se otevřít konfigurační soubor ke čtení: (%ls)"
     IDS_ERR_ONLY_ONE_KEY_OPTION "Není možné mít více než jednu definici ""key"" v konfiguračním souboru."
     IDS_ERR_ONLY_KEY_OR_PKCS12 "Není možné mít definice ""key"" a ""pkcs12"" ve stejném konfiguračním souboru."
     IDS_ERR_ONLY_ONE_PKCS12_OPTION "Není možné mít více než jednu definici ""pkcs12"" v konfiguračním souboru."
@@ -464,7 +464,7 @@ Prosím zadejte jiné."
     IDS_ERR_SOCKS_PROXY_ADDRESS "Je nutné zadat adresu SOCKS proxy."
     IDS_ERR_SOCKS_PROXY_PORT "Je nutné zadat port SOCKS proxy."
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "Port SOCKS proxy musí být v rozsahu 1-65535"
-    IDS_ERR_CREATE_REG_HKCU_KEY "Došlo k chybě při vytváření klíče ""HKCU\\%s"" v registru."
+    IDS_ERR_CREATE_REG_HKCU_KEY "Došlo k chybě při vytváření klíče ""HKCU\\%ls"" v registru."
     IDS_ERR_GET_TEMP_PATH "Došlo k chybě při zjišťování cesty ke složce Temp pomocí GetTempPath(). Bude použito ""C:\\""."
 
     /* service */
@@ -498,24 +498,24 @@ OpenVPN pravděpodobně není nainstalováno."
     IDS_ERR_CREATE_REG_KEY "Nepodařilo se vytvořit klíč HKLM\\SOFTWARE\\OpenVPN-GUI."
     IDS_ERR_OPEN_WRITE_REG "Nepodařilo se otevřít registr pro zápis. Je nutné spustit aplikaci \
 jednou jako správce, aby se registr aktualizoval."
-    IDS_ERR_READ_SET_KEY "Došlo k chybě při čtení a zápisu klíče registru ""%s""."
-    IDS_ERR_WRITE_REGVALUE "Došlo k chybě při zápisu hodnoty registru ""HKCU\\%s\\%s""."
+    IDS_ERR_READ_SET_KEY "Došlo k chybě při čtení a zápisu klíče registru ""%ls""."
+    IDS_ERR_WRITE_REGVALUE "Došlo k chybě při zápisu hodnoty registru ""HKCU\\%ls\\%ls""."
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS "Konfigurace s názvem ""%s"" již existuje."
+    IDS_ERR_IMPORT_EXISTS "Konfigurace s názvem ""%ls"" již existuje."
     IDS_ERR_IMPORT_FAILED "Nepodařilo se importovat konfigurační soubor. Následující cestu se nepodařilo vytvořit.\n\n\
-%s\n\nUjistěte se prosím, že máte potřebná oprávnění."
+%ls\n\nUjistěte se prosím, že máte potřebná oprávnění."
     IDS_NFO_IMPORT_SUCCESS "Konfigurace úspěšně importována."
-    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
-    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
+    IDS_NFO_IMPORT_OVERWRITE "A config named ""%ls"" already exists. Do you want to replace it?"
+    IDS_ERR_IMPORT_SOURCE "Cannot import file <%ls> as it is already in the global or local config directory"
     IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
 
     /* save/delete password */
-    IDS_NFO_DELETE_PASS "Stiskněte OK pro odstranění uložených hesel pro konfiguraci ""%s"""
+    IDS_NFO_DELETE_PASS "Stiskněte OK pro odstranění uložených hesel pro konfiguraci ""%ls"""
 
     /* Token password related */
     IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN - Heslo tokenu"
-    IDS_NFO_TOKEN_PASSWORD_REQUEST "Prosím zadejte heslo/PIN pro token '%S'"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "Prosím zadejte heslo/PIN pro token '%hs'"
 
     IDS_NFO_AUTH_PASS_RETRY "Wrong credentials. Try again…"
     IDS_NFO_KEY_PASS_RETRY  "Wrong password. Try again…"
@@ -523,6 +523,6 @@ jednou jako správce, aby se registr aktualizoval."
     IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
     IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds…"
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
-    IDS_NFO_BYTECOUNT "Bytes in: %s  out: %s"
+    IDS_NFO_BYTECOUNT "Bytes in: %ls  out: %ls"
 
 END

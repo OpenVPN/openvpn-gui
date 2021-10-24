@@ -221,7 +221,7 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, ID_ICON_ABOUT, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v%s - A Windows GUI for OpenVPN\n\
+    LTEXT "OpenVPN GUI v%ls - A Windows GUI for OpenVPN\n\
 Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
 Copyright (C) 2012-2021 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
@@ -277,7 +277,7 @@ BEGIN
     IDS_TIP_CONNECTED "\n接続済み: "
     IDS_TIP_CONNECTING "\n接続中: "
     IDS_TIP_CONNECTED_SINCE "\n接続時間: "
-    IDS_TIP_ASSIGNED_IP "\n割り当てられたIP: %s"
+    IDS_TIP_ASSIGNED_IP "\n割り当てられたIP: %ls"
     IDS_MENU_SERVICE "OpenVPNサービス"
     IDS_MENU_IMPORT "Import"
     IDS_MENU_IMPORT_AS "Import from Access Server..."
@@ -302,28 +302,28 @@ BEGIN
     IDS_MENU_ASK_STOP_SERVICE "切断しますか？（OpenVPNサービスを停止します）"
 
     /* Logviewer - Resources */
-    IDS_ERR_START_LOG_VIEWER "ログビューアの起動に失敗しました: %s"
-    IDS_ERR_START_CONF_EDITOR "設定エディタの起動に失敗しました: %s"
+    IDS_ERR_START_LOG_VIEWER "ログビューアの起動に失敗しました: %ls"
+    IDS_ERR_START_CONF_EDITOR "設定エディタの起動に失敗しました: %ls"
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUIは %d 以上の設定はサポートしていません。上限以上の設定は無視されます。"
     IDS_NFO_NO_CONFIGS "読み込める接続プロファイル（設定ファイル）がありません。\n\
-""ファイルのインポート.."" メニューを使用するか、設定ファイルを ""%s"" か ""%s"" にコピーしてください。"
-    IDS_ERR_CONFIG_NOT_AUTHORIZED "この接続 (%s) を開始するには \
-""%s"" グループのメンバーである必要があります。システム管理者に連絡してください。\n"
-    IDS_ERR_CONFIG_TRY_AUTHORIZE  "この接続 (%s) を開始するには \
-""%s"" グループのメンバーである必要があります。\n\n\
+""ファイルのインポート.."" メニューを使用するか、設定ファイルを ""%ls"" か ""%ls"" にコピーしてください。"
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "この接続 (%ls) を開始するには \
+""%ls"" グループのメンバーである必要があります。システム管理者に連絡してください。\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "この接続 (%ls) を開始するには \
+""%ls"" グループのメンバーである必要があります。\n\n\
 このグループに追加しますか？\n\
 この操作を実行するには、管理用パスワードの入力や確認が必要な場合があります。"
-    IDS_NFO_CONFIG_AUTH_PENDING   "この接続 (%s) を開始するには \
-""%s"" グループのメンバーである必要があります。\n\n\
+    IDS_NFO_CONFIG_AUTH_PENDING   "この接続 (%ls) を開始するには \
+""%ls"" グループのメンバーである必要があります。\n\n\
 認証処理を完了してください。"
-    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "グループ ""%s"" にユーザーを追加できませんでした。"
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "グループ ""%ls"" にユーザーを追加できませんでした。"
     IDS_ERR_ONE_CONN_OLD_VER "OpenVPN 2.0-beta6 より古いバージョンでは、同時に使用できる接続は1つだけです。"
     IDS_ERR_STOP_SERV_OLD_VER "OpenVPNサービスが実行されているときには、OpenVPN GUI で接続を開始できません（OpenVPN 1.5/1.6）。OpenVPN GUIを使用する場合には先にOpenVPNサービスを停止してください。"
-    IDS_ERR_CREATE_EVENT "CreateEvent failed on exit event: %s"
-    IDS_ERR_UNKNOWN_PRIORITY "Unknown priority name: %s"
-    IDS_ERR_LOG_APPEND_BOOL "ログファイルの追加フラグ ('%s' が指定されています) は'0'か'1'である必要があります。"
+    IDS_ERR_CREATE_EVENT "CreateEvent failed on exit event: %ls"
+    IDS_ERR_UNKNOWN_PRIORITY "Unknown priority name: %ls"
+    IDS_ERR_LOG_APPEND_BOOL "ログファイルの追加フラグ ('%ls' が指定されています) は'0'か'1'である必要があります。"
     IDS_ERR_GET_MSIE_PROXY "MSIEのプロキシ設定が取得できません。"
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor failed."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl failed."
@@ -331,43 +331,43 @@ BEGIN
     IDS_ERR_CREATE_PIPE_INPUT "CreatePipe on hInputRead failed."
     IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle on hOutputRead failed."
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite failed."
-    IDS_ERR_CREATE_PROCESS "CreateProcess failed, exe='%s' cmdline='%s' dir='%s'"
+    IDS_ERR_CREATE_PROCESS "CreateProcess failed, exe='%ls' cmdline='%ls' dir='%ls'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread to show Status window Failed."
     IDS_NFO_STATE_WAIT_TERM "現在の状況: OpenVPNの終了を待機中..."
     IDS_NFO_STATE_CONNECTED "現在の状況: 接続済み"
-    IDS_NFO_NOW_CONNECTED "%s に接続しました。"
-    IDS_NFO_ASSIGN_IP "割り当てられたIP: %s"
+    IDS_NFO_NOW_CONNECTED "%ls に接続しました。"
+    IDS_NFO_ASSIGN_IP "割り当てられたIP: %ls"
     IDS_ERR_CERT_EXPIRED "証明書の期限が切れているかシステム時刻が正しくないため、接続できません。"
     IDS_ERR_CERT_NOT_YET_VALID "証明書の有効期間前のため接続できません。システム時刻が正しく設定されているかを確認してください。"
     IDS_NFO_STATE_RECONNECTING "現在の状況: 再接続中"
     IDS_NFO_STATE_DISCONNECTED "現在の状況: 切断"
-    IDS_NFO_CONN_TERMINATED "%s への接続を終了しました。."
+    IDS_NFO_CONN_TERMINATED "%ls への接続を終了しました。."
     IDS_NFO_STATE_FAILED "現在の状況: 接続に失敗しました。"
-    IDS_NFO_CONN_FAILED "%s への接続に失敗しました。"
+    IDS_NFO_CONN_FAILED "%ls への接続に失敗しました。"
     IDS_NFO_STATE_FAILED_RECONN "現在の状況: 再接続に失敗"
-    IDS_NFO_RECONN_FAILED "%s への再接続に失敗しました。"
+    IDS_NFO_RECONN_FAILED "%ls への再接続に失敗しました。"
     IDS_NFO_STATE_SUSPENDED "現在の状況: 保留中"
     IDS_ERR_READ_STDOUT_PIPE "OpenVPN 標準出力パイプからの読み取りでエラーが発生しました。"
     IDS_ERR_CREATE_EDIT_LOGWINDOW "Creating RichEdit LogWindow Failed!!"
     IDS_ERR_SET_SIZE "Set Size failed!"
-    IDS_ERR_AUTOSTART_CONF "自動起動用の設定が見つかりません: %s"
+    IDS_ERR_AUTOSTART_CONF "自動起動用の設定が見つかりません: %ls"
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe on hInputRead failed."
     IDS_NFO_STATE_CONNECTING "現在の状況: 接続中"
-    IDS_NFO_CONNECTION_XXX "OpenVPN接続 (%s)"
+    IDS_NFO_CONNECTION_XXX "OpenVPN接続 (%ls)"
     IDS_NFO_STATE_CONN_SCRIPT "現在の状況: 接続スクリプトを実行中"
     IDS_NFO_STATE_DISCONN_SCRIPT "現在の状況: 切断スクリプトを実行中"
-    IDS_ERR_RUN_CONN_SCRIPT "接続スクリプトの実行に失敗: %s"
-    IDS_ERR_GET_EXIT_CODE "接続スクリプトからの戻り値の取得に失敗 (%s)"
+    IDS_ERR_RUN_CONN_SCRIPT "接続スクリプトの実行に失敗: %ls"
+    IDS_ERR_GET_EXIT_CODE "接続スクリプトからの戻り値の取得に失敗 (%ls)"
     IDS_ERR_CONN_SCRIPT_FAILED "接続スクリプトが実行できませんでした。 (exitcode=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "接続スクリプトが実行できませんでした。 %d 秒経過してタイムアウトしました。"
-    IDS_ERR_CONFIG_EXIST "既に '%s' という名前の設定ファイルが存在しています。\
+    IDS_ERR_CONFIG_EXIST "既に '%ls' という名前の設定ファイルが存在しています。\
 別フォルダでも同じ名前で複数の設定ファイルを使用することはできません。"
     IDS_NFO_CONN_TIMEOUT "管理インターフェイスに接続できませんでした。\n\
-ログファイル (%s) を確認してください。"
+ログファイル (%ls) を確認してください。"
 
     /* main - Resources */
-    IDS_ERR_OPEN_DEBUG_FILE "デバッグファイル (%s) を出力用に開くときにエラーが発生しました。"
-    IDS_ERR_CREATE_PATH "%s を作成できませんでした。パス:\n%s"
+    IDS_ERR_OPEN_DEBUG_FILE "デバッグファイル (%ls) を出力用に開くときにエラーが発生しました。"
+    IDS_ERR_CREATE_PATH "%ls を作成できませんでした。パス:\n%ls"
     IDS_ERR_LOAD_RICHED20 "RICHED20.DLL が読み込めません。"
     IDS_ERR_SHELL_DLL_VERSION "shell32.dll のバージョンが古いです (0x%lx). バージョン 5.0 以降に更新してください。"
     IDS_NFO_SERVICE_STARTED "OpenVPNサービスが開始されました。"
@@ -423,26 +423,26 @@ OpenVPN GUIをこのまま終了しますか？"
 
 
     IDS_NFO_USAGECAPTION "OpenVPN GUIの使い方"
-    IDS_ERR_BAD_PARAMETER """%s"" を --option パラメータとしてパースしようとしましたが \
+    IDS_ERR_BAD_PARAMETER """%ls"" を --option パラメータとしてパースしようとしましたが \
 先頭の '--'がありません。"
-    IDS_ERR_BAD_OPTION "オプションエラー: 認識できないパラメータか、パラメータが不足しています。--%s\n\
+    IDS_ERR_BAD_OPTION "オプションエラー: 認識できないパラメータか、パラメータが不足しています。--%ls\n\
 openvpn-gui --help を参照してください。"
 
     /* passphrase - Resources */
     IDS_ERR_CREATE_PASS_THREAD "ChangePassphraseダイアログを表示するためのCreateThread似失敗しました。"
-    IDS_NFO_CHANGE_PWD "パスワード変更 (%s)"
+    IDS_NFO_CHANGE_PWD "パスワード変更 (%ls)"
     IDS_ERR_PWD_DONT_MATCH "入力されたパスワードが一致していません。再試行してください。"
     IDS_ERR_PWD_TO_SHORT "新しいパスワードは %d 文字以上で設定してください。"
     IDS_NFO_EMPTY_PWD "空のパスワードのまま設定しますか？"
     IDS_ERR_UNKNOWN_KEYFILE_FORMAT "鍵ファイルフォーマットが不明です。"
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "秘密鍵ファイル (%s) を開くときにエラーが発生しました。"
+    IDS_ERR_OPEN_PRIVATE_KEY_FILE "秘密鍵ファイル (%ls) を開くときにエラーが発生しました。"
     IDS_ERR_OLD_PWD_INCORRECT "古いパスワードが正しくありません。"
-    IDS_ERR_OPEN_WRITE_KEY "秘密鍵ファイル (%s) を書き込み用に開くときにエラーが発生しました。"
-    IDS_ERR_WRITE_NEW_KEY "新しい秘密鍵ファイル (%s) への書き込みでエラーが発生しました。"
+    IDS_ERR_OPEN_WRITE_KEY "秘密鍵ファイル (%ls) を書き込み用に開くときにエラーが発生しました。"
+    IDS_ERR_WRITE_NEW_KEY "新しい秘密鍵ファイル (%ls) への書き込みでエラーが発生しました。"
     IDS_NFO_PWD_CHANGED "パスワードは変更されました。"
-    IDS_ERR_READ_PKCS12 "PKCS #12 ファイル (%s) の読み込みでエラーが発生しました。"
+    IDS_ERR_READ_PKCS12 "PKCS #12 ファイル (%ls) の読み込みでエラーが発生しました。"
     IDS_ERR_CREATE_PKCS12 "新しい PKCS #12 オブジェクトの作成でエラーが発生しました。パスワードの変更に失敗しました。"
-    IDS_ERR_OPEN_CONFIG "設定ファイル (%s) を読み取り用に開くときにエラーが発生しました。"
+    IDS_ERR_OPEN_CONFIG "設定ファイル (%ls) を読み取り用に開くときにエラーが発生しました。"
     IDS_ERR_ONLY_ONE_KEY_OPTION "設定ファイル内に複数の ""key"" オプションを設定することはできません。"
     IDS_ERR_ONLY_KEY_OR_PKCS12 "設定ファイル内で ""key"" と ""pkcs12"" の両方を設定することはできません。"
     IDS_ERR_ONLY_ONE_PKCS12_OPTION "設定ファイル内に複数の ""pkcs12"" オプションを設定することはできません。"
@@ -465,7 +465,7 @@ openvpn-gui --help を参照してください。"
     IDS_ERR_SOCKS_PROXY_ADDRESS "SOCKSプロキシのアドレスを設定する必要があります。"
     IDS_ERR_SOCKS_PROXY_PORT "SOCKSプロキシのポートを設定する必要があります。"
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "SOCKSプロキシのポートとして設定できるのは 1-65535 の範囲内です。"
-    IDS_ERR_CREATE_REG_HKCU_KEY """HKEY_CURRENT_USER\\%s"" キーの作成時にエラーが発生しました。"
+    IDS_ERR_CREATE_REG_HKCU_KEY """HKEY_CURRENT_USER\\%ls"" キーの作成時にエラーが発生しました。"
     IDS_ERR_GET_TEMP_PATH "GetTempPath()で一時フォルダが取得できませんでした。""C:\\"" を使用します。"
 
     /* service */
@@ -498,24 +498,24 @@ OpenVPNがインストールされていない可能性があります。"
     IDS_ERR_PRECONN_SCRIPT_TIMEOUT "レジストリ ""preconnectscript_timeout"" の値は 1-99 の範囲内である必要があります。"
     IDS_ERR_CREATE_REG_KEY "キー HKLM\\SOFTWARE\\OpenVPN-GUI の作成に失敗しました。"
     IDS_ERR_OPEN_WRITE_REG "レジストリの書き込みに失敗しました。レジストリの更新時にはアプリケーションを管理者権限で実行する必要があります。"
-    IDS_ERR_READ_SET_KEY "レジストリ ""%s"" の読み取り/書き込みに失敗しました。"
-    IDS_ERR_WRITE_REGVALUE "レジストリ ""HKEY_CURRENT_USER\\%s\\%s"" への書き込みに失敗しました。"
+    IDS_ERR_READ_SET_KEY "レジストリ ""%ls"" の読み取り/書き込みに失敗しました。"
+    IDS_ERR_WRITE_REGVALUE "レジストリ ""HKEY_CURRENT_USER\\%ls\\%ls"" への書き込みに失敗しました。"
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS "設定 ""%s"" は既に存在しています。"
+    IDS_ERR_IMPORT_EXISTS "設定 ""%ls"" は既に存在しています。"
     IDS_ERR_IMPORT_FAILED "ファイルがインポートできません。以下のパスは作成されませんでした。\n\n\
-%s\n\n適切な権限があることを確認してください。"
+%ls\n\n適切な権限があることを確認してください。"
     IDS_NFO_IMPORT_SUCCESS "ファイルが正しくインポートされました。"
-    IDS_NFO_IMPORT_OVERWRITE "設定 ""%s"" は既に存在しています。上書きしますか？"
-    IDS_ERR_IMPORT_SOURCE "<%s> はグローバル/ローカル設定フォルダにあるためインポートできません。"
+    IDS_NFO_IMPORT_OVERWRITE "設定 ""%ls"" は既に存在しています。上書きしますか？"
+    IDS_ERR_IMPORT_SOURCE "<%ls> はグローバル/ローカル設定フォルダにあるためインポートできません。"
     IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
 
     /* save/delete password */
-    IDS_NFO_DELETE_PASS "設定 ""%s"" の保存されたパスワードを削除するには OK を押してください。"
+    IDS_NFO_DELETE_PASS "設定 ""%ls"" の保存されたパスワードを削除するには OK を押してください。"
 
     /* Token password related */
     IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – トークンパスワード"
-    IDS_NFO_TOKEN_PASSWORD_REQUEST "トークン '%S' のパスワード/PINを入力してください。"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "トークン '%hs' のパスワード/PINを入力してください。"
 
     IDS_NFO_AUTH_PASS_RETRY "認証情報が正しくありません。もう一度試行してください..."
     IDS_NFO_KEY_PASS_RETRY  "パスワードが正しくありません。もう一度試行してください..."
@@ -523,6 +523,6 @@ OpenVPNがインストールされていない可能性があります。"
     IDS_ERR_INVALID_USERNAME_INPUT "ユーザー名で使用できない文字です"
     IDS_NFO_AUTO_CONNECT    "%u 秒で自動的に再接続します…"
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI は既に実行されています。トレイアイコンを右クリックして開始してください。"
-    IDS_NFO_BYTECOUNT "バイト数 受信: %s  送信: %s"
+    IDS_NFO_BYTECOUNT "バイト数 受信: %ls  送信: %ls"
 
 END

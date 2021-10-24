@@ -227,7 +227,7 @@ echo_msg_append(connection_t *c, time_t UNUSED timestamp, const char *msg, BOOL 
         WriteStatusLog(c, L"GUI> ", L"Error: out of memory while processing echo msg", false);
         goto out;
     }
-    swprintf(s + c->echo_msg.txtlen, len - c->echo_msg.txtlen,  L"%s%s", wmsg, eol);
+    swprintf(s + c->echo_msg.txtlen, len - c->echo_msg.txtlen,  L"%ls%ls", wmsg, eol);
 
     s[len-1] = L'\0';
     c->echo_msg.text = s;
@@ -552,7 +552,7 @@ MessageDialogFunc(HWND hwnd, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
         {
             connection_t *c = (connection_t *) lParam;
             wchar_t from[256];
-            _sntprintf_0(from, L"From: %s %s", c->config_name, _wctime(&c->echo_msg.fp.timestamp));
+            _sntprintf_0(from, L"From: %ls %ls", c->config_name, _wctime(&c->echo_msg.fp.timestamp));
 
             /* strip \n added by _wctime */
             if (wcslen(from) > 0)

@@ -242,7 +242,7 @@ CreatePopupMenus()
                 AppendMenu(parent->menu, MF_POPUP, (UINT_PTR) this->menu, this->name);
                 this->pos = parent->children++;
 
-                PrintDebug(L"Submenu %d named %s added to parent %s with position %d",
+                PrintDebug(L"Submenu %d named %ls added to parent %ls with position %d",
                         i, this->name, parent->name, this->pos);
             }
         }
@@ -263,7 +263,7 @@ CreatePopupMenus()
             AppendMenu(parent->menu, MF_POPUP, (UINT_PTR) hMenuConn[i], c->config_name);
             c->pos = parent->children++;
 
-            PrintDebug(L"Config %d named %s added to submenu %s with position %d",
+            PrintDebug(L"Config %d named %ls added to submenu %ls with position %d",
                         i, c->config_name, parent->name, c->pos);
         }
 
@@ -601,7 +601,7 @@ SetMenuStatusById(int i, conn_state_t state)
         }
         CheckMenuItem(parent->menu, pos, MF_BYPOSITION | (checked ? MF_CHECKED : MF_UNCHECKED));
 
-        PrintDebug(L"Setting state of config %s checked = %d, parent %s, pos %d",
+        PrintDebug(L"Setting state of config %ls checked = %d, parent %ls, pos %d",
                     c->config_name, checked, (parent->id == 0)? L"Main Menu" : L"SubMenu", pos);
 
         if (checked) /* also check all parent groups */

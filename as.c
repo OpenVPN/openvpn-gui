@@ -481,7 +481,7 @@ again:
         MessageBoxW(hWnd, L"Failed to get TMP path", _T(PACKAGE_NAME), MB_OK);
         goto done;
     }
-    swprintf(out_path, out_path_size, L"%s%s", out_path, name);
+    swprintf(out_path, out_path_size, L"%ls%ls", out_path, name);
     out_path[out_path_size - 1] = '\0';
     FILE* f = _wfopen(out_path, L"w");
     if (f == NULL) {

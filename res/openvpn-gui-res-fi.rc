@@ -220,7 +220,7 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FINNISH, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, ID_ICON_ABOUT, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v%s - Graafinen käyttöliittymä OpenVPN:lle\n\
+    LTEXT "OpenVPN GUI v%ls - Graafinen käyttöliittymä OpenVPN:lle\n\
 Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
 Copyright (C) 2012-2021 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
@@ -276,7 +276,7 @@ BEGIN
     IDS_TIP_CONNECTED "\nYhdistetty kohteeseen: "
     IDS_TIP_CONNECTING "\nYhdistetään kohteeseen: "
     IDS_TIP_CONNECTED_SINCE "\nYhteys luotu: "
-    IDS_TIP_ASSIGNED_IP "\nIP-osoite: %s"
+    IDS_TIP_ASSIGNED_IP "\nIP-osoite: %ls"
     IDS_MENU_SERVICE "OpenVPN-palvelu"
     IDS_MENU_IMPORT "Tuo"
     IDS_MENU_IMPORT_AS "Import from Access Server…"
@@ -301,28 +301,28 @@ BEGIN
     IDS_MENU_ASK_STOP_SERVICE "Haluatko katkaista yhteyden ja pysäyttää OpenVPN-palvelun?"
 
     /* Logviewer - Resources */
-    IDS_ERR_START_LOG_VIEWER "Lokitiedoston katselimen käynnistäminen epäonnistui: %s"
-    IDS_ERR_START_CONF_EDITOR "Asetusten muokkaimen käynnistäminen epäonnistui: %s"
+    IDS_ERR_START_LOG_VIEWER "Lokitiedoston katselimen käynnistäminen epäonnistui: %ls"
+    IDS_ERR_START_CONF_EDITOR "Asetusten muokkaimen käynnistäminen epäonnistui: %ls"
 
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI:n asetustiedostoja voi olla käytössä korkeintaan %d. Ota yhteys tämän sovelluksen kehittäjään, mikä tarvitset useampia."
     IDS_NFO_NO_CONFIGS "Ei käyttökelpoisia asetustiedostoja.\n\
-Valitse ""Tuo tiedosto.."" valikosta tai kopioi asetustiedosto kansioon ""%s"" tai ""%s""."
-    IDS_ERR_CONFIG_NOT_AUTHORIZED "Yhteyden %s käynnistäminen vaatii ryhmään \
-""%s"" kuulumisen. Ota yhteys järjestelmäylläpitäjään.\n"
-    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Yhteyden %s käynnistäminen vaatii ryhmään \
-""%s"" kuulumisen.\n\n\
+Valitse ""Tuo tiedosto.."" valikosta tai kopioi asetustiedosto kansioon ""%ls"" tai ""%ls""."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "Yhteyden %ls käynnistäminen vaatii ryhmään \
+""%ls"" kuulumisen. Ota yhteys järjestelmäylläpitäjään.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Yhteyden %ls käynnistäminen vaatii ryhmään \
+""%ls"" kuulumisen.\n\n\
 Haluatko lisätä itsesi tähän ryhmään?\n\
 Toiminto voi vaatia ylläpitäjän salasanan tai vahvistuksen."
-    IDS_NFO_CONFIG_AUTH_PENDING   "Yhteyden %s käynnistäminen vaatii ryhmään \
-""%s"" kuulumisen.\n\n\
+    IDS_NFO_CONFIG_AUTH_PENDING   "Yhteyden %ls käynnistäminen vaatii ryhmään \
+""%ls"" kuulumisen.\n\n\
 Ole hyvä ja suorita aiempi varmennus loppuun."
-    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Käyttäjän lisääminen ryhmään ""%s"" epäonnistui."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Käyttäjän lisääminen ryhmään ""%ls"" epäonnistui."
     IDS_ERR_ONE_CONN_OLD_VER "Jos käytössä on OpenVPN 2.0-beta6 tai vanhempi, käytössä voi olla kerrallaan vain yksi yhteys."
     IDS_ERR_STOP_SERV_OLD_VER "OpenVPN GUI -sovelluksella ei voi hallita yhteyksiä, jos OpenVPN (versio 1.5/1.6) on käynnistetty palveluna. Pysäytä OpenVPN-palvelu ja yritä uudelleen."
-    IDS_ERR_CREATE_EVENT "CreateEvent epäonnistui: %s"
-    IDS_ERR_UNKNOWN_PRIORITY "Tunnistamaton prioriteetti: %s"
-    IDS_ERR_LOG_APPEND_BOOL "Lokitiedostoon lisäämisasetuksen ('%s') on oltava '0' tai '1'"
+    IDS_ERR_CREATE_EVENT "CreateEvent epäonnistui: %ls"
+    IDS_ERR_UNKNOWN_PRIORITY "Tunnistamaton prioriteetti: %ls"
+    IDS_ERR_LOG_APPEND_BOOL "Lokitiedostoon lisäämisasetuksen ('%ls') on oltava '0' tai '1'"
     IDS_ERR_GET_MSIE_PROXY "Internet Explorerin välipalvelinasetusten nouto epäonnistui."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor failed."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl failed."
@@ -330,43 +330,43 @@ Ole hyvä ja suorita aiempi varmennus loppuun."
     IDS_ERR_CREATE_PIPE_INPUT "CreatePipe on hInputRead failed."
     IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle on hOutputRead failed."
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite failed."
-    IDS_ERR_CREATE_PROCESS "CreateProcess failed, exe='%s' cmdline='%s' dir='%s'"
+    IDS_ERR_CREATE_PROCESS "CreateProcess failed, exe='%ls' cmdline='%ls' dir='%ls'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread to show Status window Failed."
     IDS_NFO_STATE_WAIT_TERM "Tila: odotetaan OpenVPN:n sammumista…"
     IDS_NFO_STATE_CONNECTED "Tila: yhdistetty"
-    IDS_NFO_NOW_CONNECTED "%s on nyt yhdistetty."
-    IDS_NFO_ASSIGN_IP "IP-osoite: %s"
+    IDS_NFO_NOW_CONNECTED "%ls on nyt yhdistetty."
+    IDS_NFO_ASSIGN_IP "IP-osoite: %ls"
     IDS_ERR_CERT_EXPIRED "Yhdistäminen epäonnistui, koska varmenne on vanhentunut tai tietokoneen kello on väärässä ajassa."
     IDS_ERR_CERT_NOT_YET_VALID "Yhdistäminen epäonnistui, koska varmenne ei ole vielä voimassa. Tarkista, että tietokoneesi kello on oikeassa ajassa."
     IDS_NFO_STATE_RECONNECTING "Tila: yhdistetään uudelleen"
     IDS_NFO_STATE_DISCONNECTED "Tila: yhteys katkaistu"
-    IDS_NFO_CONN_TERMINATED "Yhteys kohteeseen %s katkaistiin."
+    IDS_NFO_CONN_TERMINATED "Yhteys kohteeseen %ls katkaistiin."
     IDS_NFO_STATE_FAILED "Tila: yhdistäminen epäonnistui"
-    IDS_NFO_CONN_FAILED "Yhdistäminen kohteeseen %s epäonnistui."
+    IDS_NFO_CONN_FAILED "Yhdistäminen kohteeseen %ls epäonnistui."
     IDS_NFO_STATE_FAILED_RECONN "Tila: yhdistäminen uudelleen epäonnistui"
-    IDS_NFO_RECONN_FAILED "Yhdistäminen uudelleen kohteeseen %s epäonnistui."
+    IDS_NFO_RECONN_FAILED "Yhdistäminen uudelleen kohteeseen %ls epäonnistui."
     IDS_NFO_STATE_SUSPENDED "Tila: keskeytetty"
     IDS_ERR_READ_STDOUT_PIPE "Lukeminen oletustulosteesta epäonnistui."
     IDS_ERR_CREATE_EDIT_LOGWINDOW "Creating RichEdit LogWindow Failed!!"
     IDS_ERR_SET_SIZE "Koon määrittäminen epäonnistui!"
-    IDS_ERR_AUTOSTART_CONF "Ei löydetty automaattisesti käynnistettävää asetustiedostoa %s"
+    IDS_ERR_AUTOSTART_CONF "Ei löydetty automaattisesti käynnistettävää asetustiedostoa %ls"
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe on hInputRead failed."
     IDS_NFO_STATE_CONNECTING "Tila: yhdistetään"
-    IDS_NFO_CONNECTION_XXX "OpenVPN-yhteys (%s)"
+    IDS_NFO_CONNECTION_XXX "OpenVPN-yhteys (%ls)"
     IDS_NFO_STATE_CONN_SCRIPT "Tila: Suoritetaan yhteydenmuodostuskomentosarjaa"
     IDS_NFO_STATE_DISCONN_SCRIPT "Tila: Suoritetaan yhteydenkatkaisukomentosarjaa"
-    IDS_ERR_RUN_CONN_SCRIPT "Virhe suoritettaessa yhteydenmuodostoskomentosarjaa: %s"
-    IDS_ERR_GET_EXIT_CODE "Yhteydenmuodostuskomentosarjan %s paluuarvoa ei saatu"
+    IDS_ERR_RUN_CONN_SCRIPT "Virhe suoritettaessa yhteydenmuodostoskomentosarjaa: %ls"
+    IDS_ERR_GET_EXIT_CODE "Yhteydenmuodostuskomentosarjan %ls paluuarvoa ei saatu"
     IDS_ERR_CONN_SCRIPT_FAILED "Yhteydenmuodostuskomentosarjan suorittaminen epäonnistui. (paluuarvo=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Yhteydenmuodostamiskomentosarja aikakatkaistiin %d sekunnin jälkeen."
-    IDS_ERR_CONFIG_EXIST "Samanniminen asetustiedosto '%s' on jo olemassa. \
+    IDS_ERR_CONFIG_EXIST "Samanniminen asetustiedosto '%ls' on jo olemassa. \
 Myös eri kansioissa olevilla asetustiedostoilla \
 on oltava eri nimi."
     IDS_NFO_CONN_TIMEOUT "Yhdistäminen hallintaliittymään epäonnistui.\n\
-Lisätietoja lokitiedostossa (%s)."
+Lisätietoja lokitiedostossa (%ls)."
     /* main - Resources */
-    IDS_ERR_OPEN_DEBUG_FILE "Vianjäljitystiedostoon (%s) kirjoittaminen epäonnistui"
-    IDS_ERR_CREATE_PATH "Ei voitu luoda %s polkua:\n%s"
+    IDS_ERR_OPEN_DEBUG_FILE "Vianjäljitystiedostoon (%ls) kirjoittaminen epäonnistui"
+    IDS_ERR_CREATE_PATH "Ei voitu luoda %ls polkua:\n%ls"
     IDS_ERR_LOAD_RICHED20 "Kirjaston RICHED20.DLL lataaminen epäonnistui."
     IDS_ERR_SHELL_DLL_VERSION "Kirjasto shell32.dll on liian vanha (0x%lx), tarvitaan vähintään versio 5.0."
     IDS_NFO_SERVICE_STARTED "OpenVPN-palvelu käynnistetty."
@@ -423,26 +423,26 @@ Rekisterin asetukset kumoavat valinnat:\n\
 
 
     IDS_NFO_USAGECAPTION "OpenVPN GUI:n käyttö"
-    IDS_ERR_BAD_PARAMETER "Syötteen ""%s"" käsittely --option-valitsimen \
+    IDS_ERR_BAD_PARAMETER "Syötteen ""%ls"" käsittely --option-valitsimen \
 parametrina epäonnistui, koska sen alusta puuttui '--'"
-    IDS_ERR_BAD_OPTION "Tuntematon valinta tai parametreja puuttuu: --%s\n\
+    IDS_ERR_BAD_OPTION "Tuntematon valinta tai parametreja puuttuu: --%ls\n\
 Lisätietoja saa komennolla openvpn-gui --help"
 
     /* passphrase - Resources */
     IDS_ERR_CREATE_PASS_THREAD "CreateThread to show ChangePassphrase dialog failed."
-    IDS_NFO_CHANGE_PWD "Vaihda yksityisen avaimen salasana (%s)"
+    IDS_NFO_CHANGE_PWD "Vaihda yksityisen avaimen salasana (%ls)"
     IDS_ERR_PWD_DONT_MATCH "Salasanat eivät täsmää. Yritä uudelleen."
     IDS_ERR_PWD_TO_SHORT "Salasanan on oltava vähintään %d merkkiä pitkä."
     IDS_NFO_EMPTY_PWD "Haluatko varmasti määrittää TYHJÄN salasanan?"
     IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Tuntematon avaintiedoston muoto."
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Virhe avattaessa yksityistä avaintiedostoa (%s)."
+    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Virhe avattaessa yksityistä avaintiedostoa (%ls)."
     IDS_ERR_OLD_PWD_INCORRECT "Vanha salasana on virheellinen."
-    IDS_ERR_OPEN_WRITE_KEY "Kirjoittaminen yksityiseen avaintiedostoon (%s) epäonnistui."
-    IDS_ERR_WRITE_NEW_KEY "Uuden yksityisen avaintiedoston (%s) luonti epäonnistui."
+    IDS_ERR_OPEN_WRITE_KEY "Kirjoittaminen yksityiseen avaintiedostoon (%ls) epäonnistui."
+    IDS_ERR_WRITE_NEW_KEY "Uuden yksityisen avaintiedoston (%ls) luonti epäonnistui."
     IDS_NFO_PWD_CHANGED "Salasana vaihdettu."
-    IDS_ERR_READ_PKCS12 "PKCS #12 -tiedoston (%s) lukeminen epäonnistui."
+    IDS_ERR_READ_PKCS12 "PKCS #12 -tiedoston (%ls) lukeminen epäonnistui."
     IDS_ERR_CREATE_PKCS12 "PKCS #12 -tiedoston luonti ja salasanan vaihto epäonnistuivat."
-    IDS_ERR_OPEN_CONFIG "Asetustiedoston luku epäonnistui: (%s)"
+    IDS_ERR_OPEN_CONFIG "Asetustiedoston luku epäonnistui: (%ls)"
     IDS_ERR_ONLY_ONE_KEY_OPTION "Asetustiedostossa voi olla korkeintaan yksi ""key""-valinta."
     IDS_ERR_ONLY_KEY_OR_PKCS12 "Asetustiedostossa ei voi olla yhtäaikaisesti määritettynä sekä ""key"" että ""pkcs12""."
     IDS_ERR_ONLY_ONE_PKCS12_OPTION "Asetustiedostossa voi olla korkeintaan yksi ""pkcs12""-valinta."
@@ -465,7 +465,7 @@ sitä on muutettava."
     IDS_ERR_SOCKS_PROXY_ADDRESS "SOCKS-välipalvelimen osoite on määritettävä."
     IDS_ERR_SOCKS_PROXY_PORT "SOCKS-välipalvelimen portti on määritettävä."
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "SOCKS-välipalvelimen portti on oltava väliltä 1-65535"
-    IDS_ERR_CREATE_REG_HKCU_KEY "Virhe luotaessa avainta ""HKEY_CURRENT_USER\\%s""."
+    IDS_ERR_CREATE_REG_HKCU_KEY "Virhe luotaessa avainta ""HKEY_CURRENT_USER\\%ls""."
     IDS_ERR_GET_TEMP_PATH "Virhe määritettäessä muuttujaa TempPath funktiolla GetTempPath(). Käytetään polkua ""C:\\""."
 
     /* service */
@@ -499,24 +499,24 @@ OpenVPN:ää ei todennäköisesti ole asennettu."
     IDS_ERR_CREATE_REG_KEY "Virhe luotaessa rekisteriavainta HKLM\\SOFTWARE\\OpenVPN-GUI."
     IDS_ERR_OPEN_WRITE_REG "Virhe kirjoitettaessa rekisteriin. Tämä sovellus pitää ensimmäisellä kerralla \
 ajaa ylläpitäjän oikeuksin, jotta se saa lisättyä rekisteriin tietoja."
-    IDS_ERR_READ_SET_KEY "Virhe luettaessa ja määritettäessä rekisteriavainta ""%s""."
-    IDS_ERR_WRITE_REGVALUE "Virhe kirjoitettaessa rekisterin arvoa ""HKEY_CURRENT_USER\\%s\\%s""."
+    IDS_ERR_READ_SET_KEY "Virhe luettaessa ja määritettäessä rekisteriavainta ""%ls""."
+    IDS_ERR_WRITE_REGVALUE "Virhe kirjoitettaessa rekisterin arvoa ""HKEY_CURRENT_USER\\%ls\\%ls""."
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS "Samanniminen (""%s"") asetustiedosto on jo olemassa."
+    IDS_ERR_IMPORT_EXISTS "Samanniminen (""%ls"") asetustiedosto on jo olemassa."
     IDS_ERR_IMPORT_FAILED "Asetustiedoston tuonti epäonnistui. Polkua ei voitu luoda:\n\n\
-%s\n\nVarmista, että sinulla on tarvittavat tiedosto-oikeudet."
+%ls\n\nVarmista, että sinulla on tarvittavat tiedosto-oikeudet."
     IDS_NFO_IMPORT_SUCCESS "Asetustiedoston tuonti onnistui."
-    IDS_NFO_IMPORT_OVERWRITE "A config named ""%s"" already exists. Do you want to replace it?"
-    IDS_ERR_IMPORT_SOURCE "Cannot import file <%s> as it is already in the global or local config directory"
+    IDS_NFO_IMPORT_OVERWRITE "A config named ""%ls"" already exists. Do you want to replace it?"
+    IDS_ERR_IMPORT_SOURCE "Cannot import file <%ls> as it is already in the global or local config directory"
     IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
 
     /* save/delete password */
-    IDS_NFO_DELETE_PASS "Napsauta OK poistaaksesi asetustiedostoon ""%s"" liitetyt salasanat."
+    IDS_NFO_DELETE_PASS "Napsauta OK poistaaksesi asetustiedostoon ""%ls"" liitetyt salasanat."
 
     /* Token password related */
     IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN - Tokenin salasana"
-    IDS_NFO_TOKEN_PASSWORD_REQUEST "Anna Salasana/PIN tokenille '%S'"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "Anna Salasana/PIN tokenille '%hs'"
 
     IDS_NFO_AUTH_PASS_RETRY "Wrong credentials. Try again…"
     IDS_NFO_KEY_PASS_RETRY  "Wrong password. Try again…"
@@ -524,6 +524,6 @@ ajaa ylläpitäjän oikeuksin, jotta se saa lisättyä rekisteriin tietoja."
     IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
     IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds…"
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
-    IDS_NFO_BYTECOUNT "Bytes in: %s  out: %s"
+    IDS_NFO_BYTECOUNT "Bytes in: %ls  out: %ls"
 
 END

@@ -126,7 +126,7 @@ NotifyRunningInstance()
             config_data.cbData = (wcslen(o.action_arg)+1)*sizeof(o.action_arg[0]);
             config_data.lpData = (void *) o.action_arg;
         }
-        PrintDebug(L"Instance 2: called with action %d : %s", o.action, o.action_arg);
+        PrintDebug(L"Instance 2: called with action %d : %ls", o.action, o.action_arg);
         if (!SendMessageTimeout (hwnd_master, WM_COPYDATA, 0,
                                  (LPARAM) &config_data, 0, timeout, NULL))
         {
@@ -206,7 +206,7 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
       ShowLocalizedMsg(IDS_ERR_OPEN_DEBUG_FILE, DEBUG_FILE);
       exit(1);
     }
-  PrintDebug(_T("Starting OpenVPN GUI v%S"), PACKAGE_VERSION);
+  PrintDebug(_T("Starting OpenVPN GUI v%hs"), PACKAGE_VERSION);
 #endif
 
 
@@ -429,7 +429,7 @@ HandleCopyDataMessage(const COPYDATASTRUCT *copy_data)
 {
     WCHAR *str = NULL;
     connection_t *c = NULL;
-    PrintDebug (L"WM_COPYDATA message received. (dwData: %lu, cbData: %lu, lpData: %s)",
+    PrintDebug (L"WM_COPYDATA message received. (dwData: %lu, cbData: %lu, lpData: %ls)",
                 copy_data->dwData, copy_data->cbData, copy_data->lpData);
     if (copy_data->cbData >= sizeof(WCHAR) && copy_data->lpData)
     {
@@ -484,7 +484,7 @@ HandleCopyDataMessage(const COPYDATASTRUCT *copy_data)
     else
     {
         MsgToEventLog(EVENTLOG_ERROR_TYPE,
-                      L"Unknown WM_COPYDATA message ignored. (dwData: %lu, cbData: %lu, lpData: %s)",
+                      L"Unknown WM_COPYDATA message ignored. (dwData: %lu, cbData: %lu, lpData: %ls)",
                       copy_data->dwData, copy_data->cbData, copy_data->lpData);
         return FALSE;
     }
@@ -774,7 +774,7 @@ ImportConfigFileFromDisk()
 {
     TCHAR filter[2*_countof(o.ext_string)+5];
 
-    _sntprintf_0(filter, _T("*.%s%c*.%s%c"), o.ext_string, _T('\0'), o.ext_string, _T('\0'));
+    _sntprintf_0(filter, _T("*.%ls%lc*.%ls%lc"), o.ext_string, _T('\0'), o.ext_string, _T('\0'));
 
     OPENFILENAME fn;
     TCHAR source[MAX_PATH] = _T("");
@@ -815,7 +815,7 @@ void PrintDebugMsg(TCHAR *msg)
                  time_struct->tm_min,
                  time_struct->tm_sec);
 
-  _ftprintf(o.debug_fp, _T("%s %s\n"), date, msg);
+  _ftprintf(o.debug_fp, _T("%ls %ls\n"), date, msg);
   fflush(o.debug_fp);
 }
 #endif

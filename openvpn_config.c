@@ -70,7 +70,7 @@ CheckReadAccess (const TCHAR *dir, const TCHAR *file)
 {
     TCHAR path[MAX_PATH];
 
-    _sntprintf_0 (path, _T("%s\\%s"), dir, file);
+    _sntprintf_0 (path, _T("%ls\\%ls"), dir, file);
 
     return CheckFileAccess (path, GENERIC_READ);
 }
@@ -99,7 +99,7 @@ AddConfigFileToList(int config, const TCHAR *filename, const TCHAR *config_dir)
     _tcsncpy(c->config_dir, config_dir, _countof(c->config_dir) - 1);
     _tcsncpy(c->config_name, c->config_file, _countof(c->config_name) - 1);
     c->config_name[_tcslen(c->config_name) - _tcslen(o.ext_string) - 1] = _T('\0');
-    _sntprintf_0(c->log_path, _T("%s\\%s.log"), o.log_dir, c->config_name);
+    _sntprintf_0(c->log_path, _T("%ls\\%ls.log"), o.log_dir, c->config_name);
 
     c->manage.sk = INVALID_SOCKET;
     c->manage.skaddr.sin_family = AF_INET;
@@ -172,7 +172,7 @@ NewConfigGroup(const wchar_t *name, int parent, int flags)
     config_group_t *cg = &o.groups[o.num_groups];
     memset(cg, 0, sizeof(*cg));
 
-    _sntprintf_0(cg->name, L"%s", name);
+    _sntprintf_0(cg->name, L"%ls", name);
     cg->id = o.num_groups++;
     cg->parent = parent;
     cg->active = false; /* activated later if not empty */
@@ -268,7 +268,7 @@ BuildFileList0(const TCHAR *config_dir, int recurse_depth, int group, int flags)
     TCHAR find_string[MAX_PATH];
     TCHAR subdir_name[MAX_PATH];
 
-    _sntprintf_0(find_string, _T("%s\\*"), config_dir);
+    _sntprintf_0(find_string, _T("%ls\\*"), config_dir);
     find_handle = FindFirstFile(find_string, &find_obj);
     if (find_handle == INVALID_HANDLE_VALUE)
         return;
@@ -326,7 +326,7 @@ BuildFileList0(const TCHAR *config_dir, int recurse_depth, int group, int flags)
                 &&  wcscmp(find_obj.cFileName, _T("..")))
             {
                 /* recurse into subdirectory */
-                _sntprintf_0(subdir_name, _T("%s\\%s"), config_dir, find_obj.cFileName);
+                _sntprintf_0(subdir_name, _T("%ls\\%ls"), config_dir, find_obj.cFileName);
                 int sub_group = NewConfigGroup(find_obj.cFileName, group, flags);
 
                 BuildFileList0(subdir_name, recurse_depth - 1, sub_group, flags);
