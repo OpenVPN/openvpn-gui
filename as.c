@@ -22,6 +22,7 @@
 #include <windows.h>
 #include <wininet.h>
 #include <stdlib.h>
+#include <shlwapi.h>
 
 #include "config.h"
 #include "localization.h"
@@ -37,6 +38,21 @@
 
 #define PROFILE_NAME_TOKEN L"# OVPN_ACCESS_SERVER_PROFILE="
 #define FRIENDLY_NAME_TOKEN L"# OVPN_ACCESS_SERVER_FRIENDLY_NAME="
+
+/** Replace characters not allowed in Windows filenames with '_' */
+void
+SanitizeFilename(wchar_t *fname)
+{
+    const wchar_t *reserved = L"<>:\"/\\|?*;"; /* remap these and ascii 1 to 31 */
+    while (*fname) {
+        wchar_t c = *fname;
+        if (c < 32 || wcschr(reserved, c))
+        {
+            *fname = L'_';
+        }
+        ++fname;
+    }
+}
 
 /**
  * Extract profile name from profile content.
@@ -87,14 +103,7 @@ ExtractProfileName(const WCHAR *profile, const WCHAR *default_name, WCHAR *out_n
 
     out_name[out_name_length - 1] = L'\0';
 
-    /* sanitize profile name */
-    const WCHAR *reserved = L"<>:\"/\\|?*;"; /* remap these and ascii 1 to 31 */
-    while (*out_name) {
-        wchar_t c = *out_name;
-        if (c < 32 || wcschr(reserved, c))
-            *out_name = L'_';
-        ++out_name;
-    }
+    SanitizeFilename(out_name);
 
     free(buf);
 }
@@ -296,6 +305,77 @@ GetASUrl(const WCHAR *host, bool autologin, struct UrlComponents *comps)
 }
 
 /**
+ * Read content-disposition header and extract file name if any.
+ * Returns true on success, false otherwise.
+ */
+bool
+ExtractFilenameFromHeader(HINTERNET hRequest, wchar_t *name, size_t len)
+{
+    DWORD index = 0;
+    char *buf = NULL;
+    DWORD buflen = 256;
+    bool res = false;
+    UINT codepage = 28591; /* ISO 8859_1 -- the default char set for http header */
+
+    buf = malloc(buflen);
+    if (!buf
+        || (!HttpQueryInfoA(hRequest, HTTP_QUERY_CONTENT_DISPOSITION, buf, &buflen, &index)
+            && GetLastError() != ERROR_INSUFFICIENT_BUFFER))
+    {
+        goto done;
+    }
+
+    if (GetLastError() == ERROR_INSUFFICIENT_BUFFER)
+    {
+        /* try again with more space */
+        free(buf);
+        buf = malloc(buflen);
+        if (!buf
+            || !HttpQueryInfoA(hRequest, HTTP_QUERY_CONTENT_DISPOSITION, buf, &buflen, &index))
+        {
+            goto done;
+        }
+    }
+
+    /* look for filename=<name> */
+    char *p = strtok(buf, ";");
+    char *fn = NULL;
+    for ( ; p; p = strtok(NULL, ";"))
+    {
+        if ((fn = strstr(p, "filename=")) != NULL)
+        {
+            fn += 9;
+            continue;
+        }
+        else if ((fn = strstr(p, "filename*=utf-8''")) != NULL)
+        {
+            fn += 17;
+            UrlUnescapeA(fn, NULL, NULL, URL_UNESCAPE_INPLACE);
+            codepage = CP_UTF8;
+            break; /* we prefer filename*= value */
+        }
+    }
+
+    if (fn && strlen(fn))
+    {
+        StrTrimA(fn, " \""); /* strip leading and trailing spaces and quotes */
+        wchar_t *wfn = WidenEx(codepage, fn);
+        if (wfn)
+        {
+            wcsncpy_s(name, len, wfn, _TRUNCATE);
+            res = true;
+            free(wfn);
+        }
+    }
+
+    SanitizeFilename(name);
+
+done:
+    free(buf);
+    return res;
+}
+
+/**
  * Download profile from a generic URL and save it to a temp file
  *
  * @param hWnd handle of window which initiated download
@@ -467,13 +547,18 @@ again:
     }
 
     WCHAR name[MAX_PATH] = {0};
-    WCHAR* wbuf = Widen(buf);
-    if (!wbuf) {
-        MessageBoxW(hWnd, L"Failed to convert profile content to wchar", _T(PACKAGE_NAME), MB_OK);
-        goto done;
+    /* read filename from header or from the profile metadata */
+    if (strlen(comps->content_type) == 0 /* AS profile */
+        || !ExtractFilenameFromHeader(hRequest, name, MAX_PATH))
+    {
+        WCHAR* wbuf = Widen(buf);
+        if (!wbuf) {
+            MessageBoxW(hWnd, L"Failed to convert profile content to wchar", _T(PACKAGE_NAME), MB_OK);
+            goto done;
+        }
+        ExtractProfileName(wbuf, comps->host, name, MAX_PATH);
+        free(wbuf);
     }
-    ExtractProfileName(wbuf, comps->host, name, MAX_PATH);
-    free(wbuf);
 
     /* save profile content into tmp file */
     DWORD res = GetTempPathW((DWORD)out_path_size, out_path);
