@@ -39,6 +39,7 @@
 #include "main.h"
 #include "openvpn_config.h"
 #include "openvpn-gui-res.h"
+#include "tray.h"
 
 /*
  * Helper function to do base64 conversion through CryptoAPI
@@ -692,7 +693,7 @@ ImportConfigFile(const TCHAR* source)
        return;
     }
 
-    ShowLocalizedMsg(IDS_NFO_IMPORT_SUCCESS);
+    ShowTrayBalloon(LoadLocalizedString(IDS_NFO_IMPORT_SUCCESS), fileName);
     /* rescan file list after import */
     BuildFileList();
 }
