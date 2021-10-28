@@ -466,22 +466,23 @@ CheckFileAccess (const TCHAR *path, int access)
     return ret;
 }
 
-/*
- * Convert a NUL terminated utf8 string to widechar. The caller must free
+/**
+ * Convert a NUL terminated narrow string to wide string using
+ * specified codepage. The caller must free
  * the returned pointer. Return NULL on error.
  */
 WCHAR *
-Widen(const char *utf8)
+WidenEx(UINT codepage, const char *str)
 {
     WCHAR *wstr = NULL;
-    if (!utf8)
+    if (!str)
         return wstr;
 
-    int nch = MultiByteToWideChar(CP_UTF8, 0, utf8, -1, NULL, 0);
+    int nch = MultiByteToWideChar(codepage, 0, str, -1, NULL, 0);
     if (nch > 0)
         wstr = malloc(sizeof(WCHAR) * nch);
     if (wstr)
-        nch =  MultiByteToWideChar(CP_UTF8, 0, utf8, -1, wstr, nch);
+        nch =  MultiByteToWideChar(codepage, 0, str, -1, wstr, nch);
 
     if (nch == 0 && wstr)
     {
@@ -490,6 +491,15 @@ Widen(const char *utf8)
     }
 
     return wstr;
+}
+
+/*
+ * Same as WidenEx with codepage = UTF8
+ */
+WCHAR *
+Widen(const char *utf8)
+{
+    return WidenEx(CP_UTF8, utf8);
 }
 
 /* Return false if input contains any characters in exclude */
