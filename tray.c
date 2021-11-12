@@ -332,7 +332,7 @@ DestroyPopupMenus()
 }
 
 /* Rescan config folders and recreate popup menus */
-static void
+void
 RecreatePopupMenus(void)
 {
     DestroyPopupMenus();
