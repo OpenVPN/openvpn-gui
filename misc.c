@@ -704,6 +704,6 @@ ImportConfigFile(const TCHAR* source)
     }
 
     ShowTrayBalloon(LoadLocalizedString(IDS_NFO_IMPORT_SUCCESS), fileName);
-    /* rescan file list after import */
-    BuildFileList();
+    /* destroy popup menus, based on existing num_configs, rescan file list and recreate menus */
+    RecreatePopupMenus();
 }

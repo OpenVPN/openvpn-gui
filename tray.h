@@ -45,6 +45,7 @@
 #define IDM_CLEARPASSMENU       (1 + IDM_PASSPHRASEMENU)
 #define IDM_RECONNECTMENU       (1 + IDM_CLEARPASSMENU)
 
+void RecreatePopupMenus(void);
 void CreatePopupMenus();
 void OnNotifyTray(LPARAM);
 void OnDestroyTray(void);
