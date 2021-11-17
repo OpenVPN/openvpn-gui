@@ -682,7 +682,7 @@ ImportProfileFromURLDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
             if (downloaded) {
                 EndDialog(hwndDlg, LOWORD(wParam));
 
-                ImportConfigFile(path);
+                ImportConfigFile(path, false); /* do not prompt user */
                 _wunlink(path);
             }
             return TRUE;

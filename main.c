@@ -471,7 +471,7 @@ HandleCopyDataMessage(const COPYDATASTRUCT *copy_data)
     }
     else if(copy_data->dwData == WM_OVPN_IMPORT && str)
     {
-        ImportConfigFile(str);
+        ImportConfigFile(str, true); /* prompt user */
     }
     else if (copy_data->dwData == WM_OVPN_NOTIFY)
     {
@@ -531,7 +531,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       /* if '--import' was specified, do it now */
       if (o.action == WM_OVPN_IMPORT && o.action_arg)
       {
-        ImportConfigFile(o.action_arg);
+        ImportConfigFile(o.action_arg, true); /* prompt user */
       }
 
       if (!AutoStartConnections()) {
@@ -794,7 +794,7 @@ ImportConfigFileFromDisk()
 
     if (GetOpenFileName(&fn))
     {
-        ImportConfigFile(source);
+        ImportConfigFile(source, false); /* do not prompt user */
     }
 }
 
