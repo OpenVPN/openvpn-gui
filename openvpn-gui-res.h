@@ -339,6 +339,7 @@
 #define IDS_NFO_IMPORT_OVERWRITE        1904
 #define IDS_ERR_IMPORT_SOURCE           1905
 #define IDS_ERR_IMPORT_ACCESS           1906
+#define IDS_NFO_IMPORT_SOURCE           1907
 
 /* Save password related messages */
 #define IDS_NFO_DELETE_PASS             2001

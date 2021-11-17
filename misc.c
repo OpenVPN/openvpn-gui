@@ -646,7 +646,7 @@ open_url(const wchar_t *url)
 extern options_t o;
 
 void
-ImportConfigFile(const TCHAR* source)
+ImportConfigFile(const TCHAR* source, bool prompt_user)
 {
     TCHAR fileName[MAX_PATH] = _T("");
     TCHAR ext[MAX_PATH] = _T("");
@@ -683,6 +683,12 @@ ImportConfigFile(const TCHAR* source)
     }
     else
     {
+        if (prompt_user
+            && ShowLocalizedMsgEx(MB_YESNO, NULL, TEXT(PACKAGE_NAME),
+                              IDS_NFO_IMPORT_SOURCE, fileName) == IDNO)
+        {
+            return;
+        }
         WCHAR dest_dir[MAX_PATH+1];
         swprintf(dest_dir, MAX_PATH, L"%ls\\%ls", o.config_dir, fileName);
         dest_dir[MAX_PATH] = L'\0';

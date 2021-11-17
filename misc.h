@@ -72,7 +72,7 @@ DWORD md_final(md_ctx *ctx, BYTE *md);
 /* Open specified http/https URL using ShellExecute. */
 BOOL open_url(const wchar_t *url);
 
-void ImportConfigFile(const TCHAR* path);
+void ImportConfigFile(const TCHAR* path, bool prompt_user);
 
 /*
  * Helper function to convert UCS-2 text from a dialog item to UTF-8.
