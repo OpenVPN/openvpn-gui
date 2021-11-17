@@ -507,6 +507,7 @@ OpenVPN, можливо, не встановлений."
 Перевірте, що в вас є необхідні права для цієї операції."
     IDS_NFO_IMPORT_SUCCESS "Імпорт файла успішно завершено."
     IDS_NFO_IMPORT_OVERWRITE "Конфігурація з назвою ""%ls"" вже існує. Замінити?"
+    IDS_NFO_IMPORT_SOURCE "Do you want to import the profile <%ls>?"
     IDS_ERR_IMPORT_SOURCE "Не вдається імпортувати файл <%ls>, оскільки він уже є в глобальному або локальному каталозі конфігурації"
     IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
 
