@@ -506,6 +506,7 @@ uma vez como Administrador para alterar o registro."
 %ls\n\nCertifique-se de que você possui as permissões necessárias."
     IDS_NFO_IMPORT_SUCCESS "Arquivo importado com sucesso."
     IDS_NFO_IMPORT_OVERWRITE "Uma configuração nomeada ""%ls"" já existe. Você deseja substituí-la?"
+    IDS_NFO_IMPORT_SOURCE "Do you want to import the profile <%ls>?"
     IDS_ERR_IMPORT_SOURCE "Não é possível importar o arquivo <%ls>, pois ele já está na pasta de configurações global ou local"
     IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
 

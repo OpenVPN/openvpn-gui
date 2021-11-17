@@ -508,6 +508,7 @@ ajaa ylläpitäjän oikeuksin, jotta se saa lisättyä rekisteriin tietoja."
 %ls\n\nVarmista, että sinulla on tarvittavat tiedosto-oikeudet."
     IDS_NFO_IMPORT_SUCCESS "Asetustiedoston tuonti onnistui."
     IDS_NFO_IMPORT_OVERWRITE "A config named ""%ls"" already exists. Do you want to replace it?"
+    IDS_NFO_IMPORT_SOURCE "Do you want to import the profile <%ls>?"
     IDS_ERR_IMPORT_SOURCE "Cannot import file <%ls> as it is already in the global or local config directory"
     IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
 

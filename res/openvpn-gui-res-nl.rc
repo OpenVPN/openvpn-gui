@@ -508,6 +508,7 @@ om de registerinstellingen te updaten."
 %ls\n\nControleer of de juiste rechten gebruikt worden."
     IDS_NFO_IMPORT_SUCCESS "Importeren bestand gelukt."
     IDS_NFO_IMPORT_OVERWRITE "Een configuratie met de naam ""%ls"" bestaat al. Wilt u deze vervangen?"
+    IDS_NFO_IMPORT_SOURCE "Do you want to import the profile <%ls>?"
     IDS_ERR_IMPORT_SOURCE "Het bestand <%ls> kan niet worden geïmporteerd omdat het al in de globale of lokale configuratiemap bestaat"
     IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
 
