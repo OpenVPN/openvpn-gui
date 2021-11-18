@@ -28,6 +28,11 @@
 #include <openssl/pem.h>
 #include <openssl/err.h>
 #include <openssl/pkcs12.h>
+
+#if defined(_MSC_VER) && !defined(_M_ARM64)
+#include <openssl/applink.c>
+#endif
+
 #endif
 
 #include <windows.h>
