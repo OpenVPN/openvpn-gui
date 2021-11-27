@@ -647,6 +647,25 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             /* Set password echo on if needed */
             if (param->flags & FLAG_CR_ECHO)
                 SendMessage(GetDlgItem(hwndDlg, ID_EDT_RESPONSE), EM_SETPASSWORDCHAR, 0, 0);
+
+            /* Resize Window if text if challenge text is long */
+            SIZE sz = {0};
+            RECT rect = {0};
+            HDC hdc = GetDC(GetDlgItem(hwndDlg, ID_TXT_DESCRIPTION));
+            GetWindowRect(hwndDlg, &rect);
+            rect.right -= rect.left;
+            rect.bottom -= rect.top;
+
+            /* if space for text + some margin exceeds the window size, resize */
+            if (GetTextExtentPoint32W(hdc, wstr, wcslen(wstr), &sz)
+                && LPtoDP(hdc, (POINT *) &sz, 1) /* logical to device units */
+                && sz.cx + DPI_SCALE(15) > rect.right) /* 15 nominal pixel margin space */
+            {
+                /* new horizontal dimension with a max of 640 nominal pixels */
+                rect.right = min(DPI_SCALE(640), sz.cx + DPI_SCALE(15));
+                SetWindowPos(hwndDlg, NULL, 0, 0, rect.right, rect.bottom, SWP_NOMOVE);
+                PrintDebug(L"Window resized to = %d %d", rect.right, rect.bottom);
+            }
         }
         else if (param->flags & FLAG_PASS_TOKEN)
         {
