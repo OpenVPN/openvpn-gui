@@ -648,7 +648,7 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             if (param->flags & FLAG_CR_ECHO)
                 SendMessage(GetDlgItem(hwndDlg, ID_EDT_RESPONSE), EM_SETPASSWORDCHAR, 0, 0);
 
-            /* Resize Window if text if challenge text is long */
+            /* Rendered size of challenge text and window rectangle */
             SIZE sz = {0};
             RECT rect = {0};
             HDC hdc = GetDC(GetDlgItem(hwndDlg, ID_TXT_DESCRIPTION));
