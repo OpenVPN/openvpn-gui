@@ -7,13 +7,22 @@ jobs:
     strategy:
       matrix:
         arch: [x86, amd64, amd64_arm64]
+        ossl: [openssl, openssl3]
+        include:
+        - arch: amd64_arm64
+          triplet: arm64
+        - arch: x86
+          triplet: x86
+        - arch: amd64
+          triplet: x64
 
     env:
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
       SOLUTION_FILE_PATH: .
       BUILD_CONFIGURATION: Release
-      buildDir: '${{ github.workspace }}/build'
+      VCPKG_OVERLAY_PORTS: '${{ github.workspace }}/openvpn/contrib/vcpkg-ports'
+      buildDir: '${{ github.workspace }}/build/'
 
     runs-on: windows-latest
     steps:
@@ -23,23 +32,30 @@ jobs:
       with:
         arch: ${{ matrix.arch }}
 
-    - name: Restore from cache and install vcpkg
-      uses: lukka/run-vcpkg@v6
+    - name: Clone openvpn repo
+      uses: actions/checkout@v2
       with:
-        setupOnly: true
-        vcpkgGitCommitId: 'a267ab118c09f56f3dae96c9a4b3410820ad2f0b'
-        additionalCachedPaths: ${{ env.buildDir }}/vcpkg_installed
-        appendedCacheKey: ${{ matrix.arch }}-${{ hashFiles( '**/vcpkg.json' ) }}
+        repository: openvpn/openvpn
+        path: openvpn
 
-    - name: Run CMake with vcpkg.json manifest
+    - name: Install dependencies
+      uses: lukka/run-vcpkg@v7.4
+      with:
+        vcpkgGitCommitId: 'b18b17865cfb6bd24620a00f30691be6775abb96'
+        vcpkgArguments: ${{ matrix.ossl }}
+        vcpkgTriplet: '${{ matrix.triplet }}-windows'
+
+    - name: Build
       uses: lukka/run-cmake@v3
       with:
         useVcpkgToolchainFile: true
         buildWithCMake: true
-        buildDirectory: ${{ env.buildDir }}
         cmakeBuildType: ${{env.BUILD_CONFIGURATION}}
+        buildDirectory: ${{ env.buildDir }}
 
     - uses: actions/upload-artifact@v2
       with:
-        name: openvpn-gui ${{ matrix.arch }}
-        path: '${{ env.buildDir }}/openvpn-gui.exe'
+        name: openvpn-gui_${{ matrix.triplet }}_${{ matrix.ossl }}
+        path: |
+          ${{ env.buildDir }}/*.exe
+          ${{ env.buildDir }}/*.dll
