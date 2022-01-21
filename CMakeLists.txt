@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(VCPKG_FEATURE_FLAGS manifests)
-
 project(openvpn-gui C)
 
 add_executable(${PROJECT_NAME} WIN32
