@@ -77,7 +77,8 @@ ExtractProfileName(const WCHAR *profile, const WCHAR *default_name, WCHAR *out_n
     WCHAR *buf = _wcsdup(profile);
 
     WCHAR *pch = NULL;
-    pch = wcstok(buf, L"\r\n");
+    WCHAR *ctx = NULL;
+    pch = wcstok(buf, L"\r\n", &ctx);
 
     while (pch != NULL) {
         if (wcsbegins(pch, PROFILE_NAME_TOKEN)) {
@@ -89,7 +90,7 @@ ExtractProfileName(const WCHAR *profile, const WCHAR *default_name, WCHAR *out_n
             friendly_name[PROFILE_NAME_LEN - 1] = L'\0';
         }
 
-        pch = wcstok(NULL, L"\r\n");
+        pch = wcstok(NULL, L"\r\n", &ctx);
     }
 
     /* we use .ovpn here, but extension could be customized */
