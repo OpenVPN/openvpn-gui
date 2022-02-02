@@ -475,7 +475,8 @@ ParseProxyString(LPWSTR proxy_str, url_scheme scheme,
         return;
 
     LPCWSTR delim = L"; ";
-    LPWSTR token = wcstok(proxy_str, delim);
+    LPWSTR ctx = NULL;
+    LPWSTR token = wcstok_s(proxy_str, delim, &ctx);
 
     LPCWSTR scheme_str = UrlSchemeStr(scheme);
     LPCWSTR socks_str = UrlSchemeStr(SOCKS_URL);
@@ -545,7 +546,7 @@ ParseProxyString(LPWSTR proxy_str, url_scheme scheme,
 
             break;
         }
-        token = wcstok(NULL, delim);
+        token = wcstok_s(NULL, delim, &ctx);
     }
 }
 
