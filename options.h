@@ -185,6 +185,7 @@ typedef struct {
 
     /* HKLM Registry values */
     TCHAR exe_path[MAX_PATH];
+    TCHAR install_path[MAX_PATH];
     TCHAR global_config_dir[MAX_PATH];
     TCHAR priority_string[64];
     TCHAR ovpn_admin_group[MAX_NAME];

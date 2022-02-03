@@ -78,7 +78,6 @@ static int
 GetGlobalRegistryKeys()
 {
   TCHAR windows_dir[MAX_PATH];
-  TCHAR openvpn_path[MAX_PATH];
   HKEY regkey;
 
   if (!GetWindowsDirectory(windows_dir, _countof(windows_dir))) {
@@ -100,23 +99,23 @@ GetGlobalRegistryKeys()
       regkey = NULL;
       ShowLocalizedMsg(IDS_ERR_OPEN_REGISTRY);
     }
-  if (!regkey || !GetRegistryValue(regkey, _T(""), openvpn_path, _countof(openvpn_path))
-      || _tcslen(openvpn_path) == 0)
+  if (!regkey || !GetRegistryValue(regkey, _T(""), o.install_path, _countof(o.install_path))
+      || _tcslen(o.install_path) == 0)
     {
       /* error reading registry value */
       if (regkey)
           ShowLocalizedMsg(IDS_ERR_READING_REGISTRY);
       /* Use a sane default value */
-      _sntprintf_0(openvpn_path, _T("%ls"), _T("C:\\Program Files\\OpenVPN\\"));
+      _sntprintf_0(o.install_path, _T("%ls"), _T("C:\\Program Files\\OpenVPN\\"));
     }
-  if (openvpn_path[_tcslen(openvpn_path) - 1] != _T('\\'))
-    _tcscat(openvpn_path, _T("\\"));
+  if (o.install_path[_tcslen(o.install_path) - 1] != _T('\\'))
+    _tcscat(o.install_path, _T("\\"));
 
   /* an admin-defined global config dir defined in HKLM\OpenVPN\config_dir */
   if (!regkey || !GetRegistryValue(regkey, _T("config_dir"), o.global_config_dir, _countof(o.global_config_dir)))
     {
       /* use default = openvpnpath\config */
-      _sntprintf_0(o.global_config_dir, _T("%lsconfig"), openvpn_path);
+      _sntprintf_0(o.global_config_dir, _T("%lsconfig"), o.install_path);
     }
 
   if (!regkey || !GetRegistryValue(regkey, _T("ovpn_admin_group"), o.ovpn_admin_group, _countof(o.ovpn_admin_group)))
@@ -126,7 +125,7 @@ GetGlobalRegistryKeys()
 
   if (!regkey || !GetRegistryValue(regkey, _T("exe_path"), o.exe_path, _countof(o.exe_path)))
     {
-      _sntprintf_0(o.exe_path, _T("%lsbin\\openvpn.exe"), openvpn_path);
+      _sntprintf_0(o.exe_path, _T("%lsbin\\openvpn.exe"), o.install_path);
     }
 
   if (!regkey || !GetRegistryValue(regkey, _T("priority"), o.priority_string, _countof(o.priority_string)))

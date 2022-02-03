@@ -713,3 +713,28 @@ ImportConfigFile(const TCHAR* source, bool prompt_user)
     /* destroy popup menus, based on existing num_configs, rescan file list and recreate menus */
     RecreatePopupMenus();
 }
+
+void
+set_openssl_env_vars()
+{
+    struct {
+        WCHAR *name;
+        WCHAR *value;
+    } ossl_env[] = {
+        {L"OPENSSL_CONF", L"ssl\\openssl.cnf"},
+        {L"OPENSSL_ENGINES", L"ssl\\engines"},
+        {L"OPENSSL_MODULES", L"ssl\\modules"}
+    };
+    for (size_t i = 0; i < _countof(ossl_env); i++)
+    {
+        size_t size = 0;
+
+        _wgetenv_s(&size, NULL, 0, ossl_env[i].name);
+        if (size == 0)
+        {
+            WCHAR val[MAX_PATH] = {0};
+            _sntprintf_0(val, L"%ls%ls", o.install_path, ossl_env[i].value);
+            _wputenv_s(ossl_env[i].name, val);
+        }
+    }
+}
