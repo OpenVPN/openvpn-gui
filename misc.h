@@ -81,4 +81,9 @@ void ImportConfigFile(const TCHAR* path, bool prompt_user);
 BOOL
 GetDlgItemTextUtf8(HWND hDlg, int id, LPSTR* str, int* len);
 
+/*
+ * Set env vars used by OpenSSL to sane values.
+ */
+void set_openssl_env_vars(void);
+
 #endif

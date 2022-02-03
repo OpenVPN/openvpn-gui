@@ -78,6 +78,7 @@ ExpandOptions (void)
     ExpandString (o.log_dir, _countof(o.log_dir));
     ExpandString (o.editor, _countof(o.editor));
     ExpandString (o.log_viewer, _countof(o.log_viewer));
+    ExpandString (o.install_path, _countof(o.install_path));
 }
 
 static int

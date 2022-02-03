@@ -53,8 +53,7 @@
 #include "as.h"
 
 #ifndef DISABLE_CHANGE_PASSWORD
-#include <openssl/evp.h>
-#include <openssl/err.h>
+#include <openssl/crypto.h>
 #endif
 
 #define OVPN_EXITCODE_ERROR      1
@@ -287,9 +286,9 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
 
 #ifndef DISABLE_CHANGE_PASSWORD
   /* Initialize OpenSSL */
-  OpenSSL_add_all_algorithms();
-  ERR_load_crypto_strings();
-#endif
+  set_openssl_env_vars();
+  OPENSSL_init_crypto(OPENSSL_INIT_LOAD_CONFIG, NULL);
+#endif /* DISABLE_CHANGE_PASSWORD */
 
   /* The Window structure */
   wincl.hInstance = hThisInstance;
