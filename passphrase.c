@@ -47,6 +47,11 @@
 #include "localization.h"
 #include "misc.h"
 
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L
+#include <openssl/provider.h>
+static OSSL_PROVIDER *legacy = NULL;
+#endif
+
 extern options_t o;
 
 /*
@@ -82,6 +87,40 @@ const int KEYFILE_FORMAT_PKCS12 = 1;
 const int KEYFILE_FORMAT_PEM = 2;
 const int MIN_PASSWORD_LEN = 8;
 
+/* Load legacy provider if not fips and not already
+ * loaded and return true if explicitly loaded.
+ */
+bool
+load_legacy(void)
+{
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L
+    if (EVP_default_properties_is_fips_enabled(NULL)
+        || OSSL_PROVIDER_available(NULL, "legacy"))
+    {
+        return false;
+    }
+
+    legacy = OSSL_PROVIDER_load(NULL, "legacy");
+    if (!legacy)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"failed to load legacy provider ");
+    }
+    return (legacy != NULL);
+#else
+    return false;
+#endif /* OPENSSL 3.0+ */
+}
+
+void
+unload_legacy(void)
+{
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L
+    if (legacy)
+    {
+        OSSL_PROVIDER_unload(legacy);
+    }
+#endif /* OPENSSL 3.0+ */
+}
 
 /*
  * Return TRUE if new passwords match
@@ -186,16 +225,33 @@ ChangePasswordPEM(HWND hwndDlg)
       return(0);
     }
 
-  /* Import old key */
-  if (! (privkey = PEM_read_PrivateKey (fp, NULL, NULL, oldpsw)))
+    /* Import old key */
+    for (int trial = 0; trial < 2; trial++)
     {
-      /* wrong password */
-      ShowLocalizedMsg(IDS_ERR_OLD_PWD_INCORRECT);
-      fclose(fp);
-      return(-1);
-    }
+        if ((privkey = PEM_read_PrivateKey (fp, NULL, NULL, oldpsw)))
+        {
+            break; /* key imported */
+        }
+        /* try again with legacy provider loaded */
+        else if (trial == 0 && load_legacy())
+        {
+            PrintDebug(L"Private key decrypt failed. Try again with legacy provider");
+            rewind(fp);
+            continue;
+        }
+        if (ERR_get_error() == EVP_R_UNSUPPORTED_ALGORITHM)
+        {
+            MsgToEventLog(EVENTLOG_ERROR_TYPE, L"OpenSSL error: unsupported algorithm");
+        }
+        unload_legacy();
 
-  fclose(fp);
+        /* wrong password? */
+        ShowLocalizedMsg(IDS_ERR_OLD_PWD_INCORRECT);
+        fclose(fp);
+        return(-1);
+    }
+    unload_legacy();
+    fclose(fp);
 
   /* Open keyfile for writing */
   if (! (fp = _tfopen (keyfile, _T("w"))))
@@ -224,9 +280,9 @@ ChangePasswordPEM(HWND hwndDlg)
   else
     {
       /* Use passphrase */
-      if ( !(PEM_write_PrivateKey(fp, privkey, \
-                                  EVP_des_ede3_cbc(),  /* Use 3DES encryption */
-                                  (UCHAR*) newpsw, (int) strlen(newpsw), 0, NULL)))
+      if ( !(PEM_write_PKCS8PrivateKey(fp, privkey,
+                                  EVP_aes_256_cbc(),
+                                  newpsw, (int) strlen(newpsw), 0, NULL)))
         {
           /* can't write new key */
           ShowLocalizedMsg(IDS_ERR_WRITE_NEW_KEY, keyfile);
@@ -296,14 +352,30 @@ ChangePasswordPKCS12(HWND hwndDlg)
       return(0);
     }
 
-  /* Parse the PKCS #12 file */
-  if (!PKCS12_parse(p12, oldpsw, &privkey, &cert, &ca))
+    /* Parse the PKCS #12 file */
+    for (int trial = 0; trial < 2; trial++)
     {
-      /* old password incorrect */
-      ShowLocalizedMsg(IDS_ERR_OLD_PWD_INCORRECT);
-      PKCS12_free(p12);
-      return(-1);
+        if (PKCS12_parse(p12, oldpsw, &privkey, &cert, &ca))
+        {
+            break;
+        }
+        /* try again with legacy provider loaded */
+        else if (trial == 0 && load_legacy())
+        {
+            continue;
+        }
+        if (ERR_get_error() == EVP_R_UNSUPPORTED_ALGORITHM)
+        {
+            MsgToEventLog(EVENTLOG_ERROR_TYPE, L"OpenSSL error: unsupported algorithm");
+        }
+        unload_legacy();
+
+        /* old password incorrect ? */
+        ShowLocalizedMsg(IDS_ERR_OLD_PWD_INCORRECT);
+        PKCS12_free(p12);
+        return(-1);
     }
+    unload_legacy();
 
   /* Free old PKCS12 object */
   PKCS12_free(p12);
