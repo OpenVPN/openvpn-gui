@@ -733,13 +733,13 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             {
                 /* send username */
                 template = "username \"Auth\" \"%s\"";
-                fmt = malloc(strlen(template) + strlen(param->user));
+                char *username = escape_string(param->user);
+                fmt = malloc(strlen(template) + strlen(username));
 
-                if (fmt)
+                if (fmt && username)
                 {
-                    sprintf(fmt, template, param->user);
+                    sprintf(fmt, template, username);
                     ManagementCommand(param->c, fmt, NULL, regular);
-                    free(fmt);
                 }
                 else /* no memory? send an emty username and let it error out */
                 {
@@ -747,6 +747,8 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                         L"Out of memory: sending a generic username for dynamic CR", false);
                     ManagementCommand(param->c, "username \"Auth\" \"user\"", NULL, regular);
                 }
+                free(fmt);
+                free(username);
 
                 /* password template */
                 template = "password \"Auth\" \"CRV1::%s::%%s\"";
