@@ -161,6 +161,46 @@ out:
     return retval;
 }
 
+/**
+ * Escape \ space ' and " in a string
+ * @param input  Pointer to the string to escape
+ * @returns      A newly allocated string containing the result or NULL
+ *               on error. Caller must free it after use.
+ */
+char *
+escape_string(const char *input)
+{
+    char *out = strdup(input);
+    int len = strlen(out);
+    const char *esc = "\'\"\\ ";
+
+    if (!out)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Error in escape_string: out of memory");
+        return NULL;
+    }
+
+    for (int pos = 0; pos < len; ++pos)
+    {
+        if (strchr(esc, out[pos]))
+        {
+            char *buf = realloc(out, ++len + 1);
+            if (buf == NULL)
+            {
+                free(out);
+                MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Error in escape_string: out of memory");
+                return NULL;
+            }
+            out = buf;
+            memmove(out + pos + 1, out + pos, len - pos + 1);
+            out[pos] = '\\';
+            pos += 1;
+        }
+    }
+
+    PrintDebug(L"escape_string: in: '%hs' out: '%hs' len = %d", input, out, len);
+    return out;
+}
 
 /*
  * Generate a management command from user input and send it
@@ -170,25 +210,19 @@ ManagementCommandFromInput(connection_t *c, LPCSTR fmt, HWND hDlg, int id)
 {
     BOOL retval = FALSE;
     LPSTR input, cmd;
-    int input_len, cmd_len, pos;
+    int input_len, cmd_len;
 
     GetDlgItemTextUtf8(hDlg, id, &input, &input_len);
 
     /* Escape input if needed */
-    for (pos = 0; pos < input_len; ++pos)
+    char *input_e = escape_string(input);
+    if (!input_e)
     {
-        if (input[pos] == '\\' || input[pos] == '"')
-        {
-            LPSTR buf = realloc(input, ++input_len + 1);
-            if (buf == NULL)
-                goto out;
-
-            input = buf;
-            memmove(input + pos + 1, input + pos, input_len - pos + 1);
-            input[pos] = '\\';
-            pos += 1;
-        }
+        goto out;
     }
+    free(input);
+    input = input_e;
+    input_len = strlen(input);
 
     cmd_len = input_len + strlen(fmt);
     cmd = malloc(cmd_len);

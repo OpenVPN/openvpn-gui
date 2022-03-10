@@ -86,4 +86,7 @@ GetDlgItemTextUtf8(HWND hDlg, int id, LPSTR* str, int* len);
  */
 void set_openssl_env_vars(void);
 
+/* Return escaped copy of a string */
+char *escape_string(const char *str);
+
 #endif
