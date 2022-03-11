@@ -171,7 +171,6 @@ char *
 escape_string(const char *input)
 {
     char *out = strdup(input);
-    int len = strlen(out);
     const char *esc = "\'\"\\ ";
 
     if (!out)
@@ -179,6 +178,8 @@ escape_string(const char *input)
         MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Error in escape_string: out of memory");
         return NULL;
     }
+
+    int len = strlen(out);
 
     for (int pos = 0; pos < len; ++pos)
     {
