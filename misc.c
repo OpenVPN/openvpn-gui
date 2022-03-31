@@ -162,7 +162,7 @@ out:
 }
 
 /**
- * Escape \ space ' and " in a string
+ * Escape backslash, space and double-quote in a string
  * @param input  Pointer to the string to escape
  * @returns      A newly allocated string containing the result or NULL
  *               on error. Caller must free it after use.
@@ -171,7 +171,7 @@ char *
 escape_string(const char *input)
 {
     char *out = strdup(input);
-    const char *esc = "\'\"\\ ";
+    const char *esc = "\"\\ ";
 
     if (!out)
     {
