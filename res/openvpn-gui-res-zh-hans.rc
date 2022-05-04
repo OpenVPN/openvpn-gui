@@ -45,7 +45,7 @@ EXSTYLE WS_EX_TOPMOST
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 BEGIN
-    LTEXT "用户名称:", ID_LTEXT_USERNAME, 6, 9, 50, 10
+    LTEXT "用户名:", ID_LTEXT_USERNAME, 6, 9, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
     LTEXT "密码:", ID_LTEXT_PASSWORD, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
@@ -62,7 +62,7 @@ CAPTION "OpenVPN - 用户认证"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 BEGIN
-    LTEXT "用户名称:", ID_LTEXT_USERNAME, 6, 9, 50, 10
+    LTEXT "用户名:", ID_LTEXT_USERNAME, 6, 9, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
     LTEXT "密码:", ID_LTEXT_PASSWORD, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
@@ -163,7 +163,7 @@ BEGIN
     AUTOCHECKBOX "追加日志文件", ID_CHK_LOG_APPEND, 17, 95, 60, 10
     AUTOCHECKBOX "显示脚本窗口", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "静默连接", ID_CHK_SILENT, 17, 125, 200, 10
-    AUTOCHECKBOX "Always use interactive service", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
+    AUTOCHECKBOX "始终使用交互式服务", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
     LTEXT "显示通知", ID_TXT_BALLOON, 17, 155, 100, 10
     AUTORADIOBUTTON "连接时", ID_RB_BALLOON1, 28, 170, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "连接时、重新连接时", ID_RB_BALLOON2, 86, 170, 90, 10
@@ -198,7 +198,7 @@ BEGIN
     EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 103, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
 
     GROUPBOX "Management interface", 204, 6, 163, 235, 30
-    LTEXT "Port offset:", 205, 17, 175, 75, 10
+    LTEXT "端口偏移:", 205, 17, 175, 75, 10
     EDITTEXT ID_EDT_MGMT_PORT, 103, 173, 30, 12, ES_AUTOHSCROLL
 
     GROUPBOX "Config menu view", 206, 6, 198, 235, 30
@@ -209,9 +209,9 @@ BEGIN
     GROUPBOX "Echo message display", 207, 6, 233, 235, 45
     AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 245, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Ne&ver", ID_RB_BALLOON4, 88, 245, 50, 10
-    LTEXT "Repeated messages are muted for: ", 208, 17, 260, 125, 10
+    LTEXT "重复的消息会被静音: ", 208, 17, 260, 125, 10
     EDITTEXT ID_EDT_POPUP_MUTE, 150, 258, 30, 12, ES_AUTOHSCROLL
-    LTEXT "hours", 209, 190, 260, 40, 10
+    LTEXT "小时", 209, 190, 260, 40, 10
 
 END
 
@@ -244,7 +244,7 @@ CAPTION "OpenVPN - 代理认证"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 BEGIN
-    LTEXT "用户名称:", 201, 9, 8, 45, 10
+    LTEXT "用户名:", 201, 9, 8, 45, 10
     EDITTEXT ID_EDT_PROXY_USER, 56, 5, 87, 12, ES_AUTOHSCROLL
     LTEXT "密码:", 202, 9, 26, 38, 10
     EDITTEXT ID_EDT_PROXY_PASS, 56, 23, 87, 12, ES_PASSWORD | ES_AUTOHSCROLL
@@ -258,11 +258,11 @@ CAPTION "Import Profile from Access Server"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 BEGIN
-    LTEXT "U&RL:", 201, 6, 9, 50, 10
+    LTEXT "URL:", 201, 6, 9, 50, 10
     EDITTEXT ID_EDT_URL, 60, 6, 183, 12, ES_AUTOHSCROLL
-    LTEXT "&Username:", 202, 6, 26, 50, 10
+    LTEXT "用户名:", 202, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 23, 94, 12, ES_AUTOHSCROLL
-    LTEXT "&Password:", ID_LTEXT_PASSWORD, 6, 42, 50, 10
+    LTEXT "密码:", ID_LTEXT_PASSWORD, 6, 42, 50, 10
     EDITTEXT ID_EDT_AUTH_PASS, 60, 40, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     AUTOCHECKBOX "&Autologin", ID_CHK_AUTOLOGIN, 6, 59, 100, 10
     PUSHBUTTON "&OK", IDOK, 20, 76, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
@@ -281,9 +281,9 @@ BEGIN
     IDS_TIP_CONNECTED_SINCE "\n连接自: "
     IDS_TIP_ASSIGNED_IP "\n分配 IP: %ls"
     IDS_MENU_SERVICE "OpenVPN 服务"
-    IDS_MENU_IMPORT "Import"
-    IDS_MENU_IMPORT_AS "Import from Access Server…"
-    IDS_MENU_IMPORT_URL "Import from URL…"
+    IDS_MENU_IMPORT "导入"
+    IDS_MENU_IMPORT_AS "从Access Server导入…"
+    IDS_MENU_IMPORT_URL "从URL导入…"
     IDS_MENU_IMPORT_FILE "导入配置文件…"
     IDS_MENU_SETTINGS "选项…"
     IDS_MENU_CLOSE "退出"
@@ -392,7 +392,7 @@ BEGIN
     exit                 \t\t: 退出所有运行中的实例 (可能需要确认)\n\
     status cnn           \t\t: 如果已连接,显示配置""cnn""的状态\n\
     silent_connection [0|1]\t: 设置静默连接开启 (1) 或者关闭 (0)\n\
-    import path          \t\t: Import the config file pointed to by path\n\
+    import path          \t\t: 导入路径指向的配置文件\n\
 \t\t\t例如: openvpn-gui.exe --command disconnect myconfig\n\
 \n\
 可覆盖系统注册表设定的选项:\n\
@@ -415,12 +415,12 @@ BEGIN
 --passphrase_attempts\t: 允许尝试输入密码次数。\n\
 --connectscript_timeout\t: 等待连接脚本执行的时间。\n\
 --disconnectscript_timeout\t: 等待断开连接脚本执行的时间。\n\
---preconnectscript_timeout\t: Time to wait for preconnect script to finish.\n\
---iservice_admin\t\t: 0=Do not use interactive service when started as admin (default is 1 for Windows 7 and newer)\n\
---disable_popup_messages\t: Do not popup (i.e., show) the echo message window. Default is to show.\n\
---popup_mute_interval\t: Time in hours for which a previously shown echo message is not re-displayed. Default=24 hours.\n\
---management_port_offset\t: Offset value added to config index to determine the management port for a connection.\n\
-\t\t\t Must be in the range 1 to 61000. Maximum number of configs is limited by 65536 minus this value. Default=25340.\n"
+--preconnectscript_timeout\t: 等待预连接脚本完成的时间。\n\
+--iservice_admin\t\t: 0=当以管理员身份启动时，不要使用交互式服务 (Windows 7及更新版本的默认值为1)\n\
+--disable_popup_messages\t: 不要弹出（即显示）回显消息窗口。 默认是显示。\n\
+--popup_mute_interval\t: 以前显示的回显消息不会重新显示的时间（小时）。默认值为24小时。\n\
+--management_port_offset\t: 添加到配置索引以确定连接的管理端口的偏移值。\n\
+\t\t\t 必须在1到61000之间。配置的最大数量限制为65536减去该值。默认值=25340。\n"
 
 
     IDS_NFO_USAGECAPTION "OpenVPN GUI 使用方式"
@@ -484,7 +484,7 @@ BEGIN
     IDS_ERR_NOTSTARTED_ISERVICE  "未启动「OpenVPNServiceInteractive」。\n\
 需要管理员权限的任务可能无法正常执行。"
     IDS_ERR_NOTSTARTED_ISERVICE_ADM  "未启动「OpenVPNServiceInteractive」。\
-Wintun driver will not work."
+Wintun驱动程序将无法正常工作。"
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "获取 Windows 目录时发生错误。"
@@ -507,10 +507,10 @@ Wintun driver will not work."
     IDS_ERR_IMPORT_FAILED "文件导入失败。无法建立下列路径。\n\n\
 %ls\n\n请确定您有正确的系统权限。"
     IDS_NFO_IMPORT_SUCCESS "已成功导入文件。"
-    IDS_NFO_IMPORT_OVERWRITE "A config named ""%ls"" already exists. Do you want to replace it?"
-    IDS_NFO_IMPORT_SOURCE "Do you want to import the profile <%ls>?"
-    IDS_ERR_IMPORT_SOURCE "Cannot import file <%ls> as it is already in the global or local config directory"
-    IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
+    IDS_NFO_IMPORT_OVERWRITE "名为“%ls”的配置已存在。您想替换它吗？"
+    IDS_NFO_IMPORT_SOURCE "您是否要导入配置文件 <%ls>?"
+    IDS_ERR_IMPORT_SOURCE "无法导入文件<%ls>，因为它已在全局或本地配置目录中"
+    IDS_ERR_IMPORT_ACCESS "无法导入<%ls>，因为它缺失或不可读"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "请按「确定」删除「%ls」连接配置文件的已存密码。"
