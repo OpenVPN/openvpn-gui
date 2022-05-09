@@ -6,60 +6,37 @@ jobs:
   msvc:
     strategy:
       matrix:
-        arch: [x86, amd64, amd64_arm64]
-        ossl: [openssl, openssl3]
-        include:
-        - arch: amd64_arm64
-          triplet: arm64
-        - arch: x86
-          triplet: x86
-        - arch: amd64
-          triplet: x64
+        arch: [x86, x64, arm64]
+        ossl: [ossl1.1.1, ossl3]
 
     env:
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
-      SOLUTION_FILE_PATH: .
-      BUILD_CONFIGURATION: Release
-      VCPKG_OVERLAY_PORTS: '${{ github.workspace }}/openvpn/contrib/vcpkg-ports'
-      buildDir: '${{ github.workspace }}/build/'
 
-    name: "msvc - ${{matrix.triplet}} - ${{ matrix.ossl }}"
-    runs-on: windows-latest
+    name: 'msvc - ${{matrix.arch}} - ${{ matrix.ossl }}'
+    runs-on: windows-2019
     steps:
     - uses: actions/checkout@v2
     - uses: lukka/get-cmake@latest
-    - uses: ilammy/msvc-dev-cmd@v1
-      with:
-        arch: ${{ matrix.arch }}
 
-    - name: Clone openvpn repo
-      uses: actions/checkout@v2
+    - name: Restore artifacts, or setup vcpkg (do not install any package)
+      uses: lukka/run-vcpkg@v10
       with:
-        repository: openvpn/openvpn
-        path: openvpn
+        vcpkgGitCommitId: "a5d6d145164e82e67fbf91a4a30f98699d30de63"
+        appendedCacheKey: "${{ matrix.arch }} - ${{ matrix.ossl }}"
 
-    - name: Install dependencies
-      uses: lukka/run-vcpkg@v7.4
+    - name: Run CMake consuming CMakePreset.json and vcpkg.json by mean of vcpkg.
+      uses: lukka/run-cmake@v10
       with:
-        vcpkgGitCommitId: 'b18b17865cfb6bd24620a00f30691be6775abb96'
-        vcpkgArguments: ${{ matrix.ossl }}
-        vcpkgTriplet: '${{ matrix.triplet }}-windows'
+        configurePreset: '${{ matrix.arch }}-release-${{ matrix.ossl }}'
+        buildPreset: '${{ matrix.arch }}-release-${{ matrix.ossl }}'
 
-    - name: Build
-      uses: lukka/run-cmake@v3
+    - uses: actions/upload-artifact@v3
       with:
-        useVcpkgToolchainFile: true
-        buildWithCMake: true
-        cmakeBuildType: ${{env.BUILD_CONFIGURATION}}
-        buildDirectory: ${{ env.buildDir }}
-
-    - uses: actions/upload-artifact@v2
-      with:
-        name: openvpn-gui_${{ matrix.triplet }}_${{ matrix.ossl }}
+        name: openvpn-gui_${{ matrix.arch }}_${{ matrix.ossl }}
         path: |
-          ${{ env.buildDir }}/*.exe
-          ${{ env.buildDir }}/*.dll
+          out/build/${{ matrix.arch }}-release-${{ matrix.ossl }}/*.dll
+          out/build/${{ matrix.arch }}-release-${{ matrix.ossl }}/*.exe
 
   mingw:
     strategy:
