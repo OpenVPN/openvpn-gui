@@ -38,7 +38,7 @@ dist_doc_DATA = \
 	COPYRIGHT.GPL \
 	COPYING
 
-AM_CPPFLAGS = $(OPENSSL_CRYPTO_CFLAGS) -D_UNICODE
+AM_CPPFLAGS = $(OPENSSL_CRYPTO_CFLAGS) -D_UNICODE $(JSON_CFLAGS)
 AM_CFLAGS = -municode
 
 openvpn_gui_RESOURCES = \
@@ -110,7 +110,9 @@ openvpn_gui_LDADD = \
 	-lole32 \
 	-lshlwapi \
 	-lsecur32 \
-	-lwininet
+	-lwininet \
+	$(JSON_LIBS)
 
 openvpn-gui-res.o: $(openvpn_gui_RESOURCES) $(srcdir)/openvpn-gui-res.h
 	$(RCCOMPILE) -i $< -o $@
+

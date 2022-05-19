@@ -36,6 +36,9 @@
 #include "openvpn-gui-res.h"
 #include "localization.h"
 
+#define OPENVPN_SERVICE_NAME_OVPN3 L"ovpnagent"
+#define OPENVPN_SERVICE_NAME_OVPN2 L"OpenVPNServiceInteractive"
+
 extern options_t o;
 
 int MyStartService()
@@ -266,8 +269,9 @@ CheckIServiceStatus(BOOL warn)
     if (NULL == schSCManager)
         return(false);
 
-    schService = OpenService(schSCManager, _T("OpenVPNServiceInteractive"),
-                             SERVICE_QUERY_STATUS);
+    schService = OpenService(schSCManager, o.ovpn_engine == OPENVPN_ENGINE_OVPN3 ?
+        OPENVPN_SERVICE_NAME_OVPN3 : OPENVPN_SERVICE_NAME_OVPN2, SERVICE_QUERY_STATUS);
+
     if (schService == NULL &&
         GetLastError() == ERROR_SERVICE_DOES_NOT_EXIST)
     {

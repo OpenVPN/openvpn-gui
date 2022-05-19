@@ -271,6 +271,13 @@ OnManagement(SOCKET sk, LPARAM lParam)
             {
                 ManagementCommand(c, c->manage.password, NULL, regular);
                 *c->manage.password = '\0';
+
+                if (o.ovpn_engine == OPENVPN_ENGINE_OVPN3)
+                {
+                    ManagementCommand(c, "log on all", NULL, regular);
+                    ManagementCommand(c, "state on all", NULL, regular);
+                }
+
                 continue;
             }
 

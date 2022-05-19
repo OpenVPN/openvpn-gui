@@ -92,6 +92,9 @@ typedef struct {
 #define CONFIG_VIEW_FLAT      (1)
 #define CONFIG_VIEW_NESTED    (2)
 
+#define OPENVPN_ENGINE_OVPN2  (0)
+#define OPENVPN_ENGINE_OVPN3  (1)
+
 typedef struct {
     unsigned short major, minor, build, revision;
 } version_t;
@@ -209,6 +212,7 @@ typedef struct {
     DWORD disable_popup_messages;       /* set nonzero to suppress all echo msg messages */
     DWORD popup_mute_interval;          /* Interval in hours to suppress repeated echo messages */
     DWORD mgmt_port_offset;             /* management interface port = this offset + index of connection profile */
+    DWORD ovpn_engine;                  /* 0 - openvpn2, 1 - openvpn3 */
 
 #ifdef DEBUG
     FILE *debug_fp;

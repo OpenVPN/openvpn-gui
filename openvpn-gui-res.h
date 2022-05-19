@@ -137,6 +137,9 @@
 #define ID_EDT_MGMT_PORT                 285
 #define ID_TXT_FOLDER1                   286
 #define ID_EDT_POPUP_MUTE                287
+#define ID_RB_ENGINE_SELECTION           288
+#define ID_RB_ENGINE_OVPN2               289
+#define ID_RB_ENGINE_OVPN3              3290
 
 /* Connections dialog */
 #define ID_DLG_CONNECTIONS               290

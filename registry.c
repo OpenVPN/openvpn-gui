@@ -66,6 +66,7 @@ struct regkey_int {
       {L"popup_mute_interval", &o.popup_mute_interval, 24},
       {L"disable_popup_messages", &o.disable_popup_messages, 0},
       {L"management_port_offset", &o.mgmt_port_offset, 25340},
+      {L"ovpn_engine", &o.ovpn_engine, OPENVPN_ENGINE_OVPN2},
     };
 
 static int
