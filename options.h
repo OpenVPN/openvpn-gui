@@ -158,6 +158,17 @@ struct connection {
     struct echo_msg echo_msg;      /* Message echo-ed from server or client config and related data */
 };
 
+/* Command actions to be send to running instance */
+struct action {
+    int type;
+    wchar_t *arg;
+    struct action *next;
+};
+
+struct action_list {
+    struct action *head, *tail;
+};
+
 /* All options used within OpenVPN GUI */
 typedef struct {
     /* Array of configs to autostart */
@@ -223,8 +234,7 @@ typedef struct {
     unsigned int dpi_scale;
     COLORREF clr_warning;
     COLORREF clr_error;
-    int action;            /* action to send to a running instance */
-    TCHAR *action_arg;
+    struct action_list action_list; /* list of actions to send to a running instance */
     HANDLE session_semaphore;
     HANDLE event_log;
 } options_t;
