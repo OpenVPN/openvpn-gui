@@ -2100,13 +2100,14 @@ static char* PrepareStartJsonRequest(connection_t *c, wchar_t *exit_event_name)
 
     const char *body = json_object_to_json_string(jobj);
 
-    char *request = calloc(1, strlen(request_header) + strlen(body) + 1);
+    int len = snprintf(NULL, 0, request_header, strlen(body)) + strlen(body) + 1;
+    char *request = calloc(1, len);
     if (request == NULL)
     {
         goto out;
     }
-    sprintf(request, request_header, strlen(body));
-    strcat(request, body);
+    sprintf_s(request, len, request_header, strlen(body));
+    strcat_s(request, len, body);
 
 out:
     json_object_put(jobj);
@@ -2227,6 +2228,15 @@ StartOpenVPN(connection_t *c)
             goto out;
         }
     }
+#ifdef ENABLE_OVPN3    
+    else if (o.ovpn_engine == OPENVPN_ENGINE_OVPN3)
+    {
+        ShowLocalizedMsg (IDS_ERR_WRITE_SERVICE_PIPE);
+        CloseHandle(c->exit_event);
+        CloseServiceIO(&c->iserv);
+        goto out;
+    }
+#endif    
     else
     {
         /* Start OpenVPN directly */
