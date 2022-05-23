@@ -686,10 +686,6 @@ LoadAdvancedDlgParams (HWND hdlg)
 #ifdef ENABLE_OVPN3
     CheckRadioButton(hdlg, ID_RB_ENGINE_OVPN2, ID_RB_ENGINE_OVPN3,
         o.ovpn_engine == OPENVPN_ENGINE_OVPN3 ? ID_RB_ENGINE_OVPN3 : ID_RB_ENGINE_OVPN2);
-#else
-    ShowWindow(GetDlgItem(hdlg, ID_RB_ENGINE_SELECTION), SW_HIDE);
-    ShowWindow(GetDlgItem(hdlg, ID_RB_ENGINE_OVPN2), SW_HIDE);
-    ShowWindow(GetDlgItem(hdlg, ID_RB_ENGINE_OVPN3), SW_HIDE);
 #endif
 }
 
