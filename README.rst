@@ -150,6 +150,10 @@ it using the command line interface using the following syntax::
 
     openvpn-gui.exe --command *cmd* [*args*]
 
+Or::
+
+    openvpn-gui.exe --cmd [*args*]
+
 Currently supported *cmds* are
 
 connect ``config-name``
@@ -162,6 +166,10 @@ disconnect ``config-name``
 reconnect ``config-name``
      Disconnect and then reconnect the configuration named *config-name*
      if connected.
+
+status ``config-name``
+     Show the status window of the configuration named *config-name*
+     if connected or is in the process of connecting.
 
 disconnect\_all
      Disconnect all active connections.
@@ -178,9 +186,10 @@ rescan
 import ``path``
      Import the config file pointed to by ``path``.
 
-If no running instance of the GUI is found, these commands do nothing
-except for *--command connect config-name* which gets interpreted
-as *--connect config-name*
+If no running instance of the GUI is found, these commands have no
+effect except for *connect*, *import*, and *silent_connection* which
+get interpreted resepctively as *--connect*, *--import*, and
+*--silent_connection*.
 
 Registry Values affecting the OpenVPN GUI operation
 ***************************************************

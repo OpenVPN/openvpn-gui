@@ -104,6 +104,22 @@ add_action(struct action_list *al, DWORD type, wchar_t *arg)
     al->tail = a;
 }
 
+/* action commands that could be sent to a running instance */
+static const wchar_t *valid_cmds[] =
+{
+    L"connect",
+    L"disconnect",
+    L"reconnect",
+    L"disconnect_all",
+    L"status",
+    L"exit",
+    L"import",
+    L"silent_connection",
+    L"rescan",
+
+    NULL       /* last entry */
+};
+
 static int
 add_option(options_t *options, int i, TCHAR **p)
 {
@@ -234,6 +250,8 @@ add_option(options_t *options, int i, TCHAR **p)
     {
         ++i;
         options->silent_connection = _ttoi(p[1]) ? 1 : 0;
+        /* also interpreted by a second instance */
+        add_action(al, WM_OVPN_SILENT, p[1]);
     }
     else if (streq(p[0], _T("passphrase_attempts")) && p[1])
     {
@@ -262,55 +280,52 @@ add_option(options_t *options, int i, TCHAR **p)
     }
     else if (streq(p[0], _T("command")) && p[1])
     {
-        ++i;
         /* command to be sent to a running instance */
-        if (streq(p[1], _T("connect")) && p[2])
+        int found = 0;
+        for (int k = 0; valid_cmds[k] && !found; k++)
         {
-            /* Treat this as "--connect profile" in case this is the first instance */
-            i = add_option(options, i, &p[1]);
+            found = streq(valid_cmds[k], p[1]);
         }
-        else if (streq(p[1], _T("disconnect")) && p[2])
-        {
-            ++i;
-            add_action(al, WM_OVPN_STOP, p[2]);
-        }
-        else if (streq(p[1], _T("reconnect")) && p[2])
-        {
-            ++i;
-            add_action(al, WM_OVPN_RESTART, p[2]);
-        }
-        else if (streq(p[1], _T("status")) && p[2])
-        {
-            ++i;
-            add_action(al, WM_OVPN_SHOWSTATUS, p[2]);
-        }
-        else if (streq(p[1], L"import") && p[2])
-        {
-            ++i;
-            add_action(al, WM_OVPN_IMPORT, p[2]);
-        }
-        else if (streq(p[1], _T("silent_connection")))
-        {
-            ++i;
-            add_action(al, WM_OVPN_SILENT, p[2] ? p[2] : L"1");
-        }
-        else if (streq(p[1], _T("disconnect_all")))
-        {
-            add_action(al, WM_OVPN_STOPALL, NULL);
-        }
-        else if (streq(p[1], _T("exit")))
-        {
-            add_action(al, WM_OVPN_EXIT, NULL);
-        }
-        else if (streq(p[1], _T("rescan")))
-        {
-            add_action(al, WM_OVPN_RESCAN, NULL);
-        }
-        else
+        if (!found)
         {
             ShowLocalizedMsg(IDS_ERR_BAD_OPTION, p[0]);
             exit(1);
         }
+        ++i;
+        i = add_option(options, i, &p[1]);
+    }
+    else if (streq(p[0], _T("disconnect")) && p[1])
+    {
+        ++i;
+        /* this option is handled only as an action passed by a second instance */
+        add_action(al, WM_OVPN_STOP, p[1]);
+    }
+    else if (streq(p[0], _T("reconnect")) && p[1])
+    {
+        ++i;
+        /* this option is handled only as an action passed by a second instance */
+        add_action(al, WM_OVPN_RESTART, p[1]);
+    }
+    else if (streq(p[0], _T("status")) && p[1])
+    {
+        ++i;
+        /* this option is handled only as an action passed by a second instance */
+        add_action(al, WM_OVPN_SHOWSTATUS, p[1]);
+    }
+    else if (streq(p[0], _T("disconnect_all")))
+    {
+        /* this option is handled only as an action passed by a second instance */
+        add_action(al, WM_OVPN_STOPALL, NULL);
+    }
+    else if (streq(p[0], _T("exit")))
+    {
+        /* this option is handled only as an action passed by a second instance */
+        add_action(al, WM_OVPN_EXIT, NULL);
+    }
+    else if (streq(p[0], _T("rescan")))
+    {
+        /* this option is handled only as an action passed by a second instance */
+        add_action(al, WM_OVPN_RESCAN, NULL);
     }
     else if (streq(p[0], _T("popup_mute_interval")) && p[1])
     {

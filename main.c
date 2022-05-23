@@ -258,9 +258,9 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
   {
       for (struct action *a = o.action_list.head; a; a = a->next)
       {
-          if (a->type == WM_OVPN_START)
+          if (a->type == WM_OVPN_START || a->type == WM_OVPN_SILENT)
           {
-              PrintDebug(L"Instance 1: Called with --command connect xxx. Treating it as --connect xxx");
+              ; /* pass these could get set by --connect or --silent_connection */
           }
           else if (a->type == WM_OVPN_IMPORT)
           {
@@ -268,8 +268,8 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
           }
           else
           {
-              MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Called with --command when no previous instance available (action type = %d arg = %s", a->type, a->arg ? a->arg : L"");
-              exit(OVPN_EXITCODE_ERROR);
+              /* log an error, but do not treat as fatal */
+              MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Called with options relevant only when a previous instance is available (action type = %d arg = %s", a->type, a->arg ? a->arg : L"");
           }
       }
   }
