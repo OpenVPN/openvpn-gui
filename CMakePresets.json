@@ -38,11 +38,10 @@
         },
         {
             "name": "arm64",
-            "generator": "Ninja",
+            "generator": "Visual Studio 16 2019",
             "hidden": true,
             "architecture": {
-                "value": "arm64",
-                "strategy": "external"
+                "value": "arm64"
             }
         },
         {
