@@ -136,11 +136,13 @@
         },
         {
             "name": "arm64-release-ossl3",
-            "configurePreset": "arm64-release-ossl3"
+            "configurePreset": "arm64-release-ossl3",
+            "configuration": "Release"
         },
         {
             "name": "arm64-release-ossl1.1.1",
-            "configurePreset": "arm64-release-ossl1.1.1"
+            "configurePreset": "arm64-release-ossl1.1.1",
+            "configuration": "Release"
         },
         {
             "name": "x64-debug-ossl3",
@@ -162,11 +164,13 @@
         },
         {
             "name": "arm64-debug-ossl3",
-            "configurePreset": "arm64-debug-ossl3"
+            "configurePreset": "arm64-debug-ossl3",
+            "configuration": "Debug"
         },
         {
             "name": "arm64-debug-ossl1.1.1",
-            "configurePreset": "arm64-debug-ossl1.1.1"
+            "configurePreset": "arm64-debug-ossl1.1.1",
+            "configuration": "Debug"
         }
     ]
 }
