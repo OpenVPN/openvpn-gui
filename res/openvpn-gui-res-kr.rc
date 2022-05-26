@@ -389,7 +389,10 @@ OpenVPN GUI를 이대로 종료 하겠습니까?"
     status cnn           \t\t: 연결 되어 있는 ""cnn"" 설정의 상태를 표시\n\
     silent_connection [0|1]\t: silent_connection 플래그를 on(1) 또는 off(0)로 설정\n\
     import path          \t\t: Import the config file pointed to by path\n\
+    rescan               \t\t: Rescan config directories for config files\n\
 \t\t\t예제: openvpn-gui.exe --command disconnect myconfig\n\
+    As a shortcut, --command cmd may be simplified to --cmd\n\
+    e.g., --exit is the same as --command exit.\n\
 \n\
 각 옵션은 레지스트리 설정보다 우선 합니다:\n\
 --exe_path\t\t: openvpn.exe 경로.\n\

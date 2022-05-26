@@ -392,7 +392,10 @@ OpenVPN GUIをこのまま終了しますか？"
     status cnn           \t\t: 設定 ""cnn"" のステータスウィンドウを表示（接続時のみ）\n\
     silent_connection [0|1]\t: サイレント接続フラグをON (1) または OFF (0) に設定する\n\
     import path          \t\t: Import the config file pointed to by path\n\
+    rescan               \t\t: Rescan config directories for config files\n\
 \t\t\t例: openvpn-gui.exe --command disconnect myconfig\n\
+    As a shortcut, --command cmd may be simplified to --cmd\n\
+    e.g., --exit is the same as --command exit.\n\
 \n\
 各オプションはレジストリの設定に優先されます:\n\
 --exe_path\t\t: openvpn.exeへのパス。\n\

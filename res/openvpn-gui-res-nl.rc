@@ -392,7 +392,10 @@ Ondersteunde commando's:\n\
     status cnn           \t\t: het status-scherm van de configuratie ""cnn"" laten zien als de verbinding is gemaakt\n\
     silent_connection [0|1]\t: de vlag ""silent_connection"" aan- (1) of uitzetten (0)\n\
     import path          \t\t: Import the config file pointed to by path\n\
+    rescan               \t\t: Rescan config directories for config files\n\
 \t\t\tVoorbeeld: openvpn-gui.exe --command disconnect myconfig\n\
+    As a shortcut, --command cmd may be simplified to --cmd\n\
+    e.g., --exit is the same as --command exit.\n\
 \n\
 Instellingen die de registerinstellingen overschrijven:\n\
 --exe_path\t\t: Pad naar openvpn.exe.\n\
