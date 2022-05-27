@@ -8,7 +8,7 @@
   "overrides": [
     {
       "name": "openssl",
-      "version-string": "1.1.1n"
+      "version-string": "1.1.1o"
     }
   ]
 }
