@@ -5,6 +5,7 @@
             "name": "base",
             "hidden": true,
             "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "generator": "Visual Studio 16 2019",
             "cacheVariables": {
                 "CMAKE_TOOLCHAIN_FILE": {
                     "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
@@ -29,16 +30,13 @@
         },
         {
             "name": "x64",
-            "generator": "Ninja",
             "hidden": true,
             "architecture": {
-                "value": "x64",
-                "strategy": "external"
+                "value": "x64"
             }
         },
         {
             "name": "arm64",
-            "generator": "Visual Studio 16 2019",
             "hidden": true,
             "architecture": {
                 "value": "arm64"
@@ -46,7 +44,6 @@
         },
         {
             "name": "x86",
-            "generator": "Visual Studio 16 2019",
             "hidden": true,
             "architecture": {
                 "value": "Win32"
@@ -118,11 +115,13 @@
     "buildPresets": [
         {
             "name": "x64-release-ossl3",
-            "configurePreset": "x64-release-ossl3"
+            "configurePreset": "x64-release-ossl3",
+            "configuration": "Release"
         },
         {
             "name": "x64-release-ossl1.1.1",
-            "configurePreset": "x64-release-ossl1.1.1"
+            "configurePreset": "x64-release-ossl1.1.1",
+            "configuration": "Release"
         },
         {
             "name": "x86-release-ossl3",
@@ -146,11 +145,13 @@
         },
         {
             "name": "x64-debug-ossl3",
-            "configurePreset": "x64-debug-ossl3"
+            "configurePreset": "x64-debug-ossl3",
+            "configuration": "Debug"
         },
         {
             "name": "x64-debug-ossl1.1.1",
-            "configurePreset": "x64-debug-ossl1.1.1"
+            "configurePreset": "x64-debug-ossl1.1.1",
+            "configuration": "Debug"
         },
         {
             "name": "x86-debug-ossl3",
