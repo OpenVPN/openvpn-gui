@@ -391,7 +391,10 @@ Supported commands:\n\
     status cnn           \t\t: show the status window of config ""cnn"" if connected\n\
     silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n\
     import path          \t\t: Import the config file pointed to by path\n\
+    rescan               \t\t: Rescan config directories for config files\n\
 \t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n\
+    As a shortcut, --command cmd may be simplified to --cmd\n\
+    e.g., --exit is the same as --command exit.\n\
 \n\
 Options pour corriger la configuration de registre:\n\
 --exe_path\t\t: Chemin vers openvpn.exe.\n\

@@ -100,7 +100,7 @@ VerifyAutoConnections()
  * to the running instance and return success or error.
  */
 static int
-NotifyRunningInstance()
+NotifyRunningInstance(int action_type, wchar_t *action_arg)
 {
     /* Check if a previous instance has a window initialized
      * Even if we are not the first instance this may return null
@@ -110,22 +110,16 @@ NotifyRunningInstance()
     int exit_code = 0;
     if (hwnd_master)
     {
-        /* GUI up and running -- send a message if any action is pecified,
-           else show the balloon */
+        /* GUI up and running -- send a message for the specified action */
         COPYDATASTRUCT config_data = {0};
         int timeout = 30*1000;             /* 30 seconds */
-        if (!o.action)
+        config_data.dwData = action_type;
+        if (action_arg)
         {
-            o.action = WM_OVPN_NOTIFY;
-            o.action_arg = LoadLocalizedString(IDS_NFO_CLICK_HERE_TO_START);
+            config_data.cbData = (wcslen(action_arg)+1)*sizeof(action_arg[0]);
+            config_data.lpData = (void *) action_arg;
         }
-        config_data.dwData = o.action;
-        if (o.action_arg)
-        {
-            config_data.cbData = (wcslen(o.action_arg)+1)*sizeof(o.action_arg[0]);
-            config_data.lpData = (void *) o.action_arg;
-        }
-        PrintDebug(L"Instance 2: called with action %d : %ls", o.action, o.action_arg);
+        PrintDebug(L"Instance 2: called with action %d : %ls", action_type, action_arg);
         if (!SendMessageTimeout (hwnd_master, WM_COPYDATA, 0,
                                  (LPARAM) &config_data, 0, timeout, NULL))
         {
@@ -245,23 +239,40 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
 
   if (!first_instance)
   {
-      int res = NotifyRunningInstance();
-      exit(res);
+      int exit_code = 0;
+      struct action *a = o.action_list.head;
+      if (!a) /* no actions -- send a balloon notification */
+      {
+          exit_code = NotifyRunningInstance(WM_OVPN_NOTIFY,
+                LoadLocalizedString(IDS_NFO_CLICK_HERE_TO_START));
+      }
+      else while (a)
+      {
+          int res = NotifyRunningInstance(a->type, a->arg);
+          exit_code = res > exit_code ? res : exit_code;
+          a = a->next;
+      }
+      exit(exit_code);
   }
-  else if (o.action == WM_OVPN_START)
+  else
   {
-      PrintDebug(L"Instance 1: Called with --command connect xxx. Treating it as --connect xxx");
+      for (struct action *a = o.action_list.head; a; a = a->next)
+      {
+          if (a->type == WM_OVPN_START || a->type == WM_OVPN_SILENT)
+          {
+              ; /* pass these could get set by --connect or --silent_connection */
+          }
+          else if (a->type == WM_OVPN_IMPORT)
+          {
+              ; /* pass -- import is handled after Window initialization */
+          }
+          else
+          {
+              /* log an error, but do not treat as fatal */
+              MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Called with options relevant only when a previous instance is available (action type = %d arg = %s", a->type, a->arg ? a->arg : L"");
+          }
+      }
   }
-  else if (o.action == WM_OVPN_IMPORT)
-  {
-     ; /* pass -- import is handled after Window initialization */
-  }
-  else if (o.action)
-  {
-      MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Called with --command when no previous instance available");
-      exit(OVPN_EXITCODE_ERROR);
-  }
-
   if (!CheckVersion()) {
     exit(1);
   }
@@ -528,9 +539,12 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         CheckServiceStatus();	// Check if service is running or not
 
       /* if '--import' was specified, do it now */
-      if (o.action == WM_OVPN_IMPORT && o.action_arg)
+      for (struct action *a = o.action_list.head; a ; a = a->next)
       {
-        ImportConfigFile(o.action_arg, true); /* prompt user */
+          if (a->type == WM_OVPN_IMPORT && a->arg)
+          {
+              ImportConfigFile(a->arg, true); /* prompt user */
+          }
       }
 
       if (!AutoStartConnections()) {

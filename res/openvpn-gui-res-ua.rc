@@ -390,7 +390,10 @@ BEGIN
     status cnn           \t\t: показати вікно стану конфігурації ""cnn"", якщо з'єднання активне\n\
     silent_connection [0|1]\t: щоб встановити режим silent_connection, вкажіть (1), Щоб вимкнути, вкажіть (0)\n\
     import path          \t\t: Import the config file pointed to by path\n\
+    rescan               \t\t: Rescan config directories for config files\n\
 \t\t\tНаприклад: openvpn-gui.exe --command disconnect myconfig\n\
+    As a shortcut, --command cmd may be simplified to --cmd\n\
+    e.g., --exit is the same as --command exit.\n\
 \n\
 Опції спрямовані на переконфігурацію налаштувань реєстру:\n\
 --exe_path\t\t: Розташування openvpn.exe.\n\
