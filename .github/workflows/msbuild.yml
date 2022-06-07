@@ -8,12 +8,19 @@ jobs:
       matrix:
         arch: [x86, x64, arm64]
         ossl: [ossl1.1.1, ossl3]
+        ovpn3:
+          - preset: ""
+            name: ""
+            upload_name: ""
+          - preset: -ovpn3
+            name: " - ovpn3"
+            upload_name: "_ovpn3"
 
     env:
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
 
-    name: 'msvc - ${{matrix.arch}} - ${{ matrix.ossl }}'
+    name: 'msvc - ${{matrix.arch}} - ${{ matrix.ossl }}${{ matrix.ovpn3.name }}'
     runs-on: windows-2019
     steps:
     - uses: actions/checkout@v2
@@ -23,20 +30,20 @@ jobs:
       uses: lukka/run-vcpkg@v10
       with:
         vcpkgGitCommitId: "a5d6d145164e82e67fbf91a4a30f98699d30de63"
-        appendedCacheKey: "${{ matrix.arch }} - ${{ matrix.ossl }}"
+        appendedCacheKey: "${{ matrix.arch }} - ${{ matrix.ossl }}${{ matrix.ovpn3.name }}"
 
     - name: Run CMake consuming CMakePreset.json and vcpkg.json by mean of vcpkg.
       uses: lukka/run-cmake@v10
       with:
-        configurePreset: '${{ matrix.arch }}-release-${{ matrix.ossl }}'
-        buildPreset: '${{ matrix.arch }}-release-${{ matrix.ossl }}'
+        configurePreset: '${{ matrix.arch }}-release-${{ matrix.ossl }}${{ matrix.ovpn3.preset }}'
+        buildPreset: '${{ matrix.arch }}-release-${{ matrix.ossl }}${{ matrix.ovpn3.preset }}'
 
     - uses: actions/upload-artifact@v3
       with:
-        name: openvpn-gui_${{ matrix.arch }}_${{ matrix.ossl }}
+        name: openvpn-gui_${{ matrix.arch }}_${{ matrix.ossl }}${{ matrix.ovpn3.upload_name }}
         path: |
-          out/build/${{ matrix.arch }}-release-${{ matrix.ossl }}/*.dll
-          out/build/${{ matrix.arch }}-release-${{ matrix.ossl }}/*.exe
+          out/build/${{ matrix.arch }}-release-${{ matrix.ossl }}${{ matrix.ovpn3.preset }}/*.dll
+          out/build/${{ matrix.arch }}-release-${{ matrix.ossl }}${{ matrix.ovpn3.preset }}/*.exe
 
   mingw:
     strategy:
