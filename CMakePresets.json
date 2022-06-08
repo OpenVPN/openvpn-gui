@@ -1,0 +1,177 @@
+﻿{
+    "version": 2,
+    "configurePresets": [
+        {
+            "name": "base",
+            "hidden": true,
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "generator": "Visual Studio 16 2019",
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": {
+                    "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                    "type": "FILEPATH"
+                }
+            },
+            "vendor": { "microsoft.com/VisualStudioSettings/CMake/1.0": { "hostOS": [ "Windows" ] } }
+        },
+        {
+            "name": "ossl3",
+            "hidden": true,
+            "cacheVariables": {
+                "VCPKG_MANIFEST_DIR": "${sourceDir}/vcpkg_manifests/openssl_3"
+            }
+        },
+        {
+            "name": "ossl1.1.1",
+            "hidden": true,
+            "cacheVariables": {
+                "VCPKG_MANIFEST_DIR": "${sourceDir}/vcpkg_manifests/openssl_1.1.1"
+            }
+        },
+        {
+            "name": "x64",
+            "hidden": true,
+            "architecture": {
+                "value": "x64"
+            }
+        },
+        {
+            "name": "arm64",
+            "hidden": true,
+            "architecture": {
+                "value": "arm64"
+            }
+        },
+        {
+            "name": "x86",
+            "hidden": true,
+            "architecture": {
+                "value": "Win32"
+            }
+        },
+        {
+            "name": "debug",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "release",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "x64-debug-ossl3",
+            "inherits": [ "base", "ossl3", "x64", "debug" ]
+        },
+        {
+            "name": "x64-debug-ossl1.1.1",
+            "inherits": [ "base", "ossl1.1.1", "x64", "debug" ]
+        },
+        {
+            "name": "arm64-debug-ossl3",
+            "inherits": [ "base", "ossl3", "arm64", "debug" ]
+        },
+        {
+            "name": "arm64-debug-ossl1.1.1",
+            "inherits": [ "base", "ossl1.1.1", "arm64", "debug" ]
+        },
+        {
+            "name": "x86-debug-ossl3",
+            "inherits": [ "base", "ossl3", "x86", "debug" ]
+        },
+        {
+            "name": "x86-debug-ossl1.1.1",
+            "inherits": [ "base", "ossl1.1.1", "x86", "debug" ]
+        },
+        {
+            "name": "x64-release-ossl3",
+            "inherits": [ "base", "ossl3", "x64", "release" ]
+        },
+        {
+            "name": "x64-release-ossl1.1.1",
+            "inherits": [ "base", "ossl1.1.1", "x64", "release" ]
+        },
+        {
+            "name": "arm64-release-ossl3",
+            "inherits": [ "base", "ossl3", "arm64", "release" ]
+        },
+        {
+            "name": "arm64-release-ossl1.1.1",
+            "inherits": [ "base", "ossl1.1.1", "arm64", "release" ]
+        },
+        {
+            "name": "x86-release-ossl3",
+            "inherits": [ "base", "ossl3", "x86", "release" ]
+        },
+        {
+            "name": "x86-release-ossl1.1.1",
+            "inherits": [ "base", "ossl1.1.1", "x86", "release" ]
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "x64-release-ossl3",
+            "configurePreset": "x64-release-ossl3",
+            "configuration": "Release"
+        },
+        {
+            "name": "x64-release-ossl1.1.1",
+            "configurePreset": "x64-release-ossl1.1.1",
+            "configuration": "Release"
+        },
+        {
+            "name": "x86-release-ossl3",
+            "configurePreset": "x86-release-ossl3",
+            "configuration": "Release"
+        },
+        {
+            "name": "x86-release-ossl1.1.1",
+            "configurePreset": "x86-release-ossl1.1.1",
+            "configuration": "Release"
+        },
+        {
+            "name": "arm64-release-ossl3",
+            "configurePreset": "arm64-release-ossl3",
+            "configuration": "Release"
+        },
+        {
+            "name": "arm64-release-ossl1.1.1",
+            "configurePreset": "arm64-release-ossl1.1.1",
+            "configuration": "Release"
+        },
+        {
+            "name": "x64-debug-ossl3",
+            "configurePreset": "x64-debug-ossl3",
+            "configuration": "Debug"
+        },
+        {
+            "name": "x64-debug-ossl1.1.1",
+            "configurePreset": "x64-debug-ossl1.1.1",
+            "configuration": "Debug"
+        },
+        {
+            "name": "x86-debug-ossl3",
+            "configurePreset": "x86-debug-ossl3",
+            "configuration": "Debug"
+        },
+        {
+            "name": "x86-debug-ossl1.1.1",
+            "configurePreset": "x86-debug-ossl1.1.1",
+            "configuration": "Debug"
+        },
+        {
+            "name": "arm64-debug-ossl3",
+            "configurePreset": "arm64-debug-ossl3",
+            "configuration": "Debug"
+        },
+        {
+            "name": "arm64-debug-ossl1.1.1",
+            "configurePreset": "arm64-debug-ossl1.1.1",
+            "configuration": "Debug"
+        }
+    ]
+}

@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.10)
 
+if(NOT VCPKG_MANIFEST_DIR)
+    set(VCPKG_MANIFEST_DIR ${CMAKE_SOURCE_DIR}/vcpkg_manifests/openssl_3)
+endif()
+
 project(openvpn-gui C)
 
 add_executable(${PROJECT_NAME} WIN32
@@ -66,3 +70,11 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
     UNICODE
     WIN32_LEAN_AND_MEAN
     HAVE_CONFIG_H)
+
+if(MSVC)
+    # work around msvc generator Debug/Release directory ugliness, doesn't apply for Ninja
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<0:>
+        LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<0:>
+        ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<0:>)
+endif(MSVC)

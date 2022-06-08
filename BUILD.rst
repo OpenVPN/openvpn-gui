@@ -1,3 +1,46 @@
+How to build with MSVC
+======================
+
+This is the recommended way of building openvpn-gui on Windows, which is also used when doing OpenVPN Windows releases.
+
+Prerequisites
+-------------
+
+ - Visual Studio 2019 (build tools should be enough, also 2022 will likely work)
+ - CMake
+ - vcpkg (add the environment variable ``VCPKG_ROOT`` which points to vcpkg installation)
+
+Build steps
+-----------
+
+Run inside MSVC command prompt:
+
+.. code-block::
+
+    c:\Temp\openvpn-gui>cmake -S . --preset x64-release-ossl3
+    c:\Temp\openvpn-gui>cmake --build --preset x64-release-ossl3
+
+To see all presets, run:
+
+.. code-block::
+
+  C:\Users\lev\Projects\openvpn-gui>cmake -S c:\Users\lev\Projects\openvpn-gui --list-presets
+  Available configure presets:
+  "x64-debug-ossl3"
+  "x64-debug-ossl1.1.1"
+  "arm64-debug-ossl3"
+  "arm64-debug-ossl1.1.1"
+  "x86-debug-ossl3"
+  "x86-debug-ossl1.1.1"
+  "x64-release-ossl3"
+  "x64-release-ossl1.1.1"
+  "arm64-release-ossl3"
+  "arm64-release-ossl1.1.1"
+  "x86-release-ossl3"
+  "x86-release-ossl1.1.1"
+
+You could also open CMake project from MSVC IDE and build from there.
+
 How to build using Cygwin
 =========================
 
