@@ -101,6 +101,57 @@ SetGUILanguage(LANGID langId)
     gui_language = langId;
 }
 
+static int
+LocalizedSystemTime(const SYSTEMTIME *st, wchar_t *buf, size_t size)
+{
+    int date_size = 0, time_size = 0;
+    LCID locale = MAKELCID(GetGUILanguage(), SORT_DEFAULT);
+
+    if (size == 0 || buf == NULL)
+    {
+        date_size = GetDateFormat(locale, DATE_SHORTDATE, st, NULL, NULL, 0);
+        time_size = GetTimeFormat(locale, TIME_NOSECONDS, st, NULL, NULL, 0);
+        return date_size + time_size;
+    }
+
+    if (size > 0) {
+        date_size = GetDateFormat(locale, DATE_SHORTDATE, st, NULL,
+                                  buf, size);
+        if (date_size)
+            buf[date_size - 1] = ' ';
+    }
+    if (size - date_size > 0) {
+        time_size = GetTimeFormat(locale, TIME_NOSECONDS, st, NULL,
+                                  buf + date_size, size - date_size);
+    }
+    return date_size + time_size;
+}
+
+/*
+ * Convert filetime to a wide character string -- caller must free the
+ * result after use.
+ */
+wchar_t *
+LocalizedFileTime(const FILETIME *ft)
+{
+    FILETIME lft;
+    SYSTEMTIME st;
+    FileTimeToLocalFileTime(ft, &lft);
+    FileTimeToSystemTime(&lft, &st);
+    wchar_t *buf = NULL;
+
+    int size = LocalizedSystemTime(&st, NULL, 0);
+    if (size > 0)
+    {
+        buf = calloc(1, size*sizeof(wchar_t));
+        if (buf)
+        {
+            LocalizedSystemTime(&st, buf, size);
+        }
+    }
+    return buf;
+}
+
 int
 LocalizedTime(const time_t t, LPTSTR buf, size_t size)
 {
@@ -112,22 +163,8 @@ LocalizedTime(const time_t t, LPTSTR buf, size_t size)
     FileTimeToLocalFileTime(&ft, &lft);
     FileTimeToSystemTime(&lft, &st);
 
-    int date_size = 0, time_size = 0;
-    LCID locale = MAKELCID(GetGUILanguage(), SORT_DEFAULT);
-
-    if (size > 0) {
-        date_size = GetDateFormat(locale, DATE_SHORTDATE, &st, NULL,
-                                  buf, size);
-        if (date_size)
-            buf[date_size - 1] = ' ';
-    }
-    if (size - date_size > 0) {
-        time_size = GetTimeFormat(locale, TIME_NOSECONDS, &st, NULL,
-                                  buf + date_size, size - date_size);
-    }
-    return date_size + time_size;
+    return LocalizedSystemTime(&st, buf, size);
 }
-
 
 static int
 LoadStringLang(UINT stringId, LANGID langId, PTSTR buffer, int bufferSize, va_list args)
