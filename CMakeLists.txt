@@ -50,6 +50,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Gdi32.lib
     Comdlg32.lib
     Ole32.lib
+    Cryptui.lib
     Wininet.lib)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})

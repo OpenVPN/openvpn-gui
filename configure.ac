@@ -76,6 +76,8 @@ case "$host" in
 		;;
 esac
 
+AC_CHECK_LIB(cryptui, CryptUIDlgViewContext)
+
 AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_LN_S

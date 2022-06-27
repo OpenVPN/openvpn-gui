@@ -33,6 +33,7 @@
 #include "openvpn-gui-res.h"
 #include "localization.h"
 #include <commctrl.h>
+#include <cryptuiapi.h>
 #include <shlwapi.h>
 #include <assert.h>
 
@@ -49,6 +50,7 @@ struct cert_info
     wchar_t *commonname;
     wchar_t *issuer;
     wchar_t *notAfter;
+    const CERT_CONTEXT *ctx;
 };
 
 struct pkcs11_entry
@@ -65,6 +67,7 @@ certificate_free(struct cert_info *cert)
         free(cert->commonname);
         free(cert->issuer);
         free(cert->notAfter);
+        CertFreeCertificateContext(cert->ctx);
     }
 }
 
@@ -151,8 +154,7 @@ decode_certificate(struct cert_info *cert, const char *b64)
     cert->commonname = extract_name_entry(ctx, 0);
     cert->issuer = extract_name_entry(ctx, CERT_NAME_ISSUER_FLAG);
     cert->notAfter = LocalizedFileTime(&ctx->pCertInfo->NotAfter);
-    CertFreeCertificateContext(ctx);
-
+    cert->ctx = ctx;
     ret = true;
 
 out:
@@ -528,6 +530,27 @@ pkcs11_listview_reset(HWND parent)
     SetTimer(parent, 0, 100, pkcs11_listview_fill);
 }
 
+void
+display_certificate(HWND parent, connection_t *c, UINT i)
+{
+    struct pkcs11_list *l = &c->pkcs11_list;
+    if (i < l->count)
+    {
+/* Currently cryptui.lib is missing in mingw for i686
+ * Remove this and corresponding check in configure.ac
+ * when that changes.
+ */
+#if defined(HAVE_LIBCRYPTUI) || defined (_MSC_VER)
+        CryptUIDlgViewContext(CERT_STORE_CERTIFICATE_CONTEXT, l->pe[i].cert.ctx,
+                               parent, L"Certificate", 0, NULL);
+#else
+        (void) i;
+        (void) parent;
+        WriteStatusLog(c, L"GUI> ", L"Certificate display not supported in this build", false);
+#endif
+    }
+}
+
 /* Dialog proc for querying pkcs11 */
 static INT_PTR CALLBACK
 QueryPkcs11DialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -603,6 +626,7 @@ QueryPkcs11DialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             return FALSE;
 
         case WM_NOTIFY:
+            c = (connection_t *) GetProp(hwndDlg, cfgProp);
             if (((NMHDR *)lParam)->idFrom == ID_LVW_PKCS11)
             {
                 NMITEMACTIVATE *ln = (NMITEMACTIVATE *) lParam;
@@ -610,6 +634,10 @@ QueryPkcs11DialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 {
                     /* remove the no-selection warning */
                     SetDlgItemTextW(hwndDlg, ID_TXT_WARNING, L"");
+                }
+                if (ln->hdr.code == NM_DBLCLK && ln->iItem >= 0)
+                {
+                   display_certificate(hwndDlg, c, (UINT) ln->iItem);
                 }
             }
             break;
