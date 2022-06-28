@@ -538,4 +538,7 @@ als Administrator ausführen, um die Registry zu aktualisieren."
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI läuft bereits. Klicken Sie rechts auf das Symbol in der Taskleiste, um die Anwendung zu starten."
     IDS_NFO_BYTECOUNT "Bytes eingehend: %ls  ausgehend: %ls"
 
+    /* AS profile import */
+    IDS_ERR_URL_IMPORT_PROFILE "Error fetching profile from URL: [%d] %ls"
+
 END

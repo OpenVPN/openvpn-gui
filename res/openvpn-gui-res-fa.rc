@@ -538,4 +538,7 @@ once as Administrator to update the registry."
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI قبلا باز شده. کلیک راست کنید بر روی آن در نماد های برنامه ها."
     IDS_NFO_BYTECOUNT "بایت به: %ls  خروج: %ls"
 
+    /* AS profile import */
+    IDS_ERR_URL_IMPORT_PROFILE "Error fetching profile from URL: [%d] %ls"
+
 END

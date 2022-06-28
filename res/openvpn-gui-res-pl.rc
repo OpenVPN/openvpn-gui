@@ -534,5 +534,8 @@ z prawami administratora aby uaktualnić rejestr."
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI jest już uruchomiony. Kliknij prawym przyciskiem myszy na ikonę w pasku zadań aby rozpocząć."
     IDS_NFO_BYTECOUNT "Bajtów pobranych: %ls  wysłanych: %ls"
 
+    /* AS profile import */
+    IDS_ERR_URL_IMPORT_PROFILE "Error fetching profile from URL: [%d] %ls"
+
 END
 

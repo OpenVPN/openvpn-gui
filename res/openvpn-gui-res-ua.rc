@@ -535,4 +535,7 @@ OpenVPN, можливо, не встановлений."
     IDS_NFO_CLICK_HERE_TO_START "Графічний інтерфейс OpenVPN вже запущений. Клацніть правою кнопкою мишки на піктограмі OpenVPN в лотку, щоб його запустити."
     IDS_NFO_BYTECOUNT "Завантажено байт: %ls Передано байт: %ls"
 
+    /* AS profile import */
+    IDS_ERR_URL_IMPORT_PROFILE "Error fetching profile from URL: [%d] %ls"
+
 END

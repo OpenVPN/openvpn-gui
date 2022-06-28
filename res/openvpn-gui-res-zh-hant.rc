@@ -536,4 +536,7 @@ Wintun driver will not work."
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
     IDS_NFO_BYTECOUNT "Bytes in: %ls  out: %ls"
 
+    /* AS profile import */
+    IDS_ERR_URL_IMPORT_PROFILE "Error fetching profile from URL: [%d] %ls"
+
 END
