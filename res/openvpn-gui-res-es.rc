@@ -274,6 +274,21 @@ BEGIN
     PUSHBUTTON "&Cancel", IDCANCEL, 90, 76, 52, 14
 END
 
+/* Query PKCS11-ID Dialog */
+ID_DLG_PKCS11_QUERY DIALOGEX 6, 18, 340, 242
+STYLE WS_SIZEBOX| WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFONT
+CAPTION "Select Certificate"
+FONT 8, "Segoe UI"
+LANGUAGE LANG_SPANISH, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "PKCS11 Certificates available:", ID_TXT_PKCS11, 17, 12, 171, 12
+    CONTROL "", ID_LVW_PKCS11, "SysListView32", LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP, 17, 25, 171,150
+    PUSHBUTTON "&OK", IDOK, 20, 200, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "&Cancel", IDCANCEL, 90, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "&Retry", IDRETRY, 160, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    LTEXT "", ID_TXT_WARNING, 6, 222, 190, 10
+END
+
 STRINGTABLE
 LANGUAGE LANG_SPANISH, SUBLANG_DEFAULT
 BEGIN
@@ -534,5 +549,12 @@ nuevo como Administrator para actualizar el registro."
 
     /* AS profile import */
     IDS_ERR_URL_IMPORT_PROFILE "Error fetching profile from URL: [%d] %ls"
+
+    IDS_ERR_NO_PKCS11 "No certificates found. If you have a token insert it and press retry."
+    IDS_ERR_SELECT_PKCS11 "No certificates selected."
+    /* column headers for pkcs11 certificate list */
+    IDS_CERT_DISPLAYNAME "Issued to"
+    IDS_CERT_ISSUER "Issued by"
+    IDS_CERT_NOTAFTER "Valid until"
 
 END
