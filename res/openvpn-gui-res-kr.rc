@@ -532,4 +532,7 @@ Administrator 권한으로 이 프로그램을 실행해야 합니다."
     IDS_NFO_AUTO_CONNECT    "%u초 후 자동으로 연결..."
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI 가 이미 실행 중입니다. 시작하려면 작업 표시줄의 아이콘을 마우스 우클릭 하십시오."
     IDS_NFO_BYTECOUNT "수신 바이트: %ls  전송 바이트: %ls"
+
+    /* AS profile import */
+    IDS_ERR_URL_IMPORT_PROFILE "Error fetching profile from URL: [%d] %ls"
 END

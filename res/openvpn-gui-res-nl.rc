@@ -536,4 +536,7 @@ om de registerinstellingen te updaten."
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI draait al. Klik met de rechtermuisknop op het tray icon om te starten."
     IDS_NFO_BYTECOUNT "Bytes in: %ls  uit: %ls"
 
+    /* AS profile import */
+    IDS_ERR_URL_IMPORT_PROFILE "Error fetching profile from URL: [%d] %ls"
+
 END

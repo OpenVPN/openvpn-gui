@@ -535,4 +535,7 @@ una volta che l'amministratore ha aggiornato il registro."
     IDS_NFO_CLICK_HERE_TO_START "L'interfaccia OpenVPN è già in esecuzione. Clicca con il tasto destro sull'icona nell'area di notifica per cominciare."
     IDS_NFO_BYTECOUNT "Byte in: %ls out: %ls"
 
+    /* AS profile import */
+    IDS_ERR_URL_IMPORT_PROFILE "Error fetching profile from URL: [%d] %ls"
+
 END

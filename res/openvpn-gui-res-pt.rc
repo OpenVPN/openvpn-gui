@@ -534,4 +534,7 @@ uma vez como Administrador para alterar o registro."
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI já está em execução. Clique direito no ícone da área de notificação para iniciar."
     IDS_NFO_BYTECOUNT "Bytes recebidos: %ls  enviados: %ls"
 
+    /* AS profile import */
+    IDS_ERR_URL_IMPORT_PROFILE "Error fetching profile from URL: [%d] %ls"
+
 END
