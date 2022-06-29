@@ -89,4 +89,13 @@ void set_openssl_env_vars(void);
 /* Return escaped copy of a string */
 char *escape_string(const char *str);
 
+/**
+ * Find a free port to bind to
+ * @param addr : Address to bind to -- if port >0 it's tried first.
+ *               On return the port is set to the one found.
+ * @returns true on success, false on error. In case of error
+ * addr is unchanged.
+ */
+BOOL find_free_tcp_port(SOCKADDR_IN *addr);
+
 #endif
