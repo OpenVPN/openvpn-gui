@@ -114,15 +114,16 @@ LocalizedSystemTime(const SYSTEMTIME *st, wchar_t *buf, size_t size)
         return date_size + time_size;
     }
 
-    if (size > 0) {
-        date_size = GetDateFormat(locale, DATE_SHORTDATE, st, NULL,
-                                  buf, size);
-        if (date_size)
-            buf[date_size - 1] = ' ';
-    }
-    if (size - date_size > 0) {
+    date_size = GetDateFormat(locale, DATE_SHORTDATE, st, NULL,
+                              buf, size);
+    if (size > (size_t) date_size)
+    {
         time_size = GetTimeFormat(locale, TIME_NOSECONDS, st, NULL,
                                   buf + date_size, size - date_size);
+    }
+    if (date_size > 0 && time_size > 0)
+    {
+        buf[date_size - 1] = L' '; /* replaces the NUL char in the middle */
     }
     return date_size + time_size;
 }
