@@ -2193,6 +2193,8 @@ StartOpenVPN(connection_t *c)
     /* Create a management interface password */
     GetRandomPassword(c->manage.password, sizeof(c->manage.password) - 1);
 
+    find_free_tcp_port(&c->manage.skaddr);
+
     /* Construct command line -- put log first */
     _sntprintf_0(cmdline, _T("openvpn --log%ls \"%ls\" --config \"%ls\" "
         "--setenv IV_GUI_VER \"%hs\" --setenv IV_SSO openurl,crtext --service %ls 0 --auth-retry interact "

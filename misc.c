@@ -773,3 +773,54 @@ set_openssl_env_vars()
         }
     }
 }
+
+/*
+ * Find a free port to bind and return it in addr.sin_port
+ */
+BOOL
+find_free_tcp_port(SOCKADDR_IN *addr)
+{
+    BOOL ret = false;
+    SOCKADDR_IN addr_bound;
+    WSADATA wsaData;
+    int len = sizeof(*addr);
+
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
+    {
+        return ret;
+    }
+
+    u_short old_port = addr->sin_port;
+
+    SOCKET sk = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (sk == INVALID_SOCKET)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs: socket open failed", __func__);
+        goto out;
+    }
+    while (bind(sk, (SOCKADDR *) addr, len))
+    {
+        if (addr->sin_port == 0)
+        {
+            MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs: bind to dynamic port failed", __func__);
+            goto out;
+        }
+        addr->sin_port = 0;
+    }
+    if (getsockname(sk, (SOCKADDR *) &addr_bound, &len))
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs: getsockname failed", __func__);
+        goto out;
+    }
+
+    ret = true;
+
+out:
+    if (sk != INVALID_SOCKET)
+    {
+        closesocket(sk);
+    }
+    addr->sin_port = ret ? addr_bound.sin_port : old_port;
+    WSACleanup();
+    return ret;
+}
