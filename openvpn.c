@@ -1709,7 +1709,7 @@ OnService(connection_t *c, UNUSED char *msg)
             OnStop(c, NULL);
             break;
         default:
-            /* Unknown failure: let management connection timeout */
+            OnStop(c, NULL);
             break;
     }
 }
@@ -2065,6 +2065,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             /* openvpn failed to respond to stop signal -- terminate */
             TerminateOpenVPN(c);
             KillTimer (hwndDlg, IDT_STOP_TIMER);
+            OnStop(c, NULL);
         }
         break;
 
