@@ -352,14 +352,29 @@ pkcs11_list_update(connection_t *c)
     }
 }
 
+static void
+listview_set_column_width(HWND lv)
+{
+    for (int i = 0; i < 3; i++)
+    {
+        /* MSDN docs on this is not clear, but using AUTOSIZE_USEHEADER
+         * instead of AUTOSIZE ensures the column is wide enough for
+         * both header and content strings -- must be set again if/when
+         * content or header strings are modified. */
+        ListView_SetColumnWidth(lv, i, LVSCW_AUTOSIZE_USEHEADER);
+    }
+}
+
 /*
  * Position widgets in pkcs11 list window using current dpi.
  * Takes client area width and height in screen pixels as input.
  */
-void
+static void
 pkcs11_listview_resize(HWND hwnd, UINT w, UINT h)
 {
-    MoveWindow(GetDlgItem(hwnd, ID_LVW_PKCS11), DPI_SCALE(20), DPI_SCALE(25),
+    HWND lv = GetDlgItem(hwnd, ID_LVW_PKCS11);
+
+    MoveWindow(lv, DPI_SCALE(20), DPI_SCALE(25),
                w - DPI_SCALE(40), h - DPI_SCALE(120), TRUE);
     MoveWindow(GetDlgItem(hwnd, ID_TXT_PKCS11), DPI_SCALE(20), DPI_SCALE(5),
                w-DPI_SCALE(30), DPI_SCALE(15), TRUE);
@@ -372,15 +387,7 @@ pkcs11_listview_resize(HWND hwnd, UINT w, UINT h)
     MoveWindow(GetDlgItem(hwnd, IDRETRY), DPI_SCALE(200), h - DPI_SCALE(30),
                DPI_SCALE(60), DPI_SCALE(23), TRUE);
 
-    /* leave space for notafter and divide the rest among the two name fields */
-    int cx0 = (w - DPI_SCALE(40) - DPI_SCALE(125))/2;
-    cx0 = (cx0 > 80) ? cx0 : 80; /* ensure a reasonable minimum width */
-
-    int cx[3] = {cx0, cx0, DPI_SCALE(120)};
-    for (int i = 0; i < 3; i++)
-    {
-        ListView_SetColumnWidth(GetDlgItem(hwnd, ID_LVW_PKCS11), i, cx[i]);
-    }
+    listview_set_column_width(lv);
 }
 
 /* initialize the listview widget for displaying pkcs11 entries */
@@ -495,6 +502,7 @@ pkcs11_listview_fill(HWND hwnd, UINT UNUSED msg, UINT_PTR id, DWORD UNUSED now)
         {
             ListView_SetItemState(lv, pos, LVIS_SELECTED, LVIS_SELECTED);
         }
+        listview_set_column_width(lv);
 
         KillTimer(hwnd, id);
     }
