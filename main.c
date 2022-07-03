@@ -351,10 +351,23 @@ StopAllOpenVPN()
 {
     int i;
 
+    /* Stop all connections started by us -- we leave persistent ones
+     * at their current state. Use the disconnect menu to put them into
+     * hold state before exit, if desired.
+     */
     for (i = 0; i < o.num_configs; i++)
     {
         if (o.conn[i].state != disconnected)
-            StopOpenVPN(&o.conn[i]);
+        {
+            if (o.conn[i].flags & FLAG_DAEMON_PERSISTENT)
+            {
+                DetachOpenVPN(&o.conn[i]);
+            }
+            else
+            {
+                StopOpenVPN(&o.conn[i]);
+            }
+        }
     }
 
     /* Wait for all connections to terminate (Max 5 sec) */
@@ -756,14 +769,21 @@ CloseApplication(HWND hwnd)
     && ShowLocalizedMsgEx(MB_YESNO, NULL, _T("Exit OpenVPN"), IDS_NFO_SERVICE_ACTIVE_EXIT) == IDNO)
             return;
 
+    /* Show a message if any non-persistent connections are active */
     for (i = 0; i < o.num_configs; i++)
     {
-        if (o.conn[i].state == disconnected)
+        if (o.conn[i].state == disconnected
+            || o.conn[i].flags & FLAG_DAEMON_PERSISTENT)
+        {
             continue;
+        }
 
         /* Ask for confirmation if still connected */
         if (ShowLocalizedMsgEx(MB_YESNO, NULL, _T("Exit OpenVPN"), IDS_NFO_ACTIVE_CONN_EXIT) == IDNO)
+        {
             return;
+        }
+        break; /* show the above message box only once */
     }
 
     DestroyWindow(hwnd);

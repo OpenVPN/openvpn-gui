@@ -357,6 +357,7 @@ BEGIN
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread to show Status window Failed."
     IDS_NFO_STATE_WAIT_TERM "현재 상태: OpenVPN 종료 대기 중…"
     IDS_NFO_STATE_CONNECTED "현재 상태: 연결됨"
+    IDS_NFO_STATE_ONHOLD "Current State: On Hold (disconnected)"
     IDS_NFO_NOW_CONNECTED "%ls 접속이 연결 되었습니다."
     IDS_NFO_ASSIGN_IP "할당된 IP: %ls"
     IDS_ERR_CERT_EXPIRED "인증서가 만료 되었거나, 시스템 시간이 잘못 설정 되어 연결할 수 없습니다."

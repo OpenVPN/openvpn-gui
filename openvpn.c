@@ -121,6 +121,9 @@ OnReady(connection_t *c, UNUSED char *msg)
     ManagementCommand(c, "log on all", OnLogLine, combined);
     ManagementCommand(c, "echo on all", OnEcho, combined);
     ManagementCommand(c, "bytecount 5", NULL, regular);
+
+    /* ask for the current state, especially useful when the daemon was prestarted */
+    ManagementCommand(c, "state", OnStateChange, regular);
 }
 
 
@@ -130,6 +133,19 @@ OnReady(connection_t *c, UNUSED char *msg)
 void
 OnHold(connection_t *c, UNUSED char *msg)
 {
+    EnableWindow(GetDlgItem(c->hwndStatus, ID_RESTART), TRUE);
+    if ((c->flags & FLAG_DAEMON_PERSISTENT) && (c->state == disconnecting))
+    {
+        /* retain the hold state if we are here while disconnecting  */
+        c->state = onhold;
+        SetMenuStatus(c, onhold);
+        SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_ONHOLD));
+        SetStatusWinIcon(c->hwndStatus, ID_ICO_DISCONNECTED);
+        EnableWindow(GetDlgItem(c->hwndStatus, ID_DISCONNECT), FALSE);
+        CheckAndSetTrayIcon();
+        return;
+    }
+    EnableWindow(GetDlgItem(c->hwndStatus, ID_DISCONNECT), TRUE);
     ManagementCommand(c, "hold off", NULL, regular);
     ManagementCommand(c, "hold release", NULL, regular);
 }
@@ -296,8 +312,11 @@ OnStateChange(connection_t *c, char *data)
         LoadLocalizedStringBuf(ip_txt, _countof(ip_txt), IDS_NFO_ASSIGN_IP, ip);
 
         /* Run Connect Script */
-        if (c->state == connecting || c->state == resuming)
+        if (!(c->flags & FLAG_DAEMON_PERSISTENT)
+            && (c->state == connecting || c->state == resuming))
+        {
             RunConnectScript(c, false);
+        }
 
         /* Show connection tray balloon */
         if ((c->state == connecting   && o.show_balloon != 0)
@@ -1319,6 +1338,7 @@ OnStop(connection_t *c, UNUSED char *msg)
         c->failed_auth_attempts = 0;
         c->state = disconnected;
         CheckAndSetTrayIcon();
+        SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_DISCONNECTED));
         SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
         break;
 
@@ -1753,6 +1773,44 @@ OnNeedStr (connection_t *c, UNUSED char *msg)
     WriteStatusLog (c, L"GUI> ", L"Error: Received NEED-STR message -- not implemented", false);
 }
 
+/* Parse the management port and password of a
+ * a running daemon -- useful when the daemon is externally
+ * started (persistent) and we need to use the cached
+ * management interface address parameters to connect to it.
+ */
+static BOOL
+ParseManagementAddress(connection_t *c)
+{
+    /* Not implemented */
+    return false;
+}
+
+/* Stop the connection -- this sets the daemon to exit if
+ * started by us, else instructs the daemon to disconnect and
+ * and wait.
+ */
+static void
+DisconnectDaemon(connection_t *c)
+{
+    if (c->flags & FLAG_DAEMON_PERSISTENT)
+    {
+        if (c->manage.connected)
+        {
+            ManagementCommand(c, "hold on", NULL, regular);
+            ManagementCommand(c, "signal SIGHUP", NULL, regular);
+        }
+        else
+        {
+            OnStop(c, NULL);
+        }
+    }
+    else
+    {
+        SetEvent(c->exit_event);
+        SetTimer(c->hwndStatus, IDT_STOP_TIMER, 15000, NULL);
+    }
+}
+
 /*
  * Close open handles
  */
@@ -1889,7 +1947,6 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             return TRUE;
 
         case ID_RESTART:
-            c->state = reconnecting;
             SetFocus(GetDlgItem(c->hwndStatus, ID_EDT_LOG));
             RestartOpenVPN(c);
             return TRUE;
@@ -1921,19 +1978,42 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         PostQuitMessage(0);
         break;
 
+    case WM_OVPN_RELEASE:
+        c = (connection_t *) GetProp(hwndDlg, cfgProp);
+        c->state = reconnecting;
+        SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_RECONNECTING));
+        SetDlgItemTextW(c->hwndStatus, ID_TXT_IP, L"");
+        SetStatusWinIcon(c->hwndStatus, ID_ICO_CONNECTING);
+        OnHold(c, "");
+        break;
+
     case WM_OVPN_STOP:
         c = (connection_t *) GetProp(hwndDlg, cfgProp);
         /* external messages can trigger when we are not ready -- check the state */
-        if (!IsWindowEnabled(GetDlgItem(c->hwndStatus, ID_DISCONNECT)))
+        if (!IsWindowEnabled(GetDlgItem(c->hwndStatus, ID_DISCONNECT))
+            || c->state == onhold)
+        {
             break;
+        }
         c->state = disconnecting;
-        RunDisconnectScript(c, false);
+        if (!(c->flags & FLAG_DAEMON_PERSISTENT))
+        {
+            RunDisconnectScript(c, false);
+        }
         EnableWindow(GetDlgItem(c->hwndStatus, ID_DISCONNECT), FALSE);
         EnableWindow(GetDlgItem(c->hwndStatus, ID_RESTART), FALSE);
         SetMenuStatus(c, disconnecting);
         SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_WAIT_TERM));
-        SetEvent(c->exit_event);
-        SetTimer(hwndDlg, IDT_STOP_TIMER, 15000, NULL);
+        DisconnectDaemon(c);
+        break;
+
+    case WM_OVPN_DETACH:
+        c = (connection_t *) GetProp(hwndDlg, cfgProp);
+        /* just stop the thread keeping openvpn.exe running */
+        c->state = disconnecting;
+        EnableWindow(GetDlgItem(c->hwndStatus, ID_DISCONNECT), FALSE);
+        EnableWindow(GetDlgItem(c->hwndStatus, ID_RESTART), FALSE);
+        OnStop(c, NULL);
         break;
 
     case WM_OVPN_SUSPEND:
@@ -1962,7 +2042,13 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         c = (connection_t *) GetProp(hwndDlg, cfgProp);
         /* external messages can trigger when we are not ready -- check the state */
         if (IsWindowEnabled(GetDlgItem(c->hwndStatus, ID_RESTART)))
+        {
+            c->state = reconnecting;
             ManagementCommand(c, "signal SIGHUP", NULL, regular);
+            SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_RECONNECTING));
+            SetDlgItemTextW(c->hwndStatus, ID_TXT_IP, L"");
+            SetStatusWinIcon(c->hwndStatus, ID_ICO_CONNECTING);
+        }
         if (!o.silent_connection)
         {
             SetForegroundWindow(c->hwndStatus);
@@ -2037,7 +2123,21 @@ ThreadOpenVPNStatus(void *p)
     while (WM_QUIT != msg.message)
     {
         DWORD res;
-        if (!PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+        if (wait_event == NULL) /* for persistent connections there is no wait_event */
+        {
+            res = GetMessage(&msg, NULL, 0, 0);
+            if (res == (DWORD) -1)  /* log the error and continue */
+            {
+                MsgToEventLog(EVENTLOG_WARNING_TYPE, L"GetMessage for <%ls> returned error (status=%lu)",
+                              c->config_name, GetLastError());
+                continue;
+            }
+            else if (res == 0) /* WM_QUIT */
+            {
+                break;
+            }
+        }
+        else if (!PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
         {
             if ((res = MsgWaitForMultipleObjectsEx (1, &wait_event, INFINITE, QS_ALLINPUT,
                                          MWMO_ALERTABLE)) == WAIT_OBJECT_0)
@@ -2140,6 +2240,17 @@ out:
 }
 #endif
 
+/* If state is on hold -- release */
+void
+ReleaseOpenVPN(connection_t *c)
+{
+    if (c->state != onhold)
+    {
+        return;
+    }
+    PostMessage(c->hwndStatus, WM_OVPN_RELEASE, 0, 0);
+}
+
 /* Start a thread to monitor a connection and launch openvpn.exe if required */
 BOOL
 StartOpenVPN(connection_t *c)
@@ -2148,6 +2259,11 @@ StartOpenVPN(connection_t *c)
 
     if (c->hwndStatus)
     {
+        if (c->state == onhold)
+        {
+            ReleaseOpenVPN(c);
+            return true;
+        }
         PrintDebug(L"Connection request when already started -- ignored");
         /* the tread can hang around after disconnect if user has not dismissed any popups */
         if (c->state == disconnected)
@@ -2175,8 +2291,16 @@ StartOpenVPN(connection_t *c)
         return false;
     }
 
+    if (c->flags & FLAG_DAEMON_PERSISTENT)
+    {
+        if (!ParseManagementAddress(c))
+        {
+            TerminateThread(hThread, 1);
+            return false;
+        }
+    }
     /* Launch openvpn.exe using the service or directly */
-    if (!LaunchOpenVPN(c))
+    else if (!LaunchOpenVPN(c))
     {
         TerminateThread(hThread, 1);
         return false;
@@ -2388,6 +2512,20 @@ out:
 }
 
 
+/* Close the status thread without disconnecting the tunnel.
+ * Meant to be used only on persistent connections which can
+ * stay connected without the GUI tending to it.
+ */
+void
+DetachOpenVPN(connection_t *c)
+{
+   /* currently supported only for persistent connections */
+    if (c->flags & FLAG_DAEMON_PERSISTENT)
+    {
+        PostMessage(c->hwndStatus, WM_OVPN_DETACH, 0, 0);
+    }
+}
+
 void
 StopOpenVPN(connection_t *c)
 {
@@ -2431,10 +2569,18 @@ SuspendOpenVPN(int config)
 void
 RestartOpenVPN(connection_t *c)
 {
-    if (c->hwndStatus)
+    if (c->state == onhold)
+    {
+        ReleaseOpenVPN(c);
+    }
+    else if (c->hwndStatus)
+    {
         PostMessage(c->hwndStatus, WM_OVPN_RESTART, 0, 0);
+    }
     else /* Not started: treat this as a request to connect */
+    {
         StartOpenVPN(c);
+    }
 }
 
 void

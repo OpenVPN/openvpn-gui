@@ -359,6 +359,7 @@ BEGIN
     IDS_ERR_CREATE_THREAD_STATUS "Робоча помилка CreateThread, а саме у час відображення вікна статусу."
     IDS_NFO_STATE_WAIT_TERM "У цей час статус: очікування зупинки роботи OpenVPN…"
     IDS_NFO_STATE_CONNECTED "У цей час статус: підключено."
+    IDS_NFO_STATE_ONHOLD "Current State: On Hold (disconnected)"
     IDS_NFO_NOW_CONNECTED "%ls зараз підключено."
     IDS_NFO_ASSIGN_IP "Отримано IP: %ls"
     IDS_ERR_CERT_EXPIRED "Неможливо з'єднатися, бо час дії вашого сертифікату минув або системний час некорректний."

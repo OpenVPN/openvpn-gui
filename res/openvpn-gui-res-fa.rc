@@ -361,6 +361,7 @@ BEGIN
     IDS_ERR_CREATE_THREAD_STATUS "ایجاد موضوع برای نمایش پنجره وضعیت ناموفق بود."
     IDS_NFO_STATE_WAIT_TERM "وضعیت اخیر: منتظر OpenVPN برای پایان دادن…"
     IDS_NFO_STATE_CONNECTED "وضعیت اخیر: متصل"
+    IDS_NFO_STATE_ONHOLD "Current State: On Hold (disconnected)"
     IDS_NFO_NOW_CONNECTED "%ls متصل است."
     IDS_NFO_ASSIGN_IP "ّIP اختصاص داده شده: %ls"
     IDS_ERR_CERT_EXPIRED "اتصال امکان پذیر نیست زیرا گواهی شما منقضی شده است یا زمان سیستم نادرست است."

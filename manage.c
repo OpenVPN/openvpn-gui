@@ -204,8 +204,12 @@ OnManagement(SOCKET sk, LPARAM lParam)
     case FD_CONNECT:
         if (WSAGETSELECTERROR(lParam))
         {
-            if (time(NULL) < c->manage.timeout)
+            /* keep trying for connections with persistent daemons */
+            if (c->flags & FLAG_DAEMON_PERSISTENT
+                || time(NULL) < c->manage.timeout)
+            {
                 connect(c->manage.sk, (SOCKADDR *)&c->manage.skaddr, sizeof(c->manage.skaddr));
+            }
             else
             {
                 /* Connection to MI timed out. */

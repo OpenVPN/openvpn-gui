@@ -65,6 +65,7 @@ typedef enum {
 /* connection states */
 typedef enum {
     disconnected,
+    onhold,
     connecting,
     reconnecting,
     connected,
@@ -87,6 +88,7 @@ typedef struct {
 #define FLAG_SAVE_AUTH_PASS (1<<5)
 #define FLAG_DISABLE_SAVE_PASS (1<<6)
 #define FLAG_DISABLE_ECHO_MSG  (1<<7)
+#define FLAG_DAEMON_PERSISTENT  (1<<8)
 
 #define CONFIG_VIEW_AUTO      (0)
 #define CONFIG_VIEW_FLAT      (1)
