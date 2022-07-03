@@ -361,6 +361,7 @@ BEGIN
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread 以顯示狀態視窗時失敗。"
     IDS_NFO_STATE_WAIT_TERM "目前狀態: 等待中止 OpenVPN…"
     IDS_NFO_STATE_CONNECTED "目前狀態: 已連線"
+    IDS_NFO_STATE_ONHOLD "Current State: On Hold (disconnected)"
     IDS_NFO_NOW_CONNECTED "已連線至 %ls。"
     IDS_NFO_ASSIGN_IP "配發 IP: %ls"
     IDS_ERR_CERT_EXPIRED "您的憑證已過期，或是系統時間不正確，無法連線。"

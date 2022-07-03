@@ -58,10 +58,12 @@
 #define WM_OVPN_NOTIFY         (WM_APP + 16)
 #define WM_OVPN_EXIT           (WM_APP + 17)
 #define WM_OVPN_SILENT         (WM_APP + 18)
+#define WM_OVPN_RELEASE        (WM_APP + 19)
 #define WM_OVPN_IMPORT         (WM_APP + 20)
 #define WM_OVPN_RESCAN         (WM_APP + 21)
 #define WM_OVPN_ECHOMSG        (WM_APP + 22)
 #define WM_OVPN_STATE          (WM_APP + 23)
+#define WM_OVPN_DETACH         (WM_APP + 24)
 
 /* bool definitions */
 #define bool int

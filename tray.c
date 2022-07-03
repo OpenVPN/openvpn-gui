@@ -576,6 +576,13 @@ SetMenuStatusById(int i, conn_state_t state)
             EnableMenuItem(hMenu, IDM_RECONNECTMENU, MF_GRAYED);
             EnableMenuItem(hMenu, IDM_STATUSMENU, MF_ENABLED);
         }
+        else if (state == onhold)
+        {
+            EnableMenuItem(hMenu, IDM_CONNECTMENU, MF_ENABLED);
+            EnableMenuItem(hMenu, IDM_DISCONNECTMENU, MF_GRAYED);
+            EnableMenuItem(hMenu, IDM_RECONNECTMENU, MF_ENABLED);
+            EnableMenuItem(hMenu, IDM_STATUSMENU, MF_ENABLED);
+        }
         if (c->flags & (FLAG_SAVE_AUTH_PASS | FLAG_SAVE_KEY_PASS))
             EnableMenuItem(hMenu, IDM_CLEARPASSMENU, MF_ENABLED);
         else
@@ -633,6 +640,13 @@ SetMenuStatusById(int i, conn_state_t state)
             EnableMenuItem(hMenuConn[i], IDM_CONNECTMENU, MF_GRAYED);
             EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU, MF_GRAYED);
             EnableMenuItem(hMenuConn[i], IDM_RECONNECTMENU, MF_GRAYED);
+            EnableMenuItem(hMenuConn[i], IDM_STATUSMENU, MF_ENABLED);
+        }
+        else if (state == onhold)
+        {
+            EnableMenuItem(hMenuConn[i], IDM_CONNECTMENU, MF_ENABLED);
+            EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU, MF_GRAYED);
+            EnableMenuItem(hMenuConn[i], IDM_RECONNECTMENU, MF_ENABLED);
             EnableMenuItem(hMenuConn[i], IDM_STATUSMENU, MF_ENABLED);
         }
         if (c->flags & (FLAG_SAVE_AUTH_PASS | FLAG_SAVE_KEY_PASS))

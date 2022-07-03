@@ -359,6 +359,7 @@ BEGIN
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread to show Status window Failed."
     IDS_NFO_STATE_WAIT_TERM "現在の状況: OpenVPNの終了を待機中..."
     IDS_NFO_STATE_CONNECTED "現在の状況: 接続済み"
+    IDS_NFO_STATE_ONHOLD "Current State: On Hold (disconnected)"
     IDS_NFO_NOW_CONNECTED "%ls に接続しました。"
     IDS_NFO_ASSIGN_IP "割り当てられたIP: %ls"
     IDS_ERR_CERT_EXPIRED "証明書の期限が切れているかシステム時刻が正しくないため、接続できません。"
