@@ -431,7 +431,6 @@ Opções para sobrescrever opções do registro:\n\
 --allow_password\t\t: 1=Mostrar menu de troca de senha.\n\
 --allow_proxy\t\t: 1=Mostrar menu de configurações de Proxy.\n\
 --show_balloon\t\t: 0=Nunca, 1=Ao iniciar conexão, 2=Sempre que reconectar.\n\
---service_only\t\t: 1=Habilitar modo Service Only .\n\
 --silent_connection\t\t: 1=Não mostrar dialogo de status quando estiver conectando.\n\
 --show_script_window\t: 0=Esconder janela de execução de script, 1=Mostrar.\n\
 --passphrase_attempts\t: Número de tentativas de digitação de senha.\n\

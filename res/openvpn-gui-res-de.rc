@@ -435,7 +435,6 @@ Option zum Überschreiben der Registry Einstellungen:\n\
 --allow_password\t\t: 1=Zeige Passwort-ändern-Menü.\n\
 --allow_proxy\t\t: 1=Zeige Proxy-Einstellungsmenü.\n\
 --show_balloon\t\t: 0=Nie, 1=Beim ersten Verbinden, 2=Bei jedem Wiederverbinden.\n\
---service_only\t\t: 1=Aktiviere Service-Only-Modus.\n\
 --silent_connection\t\t: 1=Unterdrücke die Anzeige des Statusdialogs beim Verbinden.\n\
 --show_script_window\t: 0=Unterdrücke die Anzeige des Skriptfensters, 1=Zeige es.\n\
 --passphrase_attempts\t: Anzahl der erlaubten Passphrase-Versuche.\n\

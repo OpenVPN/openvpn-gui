@@ -30,7 +30,6 @@
 #include <time.h>
 
 #include "tray.h"
-#include "service.h"
 #include "main.h"
 #include "options.h"
 #include "openvpn.h"
@@ -45,7 +44,6 @@ HMENU hMenu;
 HMENU *hMenuConn;
 HMENU hMenuImport;
 int hmenu_size = 0; /* allocated size of hMenuConn array */
-HMENU hMenuService;
 
 HBITMAP hbmpConnecting;
 
@@ -179,7 +177,6 @@ CreatePopupMenus()
         o.groups[i].children = 0; /* we have to recount this when assigning menu position index */
     }
 
-    hMenuService = CreatePopupMenu();
     hMenu = o.groups[0].menu; /* the first group menu is also the root menu */
 
     /* Set notify by position style for the top menu - gets automatically applied to sub-menus */
@@ -190,19 +187,11 @@ CreatePopupMenus()
 
     if (o.num_configs == 1) {
         /* Create Main menu with actions */
-        if (o.service_only == 0) {
-            AppendMenu(hMenu, MF_STRING, IDM_CONNECTMENU, LoadLocalizedString(IDS_MENU_CONNECT));
-            AppendMenu(hMenu, MF_STRING, IDM_DISCONNECTMENU, LoadLocalizedString(IDS_MENU_DISCONNECT));
-            AppendMenu(hMenu, MF_STRING, IDM_RECONNECTMENU, LoadLocalizedString(IDS_MENU_RECONNECT));
-            AppendMenu(hMenu, MF_STRING, IDM_STATUSMENU, LoadLocalizedString(IDS_MENU_STATUS));
-            AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
-        }
-        else {
-            AppendMenu(hMenu, MF_STRING, IDM_SERVICE_START, LoadLocalizedString(IDS_MENU_SERVICEONLY_START));
-            AppendMenu(hMenu, MF_STRING, IDM_SERVICE_STOP, LoadLocalizedString(IDS_MENU_SERVICEONLY_STOP));
-            AppendMenu(hMenu, MF_STRING, IDM_SERVICE_RESTART, LoadLocalizedString(IDS_MENU_SERVICEONLY_RESTART));
-            AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
-        }
+        AppendMenu(hMenu, MF_STRING, IDM_CONNECTMENU, LoadLocalizedString(IDS_MENU_CONNECT));
+        AppendMenu(hMenu, MF_STRING, IDM_DISCONNECTMENU, LoadLocalizedString(IDS_MENU_DISCONNECT));
+        AppendMenu(hMenu, MF_STRING, IDM_RECONNECTMENU, LoadLocalizedString(IDS_MENU_RECONNECT));
+        AppendMenu(hMenu, MF_STRING, IDM_STATUSMENU, LoadLocalizedString(IDS_MENU_STATUS));
+        AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
 
         AppendMenu(hMenu, MF_STRING, IDM_VIEWLOGMENU, LoadLocalizedString(IDS_MENU_VIEWLOG));
 
@@ -270,13 +259,6 @@ CreatePopupMenus()
         if (o.num_configs > 0)
             AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
 
-        if (o.service_only) {
-            AppendMenu(hMenu, MF_STRING, IDM_SERVICE_START, LoadLocalizedString(IDS_MENU_SERVICEONLY_START));
-            AppendMenu(hMenu, MF_STRING, IDM_SERVICE_STOP, LoadLocalizedString(IDS_MENU_SERVICEONLY_STOP));
-            AppendMenu(hMenu, MF_STRING, IDM_SERVICE_RESTART, LoadLocalizedString(IDS_MENU_SERVICEONLY_RESTART));
-            AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
-        }
-
         hMenuImport = CreatePopupMenu();
         AppendMenu(hMenu, MF_POPUP, (UINT_PTR) hMenuImport, LoadLocalizedString(IDS_MENU_IMPORT));
         AppendMenu(hMenuImport, MF_STRING, IDM_IMPORT_FILE, LoadLocalizedString(IDS_MENU_IMPORT_FILE));
@@ -288,13 +270,11 @@ CreatePopupMenus()
 
         /* Create popup menus for every connection */
         for (int i = 0; i < o.num_configs; i++) {
-            if (o.service_only == 0) {
-                AppendMenu(hMenuConn[i], MF_STRING, IDM_CONNECTMENU, LoadLocalizedString(IDS_MENU_CONNECT));
-                AppendMenu(hMenuConn[i], MF_STRING, IDM_DISCONNECTMENU, LoadLocalizedString(IDS_MENU_DISCONNECT));
-                AppendMenu(hMenuConn[i], MF_STRING, IDM_RECONNECTMENU, LoadLocalizedString(IDS_MENU_RECONNECT));
-                AppendMenu(hMenuConn[i], MF_STRING, IDM_STATUSMENU, LoadLocalizedString(IDS_MENU_STATUS));
-                AppendMenu(hMenuConn[i], MF_SEPARATOR, 0, 0);
-            }
+            AppendMenu(hMenuConn[i], MF_STRING, IDM_CONNECTMENU, LoadLocalizedString(IDS_MENU_CONNECT));
+            AppendMenu(hMenuConn[i], MF_STRING, IDM_DISCONNECTMENU, LoadLocalizedString(IDS_MENU_DISCONNECT));
+            AppendMenu(hMenuConn[i], MF_STRING, IDM_RECONNECTMENU, LoadLocalizedString(IDS_MENU_RECONNECT));
+            AppendMenu(hMenuConn[i], MF_STRING, IDM_STATUSMENU, LoadLocalizedString(IDS_MENU_STATUS));
+            AppendMenu(hMenuConn[i], MF_SEPARATOR, 0, 0);
 
             AppendMenu(hMenuConn[i], MF_STRING, IDM_VIEWLOGMENU, LoadLocalizedString(IDS_MENU_VIEWLOG));
 
@@ -309,8 +289,6 @@ CreatePopupMenus()
             SetMenuStatusById(i, o.conn[i].state);
         }
     }
-
-    SetServiceMenuStatus();
 }
 
 
@@ -322,11 +300,9 @@ DestroyPopupMenus()
     for (i = 0; i < o.num_configs; i++)
         DestroyMenu(hMenuConn[i]);
 
-    DestroyMenu(hMenuService);
     DestroyMenu(hMenuImport);
     DestroyMenu(hMenu);
 
-    hMenuService = NULL;
     hMenuImport = NULL;
     hMenu = NULL;
 }
@@ -359,17 +335,7 @@ OnNotifyTray(LPARAM lParam)
         break;
 
     case WM_LBUTTONDBLCLK:
-        if (o.service_only) {
-            /* Start or stop OpenVPN service */
-            if (o.service_state == service_disconnected) {
-                MyStartService();
-            }
-            else if (o.service_state == service_connected
-            && ShowLocalizedMsgEx(MB_YESNO, NULL, _T(PACKAGE_NAME), IDS_MENU_ASK_STOP_SERVICE) == IDYES) {
-                MyStopService();
-            }
-        }
-        else {
+        {
             int disconnected_conns = CountConnState(disconnected);
 
             RecreatePopupMenus();
@@ -494,12 +460,6 @@ SetTrayIcon(conn_state_t state)
 void
 CheckAndSetTrayIcon()
 {
-    if (o.service_state == service_connected)
-    {
-        SetTrayIcon(connected);
-        return;
-    }
-
     if (CountConnState(connected) != 0)
     {
         SetTrayIcon(connected);
@@ -507,7 +467,7 @@ CheckAndSetTrayIcon()
     else
     {
         if (CountConnState(connecting) != 0 || CountConnState(reconnecting) != 0
-        ||  CountConnState(resuming) != 0 || o.service_state == service_connecting)
+            ||  CountConnState(resuming) != 0)
             SetTrayIcon(connecting);
         else
             SetTrayIcon(disconnected);
@@ -653,37 +613,5 @@ SetMenuStatusById(int i, conn_state_t state)
             EnableMenuItem(hMenuConn[i], IDM_CLEARPASSMENU, MF_ENABLED);
         else
             EnableMenuItem(hMenuConn[i], IDM_CLEARPASSMENU, MF_GRAYED);
-    }
-}
-
-
-void
-SetServiceMenuStatus()
-{
-    HMENU hMenuHandle;
-
-    if (o.service_only == 0)
-        return;
-
-    if (o.service_only)
-        hMenuHandle = hMenu;
-    else
-        hMenuHandle = hMenuService;
-
-    if (o.service_state == service_noaccess
-    ||  o.service_state == service_connecting) {
-        EnableMenuItem(hMenuHandle, IDM_SERVICE_START, MF_GRAYED);
-        EnableMenuItem(hMenuHandle, IDM_SERVICE_STOP, MF_GRAYED);
-        EnableMenuItem(hMenuHandle, IDM_SERVICE_RESTART, MF_GRAYED);
-    }
-    else if (o.service_state == service_connected) {
-        EnableMenuItem(hMenuHandle, IDM_SERVICE_START, MF_GRAYED);
-        EnableMenuItem(hMenuHandle, IDM_SERVICE_STOP, MF_ENABLED);
-        EnableMenuItem(hMenuHandle, IDM_SERVICE_RESTART, MF_ENABLED);
-    }
-    else {
-        EnableMenuItem(hMenuHandle, IDM_SERVICE_START, MF_ENABLED);
-        EnableMenuItem(hMenuHandle, IDM_SERVICE_STOP, MF_GRAYED);
-        EnableMenuItem(hMenuHandle, IDM_SERVICE_RESTART, MF_GRAYED);
     }
 }

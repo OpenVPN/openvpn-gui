@@ -432,7 +432,6 @@ Rekisterin asetukset kumoavat valinnat:\n\
 --allow_password\t\t: 1=Näytä salasanan vaihto valikossa.\n\
 --allow_proxy\t\t: 1=Näytä välipalvelimen asetukset valikossa.\n\
 --show_balloon\t\t: 0=Ei koskaan, 1=Ensimmäisen kerran yhdistettäessä, 2=Joka yhdistyksellä.\n\
---service_only\t\t: 1=Käynnistä palveluna.\n\
 --silent_connection\t\t: 1=Älä näytä sovelluksen tilaa yhdistettäessä.\n\
 --show_script_window\t: 0=Piilota komentojonoikkuna, 1=Älä piilota sitä.\n\
 --passphrase_attempts\t: Salasanan syöttökertojen maksimimäärä\n\

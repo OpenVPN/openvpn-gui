@@ -447,7 +447,6 @@ Options to override registry settings:\n\
 --allow_password\t\t: 1=Show Change Password menu item.\n\
 --allow_proxy\t\t: 1=Show Proxy Settings menu.\n\
 --show_balloon\t\t: 0=Never, 1=At initial connect, 2=At every reconnect.\n\
---service_only\t\t: 1=Enable Service Only mode.\n\
 --silent_connection\t: 1=Do not show the status dialog while connecting or non-critical warnings at startup.\n\
 --show_script_window\t: 0=Hide Script execution window, 1=Show it.\n\
 --passphrase_attempts\t: Number of passphrase attempts to allow.\n\

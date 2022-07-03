@@ -431,7 +431,6 @@ Registry ayarları için:\n\
 --allow_password\t\t: 1=Şifre değiştirme menü öğesini göster.\n\
 --allow_proxy\t\t: 1=Proxy Ayarları menüsünü gözter.\n\
 --show_balloon\t\t: 0=Hiç bir zaman, 1=Bağlantı yapılırken, 2=Bağlantı her yeniden yapıldığında.\n\
---service_only\t\t: 1=Sadece servis çalışsın, arayüz gösterilmesin.\n\
 --silent_connection\t\t: 1=Bağlantı sırasında durum diyaloğu görünmesin.\n\
 --show_script_window\t: 0=Betik çalıştırma penceresi görünmesin, 1=Betik çalıştırma penceresi görünsün.\n\
 --passphrase_attempts\t: Kaç defa şifre giriş denemesi yapılabilir.\n\

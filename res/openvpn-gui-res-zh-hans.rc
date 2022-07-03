@@ -434,7 +434,6 @@ BEGIN
 --allow_password\t\t: 1=显示「变更密码」选项。\n\
 --allow_proxy\t\t: 1=显示「代理设置」选项。\n\
 --show_balloon\t\t: 0=永不、1=首次连接时、2=每次重新连接时显示通知。\n\
---service_only\t\t: 1=启动「仅系统服务」模式。\n\
 --silent_connection\t\t: 1=连接时，不显示状态窗口。\n\
 --show_script_window\t: 0=隐藏脚本执行窗口、1=显示。\n\
 --passphrase_attempts\t: 允许尝试输入密码次数。\n\

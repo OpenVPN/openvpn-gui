@@ -433,7 +433,6 @@ OpenVPN GUIをこのまま終了しますか？"
 --allow_password\t\t: 1=[パスワードの変更]メニューを表示する。\n\
 --allow_proxy\t\t: 1=[プロキシ設定]メニューを表示する。\n\
 --show_balloon\t\t: 0=表示しない, 1=接続時, 2=接続/再接続時\n\
---service_only\t\t: 1=サービスのみのモードを有効にする。\n\
 --silent_connection\t\t: 1=接続時にステータス表示ダイアログを表示しない。\n\
 --show_script_window\t: 0=スクリプト実行ウィンドウを非表示にする。1=表示する。\n\
 --passphrase_attempts\t: パスフレーズの入力可能回数。\n\

@@ -204,7 +204,7 @@ add_option(options_t *options, int i, TCHAR **p)
     else if (streq(p[0], _T("service_only")) && p[1])
     {
         ++i;
-        options->service_only = _ttoi(p[1]) ? 1 : 0;
+        PrintDebug (L"Deprecated option: '%ls' ignored.", p[0]);
     }
     else if (streq(p[0], _T("show_script_window")) && p[1])
     {

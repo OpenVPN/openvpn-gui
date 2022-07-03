@@ -429,7 +429,6 @@ Opciones para sobreescribir opciones del registro:\n\
 --allow_password\t\t: 1=Mostrar el menú de Cambiar Clave.\n\
 --allow_proxy\t\t: 1=Mostrar el menú de Configuración del Proxy.\n\
 --show_balloon\t\t: 0=Nunca, 1=En la conexión inicial, 2=En cada reconexión.\n\
---service_only\t\t: 1=Activar el modo de Solo Servicio.\n\
 --silent_connection\t\t: 1=No mostrar la ventana de estado al conectar.\n\
 --show_script_window\t: 0=Oculta la ventana de ejecución de Script, 1=Mostrarla.\n\
 --passphrase_attempts\t: Número de intentos permitidos para la passphrase.\n\

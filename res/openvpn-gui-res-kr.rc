@@ -430,7 +430,6 @@ OpenVPN GUI를 이대로 종료 하겠습니까?"
 --allow_password\t\t: 1=암호 변경 메뉴 표시\n\
 --allow_proxy\t\t: 1=프락시 설정 메뉴 표시\n\
 --show_balloon\t\t: 0=표시 안함, 1=접속 시, 2=모든 접속/재접속 시.\n\
---service_only\t\t: 1=서비스 전용 모드를 사용\n\
 --silent_connection\t\t: 1=연결시 상태 표시 대화 상자를 표시하지 않습니다.\n\
 --show_script_window\t: 0=스크립트 실행창 숨김, 1=보기.\n\
 --passphrase_attempts\t: 암호 입력 시도 회수\n\
