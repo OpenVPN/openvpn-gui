@@ -432,7 +432,6 @@ Opzioni per ignorare il registro di sistema:\n\
 --allow_password\t\t: 1=Mostra menu modifica password.\n\
 --allow_proxy\t\t: 1=Mostra menu impostazioni proxy.\n\
 --show_balloon\t\t: 0=Mai, 1=Alla connessione iniziale, 2=A ogni riconnessione.\n\
---service_only\t\t: 1=Abilita la modalità solo servizio.\n\
 --silent_connection\t\t: 1=Non mostrare la finestra di stato durante la connessione e avvertimenti non urgenti all'avvio.\n\
 --show_script_window\t: 0=Nascondi la finestra di esecuzione dello script, 1=Mostra.\n\
 --passphrase_attempts\t: Numero di tentativi permessi per la frase di sicurezza.\n\

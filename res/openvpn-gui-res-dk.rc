@@ -432,7 +432,6 @@ Parametre som vil tilsidesætte indstillinger i registreringsdatabasen:\n\
 --allow_password\t\t: 1=Vise Ændre Password i menu.\n\
 --allow_proxy\t\t: 1=Vise Proxy Innstillinger i menu.\n\
 --show_balloon\t\t: 0=Aldrig, 1=under tilslutning, 2=Ved hver ""gen-tilslutning"".\n\
---service_only\t\t: 1=Aktivere ""Kun Service"" tilstand.\n\
 --silent_connection\t\t: 1=ikke vise status-vindue ved tilslutning.\n\
 --show_script_window\t: 0=Skjul script-vindue, 1=Vise script-vindue.\n\
 --passphrase_attempts\t: Antal forbindelses-forsøg.\n\

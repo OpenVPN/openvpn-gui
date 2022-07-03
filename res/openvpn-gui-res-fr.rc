@@ -432,7 +432,6 @@ Options pour corriger la configuration de registre:\n\
 --allow_password\t\t: 1=Afficher le menu de Changement de Mot de passe.\n\
 --allow_proxy\t\t: 1=Afficher le menu de la configuration du Proxy.\n\
 --show_balloon\t\t: 0=Jamais, 1=A la connexion initiale, 2=A toutes les reconnexions.\n\
---service_only\t\t: 1=Activer le mode Service seul Enable.\n\
 --silent_connection\t\t: 1=Ne pas ouvrir le dialogue de Statut à la connexion.\n\
 --show_script_window\t: 0=Cacher la fenêtre d'exécution du script, 1=Afficher la fenêtre.\n\
 --passphrase_attempts\t: Nombre de tentatives de Mot de passe permises.\n\

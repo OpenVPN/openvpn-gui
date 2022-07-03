@@ -277,6 +277,7 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
   if (use_iservice && strtod(o.ovpn_version, NULL) > 2.3 && !o.silent_connection)
     CheckIServiceStatus(TRUE);
 
+  CheckServiceStatus();	/* Check if automatic service is running or not */
   BuildFileList();
 
   if (!VerifyAutoConnections()) {
@@ -538,8 +539,6 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
       CreatePopupMenus();	/* Create popup menus */
       ShowTrayIcon();
-      if (o.service_only)
-        CheckServiceStatus();	// Check if service is running or not
 
       /* if '--import' was specified, do it now */
       if (o.action == WM_OVPN_IMPORT && o.action_arg)
@@ -580,15 +579,6 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       }
       else if (LOWORD(wParam) == IDM_CLOSE) {
         CloseApplication(hwnd);
-      }
-      else if (LOWORD(wParam) == IDM_SERVICE_START) {
-        MyStartService();
-      }
-      else if (LOWORD(wParam) == IDM_SERVICE_STOP) {
-        MyStopService();
-      }
-      else if (LOWORD(wParam) == IDM_SERVICE_RESTART) {
-        MyReStartService();
       }
       /* rest of the handlers require a connection id */
       else {
@@ -713,16 +703,14 @@ ShowSettingsDialog()
   ++page_number;
 
   /* Proxy tab */
-  if (o.service_only == 0) {
-    psp[page_number].dwSize = sizeof(PROPSHEETPAGE);
-    psp[page_number].dwFlags = PSP_DLGINDIRECT;
-    psp[page_number].hInstance = o.hInstance;
-    psp[page_number].pResource = LocalizedDialogResource(ID_DLG_PROXY);
-    psp[page_number].pfnDlgProc = ProxySettingsDialogFunc;
-    psp[page_number].lParam = 0;
-    psp[page_number].pfnCallback = NULL;
-    ++page_number;
-  }
+  psp[page_number].dwSize = sizeof(PROPSHEETPAGE);
+  psp[page_number].dwFlags = PSP_DLGINDIRECT;
+  psp[page_number].hInstance = o.hInstance;
+  psp[page_number].pResource = LocalizedDialogResource(ID_DLG_PROXY);
+  psp[page_number].pfnDlgProc = ProxySettingsDialogFunc;
+  psp[page_number].lParam = 0;
+  psp[page_number].pfnCallback = NULL;
+  ++page_number;
 
   /* Advanced tab */
   psp[page_number].dwSize = sizeof(PROPSHEETPAGE);
@@ -764,10 +752,6 @@ void
 CloseApplication(HWND hwnd)
 {
     int i;
-
-    if (o.service_state == service_connected
-    && ShowLocalizedMsgEx(MB_YESNO, NULL, _T("Exit OpenVPN"), IDS_NFO_SERVICE_ACTIVE_EXIT) == IDNO)
-            return;
 
     /* Show a message if any non-persistent connections are active */
     for (i = 0; i < o.num_configs; i++)

@@ -433,7 +433,6 @@ Instellingen die de registerinstellingen overschrijven:\n\
 --allow_password\t\t: 1=""Wachtwoord wijzigen"" menu-item weergeven.\n\
 --allow_proxy\t\t: 1=Menu ""Proxyinstellingen"" weergeven.\n\
 --show_balloon\t\t: 0=Nooit, 1=Tijdens eerste verbinding, 2=Bij elke herverbinding.\n\
---service_only\t\t: 1=Service Only modus activeren.\n\
 --silent_connection\t\t: 1=Het status-venster tijdens het verbinden verbergen.\n\
 --show_script_window\t: 0=Het script uitvoer-venster verbergen, 1=Weergeven.\n\
 --passphrase_attempts\t: Aantal wachtwoordpogingen.\n\

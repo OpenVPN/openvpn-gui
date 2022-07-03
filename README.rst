@@ -264,11 +264,6 @@ silent_connection
     not be shown while connecting. Warnings such as interactive service
     not started or multiple config files with same name are also suppressed.
 
-service_only
-    If set to "1", OpenVPN GUI's normal "Connect" and "Disconnect"
-    actions are changed so they start/stop the OpenVPN service instead
-    of launching openvpn.exe directly.
-
 show_balloon
     0: Never show any connected balloon
 

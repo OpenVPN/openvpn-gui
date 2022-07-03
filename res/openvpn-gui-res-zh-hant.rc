@@ -434,7 +434,6 @@ Supported commands:\n\
 --allow_password\t\t: 1=顯示「變更密碼」選單。\n\
 --allow_proxy\t\t: 1=顯示「Proxy 設定」選單。\n\
 --show_balloon\t\t: 0=永不、1=首次連線時、2=每次重新連線時顯示通知氣球。\n\
---service_only\t\t: 1=啟動「僅有系統服務」模式。\n\
 --silent_connection\t\t: 1=連線時，不顯示狀態視窗。\n\
 --show_script_window\t: 0=隱藏指令碼執行視窗、1=顯示。\n\
 --passphrase_attempts\t: 允許嘗試輸入密碼次數。\n\

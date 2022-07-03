@@ -431,7 +431,6 @@ Opcje oddalające ustawienia rejestru:\n\
 --allow_password\t\t: 1=Wyświetl w menu pole Zmień Hasło.\n\
 --allow_proxy\t\t: 1=Wyświetl w menu pole Pokaż Ustawienia Proxy.\n\
 --show_balloon\t\t: 0=Nigdy, 1=Przy pierwszym połączeniu, 2=Przy każdym połączeniu.\n\
---service_only\t\t: 1=Aktywuj tryb Tylko Usługa (Service Only).\n\
 --silent_connection\t\t: 1=Nie pokazuj okna statusu podczas łączenia.\n\
 --show_script_window\t: 0=Ukryj okno wykonywania skryptu, 1=Wyświetl je.\n\
 --passphrase_attempts\t: Dopuszczalna ilość prób podania hasła.\n\

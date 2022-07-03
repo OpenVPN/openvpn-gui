@@ -433,7 +433,6 @@ Volby k použití explicitního nastavení namísto výchozího z registru:\n\
 --allow_password\t\t: 1=Zobrazit položku Změnit heslo v menu.\n\
 --allow_proxy\t\t: 1=Zobrazit nastavení proxy v menu.\n\
 --show_balloon\t\t: Ukazovat upozornění: 0=Nikdy, 1=Při připojení, 2=Při připojení/obnovení spojení.\n\
---service_only\t\t: 1=Ovládat pouze službu systému.\n\
 --silent_connection\t\t: 1=Nezobrazovat stav při připojování ani nekritická varování při spuštění.\n\
 --show_script_window\t: 0=Nezobrazovat okno skriptu, 1=Zobrazit okno skriptu.\n\
 --passphrase_attempts\t: Počet možných pokusů o zadání hesla.\n\

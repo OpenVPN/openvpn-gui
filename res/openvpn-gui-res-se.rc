@@ -428,7 +428,6 @@ Parametrar som ersätter inställningar gjorda i registret:\n\
 --allow_password\t\t: 1=Visa Ändra Lösenord på menyn.\n\
 --allow_proxy\t\t: 1=Visa Proxy Inställningar på menyn.\n\
 --show_balloon\t\t: 0=Aldrig, 1=Vid anslutning, 2=Vid varje återanslutning.\n\
---service_only\t\t: 1=Aktivera ""Service Only"" läge.\n\
 --silent_connection\t\t: 1=Visa inte status fönstret under anslutning.\n\
 --show_script_window\t: 0=Göm skript fönster, 1=Visa skript fönster.\n\
 --passphrase_attempts\t: Antal lösenordsförsök.\n\
