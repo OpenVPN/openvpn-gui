@@ -67,8 +67,8 @@
 
 extern options_t o;
 
-static BOOL
-TerminateOpenVPN(connection_t *c);
+static BOOL TerminateOpenVPN(connection_t *c);
+static BOOL LaunchOpenVPN(connection_t *c);
 
 const TCHAR *cfgProp = _T("conn");
 
@@ -1314,21 +1314,6 @@ OnStop(connection_t *c, UNUSED char *msg)
         break;
 
     case disconnecting:
-//   /* Check for "certificate has expired" message */
-//   if ((strstr(line, "error=certificate has expired") != NULL))
-//     {
-//       StopOpenVPN(config);
-//       /* Cert expired... */
-//       ShowLocalizedMsg(IDS_ERR_CERT_EXPIRED);
-//     }
-//
-//   /* Check for "certificate is not yet valid" message */
-//   if ((strstr(line, "error=certificate is not yet valid") != NULL))
-//     {
-//       StopOpenVPN(config);
-//       /* Cert not yet valid */
-//       ShowLocalizedMsg(IDS_ERR_CERT_NOT_YET_VALID);
-//     }
         /* Shutdown was initiated by us */
         c->failed_psw_attempts = 0;
         c->failed_auth_attempts = 0;
@@ -2006,12 +1991,18 @@ ThreadOpenVPNStatus(void *p)
     _tcsncpy(conn_name, c->config_file, _countof(conn_name));
     conn_name[_tcslen(conn_name) - _tcslen(o.ext_string) - 1] = _T('\0');
 
-    c->state = (c->state == suspended ? resuming : connecting);
+    c->state = ((c->state == suspended)  ? resuming : connecting);
 
     /* Create and Show Status Dialog */
     c->hwndStatus = CreateLocalizedDialogParam(ID_DLG_STATUS, StatusDialogFunc, (LPARAM) c);
     if (!c->hwndStatus)
+    {
+        /* kill daemon process if we started it */
+        SetEvent(c->exit_event);
+        Cleanup(c);
+        c->state = disconnected;
         return 1;
+    }
 
     CheckAndSetTrayIcon();
     SetMenuStatus(c, connecting);
@@ -2032,7 +2023,9 @@ ThreadOpenVPNStatus(void *p)
         wait_event = c->iserv.hEvent;
     }
     else
+    {
         wait_event = c->hProcess;
+    }
 
     if (o.silent_connection == 0)
         ShowWindow(c->hwndStatus, SW_SHOW);
@@ -2147,20 +2140,10 @@ out:
 }
 #endif
 
-/*
- * Launch an OpenVPN process and the accompanying thread to monitor it
- */
+/* Start a thread to monitor a connection and launch openvpn.exe if required */
 BOOL
 StartOpenVPN(connection_t *c)
 {
-    TCHAR cmdline[1024];
-    TCHAR *options = cmdline + 8;
-    TCHAR exit_event_name[17];
-    HANDLE hStdInRead = NULL, hStdInWrite = NULL;
-    HANDLE hNul = NULL, hThread = NULL;
-    DWORD written;
-    BOOL retval = FALSE;
-
     CLEAR(c->ip);
 
     if (c->hwndStatus)
@@ -2177,17 +2160,52 @@ StartOpenVPN(connection_t *c)
         }
         return FALSE;
     }
+    else if (c->state != disconnected)
+    {
+        return FALSE;
+    }
+
     PrintDebug(L"Starting openvpn on config %ls", c->config_name);
 
-    RunPreconnectScript(c);
-
     /* Create thread to show the connection's status dialog */
-    hThread = CreateThread(NULL, 0, ThreadOpenVPNStatus, c, CREATE_SUSPENDED, &c->threadId);
+    HANDLE hThread = CreateThread(NULL, 0, ThreadOpenVPNStatus, c, CREATE_SUSPENDED, &c->threadId);
     if (hThread == NULL)
     {
         ShowLocalizedMsg(IDS_ERR_CREATE_THREAD_STATUS);
-        goto out;
+        return false;
     }
+
+    /* Launch openvpn.exe using the service or directly */
+    if (!LaunchOpenVPN(c))
+    {
+        TerminateThread(hThread, 1);
+        return false;
+    }
+
+    /* Start the status dialog thread */
+    ResumeThread(hThread);
+
+    if (hThread && hThread != INVALID_HANDLE_VALUE)
+        CloseHandle(hThread);
+
+    return true;
+}
+
+/*
+ * Launch an OpenVPN process
+ */
+static BOOL
+LaunchOpenVPN(connection_t *c)
+{
+    TCHAR cmdline[1024];
+    TCHAR *options = cmdline + 8;
+    TCHAR exit_event_name[17];
+    HANDLE hStdInRead = NULL, hStdInWrite = NULL;
+    HANDLE hNul = NULL;
+    DWORD written;
+    BOOL retval = FALSE;
+
+    RunPreconnectScript(c);
 
     /* Create an event object to signal OpenVPN to exit */
     _sntprintf_0(exit_event_name, _T("%x%08x"), GetCurrentProcessId(), c->threadId);
@@ -2357,13 +2375,9 @@ StartOpenVPN(connection_t *c)
         CloseHandle(pi.hThread);
     }
 
-    /* Start the status dialog thread */
-    ResumeThread(hThread);
     retval = TRUE;
 
 out:
-    if (hThread && hThread != INVALID_HANDLE_VALUE)
-        CloseHandle(hThread);
     if (hStdInWrite && hStdInWrite != INVALID_HANDLE_VALUE)
         CloseHandle(hStdInWrite);
     if (hStdInRead && hStdInRead != INVALID_HANDLE_VALUE)
