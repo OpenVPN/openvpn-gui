@@ -2,7 +2,6 @@
  *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
- *                2009 Heiko Hund <heikoh@users.sf.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -103,20 +102,6 @@ BEGIN
     PUSHBUTTON "&Disconnetti", ID_DISCONNECT, 50, 190, 50, 14
     PUSHBUTTON "&Riconnetti", ID_RESTART, 150, 190, 50, 14
     PUSHBUTTON "&Nascondi", ID_HIDE, 100, 190, 50, 14
-END
-
-/* Message Window.
- * This dialog needs no translation unless a different font instead
- * of the specified Segoe UI (or its equivalent) is preferred.
- */
-ID_DLG_MESSAGE DIALOG 6, 18, 278, 210
-STYLE WS_SIZEBOX | WS_SYSMENU | WS_POPUP | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND | DS_SETFONT
-CAPTION "OpenVPN Message" /* a place holder replaced dynamically */
-FONT 9, "Segoe UI"
-LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
-BEGIN
-    /* We use an edit control to allow select, copy */
-    CONTROL "", ID_TXT_MESSAGE, RICHEDIT_CLASSW, ES_MULTILINE | WS_VSCROLL | ES_AUTOVSCROLL |  NOT WS_BORDER | ES_READONLY | NOT WS_TABSTOP, 10, 10, 260, 190
 END
 
 /* Change Passphrase Dialog */
@@ -303,7 +288,7 @@ BEGIN
     IDS_TIP_ASSIGNED_IP "\nIP assegnato: %ls"
     IDS_MENU_SERVICE "Servizio OpenVPN"
     IDS_MENU_IMPORT "Importa"
-    IDS_MENU_IMPORT_AS "Importa dal server di accesso…"
+    IDS_MENU_IMPORT_AS "Importa profilo da Access Server…"
     IDS_MENU_IMPORT_URL "Importa da URL…"
     IDS_MENU_IMPORT_FILE "Importa file…"
     IDS_MENU_SETTINGS "Impostazioni…"
@@ -331,7 +316,7 @@ BEGIN
     /* OpenVPN */
     IDS_ERR_MANY_CONFIGS "OpenVPN GUI non supporta più di %d configurazioni. Contatta l'autore se hai bisogno che ne supporti di più."
     IDS_NFO_NO_CONFIGS "Nessun file di configurazione trovato.\n\
-Usa il menu ""Importa file.."" o copia i file in ""%ls"" oppure ""%ls""."
+Usa il menu ""Importa file…"" o copia i file in ""%ls"" oppure ""%ls""."
     IDS_ERR_CONFIG_NOT_AUTHORIZED "L'avvio di questa connessione (%ls) richiede di essere membro del \
 gruppo ""%ls"". Contatta l'amministratore di sistema.\n"
     IDS_ERR_CONFIG_TRY_AUTHORIZE  "L'avvio di questa connessione (%ls) richiede di essere membro del \
@@ -545,7 +530,7 @@ Puoi far partire questa applicazione una volta che l'amministratore ha aggiornat
     IDS_NFO_KEY_PASS_RETRY  "Password errata. Riprova."
     IDS_ERR_INVALID_PASSWORD_INPUT "Carattere non valido nella password"
     IDS_ERR_INVALID_USERNAME_INPUT "Carattere non valido nel nome utente"
-    IDS_NFO_AUTO_CONNECT    "Connessione automatica tra %u secondi..."
+    IDS_NFO_AUTO_CONNECT    "Connessione automatica tra %u secondi…"
     IDS_NFO_CLICK_HERE_TO_START "L'interfaccia di OpenVPN è già in esecuzione.\nPer avviare fai clic con il tasto destro sull'icona nell'area di notifica."
     IDS_NFO_BYTECOUNT "Byte in: %ls out: %ls"
 
