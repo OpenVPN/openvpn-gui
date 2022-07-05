@@ -1778,18 +1778,6 @@ OnNeedStr (connection_t *c, UNUSED char *msg)
     WriteStatusLog (c, L"GUI> ", L"Error: Received NEED-STR message -- not implemented", false);
 }
 
-/* Parse the management port and password of a
- * a running daemon -- useful when the daemon is externally
- * started (persistent) and we need to use the cached
- * management interface address parameters to connect to it.
- */
-static BOOL
-ParseManagementAddress(connection_t *c)
-{
-    /* Not implemented */
-    return false;
-}
-
 /* Stop the connection -- this sets the daemon to exit if
  * started by us, else instructs the daemon to disconnect and
  * and wait.
@@ -2076,7 +2064,7 @@ ThreadOpenVPNStatus(void *p)
     HANDLE wait_event;
 
     CLEAR (msg);
-    srand(time(NULL));
+    srand(c->threadId);
 
     /* Cut of extention from config filename. */
     _tcsncpy(conn_name, c->config_file, _countof(conn_name));
@@ -2118,7 +2106,7 @@ ThreadOpenVPNStatus(void *p)
         wait_event = c->hProcess;
     }
 
-    if (o.silent_connection == 0)
+    if (o.silent_connection == 0 && (c->flags & FLAG_DAEMON_PERSISTENT) == 0)
         ShowWindow(c->hwndStatus, SW_SHOW);
 
     /* Load echo msg histroy from registry */

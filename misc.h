@@ -98,4 +98,15 @@ char *escape_string(const char *str);
  */
 BOOL find_free_tcp_port(SOCKADDR_IN *addr);
 
+/**
+ * Parse the config file of a connection profile for
+ * Managegment address and password.
+ * @param c : Pointer to connection profile
+ *            On return c->manage.skaddr and c->manage.password
+ *            are populated.
+ * @returns true on success false on error.
+ * Password not specified in the config file is not an error.
+ */
+BOOL ParseManagementAddress(connection_t *c);
+
 #endif
