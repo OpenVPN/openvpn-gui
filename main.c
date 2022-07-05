@@ -505,6 +505,38 @@ HandleCopyDataMessage(const COPYDATASTRUCT *copy_data)
     return TRUE; /* indicate we handled the message */
 }
 
+/* If automatic service is running, check whether we are
+ * attached to the management i/f of persistent daemons
+ * and re-attach if necessary. The timer is reset to
+ * call this routine again after a delay. Periodic check
+ * is required as we get detached if the daemon gets restarted
+ * by the service or we do a disconnect.
+ */
+static void CALLBACK
+ManagePersistent(HWND hwnd, UINT UNUSED msg, UINT_PTR id, DWORD UNUSED now)
+{
+    CheckServiceStatus(false);
+    if (o.service_state == service_connected)
+    {
+        for (int i = 0; i < o.num_configs; i++)
+        {
+            if (o.conn[i].flags & FLAG_DAEMON_PERSISTENT
+                && o.conn[i].auto_connect
+                && o.conn[i].state == disconnected)
+            {
+                /* disable auto-connect to avoid repeated re-connect
+                 * after unrecoverable errors. Re-enabled on successful
+                 * connect.
+                 */
+                o.conn[i].auto_connect = false;
+                StartOpenVPN(&o.conn[i]); /* attach to the management i/f */
+            }
+        }
+    }
+    /* schedule to call again after 10 sec */
+    SetTimer(hwnd, id, 10000, ManagePersistent);
+}
+
 /*  This function is called by the Windows function DispatchMessage()  */
 LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -550,6 +582,9 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         SendMessage(hwnd, WM_CLOSE, 0, 0);
         break;
       }
+      /* A timer to periodically tend to persistent connections */
+      SetTimer(hwnd, 0, 10000, ManagePersistent);
+
       break;
 
     case WM_NOTIFYICONTRAY:

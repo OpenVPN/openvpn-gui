@@ -193,6 +193,8 @@ typedef struct {
     TCHAR exe_path[MAX_PATH];
     TCHAR install_path[MAX_PATH];
     TCHAR global_config_dir[MAX_PATH];
+    TCHAR config_auto_dir[MAX_PATH];
+    TCHAR global_log_dir[MAX_PATH];
     TCHAR priority_string[64];
     TCHAR ovpn_admin_group[MAX_NAME];
     DWORD disable_save_passwords;

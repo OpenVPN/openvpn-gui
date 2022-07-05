@@ -75,6 +75,8 @@ ExpandOptions (void)
 {
     ExpandString (o.exe_path, _countof(o.exe_path));
     ExpandString (o.config_dir, _countof(o.config_dir));
+    ExpandString (o.global_config_dir, _countof(o.global_config_dir));
+    ExpandString (o.config_auto_dir, _countof(o.config_auto_dir));
     ExpandString (o.log_dir, _countof(o.log_dir));
     ExpandString (o.editor, _countof(o.editor));
     ExpandString (o.log_viewer, _countof(o.log_viewer));

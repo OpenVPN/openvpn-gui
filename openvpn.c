@@ -124,6 +124,11 @@ OnReady(connection_t *c, UNUSED char *msg)
 
     /* ask for the current state, especially useful when the daemon was prestarted */
     ManagementCommand(c, "state", OnStateChange, regular);
+
+    if (c->flags & FLAG_DAEMON_PERSISTENT) /* find the current state */
+    {
+        c->auto_connect = true;
+    }
 }
 
 
