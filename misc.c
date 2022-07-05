@@ -30,6 +30,8 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <shellapi.h>
+#include <ws2tcpip.h>
+#include <shlwapi.h>
 
 #include "localization.h"
 #include "options.h"
@@ -40,6 +42,7 @@
 #include "openvpn_config.h"
 #include "openvpn-gui-res.h"
 #include "tray.h"
+#include "config_parser.h"
 
 /*
  * Helper function to do base64 conversion through CryptoAPI
@@ -822,5 +825,90 @@ out:
     }
     addr->sin_port = ret ? addr_bound.sin_port : old_port;
     WSACleanup();
+    return ret;
+}
+
+/* Parse the management address and password
+ * from a config file. Results are returned
+ * in c->manage.skaddr and c->magage.password.
+ * Returns false on parse error, or if address
+ * not found. Password not found is not an error.
+ */
+BOOL
+ParseManagementAddress(connection_t *c)
+{
+    BOOL ret = true;
+    wchar_t *pw_file = NULL;
+    wchar_t *workdir = c->config_dir;
+    wchar_t config_path[MAX_PATH];
+    wchar_t pw_path[MAX_PATH] = L"";
+
+    _sntprintf_0(config_path, L"%ls\\%ls", c->config_dir, c->config_file);
+
+    config_entry_t *head = config_parse(config_path);
+    config_entry_t *l = head;
+
+    if (!head)
+    {
+        return false;
+    }
+
+    SOCKADDR_IN *addr = &c->manage.skaddr;
+    addr->sin_port = 0;
+
+    while (l)
+    {
+        if (l->ntokens >= 3 && !wcscmp(l->tokens[0], L"management"))
+        {
+            /* we require the address to be a numerical ipv4 address -- e.g., 127.0.0.1*/
+            if (InetPtonW(AF_INET, l->tokens[1], &addr->sin_addr) != 1)
+            {
+                config_list_free(head);
+                return false;
+            }
+
+            addr->sin_port = htons(_wtoi(l->tokens[2]));
+            pw_file = l->tokens[3]; /* may be null */
+        }
+        else if (l->ntokens >= 2 && !wcscmp(l->tokens[0], L"cd"))
+        {
+            workdir = l->tokens[1];
+        }
+        l = l->next;
+    }
+
+    ret = (addr->sin_port != 0);
+
+    if (ret && pw_file)
+    {
+        if (PathIsRelativeW(pw_file))
+        {
+            _sntprintf_0(pw_path, L"%ls\\%ls", workdir, pw_file);
+        }
+        else
+        {
+            wcsncpy_s(pw_path, MAX_PATH, pw_file, _TRUNCATE);
+        }
+
+        FILE *fp = _wfopen(pw_path, L"r");
+        if (!fp
+            || !fgets(c->manage.password, sizeof(c->manage.password), fp))
+        {
+            /* This may be normal as not all users may be given access to this secret */
+            ret = false;
+        }
+
+        StrTrimA(c->manage.password, "\n\r");
+
+        if (fp)
+        {
+            fclose(fp);
+        }
+    }
+    config_list_free(head);
+
+    PrintDebug(L"ParseManagementAddress: host = %hs port = %d passwd_file = %s",
+               inet_ntoa(addr->sin_addr), ntohs(addr->sin_port), pw_path);
+
     return ret;
 }
