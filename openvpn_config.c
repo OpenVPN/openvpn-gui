@@ -110,6 +110,13 @@ AddConfigFileToList(int config, const TCHAR *filename, const TCHAR *config_dir)
     if (CheckKeyFileWriteAccess (c))
         c->flags |= FLAG_ALLOW_CHANGE_PASSPHRASE;
 #endif
+    if (wcsstr(config_dir, o.config_auto_dir))
+    {
+        c->flags |= FLAG_DAEMON_PERSISTENT;
+        _sntprintf_0(c->log_path, _T("%ls\\%ls.log"), o.global_log_dir, c->config_name);
+        /* set to auto-connect -- this attempts to attach to them on startup */
+        c->auto_connect = true;
+    }
 
     /* Check if connection should be autostarted */
     for (i = 0; i < o.num_auto_connect; ++i)
@@ -402,7 +409,7 @@ BuildFileList()
     static bool issue_warnings = true;
     int recurse_depth = 20; /* maximum number of levels below config_dir to recurse into */
     int flags = 0;
-    int root = 0;
+    int root0 = 0;
     int max_configs = (1<<16) - o.mgmt_port_offset;
 
     if (o.silent_connection)
@@ -418,22 +425,32 @@ BuildFileList()
         o.num_configs = 0;
         o.num_groups = 0;
         flags |= FLAG_ADD_CONFIG_GROUPS;
-        root = NewConfigGroup(L"ROOT", -1, flags); /* -1 indicates no parent */
+        root0 = NewConfigGroup(L"ROOT", -1, flags); /* -1 indicates no parent */
     }
     else
-        root = 0;
+        root0 = 0;
 
     if (issue_warnings)
     {
         flags |= FLAG_WARN_DUPLICATES | FLAG_WARN_MAX_CONFIGS;
     }
 
-    BuildFileList0 (o.config_dir, recurse_depth, root, flags);
+    BuildFileList0 (o.config_dir, recurse_depth, root0, flags);
 
-    root = NewConfigGroup(L"System Profiles", root, flags);
-
+    int root1 = NewConfigGroup(L"System Profiles", root0, flags);
     if (!IsSamePath(o.global_config_dir, o.config_dir))
-        BuildFileList0 (o.global_config_dir, recurse_depth, root, flags);
+    {
+        BuildFileList0 (o.global_config_dir, recurse_depth, root1, flags);
+    }
+
+    if (o.service_state == service_connected)
+    {
+        root1 = NewConfigGroup(L"Persistent Profiles", root0, flags);
+        if (!IsSamePath(o.config_auto_dir, o.config_dir))
+        {
+            BuildFileList0 (o.config_auto_dir, recurse_depth, root1, flags);
+        }
+    }
 
     if (o.num_configs == 0 && issue_warnings)
         ShowLocalizedMsg(IDS_NFO_NO_CONFIGS, o.config_dir, o.global_config_dir);

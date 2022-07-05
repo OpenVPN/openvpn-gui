@@ -118,6 +118,18 @@ GetGlobalRegistryKeys()
       _sntprintf_0(o.global_config_dir, _T("%lsconfig"), o.install_path);
     }
 
+  if (!regkey || !GetRegistryValue(regkey, _T("autostart_config_dir"), o.config_auto_dir, _countof(o.config_auto_dir)))
+    {
+      /* use default = openvpnpath\config-auto */
+      _sntprintf_0(o.config_auto_dir, L"%lsconfig-auto", o.install_path);
+    }
+
+  if (!regkey || !GetRegistryValue(regkey, _T("log_dir"), o.global_log_dir, _countof(o.global_log_dir)))
+    {
+      /* use default = openvpnpath\log */
+      _sntprintf_0(o.global_log_dir, L"%lslog", o.install_path);
+    }
+
   if (!regkey || !GetRegistryValue(regkey, _T("ovpn_admin_group"), o.ovpn_admin_group, _countof(o.ovpn_admin_group)))
     {
       _tcsncpy(o.ovpn_admin_group, OVPN_ADMIN_GROUP, _countof(o.ovpn_admin_group)-1);
