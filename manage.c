@@ -254,8 +254,20 @@ OnManagement(SOCKET sk, LPARAM lParam)
             char *pos;
             char *line = data + offset;
             size_t line_size = data_size - offset;
+            BOOL passwd_request = false;
+            const char *passwd_prompt = "ENTER PASSWORD:";
 
-            pos = memchr(line, (*c->manage.password ? ':' : '\n'), line_size);
+            if (line_size >= strlen(passwd_prompt)
+                && memcmp(line, passwd_prompt, strlen(passwd_prompt)) == 0)
+            {
+                pos = memchr(line, ':', line_size);
+                passwd_request = true;
+            }
+            else
+            {
+                pos = memchr(line, '\n', line_size);
+            }
+
             if (pos == NULL)
             {
                 c->manage.saved_data = malloc(line_size);
@@ -270,10 +282,22 @@ OnManagement(SOCKET sk, LPARAM lParam)
             offset += (pos - line) + 1;
 
             /* Reply to a management password request */
-            if (*c->manage.password)
+            if (*c->manage.password && passwd_request)
             {
                 ManagementCommand(c, c->manage.password, NULL, regular);
-                *c->manage.password = '\0';
+                SecureZeroMemory(c->manage.password, sizeof(c->manage.password));
+
+                continue;
+            }
+
+            if (!*c->manage.password && passwd_request)
+            {
+                /* either we don't have a password or we used it and didn't match */
+                MsgToEventLog(EVENTLOG_WARNING_TYPE, L"%ls: management password mismatch",
+                              c->config_name);
+                c->state = disconnecting;
+                CloseManagement (c);
+                rtmsg_handler[stop_](c, "");
 
                 continue;
             }
