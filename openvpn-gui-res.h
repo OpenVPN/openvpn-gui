@@ -113,6 +113,8 @@
 #define ID_CHK_ALWAYS_USE_ISERVICE       243
 #define ID_RB_BALLOON3                   244
 #define ID_RB_BALLOON4                   245
+#define ID_RB_BALLOON5                   246
+#define ID_TXT_PERSISTENT                247
 
 /* Proxy Auth Dialog */
 #define ID_DLG_PROXY_AUTH                250

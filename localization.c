@@ -514,6 +514,12 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
             CheckRadioButton (hwndDlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON2);
         if (o.show_script_window)
             Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SHOW_SCRIPT_WIN), BST_CHECKED);
+        if (o.enable_persistent == 0) /* Never */
+            CheckRadioButton (hwndDlg, ID_RB_BALLOON3, ID_RB_BALLOON5, ID_RB_BALLOON5);
+        else if (o.enable_persistent == 1) /* Enabled, but no auto-attach */
+            CheckRadioButton (hwndDlg, ID_RB_BALLOON3, ID_RB_BALLOON5, ID_RB_BALLOON4);
+        else if (o.enable_persistent == 2) /* Enabled and auto-attach */
+            CheckRadioButton (hwndDlg, ID_RB_BALLOON3, ID_RB_BALLOON5, ID_RB_BALLOON3);
 
         break;
 
@@ -541,6 +547,12 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
                 o.show_balloon = 2;
             else
                 o.show_balloon = 1;
+            if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON3))
+                o.enable_persistent = 2;
+            else if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON4))
+                o.enable_persistent = 1;
+            else
+                o.enable_persistent = 0;
             o.show_script_window =
                 (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_SHOW_SCRIPT_WIN)) == BST_CHECKED);
 
