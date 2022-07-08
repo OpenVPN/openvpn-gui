@@ -511,11 +511,11 @@ SetMenuStatusById(int i, conn_state_t state)
     int checked = 0;
 
     if (state == connected || state == disconnecting) checked = 1;
-    else if (state != disconnected) checked = 2;
+    else if (state != disconnected && state != detached && state != onhold) checked = 2;
 
     if (o.num_configs == 1)
     {
-        if (state == disconnected)
+        if (state == disconnected || state == detached)
         {
             EnableMenuItem(hMenu, IDM_CONNECTMENU, MF_ENABLED);
             EnableMenuItem(hMenu, IDM_DISCONNECTMENU, MF_GRAYED);
@@ -581,7 +581,7 @@ SetMenuStatusById(int i, conn_state_t state)
             }
         }
 
-        if (state == disconnected)
+        if (state == disconnected || state == detached)
         {
             EnableMenuItem(hMenuConn[i], IDM_CONNECTMENU, MF_ENABLED);
             EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU, MF_GRAYED);

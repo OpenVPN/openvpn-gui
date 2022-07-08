@@ -48,6 +48,7 @@
 #define ID_RESTART                       164
 #define ID_HIDE                          165
 #define ID_TXT_VERSION                   166
+#define ID_DETACH                        167
 #define ID_TXT_BYTECOUNT                 168
 #define ID_TXT_IP                        169
 

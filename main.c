@@ -358,7 +358,7 @@ StopAllOpenVPN()
      */
     for (i = 0; i < o.num_configs; i++)
     {
-        if (o.conn[i].state != disconnected)
+        if (o.conn[i].state != disconnected && o.conn[i].state != detached)
         {
             if (o.conn[i].flags & FLAG_DAEMON_PERSISTENT)
             {
@@ -374,7 +374,7 @@ StopAllOpenVPN()
     /* Wait for all connections to terminate (Max 5 sec) */
     for (i = 0; i < 20; i++, Sleep(250))
     {
-        if (CountConnState(disconnected) == o.num_configs)
+        if (CountConnState(disconnected) + CountConnState(detached) == o.num_configs)
             break;
     }
 }
@@ -522,7 +522,7 @@ ManagePersistent(HWND hwnd, UINT UNUSED msg, UINT_PTR id, DWORD UNUSED now)
         {
             if (o.conn[i].flags & FLAG_DAEMON_PERSISTENT
                 && o.conn[i].auto_connect
-                && o.conn[i].state == disconnected)
+                && (o.conn[i].state == disconnected || o.conn[i].state == detached))
             {
                 /* disable auto-connect to avoid repeated re-connect
                  * after unrecoverable errors. Re-enabled on successful
