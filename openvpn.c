@@ -125,7 +125,8 @@ OnReady(connection_t *c, UNUSED char *msg)
     /* ask for the current state, especially useful when the daemon was prestarted */
     ManagementCommand(c, "state", OnStateChange, regular);
 
-    if (c->flags & FLAG_DAEMON_PERSISTENT) /* find the current state */
+    if (c->flags & FLAG_DAEMON_PERSISTENT
+        && o.enable_persistent == 2)
     {
         c->auto_connect = true;
     }
@@ -2106,7 +2107,8 @@ ThreadOpenVPNStatus(void *p)
         wait_event = c->hProcess;
     }
 
-    if (o.silent_connection == 0 && (c->flags & FLAG_DAEMON_PERSISTENT) == 0)
+    /* For persistent connections, popup the status win only if we're in manual mode */
+    if (o.silent_connection == 0 && ((c->flags & FLAG_DAEMON_PERSISTENT) == 0 || o.enable_persistent == 1))
         ShowWindow(c->hwndStatus, SW_SHOW);
 
     /* Load echo msg histroy from registry */

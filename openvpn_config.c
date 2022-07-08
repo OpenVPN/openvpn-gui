@@ -115,7 +115,10 @@ AddConfigFileToList(int config, const TCHAR *filename, const TCHAR *config_dir)
         c->flags |= FLAG_DAEMON_PERSISTENT;
         _sntprintf_0(c->log_path, _T("%ls\\%ls.log"), o.global_log_dir, c->config_name);
         /* set to auto-connect -- this attempts to attach to them on startup */
-        c->auto_connect = true;
+        if (o.enable_persistent == 2)
+        {
+            c->auto_connect = true;
+        }
     }
 
     /* Check if connection should be autostarted */
@@ -443,7 +446,8 @@ BuildFileList()
         BuildFileList0 (o.global_config_dir, recurse_depth, root1, flags);
     }
 
-    if (o.service_state == service_connected)
+    if (o.service_state == service_connected
+        && o.enable_persistent)
     {
         root1 = NewConfigGroup(L"Persistent Profiles", root0, flags);
         if (!IsSamePath(o.config_auto_dir, o.config_dir))

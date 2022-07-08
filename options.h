@@ -218,6 +218,7 @@ typedef struct {
     DWORD mgmt_port_offset;             /* management interface port = this offset + index of connection profile */
 
     DWORD ovpn_engine;                  /* 0 - openvpn2, 1 - openvpn3 */
+    DWORD enable_persistent;            /* 0 - disabled, 1 - enabled, 2 - enabled & auto attach */
 #ifdef DEBUG
     FILE *debug_fp;
 #endif
