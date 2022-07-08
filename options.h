@@ -73,6 +73,8 @@ typedef enum {
     suspending,
     suspended,
     resuming,
+    detaching,
+    detached,
 } conn_state_t;
 
 /* Interactive Service IO parameters */

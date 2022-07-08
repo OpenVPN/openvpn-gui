@@ -140,7 +140,8 @@ void
 OnHold(connection_t *c, UNUSED char *msg)
 {
     EnableWindow(GetDlgItem(c->hwndStatus, ID_RESTART), TRUE);
-    if ((c->flags & FLAG_DAEMON_PERSISTENT) && (c->state == disconnecting))
+    if ((c->flags & FLAG_DAEMON_PERSISTENT)
+        && (c->state == disconnecting || c->state == resuming))
     {
         /* retain the hold state if we are here while disconnecting  */
         c->state = onhold;
@@ -1343,8 +1344,22 @@ OnStop(connection_t *c, UNUSED char *msg)
         c->failed_psw_attempts = 0;
         c->failed_auth_attempts = 0;
         c->state = disconnected;
+        if (c->flags & FLAG_DAEMON_PERSISTENT)
+        {
+            /* user initiated disconnection -- stay detached and do not auto-reconnect */
+            c->state = detached;
+            c->auto_connect = false;
+        }
         CheckAndSetTrayIcon();
         SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_DISCONNECTED));
+        SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
+        break;
+
+    case onhold:
+        /* stop triggered while on hold -- possibly the daemon exited. Treat same as detaching */
+    case detaching:
+        c->state = detached;
+        CheckAndSetTrayIcon();
         SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
         break;
 
@@ -1844,6 +1859,7 @@ RenderStatusWindow(HWND hwndDlg, UINT w, UINT h)
         MoveWindow(GetDlgItem(hwndDlg, ID_TXT_VERSION), w-DPI_SCALE(180), h - DPI_SCALE(55), DPI_SCALE(170), DPI_SCALE(15), TRUE);
         MoveWindow(GetDlgItem(hwndDlg, ID_DISCONNECT), DPI_SCALE(20), h - DPI_SCALE(30), DPI_SCALE(110), DPI_SCALE(23), TRUE);
         MoveWindow(GetDlgItem(hwndDlg, ID_RESTART), DPI_SCALE(145), h - DPI_SCALE(30), DPI_SCALE(110), DPI_SCALE(23), TRUE);
+        MoveWindow(GetDlgItem(hwndDlg, ID_DETACH), DPI_SCALE(270), h - DPI_SCALE(30), DPI_SCALE(110), DPI_SCALE(23), TRUE);
         MoveWindow(GetDlgItem(hwndDlg, ID_HIDE), w - DPI_SCALE(130), h - DPI_SCALE(30), DPI_SCALE(110), DPI_SCALE(23), TRUE);
 }
 
@@ -1908,6 +1924,14 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                      rect.top + rand()%100, 0, 0, SWP_NOSIZE);
         GetClientRect(hwndDlg, &rect);
         RenderStatusWindow(hwndDlg, rect.right, rect.bottom);
+        if (c->flags & FLAG_DAEMON_PERSISTENT && o.enable_persistent > 0)
+        {
+            EnableWindow(GetDlgItem(hwndDlg, ID_DETACH), TRUE);
+        }
+        else
+        {
+            ShowWindow(GetDlgItem(hwndDlg, ID_DETACH), SW_HIDE);
+        }
         /* Set focus on the LogWindow so it scrolls automatically */
         SetFocus(hLogWnd);
         return FALSE;
@@ -1944,6 +1968,11 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             SetFocus(GetDlgItem(c->hwndStatus, ID_EDT_LOG));
             RestartOpenVPN(c);
             return TRUE;
+
+        case ID_DETACH:
+            SetFocus(GetDlgItem(c->hwndStatus, ID_EDT_LOG));
+            DetachOpenVPN(c);
+            return TRUE;
         }
         break;
 
@@ -1958,7 +1987,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
     case WM_CLOSE:
         c = (connection_t *) GetProp(hwndDlg, cfgProp);
-        if (c->state != disconnected)
+        if (c->state != disconnected && c->state != detached)
             ShowWindow(hwndDlg, SW_HIDE);
         else
             DestroyWindow(hwndDlg);
@@ -2004,7 +2033,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
     case WM_OVPN_DETACH:
         c = (connection_t *) GetProp(hwndDlg, cfgProp);
         /* just stop the thread keeping openvpn.exe running */
-        c->state = disconnecting;
+        c->state = detaching;
         EnableWindow(GetDlgItem(c->hwndStatus, ID_DISCONNECT), FALSE);
         EnableWindow(GetDlgItem(c->hwndStatus, ID_RESTART), FALSE);
         OnStop(c, NULL);
@@ -2071,7 +2100,7 @@ ThreadOpenVPNStatus(void *p)
     _tcsncpy(conn_name, c->config_file, _countof(conn_name));
     conn_name[_tcslen(conn_name) - _tcslen(o.ext_string) - 1] = _T('\0');
 
-    c->state = ((c->state == suspended)  ? resuming : connecting);
+    c->state = (c->state == suspended || c->state == detached) ? resuming : connecting;
 
     /* Create and Show Status Dialog */
     c->hwndStatus = CreateLocalizedDialogParam(ID_DLG_STATUS, StatusDialogFunc, (LPARAM) c);
@@ -2271,7 +2300,7 @@ StartOpenVPN(connection_t *c)
         }
         return FALSE;
     }
-    else if (c->state != disconnected)
+    else if (c->state != disconnected && c->state != detached)
     {
         return FALSE;
     }
@@ -2517,6 +2546,7 @@ DetachOpenVPN(connection_t *c)
    /* currently supported only for persistent connections */
     if (c->flags & FLAG_DAEMON_PERSISTENT)
     {
+        c->auto_connect = false;
         PostMessage(c->hwndStatus, WM_OVPN_DETACH, 0, 0);
     }
 }
