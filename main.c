@@ -537,6 +537,40 @@ ManagePersistent(HWND hwnd, UINT UNUSED msg, UINT_PTR id, DWORD UNUSED now)
     SetTimer(hwnd, id, 10000, ManagePersistent);
 }
 
+/* Detach from the mgmt i/f of all atatched persistent
+ * connections. Called on session lock so that another
+ * user can attach to these.
+ */
+static void
+HandleSessionLock(void)
+{
+    for (int i = 0; i < o.num_configs; i++)
+    {
+        if (o.conn[i].flags & FLAG_DAEMON_PERSISTENT
+            && (o.conn[i].state != disconnected && o.conn[i].state != detached))
+        {
+            o.conn[i].auto_connect = false;
+            DetachOpenVPN(&o.conn[i]);
+            o.conn[i].flags |= FLAG_WAIT_UNLOCK;
+        }
+    }
+}
+
+/* Undo any actions done at session lock/disconnect.
+ */
+void
+HandleSessionUnlock(void)
+{
+    for (int i = 0; i < o.num_configs; i++)
+    {
+        if (o.conn[i].flags & FLAG_WAIT_UNLOCK)
+        {
+            o.conn[i].auto_connect = true; /* so that ManagePersistent will trigger attach */
+            o.conn[i].flags &= ~ FLAG_WAIT_UNLOCK;
+        }
+    }
+}
+
 /*  This function is called by the Windows function DispatchMessage()  */
 LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -675,12 +709,22 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
     case WM_WTSSESSION_CHANGE:
       switch (wParam) {
         case WTS_SESSION_LOCK:
+          PrintDebug(L"Session lock triggered");
           o.session_locked = TRUE;
+          /* Detach persistent connections so that other users can connect to it */
+          HandleSessionLock();
           break;
+
         case WTS_SESSION_UNLOCK:
+          PrintDebug(L"Session unlock triggered");
           o.session_locked = FALSE;
+          HandleSessionUnlock();
           if (CountConnState(suspended) != 0)
             ResumeConnections();
+          break;
+
+        default:
+          PrintDebug(L"Session change with wParam = %lu", wParam);
           break;
       }
       break;

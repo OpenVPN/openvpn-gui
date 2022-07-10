@@ -91,6 +91,7 @@ typedef struct {
 #define FLAG_DISABLE_SAVE_PASS (1<<6)
 #define FLAG_DISABLE_ECHO_MSG  (1<<7)
 #define FLAG_DAEMON_PERSISTENT  (1<<8)
+#define FLAG_WAIT_UNLOCK        (1<<9)
 
 #define CONFIG_VIEW_AUTO      (0)
 #define CONFIG_VIEW_FLAT      (1)
