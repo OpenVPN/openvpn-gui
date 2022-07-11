@@ -131,7 +131,7 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ITALIAN, SUBLANG_DEFAULT
 BEGIN
     GROUPBOX "   ", 201, 6, 46, 235, 52
-    AUTORADIOBUTTON "Usa file &configurazione OpenVPN", ID_RB_PROXY_OPENVPN,
+    AUTORADIOBUTTON "Usa il file di &configurazione OpenVPN", ID_RB_PROXY_OPENVPN,
                     13, 16, 200, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Usa configurazione &proxy di sistema",
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
