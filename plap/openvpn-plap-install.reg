@@ -1,0 +1,11 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\PLAP Providers\{4fbb8b67-cf02-4982-a7a8-3dd06a2c2ebd}]
+@="OpenVPNProvider"
+
+[HKEY_CLASSES_ROOT\CLSID\{4fbb8b67-cf02-4982-a7a8-3dd06a2c2ebd}]
+@="OpenVPNProvider"
+
+[HKEY_CLASSES_ROOT\CLSID\{4fbb8b67-cf02-4982-a7a8-3dd06a2c2ebd}\InprocServer32]
+@="C:\\Program Files\\OpenVPN\\bin\\libopenvpn_plap.dll"
+"ThreadingModel"="Apartment"
