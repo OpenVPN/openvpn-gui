@@ -29,11 +29,13 @@ AC_DEFINE([CORE_COPYRIGHT_YEAR_END], ["2020"], [Last copyright year for daemon i
 AC_CONFIG_AUX_DIR([.])
 AM_CONFIG_HEADER([config.h])
 AC_CONFIG_SRCDIR([main.h])
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([subdir-objects])
 AC_CANONICAL_HOST
 AC_USE_SYSTEM_EXTENSIONS
 AC_PROG_CC_C99
 AC_CHECK_TOOL([WINDRES], [windres])
+LT_INIT([win32-dll])
+LT_LANG([Windows Resource])
 
 AC_ARG_ENABLE(
 	[distonly],
@@ -102,5 +104,5 @@ fi
 
 test "${GCC}" = "yes" && CFLAGS="${CFLAGS} -pedantic -Wall -Wextra"
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile plap/Makefile])
 AC_OUTPUT

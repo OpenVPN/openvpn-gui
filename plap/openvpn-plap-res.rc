@@ -1,0 +1,117 @@
+/*
+ *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
+ *
+ *  Copyright (C) 2009 Heiko Hund <heikoh@users.sf.net>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program (see the file COPYING included with this
+ *  distribution); if not, write to the Free Software Foundation, Inc.,
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+#include <winresrc.h>
+#include <richedit.h>
+#include "../openvpn-gui-res.h"
+
+/* Language resource files are UTF-8 encoded */
+#pragma code_page(65001)
+
+/* Manifest for version 6 common controls */
+CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "openvpn-plap.manifest"
+
+/* Application Icons */
+ID_ICO_APP           ICON  DISCARDABLE  "../res/openvpn-gui.ico"
+ID_ICO_CONNECTED     ICON  DISCARDABLE  "../res/connected.ico"
+ID_ICO_CONNECTING    ICON  DISCARDABLE  "../res/connecting.ico"
+ID_ICO_DISCONNECTED  ICON  DISCARDABLE  "../res/disconnected.ico"
+
+#ifdef ENABLE_OVPN3
+#define ADVANCED_DIALOG_HEIGHT 320
+#else
+#define ADVANCED_DIALOG_HEIGHT 280
+#endif
+
+#include "../res/openvpn-gui-res-cs.rc"
+#include "../res/openvpn-gui-res-de.rc"
+#include "../res/openvpn-gui-res-dk.rc"
+#include "../res/openvpn-gui-res-en.rc"
+#include "../res/openvpn-gui-res-es.rc"
+#include "../res/openvpn-gui-res-fa.rc"
+#include "../res/openvpn-gui-res-fi.rc"
+#include "../res/openvpn-gui-res-fr.rc"
+#include "../res/openvpn-gui-res-it.rc"
+#include "../res/openvpn-gui-res-jp.rc"
+#include "../res/openvpn-gui-res-kr.rc"
+#include "../res/openvpn-gui-res-nl.rc"
+#include "../res/openvpn-gui-res-no.rc"
+#include "../res/openvpn-gui-res-pl.rc"
+#include "../res/openvpn-gui-res-pt.rc"
+#include "../res/openvpn-gui-res-ru.rc"
+#include "../res/openvpn-gui-res-se.rc"
+#include "../res/openvpn-gui-res-tr.rc"
+#include "../res/openvpn-gui-res-ua.rc"
+#include "../res/openvpn-gui-res-zh-hans.rc"
+#include "../res/openvpn-gui-res-zh-hant.rc"
+
+/* Version information and such */
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION   PACKAGE_VERSION_RESOURCE
+PRODUCTVERSION   PACKAGE_VERSION_RESOURCE
+FILEOS        VOS_NT
+FILETYPE      VFT_DLL
+BEGIN
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation"
+            , LANG_CZECH,       1200
+            , LANG_GERMAN,      1200
+            , LANG_DANISH,      1200
+            , LANG_ENGLISH,     1200
+            , LANG_SPANISH,     1200
+            , LANG_FARSI,       1200
+            , LANG_FINNISH,     1200
+            , LANG_FRENCH,      1200
+            , LANG_ITALIAN,     1200
+            , LANG_JAPANESE,    1200
+            , LANG_DUTCH,       1200
+            , LANG_NORWEGIAN,   1200
+            , LANG_POLISH,      1200
+            , LANG_PORTUGUESE,  1200
+            , LANG_RUSSIAN,     1200
+            , LANG_SWEDISH,     1200
+            , LANG_TURKISH,     1200
+            , LANG_UKRAINIAN,   1200
+            , LANG_CHINESE,     1200
+            , LANG_KOREAN,      1200
+    END
+
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"  /* en_US, Unicode */
+        BEGIN
+            VALUE "FileDescription",  "OpenVPN PLAP for Windows"
+            VALUE "FileVersion",      PACKAGE_VERSION_RESOURCE_STR
+            VALUE "InternalName",     "openvpn-plap"
+            VALUE "OriginalFilename", "libopenvpn_plap.dll"
+            VALUE "ProductName",      "OpenVPN PLAP"
+            VALUE "ProductVersion",   PACKAGE_VERSION_RESOURCE_STR
+            VALUE "Website",          PACKAGE_URL
+            VALUE "LegalCopyright",   "Selva Nair <selva.nair@gmail.com> and other " PACKAGE_NAME " developers"
+            VALUE "CompanyName",      "OpenVPN Community"
+        END
+    END
+END

@@ -32,6 +32,7 @@ MAINTAINERCLEANFILES = \
 	$(srcdir)/config.guess $(srcdir)/config.sub \
 	$(srcdir)/compile
 
+SUBDIRS = . plap
 bin_PROGRAMS = openvpn-gui
 
 dist_doc_DATA = \
