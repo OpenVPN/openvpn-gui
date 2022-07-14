@@ -65,7 +65,7 @@ OpenManagement(connection_t *c)
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
         return FALSE;
 
-    c->manage.connected = FALSE;
+    c->manage.connected = 0;
     c->manage.sk = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (c->manage.sk == INVALID_SOCKET)
     {
@@ -219,7 +219,7 @@ OnManagement(SOCKET sk, LPARAM lParam)
             }
         }
         else
-            c->manage.connected = TRUE;
+            c->manage.connected = 1;
         break;
 
     case FD_READ:
@@ -337,6 +337,7 @@ OnManagement(SOCKET sk, LPARAM lParam)
                 {
                     /* delay until management interface accepts input */
                     Sleep(100);
+                    c->manage.connected = 2;
                     if (rtmsg_handler[ready_])
                         rtmsg_handler[ready_](c, pos + 5);
                 }
@@ -437,7 +438,7 @@ CloseManagement(connection_t *c)
         }
         closesocket(c->manage.sk);
         c->manage.sk = INVALID_SOCKET;
-        c->manage.connected = FALSE;
+        c->manage.connected = 0;
         while (UnqueueCommand(c))
             ;
         WSACleanup();
