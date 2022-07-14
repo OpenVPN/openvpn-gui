@@ -1787,7 +1787,7 @@ DisconnectDaemon(connection_t *c)
 {
     if (c->flags & FLAG_DAEMON_PERSISTENT)
     {
-        if (c->manage.connected)
+        if (c->manage.connected > 1) /* connected and ready for input */
         {
             ManagementCommand(c, "hold on", NULL, regular);
             ManagementCommand(c, "signal SIGHUP", NULL, regular);

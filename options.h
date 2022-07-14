@@ -146,7 +146,7 @@ struct connection {
         char *saved_data;
         size_t saved_size;
         mgmt_cmd_t *cmd_queue;
-        BOOL connected;             /* True, if management interface has connected */
+        DWORD connected;             /* 1: management interface connected, 2: connected and ready */
     } manage;
 
     HANDLE hProcess;                /* Handle of openvpn process if directly started */
