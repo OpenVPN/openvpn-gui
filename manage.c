@@ -208,6 +208,15 @@ OnManagement(SOCKET sk, LPARAM lParam)
             if (c->flags & FLAG_DAEMON_PERSISTENT
                 || time(NULL) < c->manage.timeout)
             {
+                /* show a message on status window */
+                if (rtmsg_handler[log_] && (c->flags & FLAG_DAEMON_PERSISTENT))
+                {
+                    char buf[256];
+                    _snprintf_0(buf, "%lld,W,Waiting for the management interface to come up",
+                                (long long)time(NULL))
+                    rtmsg_handler[log_](c, buf);
+                }
+
                 connect(c->manage.sk, (SOCKADDR *)&c->manage.skaddr, sizeof(c->manage.skaddr));
             }
             else
