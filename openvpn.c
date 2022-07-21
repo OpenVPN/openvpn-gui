@@ -309,6 +309,8 @@ OnStateChange(connection_t *c, char *data)
     /* notify the all windows in the thread of state change */
     EnumThreadWindows(GetCurrentThreadId(), NotifyStateChange, (LPARAM) state);
 
+    strncpy_s(c->daemon_state, _countof(c->daemon_state), state, _TRUNCATE);
+
     if (strcmp(state, "CONNECTED") == 0)
     {
         parse_assigned_ip(c, pos + 1);
@@ -1846,6 +1848,7 @@ Cleanup (connection_t *c)
     if (c->exit_event)
         CloseHandle (c->exit_event);
     c->exit_event = NULL;
+    c->daemon_state[0] = '\0';
 }
 /*
  * Helper to position and scale widgets in status window using current dpi
