@@ -364,7 +364,7 @@ LocalizedDialogBoxParam(const UINT dialogId, DLGPROC dialogFunc, const LPARAM pa
     if (resInfo == NULL)
         return -1;
 
-    return DialogBoxIndirectParam(o.hInstance, resInfo, NULL, dialogFunc, param);
+    return DialogBoxIndirectParam(o.hInstance, resInfo, o.hWnd, dialogFunc, param);
 }
 
 
@@ -380,7 +380,7 @@ CreateLocalizedDialogParam(const UINT dialogId, DLGPROC dialogFunc, const LPARAM
     if (resInfo == NULL)
         return NULL;
 
-    return CreateDialogIndirectParam(o.hInstance, resInfo, NULL, dialogFunc, param);
+    return CreateDialogIndirectParam(o.hInstance, resInfo, o.hWnd, dialogFunc, param);
 }
 
 
