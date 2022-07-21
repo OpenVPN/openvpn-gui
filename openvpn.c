@@ -1347,7 +1347,6 @@ OnStop(connection_t *c, UNUSED char *msg)
         if (c->flags & FLAG_DAEMON_PERSISTENT)
         {
             /* user initiated disconnection -- stay detached and do not auto-reconnect */
-            c->state = detached;
             c->auto_connect = false;
         }
         CheckAndSetTrayIcon();
@@ -1358,7 +1357,7 @@ OnStop(connection_t *c, UNUSED char *msg)
     case onhold:
         /* stop triggered while on hold -- possibly the daemon exited. Treat same as detaching */
     case detaching:
-        c->state = detached;
+        c->state = disconnected;
         CheckAndSetTrayIcon();
         SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
         break;
@@ -2136,9 +2135,13 @@ ThreadOpenVPNStatus(void *p)
         wait_event = c->hProcess;
     }
 
-    /* For persistent connections, popup the status win only if we're in manual mode */
-    if (o.silent_connection == 0 && ((c->flags & FLAG_DAEMON_PERSISTENT) == 0 || o.enable_persistent == 1))
-        ShowWindow(c->hwndStatus, SW_SHOW);
+    /* For persistent connections, popup the status win only if we're connecting manually */
+    BOOL show_status_win = (o.silent_connection == 0);
+    if ((c->flags & FLAG_DAEMON_PERSISTENT) && c->state == resuming)
+    {
+       show_status_win = false;
+    }
+    ShowWindow(c->hwndStatus, show_status_win ? SW_SHOW : SW_HIDE);
 
     /* Load echo msg histroy from registry */
     echo_msg_load(c);

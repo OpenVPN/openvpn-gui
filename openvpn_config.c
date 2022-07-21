@@ -421,9 +421,13 @@ BuildFileList()
     /*
      * If no connections are active reset num_configs and rescan
      * to make a new list. Else we keep all current configs and
-     * rescan to add any new one's found
+     * rescan to add any new one's found.
+     * Do the same when persistent connections are in auto-attach mode,
+     * to avoid over-writing their status info such as auto_connect=false
+     * after manual detach.
      */
-    if (!o.num_groups || CountConnState(disconnected) == o.num_configs)
+    if (!o.num_groups
+        || (CountConnState(disconnected) == o.num_configs && o.enable_persistent != 2))
     {
         o.num_configs = 0;
         o.num_groups = 0;

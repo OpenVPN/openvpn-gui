@@ -387,7 +387,7 @@ AutoStartConnections()
 
     for (i = 0; i < o.num_configs; i++)
     {
-        if (o.conn[i].auto_connect)
+        if (o.conn[i].auto_connect && !(o.conn[i].flags & FLAG_DAEMON_PERSISTENT))
             StartOpenVPN(&o.conn[i]);
     }
 
@@ -529,6 +529,7 @@ ManagePersistent(HWND hwnd, UINT UNUSED msg, UINT_PTR id, DWORD UNUSED now)
                  * connect.
                  */
                 o.conn[i].auto_connect = false;
+                o.conn[i].state = detached; /* this is required to retain management-hold on re-attach */
                 StartOpenVPN(&o.conn[i]); /* attach to the management i/f */
             }
         }
@@ -617,7 +618,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         break;
       }
       /* A timer to periodically tend to persistent connections */
-      SetTimer(hwnd, 0, 10000, ManagePersistent);
+      SetTimer(hwnd, 0, 100, ManagePersistent);
 
       break;
 
