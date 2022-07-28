@@ -285,7 +285,7 @@ CAPTION "Select Certificate"
 FONT 8, "Segoe UI"
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 BEGIN
-    LTEXT "PKCS11 Certificates available:", ID_TXT_PKCS11, 17, 12, 171, 12
+    LTEXT "PKCS11证书可用：", ID_TXT_PKCS11, 17, 12, 171, 12
     CONTROL "", ID_LVW_PKCS11, "SysListView32", LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP, 17, 25, 171,150
     PUSHBUTTON "&OK", IDOK, 20, 200, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP
     PUSHBUTTON "&Cancel", IDCANCEL, 90, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
@@ -552,13 +552,13 @@ Wintun驱动程序将无法正常工作。"
     IDS_NFO_BYTECOUNT "接收字节: %ls  发送字节: %ls"
 
     /* AS profile import */
-    IDS_ERR_URL_IMPORT_PROFILE "Error fetching profile from URL: [%d] %ls"
+    IDS_ERR_URL_IMPORT_PROFILE "从URL获取配置文件时出错:[%d] %ls"
 
-    IDS_ERR_NO_PKCS11 "No certificates found. If you have a token insert it and press retry."
-    IDS_ERR_SELECT_PKCS11 "No certificates selected."
+    IDS_ERR_NO_PKCS11 "未找到证书。如果您有令牌，请插入它并按重试。"
+    IDS_ERR_SELECT_PKCS11 "未选择证书。"
     /* column headers for pkcs11 certificate list */
-    IDS_CERT_DISPLAYNAME "Issued to"
-    IDS_CERT_ISSUER "Issued by"
-    IDS_CERT_NOTAFTER "Valid until"
+    IDS_CERT_DISPLAYNAME "颁发给"
+    IDS_CERT_ISSUER "颁发机关"
+    IDS_CERT_NOTAFTER "有效期至"
 
 END
