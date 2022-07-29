@@ -2105,8 +2105,6 @@ ThreadOpenVPNStatus(void *p)
     _tcsncpy(conn_name, c->config_file, _countof(conn_name));
     conn_name[_tcslen(conn_name) - _tcslen(o.ext_string) - 1] = _T('\0');
 
-    c->state = (c->state == suspended || c->state == detached) ? resuming : connecting;
-
     /* Create and Show Status Dialog */
     c->hwndStatus = CreateLocalizedDialogParam(ID_DLG_STATUS, StatusDialogFunc, (LPARAM) c);
     if (!c->hwndStatus)
@@ -2338,6 +2336,8 @@ StartOpenVPN(connection_t *c)
         TerminateThread(hThread, 1);
         return false;
     }
+
+    c->state = (c->state == suspended || c->state == detached) ? resuming : connecting;
 
     /* Start the status dialog thread */
     ResumeThread(hThread);
