@@ -30,6 +30,7 @@ struct config_entry {
     wchar_t line[MAX_LINE_LENGTH];
     wchar_t sline[MAX_LINE_LENGTH];
     wchar_t *tokens[16];
+    wchar_t *comment;
     int ntokens;
     config_entry_t *next;
 };
