@@ -30,8 +30,15 @@
 static int
 legal_escape(wchar_t c)
 {
-    wchar_t *escapes = L"\"\' \\"; /* space, ", ' or backslash */
+    wchar_t *escapes = L"\" \\"; /* ", space, and backslash */
     return (wcschr(escapes, c) != NULL);
+}
+
+static int
+is_comment(wchar_t *s)
+{
+    wchar_t *comment_chars = L";#";
+    return (s && (wcschr(comment_chars, s[0]) != NULL));
 }
 
 static int
@@ -49,6 +56,7 @@ copy_token(wchar_t **dest, wchar_t **src, wchar_t* delim)
         }
         else if (*p == L'\\')
         {
+            MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Parse error in copy_token: illegal backslash");
             return -1; /* parse error -- illegal backslash in input */
         }
         else
@@ -68,7 +76,7 @@ tokenize(config_entry_t *ce)
     p = ce->line;
     s = ce->sline;
     unsigned int i = 0;
-    int status;
+    int status = 0;
 
     for ( ; *p != L'\0';  p++, s++)
     {
@@ -92,9 +100,23 @@ tokenize(config_entry_t *ce)
             p++;
             status = copy_token(&s, &p, L"\"");
         }
+        else if (is_comment(p))
+        {
+            /* store rest of the line as comment -- remove from tokens */
+            ce->comment = s;
+            wcsncpy(s, p, wcslen(p));
+            ce->tokens[--i] = NULL;
+            break;
+        }
         else
+        {
             status = copy_token(&s, &p, L" \t");
-        if (status != 0) return status;
+        }
+
+        if (status != 0)
+        {
+            return status;
+        }
 
         if (*p == L'\0') break;
     }
@@ -122,7 +144,7 @@ config_readline(FILE *fd, int first)
     config_entry_t *ce = calloc(sizeof(*ce), 1);
     if (!ce)
     {
-       MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Out of memory in tokenize");
+       MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Out of memory in config_readline");
        return NULL;
     }
 
@@ -135,6 +157,12 @@ config_readline(FILE *fd, int first)
     {
         free(ce);
         return NULL;
+    }
+
+    /* skip leading "--" in first token if any */
+    if (ce->ntokens > 0)
+    {
+        ce->tokens[0] += wcsspn(ce->tokens[0], L"--");
     }
 
     return ce;
