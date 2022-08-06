@@ -32,7 +32,7 @@
 #pragma code_page(65001)
 
 /* Manifest for version 6 common controls */
-CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "openvpn-plap.manifest"
+ISOLATIONAWARE_MANIFEST_RESOURCE_ID RT_MANIFEST "openvpn-plap.manifest"
 
 /* Application Icons */
 ID_ICO_APP           ICON  DISCARDABLE  "../res/openvpn-gui.ico"

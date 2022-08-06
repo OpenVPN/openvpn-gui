@@ -1,0 +1,5 @@
+LIBRARY libopenvpn_plap.dll
+
+EXPORTS
+    DllCanUnloadNow                                 PRIVATE
+    DllGetClassObject                               PRIVATE

@@ -95,9 +95,53 @@ if (${CLI_OVPN3})
         ENABLE_OVPN3)
 endif ()
 
+if (NOT PROJECT_NAME_PLAP)
+    set(PROJECT_NAME_PLAP "libopenvpn_plap")
+endif()
+
+add_library(${PROJECT_NAME_PLAP} SHARED
+    localization.c
+    manage.c
+    misc.c
+    openvpn.c
+    openvpn_config.c
+    options.c
+    proxy.c
+    pkcs11.c
+    registry.c
+    config_parser.c
+    plap/ui_glue.c
+    plap/stub.c
+    plap/plap_common.c
+    plap/plap_provider.c
+    plap/plap_connection.c
+    plap/plap_dll.c
+    plap/openvpn_plap.def
+    plap/openvpn-plap-res.rc)
+
+target_link_libraries(${PROJECT_NAME_PLAP} PRIVATE
+    ws2_32.lib
+    Comctl32.lib
+    Winhttp.lib
+    Crypt32.lib
+    Ole32.lib
+    Shlwapi.lib
+    Secur32.lib
+    Gdi32.lib
+    Cryptui.lib
+    Rpcrt4.lib)
+
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /MANIFEST:NO")
+target_include_directories(${PROJECT_NAME_PLAP} PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR})
+target_compile_definitions(${PROJECT_NAME_PLAP} PRIVATE
+    _UNICODE
+    UNICODE
+    WIN32_LEAN_AND_MEAN
+    HAVE_CONFIG_H)
+
 if(MSVC)
     # work around msvc generator Debug/Release directory ugliness, doesn't apply for Ninja
-    set_target_properties(${PROJECT_NAME} PROPERTIES
+    set_target_properties(${PROJECT_NAME} ${PROJECT_NAME_PLAP} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<0:>
         LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<0:>
         ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<0:>)
