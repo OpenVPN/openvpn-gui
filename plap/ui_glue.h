@@ -107,6 +107,15 @@ void DisconnectHelper(connection_t *c);
  */
 void SetActiveProfile(connection_t *c);
 
+/**
+ * A helper function to run a dialog showing progress of a connection process.
+ *
+ * @param c Connection to monitor
+ * @param cb_fn A callback function that is called back every 200 msec
+ * @param cb_data Data passed to the callback function
+ */
+int RunProgressDialog(connection_t *c, PFTASKDIALOGCALLBACK cb_fn, LONG_PTR cb_data);
+
 #ifdef __cplusplus
 }
 #endif
