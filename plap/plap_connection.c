@@ -50,6 +50,8 @@ struct OpenVPNConnection
 #define ISDISCONNECTED(c) (ConnectionState(c) == state_disconnected)
 #define ISONHOLD(c) (ConnectionState(c) == state_onhold)
 
+extern DWORD status_menu_id;
+
 /* Methods in IConnectableCredentialProviderCredential that we need to define */
 
 /* IUnknown */
@@ -529,6 +531,64 @@ NotifyEvents(OpenVPNConnection *oc, const wchar_t *status)
 }
 
 static HRESULT WINAPI
+ProgressCallback(HWND hwnd, UINT msg, WPARAM wParam, UNUSED LPARAM lParam, LONG_PTR ref_data)
+{
+    assert(ref_data);
+
+    OpenVPNConnection *oc = (OpenVPNConnection *) ref_data;
+    connection_t *c = oc->c;
+    IQueryContinueWithStatus *qc = oc->qc;
+
+    assert(qc);
+
+    HRESULT hr = S_FALSE;
+    WCHAR status[256] = L"";
+
+    if (msg == TDN_BUTTON_CLICKED && wParam == IDCANCEL)
+    {
+        dmsg(L"wParam=IDCANCEL -- returning S_OK");
+        hr = S_OK; /* this will cause the progress dialog to close */
+    }
+    else if (ISCONNECTED(c) || ISDISCONNECTED(c) || (qc->lpVtbl->QueryContinue(qc) != S_OK))
+    {
+        /* this will trigger IDCANCEL */
+        PostMessageW(hwnd, WM_CLOSE, 0, 0);
+        dmsg(L"profile = %ls, closing progress dialog", oc->display_name);
+        hr = S_OK;
+    }
+    else if (ISONHOLD(c)) /* Try to connect again */
+    {
+        ConnectHelper(c);
+    }
+    else if (!ISCONNECTED(c) && msg == TDN_BUTTON_CLICKED && wParam == status_menu_id)
+    {
+        dmsg(L"wParam = status_menu_id  -- showing status window");
+        ShowStatusWindow(c, TRUE);
+    }
+    else if (!ISCONNECTED(c) && msg == TDN_BUTTON_CLICKED && wParam == IDRETRY)
+    {
+        dmsg(L"wParam = IDRETRY -- closing progress dialog for restart");
+        hr = S_OK;
+    }
+
+    if (msg == TDN_CREATED)
+    {
+        dmsg(L"starting progress bar marquee");
+        PostMessageW(hwnd, TDM_SET_PROGRESS_BAR_MARQUEE, 1, 0);
+    }
+
+    if (msg == TDN_TIMER)
+    {
+        GetConnectionStatusText(c, status, _countof(status));
+        NotifyEvents(oc, status);
+        SendMessageW(hwnd, TDM_UPDATE_ELEMENT_TEXT, TDE_CONTENT, (LPARAM) status);
+        dmsg(L"Connection status <%ls>", status);
+    }
+
+    return hr;
+}
+
+static HRESULT WINAPI
 Connect(ICCPC *this, IQueryContinueWithStatus *qc)
 {
     OpenVPNConnection *oc = (OpenVPNConnection *) this;
@@ -538,33 +598,41 @@ Connect(ICCPC *this, IQueryContinueWithStatus *qc)
 
     oc->qc = qc;
     NotifyEvents(oc, L"");
-    oc->connect_cancelled = FALSE;
 
-    SetActiveProfile(oc->c);
+again:
+    oc->connect_cancelled = FALSE;
+    SetActiveProfile(oc->c); /* This enables UI dialogs to be shown for c */
 
     ConnectHelper(oc->c);
 
     Sleep(100);
 
-    while (!ISCONNECTED(oc->c) && !ISDISCONNECTED(oc->c))
+    /* if not immediately connected, show a progress dialog with
+     * service state changes and retry/cancel options. Progress dialog
+     * returns on error, cancel or when connected.
+     */
+    if (!ISCONNECTED(oc->c) && !ISDISCONNECTED(oc->c))
     {
-        ShowStatusWindow(oc->c, TRUE);
-        GetConnectionStatusText(oc->c, status, _countof(status));
-        NotifyEvents(oc, status);
-        if (qc->lpVtbl->QueryContinue(qc) != S_OK)
+        dmsg(L"Runninng progress dialog");
+        int res = RunProgressDialog(oc->c, ProgressCallback, (LONG_PTR) oc);
+        dmsg(L"Out of progress dialog with res = %d", res);
+
+        if (res == IDRETRY && !ISCONNECTED(oc->c))
         {
-            /* user wants to cancel */
+            wcsncpy_s(status, _countof(status), L"Current State: Retrying", _TRUNCATE);
+            NotifyEvents(oc, status);
+
+            DisconnectHelper(oc->c);
+            goto again;
+        }
+        else if (res == IDCANCEL  && !ISCONNECTED(oc->c) && !ISDISCONNECTED(oc->c))
+        {
             wcsncpy_s(status, _countof(status), L"Current State: Cancelling", _TRUNCATE);
             NotifyEvents(oc, status);
-            oc->connect_cancelled = TRUE;
+
             DisconnectHelper(oc->c);
-            break;
+            oc->connect_cancelled = TRUE;
         }
-        else if (ISONHOLD(oc->c))
-        {
-            ConnectHelper(oc->c);
-        }
-        Sleep(100);
     }
 
     GetConnectionStatusText(oc->c, status, _countof(status));

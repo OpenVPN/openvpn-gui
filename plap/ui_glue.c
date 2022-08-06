@@ -39,6 +39,7 @@
 #include "openvpn-gui-res.h"
 #include "localization.h"
 #include "misc.h"
+#include "tray.h"
 
 /* Global options structure */
 options_t o;
@@ -47,6 +48,7 @@ int state_connected = connected, state_disconnected = disconnected,
     state_onhold = onhold;
 
 static connection_t *active_profile;
+DWORD status_menu_id = IDM_STATUSMENU;
 
 /* Override management handlers that generate user dialogs
  * and pass them on only for currently active profile.
@@ -476,4 +478,42 @@ void
 SetActiveProfile(connection_t *c)
 {
     active_profile = c;
+}
+
+int
+RunProgressDialog(connection_t *c, PFTASKDIALOGCALLBACK cb_fn, LONG_PTR cb_data)
+{
+    dmsg(L"Entry with profile = <%ls>", c->config_name);
+
+    const TASKDIALOG_FLAGS flags = TDF_SHOW_MARQUEE_PROGRESS_BAR|TDF_CALLBACK_TIMER|TDF_USE_HICON_MAIN;
+    wchar_t main_text[256];
+    wchar_t details_btn_text[256];
+
+    _sntprintf_0(main_text, L"%ls %ls", LoadLocalizedString(IDS_MENU_CONNECT), c->config_name);
+    LoadLocalizedStringBuf(details_btn_text, _countof(main_text), IDS_MENU_STATUS);
+
+    const TASKDIALOG_BUTTON extra_buttons[] = {
+        {status_menu_id, details_btn_text},
+    };
+
+    const TASKDIALOGCONFIG taskcfg = {
+        .cbSize = sizeof(taskcfg),
+        .hwndParent = o.hWnd,
+        .hInstance = o.hInstance,
+        .dwFlags = flags,
+        .hMainIcon = LoadLocalizedIcon(ID_ICO_APP),
+        .cButtons = _countof(extra_buttons),
+        .pButtons = extra_buttons,
+        .dwCommonButtons = TDCBF_CANCEL_BUTTON|TDCBF_RETRY_BUTTON,
+        .pszWindowTitle = L""PACKAGE_NAME" PLAP",
+        .pszMainInstruction = main_text,
+        .pszContent = L"Starting", /* replaced on create */
+        .pfCallback = cb_fn,
+        .lpCallbackData = cb_data,
+    };
+
+    int button_clicked = 0;
+    dmsg(L"calling taskdialogindirect");
+    TaskDialogIndirect(&taskcfg, &button_clicked, NULL, NULL);
+    return button_clicked;
 }
