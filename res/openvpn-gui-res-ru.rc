@@ -79,7 +79,7 @@ END
 ID_DLG_CHALLENGE_RESPONSE DIALOG 6, 18, 212, 72
 STYLE WS_SIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
 EXSTYLE WS_EX_TOPMOST
-CAPTION "OpenVPN - Challenge Response"
+CAPTION "OpenVPN - вызов-отклик"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 BEGIN
@@ -203,26 +203,26 @@ BEGIN
     EDITTEXT ID_EDT_CONNECT_TIMEOUT, 123, 123, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 123, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
 
-    GROUPBOX "Management interface", 204, 6, 163, 235, 30
-    LTEXT "Port offset:", 205, 17, 175, 75, 10
+    GROUPBOX "Интерфейс управления", 204, 6, 163, 235, 30
+    LTEXT "Смещение порта:", 205, 17, 175, 75, 10
     EDITTEXT ID_EDT_MGMT_PORT, 103, 173, 30, 12, ES_AUTOHSCROLL
 
-    GROUPBOX "Config menu view", 206, 6, 198, 235, 30
-    AUTORADIOBUTTON "&Auto", ID_RB_BALLOON0, 28, 210, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "&Flat", ID_RB_BALLOON1, 88, 210, 50, 10
-    AUTORADIOBUTTON "&Nested", ID_RB_BALLOON2, 148, 210, 50, 10
+    GROUPBOX "Настроить вид меню", 206, 6, 198, 235, 30
+    AUTORADIOBUTTON "Авто", ID_RB_BALLOON0, 28, 210, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Плоский", ID_RB_BALLOON1, 88, 210, 50, 10
+    AUTORADIOBUTTON "Вложенный", ID_RB_BALLOON2, 148, 210, 50, 10
 
-    GROUPBOX "Echo message display", 207, 6, 233, 235, 45
-    AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 245, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Ne&ver", ID_RB_BALLOON4, 88, 245, 50, 10
-    LTEXT "Repeated messages are muted for: ", 208, 17, 260, 125, 10
+    GROUPBOX "Отображение сообщений", 207, 6, 233, 235, 45
+    AUTORADIOBUTTON "Авто", ID_RB_BALLOON3, 28, 245, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Никогда", ID_RB_BALLOON4, 88, 245, 50, 10
+    LTEXT "Повторяющиеся сообщения скрыты на: ", 208, 17, 260, 125, 10
     EDITTEXT ID_EDT_POPUP_MUTE, 150, 258, 30, 12, ES_AUTOHSCROLL
-    LTEXT "hours", 209, 190, 260, 40, 10
+    LTEXT "часов", 209, 190, 260, 40, 10
 
 #if ENABLE_OVPN3
     GROUPBOX "OpenVPN Engine", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
     AUTORADIOBUTTON "OpenVPN2", ID_RB_ENGINE_OVPN2, 18, 296, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "OpenVPN3 (experimental)", ID_RB_ENGINE_OVPN3, 76, 296, 90, 10
+    AUTORADIOBUTTON "OpenVPN3 (экспериментально)", ID_RB_ENGINE_OVPN3, 76, 296, 90, 10
 #endif
 
 END
@@ -267,33 +267,33 @@ END
 /* URL Profile Import Dialog */
 ID_DLG_URL_PROFILE_IMPORT DIALOG 6, 18, 249, 95
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFOREGROUND
-CAPTION "Import Profile from Access Server"
+CAPTION "Импортировать профиль с сервера"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 BEGIN
     LTEXT "U&RL:", 201, 6, 9, 50, 10
     EDITTEXT ID_EDT_URL, 60, 6, 183, 12, ES_AUTOHSCROLL
-    LTEXT "&Username:", 202, 6, 26, 50, 10
+    LTEXT "Имя пользователя:", 202, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 23, 94, 12, ES_AUTOHSCROLL
-    LTEXT "&Password:", ID_LTEXT_PASSWORD, 6, 42, 50, 10
+    LTEXT "Пароль:", ID_LTEXT_PASSWORD, 6, 42, 50, 10
     EDITTEXT ID_EDT_AUTH_PASS, 60, 40, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    AUTOCHECKBOX "&Autologin", ID_CHK_AUTOLOGIN, 6, 59, 100, 10
+    AUTOCHECKBOX "Автоматический вход", ID_CHK_AUTOLOGIN, 6, 59, 100, 10
     PUSHBUTTON "&OK", IDOK, 20, 76, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
-    PUSHBUTTON "&Cancel", IDCANCEL, 90, 76, 52, 14
+    PUSHBUTTON "Отмена", IDCANCEL, 90, 76, 52, 14
 END
 
 /* Query PKCS11-ID Dialog */
 ID_DLG_PKCS11_QUERY DIALOGEX 6, 18, 340, 242
 STYLE WS_SIZEBOX| WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFONT
-CAPTION "Select Certificate"
+CAPTION "Выбрать сертификат"
 FONT 8, "Segoe UI"
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "PKCS11 Certificates available:", ID_TXT_PKCS11, 17, 12, 171, 12
+    LTEXT "Доступные сертификаты PKCS11:", ID_TXT_PKCS11, 17, 12, 171, 12
     CONTROL "", ID_LVW_PKCS11, "SysListView32", LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP, 17, 25, 171,150
     PUSHBUTTON "&OK", IDOK, 20, 200, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP
-    PUSHBUTTON "&Cancel", IDCANCEL, 90, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
-    PUSHBUTTON "&Retry", IDRETRY, 160, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "Отмена", IDCANCEL, 90, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "Повторить", IDRETRY, 160, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
     LTEXT "", ID_TXT_WARNING, 6, 222, 190, 10
 END
 
@@ -303,15 +303,15 @@ BEGIN
     IDS_LANGUAGE_NAME "Русский - Russian"
 
     /* Tray - Resources */
-    IDS_TIP_DEFAULT "OpenVPN GUI "
+    IDS_TIP_DEFAULT "Графический интерфейс OpenVPN"
     IDS_TIP_CONNECTED "\nПодключен к: "
     IDS_TIP_CONNECTING "\nПодключение к: "
     IDS_TIP_CONNECTED_SINCE "\nПодключен с: "
     IDS_TIP_ASSIGNED_IP "\nНазначенный IP: %ls"
     IDS_MENU_SERVICE "Служба OpenVPN"
     IDS_MENU_IMPORT "Импорт"
-    IDS_MENU_IMPORT_AS "Import from Access Server…"
-    IDS_MENU_IMPORT_URL "Import from URL…"
+    IDS_MENU_IMPORT_AS "Импортировать с сервера доступа…"
+    IDS_MENU_IMPORT_URL "Импортировать по ссылке…"
     IDS_MENU_IMPORT_FILE "Импорт файла конфигурации…"
     IDS_MENU_SETTINGS "Настройки…"
     IDS_MENU_CLOSE "Выход"
@@ -365,7 +365,7 @@ BEGIN
     IDS_ERR_CREATE_THREAD_STATUS "Ошибка выполнения CreateThread при отображении окна состояния."
     IDS_NFO_STATE_WAIT_TERM "Текущее состояние: ожидание завершения работы OpenVPN…"
     IDS_NFO_STATE_CONNECTED "Текущее состояние: подключено"
-    IDS_NFO_STATE_ONHOLD "Current State: On Hold (disconnected)"
+    IDS_NFO_STATE_ONHOLD "Текущее состояние: приостановлено (нет соединения)"
     IDS_NFO_NOW_CONNECTED "%ls сейчас подключено."
     IDS_NFO_ASSIGN_IP "Назначенный IP: %ls"
     IDS_ERR_CERT_EXPIRED "Невозможно подключиться, так как срок действия вашего сертификата истёк или системное время некорректно."
@@ -391,8 +391,8 @@ BEGIN
     IDS_ERR_GET_EXIT_CODE "Ошибка получения кода выхода (ExitCode) скрипта подключения (%ls)"
     IDS_ERR_CONN_SCRIPT_FAILED "Ошибка выполнения скрипта подключения. (exitcode=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Ошибка выполнения скрипта подключения. Истекло время ожидания после %d сек."
-    IDS_ERR_CONFIG_EXIST "Уже существует файл конфигурации с названием '%ls'. Вы не можете \
-иметь несколько файлов конфигурации с одним именем, даже если \
+    IDS_ERR_CONFIG_EXIST "Уже существует файл конфигурации с названием '%ls'. У вас \
+не может быть нескольких файлов конфигурации с одним именем, даже если \
 они находятся в разных папках."
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "Ошибка открытия файла отладки (%ls) для вывода."
@@ -411,17 +411,17 @@ BEGIN
     IDS_NFO_USAGE "--help\t\t\t: Отобразить это сообщение.\n\
 --connect cnn \t\t: Подключиться к ""cnn"" при запуске. (включая расширение файла)\n\
 \t\t\t   Пример: openvpn-gui --connect office.ovpn\n\
---command cmd [args]\t: Send a command to a running instance of the GUI\n\
+--command cmd [args]\t: Послать команду работающему процессу графического интерфейса\n\
 Supported commands:\n\
-    connect cnn            \t: connect the config named ""cnn""\n\
-    disconnect cnn         \t: disconnect the config named ""cnn""\n\
-    reconnect cnn          \t: reconnect the config named ""cnn""\n\
-    disconnect_all         \t: disconnect all connected configs\n\
-    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n\
-    status cnn           \t\t: show the status window of config ""cnn"" if connected\n\
-    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n\
-    import path          \t\t: Import the config file pointed to by path\n\
-\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n\
+    connect cnn            \t: подключиться к конфигурации под названием ""cnn""\n\
+    disconnect cnn         \t: отключиться от конфигурации с названием ""cnn""\n\
+    reconnect cnn          \t: переподключиться к конфигурации с названием ""cnn""\n\
+    disconnect_all         \t: отключить все соединения\n\
+    exit                 \t\t: заверщить процесс графического интерфейса (может запросить подтверждение)\n\
+    status cnn           \t\t: показать статус конфигурации ""cnn"", если он включен\n\
+    silent_connection [0|1]\t: установить флаг тихого включения вкл (1) или выкл (0)\n\
+    import path          \t\t: Импортировать файл конфигурации по относительному пути\n\
+\t\t\Пример: openvpn-gui.exe --command disconnect myconfig\n\
 \n\
 Опции для переназначения настроек реестра:\n\
 --exe_path\t\t: Путь к openvpn.exe.\n\
@@ -442,12 +442,12 @@ Supported commands:\n\
 --passphrase_attempts\t: Количество разрешённых попыток ввода пароля.\n\
 --connectscript_timeout\t: Время ожидания завершения скрипта подключения.\n\
 --disconnectscript_timeout\t: Время ожидания завершения скрипта отключения.\n\
---preconnectscript_timeout\t: Time to wait for preconnect script to finish.\n\
---iservice_admin\t\t: 0=Do not use interactive service when started as admin (default is 1 for Windows 7 and newer)\n\
---disable_popup_messages\t: Do not popup (i.e., show) the echo message window. Default is to show.\n\
---popup_mute_interval\t: Time in hours for which a previously shown echo message is not re-displayed. Default=24 hours.\n\
---management_port_offset\t: Offset value added to config index to determine the management port for a connection.\n\
-\t\t\t Must be in the range 1 to 61000. Maximum number of configs is limited by 65536 minus this value. Default=25340.\n"
+--preconnectscript_timeout\t: Время ожидания завершения скрипта предварительного подключения.\n\
+--iservice_admin\t\t: 0=Не использовать интерактивный сервис при запуске от имени администратора (по умолчанию 1 в Windows 7 и более новых системах)\n\
+--disable_popup_messages\t: Не показывать всплывающие сообщения. По умолчанию показывает.\n\
+--popup_mute_interval\t: Время в часах, в течение которого всплывающее сообщение не показывается повторно. По умолчанию: 24 часа.\n\
+--management_port_offset\t: Число, добавляемое к номеру порта при соединении.\n\
+\t\t\t Должно быть между 1 и 61000. Максимальное число файлов настроек ограничено 65536 минус это значение. По умолчанию: 25340.\n"
 
 
     IDS_NFO_USAGECAPTION "Использование OpenVPN GUI"
@@ -535,34 +535,34 @@ OpenVPN, возможно, не установлен."
     IDS_ERR_IMPORT_FAILED "Ошибка импорта файла. Путь %ls не может быть создан.\n\n\
 Убедитесь, что у вас есть необходимые привилегии для данного действия."
     IDS_NFO_IMPORT_SUCCESS "Импорт файла успешно завершен."
-    IDS_NFO_IMPORT_OVERWRITE "A config named ""%ls"" already exists. Do you want to replace it?"
-    IDS_NFO_IMPORT_SOURCE "Do you want to import the profile <%ls>?"
-    IDS_ERR_IMPORT_SOURCE "Cannot import file <%ls> as it is already in the global or local config directory"
-    IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
+    IDS_NFO_IMPORT_OVERWRITE "Файл конфигурации с именем ""%ls"" уже существует. Вы хотите заменить его?"
+    IDS_NFO_IMPORT_SOURCE "Вы хотите импортировать профиль <%ls>?"
+    IDS_ERR_IMPORT_SOURCE "Нельзя импортировать файл <%ls>, поскольку он уже в папке глобальных или локальных настроек"
+    IDS_ERR_IMPORT_ACCESS "Нельзя импортировать файл <%ls>, поскольку он отсутствует или не может быть прочитан"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "Подтвердите удаление сохраненных паролей для ""%ls"""
 
     /* Token password related */
-    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – Token Password"
-    IDS_NFO_TOKEN_PASSWORD_REQUEST "Input Password/PIN for Token '%hs'"
+    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – токен-пароль"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "Введитте пароль/PIN для токена '%hs'"
 
     IDS_NFO_AUTH_PASS_RETRY "Неправильное имя пользователя или пароль"
     IDS_NFO_KEY_PASS_RETRY  "Неправильный пароль"
-    IDS_ERR_INVALID_PASSWORD_INPUT "Invalid character in password"
-    IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
+    IDS_ERR_INVALID_PASSWORD_INPUT "Недопустимый символ в пароле"
+    IDS_ERR_INVALID_USERNAME_INPUT "Недопустимый символ в имени пользователя"
     IDS_NFO_AUTO_CONNECT    "Автоматическое подключение через %u сек..."
-    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
-    IDS_NFO_BYTECOUNT "Bytes in: %ls  out: %ls"
+    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI уже запущен. Нажмите правой кнопкой на иконке в трее чтобы развернуть."
+    IDS_NFO_BYTECOUNT "Входящие байты: %ls  Исходящие байты: %ls"
 
     /* AS profile import */
-    IDS_ERR_URL_IMPORT_PROFILE "Error fetching profile from URL: [%d] %ls"
+    IDS_ERR_URL_IMPORT_PROFILE "Ошибка получения профиля по ссылке: [%d] %ls"
 
-    IDS_ERR_NO_PKCS11 "No certificates found. If you have a token insert it and press retry."
-    IDS_ERR_SELECT_PKCS11 "No certificates selected."
+    IDS_ERR_NO_PKCS11 "Сертификат не найден. Если у вас есть токен, введите его и нажмите повторить"
+    IDS_ERR_SELECT_PKCS11 "Сертификаты не выбраны."
     /* column headers for pkcs11 certificate list */
-    IDS_CERT_DISPLAYNAME "Issued to"
-    IDS_CERT_ISSUER "Issued by"
-    IDS_CERT_NOTAFTER "Valid until"
+    IDS_CERT_DISPLAYNAME "Выдано для:"
+    IDS_CERT_ISSUER "Выдано кем"
+    IDS_CERT_NOTAFTER "Действительно до"
 
 END
