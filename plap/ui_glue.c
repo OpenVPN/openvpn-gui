@@ -42,8 +42,120 @@
 
 /* Global options structure */
 options_t o;
+
 int state_connected = connected, state_disconnected = disconnected,
     state_onhold = onhold;
+
+static connection_t *active_profile;
+
+/* Override management handlers that generate user dialogs
+ * and pass them on only for currently active profile.
+ * Also ensure no unwanted popus are generated.
+ */
+static void
+OnStop_(connection_t *c, UNUSED char *msg)
+{
+    dmsg(L"profile: %ls with state = %d", c->config_name, c->state);
+
+    /* do not show any popup error messages */
+    c->state = disconnected;
+    SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_DISCONNECTED));
+    SetStatusWinIcon(c->hwndStatus, ID_ICO_DISCONNECTED);
+    SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
+}
+
+/* Override OnInfoMsg: We filter out anything other
+ * than CR_TEXT: In particular, OPEN_URL is not supported
+ * in PLAP context.
+ */
+static void
+OnInfoMsg_(connection_t* c, char* msg)
+{
+    if (strbegins(msg, "CR_TEXT:"))
+    {
+        if (c == active_profile)
+        {
+            OnInfoMsg(c, msg);
+        }
+        else
+        {
+            DetachOpenVPN(c); /* next attach will handle it */
+        }
+    }
+}
+
+static void
+OnNeedOk_(connection_t *c, char *msg)
+{
+    if (c == active_profile)
+    {
+        OnNeedOk(c, msg);
+    }
+    else
+    {
+        DetachOpenVPN(c); /* next attach will handle it */
+    }
+}
+
+static void
+OnNeedStr_(connection_t *c, char *msg)
+{
+    if (c == active_profile)
+    {
+        OnNeedStr(c, msg);
+    }
+    else
+    {
+        DetachOpenVPN(c); /* next attach will handle it */
+    }
+}
+
+static void
+OnPassword_(connection_t *c, char *msg)
+{
+    if (c == active_profile)
+    {
+        OnPassword(c, msg);
+    }
+    else
+    {
+        DetachOpenVPN(c); /* next attach will handle it */
+    }
+}
+
+static void
+OnProxy_(connection_t *c, char *msg)
+{
+    if (c == active_profile)
+    {
+        OnProxy(c, msg);
+    }
+    else
+    {
+        DetachOpenVPN(c); /* next attach will handle it */
+    }
+}
+
+/* Intercept state change. Keep track of previous state and handle
+ * cases like user wants to disconnect but connection completed in
+ * the meantime.
+ */
+void
+OnStateChange_(connection_t *c, char *msg)
+{
+    int state_prev = c->state;
+
+    OnStateChange(c, msg);
+
+    if (c->state == connected && state_prev == disconnecting)
+    {
+        /* connection completed while user clicked disconnect,
+         * let disconnect process continue. This is required to
+         * retain the hold state after SIGHUP restart.
+         */
+        c->state = disconnecting;
+    }
+}
 
 /* Initialize GUI data structures. Returns 0 on success */
 DWORD
@@ -90,15 +202,15 @@ InitializeUI(HINSTANCE hinstance)
       { ready_,    OnReady },
       { hold_,     OnHold },
       { log_,      OnLogLine },
-      { state_,    OnStateChange },
-      { password_, OnPassword },
-      { proxy_,    OnProxy },
-      { stop_,     OnStop },
-      { needok_,   OnNeedOk },
-      { needstr_,  OnNeedStr },
+      { state_,    OnStateChange_ },
+      { password_, OnPassword_ },
+      { proxy_,    OnProxy_ },
+      { stop_,     OnStop_ },
+      { needok_,   OnNeedOk_ },
+      { needstr_,  OnNeedStr_ },
       { echo_,     OnEcho },
       { bytecount_,OnByteCount },
-      { infomsg_,  OnInfoMsg },
+      { infomsg_,  OnInfoMsg_ },
       { timeout_,  OnTimeout },
       { 0,         NULL}
     };
@@ -355,4 +467,13 @@ DisconnectHelper(connection_t *c)
     ShowWindowAsync(GetDlgItem(c->hwndStatus, ID_DISCONNECT), SW_HIDE);
 
     dmsg(L"profile: %ls state = %d", c->config_name, c->state);
+}
+
+/* Set the currently active profile in Connect() operation -- pass NULL to unset.
+ * We allow UI dialogs only on the current profile.
+ */
+void
+SetActiveProfile(connection_t *c)
+{
+    active_profile = c;
 }
