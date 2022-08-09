@@ -28,7 +28,7 @@ LTRCCOMPILE = $(LIBTOOL) --mode=compile --tag=RC $(RCCOMPILE)
 	$(RCCOMPILE) -i "$<" -o "$@"
 
 MAINTAINERCLEANFILES = \
-	$(srcdir)/Makefile.in
+	$(srcdir)/Makefile.in $(srcdir)/credentialprovider.h
 
 lib_LTLIBRARIES = libopenvpn_plap.la
 
@@ -67,7 +67,9 @@ libopenvpn_plap_la_RESOURCES = \
 openvpn-plap-res.lo: $(libopenvpn_plap_la_RESOURCES) $(top_srcdir)/openvpn-gui-res.h
 EXTRA_DIST = openvpn-plap-res.rc openvpn-plap.manifest
 
+BUILT_SOURCES = credentialprovider.h
 libopenvpn_plap_la_SOURCES = \
+	credentialprovider.h \
 	stub.c plap_provider.c \
 	plap_connection.h plap_connection.c \
 	plap_common.h plap_common.c \
@@ -96,3 +98,6 @@ libopenvpn_plap_la_LIBADD = \
 	-lrpcrt4
 
 libopenvpn_plap_la_LDFLAGS = -no-undefined -avoid-version -static-libgcc
+
+credentialprovider.h:
+	wget https://raw.githubusercontent.com/mirror/mingw-w64/master/mingw-w64-headers/include/credentialprovider.h
