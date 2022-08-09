@@ -267,7 +267,7 @@ END
 /* URL Profile Import Dialog */
 ID_DLG_URL_PROFILE_IMPORT DIALOG 6, 18, 249, 95
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFOREGROUND
-CAPTION "Импортировать профиль с сервера"
+CAPTION "Импортировать профиль с Access Server"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 BEGIN
@@ -310,7 +310,7 @@ BEGIN
     IDS_TIP_ASSIGNED_IP "\nНазначенный IP: %ls"
     IDS_MENU_SERVICE "Служба OpenVPN"
     IDS_MENU_IMPORT "Импорт"
-    IDS_MENU_IMPORT_AS "Импортировать с сервера доступа…"
+    IDS_MENU_IMPORT_AS "Импортировать с Access Server…"
     IDS_MENU_IMPORT_URL "Импортировать по ссылке…"
     IDS_MENU_IMPORT_FILE "Импорт файла конфигурации…"
     IDS_MENU_SETTINGS "Настройки…"
@@ -558,10 +558,10 @@ OpenVPN, возможно, не установлен."
     /* AS profile import */
     IDS_ERR_URL_IMPORT_PROFILE "Ошибка получения профиля по ссылке: [%d] %ls"
 
-    IDS_ERR_NO_PKCS11 "Сертификат не найден. Если у вас есть токен, введите его и нажмите повторить"
+    IDS_ERR_NO_PKCS11 "Сертификат не найден. Если у вас есть токен, введите его и нажмите повторить."
     IDS_ERR_SELECT_PKCS11 "Сертификаты не выбраны."
     /* column headers for pkcs11 certificate list */
-    IDS_CERT_DISPLAYNAME "Выдано для:"
+    IDS_CERT_DISPLAYNAME "Выдано для "
     IDS_CERT_ISSUER "Выдано кем"
     IDS_CERT_NOTAFTER "Действительно до"
 
