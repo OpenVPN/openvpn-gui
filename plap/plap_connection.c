@@ -540,6 +540,8 @@ Connect(ICCPC *this, IQueryContinueWithStatus *qc)
     NotifyEvents(oc, L"");
     oc->connect_cancelled = FALSE;
 
+    SetActiveProfile(oc->c);
+
     ConnectHelper(oc->c);
 
     Sleep(100);
@@ -570,6 +572,7 @@ Connect(ICCPC *this, IQueryContinueWithStatus *qc)
 
     ShowStatusWindow(oc->c, FALSE);
     oc->qc = NULL;
+    SetActiveProfile(NULL);
 
     dmsg (L"Exit with: <%ls>", ISCONNECTED(oc->c) ? L"success" : L"error/cancel");
 

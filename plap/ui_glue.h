@@ -101,6 +101,12 @@ void ConnectHelper(connection_t *c);
  */
 void DisconnectHelper(connection_t *c);
 
+/**
+ * Set c as the currently active profile selected for user interaction
+ * UI dialogs are suppressed for non-active profiles
+ */
+void SetActiveProfile(connection_t *c);
+
 #ifdef __cplusplus
 }
 #endif
