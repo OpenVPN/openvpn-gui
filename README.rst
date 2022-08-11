@@ -97,27 +97,40 @@ may be optionally included. Example::
 To get help with OpenVPN GUI please use one of the official `OpenVPN support
 channels <https://community.openvpn.net/openvpn/wiki/GettingHelp>`_.
 
-Running OpenVPN GUI as a Non-Admin user
-***************************************
+Running OpenVPN GUI
+*******************
 
-OpenVPN 2.3.x and earlier bundle an OpenVPN GUI version (< 11) which has to be
-run as admin for two reasons
+Run OpenVPN-GUI as normal user by double clicking on the icon. No
+administrative privileges or `runas-administrator` options are required.
+It just works as limited user with the help of Interactive Service which
+is enabled by default.
 
-* OpenVPN GUI registry keys are stored in system-wide location
-  under HKEY_LOCAL_MACHINE, and they are generated when OpenVPN GUI was
-  launched the first time
-* OpenVPN itself requires admin-level privileges to modify network settings
+Persistent or Pre-started connections
+*************************************
 
-OpenVPN GUI 11 and later can make full use of the Interactive Service
-functionality in recent versions of OpenVPN. This changes a number of
-things:
+Starting release 2.5.8 (GUI version 11.30), OpenVPN GUI can
+control connections started by the "automatic service"
+(OpenVPNService) --- also referred to as persistent connections.
+OpenVPNService, if running, starts all connection profiles
+listed in the `config-auto` directory in the installation path.
 
-* OpenVPN GUI can store its settings in user-specific part of the registry under
-  HKEY_CURRENT_USER
-* OpenVPN is able to delegate certain privileged operations, such as adding
-  routes, to the Interactive service, removing the need to run OpenVPN with
-  admin privileges. Note that for this to work the *OpenVPNServiceInteractive*
-  system service has to be enabled and running.
+By default, such connections are scanned for, and attempt is
+made to attach to their management interfaces if available.
+User can then view the status of these connections, and disconnect,
+reconnect, detach or re-attach them using the menu items.
+
+It requires that such connections be started with
+`--management 127.0.0.1 port [pw-file]` option in their config file.
+`pw-file` containing a password is optional, but highly recommended.
+Further, if `--auth-user-pass` or any such options requiring
+interactive user input are present, the config file must also
+contain `--management-query-passwords`.
+
+This feature may be controlled by changing the `Persistent Connections`
+setting in the `General` tab of the `Settings` menu: choose `auto`
+for the default behaviour described above, `manual` to enumerate
+and list such connections but not auto-attach, or `disable` to not scan
+auto-started connection profiles.
 
 Run Connect/Disconnect/Preconnect Scripts
 *****************************************
@@ -217,6 +230,11 @@ ovpn_admin_group
 disable_save_passwords
     Set to a nonzero value to disable the password save feature.
     Default: 0
+
+auto_config_dir
+    If persistent connection support is enabled and the so-called automatic
+    service (OpenVPNService) is running, any config files in this folder are
+    scanned and listed in the list of connection profiles.
 
 User Preferences
 ****************
