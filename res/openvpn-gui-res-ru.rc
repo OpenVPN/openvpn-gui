@@ -79,7 +79,7 @@ END
 ID_DLG_CHALLENGE_RESPONSE DIALOG 6, 18, 212, 72
 STYLE WS_SIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
 EXSTYLE WS_EX_TOPMOST
-CAPTION "OpenVPN - вызов-отклик"
+CAPTION "OpenVPN – Challenge Response"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 BEGIN
@@ -413,8 +413,8 @@ BEGIN
 \t\t\t   Пример: openvpn-gui --connect office.ovpn\n\
 --command cmd [args]\t: Послать команду работающему процессу графического интерфейса\n\
 Supported commands:\n\
-    connect cnn            \t: подключиться к конфигурации под названием ""cnn""\n\
-    disconnect cnn         \t: отключиться от конфигурации с названием ""cnn""\n\
+    connect cnn            \t: подключиться к конфигурации ""cnn""\n\
+    disconnect cnn         \t: отключиться от конфигурации ""cnn""\n\
     reconnect cnn          \t: переподключиться к конфигурации с названием ""cnn""\n\
     disconnect_all         \t: отключить все соединения\n\
     exit                 \t\t: заверщить процесс графического интерфейса (может запросить подтверждение)\n\
@@ -446,7 +446,7 @@ Supported commands:\n\
 --iservice_admin\t\t: 0=Не использовать интерактивный сервис при запуске от имени администратора (по умолчанию 1 в Windows 7 и более новых системах)\n\
 --disable_popup_messages\t: Не показывать всплывающие сообщения. По умолчанию показывает.\n\
 --popup_mute_interval\t: Время в часах, в течение которого всплывающее сообщение не показывается повторно. По умолчанию: 24 часа.\n\
---management_port_offset\t: Число, добавляемое к номеру порта при соединении.\n\
+--management_port_offset\t: Смещение, добавляемое к номеру конфигурации для определения порта управления при соединении.\n\
 \t\t\t Должно быть между 1 и 61000. Максимальное число файлов настроек ограничено 65536 минус это значение. По умолчанию: 25340.\n"
 
 
@@ -535,8 +535,8 @@ OpenVPN, возможно, не установлен."
     IDS_ERR_IMPORT_FAILED "Ошибка импорта файла. Путь %ls не может быть создан.\n\n\
 Убедитесь, что у вас есть необходимые привилегии для данного действия."
     IDS_NFO_IMPORT_SUCCESS "Импорт файла успешно завершен."
-    IDS_NFO_IMPORT_OVERWRITE "Файл конфигурации с именем ""%ls"" уже существует. Вы хотите заменить его?"
-    IDS_NFO_IMPORT_SOURCE "Вы хотите импортировать профиль <%ls>?"
+    IDS_NFO_IMPORT_OVERWRITE "Файл конфигурации с именем ""%ls"" уже существует. Заменить его?"
+    IDS_NFO_IMPORT_SOURCE "Импортировать профиль <%ls>?"
     IDS_ERR_IMPORT_SOURCE "Нельзя импортировать файл <%ls>, поскольку он уже в папке глобальных или локальных настроек"
     IDS_ERR_IMPORT_ACCESS "Нельзя импортировать файл <%ls>, поскольку он отсутствует или не может быть прочитан"
 
@@ -545,7 +545,7 @@ OpenVPN, возможно, не установлен."
 
     /* Token password related */
     IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – токен-пароль"
-    IDS_NFO_TOKEN_PASSWORD_REQUEST "Введитте пароль/PIN для токена '%hs'"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "Введите пароль/PIN для токена '%hs'"
 
     IDS_NFO_AUTH_PASS_RETRY "Неправильное имя пользователя или пароль"
     IDS_NFO_KEY_PASS_RETRY  "Неправильный пароль"
