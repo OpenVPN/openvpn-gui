@@ -122,8 +122,11 @@ OnReady(connection_t *c, UNUSED char *msg)
     ManagementCommand(c, "echo on all", OnEcho, combined);
     ManagementCommand(c, "bytecount 5", NULL, regular);
 
-    /* ask for the current state, especially useful when the daemon was prestarted */
-    ManagementCommand(c, "state", OnStateChange, regular);
+    if (o.ovpn_engine != OPENVPN_ENGINE_OVPN3) { // openvpn3 doesn't support this and will respond with an error
+        /* ask for the current state, especially useful when the daemon was prestarted */
+        ManagementCommand(c, "state", OnStateChange, regular);
+    }
+
 
     if (c->flags & FLAG_DAEMON_PERSISTENT
         && o.enable_persistent == 2)
