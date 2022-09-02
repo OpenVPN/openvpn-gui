@@ -286,6 +286,9 @@ OnStateChange(connection_t *c, char *data)
 {
     char *pos, *state, *message;
 
+    if (data == NULL)
+        return;
+
     pos = strchr(data, ',');
     if (pos == NULL)
         return;
