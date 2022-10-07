@@ -30,9 +30,13 @@ LTRCCOMPILE = $(LIBTOOL) --mode=compile --tag=RC $(RCCOMPILE)
 MAINTAINERCLEANFILES = \
 	$(srcdir)/Makefile.in $(srcdir)/credentialprovider.h
 
+#if ENABLE_OPENVPN_PLAP_TEST
+bin_PROGRAMS = test_plap
+#endif
 lib_LTLIBRARIES = libopenvpn_plap.la
 
 libopenvpn_plap_la_CFLAGS = -DDISABLE_PASSWORD_CHANGE -D_UNICODE -municode
+test_plap_CXXFLAGS = -DDEBUG -D_UNICODE -municode
 
 libopenvpn_plap_la_RESOURCES = \
 	$(top_srcdir)/res/openvpn-gui-res-cs.rc \
@@ -101,3 +105,7 @@ libopenvpn_plap_la_LDFLAGS = -no-undefined -avoid-version -static-libgcc
 
 credentialprovider.h:
 	wget https://raw.githubusercontent.com/mirror/mingw-w64/master/mingw-w64-headers/include/credentialprovider.h
+
+test_plap_SOURCES = test_plap.cpp test-plap-res.rc test-plap.manifest plap_common.c credentialprovider.h
+test_plap_LDFLAGS = -static-libgcc -static-libstdc++
+test_plap_LDADD = -lrpcrt4 -lole32 -lgdi32 -lcomctl32
