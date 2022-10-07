@@ -6,7 +6,7 @@ if(NOT VCPKG_MANIFEST_DIR)
     set(VCPKG_MANIFEST_DIR ${CMAKE_SOURCE_DIR}/vcpkg_manifests/openssl_3)
 endif()
 
-project(openvpn-gui C)
+project(openvpn-gui C CXX)
 
 add_executable(${PROJECT_NAME} WIN32
     access.c
@@ -139,10 +139,33 @@ target_compile_definitions(${PROJECT_NAME_PLAP} PRIVATE
     WIN32_LEAN_AND_MEAN
     HAVE_CONFIG_H)
 
+if (NOT TEST_PLAP_EXE)
+    set(TEST_PLAP_EXE "test_plap")
+endif()
+
+add_executable(${TEST_PLAP_EXE}
+    plap/test_plap.cpp
+    plap/plap_common.c)
+
+target_link_libraries(${TEST_PLAP_EXE} PRIVATE
+    Rpcrt4
+    Ole32
+    Gdi32)
+
+target_include_directories(${TEST_PLAP_EXE} PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR})
+target_compile_definitions(${TEST_PLAP_EXE} PRIVATE
+    _UNICODE
+    UNICODE
+    WIN32_LEAN_AND_MEAN
+    HAVE_CONFIG_H)
+
 if(MSVC)
     # work around msvc generator Debug/Release directory ugliness, doesn't apply for Ninja
-    set_target_properties(${PROJECT_NAME} ${PROJECT_NAME_PLAP} PROPERTIES
+    set_target_properties(${PROJECT_NAME} ${PROJECT_NAME_PLAP} ${TEST_PLAP_EXE} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<0:>
         LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<0:>
         ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<0:>)
 endif(MSVC)
+
+set_target_properties(${TEST_PLAP_EXE} PROPERTIES
+                      LINK_FLAGS " /MANIFEST:EMBED /MANIFESTINPUT:${CMAKE_SOURCE_DIR}/plap/test-plap.manifest ")
