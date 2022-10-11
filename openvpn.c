@@ -1809,6 +1809,7 @@ DisconnectDaemon(connection_t *c)
     {
         if (c->manage.connected > 1) /* connected and ready for input */
         {
+            ManagementCommand(c, "forget-passwords", NULL, regular);
             ManagementCommand(c, "hold on", NULL, regular);
             ManagementCommand(c, "signal SIGHUP", NULL, regular);
         }
