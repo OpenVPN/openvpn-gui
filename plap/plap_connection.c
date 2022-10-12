@@ -27,6 +27,7 @@
 #include "plap_connection.h"
 #include "plap_dll.h"
 #include <assert.h>
+#include "resource.h"
 
 /* A "class" that implements IConnectableCredentialProviderCredential */
 
@@ -343,9 +344,30 @@ GetStringValue(ICCPC *this, DWORD index, WCHAR **ws)
 static HRESULT WINAPI
 GetBitmapValue(UNUSED ICCPC *this, DWORD field, HBITMAP *bmp)
 {
+    HRESULT hr = S_OK;
+
     dmsg(L"field = %lu ", field);
 
-    return E_NOTIMPL;
+    if (field_desc[field].cpft == CPFT_TILE_IMAGE && bmp)
+    {
+        HBITMAP tmp = LoadBitmapW(hinst_global, MAKEINTRESOURCE(IDB_TILE_IMAGE));
+        if (tmp)
+        {
+            *bmp = tmp; /* The caller takes ownership of this memory */
+            dmsg(L"Returning a bitmap for PLAP tile %lu", field);
+        }
+        else
+        {
+            hr = HRESULT_FROM_WIN32(GetLastError());
+            dmsg(L"LoadBitmap failed with error = 0x%08x", hr);
+        }
+    }
+    else
+    {
+        hr = E_INVALIDARG;
+    }
+
+    return hr;
 }
 
 /*
