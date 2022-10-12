@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <wchar.h>
 #include "main.h"
+#include "misc.h"
 #include "config_parser.h"
 
 static int

@@ -912,3 +912,60 @@ ParseManagementAddress(connection_t *c)
 
     return ret;
 }
+
+/* Write a message to the event log */
+void
+MsgToEventLog(WORD type, wchar_t *format, ...)
+{
+    const wchar_t *msg[2];
+    wchar_t buf[256];
+    int size = _countof(buf);
+
+    if (!o.event_log)
+    {
+        o.event_log = RegisterEventSource(NULL, TEXT(PACKAGE_NAME));
+        if (!o.event_log)
+            return;
+    }
+
+    va_list args;
+    va_start(args, format);
+    int nchar = vswprintf(buf, size-1, format, args);
+    va_end(args);
+
+    if (nchar == -1) return;
+
+    buf[size - 1] = '\0';
+
+    msg[0] = TEXT(PACKAGE_NAME);
+    msg[1] = buf;
+    ReportEventW(o.event_log, type, 0, 0, NULL, 2, 0, msg, NULL);
+}
+
+/*
+ * Get dpi of the system and set the scale factor.
+ * The system dpi may be different from the per monitor dpi on
+ * Win 8.1 later. We set dpi awareness to system-dpi level in the
+ * manifest, and let Windows automatically re-scale windows
+ * if/when dpi changes dynamically.
+ */
+void
+dpi_initialize(options_t *options)
+{
+    UINT dpix = 0;
+    HDC hdc = GetDC(NULL);
+
+    if (hdc)
+    {
+        dpix = GetDeviceCaps(hdc, LOGPIXELSX);
+        ReleaseDC(NULL, hdc);
+        PrintDebug(L"System DPI: dpix = %u", dpix);
+    }
+    else
+    {
+        PrintDebug(L"GetDC failed, using default dpi = 96 (error = %lu)", GetLastError());
+        dpix = 96;
+    }
+
+    DpiSetScale(options, dpix);
+}

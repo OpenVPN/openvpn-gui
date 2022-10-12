@@ -109,4 +109,21 @@ BOOL find_free_tcp_port(SOCKADDR_IN *addr);
  */
 BOOL ParseManagementAddress(connection_t *c);
 
+/**
+ * Get dpi of the system and set the scale factor.
+ * @param o : pointer to the options struct
+ * On return initializes o.dpi_scale using the logical pixels
+ * per inch value of the system.
+ */
+#define DPI_SCALE(x) MulDiv(x, o.dpi_scale, 100)
+void dpi_initialize(options_t *o);
+
+/**
+ * Write a message to the event log
+ * @param type : event log type
+ * @param format : message format in printf style
+ * @param ...    : extra args
+ */
+void MsgToEventLog(WORD type, wchar_t *format, ...);
+
 #endif

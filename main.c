@@ -410,34 +410,6 @@ ResumeConnections()
     }
 }
 
-/*
- * Get dpi of the system and set the scale factor.
- * The system dpi may be different from the per monitor dpi on
- * Win 8.1 later. We set dpi awareness to system-dpi level in the
- * manifest, and let Windows automatically re-scale windows
- * if/when dpi changes dynamically.
- */
-static void
-dpi_initialize(void)
-{
-    UINT dpix = 0;
-    HDC hdc = GetDC(NULL);
-
-    if (hdc)
-    {
-        dpix = GetDeviceCaps(hdc, LOGPIXELSX);
-        ReleaseDC(NULL, hdc);
-        PrintDebug(L"System DPI: dpix = %u", dpix);
-    }
-    else
-    {
-        PrintDebug(L"GetDC failed, using default dpi = 96 (error = %lu)", GetLastError());
-        dpix = 96;
-    }
-
-    DpiSetScale(&o, dpix);
-}
-
 static int
 HandleCopyDataMessage(const COPYDATASTRUCT *copy_data)
 {
@@ -584,7 +556,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
       /* Save Window Handle */
       o.hWnd = hwnd;
-      dpi_initialize();
+      dpi_initialize(&o);
 
       s_uTaskbarRestart = RegisterWindowMessage(TEXT("TaskbarCreated"));
 
@@ -945,34 +917,6 @@ DWORD GetDllVersion(LPCTSTR lpszDllName)
         FreeLibrary(hinstDll);
     }
     return dwVersion;
-}
-
-void
-MsgToEventLog(WORD type, wchar_t *format, ...)
-{
-    const wchar_t *msg[2];
-    wchar_t buf[256];
-    int size = _countof(buf);
-
-    if (!o.event_log)
-    {
-        o.event_log = RegisterEventSource(NULL, TEXT(PACKAGE_NAME));
-        if (!o.event_log)
-            return;
-    }
-
-    va_list args;
-    va_start(args, format);
-    int nchar = vswprintf(buf, size-1, format, args);
-    va_end(args);
-
-    if (nchar == -1) return;
-
-    buf[size - 1] = '\0';
-
-    msg[0] = TEXT(PACKAGE_NAME);
-    msg[1] = buf;
-    ReportEventW(o.event_log, type, 0, 0, NULL, 2, 0, msg, NULL);
 }
 
 void

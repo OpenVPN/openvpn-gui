@@ -140,9 +140,6 @@ void PrintDebugMsg(TCHAR *msg);
 
 DWORD GetDllVersion(LPCTSTR lpszDllName);
 
-#define DPI_SCALE(x) MulDiv(x, o.dpi_scale, 100)
-void MsgToEventLog(WORD type, wchar_t *format, ...);
-
 void ErrorExit(int exit_code, const wchar_t *msg);
 
 #endif
