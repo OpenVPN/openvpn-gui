@@ -275,7 +275,8 @@ FindPLAPConnections(connection_t *conn[], size_t max_count)
     for (int i = 0; i < o.num_configs && count < max_count; i++)
     {
         connection_t *c = &o.conn[i];
-        if (!(c->flags & FLAG_DAEMON_PERSISTENT))
+        if (!(c->flags & FLAG_DAEMON_PERSISTENT)
+            || !ParseManagementAddress(c))
         {
             continue;
         }
