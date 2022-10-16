@@ -406,6 +406,7 @@ Konsultieren Sie die Log-Datei (%ls) für weitere Informationen."
     IDS_NFO_SERVICE_STOPPED "OpenVPN-Dienst beendet."
     IDS_NFO_ACTIVE_CONN_EXIT "Es exisiert noch eine aktive Verbindung, welche geschlossen wird, wenn Sie OpenVPN GUI beenden.\
 \n\nSind Sie sicher, dass Sie das Programm beenden möchten?"
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
     IDS_NFO_SERVICE_ACTIVE_EXIT "Der OpenVPN-Dienst ist gestartet und verbunden. \
 Die Verbindung besteht solange, bis Sie OpenVPN GUI beenden.\n\n\
 \n\nSind Sie sicher, dass Sie das Programm beenden möchten?"

@@ -399,6 +399,7 @@ konfigurations filer med samma namn, även om de ligger i olika kataloger."
     IDS_NFO_SERVICE_STARTED "OpenVPN Service startad."
     IDS_NFO_SERVICE_STOPPED "OpenVPN Service stoppad."
     IDS_NFO_ACTIVE_CONN_EXIT "Du har aktiva uppkopplingar i gång som kommer kopplas ner om du avslutar OpenVPN GUI.\n\nÄr du säker på att du vill avsluta?"
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
     IDS_NFO_SERVICE_ACTIVE_EXIT "Du är uppkopplad med OpenVPN (OpenVPN tjänsten är igång). \
 Du kommer att förbli uppkopplad även om du avslutar OpenVPN GUI.\n\n\
 Är du säker på att du vill avsluta OpenVPN GUI?"

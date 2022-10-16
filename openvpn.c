@@ -2326,6 +2326,12 @@ StartOpenVPN(connection_t *c)
     {
         if (!ParseManagementAddress(c))
         {
+            /* Show an error if manually connecting */
+            if (c->state == disconnected)
+                ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, o.hWnd, TEXT(PACKAGE_NAME), IDS_ERR_PARSE_MGMT_OPTION,
+                                   c->config_dir, c->config_file);
+            else
+                c->state = disconnected;
             TerminateThread(hThread, 1);
             return false;
         }

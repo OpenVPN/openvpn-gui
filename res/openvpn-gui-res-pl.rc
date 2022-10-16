@@ -402,6 +402,7 @@ umieszczone są w innych katalogach."
     IDS_NFO_SERVICE_STOPPED "Usługa OpenVPN zatrzymana."
     IDS_NFO_ACTIVE_CONN_EXIT "Istnieją aktywne połączenia, które zostaną zakończone jeśli zamkniesz OpenVPN GUI.\
 \n\nCzy chcesz kontynuować?"
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
     IDS_NFO_SERVICE_ACTIVE_EXIT "Obecnie jesteś połączony (usługa OpenVPN jest uruchomiona). \
 Połączenie zostanie aktywne nawet po zakończeniu programu OpenVPN GUI.\n\n\
 Czy chcesz kontynuować i zakończyć OpenVPN GUI?"

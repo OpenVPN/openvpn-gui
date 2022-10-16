@@ -404,6 +404,7 @@ Více informací najdete v logu (%ls)."
     IDS_NFO_SERVICE_STOPPED "Služba OpenVPN zastavena."
     IDS_NFO_ACTIVE_CONN_EXIT "Některá spojení jsou stále aktivní. Pokud OpenVPN GUI ukončíte, budou přerušena.\
 \n\nOpravdu chcete aplikaci ukončit?"
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
     IDS_NFO_SERVICE_ACTIVE_EXIT "Některá spojení jsou stále aktivní. Díky běžící službě OpenVPN \
 zůstanete připojeni, i když ukončíte OpenVPN GUI.\n\n\
 Chcete pokračovat a aplikaci ukončit?"

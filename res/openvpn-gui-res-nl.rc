@@ -404,6 +404,7 @@ Bekijk logbestand (%ls) voor meer informatie."
     IDS_NFO_SERVICE_STOPPED "OpenVPN Service gestopt."
     IDS_NFO_ACTIVE_CONN_EXIT "Er zijn nog actieve connecties die verbroken zullen worden indien OpenVPN GUI afgesloten wordt.\
 \n\nBent u zeker dan u wilt afsluiten?"
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
     IDS_NFO_SERVICE_ACTIVE_EXIT "Er is momenteel een actieve verbinding (OpenVPN services is gestart). \
 De verbinding blijft actief ook als OpenVPN GUI afgesloten wordt.\n\n\
 OpenVPN GUI afsluiten?"

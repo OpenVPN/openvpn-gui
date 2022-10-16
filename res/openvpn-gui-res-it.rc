@@ -403,6 +403,7 @@ Consulta il file di log (%ls) per maggiori dettagli."
     IDS_NFO_SERVICE_STOPPED "Servizio OpenVPN arrestato."
     IDS_NFO_ACTIVE_CONN_EXIT "Ci sono ancora connessioni attive che verranno chiuse se esci dall'interfaccia di OpenVPN.\
 \n\nSei sicuro di voler uscire?"
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
     IDS_NFO_SERVICE_ACTIVE_EXIT "Al momento sei connesso (il servizio di OpenVPN è in funzione). \
 Rimarrai connesso anche se esci dall'interfaccia di OpenVPN.\n\n\
 Vuoi continuare e uscire da dall'interfaccia di OpenVPN?"

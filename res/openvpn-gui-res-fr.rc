@@ -403,6 +403,7 @@ Afficher le fichier journal (%ls) pour plus de détails."
     IDS_NFO_SERVICE_STOPPED "Service OpenVPN arreté."
     IDS_NFO_ACTIVE_CONN_EXIT "Les connexions en cours seront interrompues si vous fermez OpenVPN GUI.\
 \n\nVous êtes sûr de vouloir fermer l'application ?"
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
     IDS_NFO_SERVICE_ACTIVE_EXIT "Vous êtes actuellement connecté (Le service OpenVPN est actif). \
 Vous restez connecté même si vous terminez l'OpenVPN GUI.\n\n\
 Voulez-vous continuer et fermer l'OpenVPN GUI ?"
