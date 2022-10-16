@@ -403,6 +403,7 @@ Lisätietoja lokitiedostossa (%ls)."
     IDS_NFO_SERVICE_STOPPED "OpenVPN-palvelu pysäytetty."
     IDS_NFO_ACTIVE_CONN_EXIT "Jos OpenVPN GUI suljetaan, aktiiviset yhteydet katkeavat.\
 \n\nHaluatko varmasti jatkaa?"
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
     IDS_NFO_SERVICE_ACTIVE_EXIT "Yhteys on muodostettu OpenVPN-palvelun avulla. \
 Yhteydet eivät katkea, vaikka OpenVPN GUI suljettaisiinkin.\n\n\
 Suljetaanko OpenVPN GUI?"

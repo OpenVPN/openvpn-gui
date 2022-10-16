@@ -401,6 +401,7 @@ BEGIN
     IDS_NFO_SERVICE_STOPPED "OpenVPN Service가 중지 되었습니다."
     IDS_NFO_ACTIVE_CONN_EXIT "OpenVPN GUI을 종료하면 현재 연결되어 있는 접속이 중단 됩니다.\
 \n\n그래도 종료 하겠습니까?"
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
     IDS_NFO_SERVICE_ACTIVE_EXIT "현재 접속 중 입니다. (OpenVPN Service가 실행 중 입니다.) \
 OpenVPN GUI를 종료 하더라도, 접속은 중단되지 않습니다.\n\n\
 OpenVPN GUI를 이대로 종료 하겠습니까?"

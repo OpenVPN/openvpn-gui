@@ -400,6 +400,7 @@ están en directorios diferentes."
     IDS_NFO_SERVICE_STOPPED "Servicio OpenVPN detenido."
     IDS_NFO_ACTIVE_CONN_EXIT "Aún hay conexiones activas que serán cerradas si se sale de OpenVPN GUI.\
 \n\nEstá seguro de querer salir?"
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
     IDS_NFO_SERVICE_ACTIVE_EXIT "Ahora mismo está conectado (el servicio OpenVPN está corriendo). \
 Seguriá conectado incluso si sale de OpenVPN GUI.\n\n\
 ¿Quiere proceder y salir de OpenVPN GUI?"

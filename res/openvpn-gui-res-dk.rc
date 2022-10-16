@@ -403,6 +403,7 @@ ligger i forskellige kataloger."
     IDS_NFO_ACTIVE_CONN_EXIT "Aktive forbindelser vil blive afbrudt hvis du afslutter OpenVPN GUI. \
  \n\nVil du afslutte?"
 
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
     IDS_NFO_SERVICE_ACTIVE_EXIT "Du er forbundet med OpenVPN (OpenVPN tjenesten kører). \
 Aktive forbindelser vil forblive tilsluttet hvis du afslutter OpenVPN GUI.\n\n\
 Vil du afslutte?"

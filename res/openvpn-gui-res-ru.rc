@@ -403,6 +403,7 @@ BEGIN
     IDS_NFO_SERVICE_STOPPED "Служба OpenVPN остановлена."
     IDS_NFO_ACTIVE_CONN_EXIT "Ещё присутствуют активные соединения, которые будут закрыты, если вы выйдите из OpenVPN GUI.\
 \n\nВы уверены, что хотите выйти?"
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
     IDS_NFO_SERVICE_ACTIVE_EXIT "Вы в данный момент подключены (служба OpenVPN запущена). \
 Вы останетесь подключенными, даже если вы выйдете из OpenVPN GUI.\n\n\
 Вы хотите продолжить и выйти из OpenVPN GUI?"

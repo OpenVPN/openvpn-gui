@@ -402,6 +402,7 @@ kayıt edemezsiniz."
     IDS_NFO_SERVICE_STOPPED "OpenVPN Service durduruldu."
     IDS_NFO_ACTIVE_CONN_EXIT "OpenVPN GUI ' yi kapatırsanız, açık olan bağlantılarınız sonlandırılacaktır.\
 \n\nÇıkmak istediğinize emin misiniz?"
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
     IDS_NFO_SERVICE_ACTIVE_EXIT "Şu an bağlısınız(OpenVPN Servisi çalışıyor). \
 OpenVPN GUI yi kapatsanız dahi bağlantı devam edecek.\n\n\
 OpenVPN GUI den çıkmak istiyor musunuz?"

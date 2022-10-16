@@ -402,6 +402,7 @@ BEGIN
     IDS_NFO_SERVICE_STOPPED "Служба OpenVPN зупинена."
     IDS_NFO_ACTIVE_CONN_EXIT "Ще є активні з'єднання, які будуть зупинені, якщо ви завершите роботу OpenVPN GUI.\
 \n\nВи впевнені, що бажаєте завершити?"
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
     IDS_NFO_SERVICE_ACTIVE_EXIT "У цей час система підключена (сервіс OpenVPN стартував). \
 Ви залишитися підключені, навіть якщо ви завершили роботу OpenVPN GUI.\n\n\
 Ви бажаєте залишити активним сервіс та завершити роботу OpenVPN GUI?"

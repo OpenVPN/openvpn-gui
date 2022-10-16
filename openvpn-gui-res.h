@@ -252,6 +252,7 @@
 #define IDS_ERR_ADD_USER_TO_ADMIN_GROUP 1257
 #define IDS_NFO_BYTECOUNT               1258
 #define IDS_NFO_STATE_ONHOLD            1259
+#define IDS_ERR_PARSE_MGMT_OPTION       1260
 
 /* Program Startup Related */
 #define IDS_ERR_OPEN_DEBUG_FILE         1301

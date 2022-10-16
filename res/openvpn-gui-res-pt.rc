@@ -402,6 +402,7 @@ Consulte o arquivo de log (%ls) para mais detalhes."
     IDS_NFO_SERVICE_STOPPED "Serviço OpenVPN parado."
     IDS_NFO_ACTIVE_CONN_EXIT "Ainda existem conexões ativas. Estas conexões serão encerradas se você sair do OpenVPN GUI.\
 \n\nVocê tem certeza de que deseja sair?"
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
     IDS_NFO_SERVICE_ACTIVE_EXIT "Você está conectado atualmente (Serviço OpenVPN está rodando). \
 Você permanecerá conectado mesmo que feche o OpenVPN GUI.\n\n\
 Você deseja continuar e fechar o OpenVPN GUI?"

@@ -405,6 +405,7 @@ BEGIN
     IDS_NFO_SERVICE_STOPPED "已停止 OpenVPN 服務。"
     IDS_NFO_ACTIVE_CONN_EXIT "目前還有進行中的連線，若您結束 OpenVPN GUI 該連線將被中斷。\
 \n\n您確定要離開嗎？"
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
     IDS_NFO_SERVICE_ACTIVE_EXIT "您目前已連線（OpenVPN 服務正在執行中）。\
 離開 OpenVPN GUI 仍將保持連線。\n\n\
 您確定要離開嗎？"
