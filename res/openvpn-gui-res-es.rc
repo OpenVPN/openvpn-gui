@@ -158,7 +158,7 @@ BEGIN
     GROUPBOX "Startup", 202, 6, 47, 235, 30
     AUTOCHECKBOX "Launch on Windows startup", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "Preferences", ID_GROUPBOX3, 6, 82, 235, 105
+    GROUPBOX "Preferences", ID_GROUPBOX3, 6, 82, 235, 150
     AUTOCHECKBOX "Append to log", ID_CHK_LOG_APPEND, 17, 95, 60, 10
     AUTOCHECKBOX "Show script window", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "Silent connection", ID_CHK_SILENT, 17, 125, 200, 10
@@ -171,6 +171,7 @@ BEGIN
     AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 200, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "&Manual", ID_RB_BALLOON4, 86, 200, 90, 10
     AUTORADIOBUTTON "&Disable", ID_RB_BALLOON5, 181, 200, 40, 10
+    AUTOCHECKBOX "Enable Pre-Logon A&ccess Provider (requires admin access)", ID_CHK_PLAP_REG, 17, 215, 200, 10
 END
 
 /* Advanced Dialog */
@@ -527,6 +528,8 @@ OpenVPN probablemente no está instalado"
 nuevo como Administrator para actualizar el registro."
     IDS_ERR_READ_SET_KEY "Error al leer y escribir la clave de registro ""%ls""."
     IDS_ERR_WRITE_REGVALUE "Error al escribir el valor del registro ""HKEY_CURRENT_USER\\%ls\\%ls""."
+    IDS_ERR_PLAP_REG "Failed to enable Start Before Logon (error = %d)"
+    IDS_ERR_PLAP_UNREG "Failed to disable Start Before Logon (error = %d)"
 
     /* importation */
     IDS_ERR_IMPORT_EXISTS "A config named ""%ls"" already exists."

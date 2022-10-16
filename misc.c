@@ -969,3 +969,80 @@ dpi_initialize(options_t *options)
 
     DpiSetScale(options, dpix);
 }
+
+#define PLAP_CLASSID "{4fbb8b67-cf02-4982-a7a8-3dd06a2c2ebd}"
+int
+GetPLAPRegistrationStatus(void)
+{
+    int res = 0;
+    HKEY regkey;
+    wchar_t dllPath[MAX_PATH];
+
+    _sntprintf_0(dllPath, L"%ls%ls", o.install_path, L"bin\\libopenvpn_plap.dll");
+    if (!CheckFileAccess(dllPath, GENERIC_READ)) {
+        res = -1;
+    }
+    else if (RegOpenKeyExW(HKEY_CLASSES_ROOT, L"CLSID\\"PLAP_CLASSID, 0, KEY_READ, &regkey)
+              == ERROR_SUCCESS) {
+        res = 1;
+        RegCloseKey(regkey);
+    }
+
+    return res;
+}
+
+DWORD
+SetPLAPRegistration(BOOL value)
+{
+    DWORD res = -1;
+    const wchar_t *cmd = L"C:\\windows\\system32\\reg.exe";
+    wchar_t params[MAX_PATH];
+
+    /* Run only if the state has changed */
+    int plap_status = GetPLAPRegistrationStatus();
+    if (plap_status > 0 && (BOOL) plap_status == value)  return 0;
+
+    if (value) {
+        _sntprintf_0( params, L"import \"%ls%ls\"", o.install_path, L"bin\\openvpn-plap-install.reg");
+    }
+    else {
+        _sntprintf_0( params, L"import \"%ls%ls\"", o.install_path, L"bin\\openvpn-plap-uninstall.reg");
+    }
+
+    res = RunAsAdmin(cmd, params);
+    if (res != 0)
+    {
+        ShowLocalizedMsg(value? IDS_ERR_PLAP_REG  : IDS_ERR_PLAP_UNREG, res);
+    }
+    return res;
+}
+
+/*
+ * Run a command as admin using shell execute and return the exit code.
+ * Returns 0 on success or a non-zero exit code status of the command.
+ * If the command fails to execute, the return value is (DWORD) -1.
+ */
+DWORD
+RunAsAdmin(const WCHAR *cmd, const WCHAR *params)
+{
+    SHELLEXECUTEINFO shinfo;
+    DWORD status = -1;
+
+    CLEAR (shinfo);
+    shinfo.cbSize = sizeof(shinfo);
+    shinfo.fMask = SEE_MASK_NOCLOSEPROCESS;
+    shinfo.hwnd = NULL;
+    shinfo.lpVerb = L"runas";
+    shinfo.lpFile = cmd;
+    shinfo.lpDirectory = NULL;
+    shinfo.nShow = SW_HIDE;
+    shinfo.lpParameters = params;
+
+    if (ShellExecuteEx(&shinfo) && shinfo.hProcess)
+    {
+        WaitForSingleObject(shinfo.hProcess, INFINITE);
+        GetExitCodeProcess(shinfo.hProcess, &status);
+        CloseHandle(shinfo.hProcess);
+    }
+    return status;
+}

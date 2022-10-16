@@ -116,6 +116,7 @@
 #define ID_RB_BALLOON4                   245
 #define ID_RB_BALLOON5                   246
 #define ID_TXT_PERSISTENT                247
+#define ID_CHK_PLAP_REG                  248
 
 /* Proxy Auth Dialog */
 #define ID_DLG_PROXY_AUTH                250
@@ -343,6 +344,8 @@
 #define IDS_ERR_READ_SET_KEY            1811
 #define IDS_ERR_WRITE_REGVALUE          1812
 #define IDS_ERR_GET_PROFILE_DIR         1813
+#define IDS_ERR_PLAP_REG                1814
+#define IDS_ERR_PLAP_UNREG              1815
 
 /* Importation Related */
 

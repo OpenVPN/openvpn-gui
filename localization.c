@@ -37,6 +37,7 @@
 #include "openvpn-gui-res.h"
 #include "options.h"
 #include "registry.h"
+#include "misc.h"
 
 extern options_t o;
 
@@ -522,6 +523,23 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
         else if (o.enable_persistent == 2) /* Enabled and auto-attach */
             CheckRadioButton (hwndDlg, ID_RB_BALLOON3, ID_RB_BALLOON5, ID_RB_BALLOON3);
 
+        int plap_status = GetPLAPRegistrationStatus();
+        if (plap_status == -1) /* PLAP not supported in this version */
+            ShowWindow(GetDlgItem(hwndDlg, ID_CHK_PLAP_REG), SW_HIDE);
+        else if (plap_status != 0)
+            Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_PLAP_REG), BST_CHECKED);
+
+        break;
+
+    case WM_COMMAND:
+        if (LOWORD(wParam) == ID_CHK_PLAP_REG && HIWORD(wParam) == BN_CLICKED)
+        {
+            /* change PLAPRegistration state */
+            HWND h = GetDlgItem(hwndDlg, ID_CHK_PLAP_REG);
+            BOOL newstate = Button_GetCheck(h) == BST_CHECKED ?  TRUE : FALSE;
+            if (SetPLAPRegistration(newstate) != 0) /* failed or user cancelled -- reset checkmark */
+                Button_SetCheck(h, newstate  ? BST_UNCHECKED : BST_CHECKED);
+        }
         break;
 
     case WM_NOTIFY:

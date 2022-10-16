@@ -37,6 +37,7 @@
 #include "service.h"
 #include "localization.h"
 #include "openvpn-gui-res.h"
+#include "misc.h"
 
 extern options_t o;
 
@@ -45,35 +46,6 @@ extern options_t o;
 static BOOL GetOwnerSID(PSID sid, DWORD sid_size);
 static BOOL IsUserInGroup(PSID sid, PTOKEN_GROUPS token_groups, const WCHAR *group_name);
 static PTOKEN_GROUPS GetProcessTokenGroups(void);
-
-/*
- * Run a command as admin using shell execute and return the exit code.
- * If the command fails to execute, the return value is (DWORD) -1.
- */
-static DWORD
-RunAsAdmin(const WCHAR *cmd, const WCHAR *params)
-{
-    SHELLEXECUTEINFO shinfo;
-    DWORD status = -1;
-
-    CLEAR (shinfo);
-    shinfo.cbSize = sizeof(shinfo);
-    shinfo.fMask = SEE_MASK_NOCLOSEPROCESS;
-    shinfo.hwnd = NULL;
-    shinfo.lpVerb = L"runas";
-    shinfo.lpFile = cmd;
-    shinfo.lpDirectory = NULL;
-    shinfo.nShow = SW_HIDE;
-    shinfo.lpParameters = params;
-
-    if (ShellExecuteEx(&shinfo) && shinfo.hProcess)
-    {
-        WaitForSingleObject(shinfo.hProcess, INFINITE);
-        GetExitCodeProcess(shinfo.hProcess, &status);
-        CloseHandle(shinfo.hProcess);
-    }
-    return status;
-}
 
 /*
  * The Administrators group may be localized or renamed by admins.
