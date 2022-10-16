@@ -40,6 +40,7 @@
 #include "localization.h"
 #include "misc.h"
 #include "tray.h"
+#include "service.h"
 
 /* Global options structure */
 options_t o;
@@ -259,6 +260,20 @@ InitializeUI(HINSTANCE hinstance)
     dmsg(L"BuildFileList Done");
 
     dpi_initialize(&o);
+
+    /* If openvpn service is not running but, available, attempt to start it */
+    CheckServiceStatus();
+    int num_persistent = 0;
+
+    for (int i = 0; i < o.num_configs; i++) {
+        if (o.conn[i].flags & FLAG_DAEMON_PERSISTENT) num_persistent++;
+    }
+
+    if (o.service_state == service_disconnected && num_persistent > 0) {
+        dmsg(L"Attempting to start automatic service");
+        StartAutomaticService();
+        CheckServiceStatus();
+    }
 
     return 0;
 }

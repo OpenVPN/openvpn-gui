@@ -590,7 +590,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         break;
       }
       /* A timer to periodically tend to persistent connections */
-      SetTimer(hwnd, 0, 100, ManagePersistent);
+      SetTimer(hwnd, 1, 100, ManagePersistent);
 
       break;
 
@@ -686,12 +686,14 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
           o.session_locked = TRUE;
           /* Detach persistent connections so that other users can connect to it */
           HandleSessionLock();
+          KillTimer(hwnd, 1); /* This ensure ManagePersistent is not called when session is locked */
           break;
 
         case WTS_SESSION_UNLOCK:
           PrintDebug(L"Session unlock triggered");
           o.session_locked = FALSE;
           HandleSessionUnlock();
+          SetTimer(hwnd, 1, 100, ManagePersistent);
           if (CountConnState(suspended) != 0)
             ResumeConnections();
           break;
