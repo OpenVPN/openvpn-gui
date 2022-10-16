@@ -147,3 +147,24 @@ out:
         CloseServiceHandle(schSCManager);
     return ret;
 } 
+
+/* Attempt to start OpenVPN Automatc Service */
+void StartAutomaticService(void)
+{
+    SC_HANDLE schSCManager = NULL;
+    SC_HANDLE schService = NULL;
+
+    schSCManager = OpenSCManager(NULL, NULL, SC_MANAGER_CONNECT);
+
+    if (schSCManager) {
+        schService = OpenService(schSCManager, L"OpenVPNService", SERVICE_START);
+
+        if (schService) {
+             StartService(schService, 0, NULL);
+             CloseServiceHandle(schService);
+        }
+
+        CloseServiceHandle(schSCManager);
+    }
+    return;
+}

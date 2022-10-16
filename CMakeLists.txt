@@ -110,6 +110,7 @@ add_library(${PROJECT_NAME_PLAP} SHARED
     pkcs11.c
     registry.c
     config_parser.c
+    service.c
     plap/ui_glue.c
     plap/stub.c
     plap/plap_common.c

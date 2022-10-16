@@ -21,3 +21,5 @@
 
 int CheckServiceStatus();
 BOOL CheckIServiceStatus(BOOL warn);
+/* Attempt to start OpenVPN Automatc Service */
+void StartAutomaticService(void);

@@ -89,6 +89,7 @@ libopenvpn_plap_la_SOURCES = \
 	$(top_srcdir)/openvpn_config.c \
 	$(top_srcdir)/config_parser.c \
 	$(top_srcdir)/pkcs11.c \
+	$(top_srcdir)/service.c \
 	openvpn-plap-res.rc
 
 libopenvpn_plap_la_LIBADD = \
