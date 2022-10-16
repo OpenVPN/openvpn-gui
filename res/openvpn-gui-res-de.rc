@@ -157,7 +157,7 @@ BEGIN
     LTEXT "Spr&ache:", ID_TXT_LANGUAGE, 17, 25, 29, 12
     COMBOBOX ID_CMB_LANGUAGE, 51, 23, 177, 400, CBS_DROPDOWNLIST | WS_TABSTOP
 
-    GROUPBOX "Einstellungen", ID_GROUPBOX3, 6, 82, 235, 105
+    GROUPBOX "Einstellungen", ID_GROUPBOX3, 6, 82, 235, 150
     GROUPBOX "Systemstart", 202, 6, 47, 235, 30
     AUTOCHECKBOX "Mit &Windows starten", ID_CHK_STARTUP, 17, 59, 200, 12
 
@@ -174,6 +174,7 @@ BEGIN
     AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 200, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "&Manual", ID_RB_BALLOON4, 86, 200, 90, 10
     AUTORADIOBUTTON "&Disable", ID_RB_BALLOON5, 181, 200, 40, 10
+    AUTOCHECKBOX "Enable Pre-Logon A&ccess Provider (requires admin access)", ID_CHK_PLAP_REG, 17, 215, 200, 10
 END
 
 /* Advanced Dialog */
@@ -533,6 +534,8 @@ OpenVPN ist vermutlich nicht installiert"
 als Administrator ausführen, um die Registry zu aktualisieren."
     IDS_ERR_READ_SET_KEY "Fehler beim Lesen und Setzen des Registry-Schlüssels ""%ls""."
     IDS_ERR_WRITE_REGVALUE "Fehler beim Schreiben des Registry-Schlüssels ""HKEY_CURRENT_USER\\%ls\\%ls""."
+    IDS_ERR_PLAP_REG "Failed to enable Start Before Logon (error = %d)"
+    IDS_ERR_PLAP_UNREG "Failed to disable Start Before Logon (error = %d)"
 
     /* importation */
     IDS_ERR_IMPORT_EXISTS "Eine Konfigurationsdatei namens ""%ls"" existiert bereits."

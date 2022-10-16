@@ -126,4 +126,28 @@ void dpi_initialize(options_t *o);
  */
 void MsgToEventLog(WORD type, wchar_t *format, ...);
 
+/**
+ * Check PLAP COM object is is registered
+ * @returns 1 if yes, 0 if no, or -1 if PLAP dll not installed.
+ */
+int GetPLAPRegistrationStatus(void);
+
+/**
+ * Register/Unregister PLAP COM object
+ * @param action TRUE to register, FALSE to unregister
+ * @returns 0 on success or a non-zero error code on error.
+ * Requires admin privileges -- user will prompted for admin
+ * credentials or UAC consent if required.
+ */
+DWORD SetPLAPRegistration(BOOL action);
+
+/**
+ * Run a command as admin using shellexecute
+ * @param cmd The command to run
+ * @param params Parameters to the command
+ * @returns 0 on success or a non-zero exit code from the
+ * command. If the command fails to startup, -1 is returned.
+ */
+DWORD RunAsAdmin(const WCHAR *cmd, const WCHAR *params);
+
 #endif
