@@ -132,6 +132,27 @@ for the default behaviour described above, `manual` to enumerate
 and list such connections but not auto-attach, or `disable` to not scan
 auto-started connection profiles.
 
+Interactively starting connections before logon
+***********************************************
+
+Starting release 2.6 (GUI version 11.30), "Start Before Logon"
+aka Pre-Logon Access Provider is supported. This feature is not
+enabled by default. It may be enabled during installation or
+through the `General Settings` menu of the GUI via the
+`Start Before Logon` check mark.
+
+Only `persistent connection` profiles described in the previous
+section will be listed on the login screen. Ensure that
+connections that may be interactively started from login
+screen are setup in the `config-auto` folder, `OpenVPNService`
+is running, and these connections are visible and controllable
+from the GUI.
+
+Once those pre-requisites are satisfied, the login screen will
+display an icon for `Pre-Logon Access Providers`, clicking which
+will bring up a list of OpenVPN connection profiles available, and
+allow connecting or disconnecting them interactively.
+
 Run Connect/Disconnect/Preconnect Scripts
 *****************************************
 
