@@ -89,64 +89,60 @@ out:
     return ret;
 }
 
-int CheckServiceStatus()
+VOID CheckServiceStatus()
 {
+    SC_HANDLE schSCManager = NULL;
+    SC_HANDLE schService = NULL;
+    SERVICE_STATUS ssStatus;
 
-  SC_HANDLE schSCManager = NULL;
-  SC_HANDLE schService = NULL;
-  SERVICE_STATUS ssStatus; 
-  BOOL ret = false;
+    // Open a handle to the SC Manager database.
+    schSCManager = OpenSCManager(
+        NULL,                    // local machine
+        NULL,                    // ServicesActive database
+        SC_MANAGER_CONNECT);     // Connect rights
 
-    // Open a handle to the SC Manager database. 
-    schSCManager = OpenSCManager( 
-      NULL,                    // local machine 
-      NULL,                    // ServicesActive database 
-      SC_MANAGER_CONNECT);     // Connect rights 
-   
     if (NULL == schSCManager) {
-      o.service_state = service_noaccess;
-      goto out;
+        o.service_state = service_noaccess;
+        goto out;
     }
 
-    schService = OpenService( 
-      schSCManager,          // SCM database 
-      _T("OpenVPNService"),  // service name
-      SERVICE_QUERY_STATUS); 
- 
+    schService = OpenService(
+        schSCManager,          // SCM database
+        _T("OpenVPNService"),  // service name
+        SERVICE_QUERY_STATUS);
+
     if (schService == NULL) {
-      o.service_state = service_noaccess;
-      goto out;
+        o.service_state = service_noaccess;
+        goto out;
     }
 
-    if (!QueryServiceStatus( 
-            schService,   // handle to service 
+    if (!QueryServiceStatus(
+            schService,   // handle to service
             &ssStatus) )  // address of status information structure
     {
-      /* query failed */
-      o.service_state = service_noaccess;
-      MsgToEventLog(EVENTLOG_ERROR_TYPE, LoadLocalizedString(IDS_ERR_QUERY_SERVICE));
-      goto out;
+        /* query failed */
+        o.service_state = service_noaccess;
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, LoadLocalizedString(IDS_ERR_QUERY_SERVICE));
+        goto out;
     }
- 
-    if (ssStatus.dwCurrentState == SERVICE_RUNNING) 
+
+    if (ssStatus.dwCurrentState == SERVICE_RUNNING)
     {
         o.service_state = service_connected;
-        ret = true;
         goto out;
     }
-    else 
-    { 
+    else
+    {
         o.service_state = service_disconnected;
         goto out;
-    } 
+    }
 
 out:
     if (schService)
         CloseServiceHandle(schService);
     if (schSCManager)
         CloseServiceHandle(schSCManager);
-    return ret;
-} 
+}
 
 /* Attempt to start OpenVPN Automatc Service */
 void StartAutomaticService(void)

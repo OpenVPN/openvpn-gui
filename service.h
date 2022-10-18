@@ -19,7 +19,7 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-int CheckServiceStatus();
+VOID CheckServiceStatus();
 BOOL CheckIServiceStatus(BOOL warn);
 /* Attempt to start OpenVPN Automatc Service */
 void StartAutomaticService(void);

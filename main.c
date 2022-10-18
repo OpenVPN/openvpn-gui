@@ -487,7 +487,7 @@ HandleCopyDataMessage(const COPYDATASTRUCT *copy_data)
 static void CALLBACK
 ManagePersistent(HWND hwnd, UINT UNUSED msg, UINT_PTR id, DWORD UNUSED now)
 {
-    CheckServiceStatus(false);
+    CheckServiceStatus();
     if (o.service_state == service_connected)
     {
         for (int i = 0; i < o.num_configs; i++)
