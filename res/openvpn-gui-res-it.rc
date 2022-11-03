@@ -2,7 +2,6 @@
  *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
  *
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
- *                2009 Heiko Hund <heikoh@users.sf.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -104,20 +103,6 @@ BEGIN
     PUSHBUTTON "&Riconnetti", ID_RESTART, 150, 190, 50, 14
     PUSHBUTTON "&Stacca", ID_DETACH, 180, 190, 50, 14, WS_DISABLED
     PUSHBUTTON "&Nascondi", ID_HIDE, 100, 190, 50, 14
-END
-
-/* Message Window.
- * This dialog needs no translation unless a different font instead
- * of the specified Segoe UI (or its equivalent) is preferred.
- */
-ID_DLG_MESSAGE DIALOG 6, 18, 278, 210
-STYLE WS_SIZEBOX | WS_SYSMENU | WS_POPUP | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND | DS_SETFONT
-CAPTION "Messaggio OpenVPN" /* a place holder replaced dynamically */
-FONT 9, "Segoe UI"
-LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
-BEGIN
-    /* We use an edit control to allow select, copy */
-    CONTROL "", ID_TXT_MESSAGE, RICHEDIT_CLASSW, ES_MULTILINE | WS_VSCROLL | ES_AUTOVSCROLL |  NOT WS_BORDER | ES_READONLY | NOT WS_TABSTOP, 10, 10, 260, 190
 END
 
 /* Change Passphrase Dialog */
