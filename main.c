@@ -723,12 +723,24 @@ static INT_PTR CALLBACK
 AboutDialogFunc(UNUSED HWND hDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
 {
   LPPSHNOTIFY psn;
-  wchar_t tmp1[256], tmp2[256];
+  wchar_t tmp1[300], tmp2[300];
   switch (msg) {
     case WM_INITDIALOG:
       if (GetDlgItemText(hDlg, ID_TXT_VERSION, tmp1, _countof(tmp1))) {
         _sntprintf_0(tmp2, tmp1, TEXT(PACKAGE_VERSION_RESOURCE_STR));
         SetDlgItemText(hDlg, ID_TXT_VERSION, tmp2);
+      }
+      /* Modify the ABOUT3 line that reads as "OpenVPN ... " by
+       * including the version, like "OpenVPN v2.5.8 ... ".
+       * The logic used depends on this text starting with
+       * "OpenVPN", which is the case in all languages.
+       */
+      const wchar_t *prefix = L"OpenVPN ";
+      if (GetDlgItemText(hDlg, ID_LTEXT_ABOUT3, tmp1, _countof(tmp1))
+          && wcsbegins(tmp1, prefix))
+      {
+          _sntprintf_0(tmp2, L"%lsv%hs %ls", prefix, o.ovpn_version, tmp1 + wcslen(prefix));
+          SetDlgItemText(hDlg, ID_LTEXT_ABOUT3, tmp2);
       }
       break;
     case WM_NOTIFY:
