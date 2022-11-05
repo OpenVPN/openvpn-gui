@@ -240,14 +240,14 @@ BEGIN
     LTEXT "OpenVPN GUI v%ls – یک رابط کاربر گرفیکی برای کانکشن OpenVPN\n\
 Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
-Copyright (C) 2012-2021 OpenVPN GUI مشارکت کنندگان\n", ID_TXT_VERSION, 36, 15, 206, 50
+Copyright (C) 2012-2022 OpenVPN GUI مشارکت کنندگان\n", ID_TXT_VERSION, 36, 15, 206, 50
     LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_LTEXT_ABOUT2, 36, 55, 206, 42
     LTEXT "OpenVPN – برنامه ای برای تونل ایمن شبکه های آی پی \
 با پشتیبانی از پورت های : TCP/UDP , به همراه SSL/TLS-based \
 جلسه احراز هویت و تغییر کلید و بسته ها \
 رمز نگاری و بسته احراز هویت و بسته فشرده سازی.\n\
 \n", ID_LTEXT_ABOUT3, 8, 70, 240, 64
-    LTEXT "Copyright (C) 2002-2021 شرکت،تکنولوژی OpenVPN <info@openvpn.net>\n\
+    LTEXT "Copyright (C) 2002-2022 شرکت،تکنولوژی OpenVPN <info@openvpn.net>\n\
 https://openvpn.net/", ID_LTEXT_ABOUT4, 8, 106, 240, 64
 END
 
