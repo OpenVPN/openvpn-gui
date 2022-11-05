@@ -238,14 +238,14 @@ BEGIN
     LTEXT "OpenVPN GUI v%ls - A Windows GUI for OpenVPN\n\
 Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
-Copyright (C) 2012-2021 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
+Copyright (C) 2012-2022 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
     LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_LTEXT_ABOUT2, 36, 55, 206, 42
     LTEXT "OpenVPN - An application to securely tunnel IP networks \
 over a single TCP/UDP port, with support for SSL/TLS-based \
 session authentication and key exchange, packet \
 encryption, packet authentication, and packet compression.\n\
 \n", ID_LTEXT_ABOUT3, 8, 70, 240, 64
-    LTEXT "Copyright (C) 2002-2021 OpenVPN Technologies, Inc <info@openvpn.net>\n\
+    LTEXT "Copyright (C) 2002-2022 OpenVPN Technologies, Inc <info@openvpn.net>\n\
 https://openvpn.net/", ID_LTEXT_ABOUT4, 8, 106, 240, 64
 END
 
