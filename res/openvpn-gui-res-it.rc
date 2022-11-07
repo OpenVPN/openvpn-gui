@@ -318,7 +318,7 @@ BEGIN
     IDS_MENU_DISCONNECT "Disconnetti"
     IDS_MENU_RECONNECT "Riconnetti"
     IDS_MENU_STATUS "Visualizza stato"
-    IDS_MENU_VIEWLOG "Visualizza registro"
+    IDS_MENU_VIEWLOG "Visualizza log"
     IDS_MENU_EDITCONFIG "Modifica configurazione"
     IDS_MENU_PASSPHRASE "Modifica password"
     IDS_MENU_CLEARPASS  "Cancella password salvate"
@@ -331,7 +331,7 @@ BEGIN
     IDS_MENU_ASK_STOP_SERVICE "Vuoi disconnetterti? (arrestando il servizio OpenVPN)?"
 
     /* Logviewer - Resources */
-    IDS_ERR_START_LOG_VIEWER "Errore nell'apertura del visualizzatore registro: %ls"
+    IDS_ERR_START_LOG_VIEWER "Errore nell'apertura del visualizzatore log: %ls"
     IDS_ERR_START_CONF_EDITOR "Errore nell'apertura dell'editor di configurazione: %ls"
 
     /* OpenVPN */
@@ -352,7 +352,7 @@ Completa la richiesta di autorizzazione precedente."
     IDS_ERR_STOP_SERV_OLD_VER "Con OpenVPN 1.5/1.6 non puoi usare OpenVPN GUI per far partire una connessione mentre il servizio di OpenVPN è in funzione.\nSe vuoi usare OpenVPN GUI arresta il servizio di OpenVPN ."
     IDS_ERR_CREATE_EVENT "Il creatore di eventi è fallito all'uscita dell'evento: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Nome priorità sconosciuto: %ls"
-    IDS_ERR_LOG_APPEND_BOOL "Il file registro ha aggiunto un puntatore (dato come '%ls') deve essere '0' o '1'"
+    IDS_ERR_LOG_APPEND_BOOL "Il file log ha aggiunto un puntatore (dato come '%ls') deve essere '0' o '1'"
     IDS_ERR_GET_MSIE_PROXY "Impossibile usare la configurazione di MSIE per il proxy."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor fallito."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl fallito."
@@ -362,30 +362,30 @@ Completa la richiesta di autorizzazione precedente."
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite fallito."
     IDS_ERR_CREATE_PROCESS "CreateProcess fallito, exe='%ls' linea di comando='%ls' cartella='%ls'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread fallito per visualizzare lo stato."
-    IDS_NFO_STATE_WAIT_TERM "Stato attuale: in attesa che OpenVPN termini…"
-    IDS_NFO_STATE_CONNECTED "Stato attuale: connesso"
-    IDS_NFO_STATE_ONHOLD "Stato attuale: In attesa (scollegato)"
+    IDS_NFO_STATE_WAIT_TERM "Stato corrente: in attesa che OpenVPN termini…"
+    IDS_NFO_STATE_CONNECTED "Stato corrente: connesso"
+    IDS_NFO_STATE_ONHOLD "Stato corrente: In attesa (scollegato)"
     IDS_NFO_NOW_CONNECTED "%ls è ora connesso."
     IDS_NFO_ASSIGN_IP "IP assegnato: %ls"
     IDS_ERR_CERT_EXPIRED "Impossibile connettersi perché il certificato è scaduto o l'ora di sistema non è corretta."
     IDS_ERR_CERT_NOT_YET_VALID "Impossibile connettersi perché il certificato non è ancora valido. Assicurati che l'ora di sistema sia corretta."
-    IDS_NFO_STATE_RECONNECTING "Stato attuale: riconnessione in corso"
-    IDS_NFO_STATE_DISCONNECTED "Stato attuale: disconnesso"
+    IDS_NFO_STATE_RECONNECTING "Stato corrente: riconnessione in corso"
+    IDS_NFO_STATE_DISCONNECTED "Stato corrente: disconnesso"
     IDS_NFO_CONN_TERMINATED "La connessione a %ls è terminata."
-    IDS_NFO_STATE_FAILED "Stato attuale: Connessione fallita"
+    IDS_NFO_STATE_FAILED "Stato corrente: Connessione fallita"
     IDS_NFO_CONN_FAILED "La connessione a %ls è fallita."
-    IDS_NFO_STATE_FAILED_RECONN "Stato attuale: riconnessione fallita"
+    IDS_NFO_STATE_FAILED_RECONN "Stato corrente: riconnessione fallita"
     IDS_NFO_RECONN_FAILED "La riconnessione a %ls è fallita."
-    IDS_NFO_STATE_SUSPENDED "Stato attuale: sospeso"
+    IDS_NFO_STATE_SUSPENDED "Stato corrente: sospeso"
     IDS_ERR_READ_STDOUT_PIPE "Errore in lettura dalla pipe stdout OpenVPN."
     IDS_ERR_CREATE_EDIT_LOGWINDOW "Creazione RichEdit LogWindow fallita!!"
     IDS_ERR_SET_SIZE "Impostazione dimensione fallita!"
     IDS_ERR_AUTOSTART_CONF "Impossibile trovare una configurazione di avvio automatico: %ls"
     IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe su hInputRead fallito."
-    IDS_NFO_STATE_CONNECTING "Stato attuale: connessione in corso"
+    IDS_NFO_STATE_CONNECTING "Stato corrente: connessione in corso"
     IDS_NFO_CONNECTION_XXX "Connessione OpenVPN (%ls)"
-    IDS_NFO_STATE_CONN_SCRIPT "Stato attuale: avviato script connessione"
-    IDS_NFO_STATE_DISCONN_SCRIPT "Stato corrente: Avviato lo script di disconnessione"
+    IDS_NFO_STATE_CONN_SCRIPT "Stato corrente: avviato script connessione"
+    IDS_NFO_STATE_DISCONN_SCRIPT "Stato corrente: avviato lo script di disconnessione"
     IDS_ERR_RUN_CONN_SCRIPT "Errore durante il funzionamento dello script di connessione: %ls"
     IDS_ERR_GET_EXIT_CODE "Errore nell'ExitCode dello script di connessione (%ls)"
     IDS_ERR_CONN_SCRIPT_FAILED "Esecuzione fallita script di connessione (exitcode=%ld)."
@@ -394,15 +394,15 @@ Completa la richiesta di autorizzazione precedente."
 avere più file di configurazioni con lo stesso nome, \
 a meno che non risiedano in cartelle differenti."
     IDS_NFO_CONN_TIMEOUT "Connessione all'interfaccia di gestione fallita.\n\
-Per maggiori dettagli consulta il file registro (%ls) ."
+Per maggiori dettagli consulta il file log (%ls) ."
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "Errore nell'apertura del file di debug (%ls) per l'output."
     IDS_ERR_CREATE_PATH "Errore nella creazione del percorso %ls:\n%ls"
     IDS_ERR_LOAD_RICHED20 "Impossibile caricare RICHED20.DLL."
-    IDS_ERR_SHELL_DLL_VERSION "La versione di shell32.dll è troppo vecchia (0x%lx).\nÈ necessaria almeno una versione 5.0."
+    IDS_ERR_SHELL_DLL_VERSION "La versione di shell32.dll è troppo vecchia (0x%lx).\nÈ necessaria almeno la versione 5.0."
     IDS_NFO_SERVICE_STARTED "Servizio OpenVPN avviato."
     IDS_NFO_SERVICE_STOPPED "Servizio OpenVPN arrestato."
-    IDS_NFO_ACTIVE_CONN_EXIT "se esci dall'interfaccia di OpenVPN ci sono ancora connessioni attive che verranno chiuse.\
+    IDS_NFO_ACTIVE_CONN_EXIT "Ci sono ancora connessioni attive che verranno chiuse se esci dall'interfaccia di OpenVPN.\
 \n\nSei sicuro di voler uscire?"
     IDS_ERR_PARSE_MGMT_OPTION "Impossibile analizzare l'opzione --management in <%ls%ls>."
     IDS_NFO_SERVICE_ACTIVE_EXIT "Al momento sei connesso (il servizio di OpenVPN è in funzione). \
@@ -425,14 +425,14 @@ Comandi supportati:\n\
     import path          \t\t: Importa file di configurazione presente nel percorso\n\
 \t\t\tEsempio: openvpn-gui.exe --command disconnect myconfig\n\
 \n\
-Opzioni per ignorare il registro di sistema:\n\
+Opzioni per sovrascrivere il registro di sistema:\n\
 --exe_path\t\t: Percorso file openvpn.exe.\n\
 --config_dir\t\t: Percorso cartella file di configurazione.\n\
 --ext_string\t\t: Estensione file di configurazione.\n\
---log_dir\t\t\t: Percorso cartella file del registro.\n\
+--log_dir\t\t\t: Percorso cartella file log.\n\
 --priority_string\t\t: Stringa priorità (per maggiori informazioni vedi install.txt).\n\
---append_string\t\t: 1=Aggiungi in coda al registro. 0=Tronca registro alla connessione.\n\
---log_viewer\t\t: Percorso visualizzatore registro.\n\
+--append_string\t\t: 1=Aggiungi in coda al log. 0=Tronca file log alla connessione.\n\
+--log_viewer\t\t: Percorso visualizzatore log.\n\
 --editor\t\t\t: Percorso editor configurazione.\n\
 --allow_edit\t\t: 1=Visualizza meno modifica configurazione.\n\
 --allow_service\t\t: 1=Visualizza menu controllo servizio.\n\
