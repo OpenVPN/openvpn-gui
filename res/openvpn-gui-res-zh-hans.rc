@@ -175,7 +175,7 @@ BEGIN
     AUTORADIOBUTTON "自动", ID_RB_BALLOON3, 28, 200, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "手动", ID_RB_BALLOON4, 86, 200, 90, 10
     AUTORADIOBUTTON "禁用", ID_RB_BALLOON5, 181, 200, 40, 10
-    AUTOCHECKBOX "Enable Pre-Logon A&ccess Provider (requires admin access)", ID_CHK_PLAP_REG, 17, 215, 200, 10
+    AUTOCHECKBOX "启用预登录访问提供程序（需要管理员访问权限）", ID_CHK_PLAP_REG, 17, 215, 200, 10
 END
 
 /* Advanced Dialog */
@@ -406,7 +406,7 @@ BEGIN
     IDS_NFO_SERVICE_STOPPED "已停止 OpenVPN 服务。"
     IDS_NFO_ACTIVE_CONN_EXIT "当前还有活动的连接，您若退出 OpenVPN GUI 该连接将被中断。\
 \n\n您确定要退出吗？"
-    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
+    IDS_ERR_PARSE_MGMT_OPTION "无法分析<%ls%ls>中的--management选项。"
     IDS_NFO_SERVICE_ACTIVE_EXIT "您当前已连接（OpenVPN 服务正在运行中）。\
 退出 OpenVPN GUI 仍将保持连接。\n\n\
 您确定要退出吗？"
@@ -532,8 +532,8 @@ Wintun驱动程序将无法正常工作。"
     IDS_ERR_OPEN_WRITE_REG "无法打开系统注册表进行写入，您必须以管理员身分执行此应用程序更新注册表。"
     IDS_ERR_READ_SET_KEY "读取并设定系统注册表项「%ls」时发生错误。"
     IDS_ERR_WRITE_REGVALUE "读取系统注册表值「HKEY_CURRENT_USER\\%ls\\%ls」时发生错误。"
-    IDS_ERR_PLAP_REG "Failed to enable Start Before Logon (error = %d)"
-    IDS_ERR_PLAP_UNREG "Failed to disable Start Before Logon (error = %d)"
+    IDS_ERR_PLAP_REG "无法启用登录前启动(error = %d)"
+    IDS_ERR_PLAP_UNREG "无法禁用登录前启动(error = %d)"
 
     /* importation */
     IDS_ERR_IMPORT_EXISTS "已有名为「%ls」的连接配置文件。"
