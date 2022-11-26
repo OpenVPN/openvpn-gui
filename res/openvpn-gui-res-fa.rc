@@ -4,6 +4,7 @@
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
  *                2009 Heiko Hund <heikoh@users.sf.net>
  *                2020 Mohammad Javidi <m.javidii@yahoo.com>
+ *                2022 Danial P <daniel.pm307@hotmail.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -209,24 +210,24 @@ BEGIN
     LTEXT "قطع اتصال اسکریپت ایست :", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
     EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 103, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
 
-    GROUPBOX "Management interface", 204, 6, 163, 235, 30
-    LTEXT "Port offset:", 205, 17, 175, 75, 10
+    GROUPBOX "رابط مدیریت", 204, 6, 163, 235, 30
+    LTEXT "پورت افست:", 205, 17, 175, 75, 10
     EDITTEXT ID_EDT_MGMT_PORT, 103, 173, 30, 12, ES_AUTOHSCROLL
 
-    GROUPBOX "Config menu view", 206, 6, 198, 235, 30
+    GROUPBOX "نمای منوی پیکربندی", 206, 6, 198, 235, 30
     AUTORADIOBUTTON "&Auto", ID_RB_BALLOON0, 28, 210, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "&Flat", ID_RB_BALLOON1, 88, 210, 50, 10
     AUTORADIOBUTTON "&Nested", ID_RB_BALLOON2, 148, 210, 50, 10
 
-    GROUPBOX "Echo message display", 207, 6, 233, 235, 45
+    GROUPBOX "نمایش پیام اکو", 207, 6, 233, 235, 45
     AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 245, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Ne&ver", ID_RB_BALLOON4, 88, 245, 50, 10
-    LTEXT "Repeated messages are muted for: ", 208, 17, 260, 125, 10
+    LTEXT "پیام‌های تکراری برای موارد زیر بی‌صدا می‌شوند:", 208, 17, 260, 125, 10
     EDITTEXT ID_EDT_POPUP_MUTE, 150, 258, 30, 12, ES_AUTOHSCROLL
-    LTEXT "hours", 209, 190, 260, 40, 10
+    LTEXT "ساعت", 209, 190, 260, 40, 10
 
 #if ENABLE_OVPN3
-    GROUPBOX "OpenVPN Engine", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
+    GROUPBOX "موتور OpenVPN", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
     AUTORADIOBUTTON "OpenVPN2", ID_RB_ENGINE_OVPN2, 18, 296, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "OpenVPN3 (experimental)", ID_RB_ENGINE_OVPN3, 76, 296, 90, 10
 #endif
@@ -242,15 +243,15 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FARSI, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, ID_ICON_ABOUT, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v%ls – یک رابط کاربر گرفیکی برای کانکشن OpenVPN\n\
+    LTEXT "OpenVPN GUI v%ls – A Windows GUI for OpenVPN\n\
 Copyright (C) 2004-2005 Mathias Sundman ‪<info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund ‪<heikoh@users.sf.net>\n\
-Copyright (C) 2012-2022 OpenVPN GUI مشارکت کنندگان\n", ID_TXT_VERSION, 36, 15, 206, 50
+Copyright (C) 2012-2022 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
     LTEXT "https://github.com/OpenVPN/openvpn-gui", ID_LTEXT_ABOUT2, 36, 55, 206, 42
-    LTEXT "OpenVPN – برنامه ای برای تونل ایمن شبکه های آی پی \
-با پشتیبانی از پورت های : TCP/UDP , به همراه SSL/TLS-based \
-جلسه احراز هویت و تغییر کلید و بسته ها \
-رمز نگاری و بسته احراز هویت و بسته فشرده سازی.\n\
+    LTEXT "OpenVPN - برنامه ای برای تونل ایمن شبکه های  IP \
+از طریق یک پورت  TCP/UDP، با پشتیبانی از جلسه \
+ احراز هویت مبتنی بر SSL/TLS و تبادل کلید، رمزگذاری بسته ها،  \
+احراز هویت بسته ها، و فشرده سازی بسته ها. \n\
 \n", ID_LTEXT_ABOUT3, 8, 70, 240, 64
     LTEXT "Copyright (C) 2002-2022 OpenVPN Technologies Inc. ‪<info@openvpn.net>\n\
 https://openvpn.net", ID_LTEXT_ABOUT4, 8, 106, 240, 64
@@ -460,97 +461,95 @@ Options to override registry settings:\n\
 \t\t\t Must be in the range 1 to 61000. Maximum number of configs is limited by 65536 minus this value. Default=25340.\n"
 
 
-    IDS_NFO_USAGECAPTION "OpenVPN GUI Usage"
-    IDS_ERR_BAD_PARAMETER "I'm trying to parse ""%ls"" as an --option parameter \
-but I don't see a leading '--'"
+    IDS_NFO_USAGECAPTION "استفاده از رابط کاربری گرافیکی OpenVPN"
+    IDS_ERR_BAD_PARAMETER "من سعی می کنم ""%ls"" را به عنوان یک پارامتر --option تجزیه کنم \
+اما من یک '--' پیشرو نمی بینم"
     IDS_ERR_BAD_OPTION "Options error: Unrecognized option or missing parameter(s): --%ls\n\
 Use openvpn-gui --help for more info."
 
     /* passphrase – Resources */
-    IDS_ERR_CREATE_PASS_THREAD "CreateThread to show ChangePassphrase dialog failed."
-    IDS_NFO_CHANGE_PWD "Change Private Key Password (%ls)"
-    IDS_ERR_PWD_DONT_MATCH "The passwords you typed do not match. Try again."
-    IDS_ERR_PWD_TO_SHORT "Your new password must be at least %d characters long."
-    IDS_NFO_EMPTY_PWD "Are you sure you want to set an EMPTY password?"
-    IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Unknown keyfile format."
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Error opening private key file (%ls)."
-    IDS_ERR_OLD_PWD_INCORRECT "The old password is incorrect."
-    IDS_ERR_OPEN_WRITE_KEY "Error opening private key file for writing (%ls)."
-    IDS_ERR_WRITE_NEW_KEY "Error writing new private key file (%ls)."
-    IDS_NFO_PWD_CHANGED "Your password has been changed."
-    IDS_ERR_READ_PKCS12 "Error reading PKCS #12 file (%ls)."
-    IDS_ERR_CREATE_PKCS12 "Error creating new PKCS #12 object. Change Password has failed."
-    IDS_ERR_OPEN_CONFIG "Could not open config file for reading: (%ls)"
-    IDS_ERR_ONLY_ONE_KEY_OPTION "You cannot have more than one ""key"" option in your config."
-    IDS_ERR_ONLY_KEY_OR_PKCS12 "You cannot have both ""key"" and ""pkcs12"" options in your config."
-    IDS_ERR_ONLY_ONE_PKCS12_OPTION "You cannot have more than one ""pkcs12"" option in your config."
-    IDS_ERR_HAVE_KEY_OR_PKCS12 "Your config file does not contain any ""key"" or ""pkcs12"" option."
-    IDS_ERR_KEY_FILENAME_TO_LONG "Your key filename in the config is too long!"
-    IDS_ERR_PASSPHRASE2STDIN "Error passing passphrase to stdin."
-    IDS_ERR_AUTH_USERNAME2STDIN "Error passing auth username to stdin."
-    IDS_ERR_AUTH_PASSWORD2STDIN "Error passing auth password to stdin."
-    IDS_ERR_CR2STDIN "Error passing CR to stdin."
-    IDS_ERR_INVALID_CHARS_IN_PSW "Your new password contains non-valid characters. \
-Please choose another one."
+    IDS_ERR_CREATE_PASS_THREAD "CreateThread برای نشان دادن گفتگوی ChangePassphrase ناموفق بود."
+    IDS_NFO_CHANGE_PWD "تغییر رمز عبور کلید خصوصی (%ls)"
+    IDS_ERR_PWD_DONT_MATCH "پسوردهایی که تایپ کردید مطابقت ندارند. دوباره امتحان کنید."
+    IDS_ERR_PWD_TO_SHORT "رمز عبور جدید شما باید حداقل %d نویسه داشته باشد."
+    IDS_NFO_EMPTY_PWD "آیا مطمئن هستید که می خواهید یک رمز عبور خالی تنظیم کنید؟"
+    IDS_ERR_UNKNOWN_KEYFILE_FORMAT "فرمت فایل کلیدی ناشناخته"
+    IDS_ERR_OPEN_PRIVATE_KEY_FILE "خطا در باز کردن فایل کلید خصوصی (%ls)."
+    IDS_ERR_OLD_PWD_INCORRECT "رمز عبور قدیمی اشتباه است."
+    IDS_ERR_OPEN_WRITE_KEY "خطا در باز کردن فایل کلید خصوصی برای نوشتن (%ls)."
+    IDS_ERR_WRITE_NEW_KEY "خطا در نوشتن فایل کلید خصوصی جدید (%ls)."
+    IDS_NFO_PWD_CHANGED "گذر واژه شما تغییر کرده است."
+    IDS_ERR_READ_PKCS12 "خطا در خواندن فایل PKCS #12 (%ls)."
+    IDS_ERR_CREATE_PKCS12 "خطا در ایجاد شیء PKCS #12 جدید. تغییر رمز عبور انجام نشد."
+    IDS_ERR_OPEN_CONFIG "فایل پیکربندی برای خواندن باز نشد: (%ls)"
+    IDS_ERR_ONLY_ONE_KEY_OPTION "شما نمی توانید بیش از یک گزینه ""key"" در پیکربندی خود داشته باشید."
+    IDS_ERR_ONLY_KEY_OR_PKCS12 "شما نمی توانید هر دو گزینه ""key"" و ""pkcs12"" را در پیکربندی خود داشته باشید."
+    IDS_ERR_ONLY_ONE_PKCS12_OPTION "شما نمی توانید بیش از یک گزینه ""pkcs12"" در پیکربندی خود داشته باشید."
+    IDS_ERR_HAVE_KEY_OR_PKCS12 "فایل پیکربندی شما حاوی هیچ گزینه ""key"" یا ""pkcs12"" نیست."
+    IDS_ERR_KEY_FILENAME_TO_LONG "نام فایل کلید شما در پیکربندی خیلی طولانی است!"
+    IDS_ERR_PASSPHRASE2STDIN "خطا در ارسال عبارت عبور به stdin."
+    IDS_ERR_AUTH_USERNAME2STDIN "خطا در ارسال نام کاربری auth به stdin."
+    IDS_ERR_AUTH_PASSWORD2STDIN "خطا در ارسال رمز عبور اعتبار به stdin."
+    IDS_ERR_CR2STDIN "خطا در انتقال CR به stdin."
+    IDS_ERR_INVALID_CHARS_IN_PSW "رمز عبور جدید شما حاوی نویسه های غیر معتبر است. \
+لطفا یکی دیگر را انتخاب کنید"
 
     /* settings */
-    IDS_SETTINGS_CAPTION "OpenVPN – Settings"
+    IDS_SETTINGS_CAPTION "OpenVPN – تنظیمات"
 
     /* proxy */
-    IDS_ERR_HTTP_PROXY_ADDRESS "You must specify a HTTP proxy address."
-    IDS_ERR_HTTP_PROXY_PORT "You must specify a HTTP proxy port."
-    IDS_ERR_HTTP_PROXY_PORT_RANGE "You must specify a HTTP proxy port between 1 and 65535."
-    IDS_ERR_SOCKS_PROXY_ADDRESS "You must specify a SOCKS proxy address."
-    IDS_ERR_SOCKS_PROXY_PORT "You must specify a SOCKS proxy port."
-    IDS_ERR_SOCKS_PROXY_PORT_RANGE "You must specify a SOCKS proxy port between 1 and 65535."
-    IDS_ERR_CREATE_REG_HKCU_KEY "Error creating ""HKEY_CURRENT_USER\\%ls"" key."
-    IDS_ERR_GET_TEMP_PATH "Error determining TempPath with GetTempPath(). Using ""C:\\"" instead."
+    IDS_ERR_HTTP_PROXY_ADDRESS "شما باید یک آدرس پروکسی HTTP را مشخص کنید."
+    IDS_ERR_HTTP_PROXY_PORT "شما باید یک پورت پروکسی HTTP را مشخص کنید."
+    IDS_ERR_HTTP_PROXY_PORT_RANGE "شما باید یک پورت پروکسی HTTP بین 1 تا 65535 را مشخص کنید."
+    IDS_ERR_SOCKS_PROXY_ADDRESS "شما باید یک آدرس پروکسی SOCKS را مشخص کنید."
+    IDS_ERR_SOCKS_PROXY_PORT "شما باید یک پورت پروکسی SOCKS را مشخص کنید."
+    IDS_ERR_SOCKS_PROXY_PORT_RANGE "شما باید یک پورت پراکسی SOCKS بین 1 تا 65535 را مشخص کنید."
+    IDS_ERR_CREATE_REG_HKCU_KEY "خطا در ایجاد کلید ""HKEY_CURRENT_USER\\%ls""."
+    IDS_ERR_GET_TEMP_PATH "خطا در تعیین TempPath با GetTempPath(). استفاده از ""C:\\"" به جای آن."
 
     /* service */
-    IDS_ERR_OPEN_VPN_SERVICE "Failed to open ""OpenVPNService""."
-    IDS_ERR_START_SERVICE "Failed to start ""OpenVPNService""."
-    IDS_ERR_QUERY_SERVICE "Failed to query service status."
-    IDS_ERR_SERVICE_START_FAILED "OpenVPN Service failed to start."
-    IDS_ERR_OPEN_SCMGR "OpenSCManager failed (%d)."
-    IDS_ERR_STOP_SERVICE "Failed to stop OpenVPN Service."
-    IDS_NFO_RESTARTED "OpenVPN Service restarted."
-    IDS_ERR_ACCESS_SERVICE_PIPE "Access to service pipe failed."
-    IDS_ERR_WRITE_SERVICE_PIPE "Writing to service pipe failed."
-    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is not installed.\n\
-Wintun driver and tasks requiring administrative access may not work."
-    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" is not started.\n\
-Wintun driver and tasks requiring administrative access may not work."
-    IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" is not started.\n\
-Wintun driver will not work."
+    IDS_ERR_OPEN_VPN_SERVICE "باز نشد ""OpenVPNService""."
+    IDS_ERR_START_SERVICE "شروع نشد ""OpenVPNService""."
+    IDS_ERR_QUERY_SERVICE "پرس و جو از وضعیت سرویس ناموفق بود."
+    IDS_ERR_SERVICE_START_FAILED "سرویس OpenVPN شروع نشد."
+    IDS_ERR_OPEN_SCMGR "OpenSCManager ناموفق بود (%d)."
+    IDS_ERR_STOP_SERVICE "سرویس OpenVPN متوقف نشد."
+    IDS_NFO_RESTARTED "سرویس OpenVPN دوباره راه اندازی شد."
+    IDS_ERR_ACCESS_SERVICE_PIPE "دسترسی به لوله سرویس ناموفق بود."
+    IDS_ERR_WRITE_SERVICE_PIPE "نوشتن در لوله سرویس ناموفق بود."
+    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" نصب نشده است.\n\
+درایور Wintun و کارهایی که نیاز به دسترسی مدیریت دارند ممکن است کار نکنند."
+    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" شروع نشده است.\n\
+درایور Wintun و کارهایی که نیاز به دسترسی مدیریت دارند ممکن است کار نکنند."
+    IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" شروع نشده است.\n\
+درایور Wintun کار نخواهد کرد."
 
     /* registry */
-    IDS_ERR_GET_WINDOWS_DIR "Error getting Windows Directory."
-    IDS_ERR_GET_PROFILE_DIR "Error getting User Profile Directory."
-    IDS_ERR_GET_PROGRAM_DIR "Error getting ""Program"" folder name."
-    IDS_ERR_OPEN_REGISTRY "Error opening registry for reading (HKLM\\SOFTWARE\\OpenVPN).\n \
-OpenVPN is probably not installed"
-    IDS_ERR_READING_REGISTRY "Error reading registry value (HKLM\\SOFTWARE\\OpenVPN)."
-    IDS_ERR_PASSPHRASE_ATTEMPTS "Registry value ""passphrase_attempts"" must be a number between 1 and 9."
-    IDS_ERR_CONN_SCRIPT_TIMEOUT "Registry value ""connectscript_timeout"" must be a number between 0 and 99."
-    IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Registry value ""disconnectscript_timeout"" must be a number between 1 and 99."
-    IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Registry value ""preconnectscript_timeout"" must be a number between 1 and 99."
-    IDS_ERR_CREATE_REG_KEY "Error creating HKLM\\SOFTWARE\\OpenVPN-GUI key."
-    IDS_ERR_OPEN_WRITE_REG "Failed to open the registry for writing. You need to run this application \
-once as Administrator to update the registry."
-    IDS_ERR_READ_SET_KEY "Error reading and setting registry key ""%ls""."
-    IDS_ERR_WRITE_REGVALUE "Error writing registry value ""HKEY_CURRENT_USER\\%ls\\%ls""."
-    IDS_ERR_PLAP_REG "Failed to enable Start Before Logon (error = %d)"
-    IDS_ERR_PLAP_UNREG "Failed to disable Start Before Logon (error = %d)"
+    IDS_ERR_GET_WINDOWS_DIR "خطا در دریافت دایرکتوری ویندوز."
+    IDS_ERR_GET_PROFILE_DIR "خطا در دریافت فهرست نمایه کاربر."
+    IDS_ERR_GET_PROGRAM_DIR " خطا در دریافت نام پوشه ""Program"" ."
+    IDS_ERR_OPEN_REGISTRY "خطا در باز کردن رجیستری برای خواندن (HKLM\\SOFTWARE\\OpenVPN).\n \
+OpenVPN احتمالا نصب نشده است"
+    IDS_ERR_READING_REGISTRY "خطا در خواندن مقدار رجیستری (HKLM\\SOFTWARE\\OpenVPN)."
+    IDS_ERR_PASSPHRASE_ATTEMPTS "مقدار رجیستری ""passphrase_attempts"" باید عددی بین 1 و 9 باشد."
+    IDS_ERR_CONN_SCRIPT_TIMEOUT "مقدار رجیستری ""connectscript_timeout"" باید عددی بین 0 تا 99 باشد."
+    IDS_ERR_DISCONN_SCRIPT_TIMEOUT "مقدار رجیستری ""disconnectscript_timeout"" باید عددی بین 1 و 99 باشد."
+    IDS_ERR_PRECONN_SCRIPT_TIMEOUT "مقدار رجیستری ""preconnectscript_timeout"" باید عددی بین 1 و 99 باشد."
+    IDS_ERR_CREATE_REG_KEY "خطا در ایجاد کلید HKLM\\SOFTWARE\\OpenVPN-GUI ."
+    IDS_ERR_OPEN_WRITE_REG "رجیستری برای نوشتن باز نشد. برای به روز رسانی رجیستری باید این برنامه را یک بار به عنوان مدیر اجرا کنید."
+    IDS_ERR_READ_SET_KEY "خطا در خواندن و تنظیم کلید رجیستری ""%ls""."
+    IDS_ERR_WRITE_REGVALUE "خطا در نوشتن مقدار رجیستری ""HKEY_CURRENT_USER\\%ls\\%ls""."
+    IDS_ERR_PLAP_REG "شروع قبل از ورود به سیستم فعال نشد (خطا = %d)"
+    IDS_ERR_PLAP_UNREG "شروع قبل از ورود به سیستم غیرفعال نشد (خطا = %d)"
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS "A config named ""%ls"" already exists."
-    IDS_ERR_IMPORT_FAILED "Failed to import file. The following path could not be created.\n\n\
-%ls\n\nMake sure you have the right permissions."
-    IDS_NFO_IMPORT_SUCCESS "File imported successfully."
-    IDS_NFO_IMPORT_OVERWRITE "A config named ""%ls"" already exists. Do you want to replace it?"
-    IDS_NFO_IMPORT_SOURCE "Do you want to import the profile <%ls>?"
-    IDS_ERR_IMPORT_SOURCE "Cannot import file <%ls> as it is already in the global or local config directory"
-    IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
+    IDS_ERR_IMPORT_EXISTS "یک پیکربندی به نام ""%ls"" از قبل وجود دارد."
+    IDS_ERR_IMPORT_FAILED "وارد کردن فایل انجام نشد. مسیر زیر ایجاد نشد.\n\n\ %ls\n\nمطمئن شوید که مجوزهای مناسب را دارید."
+    IDS_NFO_IMPORT_SUCCESS "فایل با موفقیت وارد شد."
+    IDS_NFO_IMPORT_OVERWRITE "یک پیکربندی به نام ""%ls"" از قبل وجود دارد. آیا می خواهی جایگزین کنی؟"
+    IDS_NFO_IMPORT_SOURCE "آیا می خواهید نمایه <%ls> را وارد کنید؟?"
+    IDS_ERR_IMPORT_SOURCE "نمی توان فایل <%ls> را وارد کرد زیرا از قبل در فهرست پیکربندی جهانی یا محلی است"
+    IDS_ERR_IMPORT_ACCESS "نمی‌توان <%ls> را وارد کرد زیرا وجود ندارد یا قابل خواندن نیست"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "بسیار خوب (OK) را بزن تا رمز عبور ذخیره شده برای پیکر بندی حذف شود ""%ls"""
@@ -568,13 +567,13 @@ once as Administrator to update the registry."
     IDS_NFO_BYTECOUNT "بایت به: %ls  خروج: %ls"
 
     /* AS profile import */
-    IDS_ERR_URL_IMPORT_PROFILE "Error fetching profile from URL: [%d] %ls"
+    IDS_ERR_URL_IMPORT_PROFILE "خطا در واکشی نمایه از URL: [%d] %ls"
 
-    IDS_ERR_NO_PKCS11 "No certificates found. If you have a token insert it and press retry."
-    IDS_ERR_SELECT_PKCS11 "No certificates selected."
+    IDS_ERR_NO_PKCS11 "هیچ گواهی یافت نشد اگر نشانه ای دارید آن را وارد کنید و دوباره امتحان کنید."
+    IDS_ERR_SELECT_PKCS11 "هیچ گواهی انتخاب نشده است."
     /* column headers for pkcs11 certificate list */
-    IDS_CERT_DISPLAYNAME "Issued to"
-    IDS_CERT_ISSUER "Issued by"
-    IDS_CERT_NOTAFTER "Valid until"
+    IDS_CERT_DISPLAYNAME "صادر شده به"
+    IDS_CERT_ISSUER "صادر شده توسط"
+    IDS_CERT_NOTAFTER "معتبر است تا"
 
 END
