@@ -1283,8 +1283,8 @@ OnTimeout(connection_t *c, UNUSED char *msg)
     c->state = connecting;
     if (!OpenManagement(c))
     {
-        MessageBoxEx(NULL, L"Failed to open management", _T(PACKAGE_NAME),
-                     MB_OK|MB_SETFOREGROUND|MB_ICONERROR, GetGUILanguage());
+        MessageBoxExW(NULL, L"Failed to open management", _T(PACKAGE_NAME),
+                     MB_OK | MB_SETFOREGROUND | MB_ICONERROR | MBOX_RTL_FLAGS, GetGUILanguage());
         StopOpenVPN(c);
     }
     return;
@@ -1316,8 +1316,8 @@ OnStop(connection_t *c, UNUSED char *msg)
             SetForegroundWindow(c->hwndStatus);
             ShowWindow(c->hwndStatus, SW_SHOW);
         }
-        MessageBox(c->hwndStatus, LoadLocalizedString(IDS_NFO_CONN_TERMINATED, c->config_file),
-                   _T(PACKAGE_NAME), MB_OK);
+        MessageBoxExW(c->hwndStatus, LoadLocalizedString(IDS_NFO_CONN_TERMINATED, c->config_file),
+                   _T(PACKAGE_NAME), MB_OK | MBOX_RTL_FLAGS, GetGUILanguage());
         SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
         break;
 
@@ -1340,7 +1340,8 @@ OnStop(connection_t *c, UNUSED char *msg)
             SetForegroundWindow(c->hwndStatus);
             ShowWindow(c->hwndStatus, SW_SHOW);
         }
-        MessageBox(c->hwndStatus, LoadLocalizedString(msg_id, c->config_name), _T(PACKAGE_NAME), MB_OK);
+        MessageBoxExW(c->hwndStatus, LoadLocalizedString(msg_id, c->config_name),
+                   _T(PACKAGE_NAME), MB_OK | MBOX_RTL_FLAGS, GetGUILanguage());
         SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
         break;
 
@@ -1764,7 +1765,7 @@ OnNeedOk (connection_t *c, char *msg)
     }
 
     const char *fmt;
-    if (MessageBoxW (NULL, wstr, L""PACKAGE_NAME, MB_OKCANCEL) == IDOK)
+    if (MessageBoxExW(NULL, wstr, L""PACKAGE_NAME, MB_OKCANCEL | MBOX_RTL_FLAGS, GetGUILanguage()) == IDOK)
     {
         fmt = "needok \'%s\' ok";
     }
@@ -2124,8 +2125,8 @@ ThreadOpenVPNStatus(void *p)
 
     if (!OpenManagement(c))
     {
-        MessageBoxEx(NULL, L"Failed to open management", _T(PACKAGE_NAME),
-                     MB_OK|MB_SETFOREGROUND|MB_ICONERROR, GetGUILanguage());
+        MessageBoxExW(NULL, L"Failed to open management", _T(PACKAGE_NAME),
+                     MB_OK | MB_SETFOREGROUND | MB_ICONERROR | MBOX_RTL_FLAGS, GetGUILanguage());
         StopOpenVPN(c);
     }
 

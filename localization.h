@@ -37,5 +37,11 @@ HWND CreateLocalizedDialogParam(const UINT, DLGPROC, const LPARAM);
 HWND CreateLocalizedDialog(const UINT, DLGPROC);
 INT_PTR CALLBACK GeneralSettingsDlgProc(HWND, UINT, WPARAM, LPARAM);
 LANGID GetGUILanguage(void);
+/*
+ * Detect whether the selected UI language is LTR or RTL.
+ * Returns 0 for LTR, 1 for RTL, 2 or 3 for vertical
+ */
+int LangFlowDirection(void);
+#define MBOX_RTL_FLAGS ((LangFlowDirection() == 1) ? MB_RIGHT|MB_RTLREADING : 0)
 
 #endif
