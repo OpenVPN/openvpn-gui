@@ -69,6 +69,22 @@ FindResourceLang(PTSTR resType, PTSTR resId, LANGID langId)
     return FindResource(o.hInstance, resId, resType);
 }
 
+/*
+ * Return value: 0 for LTR, 1 for RTL, 2 or 3 for vertical
+ */
+int
+LangFlowDirection(void)
+{
+    int res = 0; /* LTR by default */
+    wchar_t lcname[LOCALE_NAME_MAX_LENGTH];
+    wchar_t data[2];
+    if (LCIDToLocaleName(MAKELCID(GetGUILanguage(), SORT_DEFAULT), lcname, _countof(lcname), 0) != 0
+        && GetLocaleInfoEx(lcname, LOCALE_IREADINGLAYOUT, data, 2) != 0)
+    {
+        res = _wtoi(data);
+    }
+    return res;
+}
 
 LANGID
 GetGUILanguage(void)
@@ -257,9 +273,8 @@ static int
 __ShowLocalizedMsgEx(const UINT type, HANDLE parent, LPCTSTR caption, const UINT stringId, va_list args)
 {
     return MessageBoxEx(parent, __LoadLocalizedString(stringId, args), caption,
-        type | MB_SETFOREGROUND, GetGUILanguage());
+        type | MB_SETFOREGROUND | MBOX_RTL_FLAGS, GetGUILanguage());
 }
-
 
 int
 ShowLocalizedMsgEx(const UINT type, HANDLE parent, LPCTSTR caption, const UINT stringId, ...)
