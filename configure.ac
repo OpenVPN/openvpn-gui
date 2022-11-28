@@ -62,7 +62,7 @@ AC_ARG_ENABLE(
 case "$host" in
 	*-mingw*)
 		CPPFLAGS="${CPPFLAGS} -DWIN32_LEAN_AND_MEAN"
-		CPPFLAGS="${CPPFLAGS} -D_WIN32_WINNT=_WIN32_WINNT_VISTA -DWINVER=_WIN32_WINNT"
+		CPPFLAGS="${CPPFLAGS} -D_WIN32_WINNT=_WIN32_WINNT_WIN7 -DWINVER=_WIN32_WINNT"
 		LDFLAGS="${LDFLAGS} -Wl,--nxcompat,--dynamicbase"
 
 		dnl older mingw doesn't support `--high-entropy-va`
