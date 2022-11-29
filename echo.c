@@ -404,6 +404,13 @@ static void
 AddMessageBoxText(HWND hwnd, const wchar_t *text, const wchar_t *title, const wchar_t *from)
 {
     HWND hmsg = GetDlgItem(hwnd, ID_TXT_MESSAGE);
+    DWORD align[2] = {PFA_LEFT, PFA_RIGHT}; /* default alignments for text and title */
+
+    if (LangFlowDirection() == 1)
+    {
+        align[0] = PFA_RIGHT;
+        align[1] = PFA_LEFT;
+    }
 
     /* Start adding new message at the top */
     SendMessage(hmsg, EM_SETSEL, 0, 0);
@@ -413,7 +420,7 @@ AddMessageBoxText(HWND hwnd, const wchar_t *text, const wchar_t *title, const wc
     /* save current alignment */
     PARAFORMAT pf = {.cbSize = sizeof(PARAFORMAT) };
     SendMessage(hmsg, EM_GETPARAFORMAT, 0, (LPARAM) &pf);
-    WORD pf_align_saved = pf.dwMask & PFM_ALIGNMENT ? pf.wAlignment : PFA_LEFT;
+    WORD pf_align_saved = pf.dwMask & PFM_ALIGNMENT ? pf.wAlignment : align[0];
     pf.dwMask |= PFM_ALIGNMENT;
 
     if (from && wcslen(from))
@@ -425,13 +432,13 @@ AddMessageBoxText(HWND hwnd, const wchar_t *text, const wchar_t *title, const wc
 
         SendMessage(hmsg, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM) &cfm);
        /* Align to right */
-        pf.wAlignment = PFA_RIGHT;
+        pf.wAlignment = align[1];
         SendMessage(hmsg, EM_SETPARAFORMAT, 0, (LPARAM) &pf);
         SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM) from);
         SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM) L"\n");
     }
 
-    pf.wAlignment = PFA_LEFT;
+    pf.wAlignment = align[0];
     SendMessage(hmsg, EM_SETPARAFORMAT, 0, (LPARAM) &pf);
 
     if (title && wcslen(title))
@@ -503,6 +510,13 @@ MessageDialogFunc(HWND hwnd, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
         SetWindowText(hwnd, L"OpenVPN Messages");
         SendMessage(hmsg, EM_SETMARGINS, EC_LEFTMARGIN|EC_RIGHTMARGIN,
                          MAKELPARAM(side_margin, side_margin));
+        if (LangFlowDirection() == 1)
+        {
+            LONG exstyle = GetWindowLong(hwnd, GWL_EXSTYLE);
+            SetWindowLong(hwnd, GWL_EXSTYLE, exstyle | WS_EX_RTLREADING | WS_EX_LAYOUTRTL);
+            exstyle = GetWindowLong(hmsg, GWL_EXSTYLE);
+            SetWindowLong(hmsg, GWL_EXSTYLE, exstyle | WS_EX_LEFTSCROLLBAR);
+	}
 
         enable_url_detection(hmsg);
 
