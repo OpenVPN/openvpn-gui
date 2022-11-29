@@ -501,10 +501,14 @@ RunProgressDialog(connection_t *c, PFTASKDIALOGCALLBACK cb_fn, LONG_PTR cb_data)
 {
     dmsg(L"Entry with profile = <%ls>", c->config_name);
 
-    const TASKDIALOG_FLAGS flags = TDF_SHOW_MARQUEE_PROGRESS_BAR|TDF_CALLBACK_TIMER|TDF_USE_HICON_MAIN;
+    TASKDIALOG_FLAGS flags = TDF_SHOW_MARQUEE_PROGRESS_BAR|TDF_CALLBACK_TIMER|TDF_USE_HICON_MAIN;
     wchar_t main_text[256];
     wchar_t details_btn_text[256];
 
+    if (LangFlowDirection() == 1)
+    {
+        flags |= TDF_RTL_LAYOUT;
+    }
     _sntprintf_0(main_text, L"%ls %ls", LoadLocalizedString(IDS_MENU_CONNECT), c->config_name);
     LoadLocalizedStringBuf(details_btn_text, _countof(main_text), IDS_MENU_STATUS);
 
