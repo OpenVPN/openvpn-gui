@@ -28,6 +28,7 @@
 #include "plap_dll.h"
 #include <assert.h>
 #include "resource.h"
+#include "localization.h"
 
 /* A "class" that implements IConnectableCredentialProviderCredential */
 
