@@ -353,7 +353,7 @@ GetConnectionStatusText(connection_t *c, wchar_t *status, DWORD len)
         }
         else if (*c->daemon_state) /* this is more fine-grained and thus preferred */
         {
-            __sntprintf_0(status, len, L"%hs", c->daemon_state);
+            LoadLocalizedStringBuf(status, len, daemon_state_resid(c->daemon_state));
         }
         else if (*status_text)
         {

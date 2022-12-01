@@ -89,4 +89,10 @@ parse_dynamic_cr(const char* str, auth_param_t* param);
 void
 free_auth_param(auth_param_t* param);
 
+/*
+ * Given an OpenVPN state as reported by the management interface
+ * return the correspnding resource id for translation.
+ */
+int daemon_state_resid(const char *name);
+
 #endif

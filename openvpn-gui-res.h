@@ -380,6 +380,22 @@
 #define IDS_CERT_ISSUER                 2163
 #define IDS_CERT_NOTAFTER               2164
 
+/* openvpn daemon state descriptions */
+#define IDS_NFO_OVPN_STATE_INITIAL      2200
+#define IDS_NFO_OVPN_STATE_CONNECTING   2201
+#define IDS_NFO_OVPN_STATE_ASSIGN_IP    2202
+#define IDS_NFO_OVPN_STATE_ADD_ROUTES   2203
+#define IDS_NFO_OVPN_STATE_CONNECTED    2204
+#define IDS_NFO_OVPN_STATE_RECONNECTING 2205
+#define IDS_NFO_OVPN_STATE_EXITING      2206
+#define IDS_NFO_OVPN_STATE_WAIT         2207
+#define IDS_NFO_OVPN_STATE_AUTH         2208
+#define IDS_NFO_OVPN_STATE_GET_CONFIG   2209
+#define IDS_NFO_OVPN_STATE_RESOLVE      2210
+#define IDS_NFO_OVPN_STATE_TCP_CONNECT  2211
+#define IDS_NFO_OVPN_STATE_AUTH_PENDING 2212
+#define IDS_NFO_OVPN_STATE_UNKNOWN      2220
+
 /* Timer IDs */
 #define IDT_STOP_TIMER                  2500  /* Timer used to trigger force termination */
 
