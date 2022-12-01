@@ -2789,3 +2789,24 @@ ResetSavePasswords(connection_t *c)
     c->flags &= ~(FLAG_SAVE_KEY_PASS | FLAG_SAVE_AUTH_PASS);
     SetMenuStatus(c, c->state);
 }
+
+/* keep this array in same order as corresponding resource ids -- IDS_NFO_OVPN_STATE_xxxxx */
+static const char *daemon_states[] = {"INITIAL", "CONNECTING", "ASSIGN_IP",
+    "ADD_ROUTES", "CONNECTED", "RECONNECTING", "EXITING", "WAIT",
+    "AUTH", "GET_CONFIG", "RESOLVE", "TCP_CONNECT", "AUTH_PENDING", NULL};
+
+/*
+ * Given an OpenVPN state as reported by the management interface
+ * return the correspnding resource id for translated string.
+ * Returns IDS_NFO_OVPN_STATE_UNKNOWN if no match found.
+ */
+int
+daemon_state_resid(const char *state)
+{
+    int i = 0;
+    while (daemon_states[i] && strcmp(daemon_states[i], state))
+    {
+	i++;
+    }
+    return daemon_states[i] ? IDS_NFO_OVPN_STATE_INITIAL + i : IDS_NFO_OVPN_STATE_UNKNOWN;
+}
