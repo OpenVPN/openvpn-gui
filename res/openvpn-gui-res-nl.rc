@@ -570,4 +570,27 @@ om de registerinstellingen te updaten."
     IDS_CERT_ISSUER "Issued by"
     IDS_CERT_NOTAFTER "Valid until"
 
+
+    /* PLAP related */
+    IDS_NFO_STATE_RETRYING "Retrying"
+    IDS_NFO_STATE_CANCELLING "Cancelling"
+    IDS_NFO_STATE_DISCONNECTING "Disconnecting"
+    IDS_NFO_CONN_CANCELLED "Connection cancelled by user"
+
+    /* openvpn daemon state names -- these are shown on progress dialog in PLAP */
+    IDS_NFO_OVPN_STATE_INITIAL      "Initializing"
+    IDS_NFO_OVPN_STATE_CONNECTING   "Connecting"
+    IDS_NFO_OVPN_STATE_ASSIGN_IP    "Assigning IP address"
+    IDS_NFO_OVPN_STATE_ADD_ROUTES   "Adding routes"
+    IDS_NFO_OVPN_STATE_CONNECTED    "Connected"
+    IDS_NFO_OVPN_STATE_RECONNECTING "Reconnecting"
+    IDS_NFO_OVPN_STATE_EXITING      "Exiting"
+    IDS_NFO_OVPN_STATE_WAIT         "Waiting"
+    IDS_NFO_OVPN_STATE_AUTH         "Authenticating"
+    IDS_NFO_OVPN_STATE_GET_CONFIG   "Pulling configuration from server"
+    IDS_NFO_OVPN_STATE_RESOLVE      "Resolving remote host"
+    IDS_NFO_OVPN_STATE_TCP_CONNECT  "Establishing TCP connection"
+    IDS_NFO_OVPN_STATE_AUTH_PENDING "Authentication pending"
+    IDS_NFO_OVPN_STATE_UNKNOWN      "?"
+
 END
