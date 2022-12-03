@@ -164,7 +164,7 @@ BEGIN
 
 
     GROUPBOX "شروع به کار", 202, 6, 47, 235, 30
-    AUTOCHECKBOX "شروع به کار - وقتی کاربر وارد شد", ID_CHK_STARTUP, 17, 59, 100, 12
+    AUTOCHECKBOX "شروع به کار - وقتی کاربر وارد شد", ID_CHK_STARTUP, 17, 59, 200, 12
 
     GROUPBOX "تنظیمات", ID_GROUPBOX3, 6, 82, 235, 150
     AUTOCHECKBOX "چسباندن به گزارشات", ID_CHK_LOG_APPEND, 17, 95, 60, 10
@@ -173,8 +173,8 @@ BEGIN
     AUTOCHECKBOX "همیشه از خدمات تعاملی استفاده کنید", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
     LTEXT "نمایش اطلاع رسانی ها", ID_TXT_BALLOON, 17, 155, 100, 10
     AUTORADIOBUTTON "وقت متصل بودن", ID_RB_BALLOON1, 28, 170, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "وقت متصل بودن - و اتصال مجدد", ID_RB_BALLOON2, 86, 170, 90, 10
-    AUTORADIOBUTTON "هرگز", ID_RB_BALLOON0, 181, 170, 40, 10
+    AUTORADIOBUTTON "وقت متصل بودن - و اتصال مجدد", ID_RB_BALLOON2, 86, 170, 110, 10
+    AUTORADIOBUTTON "هرگز", ID_RB_BALLOON0, 204, 170, 30, 10
     LTEXT "Persistent Connections", ID_TXT_PERSISTENT, 17, 185, 100, 10
     AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 200, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "&Manual", ID_RB_BALLOON4, 86, 200, 90, 10
