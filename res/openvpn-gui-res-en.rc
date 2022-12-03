@@ -583,6 +583,12 @@ once as Administrator to update the registry."
     IDS_CERT_ISSUER "Issued by"
     IDS_CERT_NOTAFTER "Valid until"
 
+    /* PLAP related */
+    IDS_NFO_STATE_RETRYING "Retrying"
+    IDS_NFO_STATE_CANCELLING "Cancelling"
+    IDS_NFO_STATE_DISCONNECTING "Disconnecting"
+    IDS_NFO_CONN_CANCELLED "Connection cancelled by user"
+
     /* openvpn daemon state names -- these are shown on progress dialog in PLAP */
     IDS_NFO_OVPN_STATE_INITIAL      "Initializing"
     IDS_NFO_OVPN_STATE_CONNECTING   "Connecting"
