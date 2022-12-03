@@ -29,6 +29,7 @@
 #include <assert.h>
 #include "resource.h"
 #include "localization.h"
+#include "openvpn-gui-res.h"
 
 /* A "class" that implements IConnectableCredentialProviderCredential */
 
@@ -487,9 +488,9 @@ GetSerialization(ICCPC *this, CREDENTIAL_PROVIDER_GET_SERIALIZATION_RESPONSE *re
         if (text && icon)
         {
             if (oc->connect_cancelled)
-                hr = SHStrDupW(L"Connection cancelled by user", text);
-            else if (text)
-                hr = SHStrDupW(L"Connection failed to complete", text);
+                hr = SHStrDupW(LoadLocalizedString(IDS_NFO_CONN_CANCELLED), text);
+            else
+                hr = SHStrDupW(LoadLocalizedString(IDS_NFO_CONN_FAILED, oc->display_name), text);
 
             *icon = CPSI_ERROR;
         }
@@ -501,7 +502,7 @@ GetSerialization(ICCPC *this, CREDENTIAL_PROVIDER_GET_SERIALIZATION_RESPONSE *re
         /* return CPGSR_RETURN_NO_CREDENTIAL_FINISHED leads to a loop! */
         if (text && icon)
         {
-            hr = SHStrDupW(L"Connected..", text);
+            hr = SHStrDupW(LoadLocalizedString(IDS_NFO_OVPN_STATE_CONNECTED), text);
             *icon = CPSI_SUCCESS;
         }
     }
@@ -620,7 +621,7 @@ again:
 
         if (res == IDRETRY && !ISCONNECTED(oc->c))
         {
-            wcsncpy_s(status, _countof(status), L"Current State: Retrying", _TRUNCATE);
+            LoadLocalizedStringBuf(status, _countof(status), IDS_NFO_STATE_RETRYING);
             NotifyEvents(oc, status);
 
             DisconnectHelper(oc->c);
@@ -628,7 +629,7 @@ again:
         }
         else if (res == IDCANCEL  && !ISCONNECTED(oc->c) && !ISDISCONNECTED(oc->c))
         {
-            wcsncpy_s(status, _countof(status), L"Current State: Cancelling", _TRUNCATE);
+            LoadLocalizedStringBuf(status, _countof(status), IDS_NFO_STATE_CANCELLING);
             NotifyEvents(oc, status);
 
             DisconnectHelper(oc->c);
@@ -654,7 +655,7 @@ Disconnect(ICCPC *this)
     OpenVPNConnection *oc = (OpenVPNConnection *) this;
     dmsg (L"profile <%ls>", oc->display_name);
 
-    NotifyEvents(oc, L"Disconnecting");
+    NotifyEvents(oc, LoadLocalizedString(IDS_NFO_STATE_DISCONNECTING));
 
     DisconnectHelper(oc->c);
 

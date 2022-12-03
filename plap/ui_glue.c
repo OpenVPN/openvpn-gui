@@ -510,7 +510,7 @@ RunProgressDialog(connection_t *c, PFTASKDIALOGCALLBACK cb_fn, LONG_PTR cb_data)
         flags |= TDF_RTL_LAYOUT;
     }
     _sntprintf_0(main_text, L"%ls %ls", LoadLocalizedString(IDS_MENU_CONNECT), c->config_name);
-    LoadLocalizedStringBuf(details_btn_text, _countof(main_text), IDS_MENU_STATUS);
+    LoadLocalizedStringBuf(details_btn_text, _countof(details_btn_text), IDS_MENU_STATUS);
 
     const TASKDIALOG_BUTTON extra_buttons[] = {
         {status_menu_id, details_btn_text},
@@ -527,7 +527,7 @@ RunProgressDialog(connection_t *c, PFTASKDIALOGCALLBACK cb_fn, LONG_PTR cb_data)
         .dwCommonButtons = TDCBF_CANCEL_BUTTON|TDCBF_RETRY_BUTTON,
         .pszWindowTitle = L""PACKAGE_NAME" PLAP",
         .pszMainInstruction = main_text,
-        .pszContent = L"Starting", /* replaced on create */
+        .pszContent = L"Starting", /* updated in progress callback */
         .pfCallback = cb_fn,
         .lpCallbackData = cb_data,
     };
