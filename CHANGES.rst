@@ -1,3 +1,421 @@
+Version 11.33.0 (202?-??-??)
+============================
+
+Updates
+-------
+* RTL support in message boxes and echo message window
+* Target for mingw build changed to _WIN32_WINNT_WIN7
+* Translations (Farsi)
+
+Version 11.32.0 (2022-12-02)
+============================
+
+New features
+------------
+* Support for RTL layout (for Farsi) and bidirectional text
+
+Updates
+-------
+* Translations (Chinese simplified)
+
+Version 11.31.0 (2022-11-07)
+============================
+
+Updates
+-------
+* Update README
+* Forget passwords while stopping persistent connections
+
+Version 11.30.0 (2022-11-04)
+============================
+
+New features
+-----------
+* Pre-logon access provider for starting connections from login screen
+* Persistent connections: Connections in config-auto folder started by
+  automatic service now visible and controllable from the GUI
+* Handle pkcs11-id query from daemon
+* Support for OpenVPN 3
+
+Updates
+-------
+* Translations (Chinese simplified)
+* Added a config file parser
+* Qspectre protection and control flow guard
+* Automatically find and use a free port for management interface
+
+Version 11.29.0 (2022-05-31)
+============================
+
+Updates
+-------
+* MSVC and CI build improvements
+* Load legacy provider if required
+* OpenSSL initializations: set OPENSSL_CONF and OPENSSL_MODULES
+* Support for OpenSSL 3 in MSVC builds
+
+Bug fixes
+---------
+* Username string escape in CRV response
+
+Version 11.27.0 (2021-12-15)
+============================
+
+Updates
+-------
+* Github action improvements
+* Allow for longer challenge response text (up to 120 characters)
+* Support import as a context menu for .ovpn files
+  Facilitates automatic import of downloaded ovpn files
+* Check content-deposition when importing from URL
+
+Bug fixes
+---------
+* Include applink for change password
+* Character remapping in filename of imported configs
+
+Version 11.26.0 (2021-10-05)
+============================
+
+New features
+------------
+* Implement importing of profile from a URL
+* New "--command import" command line option
+* Option to disable echo messages
+
+Updates
+-------
+* Translations (Japanese)
+
+Bug fixes
+---------
+* Correctly parse challenge response containing ': character
+
+
+Version 11.25.0 (2021-06-17)
+============================
+
+New features
+------------
+* Support for CR_TEXT challenge from server
+* Support for web-based authentication (OPEN_URL)
+
+Updates
+-------
+* Make resource files MSVC compliant
+* Github actions use cmake instead of msvc project
+
+Version 11.24.0 (2021-04-21)
+============================
+
+Updates
+-------
+* Translations (Polish, Portuguese)
+* Remove limit on max number of configs
+* Command line option for management_port_offset
+
+Version 11.23.0 (2021-02-24)
+============================
+
+New features
+------------
+* User configurable management_port_offset & menu_view
+* Display of echo messages from server
+* Indicate profiles in connecting state by a check-mark
+* New language: Farsi
+* Open all active connection status windows by double-click
+
+Version 11.21.0 (2020-12-09)
+============================
+
+Updates
+-------
+* Update README
+* Add logging support for pre/up/down scripts
+
+Version 11.19.0 (2020-09-21)
+============================
+
+New features
+------------
+* Per-monitor DPI scaling support
+
+Updates
+-------
+* Always use interactive service (even for admin users)
+* Allow config directories to nest deep up to 20 levels
+* Translations (Dutch, Ukrainian)
+
+Version 11.17.0 (2020-09-01)
+============================
+
+Updates
+-------
+* Startup option now named "Launch on User Logon"
+
+Version 11.16.0 (2020-08-12)
+============================
+
+Updates
+-------
+* Translations (Danish, German)
+
+Bug fixes
+---------
+* Do not do escape processing of static-challenge response
+
+Version 11.15.0 (2020-04-16)
+============================
+
+New features
+------------
+* Add "--command rescan" to rescan config folders
+
+Updates
+-------
+* Allow overwriting of profiles during import
+* MSVC build support
+
+Bug fixes
+---------
+* Remove CRLF in base64 output
+
+Version 11.15.0 (2019-10-30)
+============================
+
+Updates
+-------
+* Translations (Finnish)
+
+Version 11.13.0 (2019-04-19)
+============================
+
+Updates
+-------
+* Appveyor/CI improvements
+* Translations (Russian)
+
+Version 11.12.0 (2019-02-20)
+============================
+
+New features
+------------
+* Nested config menu display
+  User selectable from settings: flat/nested/auto
+* Setting of env variables from server: 'echo setenv name var'
+* New language: Simplified Chinese
+
+Updates
+-------
+* Translations (Italian, Korean, Dutch)
+* Use a dynamic array for configuration profile list
+* Ignore pushed --route-method when using interactive service
+* Service-only menu item removed
+* Set 'notepad.exe' as the fallback editor
+* Do not clear saved passwords on verification failure
+
+Bug fixes
+---------
+* Display IP address correctly when only IPv6 is assigned
+* 'openvpn-gui --help' not to be treated as a running instance
+* 'echo save-passwords' should not override 'disable_save_passwords'
+  enforced by an Administrator
+
+Version 11.10.0 (2018-03-02)
+============================
+
+New features
+------------
+* Display assigned IPs and connection stats on status window
+* Support sending commands to running instance
+* Add restart button to connection menus
+* Auto submit saved auth-user-pass credentials after a brief delay
+
+Updates
+-------
+* Translations (German, Russian, French)
+* In '--connect profile-name' make the extension (.ovpn) optional
+* Treat --connect as --command connect in case GUI is already running
+* Allow the GUI to run without any registry keys present using defaults
+* Check for invalid characters in user inputs
+
+Bug fixes
+---------
+* Correct parsing of the process ID returned by interactive service
+
+Version 11.9.0 (2017-09-26)
+===========================
+
+New features
+------------
+* Highlight (color) warning and error messages in status window
+
+Updates
+-------
+* Translations (French)
+* Add instruction how to build using MSYS2
+
+Version 11.8.0 (2017-07-25)
+===========================
+
+Updates
+-------
+* Translations (Ukrainian, Russian)
+* Add warning to credential dialogs on retry after auth failure
+
+Version 11.7.0 (2017-06-20)
+===========================
+
+Updates
+-------
+* Translations (German, Finnish)
+* Set focus to password field when username is filled
+* Close registry keys and service handles after use
+
+Version 11.6.0 (2017-05-12)
+===========================
+
+Updates
+-------
+* Close token handle in GetProcessTokenGroups()
+* Translations (Korean)
+* Several AppVeyor build improvements
+
+Version 11.5.0 (2017-03-22)
+===========================
+
+New features
+------------
+* Add a system-wide option to disable the password save feature
+* Parse ECHO directives from openvpn
+  - "echo forget-passwords"
+  - "echo save-passwords"
+* New language: Czech
+
+Updates
+-------
+* Translations (French)
+* AppVeyor build support
+* Readme: add AppVeyor and travis badge
+* Check group membership without needing connection to DC
+* Update travis-ci
+* Target changed to _WIN32_WINNT_VISTA
+* Fix truncation of usage message shown with --help
+* Enable ASLR and DEP
+* Close service pipe in case of startup error
+* Update README
+* Added Windows Vista/Win7/Win8/Win8.1/Win10 to compatibility manifest
+* Suppress warning popups if silent_connection is set
+* Translations (Dutch, Chinese-traditional)
+
+Bug fixes
+---------
+* Do not set status as connected when connection completes with errors
+
+Version 11.4.0 (2016-12-16)
+===========================
+
+Updates
+-------
+* Load icons at sizes given by DPI-dependent system metric
+* Add 24x24 and 20x20 versions of each icon.
+
+Version 11.3.0 (2016-12-02)
+===========================
+
+Updates
+-------
+* Translations (Norwegian)
+
+Version 11.2.0 (2016-11-25)
+===========================
+
+New features
+------------
+* Make the program DPI aware
+
+Version 11.1.0 (2016-11-17)
+===========================
+
+New features
+------------
+* Support pkcs11 token insertion request and pin input
+* Handle dynamic challenge/response
+* Make options saved in registry editable by user
+* Use file associations to open config and log
+* Save username and optionally passwords
+* Add "Launch on startup" setting
+* New Windows 8 styled system tray icons.
+* Support user and global config directories
+
+Updates
+-------
+* Translations (Ukrainian, Russian, Italian, Dutch, Portuguese)
+* Check for interactive service only if OpenVPN version is >= 2.4
+* Update About page
+* Do not start a connection when a previous thread has not fully exited
+* Force-kill any openvpn processes that fail to stop
+* NUL terminate messages received from interactive service
+* Improve the message shown when no config files are found
+* Remove unused nsis installer
+* CI-build: add build with --disable-password-change and other improvements
+* Add instructions on how to build openvpn-gui using openvpn-build
+* Rename README as README.rst and modernize it
+* Rescan configs even when connections are active
+* Read errors from the service pipe and handle fatal ones
+* Update build instructions
+* Handle interactive service policy restrictions
+* Remove "Run with highest privilege available"
+
+Bug fixes
+---------
+* Fix exit handling while in modal loops
+* Fix some duplicate resource ids
+* Handle empty strings in Base64Encode
+* Ensure strings read from registry are null terminated
+* Fix wrongly used o.conn[config] in place of current config c
+* Fix potential out-of-bounds access
+
+Version 11 (2016-02-22)
+=======================
+
+New features
+------------
+* "Import file" feature
+
+Updates
+-------
+* Warn if integrative service is not installed or not running
+* Updating README build instructions
+* Better error reporting when connection fails to come up
+* Put --log first in the command line
+* Fix the path of notepad.exe
+* Change default log file location to a OpenVPN/log in user's profile directory
+* Do not use interactive service if running as admin
+* cleanup .travis.yml
+
+Version 10(2016-01-04)
+======================
+
+Updates
+-------
+* Support for travis-ci builds
+
+
+Version 9 (2016-01-04)
+======================
+
+Updates
+-------
+* Run with highest privilege available
+* Do not disconnect on suspend
+* Convert changes.txt to CHANGES.rst
+* Translations (Russian, Ukrainian)
+
+Bug fixes
+---------
+* Fix errors reported by cppcheck
+
 Version 7 (2015-02-27)
 ======================
 
