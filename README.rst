@@ -19,7 +19,7 @@ branch. OpenVPN-GUI gets installed by default in all OpenVPN installers.
 Installation using the official OpenVPN installers
 **************************************************
 
-* Download an `OpenVPN installer <https://openvpn.net/index.php/open-source.html>`_
+* Download an `OpenVPN installer <https://openvpn.net/index.php/download/community-downloads.html>`_
 * If you have a previous version of OpenVPN GUI running, shut it down.
   Make sure it's closed by ALL logged on users.
 
@@ -51,7 +51,7 @@ configuration file with .ovpn suffix. Any text editor (e.g. notepad.exe) can be
 used to create a OpenVPN configuration files. Note that *log* and *log-append*
 options are ignored as OpenVPN GUI redirects the normal output to a log file
 itself. There are sample config files in the *sample-config* folder. Please
-refer to the `OpenVPN project homepage <https://openvpn.net>`_ for more
+refer to the `OpenVPN How To <https://openvpn.net/community-resources/how-to/#creating-configuration-files-for-server-and-clients>`_ for more
 information regarding creating the configuration file.
 
 Once the configuration file is ready, you need to let OpenVPN GUI know about it.
