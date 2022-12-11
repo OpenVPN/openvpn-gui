@@ -412,7 +412,7 @@ BuildFileList()
     static bool issue_warnings = true;
     int recurse_depth = 20; /* maximum number of levels below config_dir to recurse into */
     int flags = 0;
-    int root0 = 0;
+    static int root_gp, system_gp, persistent_gp;
     int max_configs = (1<<16) - o.mgmt_port_offset;
 
     if (o.silent_connection)
@@ -432,31 +432,30 @@ BuildFileList()
         o.num_configs = 0;
         o.num_groups = 0;
         flags |= FLAG_ADD_CONFIG_GROUPS;
-        root0 = NewConfigGroup(L"ROOT", -1, flags); /* -1 indicates no parent */
+        root_gp = NewConfigGroup(L"ROOT", -1, flags); /* -1 indicates no parent */
+        persistent_gp = NewConfigGroup(L"Persistent Profiles", root_gp, flags);
+        system_gp = NewConfigGroup(L"System Profiles", root_gp, flags);
     }
-    else
-        root0 = 0;
+    /* else these parent groups use their saved values */
 
     if (issue_warnings)
     {
         flags |= FLAG_WARN_DUPLICATES | FLAG_WARN_MAX_CONFIGS;
     }
 
-    BuildFileList0 (o.config_dir, recurse_depth, root0, flags);
+    BuildFileList0 (o.config_dir, recurse_depth, root_gp, flags);
 
-    int root1 = NewConfigGroup(L"System Profiles", root0, flags);
     if (!IsSamePath(o.global_config_dir, o.config_dir))
     {
-        BuildFileList0 (o.global_config_dir, recurse_depth, root1, flags);
+        BuildFileList0 (o.global_config_dir, recurse_depth, system_gp, flags);
     }
 
     if (o.service_state == service_connected
         && o.enable_persistent)
     {
-        root1 = NewConfigGroup(L"Persistent Profiles", root0, flags);
         if (!IsSamePath(o.config_auto_dir, o.config_dir))
         {
-            BuildFileList0 (o.config_auto_dir, recurse_depth, root1, flags);
+            BuildFileList0 (o.config_auto_dir, recurse_depth, persistent_gp, flags);
         }
     }
 
