@@ -26,6 +26,7 @@
 #endif
 
 #include <windows.h>
+#include <assert.h>
 
 #include "main.h"
 #include "openvpn-gui-res.h"
@@ -438,6 +439,8 @@ BuildFileList()
     }
     /* else these parent groups use their saved values */
 
+    assert (&o.groups[persistent_gp] == PERSISTENT_ROOT_GROUP); /* sanity check */
+
     if (issue_warnings)
     {
         flags |= FLAG_WARN_DUPLICATES | FLAG_WARN_MAX_CONFIGS;
@@ -470,11 +473,7 @@ BuildFileList()
         o.num_configs = max_configs; /* management-port cant handle more -- ignore the rest */
     }
 
-    /* if adding groups, activate non-empty ones */
-    if (flags &FLAG_ADD_CONFIG_GROUPS)
-    {
-        ActivateConfigGroups();
-    }
+    ActivateConfigGroups();
 
     issue_warnings = false;
 }

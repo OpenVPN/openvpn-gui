@@ -218,22 +218,25 @@ CreatePopupMenus()
     }
     else {
         /* construct the submenu tree first */
-        if (USE_NESTED_CONFIG_MENU)
+        /* i = 0 is the root menu and has no parent */
+        for (int i = 1; i < o.num_groups; i++)
         {
-            /* i = 0 is the root menu and has no parent */
-            for (int i = 1; i < o.num_groups; i++)
+            config_group_t *this = &o.groups[i];
+            config_group_t *parent = PARENT_GROUP(this);
+
+            /* Root group of persistent connections is always displayed if active.
+             * Add the rest only if (USE_NESTED_CONFIG_MENU)
+             */
+            if (!this->active || !parent
+                || (this != PERSISTENT_ROOT_GROUP && !USE_NESTED_CONFIG_MENU))
             {
-                config_group_t *this = &o.groups[i];
-                config_group_t *parent = PARENT_GROUP(this);
-
-                if (!this->active || !parent)
-                    continue;
-                AppendMenu(parent->menu, MF_POPUP, (UINT_PTR) this->menu, this->name);
-                this->pos = parent->children++;
-
-                PrintDebug(L"Submenu %d named %ls added to parent %ls with position %d",
-                        i, this->name, parent->name, this->pos);
+                continue;
             }
+            AppendMenu(parent->menu, MF_POPUP, (UINT_PTR) this->menu, this->name);
+            this->pos = parent->children++;
+
+            PrintDebug(L"Submenu %d named %ls added to parent %ls with position %d",
+                    i, this->name, parent->name, this->pos);
         }
 
         /* add config file (connection) entries */
@@ -245,6 +248,11 @@ CreatePopupMenus()
             if (USE_NESTED_CONFIG_MENU)
             {
                 parent = CONFIG_GROUP(c);
+            }
+            else if (c->flags & FLAG_DAEMON_PERSISTENT)
+            {
+                /* Persistent connections always displayed under a submenu */
+                parent = PERSISTENT_ROOT_GROUP;
             }
             assert(parent);
 
@@ -554,7 +562,13 @@ SetMenuStatusById(int i, conn_state_t state)
         int pos = c->pos;
 
         if (USE_NESTED_CONFIG_MENU && CONFIG_GROUP(c))
+        {
             parent = CONFIG_GROUP(c);
+        }
+        else if (c->flags & FLAG_DAEMON_PERSISTENT)
+        {
+            parent = PERSISTENT_ROOT_GROUP;
+        }
 
         if (checked == 1)
         {
