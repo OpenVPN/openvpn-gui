@@ -123,6 +123,7 @@ typedef struct config_group {
 /* short hand for pointer to the group a config belongs to */
 #define CONFIG_GROUP(c) (&o.groups[(c)->group])
 #define PARENT_GROUP(cg) ((cg)->parent < 0 ? NULL : &o.groups[(cg)->parent])
+#define PERSISTENT_ROOT_GROUP (&o.groups[1])
 
 /* Connections parameters */
 struct connection {
