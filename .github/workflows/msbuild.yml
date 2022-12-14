@@ -21,7 +21,7 @@ jobs:
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
 
     name: 'msvc - ${{matrix.arch}} - ${{ matrix.ossl }}${{ matrix.ovpn3.name }}'
-    runs-on: windows-2019
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
     - uses: lukka/get-cmake@latest

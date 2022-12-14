@@ -5,7 +5,7 @@
             "name": "base",
             "hidden": true,
             "binaryDir": "${sourceDir}/out/build/${presetName}",
-            "generator": "Visual Studio 16 2019",
+            "generator": "Visual Studio 17 2022",
             "cacheVariables": {
                 "CMAKE_TOOLCHAIN_FILE": {
                     "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
