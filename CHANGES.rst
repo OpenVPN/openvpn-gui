@@ -1,11 +1,21 @@
-Version 11.33.0 (202?-??-??)
+Version 11.34.0 (202?-??-??)
+===========================
+
+Version 11.33.0 (2022-12-15)
 ============================
 
 Updates
 -------
 * RTL support in message boxes and echo message window
 * Target for mingw build changed to _WIN32_WINNT_WIN7
-* Translations (Farsi)
+* Translations (Farsi, Chinese simplified)
+* Localize daemon state names and PLAP dialog
+* Always show persistent connections as a separate group
+
+Bug fixes
+---------
+* Fix disconnection failure when management interface repeatedly
+  tries to connect and fails in some corner cases
 
 Version 11.32.0 (2022-12-02)
 ============================
