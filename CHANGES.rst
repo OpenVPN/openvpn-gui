@@ -1,5 +1,21 @@
-Version 11.34.0 (202?-??-??)
-===========================
+Version 11.34.0
+===============
+
+New features
+------------
+* Connections active on exit/logout are now automatically restarted
+  in the next session of the GUI
+
+Updates
+-------
+* Support for WEB_AUTH request from the server
+* Persistent connections are now shown in a submenu even if
+  nested-menu-view is not active
+
+Bug fixes
+---------
+* Fix truncated text in German localization of settings dialog
+* Fix the issue of management-password truncated at 15 bytes
 
 Version 11.33.0 (2022-12-15)
 ============================
