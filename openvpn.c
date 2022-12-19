@@ -1426,16 +1426,36 @@ void OnByteCount(connection_t *c, char *msg)
 
 /*
  * Handle INFOMSG from OpenVPN. At the moment it handles
- * OPEN_URL:<url> and CR_TEXT:<flags>:<challenge-str> messages
+ * WEB_AUTH:<flags>:<url>, OPEN_URL:<url> and CR_TEXT:<flags>:<challenge-str> messages
  * used by two-step authentication.
  */
 void OnInfoMsg(connection_t* c, char* msg)
 {
     PrintDebug(L"OnInfoMsg with msg = %hs", msg);
 
+    char *p = NULL;
+    wchar_t *url = NULL;
+
     if (strbegins(msg, "OPEN_URL:"))
     {
-        wchar_t* url = Widen(msg + 9);
+        url = Widen(msg + 9);
+    }
+    else if (strbegins(msg, "WEB_AUTH:") && (p = strchr(msg + 9, ':')) != NULL)
+    {
+        if (p != msg + 9)
+        {
+            /* flags not empty: log a message that we do not support any flags */
+            *p = '\0';
+            wchar_t *flags = Widen(msg + 9);
+            if (flags)
+                WriteStatusLog (c, L"GUI> Unsupported flags in WEB_AUTH request ignored: ", flags, false);
+            free(flags);
+        }
+        url = Widen(p+1);
+    }
+
+    if (url)
+    {
         if (!open_url(url))
         {
             WriteStatusLog(c, L"GUI> ", L"Error: failed to open url from info msg", false);
@@ -2389,7 +2409,7 @@ LaunchOpenVPN(connection_t *c)
 
     /* Construct command line -- put log first */
     _sntprintf_0(cmdline, _T("openvpn --log%ls \"%ls\" --config \"%ls\" "
-        "--setenv IV_GUI_VER \"%hs\" --setenv IV_SSO openurl,crtext --service %ls 0 --auth-retry interact "
+        "--setenv IV_GUI_VER \"%hs\" --setenv IV_SSO openurl,webauth,crtext --service %ls 0 --auth-retry interact "
         "--management %hs %hd stdin --management-query-passwords %ls"
         "--management-hold"),
         (o.log_append ? _T("-append") : _T("")), c->log_path,
