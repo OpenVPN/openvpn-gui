@@ -117,6 +117,7 @@
 #define ID_RB_BALLOON5                   246
 #define ID_TXT_PERSISTENT                247
 #define ID_CHK_PLAP_REG                  248
+#define ID_CHK_AUTO_RESTART              249
 
 /* Proxy Auth Dialog */
 #define ID_DLG_PROXY_AUTH                250
