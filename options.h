@@ -224,6 +224,7 @@ typedef struct {
 
     DWORD ovpn_engine;                  /* 0 - openvpn2, 1 - openvpn3 */
     DWORD enable_persistent;            /* 0 - disabled, 1 - enabled, 2 - enabled & auto attach */
+    DWORD enable_auto_restart;          /* 0 - disabled, >0 enabled */
 #ifdef DEBUG
     FILE *debug_fp;
 #endif

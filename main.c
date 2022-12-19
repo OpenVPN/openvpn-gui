@@ -66,6 +66,8 @@ static void ShowSettingsDialog();
 void CloseApplication(HWND hwnd);
 void ImportConfigFileFromDisk();
 void ImportConfigFromAS();
+static void SaveAutoRestartList();
+static void LoadAutoRestartList();
 
 /*  Class name and window title  */
 TCHAR szClassName[ ] = _T("OpenVPN-GUI");
@@ -585,6 +587,11 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         ImportConfigFile(o.action_arg, true); /* prompt user */
       }
 
+      if (o.enable_auto_restart)
+      {
+          LoadAutoRestartList();
+      }
+
       if (!AutoStartConnections()) {
         SendMessage(hwnd, WM_CLOSE, 0, 0);
         break;
@@ -675,6 +682,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       return(TRUE);
 
     case WM_ENDSESSION:
+      SaveAutoRestartList();
       StopAllOpenVPN();
       OnDestroyTray();
       break;
@@ -836,6 +844,8 @@ CloseApplication(HWND hwnd)
         break; /* show the above message box only once */
     }
 
+    SaveAutoRestartList(); /* active connection names saved in registry */
+
     DestroyWindow(hwnd);
 }
 
@@ -947,5 +957,120 @@ ErrorExit(int exit_code, const wchar_t *msg)
     else
     {
         exit(exit_code);
+    }
+}
+
+/**
+ * Save a list of active connections in registry. If enable_auto_restart
+ * is false, any previously saved list is deleted and no new list is saved.
+ * Do not show any messages here as this may be called on receiving
+ * WM_ENDSESSION (user logout).
+ */
+static void
+SaveAutoRestartList()
+{
+    size_t len = 0;
+    int nactive = 0;
+    int max_active = o.num_configs - CountConnState(disconnected);
+
+    if (!o.enable_auto_restart || max_active <= 0)
+    {
+        /* delete the list -- on load this gets treated as an empty list */
+        RegDeleteKeyValueW(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, L"auto_restart_list");
+        return;
+    }
+
+    int *active_conns = malloc((size_t) max_active*sizeof(int));
+
+    if (!active_conns)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Out of memory while persisting state in registry");
+        return;
+    }
+
+    for (int i = 0; i < o.num_configs; i++)
+    {
+        if (o.conn[i].state == disconnected
+            || o.conn[i].flags & FLAG_DAEMON_PERSISTENT)
+        {
+            continue;
+        }
+        /* accumulate space needed for list of active connections */
+        len += wcslen(o.conn[i].config_name) + 1;
+        active_conns[nactive++] = i;
+    }
+    len++; /* for double nul termination */
+
+    if (len == 1) len++; /* two nuls for empty string */
+
+    /* Make a double nul terminated list of active connections */
+    wchar_t *list = calloc(len, sizeof(wchar_t));
+    if (!list)
+    {
+        free(active_conns);
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Out of memory while persisting state in registry");
+        return;
+    }
+
+    wchar_t *p = list;
+    for (int i = 0; i < nactive; i++)
+    {
+        connection_t *c = &o.conn[active_conns[i]];
+        wcscpy(p, c->config_name); /* wcscpy is safe here */
+        p += wcslen(c->config_name) + 1;
+    }
+
+    /* Save the list in registry for auto-connect on restart */
+    LSTATUS status = RegSetKeyValueW(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, L"auto_restart_list",
+                                   REG_MULTI_SZ, list, (DWORD) len*sizeof(wchar_t));
+    if (status != ERROR_SUCCESS)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"RegSetKeyValue returned error: status = %lu", status);
+    }
+
+    free(active_conns);
+    free(list);
+}
+
+/*
+ * Read list of active connections in last session and set them to auto-start
+ */
+static void
+LoadAutoRestartList()
+{
+    wchar_t *list;
+    DWORD len = 0;
+
+    LSTATUS status = RegGetValueW(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, L"auto_restart_list",
+                                RRF_RT_REG_MULTI_SZ, NULL, NULL, &len);
+    if (status != ERROR_SUCCESS || len == 0)
+    {
+        return;
+    }
+
+    list = malloc(len);
+    if (!list)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Out of memory while reading state from registry");
+        return;
+    }
+
+    status = RegGetValueW(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, L"auto_restart_list",
+                         RRF_RT_REG_MULTI_SZ, NULL, list, &len);
+    if (status != ERROR_SUCCESS)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Error reading state from registry");
+        free(list);
+        return;
+    }
+
+    for (wchar_t *p = list; *p; p += wcslen(p) + 1)
+    {
+        connection_t *c = GetConnByName(p);
+        if (!c || c->flags & FLAG_DAEMON_PERSISTENT)
+        {
+            continue;
+        }
+        c->auto_connect = true;
     }
 }
