@@ -543,6 +543,8 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
             ShowWindow(GetDlgItem(hwndDlg, ID_CHK_PLAP_REG), SW_HIDE);
         else if (plap_status != 0)
             Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_PLAP_REG), BST_CHECKED);
+        if (o.enable_auto_restart)
+            Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_AUTO_RESTART), BST_CHECKED);
 
         break;
 
@@ -589,6 +591,9 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
                 o.enable_persistent = 0;
             o.show_script_window =
                 (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_SHOW_SCRIPT_WIN)) == BST_CHECKED);
+            o.enable_auto_restart =
+                (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_AUTO_RESTART)) == BST_CHECKED);
+
 
             SaveRegistryKeys();
 
