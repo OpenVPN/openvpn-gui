@@ -146,7 +146,7 @@ struct connection {
         SOCKET sk;
         SOCKADDR_IN skaddr;
         time_t timeout;
-        char password[16];
+        char password[4096];        /* match with largest possible passwd in openvpn.exe */
         char *saved_data;
         size_t saved_size;
         mgmt_cmd_t *cmd_queue;
