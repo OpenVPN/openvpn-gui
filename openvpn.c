@@ -2390,6 +2390,12 @@ LaunchOpenVPN(connection_t *c)
     HANDLE hNul = NULL;
     DWORD written;
     BOOL retval = FALSE;
+    DWORD passwd_len = 16; /* incuding NUL */
+
+    if (passwd_len > sizeof(c->manage.password))
+    {
+        passwd_len = sizeof(c->manage.password);
+    }
 
     RunPreconnectScript(c);
 
@@ -2403,7 +2409,7 @@ LaunchOpenVPN(connection_t *c)
     }
 
     /* Create a management interface password */
-    GetRandomPassword(c->manage.password, sizeof(c->manage.password) - 1);
+    GetRandomPassword(c->manage.password, passwd_len - 1);
 
     find_free_tcp_port(&c->manage.skaddr);
 
@@ -2434,7 +2440,7 @@ LaunchOpenVPN(connection_t *c)
         }
         else
         {
-            DWORD size = _tcslen(c->config_dir) + _tcslen(options) + sizeof(c->manage.password) + 3;
+            DWORD size = _tcslen(c->config_dir) + _tcslen(options) + passwd_len + 3;
             TCHAR startup_info[1024];
 
             if (!AuthorizeConfig(c))
@@ -2445,15 +2451,15 @@ LaunchOpenVPN(connection_t *c)
             }
 
             c->hProcess = NULL;
-            c->manage.password[sizeof(c->manage.password) - 1] = '\n';
+            c->manage.password[passwd_len - 1] = '\n';
 
             /* Ignore pushed route-method when service is in use */
             const wchar_t* extra_options = L" --pull-filter ignore route-method";
             size += wcslen(extra_options);
 
             _sntprintf_0(startup_info, L"%ls%lc%ls%ls%lc%.*hs", c->config_dir, L'\0',
-                options, extra_options, L'\0', sizeof(c->manage.password), c->manage.password);
-            c->manage.password[sizeof(c->manage.password) - 1] = '\0';
+                options, extra_options, L'\0', passwd_len, c->manage.password);
+            c->manage.password[passwd_len - 1] = '\0';
 
             res = WritePipe(c->iserv.pipe, startup_info, size * sizeof(TCHAR));
         }
@@ -2553,9 +2559,9 @@ LaunchOpenVPN(connection_t *c)
         CloseHandleEx(&hNul);
 
         /* Pass management password to OpenVPN process */
-        c->manage.password[sizeof(c->manage.password) - 1] = '\n';
-        WriteFile(hStdInWrite, c->manage.password, sizeof(c->manage.password), &written, NULL);
-        c->manage.password[sizeof(c->manage.password) - 1] = '\0';
+        c->manage.password[passwd_len - 1] = '\n';
+        WriteFile(hStdInWrite, c->manage.password, passwd_len, &written, NULL);
+        c->manage.password[passwd_len - 1] = '\0';
 
         c->hProcess = pi.hProcess; /* Will be closed in the event loop on exit */
         CloseHandle(pi.hThread);
