@@ -28,10 +28,12 @@ Installation using the official OpenVPN installers
 Manual installation of OpenVPN GUI
 **********************************
 
-* `Download <https://openvpn.net/index.php/download/community-downloads.html>`_
-  and install OpenVPN
+* First install OpenVPN using an official installer as described above.
 
-* Download OpenVPN GUI of your choice and save it in OpenVPN's bin folder.
+* Build your own version of OpenVPN GUI from source.  See `BUILD.rst <BUILD.rst>`_
+  for build instructions. From the build tree copy *openvpn-gui.exe*,
+  *libopenvpn_plap.dll*, *openvpn-plap-install.reg* and *openvpn-plap-uninstall.reg*
+  to OpenVPN's bin folder.
   Default is *C:\\Program Files\\OpenVPN\\bin\\*. You must put it in this folder
   because OpenVPN GUI depends on the OpenSSL DLLs installed in this folder by
   OpenVPN.
@@ -69,6 +71,9 @@ There are three ways to do this:
   and to add the user to it. This will only work if admin-level credentials are
   available.
 * Use the "Import file" function in OpenVPN GUI itself
+* See the section on `Persistent or Pre-started connections`_
+  for how to use OpenVPN GUI to conftrol configurations in
+  *C:\\Program Files\\OpenVPN\\config-auto\\* that are started by the automatic service.
 
 Using OpenVPN GUI
 #################
@@ -93,6 +98,9 @@ may be optionally included. Example::
     openvpn-gui --connect office.ovpn
     OR
     openvpn-gui --connect office
+
+Starting version 11.34, any connections active when OpenVPN GUI exits or the user
+logs out are automatically reconnected when OpenVPN GUI is restarted.
 
 To get help with OpenVPN GUI please use one of the official `OpenVPN support
 channels <https://community.openvpn.net/openvpn/wiki/GettingHelp>`_.
@@ -122,6 +130,8 @@ reconnect, detach or re-attach them using the menu items.
 It requires that such connections be started with
 `--management 127.0.0.1 port [pw-file]` option in their config file.
 `pw-file` containing a password is optional, but highly recommended.
+The password should be a single line of text, preferably shorter than 128
+characters of plain ascii.
 Further, if `--auth-user-pass` or any such options requiring
 interactive user input are present, the config file must also
 contain `--management-query-passwords`.
