@@ -6,7 +6,7 @@ This is the recommended way of building openvpn-gui on Windows, which is also us
 Prerequisites
 -------------
 
- - Visual Studio 2019 (build tools should be enough, also 2022 will likely work)
+ - Visual Studio 2022 (build tools should be enough)
  - CMake
  - vcpkg (add the environment variable ``VCPKG_ROOT`` which points to vcpkg installation)
 
