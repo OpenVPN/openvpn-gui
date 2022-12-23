@@ -29,7 +29,7 @@ jobs:
     - name: Restore artifacts, or setup vcpkg (do not install any package)
       uses: lukka/run-vcpkg@v10
       with:
-        vcpkgGitCommitId: "a5d6d145164e82e67fbf91a4a30f98699d30de63"
+        vcpkgGitCommitId: "6adca01a3fadca0cc0b80f03ec57c7c3a0be5c02"
         appendedCacheKey: "${{ matrix.arch }} - ${{ matrix.ossl }}"
 
     - name: Run CMake consuming CMakePreset.json and vcpkg.json by mean of vcpkg.
