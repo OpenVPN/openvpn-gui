@@ -176,7 +176,7 @@ BEGIN
     AUTORADIOBUTTON "手动", ID_RB_BALLOON4, 86, 200, 90, 10
     AUTORADIOBUTTON "禁用", ID_RB_BALLOON5, 181, 200, 40, 10
     AUTOCHECKBOX "启用预登录访问提供程序（需要管理员访问权限）", ID_CHK_PLAP_REG, 17, 215, 200, 10
-    AUTOCHECKBOX "Enable auto restart of active connections", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
+    AUTOCHECKBOX "启用活动连接的自动重新启动", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
 END
 
 /* Advanced Dialog */
