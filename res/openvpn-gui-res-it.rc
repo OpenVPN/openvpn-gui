@@ -159,21 +159,22 @@ BEGIN
     GROUPBOX "Opzioni avvio", 202, 6, 47, 235, 30
     AUTOCHECKBOX "&Esegui all'avvio di Windows", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "Impostazioni", ID_GROUPBOX3, 6, 82, 235, 165
+    GROUPBOX "Impostazioni", ID_GROUPBOX3, 6, 82, 235, 175
     AUTOCHECKBOX "Aggiungi in coda al f&ile registro", ID_CHK_LOG_APPEND, 17, 95, 200, 10
     AUTOCHECKBOX "Visualizza &finestra script", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "Connessione &silenziosa", ID_CHK_SILENT, 17, 125, 200, 10
     AUTOCHECKBOX "Utilizza sempre il servizio interattivo", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
     LTEXT "Visualizza notifica", ID_TXT_BALLOON, 17, 155, 150, 10
-    AUTORADIOBUTTON "Alla &connessione", ID_RB_BALLOON1, 28, 170, 200, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Alla connessione/&riconnessione", ID_RB_BALLOON2, 28, 185, 200, 10
-    AUTORADIOBUTTON "&Mai", ID_RB_BALLOON0, 28, 200, 200, 10
+    AUTORADIOBUTTON "Alla &connessione", ID_RB_BALLOON1, 17, 170, 65, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Alla connessione/&riconnessione", ID_RB_BALLOON2, 88, 170, 115, 10
+    AUTORADIOBUTTON "&Mai", ID_RB_BALLOON0, 210, 170, 30, 10
     LTEXT "Persistent Connessioni", ID_TXT_PERSISTENT, 17, 185, 100, 10
-    AUTORADIOBUTTON "A&utomatica", ID_RB_BALLOON3, 28, 200, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "&Manuale", ID_RB_BALLOON4, 86, 200, 90, 10
-    AUTORADIOBUTTON "&Disabilita", ID_RB_BALLOON5, 181, 200, 40, 10
-    AUTOCHECKBOX "Abilita provider accesso e pre-accesso (richiede accesso come amministratore)", ID_CHK_PLAP_REG, 17, 215, 200, 10
-    AUTOCHECKBOX "Enable auto restart of active connections", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
+    AUTORADIOBUTTON "A&utomatica", ID_RB_BALLOON3, 17, 200, 60, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "&Manuale", ID_RB_BALLOON4, 88, 200, 90, 10
+    AUTORADIOBUTTON "&Disabilita", ID_RB_BALLOON5, 180, 200, 50, 10
+    AUTOCHECKBOX "Enable Pre-logon Access Provider", ID_CHK_PLAP_REG, 17, 215, 200, 10
+    LTEXT "(requires administrator access)", 220, 28, 225, 200, 10
+    AUTOCHECKBOX "Enable auto restart of active connections", ID_CHK_AUTO_RESTART, 17, 240, 200, 10
 END
 
 /* Advanced Dialog */
