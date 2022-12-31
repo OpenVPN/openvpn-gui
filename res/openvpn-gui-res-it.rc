@@ -108,7 +108,7 @@ END
 /* Change Passphrase Dialog */
 ID_DLG_CHGPASS DIALOG 6, 18, 193, 82
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "OpenVPN - Modifica della frase di sicurezza"
+CAPTION "OpenVPN - Modifica della frase di sicurezza chiave privata"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ITALIAN, SUBLANG_DEFAULT
 BEGIN
@@ -168,13 +168,13 @@ BEGIN
     AUTORADIOBUTTON "Alla &connessione", ID_RB_BALLOON1, 17, 170, 65, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Alla connessione/&riconnessione", ID_RB_BALLOON2, 88, 170, 115, 10
     AUTORADIOBUTTON "&Mai", ID_RB_BALLOON0, 210, 170, 30, 10
-    LTEXT "Persistent Connessioni", ID_TXT_PERSISTENT, 17, 185, 100, 10
-    AUTORADIOBUTTON "A&utomatica", ID_RB_BALLOON3, 17, 200, 60, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "&Manuale", ID_RB_BALLOON4, 88, 200, 90, 10
+    LTEXT "Connessioni persistenti", ID_TXT_PERSISTENT, 17, 185, 100, 10
+    AUTORADIOBUTTON "A&utomatiche", ID_RB_BALLOON3, 17, 200, 60, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "&Manuali", ID_RB_BALLOON4, 88, 200, 90, 10
     AUTORADIOBUTTON "&Disabilita", ID_RB_BALLOON5, 180, 200, 50, 10
-    AUTOCHECKBOX "Enable Pre-logon Access Provider", ID_CHK_PLAP_REG, 17, 215, 200, 10
-    LTEXT "(requires administrator access)", 220, 28, 225, 200, 10
-    AUTOCHECKBOX "Enable auto restart of active connections", ID_CHK_AUTO_RESTART, 17, 240, 200, 10
+    AUTOCHECKBOX "Abilita provider di pre-accesso/accesso", ID_CHK_PLAP_REG, 17, 215, 200, 10
+    LTEXT "(richiede accesso come amministratore)", 220, 28, 225, 200, 10
+    AUTOCHECKBOX "Abilita riavvio automatico connessioni attive", ID_CHK_AUTO_RESTART, 17, 240, 200, 10
 END
 
 /* Advanced Dialog */
@@ -218,7 +218,7 @@ BEGIN
     AUTORADIOBUTTON "&Mai", ID_RB_BALLOON4, 88, 245, 50, 10
     LTEXT "I messaggi ripetuti sono disattivati ​​per: ", 208, 17, 260, 125, 10
     EDITTEXT ID_EDT_POPUP_MUTE, 150, 258, 30, 12, ES_AUTOHSCROLL
-    LTEXT "hours", 209, 190, 260, 40, 10
+    LTEXT "ore", 209, 190, 260, 40, 10
 
 #if ENABLE_OVPN3
     GROUPBOX "Engine OpenVPN", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
@@ -236,10 +236,10 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ITALIAN, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, ID_ICON_ABOUT, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v%ls - Interfaccia di OpenVPN per Windows\n\
-Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
-Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
-Copyright (C) 2012-2022 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
+    LTEXT "OpenVPN GUI v. %ls - Interfaccia OpenVPN per Windows\n\
+    Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
+    Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
+    Copyright (C) 2012-2022 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
     LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_LTEXT_ABOUT2, 36, 55, 206, 50
     LTEXT "OpenVPN - Un'applicazione che permette di creare tunnel sicuri \
 in reti IP  con una singola porta TCP/UDP, con il supporto basato \
@@ -290,7 +290,7 @@ CAPTION "Selezione certificato"
 FONT 8, "Segoe UI"
 LANGUAGE LANG_ITALIAN, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "Certificato PKCS11 disponibile:", ID_TXT_PKCS11, 17, 12, 171, 12
+    LTEXT "Certificati PKCS11 disponibili:", ID_TXT_PKCS11, 17, 12, 171, 12
     CONTROL "", ID_LVW_PKCS11, "SysListView32", LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP, 17, 25, 171,150
     PUSHBUTTON "&OK", IDOK, 20, 200, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP
     PUSHBUTTON "&Annulla", IDCANCEL, 90, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
@@ -304,14 +304,14 @@ BEGIN
     IDS_LANGUAGE_NAME "Italiano - Italian"
 
     /* Tray - Resources */
-    IDS_TIP_DEFAULT "OpenVPN GUI "
+    IDS_TIP_DEFAULT "GUI OpenVPN "
     IDS_TIP_CONNECTED "\nConnesso a: "
     IDS_TIP_CONNECTING "\nConnessione in corso a: "
     IDS_TIP_CONNECTED_SINCE "\nConnesso da: "
     IDS_TIP_ASSIGNED_IP "\nIP assegnato: %ls"
     IDS_MENU_SERVICE "Servizio OpenVPN"
     IDS_MENU_IMPORT "Importa"
-    IDS_MENU_IMPORT_AS "Importa profilo da Access Server…"
+    IDS_MENU_IMPORT_AS "Importa da Access Server…"
     IDS_MENU_IMPORT_URL "Importa da URL…"
     IDS_MENU_IMPORT_FILE "Importa file…"
     IDS_MENU_SETTINGS "Impostazioni…"
@@ -563,7 +563,7 @@ Puoi far partire questa applicazione una volta che l'amministratore ha aggiornat
     /* AS profile import */
     IDS_ERR_URL_IMPORT_PROFILE "Errore durante il recupero del profilo dall'URL: [%d] %ls"
 
-    IDS_ERR_NO_PKCS11 "Nessun certificato trovato. Se hai un token inseriscilo e seleziona 'Riprova'."
+    IDS_ERR_NO_PKCS11 "Nessun certificato trovato.\nSe hai un token inseriscilo e seleziona 'Riprova'."
     IDS_ERR_SELECT_PKCS11 "Nessun certificato selezionato."
     /* column headers for pkcs11 certificate list */
     IDS_CERT_DISPLAYNAME "Rilasciato a"
@@ -571,25 +571,25 @@ Puoi far partire questa applicazione una volta che l'amministratore ha aggiornat
     IDS_CERT_NOTAFTER "Valido fino a"
 
     /* PLAP related */
-    IDS_NFO_STATE_RETRYING "Retrying"
-    IDS_NFO_STATE_CANCELLING "Cancelling"
-    IDS_NFO_STATE_DISCONNECTING "Disconnecting"
-    IDS_NFO_CONN_CANCELLED "Connection cancelled by user"
+    IDS_NFO_STATE_RETRYING "Nuovo tentativo"
+    IDS_NFO_STATE_CANCELLING "Annullamento"
+    IDS_NFO_STATE_DISCONNECTING "Disconnessione"
+    IDS_NFO_CONN_CANCELLED "Connessione annullata dall'utente"
 
     /* openvpn daemon state names -- these are shown on progress dialog in PLAP */
-    IDS_NFO_OVPN_STATE_INITIAL      "Initializing"
-    IDS_NFO_OVPN_STATE_CONNECTING   "Connecting"
-    IDS_NFO_OVPN_STATE_ASSIGN_IP    "Assigning IP address"
-    IDS_NFO_OVPN_STATE_ADD_ROUTES   "Adding routes"
-    IDS_NFO_OVPN_STATE_CONNECTED    "Connected"
-    IDS_NFO_OVPN_STATE_RECONNECTING "Reconnecting"
-    IDS_NFO_OVPN_STATE_EXITING      "Exiting"
-    IDS_NFO_OVPN_STATE_WAIT         "Waiting"
-    IDS_NFO_OVPN_STATE_AUTH         "Authenticating"
-    IDS_NFO_OVPN_STATE_GET_CONFIG   "Pulling configuration from server"
-    IDS_NFO_OVPN_STATE_RESOLVE      "Resolving remote host"
-    IDS_NFO_OVPN_STATE_TCP_CONNECT  "Establishing TCP connection"
-    IDS_NFO_OVPN_STATE_AUTH_PENDING "Authentication pending"
+    IDS_NFO_OVPN_STATE_INITIAL      "Inizializzazione"
+    IDS_NFO_OVPN_STATE_CONNECTING   "Connessione"
+    IDS_NFO_OVPN_STATE_ASSIGN_IP    "Assegnazione indirizzo IP"
+    IDS_NFO_OVPN_STATE_ADD_ROUTES   "Aggiunta percorsi"
+    IDS_NFO_OVPN_STATE_CONNECTED    "Connesso"
+    IDS_NFO_OVPN_STATE_RECONNECTING "Riconnessione"
+    IDS_NFO_OVPN_STATE_EXITING      "Uscita"
+    IDS_NFO_OVPN_STATE_WAIT         "In attesa"
+    IDS_NFO_OVPN_STATE_AUTH         "Autenticazione"
+    IDS_NFO_OVPN_STATE_GET_CONFIG   "Recupero configurazione dal server"
+    IDS_NFO_OVPN_STATE_RESOLVE      "Risoluzione host remoto"
+    IDS_NFO_OVPN_STATE_TCP_CONNECT  "Connessione TCP"
+    IDS_NFO_OVPN_STATE_AUTH_PENDING "Autenticazione in attesa"
     IDS_NFO_OVPN_STATE_UNKNOWN      "?"
 
 END
