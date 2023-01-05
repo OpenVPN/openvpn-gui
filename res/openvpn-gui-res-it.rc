@@ -236,7 +236,7 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_ITALIAN, SUBLANG_DEFAULT
 BEGIN
     ICON ID_ICO_APP, ID_ICON_ABOUT, 8, 16, 21, 20
-    LTEXT "OpenVPN GUI v. %ls - Interfaccia OpenVPN per Windows\n\
+    LTEXT "OpenVPN GUI v.%ls - Interfaccia OpenVPN per Windows\n\
     Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
     Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
     Copyright (C) 2012-2022 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
@@ -304,7 +304,7 @@ BEGIN
     IDS_LANGUAGE_NAME "Italiano - Italian"
 
     /* Tray - Resources */
-    IDS_TIP_DEFAULT "GUI OpenVPN "
+    IDS_TIP_DEFAULT "OpenVPN GUI "
     IDS_TIP_CONNECTED "\nConnesso a: "
     IDS_TIP_CONNECTING "\nConnessione in corso a: "
     IDS_TIP_CONNECTED_SINCE "\nConnesso da: "
@@ -580,16 +580,16 @@ Puoi far partire questa applicazione una volta che l'amministratore ha aggiornat
     IDS_NFO_OVPN_STATE_INITIAL      "Inizializzazione"
     IDS_NFO_OVPN_STATE_CONNECTING   "Connessione"
     IDS_NFO_OVPN_STATE_ASSIGN_IP    "Assegnazione indirizzo IP"
-    IDS_NFO_OVPN_STATE_ADD_ROUTES   "Aggiunta percorsi"
+    IDS_NFO_OVPN_STATE_ADD_ROUTES   "Aggiunta rotte"
     IDS_NFO_OVPN_STATE_CONNECTED    "Connesso"
     IDS_NFO_OVPN_STATE_RECONNECTING "Riconnessione"
     IDS_NFO_OVPN_STATE_EXITING      "Uscita"
     IDS_NFO_OVPN_STATE_WAIT         "In attesa"
-    IDS_NFO_OVPN_STATE_AUTH         "Autenticazione"
-    IDS_NFO_OVPN_STATE_GET_CONFIG   "Recupero configurazione dal server"
-    IDS_NFO_OVPN_STATE_RESOLVE      "Risoluzione host remoto"
-    IDS_NFO_OVPN_STATE_TCP_CONNECT  "Connessione TCP"
-    IDS_NFO_OVPN_STATE_AUTH_PENDING "Autenticazione in attesa"
+    IDS_NFO_OVPN_STATE_AUTH         "Autenticazione in corso"
+    IDS_NFO_OVPN_STATE_GET_CONFIG   "Recupero configurazione dal server in corso"
+    IDS_NFO_OVPN_STATE_RESOLVE      "Risoluzione host remoto in corso"
+    IDS_NFO_OVPN_STATE_TCP_CONNECT  "Connessione TCP in corso"
+    IDS_NFO_OVPN_STATE_AUTH_PENDING "In attesa di autenticazione"
     IDS_NFO_OVPN_STATE_UNKNOWN      "?"
 
 END
