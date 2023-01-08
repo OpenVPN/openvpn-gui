@@ -712,7 +712,7 @@ ImportConfigFile(const TCHAR* source, bool prompt_user)
     if (c && wcsnicmp(c->config_dir, o.config_dir, wcslen(o.config_dir)) == 0)
     {
         /* Ask the user whether to replace the profile or not. */
-        if (ShowLocalizedMsgEx(MB_YESNO, NULL, _T(PACKAGE_NAME), IDS_NFO_IMPORT_OVERWRITE, fileName) == IDNO)
+        if (ShowLocalizedMsgEx(MB_YESNO|MB_TOPMOST, o.hWnd, _T(PACKAGE_NAME), IDS_NFO_IMPORT_OVERWRITE, fileName) == IDNO)
         {
             return;
         }
@@ -722,7 +722,7 @@ ImportConfigFile(const TCHAR* source, bool prompt_user)
     else
     {
         if (prompt_user
-            && ShowLocalizedMsgEx(MB_YESNO, NULL, TEXT(PACKAGE_NAME),
+            && ShowLocalizedMsgEx(MB_YESNO|MB_TOPMOST, o.hWnd, TEXT(PACKAGE_NAME),
                               IDS_NFO_IMPORT_SOURCE, fileName) == IDNO)
         {
             return;

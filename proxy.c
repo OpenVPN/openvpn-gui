@@ -390,7 +390,7 @@ void
 QueryProxyAuth(connection_t *c, proxy_t type)
 {
     c->proxy_type = type;
-    LocalizedDialogBoxParam(ID_DLG_PROXY_AUTH, ProxyAuthDialogFunc, (LPARAM) c);
+    LocalizedDialogBoxParamEx(ID_DLG_PROXY_AUTH, c->hwndStatus, ProxyAuthDialogFunc, (LPARAM) c);
 }
 
 

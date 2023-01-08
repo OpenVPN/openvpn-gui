@@ -380,13 +380,18 @@ LocalizedDialogResource(const UINT dialogId)
 INT_PTR
 LocalizedDialogBoxParam(const UINT dialogId, DLGPROC dialogFunc, const LPARAM param)
 {
+    return LocalizedDialogBoxParamEx(dialogId, o.hWnd, dialogFunc, param);
+}
+
+INT_PTR
+LocalizedDialogBoxParamEx(const UINT dialogId, HWND owner, DLGPROC dialogFunc, const LPARAM param)
+{
     LPCDLGTEMPLATE resInfo = LocalizedDialogResource(dialogId);
     if (resInfo == NULL)
         return -1;
 
-    return DialogBoxIndirectParam(o.hInstance, resInfo, o.hWnd, dialogFunc, param);
+    return DialogBoxIndirectParam(o.hInstance, resInfo, owner, dialogFunc, param);
 }
-
 
 HWND
 CreateLocalizedDialogParam(const UINT dialogId, DLGPROC dialogFunc, const LPARAM param)
