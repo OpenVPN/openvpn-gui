@@ -168,7 +168,7 @@ RunConnectScript(connection_t *c, int run_as_service)
                        env, c->config_dir, &si, &pi))
     {
         PrintDebug(L"CreateProcess: error = %lu", GetLastError());
-        ShowLocalizedMsg(IDS_ERR_RUN_CONN_SCRIPT, cmdline);
+        ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, c->hwndStatus, TEXT(PACKAGE_NAME), IDS_ERR_RUN_CONN_SCRIPT, cmdline);
         free(env);
         return;
     }
@@ -187,14 +187,14 @@ RunConnectScript(connection_t *c, int run_as_service)
         if (exit_code != STILL_ACTIVE)
         {
             if (exit_code != 0)
-                ShowLocalizedMsg(IDS_ERR_CONN_SCRIPT_FAILED, exit_code);
+                ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, c->hwndStatus, TEXT(PACKAGE_NAME), IDS_ERR_CONN_SCRIPT_FAILED, exit_code);
             goto out;
         }
 
         Sleep(1000);
     }
 
-    ShowLocalizedMsg(IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT, o.connectscript_timeout);
+    ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, c->hwndStatus, TEXT(PACKAGE_NAME), IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT, o.connectscript_timeout);
 
 out:
     free(env);

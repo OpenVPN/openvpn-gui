@@ -257,7 +257,7 @@ OnPkcs11(connection_t *c, UNUSED char *msg)
     l->selected = (UINT) -1; /* set selection to an invalid index */
 
     /* prompt user to select a certificate */
-    if (IDOK == LocalizedDialogBoxParam(ID_DLG_PKCS11_QUERY, QueryPkcs11DialogProc, (LPARAM)c)
+    if (IDOK == LocalizedDialogBoxParamEx(ID_DLG_PKCS11_QUERY, c->hwndStatus, QueryPkcs11DialogProc, (LPARAM)c)
         && l->state & STATE_SELECTED
         && l->selected < l->count)
     {

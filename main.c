@@ -856,7 +856,7 @@ CloseApplication(HWND hwnd)
         }
 
         /* Ask for confirmation if still connected */
-        if (ShowLocalizedMsgEx(MB_YESNO, NULL, _T("Exit OpenVPN"), IDS_NFO_ACTIVE_CONN_EXIT) == IDNO)
+        if (ShowLocalizedMsgEx(MB_YESNO|MB_TOPMOST, o.hWnd, _T("Exit OpenVPN"), IDS_NFO_ACTIVE_CONN_EXIT) == IDNO)
         {
             return;
         }

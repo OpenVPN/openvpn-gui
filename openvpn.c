@@ -1245,7 +1245,7 @@ OnPassword(connection_t *c, char *msg)
                 free_auth_param (param);
                 return;
             }
-            LocalizedDialogBoxParam(ID_DLG_CHALLENGE_RESPONSE, GenericPassDialogFunc, (LPARAM) param);
+            LocalizedDialogBoxParamEx(ID_DLG_CHALLENGE_RESPONSE, c->hwndStatus, GenericPassDialogFunc, (LPARAM) param);
             free_dynamic_cr (c);
         }
         else if ( (chstr = strstr(msg, "SC:")) && strlen (chstr) > 5)
@@ -1253,16 +1253,16 @@ OnPassword(connection_t *c, char *msg)
             param->flags |= FLAG_CR_TYPE_SCRV1;
             param->flags |= (*(chstr + 3) != '0') ? FLAG_CR_ECHO : 0;
             param->str = strdup(chstr + 5);
-            LocalizedDialogBoxParam(ID_DLG_AUTH_CHALLENGE, UserAuthDialogFunc, (LPARAM) param);
+            LocalizedDialogBoxParamEx(ID_DLG_AUTH_CHALLENGE, c->hwndStatus, UserAuthDialogFunc, (LPARAM) param);
         }
         else
         {
-            LocalizedDialogBoxParam(ID_DLG_AUTH, UserAuthDialogFunc, (LPARAM) param);
+            LocalizedDialogBoxParamEx(ID_DLG_AUTH, c->hwndStatus, UserAuthDialogFunc, (LPARAM) param);
         }
     }
     else if (strstr(msg, "'Private Key'"))
     {
-        LocalizedDialogBoxParam(ID_DLG_PASSPHRASE, PrivKeyPassDialogFunc, (LPARAM) c);
+        LocalizedDialogBoxParamEx(ID_DLG_PASSPHRASE, c->hwndStatus, PrivKeyPassDialogFunc, (LPARAM) c);
     }
     else if (strstr(msg, "'HTTP Proxy'"))
     {
@@ -1288,7 +1288,7 @@ OnPassword(connection_t *c, char *msg)
             free_auth_param(param);
             return;
         }
-        LocalizedDialogBoxParam(ID_DLG_CHALLENGE_RESPONSE, GenericPassDialogFunc, (LPARAM) param);
+        LocalizedDialogBoxParamEx(ID_DLG_CHALLENGE_RESPONSE, c->hwndStatus, GenericPassDialogFunc, (LPARAM) param);
     }
 }
 
@@ -1312,7 +1312,7 @@ OnTimeout(connection_t *c, UNUSED char *msg)
     c->state = connecting;
     if (!OpenManagement(c))
     {
-        MessageBoxExW(NULL, L"Failed to open management", _T(PACKAGE_NAME),
+        MessageBoxExW(c->hwndStatus, L"Failed to open management", _T(PACKAGE_NAME),
                      MB_OK | MB_SETFOREGROUND | MB_ICONERROR | MBOX_RTL_FLAGS, GetGUILanguage());
         StopOpenVPN(c);
     }
@@ -1508,7 +1508,7 @@ void OnInfoMsg(connection_t* c, char* msg)
             free_auth_param(param);
             return;
         }
-        LocalizedDialogBoxParam(ID_DLG_CHALLENGE_RESPONSE, GenericPassDialogFunc, (LPARAM)param);
+        LocalizedDialogBoxParamEx(ID_DLG_CHALLENGE_RESPONSE, c->hwndStatus, GenericPassDialogFunc, (LPARAM)param);
     }
 }
 
@@ -1837,7 +1837,7 @@ OnNeedOk (connection_t *c, char *msg)
     }
 
     const char *fmt;
-    if (MessageBoxExW(NULL, wstr, L""PACKAGE_NAME, MB_OKCANCEL | MBOX_RTL_FLAGS, GetGUILanguage()) == IDOK)
+    if (MessageBoxExW(c->hwndStatus, wstr, L""PACKAGE_NAME, MB_OKCANCEL | MBOX_RTL_FLAGS, GetGUILanguage()) == IDOK)
     {
         fmt = "needok \'%s\' ok";
     }
@@ -1980,7 +1980,9 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             20, 25, 350, 160, hwndDlg, (HMENU) ID_EDT_LOG, o.hInstance, NULL);
         if (!hLogWnd)
         {
-            ShowLocalizedMsg(IDS_ERR_CREATE_EDIT_LOGWINDOW);
+            ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, c->hwndStatus, TEXT(PACKAGE_NAME), IDS_ERR_CREATE_EDIT_LOGWINDOW);
+            /* We can't continue without a log window */
+            StopOpenVPN(c);
             return FALSE;
         }
 
@@ -1993,7 +1995,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             .yHeight = 160
         };
         if (SendMessage(hLogWnd, EM_SETCHARFORMAT, SCF_DEFAULT, (LPARAM) &cfm) == 0)
-            ShowLocalizedMsg(IDS_ERR_SET_SIZE);
+            ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, c->hwndStatus, TEXT(PACKAGE_NAME), IDS_ERR_SET_SIZE);
 
         /* display version string as "OpenVPN GUI gui_version/core_version" */
         wchar_t version[256];
@@ -2203,7 +2205,7 @@ ThreadOpenVPNStatus(void *p)
 
     if (!OpenManagement(c))
     {
-        MessageBoxExW(NULL, L"Failed to open management", _T(PACKAGE_NAME),
+        MessageBoxExW(c->hwndStatus, L"Failed to open management", _T(PACKAGE_NAME),
                      MB_OK | MB_SETFOREGROUND | MB_ICONERROR | MBOX_RTL_FLAGS, GetGUILanguage());
         StopOpenVPN(c);
     }
@@ -2293,7 +2295,7 @@ SetProcessPriority(DWORD *priority)
         *priority = HIGH_PRIORITY_CLASS;
     else
     {
-        ShowLocalizedMsg(IDS_ERR_UNKNOWN_PRIORITY, o.priority_string);
+        ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, o.hWnd, TEXT(PACKAGE_NAME), IDS_ERR_UNKNOWN_PRIORITY, o.priority_string);
         return FALSE;
     }
     return TRUE;
@@ -2398,7 +2400,7 @@ StartOpenVPN(connection_t *c)
     HANDLE hThread = CreateThread(NULL, 0, ThreadOpenVPNStatus, c, CREATE_SUSPENDED, &c->threadId);
     if (hThread == NULL)
     {
-        ShowLocalizedMsg(IDS_ERR_CREATE_THREAD_STATUS);
+        ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, o.hWnd, TEXT(PACKAGE_NAME), IDS_ERR_CREATE_THREAD_STATUS);
         return false;
     }
 
@@ -2461,7 +2463,7 @@ LaunchOpenVPN(connection_t *c)
     c->exit_event = CreateEvent(NULL, TRUE, FALSE, exit_event_name);
     if (c->exit_event == NULL)
     {
-        ShowLocalizedMsg(IDS_ERR_CREATE_EVENT, exit_event_name);
+        ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, o.hWnd, TEXT(PACKAGE_NAME), IDS_ERR_CREATE_EVENT, exit_event_name);
         goto out;
     }
 
@@ -2523,7 +2525,7 @@ LaunchOpenVPN(connection_t *c)
 
         if (!res)
         {
-            ShowLocalizedMsg (IDS_ERR_WRITE_SERVICE_PIPE);
+            ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, o.hWnd, TEXT(PACKAGE_NAME), IDS_ERR_WRITE_SERVICE_PIPE);
             CloseHandle(c->exit_event);
             CloseServiceIO(&c->iserv);
             goto out;
@@ -2532,7 +2534,7 @@ LaunchOpenVPN(connection_t *c)
 #ifdef ENABLE_OVPN3
     else if (o.ovpn_engine == OPENVPN_ENGINE_OVPN3)
     {
-        ShowLocalizedMsg(IDS_ERR_WRITE_SERVICE_PIPE);
+        ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, o.hWnd, TEXT(PACKAGE_NAME), IDS_ERR_WRITE_SERVICE_PIPE);
         CloseHandle(c->exit_event);
         CloseServiceIO(&c->iserv);
         goto out;
@@ -2555,13 +2557,13 @@ LaunchOpenVPN(connection_t *c)
 
         if (!InitializeSecurityDescriptor(&sd, SECURITY_DESCRIPTOR_REVISION))
         {
-            ShowLocalizedMsg(IDS_ERR_INIT_SEC_DESC);
+            ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, o.hWnd, TEXT(PACKAGE_NAME), IDS_ERR_INIT_SEC_DESC);
             CloseHandle(c->exit_event);
             return FALSE;
         }
         if (!SetSecurityDescriptorDacl(&sd, TRUE, NULL, FALSE))
         {
-            ShowLocalizedMsg(IDS_ERR_SET_SEC_DESC_ACL);
+            ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, o.hWnd, TEXT(PACKAGE_NAME), IDS_ERR_SET_SEC_DESC_ACL);
             CloseHandle(c->exit_event);
             return FALSE;
         }
@@ -2584,13 +2586,13 @@ LaunchOpenVPN(connection_t *c)
         /* Create the pipe for STDIN with only the read end inheritable */
         if (!CreatePipe(&hStdInRead, &hStdInWrite, &sa, 0))
         {
-            ShowLocalizedMsg(IDS_ERR_CREATE_PIPE_IN_READ);
+            ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, o.hWnd, TEXT(PACKAGE_NAME), IDS_ERR_CREATE_PIPE_IN_READ);
             CloseHandle(c->exit_event);
             goto out;
         }
         if (!SetHandleInformation(hStdInWrite, HANDLE_FLAG_INHERIT, 0))
         {
-            ShowLocalizedMsg(IDS_ERR_DUP_HANDLE_IN_WRITE);
+            ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, o.hWnd, TEXT(PACKAGE_NAME), IDS_ERR_DUP_HANDLE_IN_WRITE);
             CloseHandle(c->exit_event);
             goto out;
         }
@@ -2607,7 +2609,7 @@ LaunchOpenVPN(connection_t *c)
         if (!CreateProcess(o.exe_path, cmdline, NULL, NULL, TRUE,
                         priority | CREATE_NO_WINDOW, NULL, c->config_dir, &si, &pi))
         {
-            ShowLocalizedMsg(IDS_ERR_CREATE_PROCESS, o.exe_path, cmdline, c->config_dir);
+            ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, o.hWnd, TEXT(PACKAGE_NAME), IDS_ERR_CREATE_PROCESS, o.exe_path, cmdline, c->config_dir);
             CloseHandle(c->exit_event);
             goto out;
         }
@@ -2861,7 +2863,7 @@ out:
 void
 ResetSavePasswords(connection_t *c)
 {
-    if (ShowLocalizedMsgEx(MB_OKCANCEL, NULL, TEXT(PACKAGE_NAME), IDS_NFO_DELETE_PASS, c->config_name) == IDCANCEL)
+    if (ShowLocalizedMsgEx(MB_OKCANCEL, o.hWnd, TEXT(PACKAGE_NAME), IDS_NFO_DELETE_PASS, c->config_name) == IDCANCEL)
         return;
     DeleteSavedPasswords(c->config_name);
     c->flags &= ~(FLAG_SAVE_KEY_PASS | FLAG_SAVE_AUTH_PASS);
