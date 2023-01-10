@@ -2749,7 +2749,7 @@ ReadLineFromStdOut(HANDLE hStdOut, char *line, DWORD size)
         if (read == size)
             return FALSE;
 
-        Sleep(100);
+        Sleep(100); /* called when no UI is yet initialized */
     }
 
     if (!ReadFile(hStdOut, line, len, &read, NULL) || read != len)

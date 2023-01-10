@@ -1046,3 +1046,39 @@ RunAsAdmin(const WCHAR *cmd, const WCHAR *params)
     }
     return status;
 }
+
+/* Like sleep but service messages. If hdlg is not NULL
+ * dialog messages for it are checked. Also services
+ * MSG_FILTER hooks if caller wants further special processing.
+ * Returns false on if WM_QUIT received else returns true (on timeout).
+ */
+bool
+OVPNMsgWait(DWORD timeout, HWND hdlg)
+{
+    ULONGLONG now = GetTickCount64();
+    ULONGLONG end = now + timeout;
+
+    while (end > now)
+    {
+        if (MsgWaitForMultipleObjectsEx(0, NULL, end - now, QS_ALLINPUT, MWMO_INPUTAVAILABLE) == WAIT_OBJECT_0)
+        {
+            MSG msg;
+            while(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+            {
+                if (msg.message == WM_QUIT)
+                {
+                    PostQuitMessage((int) msg.wParam);
+                    return false;
+                }
+                else if (!CallMsgFilter(&msg, MSGF_OVPN_WAIT)
+                         && (!hdlg || !IsDialogMessage(hdlg, &msg)))
+                {
+                    TranslateMessage(&msg);
+                    DispatchMessage(&msg);
+                }
+            }
+        }
+        now = GetTickCount64();
+    }
+    return true;
+}

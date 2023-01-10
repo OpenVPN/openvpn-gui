@@ -65,6 +65,8 @@
 #define WM_OVPN_STATE          (WM_APP + 23)
 #define WM_OVPN_DETACH         (WM_APP + 24)
 
+#define MSGF_OVPN_WAIT         (MSGF_USER + 1)
+
 /* bool definitions */
 #define bool int
 #define true 1

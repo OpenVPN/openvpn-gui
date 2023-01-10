@@ -30,6 +30,8 @@
 #include "resource.h"
 #include "localization.h"
 #include "openvpn-gui-res.h"
+#include "main.h"
+#include "misc.h"
 
 /* A "class" that implements IConnectableCredentialProviderCredential */
 
@@ -607,7 +609,7 @@ again:
 
     ConnectHelper(oc->c);
 
-    Sleep(100);
+    OVPNMsgWait(100, NULL);
 
     /* if not immediately connected, show a progress dialog with
      * service state changes and retry/cancel options. Progress dialog
