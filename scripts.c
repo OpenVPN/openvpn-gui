@@ -94,17 +94,17 @@ RunPreconnectScript(connection_t *c)
                        NULL, c->config_dir, &si, &pi))
         return;
 
+    /* Wait process without blocking msg pump */
     for (i = 0; i <= (int) o.preconnectscript_timeout; i++)
     {
-        if (!GetExitCodeProcess(pi.hProcess, &exit_code))
-            goto out;
-
-        if (exit_code != STILL_ACTIVE)
-            goto out;
-
-        Sleep(1000);
+        if (!GetExitCodeProcess(pi.hProcess, &exit_code)
+            || exit_code != STILL_ACTIVE
+            || !OVPNMsgWait(1000, NULL))
+        {
+            break;
+        }
     }
-out:
+
     CloseHandle(pi.hThread);
     CloseHandle(pi.hProcess);
     if (logfile_handle != NULL)
@@ -180,7 +180,7 @@ RunConnectScript(connection_t *c, int run_as_service)
     {
         if (!GetExitCodeProcess(pi.hProcess, &exit_code))
         {
-            ShowLocalizedMsg(IDS_ERR_GET_EXIT_CODE, cmdline);
+            ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, c->hwndStatus, TEXT(PACKAGE_NAME), IDS_ERR_GET_EXIT_CODE, cmdline);
             goto out;
         }
 
@@ -191,7 +191,10 @@ RunConnectScript(connection_t *c, int run_as_service)
             goto out;
         }
 
-        Sleep(1000);
+        if (!OVPNMsgWait(1000, c->hwndStatus)) /* WM_QUIT -- do not popup error */
+        {
+            goto out;
+        }
     }
 
     ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, c->hwndStatus, TEXT(PACKAGE_NAME), IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT, o.connectscript_timeout);
@@ -266,13 +269,12 @@ RunDisconnectScript(connection_t *c, int run_as_service)
 
     for (i = 0; i <= (int) o.disconnectscript_timeout; i++)
     {
-        if (!GetExitCodeProcess(pi.hProcess, &exit_code))
+        if (!GetExitCodeProcess(pi.hProcess, &exit_code)
+            || exit_code != STILL_ACTIVE
+            || !OVPNMsgWait(1000, c->hwndStatus)) /* WM_QUIT -- do not popup error */
+        {
             goto out;
-
-        if (exit_code != STILL_ACTIVE)
-            goto out;
-
-        Sleep(1000);
+        }
     }
 out:
     free(env);

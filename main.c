@@ -376,11 +376,14 @@ StopAllOpenVPN()
         }
     }
 
-    /* Wait for all connections to terminate (Max 5 sec) */
-    for (i = 0; i < 20; i++, Sleep(250))
+    /* Wait for all connections to terminate (Max 20 rounds of 250 msec = 5 sec) */
+    for (i = 0; i < 20; i++)
     {
-        if (CountConnState(disconnected) + CountConnState(detached) == o.num_configs)
+        if (CountConnState(disconnected) + CountConnState(detached) == o.num_configs
+            || !OVPNMsgWait(250, NULL)) /* Quit received */
+        {
             break;
+        }
     }
 }
 

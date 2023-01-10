@@ -405,7 +405,7 @@ DetachAllOpenVPN()
         {
             break;
         }
-        Sleep(100);
+        OVPNMsgWait(100, NULL);
     }
 
     for (connection_t *c = o.chead; c; c = c->next)
@@ -481,7 +481,7 @@ DisconnectHelper(connection_t *c)
     time_t timeout = time(NULL) + 5;
     while (timeout > time(NULL) && c->state != onhold && c->state != disconnected)
     {
-        Sleep(100);
+        OVPNMsgWait(100, NULL);
     }
 
     ShowWindowAsync(GetDlgItem(c->hwndStatus, ID_DISCONNECT), SW_HIDE);

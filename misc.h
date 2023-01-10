@@ -150,4 +150,13 @@ DWORD SetPLAPRegistration(BOOL action);
  */
 DWORD RunAsAdmin(const WCHAR *cmd, const WCHAR *params);
 
+/**
+ * Wait for a timeout while pumping messages. If hdlg is not NULL
+ * IsDialogMessage(hdlg, ...) is checked before dispatching messages.
+ * caller can install a WH_MSGFILTER hook if any other special processing
+ * is necessary. The hook will get called with ncode = MSGF_OVPN_WAIT.
+ * @returns false if WM_QUIT was received, else returns true on timeout.
+ */
+bool OVPNMsgWait(DWORD timeout, HWND hdlg);
+
 #endif
