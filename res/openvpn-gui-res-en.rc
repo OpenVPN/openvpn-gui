@@ -424,6 +424,8 @@ View log file (%ls) for more details."
     IDS_NFO_SERVICE_ACTIVE_EXIT "You are currently connected (the OpenVPN Service is running). \
 You will stay connected even if you exit OpenVPN GUI.\n\n\
 Do you want to proceed and exit OpenVPN GUI?"
+    IDS_NFO_STATE_ROUTE_ERROR "Current State: Connected with route errors"
+    IDS_NFO_NOTIFY_ROUTE_ERROR "%ls connected with route errors"
 
     /* options – Resources */
     IDS_NFO_USAGE "--help\t\t\t: Show this message.\n\

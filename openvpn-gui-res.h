@@ -259,6 +259,8 @@
 #define IDS_NFO_STATE_RETRYING          1262
 #define IDS_NFO_STATE_DISCONNECTING     1263
 #define IDS_NFO_CONN_CANCELLED          1264
+#define IDS_NFO_STATE_ROUTE_ERROR       1265
+#define IDS_NFO_NOTIFY_ROUTE_ERROR      1266
 
 /* Program Startup Related */
 #define IDS_ERR_OPEN_DEBUG_FILE         1301
