@@ -1,3 +1,11 @@
+Version 11.35.0
+===============
+
+Updates
+-------
+* Translations (Italian, Chinese-Simplified)
+* Notify user if connection completes with route addition errors
+
 Version 11.34.0
 ===============
 
