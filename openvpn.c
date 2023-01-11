@@ -311,12 +311,33 @@ OnStateChange(connection_t *c, char *data)
 
     strncpy_s(c->daemon_state, _countof(c->daemon_state), state, _TRUNCATE);
 
+    /* Connected state message could be SUCCESS or ERROR, ROUTE_ERROR.
+     * We treat both SUCCESS and ROUTE_ERROR similarly to preserve the
+     * current behaviour but show the status window and do not change
+     * icons to green if not "SUCCESS".
+     */
     if (strcmp(state, "CONNECTED") == 0)
     {
+        bool success = !strcmp(message, "SUCCESS");
+
         parse_assigned_ip(c, pos + 1);
-    }
-    if (strcmp(state, "CONNECTED") == 0 && strcmp(message, "SUCCESS") == 0)
-    {
+
+        if (!success) /* connection completed with errors */
+        {
+            SetForegroundWindow(c->hwndStatus);
+            ShowWindow(c->hwndStatus, SW_SHOW);
+            /* The daemon does not currently log this error. Add a line to the status window */
+            if (!strcmp(message, "ROUTE_ERROR"))
+            {
+                WriteStatusLog(c, L"ERROR: ", L"Some routes were not successfully added. The connection may not function correctly", false);
+            }
+            else
+            {
+                WriteStatusLog(c, L"ERROR: ", L"Connection completed with critical errors.", false);
+                return;
+            }
+        }
+
         /* concatenate ipv4 and ipv6 addresses into one string */
         WCHAR ip_txt[256];
         WCHAR ip[64];
@@ -336,7 +357,8 @@ OnStateChange(connection_t *c, char *data)
         ||  (c->state == reconnecting && o.show_balloon == 2))
         {
             TCHAR msg[256];
-            LoadLocalizedStringBuf(msg, _countof(msg), IDS_NFO_NOW_CONNECTED, c->config_name);
+            DWORD id = success ? IDS_NFO_NOW_CONNECTED : IDS_NFO_NOTIFY_ROUTE_ERROR;
+            LoadLocalizedStringBuf(msg, _countof(msg), id, c->config_name);
             ShowTrayBalloon(msg, (ip[0] ? ip_txt : _T("")));
         }
 
@@ -351,6 +373,13 @@ OnStateChange(connection_t *c, char *data)
 
         SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONNECTED));
         SetDlgItemTextW(c->hwndStatus, ID_TXT_IP, ip_txt);
+
+        if (!success)
+        {
+            SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_ROUTE_ERROR));
+            return;
+        }
+
         SetStatusWinIcon(c->hwndStatus, ID_ICO_CONNECTED);
 
         /* Hide Status Window */
