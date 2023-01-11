@@ -1528,6 +1528,29 @@ WriteStatusLog (connection_t *c, const WCHAR *prefix, const WCHAR *line, BOOL fi
     wcsncpy (datetime, _wctime(&now), _countof(datetime));
     datetime[24] = L' ';
 
+    /* change text color if Warning or Error */
+    COLORREF text_clr = 0;
+
+    if (wcsstr(prefix, L"ERROR"))
+    {
+        text_clr = o.clr_error;
+    }
+    else if (wcsstr(prefix, L"WARNING"))
+    {
+        text_clr = o.clr_warning;
+    }
+
+    if (text_clr != 0)
+    {
+        CHARFORMAT cfm = { .cbSize = sizeof(CHARFORMAT),
+                           .dwMask = CFM_COLOR|CFM_BOLD,
+                           .dwEffects = 0,
+                           .crTextColor = text_clr,
+                         };
+        SendMessage(logWnd, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM) &cfm);
+    }
+
+
     /* Remove lines from log window if it is getting full */
     if (SendMessage(logWnd, EM_GETLINECOUNT, 0, 0) > MAX_LOG_LINES)
     {
