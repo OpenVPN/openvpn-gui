@@ -1,3 +1,19 @@
+Version 11.36.0
+===============
+
+Updates
+-------
+* Do not open multiple instances of Settings window
+* Do not use assert in debug builds
+* Translations (Italian)
+
+Bug fixes
+---------
+* Use a list instead of array for connection list
+* Handle possible wraparound of time in auto-close of dialogs
+* Fix missing files in dist tarball
+* Check return value of SetProp() (fixes crash reported in github issue #577)
+
 Version 11.35.0
 ===============
 
