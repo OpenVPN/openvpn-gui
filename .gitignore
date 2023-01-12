@@ -29,7 +29,11 @@ configure.h
 depcomp
 stamp-h1
 install-sh
+libtool
+ltmain.sh
 missing
+
+plap/credentialprovider.h
 
 .vs
 x64
