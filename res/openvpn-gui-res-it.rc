@@ -410,6 +410,8 @@ Per maggiori dettagli consulta il file log (%ls) ."
     IDS_NFO_SERVICE_ACTIVE_EXIT "Al momento sei connesso (il servizio di OpenVPN è in funzione). \
 Se esci dall'interfaccia di OpenVPN rimarrai comunque connesso.\n\n\
 Vuoi continuare e uscire dall'interfaccia di OpenVPN?"
+    IDS_NFO_STATE_ROUTE_ERROR "Stato corrente: connesso con errori di rotta"
+    IDS_NFO_NOTIFY_ROUTE_ERROR "%ls connesso con errori di rotta"
 
     /* options – Resources */
     IDS_NFO_USAGE "--help\t\t\t: visualizza questo messaggio.\n\
