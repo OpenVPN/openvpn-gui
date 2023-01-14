@@ -265,8 +265,9 @@ InitializeUI(HINSTANCE hinstance)
     CheckServiceStatus();
     int num_persistent = 0;
 
-    for (int i = 0; i < o.num_configs; i++) {
-        if (o.conn[i].flags & FLAG_DAEMON_PERSISTENT) num_persistent++;
+    for (connection_t *c = o.chead; c; c = c->next)
+    {
+        if (c->flags & FLAG_DAEMON_PERSISTENT) num_persistent++;
     }
 
     if (o.service_state == service_disconnected && num_persistent > 0) {
@@ -281,15 +282,14 @@ InitializeUI(HINSTANCE hinstance)
 /* Returns number of PLAP enabled configs -- for now
  * same as autostarted (persistent) connections.
  * The corresponding connection pointers are set in
- * the conn[] array.
+ * the conn[] array
  */
 DWORD
 FindPLAPConnections(connection_t *conn[], size_t max_count)
 {
     DWORD count = 0;
-    for (int i = 0; i < o.num_configs && count < max_count; i++)
+    for (connection_t *c = o.chead; c && count < max_count; c = c->next)
     {
-        connection_t *c = &o.conn[i];
         if (!(c->flags & FLAG_DAEMON_PERSISTENT)
             || !ParseManagementAddress(c))
         {
@@ -390,11 +390,11 @@ DetachAllOpenVPN()
     int i;
 
     /* Detach from the mgmt i/f of all connections */
-    for (i = 0; i < o.num_configs; i++)
+    for (connection_t *c = o.chead; c; c = c->next)
     {
-        if (o.conn[i].state != disconnected)
+        if (c->state != disconnected)
         {
-            DetachOpenVPN(&o.conn[i]);
+            DetachOpenVPN(c);
         }
     }
 
@@ -408,12 +408,12 @@ DetachAllOpenVPN()
         Sleep(100);
     }
 
-    for (i = 0; i < o.num_configs; i++)
+    for (connection_t *c = o.chead; c; c = c->next)
     {
-        if (o.conn[i].hwndStatus)
+        if (c->hwndStatus)
         {
             /* Status thread still running? kill it */
-            WaitOnThread(&o.conn[i], 0);
+            WaitOnThread(c, 0);
         }
     }
 }

@@ -37,7 +37,7 @@
 
 extern options_t o;
 
-void ViewLog(int config)
+void ViewLog(connection_t *c)
 {
   TCHAR filename[2*MAX_PATH];
 
@@ -54,15 +54,15 @@ void ViewLog(int config)
 
   /* Try first using file association */
   CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE); /* Safe to init COM multiple times */
-  status = ShellExecuteW (o.hWnd, L"open", o.conn[config].log_path, NULL, o.log_dir, SW_SHOWNORMAL);
+  status = ShellExecuteW (o.hWnd, L"open", c->log_path, NULL, o.log_dir, SW_SHOWNORMAL);
 
   if (status > (HINSTANCE) 32) /* Success */
     return;
   else
     PrintDebug (L"Opening log file using ShellExecute with verb = open failed"
-                 " for config '%ls' (status = %lu)", o.conn[config].config_name, status);
+                 " for config '%ls' (status = %lu)", c->config_name, status);
 
-  _sntprintf_0(filename, _T("%ls \"%ls\""), o.log_viewer, o.conn[config].log_path);
+  _sntprintf_0(filename, _T("%ls \"%ls\""), o.log_viewer, c->log_path);
 
   /* fill in STARTUPINFO struct */
   GetStartupInfo(&start_info);
@@ -92,7 +92,7 @@ void ViewLog(int config)
 }
 
 
-void EditConfig(int config)
+void EditConfig(connection_t *c)
 {
   TCHAR filename[2*MAX_PATH];
 
@@ -108,17 +108,17 @@ void EditConfig(int config)
   CLEAR (sd);
 
   /* Try first using file association */
-  _sntprintf_0(filename, L"%ls\\%ls", o.conn[config].config_dir, o.conn[config].config_file);
+  _sntprintf_0(filename, L"%ls\\%ls", c->config_dir, c->config_file);
 
   CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE); /* Safe to init COM multiple times */
-  status = ShellExecuteW (o.hWnd, L"open", filename, NULL, o.conn[config].config_dir, SW_SHOWNORMAL);
+  status = ShellExecuteW (o.hWnd, L"open", filename, NULL, c->config_dir, SW_SHOWNORMAL);
   if (status > (HINSTANCE) 32)
     return;
   else
     PrintDebug (L"Opening config file using ShellExecute with verb = open failed"
-                 " for config '%ls' (status = %lu)", o.conn[config].config_name, status);
+                 " for config '%ls' (status = %lu)", c->config_name, status);
 
-  _sntprintf_0(filename, _T("%ls \"%ls\\%ls\""), o.editor, o.conn[config].config_dir, o.conn[config].config_file);
+  _sntprintf_0(filename, _T("%ls \"%ls\\%ls\""), o.editor, c->config_dir, c->config_file);
 
   /* fill in STARTUPINFO struct */
   GetStartupInfo(&start_info);
@@ -135,7 +135,7 @@ void EditConfig(int config)
 		     TRUE,
 		     CREATE_NEW_CONSOLE,
 		     NULL,
-		     o.conn[config].config_dir,	//start-up dir
+		     c->config_dir,	//start-up dir
 		     &start_info,
 		     &proc_info))
     {

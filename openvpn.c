@@ -2682,12 +2682,6 @@ TerminateOpenVPN (connection_t *c)
 }
 
 void
-SuspendOpenVPN(int config)
-{
-    PostMessage(o.conn[config].hwndStatus, WM_OVPN_SUSPEND, 0, 0);
-}
-
-void
 RestartOpenVPN(connection_t *c)
 {
     if (c->state == onhold)

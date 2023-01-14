@@ -79,22 +79,36 @@ CheckReadAccess (const TCHAR *dir, const TCHAR *file)
 static int
 ConfigAlreadyExists(TCHAR *newconfig)
 {
-    int i;
-    for (i = 0; i < o.num_configs; ++i)
+    for (connection_t *c = o.chead; c; c = c->next)
     {
-        if (_tcsicmp(o.conn[i].config_file, newconfig) == 0)
+        if (_tcsicmp(c->config_file, newconfig) == 0)
             return true;
     }
     return false;
 }
 
 static void
-AddConfigFileToList(int config, const TCHAR *filename, const TCHAR *config_dir)
+AddConfigFileToList(int group, const TCHAR *filename, const TCHAR *config_dir)
 {
-    connection_t *c = &o.conn[config];
-    int i;
+    connection_t *c = calloc(1, sizeof(connection_t));
 
-    memset(c, 0, sizeof(*c));
+    if (!c)
+    {
+        ErrorExit(1, L"Out of memory in AddConfigFileToList");
+    }
+
+    if (o.ctail)
+    {
+        o.ctail->next = c;
+        o.ctail = c;
+    }
+    else
+    {
+        o.chead = o.ctail = c;
+    }
+
+    c->id = o.num_configs++;
+    c->group = group;
 
     _tcsncpy(c->config_file, filename, _countof(c->config_file) - 1);
     _tcsncpy(c->config_dir, config_dir, _countof(c->config_dir) - 1);
@@ -105,7 +119,7 @@ AddConfigFileToList(int config, const TCHAR *filename, const TCHAR *config_dir)
     c->manage.sk = INVALID_SOCKET;
     c->manage.skaddr.sin_family = AF_INET;
     c->manage.skaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
-    c->manage.skaddr.sin_port = htons(o.mgmt_port_offset + config);
+    c->manage.skaddr.sin_port = htons(o.mgmt_port_offset + c->id);
 
 #ifndef DISABLE_CHANGE_PASSWORD
     if (CheckKeyFileWriteAccess (c))
@@ -123,7 +137,7 @@ AddConfigFileToList(int config, const TCHAR *filename, const TCHAR *config_dir)
     }
 
     /* Check if connection should be autostarted */
-    for (i = 0; i < o.num_auto_connect; ++i)
+    for (int i = 0; i < o.num_auto_connect; ++i)
     {
         if (_tcsicmp(c->config_file, o.auto_connect[i]) == 0
             || _tcsicmp(c->config_name, o.auto_connect[i]) == 0)
@@ -211,9 +225,9 @@ ActivateConfigGroups(void)
     /* count children of each group -- this includes groups
      * and configs which have it as parent
      */
-    for (int i = 0; i < o.num_configs; i++)
+    for (connection_t *c = o.chead; c; c = c->next)
     {
-        CONFIG_GROUP(&o.conn[i])->children++;
+        CONFIG_GROUP(c)->children++;
     }
 
     for (int i = 1; i < o.num_groups; i++)
@@ -235,23 +249,23 @@ ActivateConfigGroups(void)
      * script etc.) in a separate directory, without making the menu structure
      * too deeply nested.
      */
-    for (int i = 0; i < o.num_configs; i++)
+    for (connection_t *c = o.chead; c; c = c->next)
     {
-        config_group_t *cg = CONFIG_GROUP(&o.conn[i]);
+        config_group_t *cg = CONFIG_GROUP(c);
 
         /* if not root and has only this config as child -- squash it */
         if (PARENT_GROUP(cg) && cg->children == 1
-            && !wcscmp(cg->name, o.conn[i].config_name))
+            && !wcscmp(cg->name, c->config_name))
         {
             cg->children--;
-            o.conn[i].group = cg->parent;
+            c->group = cg->parent;
         }
     }
 
     /* activate all groups that connect a config to the root */
-    for (int i = 0; i < o.num_configs; i++)
+    for (connection_t *c = o.chead; c; c = c->next)
     {
-        config_group_t *cg = CONFIG_GROUP(&o.conn[i]);
+        config_group_t *cg = CONFIG_GROUP(c);
 
         while (cg)
         {
@@ -287,19 +301,6 @@ BuildFileList0(const TCHAR *config_dir, int recurse_depth, int group, int flags)
     /* Loop over each config file in config dir */
     do
     {
-        if (!o.conn || o.num_configs == o.max_configs)
-        {
-            o.max_configs += 50;
-            void *tmp = realloc(o.conn, sizeof(*o.conn)*o.max_configs);
-            if (!tmp)
-            {
-                o.max_configs -= 50;
-                FindClose(find_handle);
-                ErrorExit(1, L"Out of memory while scanning configs");
-            }
-            o.conn = tmp;
-        }
-
         match_t match_type = match(&find_obj, o.ext_string);
         if (match_type == match_file)
         {
@@ -312,8 +313,7 @@ BuildFileList0(const TCHAR *config_dir, int recurse_depth, int group, int flags)
 
             if (CheckReadAccess (config_dir, find_obj.cFileName))
             {
-                AddConfigFileToList(o.num_configs, find_obj.cFileName, config_dir);
-                o.conn[o.num_configs++].group = group;
+                AddConfigFileToList(group, find_obj.cFileName, config_dir);
             }
         }
     } while (FindNextFile(find_handle, &find_obj));
@@ -419,17 +419,12 @@ BuildFileList()
         issue_warnings = false;
 
     /*
-     * If no connections are active reset num_configs and rescan
+     * If first time or no entries in the connection list reset groups and rescan
      * to make a new list. Else we keep all current configs and
      * rescan to add any new one's found.
-     * Do the same when persistent connections are in auto-attach mode,
-     * to avoid over-writing their status info such as auto_connect=false
-     * after manual detach.
      */
-    if (!o.num_groups
-        || (CountConnState(disconnected) == o.num_configs && o.enable_persistent != 2))
+    if (!o.num_configs)
     {
-        o.num_configs = 0;
         o.num_groups = 0;
         flags |= FLAG_ADD_CONFIG_GROUPS;
         root_gp = NewConfigGroup(L"ROOT", -1, flags); /* -1 indicates no parent */

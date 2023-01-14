@@ -358,17 +358,17 @@ StopAllOpenVPN()
      * at their current state. Use the disconnect menu to put them into
      * hold state before exit, if desired.
      */
-    for (i = 0; i < o.num_configs; i++)
+    for (connection_t *c = o.chead; c; c = c->next)
     {
-        if (o.conn[i].state != disconnected && o.conn[i].state != detached)
+        if (c->state != disconnected && c->state != detached)
         {
-            if (o.conn[i].flags & FLAG_DAEMON_PERSISTENT)
+            if (c->flags & FLAG_DAEMON_PERSISTENT)
             {
-                DetachOpenVPN(&o.conn[i]);
+                DetachOpenVPN(c);
             }
             else
             {
-                StopOpenVPN(&o.conn[i]);
+                StopOpenVPN(c);
             }
         }
     }
@@ -385,12 +385,10 @@ StopAllOpenVPN()
 static int
 AutoStartConnections()
 {
-    int i;
-
-    for (i = 0; i < o.num_configs; i++)
+    for (connection_t *c = o.chead; c; c = c->next)
     {
-        if (o.conn[i].auto_connect && !(o.conn[i].flags & FLAG_DAEMON_PERSISTENT))
-            StartOpenVPN(&o.conn[i]);
+        if (c->auto_connect && !(c->flags & FLAG_DAEMON_PERSISTENT))
+            StartOpenVPN(c);
     }
 
     return TRUE;
@@ -400,15 +398,15 @@ AutoStartConnections()
 static void
 ResumeConnections()
 {
-    int i;
-    for (i = 0; i < o.num_configs; i++) {
+    for (connection_t *c = o.chead; c; c = c->next)
+    {
         /* Restart suspend connections */
-        if (o.conn[i].state == suspended)
-            StartOpenVPN(&o.conn[i]);
+        if (c->state == suspended)
+            StartOpenVPN(c);
 
         /* If some connection never reached SUSPENDED state */
-        if (o.conn[i].state == suspending)
-            StopOpenVPN(&o.conn[i]);
+        if (c->state == suspending)
+            StopOpenVPN(c);
     }
 }
 
@@ -492,19 +490,19 @@ ManagePersistent(HWND hwnd, UINT UNUSED msg, UINT_PTR id, DWORD UNUSED now)
     CheckServiceStatus();
     if (o.service_state == service_connected)
     {
-        for (int i = 0; i < o.num_configs; i++)
+        for (connection_t *c = o.chead; c; c = c->next)
         {
-            if (o.conn[i].flags & FLAG_DAEMON_PERSISTENT
-                && o.conn[i].auto_connect
-                && (o.conn[i].state == disconnected || o.conn[i].state == detached))
+            if (c->flags & FLAG_DAEMON_PERSISTENT
+                && c->auto_connect
+                && (c->state == disconnected || c->state == detached))
             {
                 /* disable auto-connect to avoid repeated re-connect
                  * after unrecoverable errors. Re-enabled on successful
                  * connect.
                  */
-                o.conn[i].auto_connect = false;
-                o.conn[i].state = detached; /* this is required to retain management-hold on re-attach */
-                StartOpenVPN(&o.conn[i]); /* attach to the management i/f */
+                c->auto_connect = false;
+                c->state = detached; /* this is required to retain management-hold on re-attach */
+                StartOpenVPN(c); /* attach to the management i/f */
             }
         }
     }
@@ -519,14 +517,14 @@ ManagePersistent(HWND hwnd, UINT UNUSED msg, UINT_PTR id, DWORD UNUSED now)
 static void
 HandleSessionLock(void)
 {
-    for (int i = 0; i < o.num_configs; i++)
+    for (connection_t *c = o.chead; c; c = c->next)
     {
-        if (o.conn[i].flags & FLAG_DAEMON_PERSISTENT
-            && (o.conn[i].state != disconnected && o.conn[i].state != detached))
+        if (c->flags & FLAG_DAEMON_PERSISTENT
+            && (c->state != disconnected && c->state != detached))
         {
-            o.conn[i].auto_connect = false;
-            DetachOpenVPN(&o.conn[i]);
-            o.conn[i].flags |= FLAG_WAIT_UNLOCK;
+            c->auto_connect = false;
+            DetachOpenVPN(c);
+            c->flags |= FLAG_WAIT_UNLOCK;
         }
     }
 }
@@ -536,12 +534,12 @@ HandleSessionLock(void)
 void
 HandleSessionUnlock(void)
 {
-    for (int i = 0; i < o.num_configs; i++)
+    for (connection_t *c = o.chead; c; c = c->next)
     {
-        if (o.conn[i].flags & FLAG_WAIT_UNLOCK)
+        if (c->flags & FLAG_WAIT_UNLOCK)
         {
-            o.conn[i].auto_connect = true; /* so that ManagePersistent will trigger attach */
-            o.conn[i].flags &= ~ FLAG_WAIT_UNLOCK;
+            c->auto_connect = true; /* so that ManagePersistent will trigger attach */
+            c->flags &= ~ FLAG_WAIT_UNLOCK;
         }
     }
 }
@@ -550,8 +548,8 @@ HandleSessionUnlock(void)
 LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
   static UINT s_uTaskbarRestart;
-  int conn_id = 0;
   MENUINFO minfo = {.cbSize = sizeof(MENUINFO)};
+  connection_t *c = NULL;
 
   switch (message) {
     case WM_CREATE:
@@ -633,36 +631,37 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       else {
         minfo.fMask = MIM_MENUDATA;
         GetMenuInfo((HMENU) lParam, &minfo);
-        conn_id = (INT) minfo.dwMenuData;
-        if (conn_id < 0 || conn_id >= o.num_configs) break; /* ignore invalid connection id */
+        c  = (connection_t *) minfo.dwMenuData;
+        if (!c)
+            break; /* ignore invalid connection */
       }
 
       /* reach here only if the command did not match any global items and a valid connection id is available */
 
       if (LOWORD(wParam) == IDM_CONNECTMENU) {
-        StartOpenVPN(&o.conn[conn_id]);
+        StartOpenVPN(c);
       }
       else if (LOWORD(wParam) == IDM_DISCONNECTMENU) {
-        StopOpenVPN(&o.conn[conn_id]);
+        StopOpenVPN(c);
       }
       else if (LOWORD(wParam) == IDM_RECONNECTMENU) {
-        RestartOpenVPN(&o.conn[conn_id]);
+        RestartOpenVPN(c);
       }
       else if (LOWORD(wParam) == IDM_STATUSMENU) {
-        ShowWindow(o.conn[conn_id].hwndStatus, SW_SHOW);
+        ShowWindow(c->hwndStatus, SW_SHOW);
       }
       else if (LOWORD(wParam) == IDM_VIEWLOGMENU) {
-        ViewLog(conn_id);
+        ViewLog(c);
       }
       else if (LOWORD(wParam) == IDM_EDITMENU) {
-        EditConfig(conn_id);
+        EditConfig(c);
       }
       else if (LOWORD(wParam) == IDM_CLEARPASSMENU) {
-        ResetSavePasswords(&o.conn[conn_id]);
+        ResetSavePasswords(c);
       }
 #ifndef DISABLE_CHANGE_PASSWORD
       else if (LOWORD(wParam) == IDM_PASSPHRASEMENU) {
-        ShowChangePassphraseDialog(&o.conn[conn_id]);
+        ShowChangePassphraseDialog(c);
       }
 #endif
       break;
@@ -825,13 +824,11 @@ ShowSettingsDialog()
 void
 CloseApplication(HWND hwnd)
 {
-    int i;
-
     /* Show a message if any non-persistent connections are active */
-    for (i = 0; i < o.num_configs; i++)
+    for (connection_t *c = o.chead; c; c = c->next)
     {
-        if (o.conn[i].state == disconnected
-            || o.conn[i].flags & FLAG_DAEMON_PERSISTENT)
+        if (c->state == disconnected
+            || c->flags & FLAG_DAEMON_PERSISTENT)
         {
             continue;
         }
@@ -980,7 +977,7 @@ SaveAutoRestartList()
         return;
     }
 
-    int *active_conns = malloc((size_t) max_active*sizeof(int));
+    connection_t **active_conns = malloc((size_t) max_active*sizeof(connection_t *));
 
     if (!active_conns)
     {
@@ -988,16 +985,16 @@ SaveAutoRestartList()
         return;
     }
 
-    for (int i = 0; i < o.num_configs; i++)
+    for (connection_t *c = o.chead; c && nactive < max_active; c = c->next)
     {
-        if (o.conn[i].state == disconnected
-            || o.conn[i].flags & FLAG_DAEMON_PERSISTENT)
+        if (c->state == disconnected
+            || c->flags & FLAG_DAEMON_PERSISTENT)
         {
             continue;
         }
         /* accumulate space needed for list of active connections */
-        len += wcslen(o.conn[i].config_name) + 1;
-        active_conns[nactive++] = i;
+        len += wcslen(c->config_name) + 1;
+        active_conns[nactive++] = c;
     }
     len++; /* for double nul termination */
 
@@ -1015,7 +1012,7 @@ SaveAutoRestartList()
     wchar_t *p = list;
     for (int i = 0; i < nactive; i++)
     {
-        connection_t *c = &o.conn[active_conns[i]];
+        connection_t *c = active_conns[i];
         wcscpy(p, c->config_name); /* wcscpy is safe here */
         p += wcslen(c->config_name) + 1;
     }
