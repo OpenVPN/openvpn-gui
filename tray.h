@@ -52,7 +52,6 @@ void OnDestroyTray(void);
 void ShowTrayIcon();
 void SetTrayIcon(conn_state_t);
 void SetMenuStatus(connection_t *, conn_state_t);
-void SetMenuStatusById(int, conn_state_t);
 void SetServiceMenuStatus();
 void ShowTrayBalloon(TCHAR *, TCHAR *);
 void CheckAndSetTrayIcon();

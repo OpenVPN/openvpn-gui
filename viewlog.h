@@ -19,5 +19,7 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-void ViewLog(int config);
-void EditConfig(int config);
+struct connection;
+
+void ViewLog(struct connection *c);
+void EditConfig(struct connection *c);

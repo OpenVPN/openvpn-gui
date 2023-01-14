@@ -76,10 +76,6 @@ void SetMenuStatus(UNUSED connection_t *c, UNUSED conn_state_t state)
 {
     return;
 }
-void SetMenuStatusById(UNUSED int id, UNUSED conn_state_t state)
-{
-    return;
-}
 void SetServiceMenuStatus(void)
 {
     return;

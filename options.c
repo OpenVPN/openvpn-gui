@@ -453,12 +453,11 @@ ProcessCommandLine(options_t *options, TCHAR *command_line)
 int
 CountConnState(conn_state_t check)
 {
-    int i;
     int count = 0;
 
-    for (i = 0; i < o.num_configs; ++i)
+    for (connection_t *c = o.chead; c; c = c->next)
     {
-        if (o.conn[i].state == check)
+        if (c->state == check)
             ++count;
     }
 
@@ -468,11 +467,10 @@ CountConnState(conn_state_t check)
 connection_t*
 GetConnByManagement(SOCKET sk)
 {
-    int i;
-    for (i = 0; i < o.num_configs; ++i)
+    for (connection_t *c = o.chead; c; c = c->next)
     {
-        if (o.conn[i].manage.sk == sk)
-            return &o.conn[i];
+        if (c->manage.sk == sk)
+            return c;
     }
     return NULL;
 }
@@ -480,11 +478,11 @@ GetConnByManagement(SOCKET sk)
 connection_t*
 GetConnByName(const WCHAR *name)
 {
-    for (int i = 0; i < o.num_configs; ++i)
+    for (connection_t *c = o.chead; c; c = c->next)
     {
-        if (wcsicmp (o.conn[i].config_file, name) == 0
-            || wcsicmp(o.conn[i].config_name, name) == 0)
-            return &o.conn[i];
+        if (wcsicmp (c->config_file, name) == 0
+            || wcsicmp(c->config_name, name) == 0)
+            return c;
     }
     return NULL;
 }

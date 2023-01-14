@@ -161,13 +161,13 @@ CreatePopupMenus()
     CreateMenuBitmaps();
     MENUINFO minfo = {.cbSize = sizeof(MENUINFO)};
 
-    for (int i = 0; i < o.num_configs; i++)
+    for (connection_t *c = o.chead; c; c = c->next)
     {
-        hMenuConn[i] = CreatePopupMenu();
+        hMenuConn[c->id] = CreatePopupMenu();
         /* Save the connection index in the menu.*/
         minfo.fMask = MIM_MENUDATA;
-        minfo.dwMenuData = i;
-        SetMenuInfo(hMenuConn[i], &minfo);
+        minfo.dwMenuData = (UINT_PTR) c;
+        SetMenuInfo(hMenuConn[c->id], &minfo);
     }
     for (int i = 0; i < o.num_groups; i++)
     {
@@ -185,7 +185,7 @@ CreatePopupMenus()
     minfo.dwStyle |= MNS_NOTIFYBYPOS;
     SetMenuInfo(hMenu, &minfo);
 
-    if (o.num_configs == 1) {
+    if (o.num_configs == 1 && o.chead) {
         /* Create Main menu with actions */
         AppendMenu(hMenu, MF_STRING, IDM_CONNECTMENU, LoadLocalizedString(IDS_MENU_CONNECT));
         AppendMenu(hMenu, MF_STRING, IDM_DISCONNECTMENU, LoadLocalizedString(IDS_MENU_DISCONNECT));
@@ -199,7 +199,7 @@ CreatePopupMenus()
         AppendMenu(hMenu, MF_STRING, IDM_CLEARPASSMENU, LoadLocalizedString(IDS_MENU_CLEARPASS));
 
 #ifndef DISABLE_CHANGE_PASSWORD
-        if (o.conn[0].flags & FLAG_ALLOW_CHANGE_PASSPHRASE)
+        if (o.chead->flags & FLAG_ALLOW_CHANGE_PASSPHRASE)
             AppendMenu(hMenu, MF_STRING, IDM_PASSPHRASEMENU, LoadLocalizedString(IDS_MENU_PASSPHRASE));
 #endif
 
@@ -214,7 +214,7 @@ CreatePopupMenus()
         AppendMenu(hMenu, MF_STRING ,IDM_SETTINGS, LoadLocalizedString(IDS_MENU_SETTINGS));
         AppendMenu(hMenu, MF_STRING ,IDM_CLOSE, LoadLocalizedString(IDS_MENU_CLOSE));
 
-        SetMenuStatusById(0,  o.conn[0].state);
+        SetMenuStatus(o.chead,  o.chead->state);
     }
     else {
         /* construct the submenu tree first */
@@ -240,9 +240,8 @@ CreatePopupMenus()
         }
 
         /* add config file (connection) entries */
-        for (int i = 0; i < o.num_configs; i++)
+        for (connection_t *c = o.chead; c; c = c->next)
         {
-            connection_t *c = &o.conn[i];
             config_group_t *parent = &o.groups[0]; /* by default config is added to the root */
 
             if (USE_NESTED_CONFIG_MENU)
@@ -257,11 +256,11 @@ CreatePopupMenus()
             assert(parent);
 
             /* Add config to the current sub menu */
-            AppendMenu(parent->menu, MF_POPUP, (UINT_PTR) hMenuConn[i], c->config_name);
+            AppendMenu(parent->menu, MF_POPUP, (UINT_PTR) hMenuConn[c->id], c->config_name);
             c->pos = parent->children++;
 
             PrintDebug(L"Config %d named %ls added to submenu %ls with position %d",
-                        i, c->config_name, parent->name, c->pos);
+                        c->id, c->config_name, parent->name, c->pos);
         }
 
         if (o.num_configs > 0)
@@ -277,7 +276,9 @@ CreatePopupMenus()
         AppendMenu(hMenu, MF_STRING, IDM_CLOSE, LoadLocalizedString(IDS_MENU_CLOSE));
 
         /* Create popup menus for every connection */
-        for (int i = 0; i < o.num_configs; i++) {
+        for (connection_t *c = o.chead; c; c = c->next)
+        {
+            int i = c->id;
             AppendMenu(hMenuConn[i], MF_STRING, IDM_CONNECTMENU, LoadLocalizedString(IDS_MENU_CONNECT));
             AppendMenu(hMenuConn[i], MF_STRING, IDM_DISCONNECTMENU, LoadLocalizedString(IDS_MENU_DISCONNECT));
             AppendMenu(hMenuConn[i], MF_STRING, IDM_RECONNECTMENU, LoadLocalizedString(IDS_MENU_RECONNECT));
@@ -290,11 +291,11 @@ CreatePopupMenus()
             AppendMenu(hMenuConn[i], MF_STRING, IDM_CLEARPASSMENU, LoadLocalizedString(IDS_MENU_CLEARPASS));
 
 #ifndef DISABLE_CHANGE_PASSWORD
-            if (o.conn[i].flags & FLAG_ALLOW_CHANGE_PASSPHRASE)
+            if (c->flags & FLAG_ALLOW_CHANGE_PASSPHRASE)
                 AppendMenu(hMenuConn[i], MF_STRING, IDM_PASSPHRASEMENU, LoadLocalizedString(IDS_MENU_PASSPHRASE));
 #endif
 
-            SetMenuStatusById(i, o.conn[i].state);
+            SetMenuStatus(c, c->state);
         }
     }
 }
@@ -304,9 +305,10 @@ CreatePopupMenus()
 static void
 DestroyPopupMenus()
 {
-    int i;
-    for (i = 0; i < o.num_configs; i++)
-        DestroyMenu(hMenuConn[i]);
+    for (connection_t *c = o.chead; c; c = c->next)
+    {
+        DestroyMenu(hMenuConn[c->id]);
+    }
 
     DestroyMenu(hMenuImport);
     DestroyMenu(hMenu);
@@ -349,16 +351,16 @@ OnNotifyTray(LPARAM lParam)
             RecreatePopupMenus();
 
             /* Start connection if only one config exist */
-            if (o.num_configs == 1 && o.conn[0].state == disconnected)
-                    StartOpenVPN(&o.conn[0]);
+            if (o.num_configs == 1 && o.chead->state == disconnected)
+                    StartOpenVPN(o.chead);
             /* show the status window of all connected/connecting profiles upto a max of 10 */
             else if (disconnected_conns < o.num_configs) {
-                int i;
                 int num_shown = 0;
-                for (i = 0; i < o.num_configs; i++) {
-                    if (o.conn[i].state != disconnected) {
-                        ShowWindow(o.conn[i].hwndStatus, SW_SHOW);
-                        SetForegroundWindow(o.conn[i].hwndStatus);
+                for (connection_t *c = o.chead; c; c = c->next)
+                {
+                    if (c->state != disconnected && c->hwndStatus) {
+                        ShowWindow(c->hwndStatus, SW_SHOW);
+                        SetForegroundWindow(c->hwndStatus);
                         if (++num_shown >= 10) break;
                     }
                 }
@@ -402,47 +404,48 @@ SetTrayIcon(conn_state_t state)
     TCHAR msg[500];
     TCHAR msg_connected[100];
     TCHAR msg_connecting[100];
-    int i, config = 0;
     BOOL first_conn;
     UINT icon_id;
+    connection_t *cc = NULL; /* a connected config */
 
     _tcsncpy(msg, LoadLocalizedString(IDS_TIP_DEFAULT), _countof(ni.szTip));
     _tcsncpy(msg_connected, LoadLocalizedString(IDS_TIP_CONNECTED), _countof(msg_connected));
     _tcsncpy(msg_connecting, LoadLocalizedString(IDS_TIP_CONNECTING), _countof(msg_connecting));
 
     first_conn = TRUE;
-    for (i = 0; i < o.num_configs; i++) {
-        if (o.conn[i].state == connected) {
+    for (connection_t *c = o.chead; c; c = c->next)
+    {
+        if (c->state == connected) {
             /* Append connection name to Icon Tip Msg */
             _tcsncat(msg, (first_conn ? msg_connected : _T(", ")), _countof(msg) - _tcslen(msg) - 1);
-            _tcsncat(msg, o.conn[i].config_name, _countof(msg) - _tcslen(msg) - 1);
+            _tcsncat(msg, c->config_name, _countof(msg) - _tcslen(msg) - 1);
             first_conn = FALSE;
-            config = i;
+            cc = c;
         }
     }
 
     first_conn = TRUE;
-    for (i = 0; i < o.num_configs; i++) {
-        if (o.conn[i].state == connecting || o.conn[i].state == resuming || o.conn[i].state == reconnecting) {
+    for (connection_t *c = o.chead; c; c = c->next)
+    {
+        if (c->state == connecting || c->state == resuming || c->state == reconnecting) {
             /* Append connection name to Icon Tip Msg */
             _tcsncat(msg, (first_conn ? msg_connecting : _T(", ")), _countof(msg) - _tcslen(msg) - 1);
-            _tcsncat(msg, o.conn[i].config_name, _countof(msg) - _tcslen(msg) - 1);
+            _tcsncat(msg, c->config_name, _countof(msg) - _tcslen(msg) - 1);
             first_conn = FALSE;
         }
     }
 
-    if (CountConnState(connected) == 1) {
+    if (CountConnState(connected) == 1 && cc) {
         /* Append "Connected since and assigned IP" to message */
-        const connection_t *c = &o.conn[config];
         TCHAR time[50];
 
-        LocalizedTime(o.conn[config].connected_since, time, _countof(time));
+        LocalizedTime(cc->connected_since, time, _countof(time));
         _tcsncat(msg, LoadLocalizedString(IDS_TIP_CONNECTED_SINCE), _countof(msg) - _tcslen(msg) - 1);
         _tcsncat(msg, time, _countof(msg) - _tcslen(msg) - 1);
 
         /* concatenate ipv4 and ipv6 addresses into one string */
         WCHAR ip[64];
-        wcs_concat2(ip, _countof(ip), c->ip, c->ipv6, L", ");
+        wcs_concat2(ip, _countof(ip), cc->ip, cc->ipv6, L", ");
         WCHAR *assigned_ip = LoadLocalizedString(IDS_TIP_ASSIGNED_IP, ip);
         _tcsncat(msg, assigned_ip, _countof(msg) - _tcslen(msg) - 1);
     }
@@ -502,21 +505,8 @@ ShowTrayBalloon(TCHAR *infotitle_msg, TCHAR *info_msg)
 void
 SetMenuStatus(connection_t *c, conn_state_t state)
 {
-    int i;
-
-    for (i = 0; i < o.num_configs; ++i)
-    {
-        if (c == &o.conn[i])
-            break;
-    }
-    SetMenuStatusById(i, state);
-}
-
-void
-SetMenuStatusById(int i, conn_state_t state)
-{
-    connection_t *c = &o.conn[i];
     int checked = 0;
+    int i = c->id;
 
     if (state == connected || state == disconnecting) checked = 1;
     else if (state != disconnected && state != detached && state != onhold) checked = 2;

@@ -167,6 +167,8 @@ struct connection {
     struct echo_msg echo_msg;      /* Message echo-ed from server or client config and related data */
     struct pkcs11_list pkcs11_list;
     char daemon_state[20];         /* state of openvpn.ex: WAIT, AUTH, GET_CONFIG etc.. */
+    int id;                        /* index of config -- treat as immutable once assigned */
+    connection_t *next;
 };
 
 /* All options used within OpenVPN GUI */
@@ -175,7 +177,8 @@ typedef struct {
     const TCHAR **auto_connect;
 
     /* Connection parameters */
-    connection_t *conn;               /* Array of connection structure */
+    connection_t *chead;              /* Head of connection list */
+    connection_t *ctail;              /* Tail of connection list */
     config_group_t *groups;           /* Array of nodes defining the config groups tree */
     int num_configs;                  /* Number of configs */
     int num_auto_connect;             /* Number of auto-connect configs */
