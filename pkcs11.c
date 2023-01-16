@@ -621,6 +621,10 @@ QueryPkcs11DialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             }
             break;
 
+        case WM_OVPN_STATE: /* state changed -- destroy the dialog */
+            EndDialog(hwndDlg, LOWORD(wParam));
+            return TRUE;
+
         case WM_CTLCOLORSTATIC:
             if (GetDlgCtrlID((HWND) lParam) == ID_TXT_WARNING)
             {
