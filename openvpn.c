@@ -655,6 +655,10 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         }
         break;
 
+    case WM_OVPN_STATE: /* state changed -- destroy the dialog */
+        EndDialog(hwndDlg, LOWORD(wParam));
+        return TRUE;
+
     case WM_CTLCOLORSTATIC:
         if (GetDlgCtrlID((HWND) lParam) == ID_TXT_WARNING)
         {
@@ -857,14 +861,16 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
          * auth succeeds or connection restarts/aborts.
          * Close the CR_TEXT dialog if state changes to anything
          * other than GET_CONFIG. The state is in lParam.
+         * For other auth dialogs any state change signals a restart: end the dialog
          */
         param = (auth_param_t *) GetProp(hwndDlg, cfgProp);
-        if ((param->flags & FLAG_CR_TYPE_CRTEXT)
-            && strcmp((const char *) lParam, "GET_CONFIG"))
+        if (!(param->flags & FLAG_CR_TYPE_CRTEXT)
+            || strcmp((const char *) lParam, "GET_CONFIG"))
         {
             EndDialog(hwndDlg, LOWORD(wParam));
         }
         return TRUE;
+
     case WM_CLOSE:
         EndDialog(hwndDlg, LOWORD(wParam));
         return TRUE;
@@ -969,6 +975,10 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             return TRUE;
         }
         break;
+
+    case WM_OVPN_STATE: /* state changed -- destroy the dialog */
+        EndDialog(hwndDlg, LOWORD(wParam));
+        return TRUE;
 
     case WM_CTLCOLORSTATIC:
         if (GetDlgCtrlID((HWND) lParam) == ID_TXT_WARNING)

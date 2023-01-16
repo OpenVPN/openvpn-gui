@@ -374,6 +374,10 @@ ProxyAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         }
         break;
 
+    case WM_OVPN_STATE: /* state changed -- destroy the dialog */
+        EndDialog(hwndDlg, LOWORD(wParam));
+        return TRUE;
+
     case WM_CLOSE:
         EndDialog(hwndDlg, LOWORD(wParam));
         return TRUE;
