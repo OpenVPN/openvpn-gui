@@ -453,15 +453,15 @@ AutoCloseHandler(HWND hwnd, UINT UNUSED msg, UINT_PTR id, DWORD now)
     if (!ac)
         return;
 
-    UINT end = ac->start + ac->timeout;
-    if (now >= end)
+    DWORD elapsed = now - ac->start;
+    if (elapsed >= ac->timeout)
     {
         SimulateButtonPress(hwnd, ac->btn);
         AutoCloseCancel(hwnd);
     }
     else
     {
-        SetDlgItemText(hwnd, ac->txtid, LoadLocalizedString(ac->txtres, (end - now)/1000));
+        SetDlgItemText(hwnd, ac->txtid, LoadLocalizedString(ac->txtres, (ac->timeout - elapsed)/1000));
         SetTimer(hwnd, id, 500, AutoCloseHandler);
     }
 }
