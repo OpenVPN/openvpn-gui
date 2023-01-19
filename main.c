@@ -79,6 +79,9 @@ options_t o;
 /* Workaround for ASLR on Windows */
 __declspec(dllexport) char aslr_workaround;
 
+/* globals */
+static HWND settings_window;   /* Handle of Settings window */
+
 static int
 VerifyAutoConnections()
 {
@@ -758,12 +761,31 @@ AboutDialogFunc(UNUSED HWND hDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
   return FALSE;
 }
 
+static int CALLBACK
+SettingsPsCallback(HWND hwnd, UINT msg, UNUSED LPARAM lParam)
+{
+    switch(msg)
+    {
+        case PSCB_INITIALIZED:
+            settings_window = hwnd;
+            break;
+    }
+
+    return 0;
+}
 
 static void
 ShowSettingsDialog()
 {
-  PROPSHEETPAGE psp[4];
-  int page_number = 0;
+    PROPSHEETPAGE psp[4];
+    int page_number = 0;
+
+    if (settings_window && IsWindow(settings_window))
+    {
+        SetForegroundWindow(settings_window);
+        ShowWindow(settings_window, SW_SHOW);
+        return;
+    }
 
   /* General tab */
   psp[page_number].dwSize = sizeof(PROPSHEETPAGE);
@@ -807,7 +829,7 @@ ShowSettingsDialog()
 
   PROPSHEETHEADER psh;
   psh.dwSize = sizeof(PROPSHEETHEADER);
-  psh.dwFlags = PSH_USEHICON | PSH_PROPSHEETPAGE | PSH_NOAPPLYNOW | PSH_NOCONTEXTHELP;
+  psh.dwFlags = PSH_USEHICON | PSH_PROPSHEETPAGE | PSH_NOAPPLYNOW | PSH_NOCONTEXTHELP | PSH_USECALLBACK;
   psh.hwndParent = o.hWnd;
   psh.hInstance = o.hInstance;
   psh.hIcon = LoadLocalizedIcon(ID_ICO_APP);
@@ -815,7 +837,7 @@ ShowSettingsDialog()
   psh.nPages = page_number;
   psh.nStartPage = 0;
   psh.ppsp = (LPCPROPSHEETPAGE) &psp;
-  psh.pfnCallback = NULL;
+  psh.pfnCallback = SettingsPsCallback;
 
   PropertySheet(&psh);
 }
