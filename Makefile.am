@@ -23,6 +23,8 @@ RCCOMPILE = $(WINDRES) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 
 AUTOMAKE_OPTIONS = foreign 1.9
 
+DISTCHECK_CONFIGURE_FLAGS = --host=x86_64-w64-mingw32
+
 MAINTAINERCLEANFILES = \
 	config.log config.status \
 	$(srcdir)/Makefile.in  $(srcdir)/configure \
@@ -36,8 +38,11 @@ SUBDIRS = . plap
 bin_PROGRAMS = openvpn-gui
 
 dist_doc_DATA = \
+	BUILD.rst \
+	CHANGES.rst \
 	COPYRIGHT.GPL \
-	COPYING
+	COPYING \
+	README.rst
 
 AM_CPPFLAGS = $(OPENSSL_CRYPTO_CFLAGS) -D_UNICODE $(JSON_CFLAGS)
 AM_CFLAGS = -municode
@@ -70,9 +75,16 @@ openvpn_gui_RESOURCES = \
 	res/disconnected.ico \
 	res/openvpn-gui.ico \
 	res/reconnecting.ico \
-	res/openvpn-gui.manifest
+	res/openvpn-gui.manifest \
+	res/tileimage.bmp
 
-EXTRA_DIST = $(openvpn_gui_RESOURCES)
+EXTRA_DIST = $(openvpn_gui_RESOURCES) \
+	CMakeLists.txt \
+	CMakePresets.json \
+	config-msvc.h.in \
+	vcpkg_manifests \
+	.editorconfig \
+	.kateconfig
 
 openvpn_gui_SOURCES = \
 	main.c main.h \
