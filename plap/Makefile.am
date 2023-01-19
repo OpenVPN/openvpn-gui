@@ -35,6 +35,8 @@ bin_PROGRAMS = test_plap
 #endif
 lib_LTLIBRARIES = libopenvpn_plap.la
 
+AM_CPPFLAGS = -I$(srcdir)/..
+
 libopenvpn_plap_la_CFLAGS = -DDISABLE_PASSWORD_CHANGE -D_UNICODE -municode
 test_plap_CXXFLAGS = -DDEBUG -D_UNICODE -municode
 
@@ -69,7 +71,12 @@ libopenvpn_plap_la_RESOURCES = \
 	openvpn-plap.manifest
 
 openvpn-plap-res.lo: $(libopenvpn_plap_la_RESOURCES) $(top_srcdir)/openvpn-gui-res.h
-EXTRA_DIST = openvpn-plap-res.rc openvpn-plap.manifest
+EXTRA_DIST = \
+	openvpn_plap.def \
+	openvpn-plap-install.reg \
+	openvpn-plap-res.rc \
+	openvpn-plap-uninstall.reg \
+	openvpn-plap.manifest
 
 BUILT_SOURCES = credentialprovider.h
 libopenvpn_plap_la_SOURCES = \
@@ -78,9 +85,12 @@ libopenvpn_plap_la_SOURCES = \
 	plap_connection.h plap_connection.c \
 	plap_common.h plap_common.c \
 	plap_dll.h plap_dll.c \
+	resource.h \
 	ui_glue.h ui_glue.c \
 	$(top_srcdir)/openvpn.c \
+	$(top_srcdir)/localization.h\
 	$(top_srcdir)/localization.c\
+	$(top_srcdir)/options.h \
 	$(top_srcdir)/options.c \
 	$(top_srcdir)/proxy.c \
 	$(top_srcdir)/registry.c \
