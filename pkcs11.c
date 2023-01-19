@@ -38,6 +38,7 @@
 #include <assert.h>
 
 extern options_t o;
+static const wchar_t *hfontProp;
 
 /* state of list array */
 #define STATE_GET_COUNT 1
@@ -417,7 +418,7 @@ pkcs11_listview_init(HWND parent)
         if (hfb)
         {
             SendMessage(ListView_GetHeader(lv), WM_SETFONT, (WPARAM)hfb, 1);
-            SetProp(parent, L"header_font", (HANDLE)hfb);
+            SetProp(parent, hfontProp, (HANDLE)hfb);
         }
     }
 
@@ -658,12 +659,12 @@ QueryPkcs11DialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
         case WM_NCDESTROY:
             RemoveProp(hwndDlg, cfgProp);
-            HFONT hf = (HFONT) GetProp(hwndDlg, L"header_font");
+            HFONT hf = (HFONT) GetProp(hwndDlg, hfontProp);
             if (hf)
             {
                 DeleteObject(hf);
             }
-            RemoveProp(hwndDlg, cfgProp);
+            RemoveProp(hwndDlg, hfontProp);
             break;
     }
     return FALSE;
