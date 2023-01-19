@@ -357,6 +357,8 @@ StopAllOpenVPN()
 {
     int i;
 
+    RemoveTrayIcon();
+
     /* Stop all connections started by us -- we leave persistent ones
      * at their current state. Use the disconnect menu to put them into
      * hold state before exit, if desired.
@@ -849,6 +851,8 @@ ShowSettingsDialog()
 void
 CloseApplication(HWND hwnd)
 {
+    /* Do not let user access main menu through tray icon */
+    RemoveTrayIcon();
     /* Show a message if any non-persistent connections are active */
     for (connection_t *c = o.chead; c; c = c->next)
     {
@@ -861,6 +865,9 @@ CloseApplication(HWND hwnd)
         /* Ask for confirmation if still connected */
         if (ShowLocalizedMsgEx(MB_YESNO|MB_TOPMOST, o.hWnd, _T("Exit OpenVPN"), IDS_NFO_ACTIVE_CONN_EXIT) == IDNO)
         {
+            /* recreate the tray icon */
+            ShowTrayIcon();
+            CheckAndSetTrayIcon();
             return;
         }
         break; /* show the above message box only once */

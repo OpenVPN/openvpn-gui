@@ -50,6 +50,7 @@ void CreatePopupMenus();
 void OnNotifyTray(LPARAM);
 void OnDestroyTray(void);
 void ShowTrayIcon();
+void RemoveTrayIcon();
 void SetTrayIcon(conn_state_t);
 void SetMenuStatus(connection_t *, conn_state_t);
 void SetServiceMenuStatus();
