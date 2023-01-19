@@ -37,7 +37,6 @@
 #include "openvpn-gui-res.h"
 #include "localization.h"
 #include "misc.h"
-#include "assert.h"
 
 /* Popup Menus */
 HMENU hMenu;
@@ -154,7 +153,11 @@ CreatePopupMenus()
      * even if num_configs = 0, we want num_groups > 0.
      * This is guaranteed as the root node is always defined.
      */
-    assert(o.num_groups > 0);
+    if (o.num_groups <= 0)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs:%d Logic error - no config groups", __func__, __LINE__);
+        return;
+    }
 
     AllocateConnectionMenu();
 
@@ -253,7 +256,11 @@ CreatePopupMenus()
                 /* Persistent connections always displayed under a submenu */
                 parent = PERSISTENT_ROOT_GROUP;
             }
-            assert(parent);
+            if (!parent)
+            {
+                MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs:%d Logic error - parent = NULL", __func__, __LINE__);
+                continue; /* ignore this config */
+            }
 
             /* Add config to the current sub menu */
             AppendMenu(parent->menu, MF_POPUP, (UINT_PTR) hMenuConn[c->id], c->config_name);

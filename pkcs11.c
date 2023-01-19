@@ -35,7 +35,6 @@
 #include <commctrl.h>
 #include <cryptuiapi.h>
 #include <shlwapi.h>
-#include <assert.h>
 
 extern options_t o;
 static const wchar_t *hfontProp;
