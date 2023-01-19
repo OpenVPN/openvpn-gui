@@ -388,14 +388,22 @@ OnNotifyTray(LPARAM lParam)
     }
 }
 
+void
+RemoveTrayIcon()
+{
+    if (ni.hWnd)
+    {
+        Shell_NotifyIcon(NIM_DELETE, &ni);
+        CLEAR(ni);
+    }
+}
 
 void
 OnDestroyTray()
 {
     DestroyMenu(hMenu);
-    Shell_NotifyIcon(NIM_DELETE, &ni);
+    RemoveTrayIcon();
 }
-
 
 void
 ShowTrayIcon()
