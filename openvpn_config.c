@@ -26,7 +26,6 @@
 #endif
 
 #include <windows.h>
-#include <assert.h>
 
 #include "main.h"
 #include "openvpn-gui-res.h"
@@ -433,7 +432,11 @@ BuildFileList()
     }
     /* else these parent groups use their saved values */
 
-    assert (&o.groups[persistent_gp] == PERSISTENT_ROOT_GROUP); /* sanity check */
+    if (&o.groups[persistent_gp] != PERSISTENT_ROOT_GROUP)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs:%d Logic error", __func__, __LINE__);
+        return;
+    }
 
     if (issue_warnings)
     {
