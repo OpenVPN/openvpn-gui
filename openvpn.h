@@ -25,6 +25,21 @@
 
 #include "options.h"
 
+#define CHECK_NULL_PARAM(p)                                                          \
+            do { if (p) break;                                                       \
+                 MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs:%d GetProp returned null", \
+                               __func__, __LINE__);                                  \
+                 return false;                                                       \
+               } while(0)
+
+#define TRY_SETPROP(hwnd, name, p)                                                   \
+            do { if (SetPropW(hwnd, name, p)) break;                                 \
+                 MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs:%d GetProp returned null", \
+                               __func__, __LINE__);                                  \
+                 EndDialog(hwnd, IDABORT);                                           \
+                 return false;                                                       \
+               } while(0)
+
 BOOL StartOpenVPN(connection_t *);
 void StopOpenVPN(connection_t *);
 void DetachOpenVPN(connection_t *);

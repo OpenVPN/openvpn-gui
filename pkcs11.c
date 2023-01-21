@@ -417,7 +417,7 @@ pkcs11_listview_init(HWND parent)
         if (hfb)
         {
             SendMessage(ListView_GetHeader(lv), WM_SETFONT, (WPARAM)hfb, 1);
-            SetProp(parent, hfontProp, (HANDLE)hfb);
+            SetPropW(parent, hfontProp, (HANDLE)hfb); /* failure here is not critical */
         }
     }
 
@@ -452,6 +452,13 @@ static void CALLBACK
 pkcs11_listview_fill(HWND hwnd, UINT UNUSED msg, UINT_PTR id, DWORD UNUSED now)
 {
     connection_t *c = (connection_t *) GetProp(hwnd, cfgProp);
+
+    if (!c)
+    {
+        KillTimer(hwnd, id);
+        return;
+    }
+
     struct pkcs11_list *l = &c->pkcs11_list;
 
     HWND lv = GetDlgItem(hwnd, ID_LVW_PKCS11);
@@ -515,6 +522,12 @@ static void
 pkcs11_listview_reset(HWND parent)
 {
     connection_t *c = (connection_t *) GetProp(parent, cfgProp);
+
+    if (!c)
+    {
+        return;
+    }
+
     struct pkcs11_list *l = &c->pkcs11_list;
     HWND lv = GetDlgItem(parent, ID_LVW_PKCS11);
 
@@ -569,7 +582,7 @@ QueryPkcs11DialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
     {
         case WM_INITDIALOG:
             c = (connection_t *) lParam;
-            SetProp(hwndDlg, cfgProp, (HANDLE)lParam);
+            TRY_SETPROP(hwndDlg, cfgProp, (HANDLE)lParam);
             SetStatusWinIcon(hwndDlg, ID_ICO_APP);
 
             /* init the listview and schedule a call to listview_fill */
@@ -586,6 +599,7 @@ QueryPkcs11DialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
         case WM_COMMAND:
             c = (connection_t *) GetProp(hwndDlg, cfgProp);
+            CHECK_NULL_PARAM(c);
             if (LOWORD(wParam) == IDOK)
             {
                 HWND lv = GetDlgItem(hwndDlg, ID_LVW_PKCS11);
@@ -635,6 +649,7 @@ QueryPkcs11DialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
         case WM_NOTIFY:
             c = (connection_t *) GetProp(hwndDlg, cfgProp);
+            CHECK_NULL_PARAM(c);
             if (((NMHDR *)lParam)->idFrom == ID_LVW_PKCS11)
             {
                 NMITEMACTIVATE *ln = (NMITEMACTIVATE *) lParam;
@@ -652,7 +667,10 @@ QueryPkcs11DialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
         case WM_CLOSE:
             c = (connection_t *) GetProp(hwndDlg, cfgProp);
-            StopOpenVPN(c);
+            if (c)
+            {
+                StopOpenVPN(c);
+            }
             EndDialog(hwndDlg, wParam);
             return TRUE;
 

@@ -230,7 +230,7 @@ CRDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
     switch (msg) {
         case WM_INITDIALOG:
             param = (auth_param_t*)lParam;
-            SetProp(hwndDlg, cfgProp, (HANDLE)param);
+            TRY_SETPROP(hwndDlg, cfgProp, (HANDLE)param);
 
             WCHAR *wstr = Widen(param->str);
             if (!wstr) {
@@ -252,6 +252,7 @@ CRDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
         case WM_COMMAND:
             param = (auth_param_t*)GetProp(hwndDlg, cfgProp);
+            CHECK_NULL_PARAM(param);
 
             switch (LOWORD(wParam)) {
             case ID_EDT_RESPONSE:
@@ -280,7 +281,6 @@ CRDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             return TRUE;
 
         case WM_NCDESTROY:
-            param = (auth_param_t*)GetProp(hwndDlg, cfgProp);
             RemoveProp(hwndDlg, cfgProp);
             break;
     }
@@ -614,7 +614,7 @@ ImportProfileFromURLDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
     {
     case WM_INITDIALOG:
         type = (server_type_t) lParam;
-        SetProp(hwndDlg, cfgProp, (HANDLE)lParam);
+        TRY_SETPROP(hwndDlg, cfgProp, (HANDLE)lParam);
         SetStatusWinIcon(hwndDlg, ID_ICO_APP);
 
         if (type == server_generic)
@@ -630,6 +630,8 @@ ImportProfileFromURLDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
 
     case WM_COMMAND:
         type = (server_type_t) GetProp(hwndDlg, cfgProp);
+        CHECK_NULL_PARAM(type);
+
         switch (LOWORD(wParam))
         {
         case ID_EDT_AUTH_USER:
