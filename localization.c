@@ -97,7 +97,10 @@ GetGUILanguage(void)
 
     LONG status = RegOpenKeyEx(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, 0, KEY_READ, &regkey);
     if (status == ERROR_SUCCESS)
+    {
         GetRegistryValueNumeric(regkey, _T("ui_language"), &value);
+        RegCloseKey(regkey);
+    }
 
     gui_language = ( value != 0 ? value : GetUserDefaultUILanguage() );
     InitMUILanguage(gui_language);
