@@ -2078,6 +2078,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         return TRUE;
 
     case WM_NCDESTROY:
+        KillTimer(hwndDlg, IDT_STOP_TIMER);
         RemoveProp(hwndDlg, cfgProp);
         break;
 
