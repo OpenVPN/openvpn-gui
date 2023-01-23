@@ -361,7 +361,6 @@ ProxyAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
         case IDOK:
             c = (connection_t *) GetProp(hwndDlg, cfgProp);
-            CHECK_NULL_PARAM(c);
             proxy_type = (c->proxy_type == http ? "HTTP" : "SOCKS");
 
             snprintf(fmt, sizeof(fmt), "username \"%s Proxy\" \"%%s\"", proxy_type);

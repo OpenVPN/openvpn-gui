@@ -252,7 +252,6 @@ CRDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
         case WM_COMMAND:
             param = (auth_param_t*)GetProp(hwndDlg, cfgProp);
-            CHECK_NULL_PARAM(param);
 
             switch (LOWORD(wParam)) {
             case ID_EDT_RESPONSE:
@@ -630,8 +629,6 @@ ImportProfileFromURLDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
 
     case WM_COMMAND:
         type = (server_type_t) GetProp(hwndDlg, cfgProp);
-        CHECK_NULL_PARAM(type);
-
         switch (LOWORD(wParam))
         {
         case ID_EDT_AUTH_USER:
@@ -702,6 +699,7 @@ ImportProfileFromURLDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
         return TRUE;
 
     case WM_NCDESTROY:
+        RemoveProp(hwndDlg, cfgProp);
         break;
     }
 
