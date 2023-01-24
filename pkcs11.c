@@ -37,7 +37,7 @@
 #include <shlwapi.h>
 
 extern options_t o;
-static const wchar_t *hfontProp;
+static const wchar_t *hfontProp = L"header_font";
 
 /* state of list array */
 #define STATE_GET_COUNT 1
@@ -414,10 +414,13 @@ pkcs11_listview_init(HWND parent)
         lf.lfWeight = FW_BOLD;
 
         HFONT hfb = CreateFontIndirect(&lf);
-        if (hfb)
+        if (hfb && SetPropW(parent, hfontProp, (HANDLE)hfb))
         {
             SendMessage(ListView_GetHeader(lv), WM_SETFONT, (WPARAM)hfb, 1);
-            SetProp(parent, hfontProp, (HANDLE)hfb);
+        }
+        else if (hfb)
+        {
+            DeleteObject(hfb);
         }
     }
 
@@ -569,7 +572,7 @@ QueryPkcs11DialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
     {
         case WM_INITDIALOG:
             c = (connection_t *) lParam;
-            SetProp(hwndDlg, cfgProp, (HANDLE)lParam);
+            TRY_SETPROP(hwndDlg, cfgProp, (HANDLE)lParam);
             SetStatusWinIcon(hwndDlg, ID_ICO_APP);
 
             /* init the listview and schedule a call to listview_fill */
