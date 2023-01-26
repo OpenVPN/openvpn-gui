@@ -169,7 +169,7 @@ CreatePopupMenus()
         hMenuConn[c->id] = CreatePopupMenu();
         /* Save the connection index in the menu.*/
         minfo.fMask = MIM_MENUDATA;
-        minfo.dwMenuData = (UINT_PTR) c;
+        minfo.dwMenuData = (ULONG_PTR) c;
         SetMenuInfo(hMenuConn[c->id], &minfo);
     }
     for (int i = 0; i < o.num_groups; i++)
@@ -189,6 +189,12 @@ CreatePopupMenus()
     SetMenuInfo(hMenu, &minfo);
 
     if (o.num_configs == 1 && o.chead) {
+        /* Set main menu's menudata to first connection */
+        minfo.fMask = MIM_MENUDATA;
+        GetMenuInfo(hMenu, &minfo);
+        minfo.dwMenuData = (ULONG_PTR) o.chead;
+        SetMenuInfo(hMenu, &minfo);
+
         /* Create Main menu with actions */
         AppendMenu(hMenu, MF_STRING, IDM_CONNECTMENU, LoadLocalizedString(IDS_MENU_CONNECT));
         AppendMenu(hMenu, MF_STRING, IDM_DISCONNECTMENU, LoadLocalizedString(IDS_MENU_DISCONNECT));
