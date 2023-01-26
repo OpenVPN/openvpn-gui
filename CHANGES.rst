@@ -1,3 +1,10 @@
+Version 11.37.0
+===============
+
+Bug fixes
+---------
+* Fix broken tray icon menu with single profile (regression in 11.36.0) (#592)
+
 Version 11.36.0
 ===============
 
