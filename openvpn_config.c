@@ -466,3 +466,18 @@ BuildFileList()
 
     issue_warnings = false;
 }
+
+void
+FreeConfigList(options_t *o)
+{
+    connection_t *next = NULL;
+    for (connection_t *c = o->chead; c; c = next)
+    {
+        next = c->next;
+        free(c);
+    }
+    free(o->groups);
+    o->groups = NULL;
+    o->num_configs = 0;
+    o->num_groups = 0;
+}
