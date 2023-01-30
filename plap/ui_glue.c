@@ -438,6 +438,8 @@ DeleteUI(void)
         dmsg(L"DeleteUI called before InitializeUI");
     }
     DetachAllOpenVPN();
+    /* at this point all status threads have terminated -- we can safely free config list */
+    FreeConfigList(&o);
     CloseSemaphore(o.session_semaphore);
     WSACleanup();
     memset (&o, 0, sizeof(o));
