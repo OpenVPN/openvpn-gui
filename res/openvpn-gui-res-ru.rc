@@ -424,7 +424,7 @@ Supported commands:\n\
     status cnn           \t\t: показать статус конфигурации ""cnn"", если он включен\n\
     silent_connection [0|1]\t: установить флаг тихого включения вкл (1) или выкл (0)\n\
     import path          \t\t: Импортировать файл конфигурации по относительному пути\n\
-\t\t\Пример: openvpn-gui.exe --command disconnect myconfig\n\
+\t\tПример: openvpn-gui.exe --command disconnect myconfig\n\
 \n\
 Опции для переназначения настроек реестра:\n\
 --exe_path\t\t: Путь к openvpn.exe.\n\
