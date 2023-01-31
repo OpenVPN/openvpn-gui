@@ -51,6 +51,9 @@ RunPreconnectScript(connection_t *c)
     struct _stat st;
     int i;
 
+    CLEAR(si);
+    CLEAR(pi);
+
     /* Cut off extention from config filename and add "_pre.bat" */
     int len = _tcslen(c->config_file) - _tcslen(o.ext_string) - 1;
     _sntprintf_0(cmdline, _T("%ls\\%.*ls_pre.bat"), c->config_dir, len, c->config_file);
@@ -73,9 +76,6 @@ RunPreconnectScript(connection_t *c)
     HANDLE logfile_handle = CreateFile(script_log_filename, GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE,
                                        &sa, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
-    CLEAR(si);
-    CLEAR(pi);
-
     /* fill in STARTUPINFO struct */
     GetStartupInfo(&si);
     si.cb = sizeof(si);
@@ -92,7 +92,9 @@ RunPreconnectScript(connection_t *c)
     if (!CreateProcess(NULL, cmdline, NULL, NULL, TRUE,
                        (o.show_script_window ? CREATE_NEW_CONSOLE : CREATE_NO_WINDOW),
                        NULL, c->config_dir, &si, &pi))
-        return;
+    {
+        goto out;
+    }
 
     /* Wait process without blocking msg pump */
     for (i = 0; i <= (int) o.preconnectscript_timeout; i++)
@@ -105,10 +107,10 @@ RunPreconnectScript(connection_t *c)
         }
     }
 
-    CloseHandle(pi.hThread);
-    CloseHandle(pi.hProcess);
-    if (logfile_handle != NULL)
-        CloseHandle(logfile_handle);
+out:
+    CloseHandleEx(&pi.hThread);
+    CloseHandleEx(&pi.hProcess);
+    CloseHandleEx(&logfile_handle);
 }
 
 
@@ -121,6 +123,9 @@ RunConnectScript(connection_t *c, int run_as_service)
     DWORD exit_code;
     struct _stat st;
     int i;
+
+    CLEAR(si);
+    CLEAR(pi);
 
     /* Cut off extention from config filename and add "_up.bat" */
     int len = _tcslen(c->config_file) - _tcslen(o.ext_string) - 1;
@@ -147,9 +152,6 @@ RunConnectScript(connection_t *c, int run_as_service)
     HANDLE logfile_handle = CreateFile(script_log_filename, GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE,
                                        &sa, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
-    CLEAR(si);
-    CLEAR(pi);
-
     /* fill in STARTUPINFO struct */
     GetStartupInfo(&si);
     si.cb = sizeof(si);
@@ -169,8 +171,7 @@ RunConnectScript(connection_t *c, int run_as_service)
     {
         PrintDebug(L"CreateProcess: error = %lu", GetLastError());
         ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, c->hwndStatus, TEXT(PACKAGE_NAME), IDS_ERR_RUN_CONN_SCRIPT, cmdline);
-        free(env);
-        return;
+        goto out;
     }
 
     if (o.connectscript_timeout == 0)
@@ -201,10 +202,9 @@ RunConnectScript(connection_t *c, int run_as_service)
 
 out:
     free(env);
-    CloseHandle(pi.hThread);
-    CloseHandle(pi.hProcess);
-    if (logfile_handle != NULL)
-        CloseHandle(logfile_handle);
+    CloseHandleEx(&pi.hThread);
+    CloseHandleEx(&pi.hProcess);
+    CloseHandleEx(&logfile_handle);
 }
 
 
@@ -217,6 +217,9 @@ RunDisconnectScript(connection_t *c, int run_as_service)
     DWORD exit_code;
     struct _stat st;
     int i;
+
+    CLEAR(si);
+    CLEAR(pi);
 
     /* Cut off extention from config filename and add "_down.bat" */
     int len = _tcslen(c->config_file) - _tcslen(o.ext_string) - 1;
@@ -243,9 +246,6 @@ RunDisconnectScript(connection_t *c, int run_as_service)
     HANDLE logfile_handle = CreateFile(script_log_filename, GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE,
                                        &sa, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
-    CLEAR(si);
-    CLEAR(pi);
-
     /* fill in STARTUPINFO struct */
     GetStartupInfo(&si);
     si.cb = sizeof(si);
@@ -263,8 +263,7 @@ RunDisconnectScript(connection_t *c, int run_as_service)
                        (o.show_script_window ? flags|CREATE_NEW_CONSOLE : flags|CREATE_NO_WINDOW),
                        NULL, c->config_dir, &si, &pi))
     {
-        free(env);
-        return;
+        goto out;
     }
 
     for (i = 0; i <= (int) o.disconnectscript_timeout; i++)
@@ -278,8 +277,7 @@ RunDisconnectScript(connection_t *c, int run_as_service)
     }
 out:
     free(env);
-    CloseHandle(pi.hThread);
-    CloseHandle(pi.hProcess);
-    if (logfile_handle != NULL)
-        CloseHandle(logfile_handle);
+    CloseHandleEx(&pi.hThread);
+    CloseHandleEx(&pi.hProcess);
+    CloseHandleEx(&logfile_handle);
 }
