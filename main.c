@@ -63,7 +63,7 @@
 /*  Declare Windows procedure  */
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
 static void ShowSettingsDialog();
-void CloseApplication(HWND hwnd);
+void CloseApplication(HWND hwnd, BOOL ask_user);
 void ImportConfigFileFromDisk();
 void ImportConfigFromAS();
 static void SaveAutoRestartList();
@@ -456,7 +456,7 @@ HandleCopyDataMessage(const COPYDATASTRUCT *copy_data)
     }
     else if(copy_data->dwData == WM_OVPN_EXIT)
     {
-        CloseApplication(o.hWnd);
+        CloseApplication(o.hWnd, true);
     }
     else if(copy_data->dwData == WM_OVPN_IMPORT && str)
     {
@@ -628,7 +628,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         ShowSettingsDialog();
       }
       else if (LOWORD(wParam) == IDM_CLOSE) {
-        CloseApplication(hwnd);
+        CloseApplication(hwnd, true);
       }
       /* rest of the handlers require a connection id */
       else {
@@ -670,7 +670,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       break;
 
     case WM_CLOSE:
-      CloseApplication(hwnd);
+      CloseApplication(hwnd, false); /* do not wait for user confirmation */
       break;
 
     case WM_DESTROY:
@@ -844,10 +844,10 @@ ShowSettingsDialog()
 
 
 void
-CloseApplication(HWND hwnd)
+CloseApplication(HWND hwnd, BOOL ask_user)
 {
     /* Show a message if any non-persistent connections are active */
-    for (connection_t *c = o.chead; c; c = c->next)
+    for (connection_t *c = o.chead; c && ask_user; c = c->next)
     {
         if (c->state == disconnected
             || c->flags & FLAG_DAEMON_PERSISTENT)
