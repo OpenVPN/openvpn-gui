@@ -219,6 +219,9 @@ OnLogLine(connection_t *c, char *line)
     SendMessage(logWnd, EM_REPLACESEL, FALSE, (LPARAM) datetime);
     SendMessage(logWnd, EM_SETTEXTEX, (WPARAM) &ste, (LPARAM) message);
     SendMessage(logWnd, EM_REPLACESEL, FALSE, (LPARAM) _T("\n"));
+
+    /* scroll to the caret */
+    SendMessage(logWnd, EM_SCROLLCARET, 0, 0);
 }
 
 /* expect ipv4,remote,port,,,ipv6 */
