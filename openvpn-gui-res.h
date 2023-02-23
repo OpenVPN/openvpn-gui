@@ -125,8 +125,6 @@
 #define ID_CHK_PLAP_REG                  248
 #define ID_CHK_AUTO_RESTART              249
 
-#define ID_CHK_TOKEN                     260
-
 /* Proxy Auth Dialog */
 #define ID_DLG_PROXY_AUTH                250
 #define ID_EDT_PROXY_USER                251

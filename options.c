@@ -218,11 +218,6 @@ add_option(options_t *options, int i, TCHAR **p)
         ++i;
         options->silent_connection = _ttoi(p[1]) ? 1 : 0;
     }
-    else if (streq(p[0], _T("mfa_token")) && p[1])
-    {
-        ++i;
-        options->mfa_token = _ttoi(p[1]) ? 1 : 0;
-    }
     else if (streq(p[0], _T("passphrase_attempts")) && p[1])
     {
         ++i;

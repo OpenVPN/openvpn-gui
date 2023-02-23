@@ -86,12 +86,13 @@ typedef struct {
 } service_io_t;
 
 #define FLAG_ALLOW_CHANGE_PASSPHRASE (1<<1)
-#define FLAG_SAVE_KEY_PASS  (1<<4)
-#define FLAG_SAVE_AUTH_PASS (1<<5)
-#define FLAG_DISABLE_SAVE_PASS (1<<6)
-#define FLAG_DISABLE_ECHO_MSG  (1<<7)
-#define FLAG_DAEMON_PERSISTENT  (1<<8)
-#define FLAG_WAIT_UNLOCK        (1<<9)
+#define FLAG_SAVE_KEY_PASS           (1<<4)
+#define FLAG_SAVE_AUTH_PASS          (1<<5)
+#define FLAG_DISABLE_SAVE_PASS       (1<<6)
+#define FLAG_DISABLE_ECHO_MSG        (1<<7)
+#define FLAG_DAEMON_PERSISTENT       (1<<8)
+#define FLAG_WAIT_UNLOCK             (1<<9)
+#define FLAG_TOKEN                   (1<<10)
 
 #define CONFIG_VIEW_AUTO      (0)
 #define CONFIG_VIEW_FLAT      (1)
@@ -214,7 +215,6 @@ typedef struct {
     TCHAR log_viewer[MAX_PATH];
     TCHAR editor[MAX_PATH];
     DWORD silent_connection;
-    DWORD mfa_token;
     DWORD iservice_admin;
     DWORD show_balloon;
     DWORD show_script_window;

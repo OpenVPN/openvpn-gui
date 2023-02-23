@@ -86,6 +86,43 @@ ConfigAlreadyExists(TCHAR *newconfig)
     return false;
 }
 
+static int
+IsTokenConfigured(connection_t* c, bool silent)
+{
+    FILE* fp = NULL;
+    char line[256];
+    TCHAR configfile_path[MAX_PATH];
+    int ret = 0;
+
+    _tcsncpy(configfile_path, c->config_dir, _countof(configfile_path));
+    if (!(configfile_path[_tcslen(configfile_path) - 1] == '\\'))
+        _tcscat(configfile_path, _T("\\"));
+    _tcsncat(configfile_path, c->config_file,
+        _countof(configfile_path) - _tcslen(configfile_path) - 1);
+
+    if (!(fp = _tfopen(configfile_path, _T("r"))))
+    {
+        /* can't open config file */
+        if (!silent)
+            ShowLocalizedMsg(IDS_ERR_OPEN_CONFIG, configfile_path);
+        goto out;
+    }
+
+    while (fgets(line, sizeof(line), fp))
+    {
+        if (strncmp(line, "# @OpenVPN_GUI token", 20) == 0)
+        {
+            ret = 1;
+            break;
+        }
+    }
+out:
+    if (fp)
+        fclose(fp);
+
+    return ret;
+}
+
 static void
 AddConfigFileToList(int group, const TCHAR *filename, const TCHAR *config_dir)
 {
@@ -161,6 +198,9 @@ AddConfigFileToList(int group, const TCHAR *filename, const TCHAR *config_dir)
     {
         DisablePopupMessages(c);
     }
+
+    if (IsTokenConfigured(c, true))
+        c->flags |= FLAG_TOKEN;
 }
 
 #define FLAG_WARN_DUPLICATES        (0x1)

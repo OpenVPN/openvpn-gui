@@ -56,6 +56,17 @@ itself. There are sample config files in the *sample-config* folder. Please
 refer to the `OpenVPN How To <https://openvpn.net/community-resources/how-to/#creating-configuration-files-for-server-and-clients>`_ for more
 information regarding creating the configuration file.
 
+Annotations in configuration file:
+
+To make OpenVPN GUI displaying a separate token field for a 2factor authentication in the user/password dialog a
+special annotation can be added to the configuration file. This is needed, because OpenVPN GUI can handle multiple
+connections (configuration files) where some might have a 2factor authentication and some not. OpenVPN GUI does
+not offer the possibilty to handle connection specific configurations on its own, so the configuration file can be
+extended.
+
+* By adding the comment '# @OpenVPN_GUI token' to the configuration file, the additional token field in the user/password
+  dialog will be shown
+
 Once the configuration file is ready, you need to let OpenVPN GUI know about it.
 There are three ways to do this:
 
@@ -312,10 +323,6 @@ silent_connection
     If set to "1", the status window with the OpenVPN log output will
     not be shown while connecting. Warnings such as interactive service
     not started or multiple config files with same name are also suppressed.
-
-mfa_token
-    If set to "1", a separate field token field will be added to the
-    authentication window.
 
 show_balloon
     0: Never show any connected balloon
