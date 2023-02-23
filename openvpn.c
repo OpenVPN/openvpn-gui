@@ -503,6 +503,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
     auth_param_t *param;
     WCHAR username[USER_PASS_LEN] = L"";
     WCHAR password[USER_PASS_LEN] = L"";
+    WCHAR token[USER_PASS_LEN] = L"";
 
     switch (msg)
     {
@@ -539,7 +540,8 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         {
             SetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password);
             if (username[0] != L'\0' && !(param->flags & FLAG_CR_TYPE_SCRV1)
-                && password[0] != L'\0' && param->c->failed_auth_attempts == 0)
+                && password[0] != L'\0' && param->c->failed_auth_attempts == 0
+                && o.mfa_token == 0)
             {
                /* user/pass available and no challenge response needed: skip dialog
                 * if silent_connection is on, else auto submit after a few seconds.
@@ -552,6 +554,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             /* if auth failed, highlight password so that user can type over */
             else if (param->c->failed_auth_attempts)
             {
+                // @todo errorhandling for wrong token
                 SendMessage(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS), EM_SETSEL, 0, MAKELONG(0,-1));
             }
             else if (param->flags & FLAG_CR_TYPE_SCRV1)
@@ -590,6 +593,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         {
         case ID_EDT_AUTH_USER:
         case ID_EDT_AUTH_PASS:
+        case ID_EDT_AUTH_TOKEN:
         case ID_EDT_AUTH_CHALLENGE:
             if (HIWORD(wParam) == EN_UPDATE)
             {
@@ -598,7 +602,8 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                                 && (GetWindowTextLength(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS))
                                     || ((param->flags & FLAG_CR_TYPE_SCRV1)
                                         && GetWindowTextLength(GetDlgItem(hwndDlg, ID_EDT_AUTH_CHALLENGE)))
-                                   );
+                                   )
+                                && (o.mfa_token == 0 || param->flags & FLAG_CR_TYPE_SCRV1 || GetWindowTextLength(GetDlgItem(hwndDlg, ID_EDT_AUTH_TOKEN)));
                 EnableWindow(GetDlgItem(hwndDlg, IDOK), enableOK);
             }
             AutoCloseCancel(hwndDlg); /* user interrupt */
@@ -626,6 +631,16 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 }
                 SaveUsername(param->c->config_name, username);
             }
+            if (GetDlgItemTextW(hwndDlg, ID_EDT_AUTH_TOKEN, token, _countof(token)))
+            {
+                BOOL token_invalid = !validate_input(token, L"\n");
+                SecureZeroMemory(token, sizeof(token));
+                if (token_invalid)
+                {
+                    show_error_tip(GetDlgItem(hwndDlg, ID_EDT_AUTH_TOKEN), LoadLocalizedString(IDS_ERR_INVALID_TOKEN_INPUT));
+                    return 0;
+                }
+            }
             if (GetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password, _countof(password)))
             {
                 if (!validate_input(password, L"\n"))
@@ -643,6 +658,8 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             ManagementCommandFromInput(param->c, "username \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_USER);
             if (param->flags & FLAG_CR_TYPE_SCRV1)
                 ManagementCommandFromTwoInputsBase64(param->c, "password \"Auth\" \"SCRV1:%s:%s\"", hwndDlg, ID_EDT_AUTH_PASS, ID_EDT_AUTH_CHALLENGE);
+            else if (o.mfa_token == 1)
+                ManagementCommandFromTwoInputs(param->c, "password \"Auth\" \"%s%s\"", hwndDlg, ID_EDT_AUTH_PASS, ID_EDT_AUTH_TOKEN);
             else
                 ManagementCommandFromInput(param->c, "password \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_PASS);
             EndDialog(hwndDlg, LOWORD(wParam));
@@ -1254,6 +1271,10 @@ OnPassword(connection_t *c, char *msg)
             param->flags |= (*(chstr + 3) != '0') ? FLAG_CR_ECHO : 0;
             param->str = strdup(chstr + 5);
             LocalizedDialogBoxParam(ID_DLG_AUTH_CHALLENGE, UserAuthDialogFunc, (LPARAM) param);
+        }
+        else if (o.mfa_token == 1)
+        {
+            LocalizedDialogBoxParam(ID_DLG_AUTH_TOKEN, UserAuthDialogFunc, (LPARAM)param);
         }
         else
         {

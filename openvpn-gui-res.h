@@ -40,6 +40,9 @@
 #define ID_EDT_PASSPHRASE                151
 #define ID_LTEXT_PASSWORD                152
 
+/* Token */
+#define ID_LTEXT_TOKEN                   155
+
 /* Status Dialog */
 #define ID_DLG_STATUS                    160
 #define ID_TXT_STATUS                    161
@@ -64,6 +67,9 @@
 #define ID_DLG_AUTH                      180
 #define ID_EDT_AUTH_USER                 181
 #define ID_EDT_AUTH_PASS                 182
+
+#define ID_DLG_AUTH_TOKEN                194
+#define ID_EDT_AUTH_TOKEN                195
 
 /* Auth Username/Password/Challenge Dialog */
 #define ID_DLG_AUTH_CHALLENGE            183
@@ -118,6 +124,8 @@
 #define ID_TXT_PERSISTENT                247
 #define ID_CHK_PLAP_REG                  248
 #define ID_CHK_AUTO_RESTART              249
+
+#define ID_CHK_TOKEN                     260
 
 /* Proxy Auth Dialog */
 #define ID_DLG_PROXY_AUTH                250
@@ -379,6 +387,7 @@
 /* Invalid input errors */
 #define IDS_ERR_INVALID_PASSWORD_INPUT  2152
 #define IDS_ERR_INVALID_USERNAME_INPUT  2153
+#define IDS_ERR_INVALID_TOKEN_INPUT     2154
 
 /* pkcs11 related */
 #define IDS_ERR_NO_PKCS11               2160

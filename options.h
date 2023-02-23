@@ -214,6 +214,7 @@ typedef struct {
     TCHAR log_viewer[MAX_PATH];
     TCHAR editor[MAX_PATH];
     DWORD silent_connection;
+    DWORD mfa_token;
     DWORD iservice_admin;
     DWORD show_balloon;
     DWORD show_script_window;

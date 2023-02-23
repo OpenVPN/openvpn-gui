@@ -313,6 +313,10 @@ silent_connection
     not be shown while connecting. Warnings such as interactive service
     not started or multiple config files with same name are also suppressed.
 
+mfa_token
+    If set to "1", a separate field token field will be added to the
+    authentication window.
+
 show_balloon
     0: Never show any connected balloon
 

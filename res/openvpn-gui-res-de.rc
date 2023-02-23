@@ -53,6 +53,25 @@ BEGIN
     LTEXT "", ID_TXT_WARNING, 6, 80, 150, 10
 END
 
+/* Auth Username/Password/Token Dialog */
+ID_DLG_AUTH_TOKEN DIALOGEX 6, 18, 160, 112
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFOREGROUND
+EXSTYLE WS_EX_TOPMOST
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "&Benutzer:", ID_LTEXT_USERNAME, 6, 9, 50, 10
+    EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
+    LTEXT "&Passwort:", ID_LTEXT_PASSWORD, 6, 26, 50, 10
+    EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    LTEXT "&Token:", ID_LTEXT_TOKEN, 6, 42, 50, 10
+    EDITTEXT ID_EDT_AUTH_TOKEN, 60, 39, 94, 12, ES_AUTOHSCROLL
+    CHECKBOX "Passwort &speichern", ID_CHK_SAVE_PASS, 6, 58, 100, 10
+    PUSHBUTTON "&OK", IDOK, 20, 75, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "&Abbrechen", IDCANCEL, 90, 75, 52, 14
+    LTEXT "", ID_TXT_WARNING, 6, 95, 150, 10
+END
+
 /* Auth Username/Password/Challenge Dialog */
 ID_DLG_AUTH_CHALLENGE DIALOG 6, 18, 160, 129
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
@@ -160,21 +179,22 @@ BEGIN
     GROUPBOX "Systemstart", 202, 6, 47, 235, 30
     AUTOCHECKBOX "Mit &Windows starten", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "Einstellungen", ID_GROUPBOX3, 6, 82, 235, 165
+    GROUPBOX "Einstellungen", ID_GROUPBOX3, 6, 82, 235, 180
     AUTOCHECKBOX "An &Log anhängen", ID_CHK_LOG_APPEND, 17, 95, 200, 10
     AUTOCHECKBOX "&Skriptfenster zeigen", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "Stille &Verbindung", ID_CHK_SILENT, 17, 125, 200, 10
-    AUTOCHECKBOX "Interactive Service immer verwenden", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
-    LTEXT "Zeige Benachrichtigung", ID_TXT_BALLOON, 17, 155, 100, 10
-    AUTORADIOBUTTON "Beim Verb&inden", ID_RB_BALLOON1, 17, 170, 60, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Beim Verbinden/&erneut Verbinden", ID_RB_BALLOON2, 83, 170, 120, 10
-    AUTORADIOBUTTON "&Nie", ID_RB_BALLOON0, 210, 170, 30, 10
-    LTEXT "Persistent Connections", ID_TXT_PERSISTENT, 17, 185, 100, 10
-    AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 17, 200, 60, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "&Manual", ID_RB_BALLOON4, 83, 200, 90, 10
-    AUTORADIOBUTTON "&Disable", ID_RB_BALLOON5, 180, 200, 50, 10
-    AUTOCHECKBOX "Enable Pre-Logon A&ccess Provider (requires admin access)", ID_CHK_PLAP_REG, 17, 215, 200, 10
-    AUTOCHECKBOX "Enable auto restart of active connections", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
+    AUTOCHECKBOX "MFA &Token", ID_CHK_TOKEN, 17, 140, 200, 10
+    AUTOCHECKBOX "Interactive Service immer verwenden", ID_CHK_ALWAYS_USE_ISERVICE, 17, 155, 200, 10
+    LTEXT "Zeige Benachrichtigung", ID_TXT_BALLOON, 17, 170, 100, 10
+    AUTORADIOBUTTON "Beim Verb&inden", ID_RB_BALLOON1, 17, 185, 60, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Beim Verbinden/&erneut Verbinden", ID_RB_BALLOON2, 83, 185, 120, 10
+    AUTORADIOBUTTON "&Nie", ID_RB_BALLOON0, 210, 185, 30, 10
+    LTEXT "Persistent Connections", ID_TXT_PERSISTENT, 17, 200, 100, 10
+    AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 17, 215, 60, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "&Manual", ID_RB_BALLOON4, 83, 215, 90, 10
+    AUTORADIOBUTTON "&Disable", ID_RB_BALLOON5, 180, 215, 50, 10
+    AUTOCHECKBOX "Enable Pre-Logon A&ccess Provider (requires admin access)", ID_CHK_PLAP_REG, 17, 230, 200, 10
+    AUTOCHECKBOX "Enable auto restart of active connections", ID_CHK_AUTO_RESTART, 17, 245, 200, 10
 END
 
 /* Advanced Dialog */
@@ -558,6 +578,7 @@ als Administrator ausführen, um die Registry zu aktualisieren."
     IDS_NFO_KEY_PASS_RETRY  "Falsches Passwort. Erneut versuchen…"
     IDS_ERR_INVALID_PASSWORD_INPUT "Unzulässiges Zeichen im Passwort"
     IDS_ERR_INVALID_USERNAME_INPUT "Unzulässiges Zeichen im Benutzername"
+    IDS_ERR_INVALID_TOKEN_INPUT "Unzulässiges Zeichen im Token"
     IDS_NFO_AUTO_CONNECT    "Verbindet automatisch in %u Sekunden…"
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI läuft bereits. Klicken Sie rechts auf das Symbol in der Taskleiste, um die Anwendung zu starten."
     IDS_NFO_BYTECOUNT "Bytes eingehend: %ls  ausgehend: %ls"

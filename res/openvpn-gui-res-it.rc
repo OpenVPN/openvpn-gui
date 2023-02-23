@@ -52,6 +52,25 @@ BEGIN
     LTEXT "", ID_TXT_WARNING, 6, 80, 150, 10
 END
 
+/* Auth Username/Password/Token Dialog */
+ID_DLG_AUTH_TOKEN DIALOGEX 6, 18, 160, 112
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFOREGROUND
+EXSTYLE WS_EX_TOPMOST
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_ITALIAN, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Nome &utente:", ID_LTEXT_USERNAME, 6, 9, 50, 10
+    EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
+    LTEXT "&Password:", ID_LTEXT_PASSWORD, 6, 26, 50, 10
+    EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    LTEXT "&Token:", ID_LTEXT_TOKEN, 6, 42, 50, 10
+    EDITTEXT ID_EDT_AUTH_TOKEN, 60, 39, 94, 12, ES_AUTOHSCROLL
+    CHECKBOX "&Ricorda password", ID_CHK_SAVE_PASS, 6, 58, 100, 10
+    PUSHBUTTON "&OK", IDOK, 20, 75, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "&Annulla", IDCANCEL, 90, 75, 52, 14
+    LTEXT "", ID_TXT_WARNING, 6, 95, 150, 10
+END
+
 /* Auth Username/Password/Challenge Dialog */
 ID_DLG_AUTH_CHALLENGE DIALOG 6, 18, 160, 129
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
@@ -558,6 +577,7 @@ Puoi far partire questa applicazione una volta che l'amministratore ha aggiornat
     IDS_NFO_KEY_PASS_RETRY  "Password errata. Riprova."
     IDS_ERR_INVALID_PASSWORD_INPUT "Carattere non valido nella password"
     IDS_ERR_INVALID_USERNAME_INPUT "Carattere non valido nel nome utente"
+    IDS_ERR_INVALID_TOKEN_INPUT "Invalid character in token"
     IDS_NFO_AUTO_CONNECT    "Connessione automatica tra %u secondi…"
     IDS_NFO_CLICK_HERE_TO_START "L'interfaccia di OpenVPN è già in esecuzione.\nPer avviare fai clic con il tasto destro sull'icona nell'area di notifica."
     IDS_NFO_BYTECOUNT "Byte in: %ls out: %ls"

@@ -57,6 +57,7 @@ struct regkey_int {
       {L"iservice_admin", &o.iservice_admin, 1},
       {L"show_balloon", &o.show_balloon, 1},
       {L"silent_connection", &o.silent_connection, 0},
+      {L"mfa_token", &o.mfa_token, 0},
       {L"preconnectscript_timeout", &o.preconnectscript_timeout, 10},
       {L"connectscript_timeout", &o.connectscript_timeout, 30},
       {L"disconnectscript_timeout", &o.disconnectscript_timeout, 10},

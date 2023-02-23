@@ -249,7 +249,64 @@ out:
     return retval;
 }
 
+/*
+ * Generate a management command from double user inputs and send it
+ */
+BOOL
+ManagementCommandFromTwoInputs(connection_t* c, LPCSTR fmt, HWND hDlg, int id, int id2)
+{
+    BOOL retval = FALSE;
+    LPSTR input, input2, cmd;
+    int input_len, input2_len, cmd_len;
 
+    GetDlgItemTextUtf8(hDlg, id, &input, &input_len);
+    GetDlgItemTextUtf8(hDlg, id2, &input2, &input2_len);
+
+    /* Escape input if needed */
+    char* input_e = escape_string(input);
+    if (!input_e)
+    {
+        goto out;
+    }
+    free(input);
+    input = input_e;
+    input_len = strlen(input);
+
+    char* input2_e = escape_string(input2);
+    if (!input2_e)
+    {
+        goto out;
+    }
+    free(input2);
+    input2 = input2_e;
+    input2_len = strlen(input2);
+
+    cmd_len = input_len + input2_len + strlen(fmt);
+    cmd = malloc(cmd_len);
+    if (cmd)
+    {
+        snprintf(cmd, cmd_len, fmt, input, input2);
+        retval = ManagementCommand(c, cmd, NULL, regular);
+        free(cmd);
+    }
+
+out:
+    /* Clear buffers with potentially secret content */
+    if (input_len)
+    {
+        memset(input, 'x', input_len);
+        SetDlgItemTextA(hDlg, id, input);
+        free(input);
+    }
+    if (input2_len)
+    {
+        memset(input2, 'x', input2_len);
+        SetDlgItemTextA(hDlg, id2, input2);
+        free(input2);
+    }
+
+    return retval;
+}
 
 /*
  * Generate a management command from double user inputs and send it
