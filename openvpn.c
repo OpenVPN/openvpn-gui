@@ -541,7 +541,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             SetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password);
             if (username[0] != L'\0' && !(param->flags & FLAG_CR_TYPE_SCRV1)
                 && password[0] != L'\0' && param->c->failed_auth_attempts == 0
-                && o.mfa_token == 0)
+                && !(param->c->flags & FLAG_TOKEN))
             {
                /* user/pass available and no challenge response needed: skip dialog
                 * if silent_connection is on, else auto submit after a few seconds.
@@ -603,7 +603,10 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                                     || ((param->flags & FLAG_CR_TYPE_SCRV1)
                                         && GetWindowTextLength(GetDlgItem(hwndDlg, ID_EDT_AUTH_CHALLENGE)))
                                    )
-                                && (o.mfa_token == 0 || param->flags & FLAG_CR_TYPE_SCRV1 || GetWindowTextLength(GetDlgItem(hwndDlg, ID_EDT_AUTH_TOKEN)));
+                                && (!(param->c->flags & FLAG_TOKEN)
+                                    || param->flags & FLAG_CR_TYPE_SCRV1
+                                    || GetWindowTextLength(GetDlgItem(hwndDlg, ID_EDT_AUTH_TOKEN))
+                                   );                              
                 EnableWindow(GetDlgItem(hwndDlg, IDOK), enableOK);
             }
             AutoCloseCancel(hwndDlg); /* user interrupt */
@@ -658,7 +661,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             ManagementCommandFromInput(param->c, "username \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_USER);
             if (param->flags & FLAG_CR_TYPE_SCRV1)
                 ManagementCommandFromTwoInputsBase64(param->c, "password \"Auth\" \"SCRV1:%s:%s\"", hwndDlg, ID_EDT_AUTH_PASS, ID_EDT_AUTH_CHALLENGE);
-            else if (o.mfa_token == 1)
+            else if (param->c->flags & FLAG_TOKEN)
                 ManagementCommandFromTwoInputs(param->c, "password \"Auth\" \"%s%s\"", hwndDlg, ID_EDT_AUTH_PASS, ID_EDT_AUTH_TOKEN);
             else
                 ManagementCommandFromInput(param->c, "password \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_PASS);
@@ -1272,7 +1275,7 @@ OnPassword(connection_t *c, char *msg)
             param->str = strdup(chstr + 5);
             LocalizedDialogBoxParam(ID_DLG_AUTH_CHALLENGE, UserAuthDialogFunc, (LPARAM) param);
         }
-        else if (o.mfa_token == 1)
+        else if (param->c->flags & FLAG_TOKEN)
         {
             LocalizedDialogBoxParam(ID_DLG_AUTH_TOKEN, UserAuthDialogFunc, (LPARAM)param);
         }
