@@ -59,12 +59,12 @@ information regarding creating the configuration file.
 Annotations in configuration file:
 
 To make OpenVPN GUI displaying a separate token field for a 2factor authentication in the user/password dialog a
-special annotation can be added to the configuration file. This is needed, because OpenVPN GUI can handle multiple
-connections (configuration files) where some might have a 2factor authentication and some not. OpenVPN GUI does
-not offer the possibilty to handle connection specific configurations on its own, so the configuration file can be
-extended by a kind of annotation to fulfill this requirement.
+special "annotation" in the form of a specific kind of comment can be added to the configuration file. This is needed,
+because OpenVPN GUI can handle multiple connections (configuration files) where some might have a 2factor authentication
+and some not. OpenVPN GUI does not offer the possibilty to handle connection specific configurations on its own, so the
+configuration file can be extended by such annotation to fulfill this requirement.
 
-* By adding the comment '# @OpenVPN_GUI token' to the configuration file an additional token field in the user/password
+* By adding the annotation '# @OpenVPN_GUI token' to the configuration file an additional token field in the user/password
   dialog will be shown. When the field is visible, a token is mandatory and the "OK" button will not get enabled until
   the token field gets filled. The automatic connection after 6s is also disabled when the token field is required. 
 
