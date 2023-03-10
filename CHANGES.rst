@@ -1,3 +1,16 @@
+Version 11.38.0
+===============
+
+Bug fixes
+
+* Fix memory leaks in PLAP and localization.c
+
+Updates
+-------
+* Replace sleep() by wait with message pump
+* Remove tray icon during exit processing
+* Use the status window as owner of dialogs in same thread
+
 Version 11.37.0
 ===============
 
