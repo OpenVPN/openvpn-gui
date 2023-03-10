@@ -353,11 +353,14 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
 
 
 static void
-StopAllOpenVPN()
+StopAllOpenVPN(bool exiting)
 {
     int i;
 
-    RemoveTrayIcon();
+    if (exiting)
+    {
+        RemoveTrayIcon();
+    }
 
     /* Stop all connections started by us -- we leave persistent ones
      * at their current state. Use the disconnect menu to put them into
@@ -451,7 +454,9 @@ HandleCopyDataMessage(const COPYDATASTRUCT *copy_data)
         ShowWindow(c->hwndStatus, SW_SHOW);
     }
     else if(copy_data->dwData == WM_OVPN_STOPALL)
-        StopAllOpenVPN();
+    {
+        StopAllOpenVPN(false);
+    }
     else if(copy_data->dwData == WM_OVPN_SILENT && str)
     {
         if (_wtoi(str) == 0)
@@ -680,7 +685,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
     case WM_DESTROY:
       WTSUnRegisterSessionNotification(hwnd);
-      StopAllOpenVPN();
+      StopAllOpenVPN(true);
       OnDestroyTray();          /* Remove Tray Icon and destroy menus */
       PostQuitMessage (0);	/* Send a WM_QUIT to the message queue */
       break;
@@ -690,7 +695,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
     case WM_ENDSESSION:
       SaveAutoRestartList();
-      StopAllOpenVPN();
+      StopAllOpenVPN(true);
       OnDestroyTray();
       break;
 
@@ -980,7 +985,7 @@ ErrorExit(int exit_code, const wchar_t *msg)
                       MB_OK | MB_SETFOREGROUND | MB_ICONERROR | MBOX_RTL_FLAGS, GetGUILanguage());
     if (o.hWnd)
     {
-        StopAllOpenVPN();
+        StopAllOpenVPN(true);
         PostQuitMessage(exit_code);
     }
     else
