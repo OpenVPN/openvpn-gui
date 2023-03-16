@@ -38,6 +38,7 @@
 #include "options.h"
 #include "registry.h"
 #include "misc.h"
+#include "tray.h"
 
 extern options_t o;
 
@@ -304,8 +305,26 @@ LoadLocalizedIconEx(const UINT iconId, int cxDesired, int cyDesired)
 {
     LANGID langId = GetGUILanguage();
 
+    UINT iconId_pref = iconId;
+    if (o.use_legacy_icons)
+    {
+        switch(iconId)
+        {
+            case ID_ICO_CONNECTED:
+                iconId_pref = ID_ICO_CONNECTED_LEGACY;
+                break;
+            case ID_ICO_DISCONNECTED:
+                iconId_pref = ID_ICO_DISCONNECTED_LEGACY;
+                break;
+            case ID_ICO_CONNECTING:
+            case ID_ICO_CONNECTED_ERR:
+                iconId_pref = ID_ICO_CONNECTING_LEGACY;
+                break;
+        }
+    }
+
     HICON hIcon =
-            (HICON) LoadImage (o.hInstance, MAKEINTRESOURCE(iconId),
+            (HICON) LoadImage (o.hInstance, MAKEINTRESOURCE(iconId_pref),
                     IMAGE_ICON, cxDesired, cyDesired, LR_DEFAULTSIZE|LR_SHARED);
     if (hIcon)
         return hIcon;
@@ -316,7 +335,7 @@ LoadLocalizedIconEx(const UINT iconId, int cxDesired, int cyDesired)
      * from the first image in the resource
      */
     /* find group icon resource */
-    HRSRC res = FindResourceLang(RT_GROUP_ICON, MAKEINTRESOURCE(iconId), langId);
+    HRSRC res = FindResourceLang(RT_GROUP_ICON, MAKEINTRESOURCE(iconId_pref), langId);
     if (res == NULL)
         return NULL;
 
@@ -553,6 +572,8 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
             Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_PLAP_REG), BST_CHECKED);
         if (o.enable_auto_restart)
             Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_AUTO_RESTART), BST_CHECKED);
+        if (o.use_legacy_icons)
+            Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_LEGACY_ICONS), BST_CHECKED);
 
         break;
 
@@ -601,7 +622,9 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
                 (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_SHOW_SCRIPT_WIN)) == BST_CHECKED);
             o.enable_auto_restart =
                 (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_AUTO_RESTART)) == BST_CHECKED);
-
+            o.use_legacy_icons =
+                (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_LEGACY_ICONS)) == BST_CHECKED);
+            CheckAndSetTrayIcon(); /* in case icons changed */
 
             SaveRegistryKeys();
 

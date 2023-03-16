@@ -379,6 +379,7 @@ InitOptions(options_t *opt)
     opt->version = MakeVersion (PACKAGE_VERSION_RESOURCE);
     opt->clr_warning = RGB(0xff, 0, 0);
     opt->clr_error = RGB(0xff, 0, 0);
+    opt->use_legacy_icons = 1;
 }
 
 

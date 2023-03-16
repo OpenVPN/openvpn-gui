@@ -29,6 +29,10 @@
 #define ID_ICO_DISCONNECTED               93
 #define ID_ICO_EYE                        94
 #define ID_ICO_EYESTROKE                  95
+#define ID_ICO_CONNECTED_ERR              96
+#define ID_ICO_CONNECTED_LEGACY           97
+#define ID_ICO_CONNECTING_LEGACY          98
+#define ID_ICO_DISCONNECTED_LEGACY        99
 
 /* About Dialog */
 #define ID_DLG_ABOUT                     100
@@ -126,6 +130,9 @@
 #define ID_DLG_PROXY_AUTH                250
 #define ID_EDT_PROXY_USER                251
 #define ID_EDT_PROXY_PASS                252
+
+/* General Settings continued */
+#define ID_CHK_LEGACY_ICONS              260
 
 /* Advanced dialog */
 #define ID_DLG_ADVANCED                  270

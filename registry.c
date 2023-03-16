@@ -67,7 +67,8 @@ struct regkey_int {
       {L"management_port_offset", &o.mgmt_port_offset, 25340},
       {L"enable_peristent_connections", &o.enable_persistent, 2},
       {L"enable_auto_restart", &o.enable_auto_restart, 1},
-      {L"ovpn_engine", &o.ovpn_engine, OPENVPN_ENGINE_OVPN2}
+      {L"ovpn_engine", &o.ovpn_engine, OPENVPN_ENGINE_OVPN2},
+      {L"use_legacy_icons", &o.use_legacy_icons, 1},
     };
 
 static int

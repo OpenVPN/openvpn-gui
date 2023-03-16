@@ -65,8 +65,11 @@ libopenvpn_plap_la_RESOURCES = \
 	$(top_srcdir)/res/connected.ico \
 	$(top_srcdir)/res/connecting.ico \
 	$(top_srcdir)/res/disconnected.ico \
+	$(top_srcdir)/res/connected_error.ico \
+	$(top_srcdir)/res/connected_old.ico \
+	$(top_srcdir)/res/connecting_old.ico \
+	$(top_srcdir)/res/disconnected_old.ico \
 	$(top_srcdir)/res/openvpn-gui.ico \
-	$(top_srcdir)/res/reconnecting.ico \
 	$(top_srcdir)/res/eye.ico \
 	$(top_srcdir)/res/eye-stroke.ico \
         openvpn-plap-res.rc \

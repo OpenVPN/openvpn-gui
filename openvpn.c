@@ -379,6 +379,7 @@ OnStateChange(connection_t *c, char *data)
         if (!success)
         {
             SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_ROUTE_ERROR));
+            SetStatusWinIcon(c->hwndStatus, ID_ICO_CONNECTED_ERR);
             return;
         }
 
