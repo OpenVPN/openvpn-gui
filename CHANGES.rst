@@ -1,8 +1,15 @@
+Version 11.39.0
+===============
+
+Bug fixes
+---------
+* Make --command disconnect_all work again
+
 Version 11.38.0
 ===============
 
 Bug fixes
-
+---------
 * Fix memory leaks in PLAP and localization.c
 
 Updates
