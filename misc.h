@@ -81,11 +81,6 @@ void ImportConfigFile(const TCHAR* path, bool prompt_user);
 BOOL
 GetDlgItemTextUtf8(HWND hDlg, int id, LPSTR* str, int* len);
 
-/*
- * Set env vars used by OpenSSL to sane values.
- */
-void set_openssl_env_vars(void);
-
 /* Return escaped copy of a string */
 char *escape_string(const char *str);
 
@@ -158,5 +153,7 @@ DWORD RunAsAdmin(const WCHAR *cmd, const WCHAR *params);
  * @returns false if WM_QUIT was received, else returns true on timeout.
  */
 bool OVPNMsgWait(DWORD timeout, HWND hdlg);
+
+bool GetRandomPassword(char *buf, size_t len);
 
 #endif

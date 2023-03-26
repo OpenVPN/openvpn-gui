@@ -41,7 +41,6 @@
 #include "service.h"
 #include "main.h"
 #include "options.h"
-#include "passphrase.h"
 #include "proxy.h"
 #include "registry.h"
 #include "openvpn-gui-res.h"
@@ -51,10 +50,6 @@
 #include "save_pass.h"
 #include "echo.h"
 #include "as.h"
-
-#ifndef DISABLE_CHANGE_PASSWORD
-#include <openssl/crypto.h>
-#endif
 
 #define OVPN_EXITCODE_ERROR      1
 #define OVPN_EXITCODE_TIMEOUT    2
@@ -290,12 +285,6 @@ int WINAPI _tWinMain (HINSTANCE hThisInstance,
   }
 
   GetProxyRegistrySettings();
-
-#ifndef DISABLE_CHANGE_PASSWORD
-  /* Initialize OpenSSL */
-  set_openssl_env_vars();
-  OPENSSL_init_crypto(OPENSSL_INIT_LOAD_CONFIG, NULL);
-#endif /* DISABLE_CHANGE_PASSWORD */
 
   /* The Window structure */
   wincl.hInstance = hThisInstance;
@@ -672,11 +661,6 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       else if (LOWORD(wParam) == IDM_CLEARPASSMENU) {
         ResetSavePasswords(c);
       }
-#ifndef DISABLE_CHANGE_PASSWORD
-      else if (LOWORD(wParam) == IDM_PASSPHRASEMENU) {
-        ShowChangePassphraseDialog(c);
-      }
-#endif
       break;
 
     case WM_CLOSE:

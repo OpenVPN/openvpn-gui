@@ -7,20 +7,19 @@ jobs:
     strategy:
       matrix:
         arch: [x86, x64, arm64]
-        ossl: [ossl1.1.1, ossl3]
         ovpn3:
           - preset: ""
             name: ""
             upload_name: ""
           - preset: -ovpn3
-            name: " - ovpn3"
+            name: "- ovpn3"
             upload_name: "_ovpn3"
 
     env:
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
 
-    name: 'msvc - ${{matrix.arch}} - ${{ matrix.ossl }}${{ matrix.ovpn3.name }}'
+    name: 'msvc - ${{matrix.arch}} ${{ matrix.ovpn3.name }}'
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
@@ -30,26 +29,25 @@ jobs:
       uses: lukka/run-vcpkg@v10
       with:
         vcpkgGitCommitId: "6adca01a3fadca0cc0b80f03ec57c7c3a0be5c02"
-        appendedCacheKey: "${{ matrix.arch }} - ${{ matrix.ossl }}"
+        appendedCacheKey: "${{ matrix.arch }}"
 
     - name: Run CMake consuming CMakePreset.json and vcpkg.json by mean of vcpkg.
       uses: lukka/run-cmake@v10
       with:
-        configurePreset: '${{ matrix.arch }}-release-${{ matrix.ossl }}${{ matrix.ovpn3.preset }}'
-        buildPreset: '${{ matrix.arch }}-release-${{ matrix.ossl }}${{ matrix.ovpn3.preset }}'
+        configurePreset: '${{ matrix.arch }}-release${{ matrix.ovpn3.preset }}'
+        buildPreset: '${{ matrix.arch }}-release${{ matrix.ovpn3.preset }}'
 
     - uses: actions/upload-artifact@v3
       with:
-        name: openvpn-gui_${{ matrix.arch }}_${{ matrix.ossl }}${{ matrix.ovpn3.upload_name }}
+        name: openvpn-gui_${{ matrix.arch }}${{ matrix.ovpn3.upload_name }}
         path: |
-          out/build/${{ matrix.arch }}-release-${{ matrix.ossl }}${{ matrix.ovpn3.preset }}/*.dll
-          out/build/${{ matrix.arch }}-release-${{ matrix.ossl }}${{ matrix.ovpn3.preset }}/*.exe
+          out/build/${{ matrix.arch }}-release${{ matrix.ovpn3.preset }}/*.dll
+          out/build/${{ matrix.arch }}-release${{ matrix.ovpn3.preset }}/*.exe
 
   mingw:
     strategy:
       fail-fast: false
       matrix:
-        openssl_version: [1.1.1m, 3.0.1]
         target: [mingw64, mingw]
         include:
           - target: mingw64
@@ -57,7 +55,7 @@ jobs:
           - target: mingw
             chost: i686-w64-mingw32
 
-    name: "gcc-mingw - ${{matrix.target}} - ossl${{ matrix.openssl_version }}"
+    name: "gcc-mingw - ${{matrix.target}}"
     runs-on: ubuntu-20.04
 
     env:
@@ -80,34 +78,10 @@ jobs:
         uses: actions/cache@v2
         with:
           path: '~/mingw/'
-          key: mingw-${{ matrix.target }}-${{ matrix.openssl_version }}
-
-      - name: Download mingw dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          wget -c -P download-cache/ "https://www.openssl.org/source/openssl-${{ matrix.openssl_version }}.tar.gz"
-          tar zxf "download-cache/openssl-${{ matrix.openssl_version }}.tar.gz"
-
-      - name: Configure OpenSSL
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: ./Configure --cross-compile-prefix=${{ matrix.chost }}- shared ${{ matrix.target }} no-capieng --prefix="${HOME}/mingw/opt" --openssldir="${HOME}/mingw/opt" -static-libgcc
-        working-directory: "./openssl-${{ matrix.openssl_version }}"
-
-      - name: Build OpenSSL
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: make
-        working-directory: "./openssl-${{ matrix.openssl_version }}"
-
-      - name: Install OpenSSL
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: make install
-        working-directory: "./openssl-${{ matrix.openssl_version }}"
+          key: mingw-${{ matrix.target }}
 
       - name: configure
-        # openssl3 uses lib64 on mingw64
-        run: |
-            [[ "${{ matrix.openssl_version }}" == "3.0.1" && "${{ matrix.target  }}" == "mingw64" ]] && LIB="lib64" || LIB="lib"
-            PKG_CONFIG_PATH=${HOME}/mingw/opt/${LIB}/pkgconfig ./configure --host=${{ matrix.chost }} --enable-password-change=yes
+        run: PKG_CONFIG_PATH=${HOME}/mingw/opt/${LIB}/pkgconfig ./configure --host=${{ matrix.chost }}
         working-directory: openvpn-gui
 
       - name: make

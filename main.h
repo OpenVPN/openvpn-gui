@@ -31,9 +31,6 @@
 //#define DEBUG
 #define DEBUG_FILE	L"C:\\windows\\temp\\openvpngui_debug.txt"
 
-/* Define this to disable Change Password support */
-//#define DISABLE_CHANGE_PASSWORD
-
 /* Registry key for User Settings */
 #define GUI_REGKEY_HKCU	_T("Software\\OpenVPN-GUI")
 

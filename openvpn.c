@@ -53,7 +53,6 @@
 #include "scripts.h"
 #include "viewlog.h"
 #include "proxy.h"
-#include "passphrase.h"
 #include "localization.h"
 #include "misc.h"
 #include "access.h"

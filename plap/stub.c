@@ -176,12 +176,6 @@ void echo_msg_load(UNUSED connection_t *c)
     return;
 }
 
-BOOL GetRandomPassword(char *p, size_t len)
-{
-    if (p && len > 0) *p = '\0';
-    return 0;
-}
-
 BOOL CheckKeyFileWriteAccess(UNUSED connection_t *c)
 {
     return 0;

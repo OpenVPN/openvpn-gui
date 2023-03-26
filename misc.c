@@ -752,31 +752,6 @@ ImportConfigFile(const TCHAR* source, bool prompt_user)
     RecreatePopupMenus();
 }
 
-void
-set_openssl_env_vars()
-{
-    struct {
-        WCHAR *name;
-        WCHAR *value;
-    } ossl_env[] = {
-        {L"OPENSSL_CONF", L"ssl\\openssl.cnf"},
-        {L"OPENSSL_ENGINES", L"ssl\\engines"},
-        {L"OPENSSL_MODULES", L"ssl\\modules"}
-    };
-    for (size_t i = 0; i < _countof(ossl_env); i++)
-    {
-        size_t size = 0;
-
-        _wgetenv_s(&size, NULL, 0, ossl_env[i].name);
-        if (size == 0)
-        {
-            WCHAR val[MAX_PATH] = {0};
-            _sntprintf_0(val, L"%ls%ls", o.install_path, ossl_env[i].value);
-            _wputenv_s(ossl_env[i].name, val);
-        }
-    }
-}
-
 /*
  * Find a free port to bind and return it in addr.sin_port
  */
@@ -1081,4 +1056,30 @@ OVPNMsgWait(DWORD timeout, HWND hdlg)
         now = GetTickCount64();
     }
     return true;
+}
+
+/*
+ * Create a random password from the printable ASCII range
+ */
+bool
+GetRandomPassword(char *buf, size_t len)
+{
+    HCRYPTPROV cp;
+    BOOL retval = FALSE;
+    unsigned i;
+
+    if (!CryptAcquireContext(&cp, NULL, NULL, PROV_DSS, CRYPT_VERIFYCONTEXT))
+        return FALSE;
+
+    if (!CryptGenRandom(cp, len, (PBYTE) buf))
+        goto out;
+
+    /* Make sure all values are between 0x21 '!' and 0x7e '~' */
+    for (i = 0; i < len; ++i)
+        buf[i] = (buf[i] & 0x5d) + 0x21;
+
+    retval = TRUE;
+out:
+    CryptReleaseContext(cp, 0);
+    return retval;
 }

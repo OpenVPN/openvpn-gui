@@ -207,11 +207,6 @@ CreatePopupMenus()
         AppendMenu(hMenu, MF_STRING, IDM_EDITMENU, LoadLocalizedString(IDS_MENU_EDITCONFIG));
         AppendMenu(hMenu, MF_STRING, IDM_CLEARPASSMENU, LoadLocalizedString(IDS_MENU_CLEARPASS));
 
-#ifndef DISABLE_CHANGE_PASSWORD
-        if (o.chead->flags & FLAG_ALLOW_CHANGE_PASSPHRASE)
-            AppendMenu(hMenu, MF_STRING, IDM_PASSPHRASEMENU, LoadLocalizedString(IDS_MENU_PASSPHRASE));
-#endif
-
         AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
 
         hMenuImport = CreatePopupMenu();
@@ -302,11 +297,6 @@ CreatePopupMenus()
 
             AppendMenu(hMenuConn[i], MF_STRING, IDM_EDITMENU, LoadLocalizedString(IDS_MENU_EDITCONFIG));
             AppendMenu(hMenuConn[i], MF_STRING, IDM_CLEARPASSMENU, LoadLocalizedString(IDS_MENU_CLEARPASS));
-
-#ifndef DISABLE_CHANGE_PASSWORD
-            if (c->flags & FLAG_ALLOW_CHANGE_PASSPHRASE)
-                AppendMenu(hMenuConn[i], MF_STRING, IDM_PASSPHRASEMENU, LoadLocalizedString(IDS_MENU_PASSPHRASE));
-#endif
 
             SetMenuStatus(c, c->state);
         }

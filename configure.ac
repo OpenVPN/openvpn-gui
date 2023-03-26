@@ -44,13 +44,6 @@ AC_ARG_ENABLE(
 )
 
 AC_ARG_ENABLE(
-	[password-change],
-	[AS_HELP_STRING([--disable-password-change], [disable password change support @<:@default=yes@:>@])],
-	,
-	[enable_password_change="yes"]
-)
-
-AC_ARG_ENABLE(
 	[ovpn3],
 	[AS_HELP_STRING([--enable-ovpn3], [enable openvpn3 agent and client @<:@default=no@:>@])],
 	[
@@ -83,23 +76,6 @@ AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
-
-if test "${enable_password_change}" = "yes"; then
-PKG_PROG_PKG_CONFIG
-PKG_CHECK_MODULES(
-	[OPENSSL_CRYPTO],
-	[libcrypto >= 0.9.6],
-	,
-	[AC_CHECK_LIB(
-		[crypto],
-		[RSA_new],
-		[OPENSSL_CRYPTO_LIBS="-lcrypto"],
-		[test "${enable_distonly}" = "no" && AC_MSG_ERROR([Cannot find OpenSSL library])]
-	)]
-)
-else
-	AC_DEFINE([DISABLE_CHANGE_PASSWORD],[1],[disable password change])
-fi
 
 test "${GCC}" = "yes" && CFLAGS="${CFLAGS} -pedantic -Wall -Wextra"
 
