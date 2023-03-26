@@ -15,20 +15,6 @@
             "vendor": { "microsoft.com/VisualStudioSettings/CMake/1.0": { "hostOS": [ "Windows" ] } }
         },
         {
-            "name": "ossl3",
-            "hidden": true,
-            "cacheVariables": {
-                "VCPKG_MANIFEST_DIR": "${sourceDir}/vcpkg_manifests/openssl_3"
-            }
-        },
-        {
-            "name": "ossl1.1.1",
-            "hidden": true,
-            "cacheVariables": {
-                "VCPKG_MANIFEST_DIR": "${sourceDir}/vcpkg_manifests/openssl_1.1.1"
-            }
-        },
-        {
             "name": "x64",
             "hidden": true,
             "architecture": {
@@ -71,222 +57,113 @@
             }
         },
         {
-            "name": "x64-debug-ossl3",
-            "inherits": [ "base", "ossl3", "x64", "debug" ]
+            "name": "x64-debug",
+            "inherits": [ "base", "x64", "debug" ]
         },
         {
-            "name": "x64-debug-ossl1.1.1",
-            "inherits": [ "base", "ossl1.1.1", "x64", "debug" ]
+            "name": "arm64-debug",
+            "inherits": [ "base", "arm64", "debug" ]
         },
         {
-            "name": "arm64-debug-ossl3",
-            "inherits": [ "base", "ossl3", "arm64", "debug" ]
+            "name": "x86-debug",
+            "inherits": [ "base", "x86", "debug" ]
         },
         {
-            "name": "arm64-debug-ossl1.1.1",
-            "inherits": [ "base", "ossl1.1.1", "arm64", "debug" ]
+            "name": "x64-release",
+            "inherits": [ "base", "x64", "release" ]
         },
         {
-            "name": "x86-debug-ossl3",
-            "inherits": [ "base", "ossl3", "x86", "debug" ]
+            "name": "arm64-release",
+            "inherits": [ "base", "arm64", "release" ]
         },
         {
-            "name": "x86-debug-ossl1.1.1",
-            "inherits": [ "base", "ossl1.1.1", "x86", "debug" ]
+            "name": "x86-release",
+            "inherits": [ "base", "x86", "release" ]
         },
         {
-            "name": "x64-release-ossl3",
-            "inherits": [ "base", "ossl3", "x64", "release" ]
+            "name": "x64-debug-ovpn3",
+            "inherits": [ "x64-debug", "ovpn3" ]
         },
         {
-            "name": "x64-release-ossl1.1.1",
-            "inherits": [ "base", "ossl1.1.1", "x64", "release" ]
+            "name": "arm64-debug-ovpn3",
+            "inherits": [ "arm64-debug", "ovpn3" ]
         },
         {
-            "name": "arm64-release-ossl3",
-            "inherits": [ "base", "ossl3", "arm64", "release" ]
+            "name": "x86-debug-ovpn3",
+            "inherits": [ "x86-debug", "ovpn3" ]
         },
         {
-            "name": "arm64-release-ossl1.1.1",
-            "inherits": [ "base", "ossl1.1.1", "arm64", "release" ]
+            "name": "x64-release-ovpn3",
+            "inherits": [ "x64-release", "ovpn3" ]
         },
         {
-            "name": "x86-release-ossl3",
-            "inherits": [ "base", "ossl3", "x86", "release" ]
+            "name": "arm64-release-ovpn3",
+            "inherits": [ "arm64-release", "ovpn3" ]
         },
         {
-            "name": "x86-release-ossl1.1.1",
-            "inherits": [ "base", "ossl1.1.1", "x86", "release" ]
-        },
-        {
-            "name": "x64-debug-ossl3-ovpn3",
-            "inherits": [ "x64-debug-ossl3", "ovpn3" ]
-        },
-        {
-            "name": "x64-debug-ossl1.1.1-ovpn3",
-            "inherits": [ "x64-debug-ossl1.1.1", "ovpn3" ]
-        },
-        {
-            "name": "arm64-debug-ossl3-ovpn3",
-            "inherits": [ "arm64-debug-ossl3", "ovpn3" ]
-        },
-        {
-            "name": "arm64-debug-ossl1.1.1-ovpn3",
-            "inherits": [ "arm64-debug-ossl1.1.1", "ovpn3" ]
-        },
-        {
-            "name": "x86-debug-ossl3-ovpn3",
-            "inherits": [ "x86-debug-ossl3", "ovpn3" ]
-        },
-        {
-            "name": "x86-debug-ossl1.1.1-ovpn3",
-            "inherits": [ "x86-debug-ossl1.1.1", "ovpn3" ]
-        },
-        {
-            "name": "x64-release-ossl3-ovpn3",
-            "inherits": [ "x64-release-ossl3", "ovpn3" ]
-        },
-        {
-            "name": "x64-release-ossl1.1.1-ovpn3",
-            "inherits": [ "x64-release-ossl1.1.1", "ovpn3" ]
-        },
-        {
-            "name": "arm64-release-ossl3-ovpn3",
-            "inherits": [ "arm64-release-ossl3", "ovpn3" ]
-        },
-        {
-            "name": "arm64-release-ossl1.1.1-ovpn3",
-            "inherits": [ "arm64-release-ossl1.1.1", "ovpn3" ]
-        },
-        {
-            "name": "x86-release-ossl3-ovpn3",
-            "inherits": [ "x86-release-ossl3", "ovpn3" ]
-        },
-        {
-            "name": "x86-release-ossl1.1.1-ovpn3",
-            "inherits": [ "x86-release-ossl1.1.1", "ovpn3" ]
+            "name": "x86-release-ovpn3",
+            "inherits": [ "x86-release", "ovpn3" ]
         }
     ],
     "buildPresets": [
         {
-            "name": "x64-release-ossl3",
-            "configurePreset": "x64-release-ossl3",
+            "name": "x64-release",
+            "configurePreset": "x64-release",
             "configuration": "Release"
         },
         {
-            "name": "x64-release-ossl1.1.1",
-            "configurePreset": "x64-release-ossl1.1.1",
+            "name": "x86-release",
+            "configurePreset": "x86-release",
             "configuration": "Release"
         },
         {
-            "name": "x86-release-ossl3",
-            "configurePreset": "x86-release-ossl3",
+            "name": "arm64-release",
+            "configurePreset": "arm64-release",
             "configuration": "Release"
         },
         {
-            "name": "x86-release-ossl1.1.1",
-            "configurePreset": "x86-release-ossl1.1.1",
-            "configuration": "Release"
-        },
-        {
-            "name": "arm64-release-ossl3",
-            "configurePreset": "arm64-release-ossl3",
-            "configuration": "Release"
-        },
-        {
-            "name": "arm64-release-ossl1.1.1",
-            "configurePreset": "arm64-release-ossl1.1.1",
-            "configuration": "Release"
-        },
-        {
-            "name": "x64-debug-ossl3",
-            "configurePreset": "x64-debug-ossl3",
+            "name": "x64-debug",
+            "configurePreset": "x64-debug",
             "configuration": "Debug"
         },
         {
-            "name": "x64-debug-ossl1.1.1",
-            "configurePreset": "x64-debug-ossl1.1.1",
+            "name": "x86-debug",
+            "configurePreset": "x86-debug",
             "configuration": "Debug"
         },
         {
-            "name": "x86-debug-ossl3",
-            "configurePreset": "x86-debug-ossl3",
+            "name": "arm64-debug",
+            "configurePreset": "arm64-debug",
             "configuration": "Debug"
         },
         {
-            "name": "x86-debug-ossl1.1.1",
-            "configurePreset": "x86-debug-ossl1.1.1",
-            "configuration": "Debug"
-        },
-        {
-            "name": "arm64-debug-ossl3",
-            "configurePreset": "arm64-debug-ossl3",
-            "configuration": "Debug"
-        },
-        {
-            "name": "arm64-debug-ossl1.1.1",
-            "configurePreset": "arm64-debug-ossl1.1.1",
-            "configuration": "Debug"
-        },
-
-        {
-            "name": "x64-release-ossl3-ovpn3",
-            "configurePreset": "x64-release-ossl3-ovpn3",
+            "name": "x64-release-ovpn3",
+            "configurePreset": "x64-release-ovpn3",
             "configuration": "Release"
         },
         {
-            "name": "x64-release-ossl1.1.1-ovpn3",
-            "configurePreset": "x64-release-ossl1.1.1-ovpn3",
+            "name": "x86-release-ovpn3",
+            "configurePreset": "x86-release-ovpn3",
             "configuration": "Release"
         },
         {
-            "name": "x86-release-ossl3-ovpn3",
-            "configurePreset": "x86-release-ossl3-ovpn3",
+            "name": "arm64-release-ovpn3",
+            "configurePreset": "arm64-release-ovpn3",
             "configuration": "Release"
         },
         {
-            "name": "x86-release-ossl1.1.1-ovpn3",
-            "configurePreset": "x86-release-ossl1.1.1-ovpn3",
-            "configuration": "Release"
-        },
-        {
-            "name": "arm64-release-ossl3-ovpn3",
-            "configurePreset": "arm64-release-ossl3-ovpn3",
-            "configuration": "Release"
-        },
-        {
-            "name": "arm64-release-ossl1.1.1-ovpn3",
-            "configurePreset": "arm64-release-ossl1.1.1-ovpn3",
-            "configuration": "Release"
-        },
-        {
-            "name": "x64-debug-ossl3-ovpn3",
-            "configurePreset": "x64-debug-ossl3-ovpn3",
+            "name": "x64-debug-ovpn3",
+            "configurePreset": "x64-debug-ovpn3",
             "configuration": "Debug"
         },
         {
-            "name": "x64-debug-ossl1.1.1-ovpn3",
-            "configurePreset": "x64-debug-ossl1.1.1-ovpn3",
+            "name": "x86-debug-ovpn3",
+            "configurePreset": "x86-debug-ovpn3",
             "configuration": "Debug"
         },
         {
-            "name": "x86-debug-ossl3-ovpn3",
-            "configurePreset": "x86-debug-ossl3-ovpn3",
-            "configuration": "Debug"
-        },
-        {
-            "name": "x86-debug-ossl1.1.1-ovpn3",
-            "configurePreset": "x86-debug-ossl1.1.1-ovpn3",
-            "configuration": "Debug"
-        },
-        {
-            "name": "arm64-debug-ossl3-ovpn3",
-            "configurePreset": "arm64-debug-ossl3-ovpn3",
-            "configuration": "Debug"
-        },
-        {
-            "name": "arm64-debug-ossl1.1.1-ovpn3",
-            "configurePreset": "arm64-debug-ossl1.1.1-ovpn3",
+            "name": "arm64-debug-ovpn3",
+            "configurePreset": "arm64-debug-ovpn3",
             "configuration": "Debug"
         }
     ]

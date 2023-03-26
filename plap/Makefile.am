@@ -37,7 +37,7 @@ lib_LTLIBRARIES = libopenvpn_plap.la
 
 AM_CPPFLAGS = -I$(srcdir)/..
 
-libopenvpn_plap_la_CFLAGS = -DDISABLE_PASSWORD_CHANGE -D_UNICODE -municode
+libopenvpn_plap_la_CFLAGS = -D_UNICODE -municode
 test_plap_CXXFLAGS = -DDEBUG -D_UNICODE -municode
 
 libopenvpn_plap_la_RESOURCES = \

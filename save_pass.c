@@ -8,7 +8,7 @@
 #include "main.h"
 #include "registry.h"
 #include "save_pass.h"
-#include "passphrase.h"
+#include "misc.h"
 
 #define KEY_PASS_DATA     L"key-data"
 #define AUTH_PASS_DATA    L"auth-data"

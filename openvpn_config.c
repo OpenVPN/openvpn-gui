@@ -33,7 +33,6 @@
 #include "localization.h"
 #include "save_pass.h"
 #include "misc.h"
-#include "passphrase.h"
 
 typedef enum
 {
@@ -120,10 +119,6 @@ AddConfigFileToList(int group, const TCHAR *filename, const TCHAR *config_dir)
     c->manage.skaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
     c->manage.skaddr.sin_port = htons(o.mgmt_port_offset + c->id);
 
-#ifndef DISABLE_CHANGE_PASSWORD
-    if (CheckKeyFileWriteAccess (c))
-        c->flags |= FLAG_ALLOW_CHANGE_PASSPHRASE;
-#endif
     if (wcsstr(config_dir, o.config_auto_dir))
     {
         c->flags |= FLAG_DAEMON_PERSISTENT;

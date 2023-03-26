@@ -2,10 +2,6 @@ option(CLI_OVPN3 "Build ${PROJECT_NAME} with OpenVPN3 support" OFF)
 
 cmake_minimum_required(VERSION 3.10)
 
-if(NOT VCPKG_MANIFEST_DIR)
-    set(VCPKG_MANIFEST_DIR ${CMAKE_SOURCE_DIR}/vcpkg_manifests/openssl_3)
-endif()
-
 project(openvpn-gui C CXX)
 
 add_executable(${PROJECT_NAME} WIN32
@@ -19,7 +15,6 @@ add_executable(${PROJECT_NAME} WIN32
     openvpn.c
     openvpn_config.c
     options.c
-    passphrase.c
     proxy.c
     registry.c
     save_pass.c
@@ -31,8 +26,6 @@ add_executable(${PROJECT_NAME} WIN32
     pkcs11.c
     config_parser.c
     res/openvpn-gui-res.rc)
-
-find_package(OpenSSL REQUIRED)
 
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG")
 
@@ -46,7 +39,6 @@ if(NOT (${CMAKE_C_COMPILER_ARCHITECTURE_ID} STREQUAL "ARM64"))
 endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    OpenSSL::SSL
     Wtsapi32.lib
     Netapi32.lib
     ws2_32.lib

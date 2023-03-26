@@ -17,8 +17,8 @@ Run inside MSVC command prompt:
 
 .. code-block::
 
-    c:\Temp\openvpn-gui>cmake -S . --preset x64-release-ossl3
-    c:\Temp\openvpn-gui>cmake --build --preset x64-release-ossl3
+    c:\Temp\openvpn-gui>cmake -S . --preset x64-release
+    c:\Temp\openvpn-gui>cmake --build --preset x64-release
 
 To see all presets, run:
 
@@ -26,18 +26,12 @@ To see all presets, run:
 
   C:\Users\lev\Projects\openvpn-gui>cmake -S c:\Users\lev\Projects\openvpn-gui --list-presets
   Available configure presets:
-  "x64-debug-ossl3"
-  "x64-debug-ossl1.1.1"
-  "arm64-debug-ossl3"
-  "arm64-debug-ossl1.1.1"
-  "x86-debug-ossl3"
-  "x86-debug-ossl1.1.1"
-  "x64-release-ossl3"
-  "x64-release-ossl1.1.1"
-  "arm64-release-ossl3"
-  "arm64-release-ossl1.1.1"
-  "x86-release-ossl3"
-  "x86-release-ossl1.1.1"
+  "x64-debug"
+  "arm64-debug"
+  "x86-debug"
+  "x64-release"
+  "arm64-release"
+  "x86-release"
 
 You could also open CMake project from MSVC IDE and build from there.
 
@@ -65,7 +59,6 @@ their dependencies. You can install these packages using the standard
 - pkg-config
 - make
 - mingw64-x86_64-gcc-core
-- mingw64-x86_64-openssl
 
 
 Build
@@ -113,7 +106,7 @@ Now install the required development packages:
 
 .. code-block:: bash
 
-    pacman -S base-devel mingw-w64-x86_64-{toolchain,openssl}
+    pacman -S base-devel mingw-w64-x86_64-{toolchain}
 
 Build
 -----

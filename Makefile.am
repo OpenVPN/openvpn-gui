@@ -44,7 +44,7 @@ dist_doc_DATA = \
 	COPYING \
 	README.rst
 
-AM_CPPFLAGS = $(OPENSSL_CRYPTO_CFLAGS) -D_UNICODE $(JSON_CFLAGS)
+AM_CPPFLAGS = -D_UNICODE $(JSON_CFLAGS)
 AM_CFLAGS = -municode
 
 openvpn_gui_RESOURCES = \
@@ -94,7 +94,6 @@ openvpn_gui_SOURCES = \
 	viewlog.c viewlog.h \
 	service.c service.h \
 	options.c options.h \
-	passphrase.c passphrase.h \
 	proxy.c proxy.h \
 	registry.c registry.h \
 	scripts.c scripts.h \
@@ -115,7 +114,6 @@ openvpn_gui_SOURCES = \
 openvpn_gui_LDFLAGS = -mwindows
 openvpn_gui_LDADD = \
 	openvpn-gui-res.o \
-	$(OPENSSL_CRYPTO_LIBS) \
 	-lws2_32 \
 	-lcomctl32 \
 	-lwinhttp \
