@@ -39,6 +39,8 @@ ID_ICO_APP           ICON  DISCARDABLE  "../res/openvpn-gui.ico"
 ID_ICO_CONNECTED     ICON  DISCARDABLE  "../res/connected.ico"
 ID_ICO_CONNECTING    ICON  DISCARDABLE  "../res/connecting.ico"
 ID_ICO_DISCONNECTED  ICON  DISCARDABLE  "../res/disconnected.ico"
+ID_ICO_EYE           ICON  DISCARDABLE  "../res/eye.ico"
+ID_ICO_EYESTROKE     ICON  DISCARDABLE  "../res/eye-stroke.ico"
 
 IDB_TILE_IMAGE       BITMAP DISCARDABLE "../res/tileimage.bmp"
 

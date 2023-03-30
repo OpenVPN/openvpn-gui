@@ -27,6 +27,8 @@
 #define ID_ICO_CONNECTED                  91
 #define ID_ICO_CONNECTING                 92
 #define ID_ICO_DISCONNECTED               93
+#define ID_ICO_EYE                        94
+#define ID_ICO_EYESTROKE                  95
 
 /* About Dialog */
 #define ID_DLG_ABOUT                     100
@@ -39,6 +41,7 @@
 #define ID_DLG_PASSPHRASE                150
 #define ID_EDT_PASSPHRASE                151
 #define ID_LTEXT_PASSWORD                152
+#define ID_PASSWORD_REVEAL               153
 
 /* Status Dialog */
 #define ID_DLG_STATUS                    160

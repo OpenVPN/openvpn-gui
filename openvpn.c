@@ -575,7 +575,8 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             ForceForegroundWindow(hwndDlg);
         else
             SetForegroundWindow(hwndDlg);
-
+        ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS),
+                            GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), 0);
         break;
 
     case WM_LBUTTONDOWN:
@@ -590,8 +591,11 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         param = (auth_param_t *) GetProp(hwndDlg, cfgProp);
         switch (LOWORD(wParam))
         {
-        case ID_EDT_AUTH_USER:
         case ID_EDT_AUTH_PASS:
+            ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS),
+                                GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), wParam);
+            /* fall through */
+        case ID_EDT_AUTH_USER:
         case ID_EDT_AUTH_CHALLENGE:
             if (HIWORD(wParam) == EN_UPDATE)
             {
@@ -653,6 +657,11 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         case IDCANCEL:
             EndDialog(hwndDlg, LOWORD(wParam));
             StopOpenVPN(param->c);
+            return TRUE;
+
+        case ID_PASSWORD_REVEAL: /* password reveal symbol clicked */
+            ChangePasswordVisibility(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS),
+                                     GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), wParam);
             return TRUE;
         }
         break;
@@ -771,6 +780,8 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             /* disable OK button until response is filled-in */
             EnableWindow(GetDlgItem(hwndDlg, IDOK), FALSE);
         }
+        ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_RESPONSE),
+                            GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), 0);
 
         break;
 
@@ -781,6 +792,11 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         switch (LOWORD(wParam))
         {
         case ID_EDT_RESPONSE:
+            if (!(param->flags & FLAG_CR_ECHO))
+            {
+                ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_RESPONSE),
+                                    GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), wParam);
+            }
             if (HIWORD(wParam) == EN_UPDATE)
             {
                 /* enable OK if response is non-empty */
@@ -854,6 +870,11 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             EndDialog(hwndDlg, LOWORD(wParam));
             StopOpenVPN(param->c);
             return TRUE;
+
+        case ID_PASSWORD_REVEAL: /* password reveal symbol clicked */
+            ChangePasswordVisibility(GetDlgItem(hwndDlg, ID_EDT_RESPONSE),
+                                     GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), wParam);
+            return TRUE;
         }
         break;
 
@@ -926,6 +947,8 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
         /* disable OK button by default - not disabled in resources */
         EnableWindow(GetDlgItem(hwndDlg, IDOK), FALSE);
+        ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_PASSPHRASE),
+                            GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), 0);
         break;
 
     case WM_COMMAND:
@@ -944,6 +967,8 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case ID_EDT_PASSPHRASE:
+            ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_PASSPHRASE),
+                                GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), wParam);
             if (HIWORD(wParam) == EN_UPDATE)
             {
                 /* enable OK if response is non-empty */
@@ -974,6 +999,11 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         case IDCANCEL:
             EndDialog(hwndDlg, LOWORD(wParam));
             StopOpenVPN (c);
+            return TRUE;
+
+        case ID_PASSWORD_REVEAL: /* password reveal symbol clicked */
+            ChangePasswordVisibility(GetDlgItem(hwndDlg, ID_EDT_PASSPHRASE),
+                                     GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), wParam);
             return TRUE;
         }
         break;
