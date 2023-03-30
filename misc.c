@@ -1083,3 +1083,64 @@ out:
     CryptReleaseContext(cp, 0);
     return retval;
 }
+
+/* Setup Password reveal
+ * Inputs: edit   handle to password edit control
+ *         btn    handle to the control that toggles the reveal
+ *         wParam action being handled, or 0 for init
+ */
+void
+ResetPasswordReveal(HWND edit, HWND btn, WPARAM wParam)
+{
+    if (!edit || !btn)
+    {
+        return;
+    }
+    /* set the password field to be masked as a sane default */
+    SendMessage(edit, EM_SETPASSWORDCHAR, (WPARAM)'*', 0);
+    SendMessage(btn, STM_SETIMAGE, (WPARAM) IMAGE_ICON, (LPARAM)LoadLocalizedSmallIcon(ID_ICO_EYE));
+
+    /* if password is not masked on init, disable reveal "button" */
+    if (wParam == 0 && SendMessage(edit, EM_GETPASSWORDCHAR, 0, 0) == 0)
+    {
+        ShowWindow(btn, SW_HIDE);
+    }
+    /* on losing focus disable password reveal button */
+    else if (HIWORD(wParam) == EN_KILLFOCUS)
+    {
+        ShowWindow(btn, SW_HIDE);
+    }
+    /* if/when password is cleared enable/re-enable reveal button */
+    else if (GetWindowTextLength(edit) == 0)
+    {
+        ShowWindow(btn, SW_SHOW);
+    }
+}
+
+/* Toggle masking of text in password field
+ * Inputs: edit   handle to password edit control
+ *         btn    handle to the control that toggles the reveal
+ *         wParam action being handled
+ */
+void
+ChangePasswordVisibility(HWND edit, HWND btn, WPARAM wParam)
+{
+    if (!edit || !btn)
+    {
+        return;
+    }
+    if (HIWORD(wParam) == STN_CLICKED)
+    {
+        if (SendMessage(edit, EM_GETPASSWORDCHAR, 0, 0) == 0) /* currently visible */
+        {
+            SendMessage(edit, EM_SETPASSWORDCHAR, (WPARAM)'*', 0);
+            SendMessage(btn, STM_SETIMAGE, (WPARAM) IMAGE_ICON, (LPARAM)LoadLocalizedSmallIcon(ID_ICO_EYE));
+        }
+        else
+        {
+            SendMessage(edit, EM_SETPASSWORDCHAR, 0, 0);
+            SendMessage(btn, STM_SETIMAGE, (WPARAM) IMAGE_ICON, (LPARAM)LoadLocalizedSmallIcon(ID_ICO_EYESTROKE));
+        }
+        InvalidateRect(edit, NULL, TRUE); /* without this the control doesn't seem to get redrawn promptly */
+    }
+}
