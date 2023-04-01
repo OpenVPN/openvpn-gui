@@ -1,3 +1,24 @@
+Version 11.43.0
+===============
+
+Version 11.42.0
+===============
+
+New features
+------------
+* Add a password reveal button in dialogs
+
+Bug fixes
+---------
+* Add back the delay before management interface is ready
+
+Version 11.40.0
+===============
+
+Removed feature
+--------------
+- Private key password change feature no longer supported
+
 Version 11.39.0
 ===============
 
