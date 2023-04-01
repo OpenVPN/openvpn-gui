@@ -212,6 +212,21 @@ GetRegistryKeys ()
         o.mgmt_port_offset = 25340;
     }
 
+    /* Read group policy setting for password reveal */
+    status = RegOpenKeyEx(HKEY_CURRENT_USER, L"Software\\Policies\\Microsoft\\Windows\\CredUI", 0, KEY_READ, &regkey);
+    if (status != ERROR_SUCCESS
+        || !GetRegistryValueNumeric(regkey, L"DisablePasswordReveal", &o.disable_password_reveal))
+    {
+        o.disable_password_reveal = 0;
+        PrintDebug(L"default: %ls = %lu", L"DisablePasswordReveal", o.disable_password_reveal);
+    }
+    else
+    {
+        PrintDebug(L"from policy: %ls = %lu", L"DisablePasswordReveal", o.disable_password_reveal);
+    }
+    if (status == ERROR_SUCCESS)
+        RegCloseKey(regkey);
+
     ExpandOptions ();
     return true;
 }
