@@ -1096,6 +1096,13 @@ ResetPasswordReveal(HWND edit, HWND btn, WPARAM wParam)
     {
         return;
     }
+
+    if (o.disable_password_reveal)
+    {
+        ShowWindow(btn, SW_HIDE);
+        return;
+    }
+
     /* set the password field to be masked as a sane default */
     SendMessage(edit, EM_SETPASSWORDCHAR, (WPARAM)'*', 0);
     SendMessage(btn, STM_SETIMAGE, (WPARAM) IMAGE_ICON, (LPARAM)LoadLocalizedSmallIcon(ID_ICO_EYE));
