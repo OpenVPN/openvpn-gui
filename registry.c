@@ -213,7 +213,7 @@ GetRegistryKeys ()
     }
 
     /* Read group policy setting for password reveal */
-    status = RegOpenKeyEx(HKEY_CURRENT_USER, L"Software\\Policies\\Microsoft\\Windows\\CredUI", 0, KEY_READ, &regkey);
+    status = RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\Policies\\Microsoft\\Windows\\CredUI", 0, KEY_READ, &regkey);
     if (status != ERROR_SUCCESS
         || !GetRegistryValueNumeric(regkey, L"DisablePasswordReveal", &o.disable_password_reveal))
     {
@@ -225,7 +225,9 @@ GetRegistryKeys ()
         PrintDebug(L"from policy: %ls = %lu", L"DisablePasswordReveal", o.disable_password_reveal);
     }
     if (status == ERROR_SUCCESS)
+    {
         RegCloseKey(regkey);
+    }
 
     ExpandOptions ();
     return true;
