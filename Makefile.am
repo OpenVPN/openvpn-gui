@@ -82,7 +82,6 @@ EXTRA_DIST = $(openvpn_gui_RESOURCES) \
 	CMakeLists.txt \
 	CMakePresets.json \
 	config-msvc.h.in \
-	vcpkg_manifests \
 	.editorconfig \
 	.kateconfig
 
