@@ -345,7 +345,8 @@ OnManagement(SOCKET sk, LPARAM lParam)
                 else if (strncmp(pos, "INFO:", 5) == 0)
                 {
                     /* delay until management interface accepts input */
-                    OVPNMsgWait(100, c->hwndStatus);
+                    /* use real sleep here, since WM_MANAGEMENT might arrive before management is ready */
+                    Sleep(100);
                     c->manage.connected = 2;
                     if (rtmsg_handler[ready_])
                         rtmsg_handler[ready_](c, pos + 5);
