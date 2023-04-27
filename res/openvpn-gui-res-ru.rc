@@ -82,12 +82,12 @@ END
 ID_DLG_CHALLENGE_RESPONSE DIALOGEX 6, 18, 212, 72
 STYLE WS_SIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
 EXSTYLE WS_EX_TOPMOST
-CAPTION "OpenVPN – Challenge Response"
+CAPTION "OpenVPN – Вызов-ответ"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
 BEGIN
     LTEXT "", ID_TXT_DESCRIPTION, 6, 9, 400, 20
-    LTEXT "Response:", ID_LTEXT_RESPONSE, 6, 30, 50, 10
+    LTEXT "Ответ:", ID_LTEXT_RESPONSE, 6, 30, 50, 10
     EDITTEXT ID_EDT_RESPONSE, 60, 27, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 28, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
     PUSHBUTTON "OK", IDOK, 20, 51, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
@@ -174,12 +174,12 @@ BEGIN
     AUTORADIOBUTTON "Подключении", ID_RB_BALLOON1, 20, 170, 62, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Под- и переподключении", ID_RB_BALLOON2, 85, 170, 100, 10
     AUTORADIOBUTTON "Никогда", ID_RB_BALLOON0, 190, 170, 43, 10
-    LTEXT "Persistent Connections", ID_TXT_PERSISTENT, 17, 185, 100, 10
-    AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 200, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "&Manual", ID_RB_BALLOON4, 86, 200, 90, 10
-    AUTORADIOBUTTON "&Disable", ID_RB_BALLOON5, 181, 200, 40, 10
-    AUTOCHECKBOX "Enable Pre-Logon A&ccess Provider (requires admin access)", ID_CHK_PLAP_REG, 17, 215, 200, 10
-    AUTOCHECKBOX "Enable auto restart of active connections", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
+    LTEXT "Устойчивость соединений", ID_TXT_PERSISTENT, 17, 185, 100, 10
+    AUTORADIOBUTTON "Авто", ID_RB_BALLOON3, 28, 200, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Вручную", ID_RB_BALLOON4, 86, 200, 90, 10
+    AUTORADIOBUTTON "Выкл.", ID_RB_BALLOON5, 181, 200, 40, 10
+    AUTOCHECKBOX "Запуск до входа в систему (с правами администратора)", ID_CHK_PLAP_REG, 17, 215, 200, 10
+    AUTOCHECKBOX "Автоматический перезапуск активных подключений", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
 END
 
 /* Advanced Dialog */
@@ -411,7 +411,7 @@ BEGIN
     IDS_NFO_SERVICE_STOPPED "Служба OpenVPN остановлена."
     IDS_NFO_ACTIVE_CONN_EXIT "Ещё присутствуют активные соединения, которые будут закрыты, если вы выйдите из OpenVPN GUI.\
 \n\nВы уверены, что хотите выйти?"
-    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
+    IDS_ERR_PARSE_MGMT_OPTION "Не удалось проанализировать параметр --management в <%ls%ls>."
     IDS_NFO_SERVICE_ACTIVE_EXIT "Вы в данный момент подключены (служба OpenVPN запущена). \
 Вы останетесь подключенными, даже если вы выйдете из OpenVPN GUI.\n\n\
 Вы хотите продолжить и выйти из OpenVPN GUI?"
@@ -538,8 +538,8 @@ OpenVPN, возможно, не установлен."
 однократно с правами администратора, чтобы обновить реестр."
     IDS_ERR_READ_SET_KEY "Ошибка чтения и установки значения ключа ""%ls""."
     IDS_ERR_WRITE_REGVALUE "Ошибка записи значения реестра ""HKEY_CURRENT_USER\\%ls\\%ls""."
-    IDS_ERR_PLAP_REG "Failed to enable Start Before Logon (error = %d)"
-    IDS_ERR_PLAP_UNREG "Failed to disable Start Before Logon (error = %d)"
+    IDS_ERR_PLAP_REG "Не удалось включить запуск до входа в систему (ошибка = %d)"
+    IDS_ERR_PLAP_UNREG "Не выключить включить запуск до входа в систему (ошибка = %d)"
 
     /* importation */
     IDS_ERR_IMPORT_EXISTS "Файл конфигурации ""%ls"" уже существует."
@@ -578,25 +578,25 @@ OpenVPN, возможно, не установлен."
 
 
     /* PLAP related */
-    IDS_NFO_STATE_RETRYING "Retrying"
-    IDS_NFO_STATE_CANCELLING "Cancelling"
-    IDS_NFO_STATE_DISCONNECTING "Disconnecting"
-    IDS_NFO_CONN_CANCELLED "Connection cancelled by user"
+    IDS_NFO_STATE_RETRYING "Повтор"
+    IDS_NFO_STATE_CANCELLING "Отмена"
+    IDS_NFO_STATE_DISCONNECTING "Отключение"
+    IDS_NFO_CONN_CANCELLED "Соединение отменено пользователем"
 
     /* openvpn daemon state names -- these are shown on progress dialog in PLAP */
-    IDS_NFO_OVPN_STATE_INITIAL      "Initializing"
-    IDS_NFO_OVPN_STATE_CONNECTING   "Connecting"
-    IDS_NFO_OVPN_STATE_ASSIGN_IP    "Assigning IP address"
-    IDS_NFO_OVPN_STATE_ADD_ROUTES   "Adding routes"
-    IDS_NFO_OVPN_STATE_CONNECTED    "Connected"
-    IDS_NFO_OVPN_STATE_RECONNECTING "Reconnecting"
-    IDS_NFO_OVPN_STATE_EXITING      "Exiting"
-    IDS_NFO_OVPN_STATE_WAIT         "Waiting"
-    IDS_NFO_OVPN_STATE_AUTH         "Authenticating"
-    IDS_NFO_OVPN_STATE_GET_CONFIG   "Pulling configuration from server"
-    IDS_NFO_OVPN_STATE_RESOLVE      "Resolving remote host"
-    IDS_NFO_OVPN_STATE_TCP_CONNECT  "Establishing TCP connection"
-    IDS_NFO_OVPN_STATE_AUTH_PENDING "Authentication pending"
+    IDS_NFO_OVPN_STATE_INITIAL      "Инициализация"
+    IDS_NFO_OVPN_STATE_CONNECTING   "Соединение"
+    IDS_NFO_OVPN_STATE_ASSIGN_IP    "Назначение IP-адреса"
+    IDS_NFO_OVPN_STATE_ADD_ROUTES   "Добавление маршрутов"
+    IDS_NFO_OVPN_STATE_CONNECTED    "Соединено"
+    IDS_NFO_OVPN_STATE_RECONNECTING "Переподключение"
+    IDS_NFO_OVPN_STATE_EXITING      "Выход"
+    IDS_NFO_OVPN_STATE_WAIT         "Ожидание"
+    IDS_NFO_OVPN_STATE_AUTH         "Аутентификация"
+    IDS_NFO_OVPN_STATE_GET_CONFIG   "Получение конфигурации с сервера"
+    IDS_NFO_OVPN_STATE_RESOLVE      "Разрешение удаленного хоста"
+    IDS_NFO_OVPN_STATE_TCP_CONNECT  "Установление TCP-соединения"
+    IDS_NFO_OVPN_STATE_AUTH_PENDING "Ожидается аутентификация"
     IDS_NFO_OVPN_STATE_UNKNOWN      "?"
 
 END
