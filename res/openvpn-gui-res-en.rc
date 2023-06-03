@@ -178,7 +178,7 @@ BEGIN
     GROUPBOX "Startup", 202, 6, 47, 235, 30
     AUTOCHECKBOX "Launch on User &Logon", ID_CHK_STARTUP, 17, 59, 100, 12
 
-    GROUPBOX "Preferences", ID_GROUPBOX3, 6, 82, 235, 165
+    GROUPBOX "Preferences", ID_GROUPBOX3, 6, 82, 235, 180
     AUTOCHECKBOX "A&ppend to log", ID_CHK_LOG_APPEND, 17, 95, 60, 10
     AUTOCHECKBOX "Show script &window", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "S&ilent connection", ID_CHK_SILENT, 17, 125, 200, 10
@@ -193,6 +193,7 @@ BEGIN
     AUTORADIOBUTTON "&Disable", ID_RB_BALLOON5, 181, 200, 40, 10
     AUTOCHECKBOX "Enable Pre-Logon A&ccess Provider (requires admin access)", ID_CHK_PLAP_REG, 17, 215, 200, 10
     AUTOCHECKBOX "Enable auto restart of active connections", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
+    AUTOCHECKBOX "Use legacy icons", ID_CHK_LEGACY_ICONS, 17, 245, 200, 10
 END
 
 /* Advanced Dialog */

@@ -73,8 +73,11 @@ openvpn_gui_RESOURCES = \
 	res/connected.ico \
 	res/connecting.ico \
 	res/disconnected.ico \
+	res/connected_error.ico \
+	res/connected_old.ico \
+	res/connecting_old.ico \
+	res/disconnected_old.ico \
 	res/openvpn-gui.ico \
-	res/reconnecting.ico \
 	res/eye.ico \
 	res/eye-stroke.ico \
 	res/openvpn-gui.manifest \
