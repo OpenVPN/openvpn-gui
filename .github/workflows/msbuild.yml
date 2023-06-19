@@ -15,10 +15,6 @@ jobs:
             name: "- ovpn3"
             upload_name: "_ovpn3"
 
-    env:
-      # Indicates the location of the vcpkg as a Git submodule of the project repository.
-      VCPKG_ROOT: ${{ github.workspace }}/vcpkg
-
     name: 'msvc - ${{matrix.arch}} ${{ matrix.ovpn3.name }}'
     runs-on: windows-latest
     steps:
@@ -26,10 +22,10 @@ jobs:
     - uses: lukka/get-cmake@latest
 
     - name: Restore artifacts, or setup vcpkg (do not install any package)
-      uses: lukka/run-vcpkg@v10
+      uses: lukka/run-vcpkg@v11
       with:
-        vcpkgGitCommitId: "6adca01a3fadca0cc0b80f03ec57c7c3a0be5c02"
-        appendedCacheKey: "${{ matrix.arch }}"
+        vcpkgDirectory: '${{ runner.workspace }}/b/vcpkg'
+        vcpkgGitCommitId: "1ba9a2591f15af5900f2ce2b3e2bf31771e3ac48"
 
     - name: Run CMake consuming CMakePreset.json and vcpkg.json by mean of vcpkg.
       uses: lukka/run-cmake@v10
