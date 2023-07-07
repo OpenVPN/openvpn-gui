@@ -124,14 +124,3 @@ You can build using these commands:
 
 The above describes how to build the 64-bit version of openvpn-gui.
 If you want to build the 32-bit version, use the ``mingw32.exe`` and in the package names simply replace ``x86_64`` with ``i686``.
-
-
-How to build using openvpn-build
-================================
-
-The `OpenVPN cross-compile buildsystem
-<https://github.com/OpenVPN/openvpn-build>`_ builds OpenVPN GUI along all the
-other OpenVPN dependencies. Instructions and automated scripts for setting up
-the buildsystem are available on the
-`Building OpenVPN using the generic buildsystem <https://community.openvpn.net/openvpn/wiki/BuildingUsingGenericBuildsystem>`_
-page on the OpenVPN community Wiki.
