@@ -46,26 +46,32 @@ CheckIServiceStatus(BOOL warn)
     SERVICE_STATUS ssStatus;
     BOOL ret = false;
 
-    // Open a handle to the SC Manager database.
+    /* Open a handle to the SC Manager database. */
     schSCManager = OpenSCManager(NULL, NULL, SC_MANAGER_CONNECT);
 
     if (NULL == schSCManager)
+    {
         return(false);
+    }
 
     schService = OpenService(schSCManager, o.ovpn_engine == OPENVPN_ENGINE_OVPN3 ?
-        OPENVPN_SERVICE_NAME_OVPN3 : OPENVPN_SERVICE_NAME_OVPN2, SERVICE_QUERY_STATUS);
+                             OPENVPN_SERVICE_NAME_OVPN3 : OPENVPN_SERVICE_NAME_OVPN2, SERVICE_QUERY_STATUS);
 
-    if (schService == NULL &&
-        GetLastError() == ERROR_SERVICE_DOES_NOT_EXIST)
+    if (schService == NULL
+        && GetLastError() == ERROR_SERVICE_DOES_NOT_EXIST)
     {
         /* warn that iservice is not installed */
         if (warn)
+        {
             ShowLocalizedMsg(IDS_ERR_INSTALL_ISERVICE);
+        }
         goto out;
     }
 
     if (!QueryServiceStatus(schService, &ssStatus))
+    {
         goto out;
+    }
 
     if (ssStatus.dwCurrentState != SERVICE_RUNNING)
     {
@@ -73,9 +79,13 @@ CheckIServiceStatus(BOOL warn)
         if (warn)
         {
             if (IsUserAdmin())
+            {
                 ShowLocalizedMsg(IDS_ERR_NOTSTARTED_ISERVICE_ADM);
+            }
             else
+            {
                 ShowLocalizedMsg(IDS_ERR_NOTSTARTED_ISERVICE);
+            }
         }
         goto out;
     }
@@ -83,42 +93,49 @@ CheckIServiceStatus(BOOL warn)
 
 out:
     if (schService)
+    {
         CloseServiceHandle(schService);
+    }
     if (schSCManager)
+    {
         CloseServiceHandle(schSCManager);
+    }
     return ret;
 }
 
-VOID CheckServiceStatus()
+VOID
+CheckServiceStatus()
 {
     SC_HANDLE schSCManager = NULL;
     SC_HANDLE schService = NULL;
     SERVICE_STATUS ssStatus;
 
-    // Open a handle to the SC Manager database.
+    /* Open a handle to the SC Manager database. */
     schSCManager = OpenSCManager(
-        NULL,                    // local machine
-        NULL,                    // ServicesActive database
-        SC_MANAGER_CONNECT);     // Connect rights
+        NULL,                    /* local machine */
+        NULL,                    /* ServicesActive database */
+        SC_MANAGER_CONNECT);     /* Connect rights */
 
-    if (NULL == schSCManager) {
+    if (NULL == schSCManager)
+    {
         o.service_state = service_noaccess;
         goto out;
     }
 
     schService = OpenService(
-        schSCManager,          // SCM database
-        _T("OpenVPNService"),  // service name
+        schSCManager,          /* SCM database */
+        _T("OpenVPNService"),  /* service name */
         SERVICE_QUERY_STATUS);
 
-    if (schService == NULL) {
+    if (schService == NULL)
+    {
         o.service_state = service_noaccess;
         goto out;
     }
 
     if (!QueryServiceStatus(
-            schService,   // handle to service
-            &ssStatus) )  // address of status information structure
+            schService,   /* handle to service */
+            &ssStatus) )  /* address of status information structure */
     {
         /* query failed */
         o.service_state = service_noaccess;
@@ -139,25 +156,32 @@ VOID CheckServiceStatus()
 
 out:
     if (schService)
+    {
         CloseServiceHandle(schService);
+    }
     if (schSCManager)
+    {
         CloseServiceHandle(schSCManager);
+    }
 }
 
 /* Attempt to start OpenVPN Automatc Service */
-void StartAutomaticService(void)
+void
+StartAutomaticService(void)
 {
     SC_HANDLE schSCManager = NULL;
     SC_HANDLE schService = NULL;
 
     schSCManager = OpenSCManager(NULL, NULL, SC_MANAGER_CONNECT);
 
-    if (schSCManager) {
+    if (schSCManager)
+    {
         schService = OpenService(schSCManager, L"OpenVPNService", SERVICE_START);
 
-        if (schService) {
-             StartService(schService, 0, NULL);
-             CloseServiceHandle(schService);
+        if (schService)
+        {
+            StartService(schService, 0, NULL);
+            CloseServiceHandle(schService);
         }
 
         CloseServiceHandle(schSCManager);

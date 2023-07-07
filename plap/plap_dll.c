@@ -48,25 +48,29 @@ DllMain(HINSTANCE hinstDll, DWORD dwReason, UNUSED LPVOID pReserved)
             DisableThreadLibraryCalls(hinstDll);
             init_debug();
             break;
+
         case DLL_PROCESS_DETACH:
             uninit_debug();
             break;
+
         case DLL_THREAD_ATTACH:
         case DLL_THREAD_DETACH:
-        break;
+            break;
     }
 
     hinst_global = hinstDll; /* global */
     return TRUE;
 }
 
-void dll_addref()
+void
+dll_addref()
 {
     InterlockedIncrement(&dll_ref_count);
     dmsg(L"ref_count after increment = %lu", dll_ref_count);
 }
 
-void dll_release()
+void
+dll_release()
 {
     InterlockedDecrement(&dll_ref_count);
     dmsg(L"ref_count after decrement = %lu", dll_ref_count);
@@ -79,9 +83,13 @@ void dll_release()
 
 /* ClassFactory methods we have to implement */
 static ULONG WINAPI AddRef(IClassFactory *this);
+
 static ULONG WINAPI Release(IClassFactory *this);
+
 static HRESULT WINAPI QueryInterface(IClassFactory *this, REFIID riid, void **ppv);
+
 static HRESULT WINAPI CreateInstance(IClassFactory *this, IUnknown *iunk, REFIID riid, void **ppv);
+
 static HRESULT WINAPI LockServer(IClassFactory *this, BOOL lock);
 
 /* template object for creation */
@@ -116,7 +124,7 @@ static HRESULT WINAPI
 QueryInterface(IClassFactory *this, REFIID riid, void **ppv)
 {
     HRESULT hr;
-    dmsg (L"Entry");
+    dmsg(L"Entry");
 
 #ifdef DEBUG
     debug_print_guid(riid, L"In CF_Queryinterface with iid = ");
@@ -184,7 +192,8 @@ LockServer(UNUSED IClassFactory *this, BOOL lock)
 }
 
 /* exported methods */
-STDAPI DllCanUnloadNow()
+STDAPI
+DllCanUnloadNow()
 {
     HRESULT hr;
 
@@ -206,7 +215,8 @@ STDAPI DllCanUnloadNow()
  * create class of type rclsid. We support only OpenVPNProvider
  * class and check it here.
  */
-STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, void **ppv)
+STDAPI
+DllGetClassObject(REFCLSID rclsid, REFIID riid, void **ppv)
 {
     dmsg(L"Entry");
     HRESULT hr;

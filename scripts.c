@@ -60,13 +60,15 @@ RunPreconnectScript(connection_t *c)
 
     /* Return if no script exists */
     if (_tstat(cmdline, &st) == -1)
+    {
         return;
+    }
 
-    // Create the filename of the logfile
+    /* Create the filename of the logfile */
     TCHAR script_log_filename[MAX_PATH];
     _sntprintf_0(script_log_filename, _T("%ls\\%ls_pre.log"), o.log_dir, c->config_name);
 
-    // Create the log file
+    /* Create the log file */
     SECURITY_ATTRIBUTES sa;
     CLEAR(sa);
     sa.nLength = sizeof(SECURITY_ATTRIBUTES);
@@ -133,16 +135,20 @@ RunConnectScript(connection_t *c, int run_as_service)
 
     /* Return if no script exists */
     if (_tstat(cmdline, &st) == -1)
+    {
         return;
+    }
 
     if (!run_as_service)
+    {
         SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONN_SCRIPT));
+    }
 
-    // Create the filename of the logfile
+    /* Create the filename of the logfile */
     TCHAR script_log_filename[MAX_PATH];
     _sntprintf_0(script_log_filename, _T("%ls\\%ls_up.log"), o.log_dir, c->config_name);
 
-    // Create the log file
+    /* Create the log file */
     SECURITY_ATTRIBUTES sa;
     CLEAR(sa);
     sa.nLength = sizeof(SECURITY_ATTRIBUTES);
@@ -175,7 +181,9 @@ RunConnectScript(connection_t *c, int run_as_service)
     }
 
     if (o.connectscript_timeout == 0)
+    {
         goto out;
+    }
 
     for (i = 0; i <= (int) o.connectscript_timeout; i++)
     {
@@ -188,7 +196,9 @@ RunConnectScript(connection_t *c, int run_as_service)
         if (exit_code != STILL_ACTIVE)
         {
             if (exit_code != 0)
+            {
                 ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, c->hwndStatus, TEXT(PACKAGE_NAME), IDS_ERR_CONN_SCRIPT_FAILED, exit_code);
+            }
             goto out;
         }
 
@@ -227,16 +237,20 @@ RunDisconnectScript(connection_t *c, int run_as_service)
 
     /* Return if no script exists */
     if (_tstat(cmdline, &st) == -1)
+    {
         return;
+    }
 
     if (!run_as_service)
+    {
         SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_DISCONN_SCRIPT));
+    }
 
-    // Create the filename of the logfile
+    /* Create the filename of the logfile */
     TCHAR script_log_filename[MAX_PATH];
     _sntprintf_0(script_log_filename, _T("%ls\\%ls_down.log"), o.log_dir, c->config_name);
 
-    // Create the log file
+    /* Create the log file */
     SECURITY_ATTRIBUTES sa;
     CLEAR(sa);
     sa.nLength = sizeof(SECURITY_ATTRIBUTES);

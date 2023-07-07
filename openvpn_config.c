@@ -50,28 +50,34 @@ match(const WIN32_FIND_DATA *find, const TCHAR *ext)
     int i;
 
     if (find->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+    {
         return match_dir;
+    }
 
     if (ext_len == 0)
+    {
         return match_file;
+    }
 
     i = _tcslen(find->cFileName) - ext_len - 1;
 
     if (i > 0 && find->cFileName[i] == '.'
-    && _tcsicmp(find->cFileName + i + 1, ext) == 0)
+        && _tcsicmp(find->cFileName + i + 1, ext) == 0)
+    {
         return match_file;
+    }
 
     return match_false;
 }
 
 static bool
-CheckReadAccess (const TCHAR *dir, const TCHAR *file)
+CheckReadAccess(const TCHAR *dir, const TCHAR *file)
 {
     TCHAR path[MAX_PATH];
 
-    _sntprintf_0 (path, _T("%ls\\%ls"), dir, file);
+    _sntprintf_0(path, _T("%ls\\%ls"), dir, file);
 
-    return CheckFileAccess (path, GENERIC_READ);
+    return CheckFileAccess(path, GENERIC_READ);
 }
 
 static int
@@ -80,7 +86,9 @@ ConfigAlreadyExists(TCHAR *newconfig)
     for (connection_t *c = o.chead; c; c = c->next)
     {
         if (_tcsicmp(c->config_file, newconfig) == 0)
+        {
             return true;
+        }
     }
     return false;
 }
@@ -148,9 +156,13 @@ AddConfigFileToList(int group, const TCHAR *filename, const TCHAR *config_dir)
     else
     {
         if (IsAuthPassSaved(c->config_name))
+        {
             c->flags |= FLAG_SAVE_AUTH_PASS;
+        }
         if (IsKeyPassSaved(c->config_name))
+        {
             c->flags |= FLAG_SAVE_KEY_PASS;
+        }
     }
     if (o.disable_popup_messages)
     {
@@ -214,7 +226,9 @@ ActivateConfigGroups(void)
 
     /* children is a counter re-used for activation, menu indexing etc. -- reset before use */
     for (int i = 0; i < o.num_groups; i++)
+    {
         o.groups[i].children = 0;
+    }
 
     /* count children of each group -- this includes groups
      * and configs which have it as parent
@@ -229,7 +243,9 @@ ActivateConfigGroups(void)
         config_group_t *this = &o.groups[i];
         config_group_t *parent = PARENT_GROUP(this);
         if (parent) /* should be true as i = 0 is omitted */
+        {
             parent->children++;
+        }
 
         /* unless activated below the group stays inactive */
         this->active = false;
@@ -290,7 +306,9 @@ BuildFileList0(const TCHAR *config_dir, int recurse_depth, int group, int flags)
     _sntprintf_0(find_string, _T("%ls\\*"), config_dir);
     find_handle = FindFirstFile(find_string, &find_obj);
     if (find_handle == INVALID_HANDLE_VALUE)
+    {
         return;
+    }
 
     /* Loop over each config file in config dir */
     do
@@ -301,11 +319,13 @@ BuildFileList0(const TCHAR *config_dir, int recurse_depth, int group, int flags)
             if (ConfigAlreadyExists(find_obj.cFileName))
             {
                 if (flags & FLAG_WARN_DUPLICATES)
+                {
                     ShowLocalizedMsg(IDS_ERR_CONFIG_EXIST, find_obj.cFileName);
+                }
                 continue;
             }
 
-            if (CheckReadAccess (config_dir, find_obj.cFileName))
+            if (CheckReadAccess(config_dir, find_obj.cFileName))
             {
                 AddConfigFileToList(group, find_obj.cFileName, config_dir);
             }
@@ -316,11 +336,15 @@ BuildFileList0(const TCHAR *config_dir, int recurse_depth, int group, int flags)
 
     /* optionally loop over each subdir */
     if (recurse_depth < 1)
+    {
         return;
+    }
 
-    find_handle = FindFirstFile (find_string, &find_obj);
+    find_handle = FindFirstFile(find_string, &find_obj);
     if (find_handle == INVALID_HANDLE_VALUE)
+    {
         return;
+    }
 
     do
     {
@@ -389,13 +413,16 @@ IsSamePath(const wchar_t *path1, const wchar_t *path2)
     BOOL ret = false;
     BY_HANDLE_FILE_INFORMATION info1, info2;
 
-    if (_wcsicmp(path1, path2) == 0) return true;
+    if (_wcsicmp(path1, path2) == 0)
+    {
+        return true;
+    }
 
     if (GetFileInfo(path1, &info1) && GetFileInfo(path2, &info2))
     {
         ret = (info1.dwVolumeSerialNumber == info2.dwVolumeSerialNumber
-                && info1.nFileIndexLow == info2.nFileIndexLow
-                && info1.nFileIndexHigh == info2.nFileIndexHigh);
+               && info1.nFileIndexLow == info2.nFileIndexLow
+               && info1.nFileIndexHigh == info2.nFileIndexHigh);
     }
 
     return ret;
@@ -410,7 +437,9 @@ BuildFileList()
     static int root_gp, system_gp, persistent_gp;
 
     if (o.silent_connection)
+    {
         issue_warnings = false;
+    }
 
     /*
      * If first time or no entries in the connection list reset groups and rescan
@@ -438,11 +467,11 @@ BuildFileList()
         flags |= FLAG_WARN_DUPLICATES | FLAG_WARN_MAX_CONFIGS;
     }
 
-    BuildFileList0 (o.config_dir, recurse_depth, root_gp, flags);
+    BuildFileList0(o.config_dir, recurse_depth, root_gp, flags);
 
     if (!IsSamePath(o.global_config_dir, o.config_dir))
     {
-        BuildFileList0 (o.global_config_dir, recurse_depth, system_gp, flags);
+        BuildFileList0(o.global_config_dir, recurse_depth, system_gp, flags);
     }
 
     if (o.service_state == service_connected
@@ -450,12 +479,14 @@ BuildFileList()
     {
         if (!IsSamePath(o.config_auto_dir, o.config_dir))
         {
-            BuildFileList0 (o.config_auto_dir, recurse_depth, persistent_gp, flags);
+            BuildFileList0(o.config_auto_dir, recurse_depth, persistent_gp, flags);
         }
     }
 
     if (o.num_configs == 0 && issue_warnings)
+    {
         ShowLocalizedMsg(IDS_NFO_NO_CONFIGS, o.config_dir, o.global_config_dir);
+    }
 
     ActivateConfigGroups();
 

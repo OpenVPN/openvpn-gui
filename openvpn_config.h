@@ -25,7 +25,9 @@
 #include "main.h"
 
 void BuildFileList(void);
+
 bool ConfigFileOptionExist(int, const char *);
+
 void FreeConfigList(options_t *o);
 
 #endif

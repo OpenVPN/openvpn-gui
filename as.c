@@ -44,7 +44,8 @@ void
 SanitizeFilename(wchar_t *fname)
 {
     const wchar_t *reserved = L"<>:\"/\\|?*;"; /* remap these and ascii 1 to 31 */
-    while (*fname) {
+    while (*fname)
+    {
         wchar_t c = *fname;
         if (c < 32 || wcschr(reserved, c))
         {
@@ -80,12 +81,15 @@ ExtractProfileName(const WCHAR *profile, const WCHAR *default_name, WCHAR *out_n
     WCHAR *ctx = NULL;
     pch = wcstok_s(buf, L"\r\n", &ctx);
 
-    while (pch != NULL) {
-        if (wcsbegins(pch, PROFILE_NAME_TOKEN)) {
+    while (pch != NULL)
+    {
+        if (wcsbegins(pch, PROFILE_NAME_TOKEN))
+        {
             wcsncpy(profile_name, pch + wcslen(PROFILE_NAME_TOKEN), PROFILE_NAME_LEN - 1);
             profile_name[PROFILE_NAME_LEN - 1] = L'\0';
         }
-        else if (wcsbegins(pch, FRIENDLY_NAME_TOKEN)) {
+        else if (wcsbegins(pch, FRIENDLY_NAME_TOKEN))
+        {
             wcsncpy(friendly_name, pch + wcslen(FRIENDLY_NAME_TOKEN), PROFILE_NAME_LEN - 1);
             friendly_name[PROFILE_NAME_LEN - 1] = L'\0';
         }
@@ -96,11 +100,17 @@ ExtractProfileName(const WCHAR *profile, const WCHAR *default_name, WCHAR *out_n
     /* we use .ovpn here, but extension could be customized */
     /* actual extension will be applied during import */
     if (wcslen(friendly_name) > 0)
+    {
         swprintf(out_name, out_name_length, L"%ls.ovpn", friendly_name);
+    }
     else if (wcslen(profile_name) > 0)
+    {
         swprintf(out_name, out_name_length, L"%ls.ovpn", profile_name);
+    }
     else
+    {
         swprintf(out_name, out_name_length, L"%ls.ovpn", default_name);
+    }
 
     out_name[out_name_length - 1] = L'\0';
 
@@ -114,7 +124,7 @@ ShowWinInetError(HANDLE hWnd)
 {
     WCHAR err[256] = { 0 };
     FormatMessageW(FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_FROM_SYSTEM, GetModuleHandleW(L"wininet.dll"),
-        GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), err, _countof(err), NULL);
+                   GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), err, _countof(err), NULL);
     ShowLocalizedMsgEx(MB_OK, hWnd, _T(PACKAGE_NAME), IDS_ERR_URL_IMPORT_PROFILE, GetLastError(), err);
 }
 
@@ -128,26 +138,30 @@ struct UrlComponents
 };
 
 /**
-* Extracts protocol, port and hostname from URL
-*
-* @param url URL to parse, length must be less than URL_MAX
-*/
+ * Extracts protocol, port and hostname from URL
+ *
+ * @param url URL to parse, length must be less than URL_MAX
+ */
 void
-ParseUrl(const WCHAR *url, struct UrlComponents* comps)
+ParseUrl(const WCHAR *url, struct UrlComponents *comps)
 {
     ZeroMemory(comps, sizeof(struct UrlComponents));
 
     comps->port = 443;
     comps->https = true;
-    if (wcsbegins(url, L"http://")) {
+    if (wcsbegins(url, L"http://"))
+    {
         url += 7;
-    } else if (wcsbegins(url, L"https://")) {
-        url +=8;
+    }
+    else if (wcsbegins(url, L"https://"))
+    {
+        url += 8;
     }
 
     WCHAR *strport = wcsstr(url, L":");
     WCHAR *pathptr = wcsstr(url, L"/");
-    if (strport) {
+    if (strport)
+    {
         wcsncpy_s(comps->host, URL_LEN, url, strport - url);
         comps->port = wcstol(strport + 1, NULL, 10);
     }
@@ -175,35 +189,41 @@ ParseUrl(const WCHAR *url, struct UrlComponents* comps)
  * @param psize pointer to a profile size, assigned by this function
  */
 BOOL
-DownloadProfileContent(HANDLE hWnd, HINTERNET hRequest, char** pbuf, size_t* psize)
+DownloadProfileContent(HANDLE hWnd, HINTERNET hRequest, char **pbuf, size_t *psize)
 {
     size_t pos = 0;
     size_t size = READ_CHUNK_LEN;
 
     *pbuf = calloc(1, size + 1);
-    char* buf = *pbuf;
-    if (buf == NULL) {
+    char *buf = *pbuf;
+    if (buf == NULL)
+    {
         MessageBoxW(hWnd, L"Out of memory", _T(PACKAGE_NAME), MB_OK);
         return FALSE;
     }
-    while (true) {
+    while (true)
+    {
         DWORD bytesRead = 0;
-        if (!InternetReadFile(hRequest, buf + pos, READ_CHUNK_LEN, &bytesRead)) {
+        if (!InternetReadFile(hRequest, buf + pos, READ_CHUNK_LEN, &bytesRead))
+        {
             ShowWinInetError(hWnd);
             return FALSE;
         }
 
         buf[pos + bytesRead] = '\0';
 
-        if (bytesRead == 0) {
+        if (bytesRead == 0)
+        {
             size = pos;
             break;
         }
 
-        if (pos + bytesRead >= size) {
+        if (pos + bytesRead >= size)
+        {
             size += READ_CHUNK_LEN;
             *pbuf = realloc(*pbuf, size + 1);
-            if (!*pbuf) {
+            if (!*pbuf)
+            {
                 free(buf);
                 MessageBoxW(hWnd, L"Out of memory", _T(PACKAGE_NAME), MB_OK);
                 return FALSE;
@@ -225,15 +245,17 @@ DownloadProfileContent(HANDLE hWnd, HINTERNET hRequest, char** pbuf, size_t* psi
 INT_PTR CALLBACK
 CRDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    auth_param_t * param = NULL;
+    auth_param_t *param = NULL;
 
-    switch (msg) {
+    switch (msg)
+    {
         case WM_INITDIALOG:
-            param = (auth_param_t*)lParam;
+            param = (auth_param_t *)lParam;
             TRY_SETPROP(hwndDlg, cfgProp, (HANDLE)param);
 
             WCHAR *wstr = Widen(param->str);
-            if (!wstr) {
+            if (!wstr)
+            {
                 EndDialog(hwndDlg, LOWORD(wParam));
                 break;
             }
@@ -242,7 +264,9 @@ CRDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
             /* Set password echo on if needed */
             if (param->flags & FLAG_CR_ECHO)
+            {
                 SendMessage(GetDlgItem(hwndDlg, ID_EDT_RESPONSE), EM_SETPASSWORDCHAR, 0, 0);
+            }
 
             SetForegroundWindow(hwndDlg);
 
@@ -253,28 +277,30 @@ CRDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_COMMAND:
-            param = (auth_param_t*)GetProp(hwndDlg, cfgProp);
+            param = (auth_param_t *)GetProp(hwndDlg, cfgProp);
 
-            switch (LOWORD(wParam)) {
-            case ID_EDT_RESPONSE:
-                if (!(param->flags & FLAG_CR_ECHO))
-                {
-                    ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_RESPONSE),
-                                        GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), wParam);
-                }
-                if (HIWORD(wParam) == EN_UPDATE) {
-                    /* enable OK if response is non-empty */
-                    BOOL enableOK = GetWindowTextLength((HWND)lParam);
-                    EnableWindow(GetDlgItem(hwndDlg, IDOK), enableOK);
-                }
-                break;
+            switch (LOWORD(wParam))
+            {
+                case ID_EDT_RESPONSE:
+                    if (!(param->flags & FLAG_CR_ECHO))
+                    {
+                        ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_RESPONSE),
+                                            GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), wParam);
+                    }
+                    if (HIWORD(wParam) == EN_UPDATE)
+                    {
+                        /* enable OK if response is non-empty */
+                        BOOL enableOK = GetWindowTextLength((HWND)lParam);
+                        EnableWindow(GetDlgItem(hwndDlg, IDOK), enableOK);
+                    }
+                    break;
 
                 case IDOK: {
                     int len = 0;
                     GetDlgItemTextUtf8(hwndDlg, ID_EDT_RESPONSE, &param->cr_response, &len);
                     EndDialog(hwndDlg, LOWORD(wParam));
                 }
-                return TRUE;
+                    return TRUE;
 
                 case IDCANCEL:
                     EndDialog(hwndDlg, LOWORD(wParam));
@@ -408,7 +434,7 @@ DownloadProfile(HANDLE hWnd, const struct UrlComponents *comps, const char *user
     HANDLE hConnect = NULL;
     HANDLE hRequest = NULL;
     BOOL result = FALSE;
-    char* buf = NULL;
+    char *buf = NULL;
 
     /* need to make copy of password to use it for dynamic response */
     char password[USER_PASS_LEN] = { 0 };
@@ -421,7 +447,8 @@ DownloadProfile(HANDLE hWnd, const struct UrlComponents *comps, const char *user
     }
 
     hInternet = InternetOpenW(L"openvpn-gui/1.0", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
-    if (!hInternet) {
+    if (!hInternet)
+    {
         ShowWinInetError(hWnd);
         goto done;
     }
@@ -435,7 +462,8 @@ DownloadProfile(HANDLE hWnd, const struct UrlComponents *comps, const char *user
     SetCursor(LoadCursorW(0, IDC_WAIT));
 
     hConnect = InternetConnectW(hInternet, comps->host, comps->port, NULL, NULL, INTERNET_SERVICE_HTTP, 0, 0);
-    if (!hConnect) {
+    if (!hConnect)
+    {
         ShowWinInetError(hWnd);
         goto done;
     }
@@ -443,13 +471,15 @@ DownloadProfile(HANDLE hWnd, const struct UrlComponents *comps, const char *user
     DWORD req_flags = INTERNET_FLAG_RELOAD; /* load from server, do not use cached data */
     req_flags |= comps->https ? INTERNET_FLAG_SECURE : 0;
     hRequest = HttpOpenRequestW(hConnect, NULL, comps->path, NULL, NULL, NULL, req_flags, 0);
-    if (!hRequest) {
+    if (!hRequest)
+    {
         ShowWinInetError(hWnd);
         goto done;
     }
 
 again:
-    if (buf) {
+    if (buf)
+    {
         free(buf);
         buf = NULL;
     }
@@ -462,26 +492,30 @@ again:
 
     /* handle cert errors */
     /* https://www.betaarchive.com/wiki/index.php/Microsoft_KB_Archive/182888 */
-    if (!HttpSendRequestW(hRequest, NULL, 0, NULL, 0)) {
+    if (!HttpSendRequestW(hRequest, NULL, 0, NULL, 0))
+    {
 #ifdef DEBUG
         DWORD err = GetLastError();
-        if ((err == ERROR_INTERNET_INVALID_CA) ||
-            (err == ERROR_INTERNET_SEC_CERT_CN_INVALID) ||
-            (err == ERROR_INTERNET_SEC_CERT_DATE_INVALID) ||
-            (err == ERROR_INTERNET_SEC_CERT_REV_FAILED)) {
+        if ((err == ERROR_INTERNET_INVALID_CA)
+            || (err == ERROR_INTERNET_SEC_CERT_CN_INVALID)
+            || (err == ERROR_INTERNET_SEC_CERT_DATE_INVALID)
+            || (err == ERROR_INTERNET_SEC_CERT_REV_FAILED))
+        {
 
             /* ask user what to do and modify options if needed */
             DWORD dlg_result = InternetErrorDlg(hWnd, hRequest,
-                err,
-                FLAGS_ERROR_UI_FILTER_FOR_ERRORS |
-                FLAGS_ERROR_UI_FLAGS_GENERATE_DATA |
-                FLAGS_ERROR_UI_FLAGS_CHANGE_OPTIONS,
-                NULL);
+                                                err,
+                                                FLAGS_ERROR_UI_FILTER_FOR_ERRORS
+                                                |FLAGS_ERROR_UI_FLAGS_GENERATE_DATA
+                                                |FLAGS_ERROR_UI_FLAGS_CHANGE_OPTIONS,
+                                                NULL);
 
-            if (dlg_result == ERROR_SUCCESS) {
+            if (dlg_result == ERROR_SUCCESS)
+            {
                 /* for unknown reasons InternetErrorDlg() doesn't change options for ERROR_INTERNET_SEC_CERT_REV_FAILED,
                  * despite user is willing to continue, so we have to do it manually */
-                if (err == ERROR_INTERNET_SEC_CERT_REV_FAILED) {
+                if (err == ERROR_INTERNET_SEC_CERT_REV_FAILED)
+                {
                     DWORD flags;
                     DWORD len = sizeof(flags);
                     InternetQueryOptionW(hRequest, INTERNET_OPTION_SECURITY_FLAGS, (LPVOID)&flags, &len);
@@ -495,9 +529,11 @@ again:
                 goto again;
             }
             else
+            {
                 goto done;
+            }
         }
-#endif
+#endif /* ifdef DEBUG */
         ShowWinInetError(hWnd);
         goto done;
     }
@@ -510,36 +546,49 @@ again:
     size_t size = 0;
 
     /* download profile content */
-    if ((status_code == 200) || (status_code == 401)) {
+    if ((status_code == 200) || (status_code == 401))
+    {
         if (!DownloadProfileContent(hWnd, hRequest, &buf, &size))
+        {
             goto done;
+        }
 
-        char* msg_begin = strstr(buf, "<Message>CRV1:");
-        char* msg_end = strstr(buf, "</Message>");
-        if ((status_code == 401) && msg_begin && msg_end) {
+        char *msg_begin = strstr(buf, "<Message>CRV1:");
+        char *msg_end = strstr(buf, "</Message>");
+        if ((status_code == 401) && msg_begin && msg_end)
+        {
             *msg_end = '\0';
-            auth_param_t* param = (auth_param_t*)calloc(1, sizeof(auth_param_t));
+            auth_param_t *param = (auth_param_t *)calloc(1, sizeof(auth_param_t));
             if (!param)
+            {
                 goto done;
+            }
 
-            if (parse_dynamic_cr(msg_begin + 14, param)) {
+            if (parse_dynamic_cr(msg_begin + 14, param))
+            {
                 /* prompt user for dynamic challenge */
                 INT_PTR res = LocalizedDialogBoxParam(ID_DLG_CHALLENGE_RESPONSE, CRDialogFunc, (LPARAM)param);
                 if (res == IDOK)
+                {
                     _snprintf_0(password, "CRV1::%s::%s", param->id, param->cr_response);
+                }
 
                 free_auth_param(param);
 
                 if (res == IDOK)
+                {
                     goto again;
+                }
             }
-            else {
+            else
+            {
                 free_auth_param(param);
             }
         }
     }
 
-    if (status_code != 200) {
+    if (status_code != 200)
+    {
         ShowLocalizedMsgEx(MB_OK, hWnd, _T(PACKAGE_NAME), IDS_ERR_URL_IMPORT_PROFILE, status_code, L"HTTP error");
         goto done;
     }
@@ -563,8 +612,9 @@ again:
     if (strlen(comps->content_type) == 0 /* AS profile */
         || !ExtractFilenameFromHeader(hRequest, name, MAX_PATH))
     {
-        WCHAR* wbuf = Widen(buf);
-        if (!wbuf) {
+        WCHAR *wbuf = Widen(buf);
+        if (!wbuf)
+        {
             MessageBoxW(hWnd, L"Failed to convert profile content to wchar", _T(PACKAGE_NAME), MB_OK);
             goto done;
         }
@@ -574,14 +624,16 @@ again:
 
     /* save profile content into tmp file */
     DWORD res = GetTempPathW((DWORD)out_path_size, out_path);
-    if (res == 0 || res > out_path_size) {
+    if (res == 0 || res > out_path_size)
+    {
         MessageBoxW(hWnd, L"Failed to get TMP path", _T(PACKAGE_NAME), MB_OK);
         goto done;
     }
     swprintf(out_path, out_path_size, L"%ls%ls", out_path, name);
     out_path[out_path_size - 1] = '\0';
-    FILE* f = _wfopen(out_path, L"w");
-    if (f == NULL) {
+    FILE *f = _wfopen(out_path, L"w");
+    if (f == NULL)
+    {
         MessageBoxW(hWnd, L"Unable to save downloaded profile", _T(PACKAGE_NAME), MB_OK);
         goto done;
     }
@@ -592,26 +644,34 @@ again:
 
 done:
     if (buf)
+    {
         free(buf);
+    }
 
     /* wipe the password */
     SecureZeroMemory(password, sizeof(password));
 
     if (hRequest)
+    {
         InternetCloseHandle(hRequest);
+    }
 
     if (hConnect)
+    {
         InternetCloseHandle(hConnect);
+    }
 
     if (hInternet)
+    {
         InternetCloseHandle(hInternet);
+    }
 
     return result;
 }
 
 typedef enum {
-   server_as = 1,
-   server_generic = 2
+    server_as = 1,
+    server_generic = 2
 } server_type_t;
 
 INT_PTR CALLBACK
@@ -623,116 +683,123 @@ ImportProfileFromURLDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
 
     switch (msg)
     {
-    case WM_INITDIALOG:
-        type = (server_type_t) lParam;
-        TRY_SETPROP(hwndDlg, cfgProp, (HANDLE)lParam);
-        SetStatusWinIcon(hwndDlg, ID_ICO_APP);
+        case WM_INITDIALOG:
+            type = (server_type_t) lParam;
+            TRY_SETPROP(hwndDlg, cfgProp, (HANDLE)lParam);
+            SetStatusWinIcon(hwndDlg, ID_ICO_APP);
 
-        if (type == server_generic)
-        {
-            /* Change window title and hide autologin checkbox */
-            SetWindowTextW(hwndDlg, LoadLocalizedString(IDS_MENU_IMPORT_URL));
-            ShowWindow(GetDlgItem(hwndDlg, ID_CHK_AUTOLOGIN), SW_HIDE);
-        }
-        /* disable OK button until required data is filled in */
-        EnableWindow(GetDlgItem(hwndDlg, IDOK), FALSE);
-        ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS),
-                            GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), 0);
-        break;
-
-    case WM_COMMAND:
-        type = (server_type_t) GetProp(hwndDlg, cfgProp);
-        switch (LOWORD(wParam))
-        {
-        case ID_EDT_AUTH_PASS:
+            if (type == server_generic)
+            {
+                /* Change window title and hide autologin checkbox */
+                SetWindowTextW(hwndDlg, LoadLocalizedString(IDS_MENU_IMPORT_URL));
+                ShowWindow(GetDlgItem(hwndDlg, ID_CHK_AUTOLOGIN), SW_HIDE);
+            }
+            /* disable OK button until required data is filled in */
+            EnableWindow(GetDlgItem(hwndDlg, IDOK), FALSE);
             ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS),
-                                GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), wParam);
-            /* fall through */
-        case ID_EDT_AUTH_USER:
-        case ID_EDT_URL:
-            if (HIWORD(wParam) == EN_UPDATE) {
-                /* enable OK button only if url and username are filled */
-                BOOL enableOK = GetWindowTextLengthW(GetDlgItem(hwndDlg, ID_EDT_URL))
-                    && GetWindowTextLengthW(GetDlgItem(hwndDlg, ID_EDT_AUTH_USER));
-                EnableWindow(GetDlgItem(hwndDlg, IDOK), enableOK);
+                                GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), 0);
+            break;
+
+        case WM_COMMAND:
+            type = (server_type_t) GetProp(hwndDlg, cfgProp);
+            switch (LOWORD(wParam))
+            {
+                case ID_EDT_AUTH_PASS:
+                    ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS),
+                                        GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), wParam);
+
+                /* fall through */
+                case ID_EDT_AUTH_USER:
+                case ID_EDT_URL:
+                    if (HIWORD(wParam) == EN_UPDATE)
+                    {
+                        /* enable OK button only if url and username are filled */
+                        BOOL enableOK = GetWindowTextLengthW(GetDlgItem(hwndDlg, ID_EDT_URL))
+                                        && GetWindowTextLengthW(GetDlgItem(hwndDlg, ID_EDT_AUTH_USER));
+                        EnableWindow(GetDlgItem(hwndDlg, IDOK), enableOK);
+                    }
+                    break;
+
+                case IDOK:
+
+                    GetDlgItemTextW(hwndDlg, ID_EDT_URL, url, _countof(url));
+
+                    int username_len = 0;
+                    char *username = NULL;
+                    GetDlgItemTextUtf8(hwndDlg, ID_EDT_AUTH_USER, &username, &username_len);
+
+                    int password_len = 0;
+                    char *password = NULL;
+                    GetDlgItemTextUtf8(hwndDlg, ID_EDT_AUTH_PASS, &password, &password_len);
+
+                    WCHAR path[MAX_PATH + 1] = { 0 };
+                    struct UrlComponents comps = {0};
+                    if (type == server_as)
+                    {
+
+                        autologin = IsDlgButtonChecked(hwndDlg, ID_CHK_AUTOLOGIN) == BST_CHECKED;
+                        GetASUrl(url, autologin, &comps);
+                    }
+                    else
+                    {
+                        ParseUrl(url, &comps);
+                        strncpy_s(comps.content_type, _countof(comps.content_type),
+                                  "application/x-openvpn-profile", _TRUNCATE);
+                    }
+                    BOOL downloaded = DownloadProfile(hwndDlg, &comps, username, password, path, _countof(path));
+
+                    if (username_len > 0)
+                    {
+                        free(username);
+                    }
+
+                    if (password_len > 0)
+                    {
+                        SecureZeroMemory(password, strlen(password));
+                        free(password);
+                    }
+
+                    if (downloaded)
+                    {
+                        EndDialog(hwndDlg, LOWORD(wParam));
+
+                        ImportConfigFile(path, false); /* do not prompt user */
+                        _wunlink(path);
+                    }
+                    return TRUE;
+
+                case IDCANCEL:
+                    EndDialog(hwndDlg, LOWORD(wParam));
+                    return TRUE;
+
+                case ID_PASSWORD_REVEAL: /* password reveal symbol clicked */
+                    ChangePasswordVisibility(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS),
+                                             GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), wParam);
+                    return TRUE;
             }
             break;
 
-        case IDOK:
 
-            GetDlgItemTextW(hwndDlg, ID_EDT_URL, url, _countof(url));
-
-            int username_len = 0;
-            char *username = NULL;
-            GetDlgItemTextUtf8(hwndDlg, ID_EDT_AUTH_USER, &username, &username_len);
-
-            int password_len = 0;
-            char *password = NULL;
-            GetDlgItemTextUtf8(hwndDlg, ID_EDT_AUTH_PASS, &password, &password_len);
-
-            WCHAR path[MAX_PATH + 1] = { 0 };
-            struct UrlComponents comps = {0};
-            if (type == server_as)
-            {
-
-                autologin = IsDlgButtonChecked(hwndDlg, ID_CHK_AUTOLOGIN) == BST_CHECKED;
-                GetASUrl(url, autologin, &comps);
-            }
-            else
-            {
-                ParseUrl(url, &comps);
-                strncpy_s(comps.content_type, _countof(comps.content_type),
-                          "application/x-openvpn-profile", _TRUNCATE);
-            }
-            BOOL downloaded = DownloadProfile(hwndDlg, &comps, username, password, path, _countof(path));
-
-            if (username_len > 0)
-                free(username);
-
-            if (password_len > 0)
-            {
-                SecureZeroMemory(password, strlen(password));
-                free(password);
-            }
-
-            if (downloaded) {
-                EndDialog(hwndDlg, LOWORD(wParam));
-
-                ImportConfigFile(path, false); /* do not prompt user */
-                _wunlink(path);
-            }
-            return TRUE;
-
-        case IDCANCEL:
+        case WM_CLOSE:
             EndDialog(hwndDlg, LOWORD(wParam));
             return TRUE;
 
-        case ID_PASSWORD_REVEAL: /* password reveal symbol clicked */
-            ChangePasswordVisibility(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS),
-                                     GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), wParam);
-            return TRUE;
-        }
-        break;
-
-
-    case WM_CLOSE:
-        EndDialog(hwndDlg, LOWORD(wParam));
-        return TRUE;
-
-    case WM_NCDESTROY:
-        RemoveProp(hwndDlg, cfgProp);
-        break;
+        case WM_NCDESTROY:
+            RemoveProp(hwndDlg, cfgProp);
+            break;
     }
 
     return FALSE;
 }
 
-void ImportConfigFromAS()
+void
+ImportConfigFromAS()
 {
     LocalizedDialogBoxParam(ID_DLG_URL_PROFILE_IMPORT, ImportProfileFromURLDialogFunc, (LPARAM) server_as);
 }
 
-void ImportConfigFromURL()
+void
+ImportConfigFromURL()
 {
     LocalizedDialogBoxParam(ID_DLG_URL_PROFILE_IMPORT, ImportProfileFromURLDialogFunc, (LPARAM) server_generic);
 }

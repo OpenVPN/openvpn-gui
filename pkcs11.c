@@ -553,7 +553,7 @@ display_certificate(HWND parent, connection_t *c, UINT i)
  */
 #if defined(HAVE_LIBCRYPTUI) || defined (_MSC_VER)
         CryptUIDlgViewContext(CERT_STORE_CERTIFICATE_CONTEXT, l->pe[i].cert.ctx,
-                               parent, L"Certificate", 0, NULL);
+                              parent, L"Certificate", 0, NULL);
 #else
         (void) i;
         (void) parent;
@@ -652,7 +652,7 @@ QueryPkcs11DialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 }
                 if (ln->hdr.code == NM_DBLCLK && ln->iItem >= 0)
                 {
-                   display_certificate(hwndDlg, c, (UINT) ln->iItem);
+                    display_certificate(hwndDlg, c, (UINT) ln->iItem);
                 }
             }
             break;

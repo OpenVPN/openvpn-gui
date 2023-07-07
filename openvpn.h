@@ -26,33 +26,51 @@
 #include "options.h"
 
 #define TRY_SETPROP(hwnd, name, p)                                                   \
-            do { if (SetPropW(hwnd, name, p)) break;                                 \
-                 MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs:%d GetProp returned null", \
-                               __func__, __LINE__);                                  \
-                 EndDialog(hwnd, IDABORT);                                           \
-                 return false;                                                       \
-               } while(0)
+    do { if (SetPropW(hwnd, name, p)) break;                                 \
+         MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs:%d GetProp returned null", \
+                       __func__, __LINE__);                                  \
+         EndDialog(hwnd, IDABORT);                                           \
+         return false;                                                       \
+    } while(0)
 
 BOOL StartOpenVPN(connection_t *);
+
 void StopOpenVPN(connection_t *);
+
 void DetachOpenVPN(connection_t *);
+
 void SuspendOpenVPN(int config);
+
 void RestartOpenVPN(connection_t *);
+
 void ReleaseOpenVPN(connection_t *);
+
 BOOL CheckVersion();
+
 void SetStatusWinIcon(HWND hwndDlg, int IconID);
 
 void OnReady(connection_t *, char *);
+
 void OnHold(connection_t *, char *);
+
 void OnLogLine(connection_t *, char *);
+
 void OnStateChange(connection_t *, char *);
+
 void OnPassword(connection_t *, char *);
+
 void OnStop(connection_t *, char *);
+
 void OnNeedOk(connection_t *, char *);
+
 void OnNeedStr(connection_t *, char *);
+
 void OnEcho(connection_t *, char *);
+
 void OnByteCount(connection_t *, char *);
-void OnInfoMsg(connection_t*, char*);
+
+void OnInfoMsg(connection_t *, char *);
+
 void OnTimeout(connection_t *, char *);
 
 void ResetSavePasswords(connection_t *);
@@ -66,7 +84,7 @@ extern const TCHAR *cfgProp;
 #define ERROR_MESSAGE_TYPE 0x20000003
 
 /* Write a line to status window and optionally to the log file */
-void WriteStatusLog (connection_t *c, const WCHAR *prefix, const WCHAR *line, BOOL fileio);
+void WriteStatusLog(connection_t *c, const WCHAR *prefix, const WCHAR *line, BOOL fileio);
 
 #define FLAG_CR_TYPE_SCRV1  0x1    /* static challenege */
 #define FLAG_CR_TYPE_CRV1   0x2    /* dynamic challenege */
@@ -78,12 +96,12 @@ void WriteStatusLog (connection_t *c, const WCHAR *prefix, const WCHAR *line, BO
 #define FLAG_CR_TYPE_CRTEXT 0x80   /* crtext */
 
 typedef struct {
-    connection_t* c;
+    connection_t *c;
     unsigned int flags;
-    char* str;
-    char* id;
-    char* user;
-    char* cr_response;
+    char *str;
+    char *id;
+    char *user;
+    char *cr_response;
 } auth_param_t;
 
 /*
@@ -92,10 +110,10 @@ typedef struct {
  * even on error.
  */
 BOOL
-parse_dynamic_cr(const char* str, auth_param_t* param);
+parse_dynamic_cr(const char *str, auth_param_t *param);
 
 void
-free_auth_param(auth_param_t* param);
+free_auth_param(auth_param_t *param);
 
 /*
  * Given an OpenVPN state as reported by the management interface
@@ -103,4 +121,4 @@ free_auth_param(auth_param_t* param);
  */
 int daemon_state_resid(const char *name);
 
-#endif
+#endif /* ifndef OPENVPN_H */

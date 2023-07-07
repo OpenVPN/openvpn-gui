@@ -46,15 +46,25 @@
 #define IDM_RECONNECTMENU       (1 + IDM_CLEARPASSMENU)
 
 void RecreatePopupMenus(void);
+
 void CreatePopupMenus();
+
 void OnNotifyTray(LPARAM);
+
 void OnDestroyTray(void);
+
 void ShowTrayIcon();
+
 void RemoveTrayIcon();
+
 void SetTrayIcon(conn_state_t);
+
 void SetMenuStatus(connection_t *, conn_state_t);
+
 void SetServiceMenuStatus();
+
 void ShowTrayBalloon(TCHAR *, TCHAR *);
+
 void CheckAndSetTrayIcon();
 
-#endif
+#endif /* ifndef TRAY_H */

@@ -24,7 +24,9 @@
 #define SCRIPTS_H
 
 void RunPreconnectScript(connection_t *);
+
 void RunConnectScript(connection_t *, int run_as_service);
+
 void RunDisconnectScript(connection_t *, int run_as_service);
 
 #endif

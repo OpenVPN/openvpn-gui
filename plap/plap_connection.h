@@ -52,7 +52,7 @@ static const CREDENTIAL_PROVIDER_FIELD_STATE field_states[] =
 
 /** Helper to deep copy field descriptor */
 HRESULT CopyFieldDescriptor(CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR *fd_out,
-                 const CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR *fd_in);
+                            const CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR *fd_in);
 
 typedef struct OpenVPNConnection OpenVPNConnection;
 

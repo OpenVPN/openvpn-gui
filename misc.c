@@ -57,27 +57,29 @@ Base64Encode(const char *input, int input_len, char **output)
     if (input_len == 0)
     {
         /* set output to empty string  -- matches the behavior in openvpn */
-        *output = calloc (1, sizeof(char));
+        *output = calloc(1, sizeof(char));
         return TRUE;
     }
     if (!CryptBinaryToStringA((const BYTE *) input, (DWORD) input_len,
-        flags, NULL, &output_len) || output_len == 0)
+                              flags, NULL, &output_len) || output_len == 0)
     {
 #ifdef DEBUG
-        PrintDebug (L"Error in CryptBinaryToStringA: input = '%.*hs'", input_len, input);
+        PrintDebug(L"Error in CryptBinaryToStringA: input = '%.*hs'", input_len, input);
 #endif
         *output = NULL;
         return FALSE;
     }
     *output = (char *)malloc(output_len);
     if (*output == NULL)
+    {
         return FALSE;
+    }
 
     if (!CryptBinaryToStringA((const BYTE *) input, (DWORD) input_len,
-        flags, *output, &output_len))
+                              flags, *output, &output_len))
     {
 #ifdef DEBUG
-        PrintDebug (L"Error in CryptBinaryToStringA: input = '%.*hs'", input_len, input);
+        PrintDebug(L"Error in CryptBinaryToStringA: input = '%.*hs'", input_len, input);
 #endif
         free(*output);
         *output = NULL;
@@ -100,7 +102,7 @@ Base64Decode(const char *input, char **output)
 {
     DWORD len;
 
-    PrintDebug (L"decoding %hs", input);
+    PrintDebug(L"decoding %hs", input);
     if (!CryptStringToBinaryA(input, 0, CRYPT_STRING_BASE64_ANY,
                               NULL, &len, NULL, NULL) || len == 0)
     {
@@ -110,10 +112,12 @@ Base64Decode(const char *input, char **output)
 
     *output = malloc(len + 1);
     if (*output == NULL)
+    {
         return -1;
+    }
 
     if (!CryptStringToBinaryA(input, 0,
-        CRYPT_STRING_BASE64, (BYTE *) *output, &len, NULL, NULL))
+                              CRYPT_STRING_BASE64, (BYTE *) *output, &len, NULL, NULL))
     {
         free(*output);
         *output = NULL;
@@ -122,7 +126,7 @@ Base64Decode(const char *input, char **output)
 
     /* NUL terminate output */
     (*output)[len] = '\0';
-    PrintDebug (L"Decoded output %hs", *output);
+    PrintDebug(L"Decoded output %hs", *output);
 
     return len;
 }
@@ -140,19 +144,27 @@ GetDlgItemTextUtf8(HWND hDlg, int id, LPSTR *str, int *len)
 
     ucs2_len = GetWindowTextLength(GetDlgItem(hDlg, id)) + 1;
     if (ucs2_len == 1)
+    {
         goto out;
+    }
 
     ucs2_str = malloc(ucs2_len * sizeof(*ucs2_str));
     if (ucs2_str == NULL)
+    {
         goto out;
+    }
 
     if (GetDlgItemText(hDlg, id, ucs2_str, ucs2_len) == 0)
+    {
         goto out;
+    }
 
     utf8_len = WideCharToMultiByte(CP_UTF8, 0, ucs2_str, -1, NULL, 0, NULL, NULL);
     utf8_str = malloc(utf8_len);
     if (utf8_str == NULL)
+    {
         goto out;
+    }
 
     WideCharToMultiByte(CP_UTF8, 0, ucs2_str, -1, utf8_str, utf8_len, NULL, NULL);
 
@@ -255,7 +267,7 @@ out:
  * Generate a management command from double user inputs and send it
  */
 BOOL
-ManagementCommandFromTwoInputsBase64(connection_t *c, LPCSTR fmt, HWND hDlg,int id, int id2)
+ManagementCommandFromTwoInputsBase64(connection_t *c, LPCSTR fmt, HWND hDlg, int id, int id2)
 {
     BOOL retval = FALSE;
     LPSTR input, input2, input_b64, input2_b64, cmd;
@@ -268,9 +280,13 @@ ManagementCommandFromTwoInputsBase64(connection_t *c, LPCSTR fmt, HWND hDlg,int 
     GetDlgItemTextUtf8(hDlg, id2, &input2, &input2_len);
 
     if (!Base64Encode(input, input_len, &input_b64))
+    {
         goto out;
+    }
     if (!Base64Encode(input2, input2_len, &input2_b64))
+    {
         goto out;
+    }
 
     cmd_len = strlen(input_b64) + strlen(input2_b64) + strlen(fmt);
     cmd = malloc(cmd_len);
@@ -284,9 +300,13 @@ ManagementCommandFromTwoInputsBase64(connection_t *c, LPCSTR fmt, HWND hDlg,int 
 out:
     /* Clear buffers with potentially secret content */
     if (input_b64)
+    {
         memset(input_b64, 0, strlen(input_b64));
+    }
     if (input2_b64)
+    {
         memset(input2_b64, 0, strlen(input2_b64));
+    }
     free(input_b64);
     free(input2_b64);
 
@@ -310,7 +330,7 @@ out:
  * Generate a management command from base64-encoded user inputs and send it
  */
 BOOL
-ManagementCommandFromInputBase64(connection_t* c, LPCSTR fmt, HWND hDlg, int id)
+ManagementCommandFromInputBase64(connection_t *c, LPCSTR fmt, HWND hDlg, int id)
 {
     BOOL retval = FALSE;
     LPSTR input, input_b64, cmd;
@@ -321,7 +341,9 @@ ManagementCommandFromInputBase64(connection_t* c, LPCSTR fmt, HWND hDlg, int id)
     GetDlgItemTextUtf8(hDlg, id, &input, &input_len);
 
     if (!Base64Encode(input, input_len, &input_b64))
+    {
         goto out;
+    }
 
     cmd_len = strlen(input_b64) + strlen(fmt);
     cmd = malloc(cmd_len);
@@ -335,7 +357,9 @@ ManagementCommandFromInputBase64(connection_t* c, LPCSTR fmt, HWND hDlg, int id)
 out:
     /* Clear buffers with potentially secret content */
     if (input_b64)
+    {
         memset(input_b64, 0, strlen(input_b64));
+    }
     free(input_b64);
 
     if (input_len)
@@ -365,20 +389,26 @@ EnsureDirExists(LPTSTR dir)
         {
             LPTSTR pos = _tcsrchr(dir, '\\');
             if (pos == NULL)
+            {
                 return FALSE;
+            }
 
             *pos = '\0';
             BOOL ret = EnsureDirExists(dir);
             *pos = '\\';
             if (ret == FALSE)
+            {
                 return FALSE;
+            }
         }
         else if (error != ERROR_FILE_NOT_FOUND)
+        {
             return FALSE;
+        }
 
         /* No error if directory already exists */
         return (CreateDirectory(dir, NULL) == TRUE
-            ||  GetLastError() == ERROR_ALREADY_EXISTS);
+                ||  GetLastError() == ERROR_ALREADY_EXISTS);
     }
 
     return (attr & FILE_ATTRIBUTE_DIRECTORY ? TRUE : FALSE);
@@ -425,13 +455,17 @@ ForceForegroundWindow(HWND hWnd)
  * Set scale factor of windows in pixels. Scale = 100% for dpi = 96
  */
 void
-DpiSetScale(options_t* options, UINT dpix)
+DpiSetScale(options_t *options, UINT dpix)
 {
     /* scale factor in percentage compared to the reference dpi of 96 */
     if (dpix != 0)
+    {
         options->dpi_scale = MulDiv(dpix, 100, 96);
+    }
     else
+    {
         options->dpi_scale = 100;
+    }
     PrintDebug(L"DPI scale set to %u", options->dpi_scale);
 }
 
@@ -442,19 +476,22 @@ DpiSetScale(options_t* options, UINT dpix)
  * in its SID.  Assumes the caller is not impersonating and has access to open its own
  * process token.
  */
-BOOL IsUserAdmin(VOID)
+BOOL
+IsUserAdmin(VOID)
 {
     BOOL b;
     SID_IDENTIFIER_AUTHORITY NtAuthority = {SECURITY_NT_AUTHORITY};
     PSID AdministratorsGroup;
 
-    b = AllocateAndInitializeSid (&NtAuthority, 2, SECURITY_BUILTIN_DOMAIN_RID,
-                                  DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0, 0, 0,
-                                  &AdministratorsGroup);
-    if(b)
+    b = AllocateAndInitializeSid(&NtAuthority, 2, SECURITY_BUILTIN_DOMAIN_RID,
+                                 DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0, 0, 0,
+                                 &AdministratorsGroup);
+    if (b)
     {
         if (!CheckTokenMembership(NULL, AdministratorsGroup, &b))
+        {
             b = FALSE;
+        }
         FreeSid(AdministratorsGroup);
     }
 
@@ -462,15 +499,15 @@ BOOL IsUserAdmin(VOID)
 }
 
 HANDLE
-InitSemaphore (WCHAR *name)
+InitSemaphore(WCHAR *name)
 {
     HANDLE semaphore = NULL;
-    semaphore = CreateSemaphore (NULL, 1, 1, name);
+    semaphore = CreateSemaphore(NULL, 1, 1, name);
     if (!semaphore)
     {
-        MessageBoxW (NULL, L"Error creating semaphore", TEXT(PACKAGE_NAME), MB_OK);
+        MessageBoxW(NULL, L"Error creating semaphore", TEXT(PACKAGE_NAME), MB_OK);
 #ifdef DEBUG
-        PrintDebug (L"InitSemaphore: CreateSemaphore failed [error = %lu]", GetLastError());
+        PrintDebug(L"InitSemaphore: CreateSemaphore failed [error = %lu]", GetLastError());
 #endif
     }
     return semaphore;
@@ -488,17 +525,17 @@ CloseSemaphore(HANDLE sem)
 
 /* Check access rights on an existing file */
 BOOL
-CheckFileAccess (const TCHAR *path, int access)
+CheckFileAccess(const TCHAR *path, int access)
 {
     HANDLE h;
     bool ret = FALSE;
 
-    h = CreateFile (path, access, FILE_SHARE_READ, NULL, OPEN_EXISTING,
+    h = CreateFile(path, access, FILE_SHARE_READ, NULL, OPEN_EXISTING,
                    FILE_ATTRIBUTE_NORMAL, NULL);
-    if ( h != INVALID_HANDLE_VALUE )
+    if (h != INVALID_HANDLE_VALUE)
     {
         ret = TRUE;
-        CloseHandle (h);
+        CloseHandle(h);
     }
 
     return ret;
@@ -514,17 +551,23 @@ WidenEx(UINT codepage, const char *str)
 {
     WCHAR *wstr = NULL;
     if (!str)
+    {
         return wstr;
+    }
 
     int nch = MultiByteToWideChar(codepage, 0, str, -1, NULL, 0);
     if (nch > 0)
+    {
         wstr = malloc(sizeof(WCHAR) * nch);
+    }
     if (wstr)
+    {
         nch =  MultiByteToWideChar(codepage, 0, str, -1, wstr, nch);
+    }
 
     if (nch == 0 && wstr)
     {
-        free (wstr);
+        free(wstr);
         wstr = NULL;
     }
 
@@ -545,7 +588,9 @@ BOOL
 validate_input(const WCHAR *input, const WCHAR *exclude)
 {
     if (!exclude)
+    {
         exclude = L"\n";
+    }
     return (wcspbrk(input, exclude) == NULL);
 }
 
@@ -556,17 +601,27 @@ wcs_concat2(WCHAR *dest, int len, const WCHAR *src1, const WCHAR *src2, const WC
     int n = 0;
 
     if (!dest || len == 0)
+    {
         return;
+    }
 
     if (src1 && src2 && src1[0] && src2[0])
+    {
         n = swprintf(dest, len, L"%ls%ls%ls", src1, sep, src2);
+    }
     else if (src1 && src1[0])
+    {
         n = swprintf(dest, len, L"%ls", src1);
+    }
     else if (src2 && src2[0])
+    {
         n = swprintf(dest, len, L"%ls", src2);
+    }
 
     if (n < 0 || n >= len) /*swprintf failed */
+    {
         n = 0;
+    }
     dest[n] = L'\0';
 }
 
@@ -594,7 +649,9 @@ url_decode(const char *src)
     char *o;
 
     if (!out)
+    {
         return NULL;
+    }
 
     for (o = out; *s; o++)
     {
@@ -618,7 +675,9 @@ md_init(md_ctx *ctx, ALG_ID hash_type)
     DWORD status = 0;
 
     if (!CryptAcquireContext(&ctx->prov, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT))
+    {
         goto err;
+    }
     if (!CryptCreateHash(ctx->prov, hash_type, 0, 0, &ctx->hash))
     {
         CryptReleaseContext(ctx->prov, 0);
@@ -684,7 +743,7 @@ open_url(const wchar_t *url)
 extern options_t o;
 
 void
-ImportConfigFile(const TCHAR* source, bool prompt_user)
+ImportConfigFile(const TCHAR *source, bool prompt_user)
 {
     TCHAR fileName[MAX_PATH] = _T("");
     TCHAR ext[MAX_PATH] = _T("");
@@ -723,7 +782,7 @@ ImportConfigFile(const TCHAR* source, bool prompt_user)
     {
         if (prompt_user
             && ShowLocalizedMsgEx(MB_YESNO|MB_TOPMOST, o.hWnd, TEXT(PACKAGE_NAME),
-                              IDS_NFO_IMPORT_SOURCE, fileName) == IDNO)
+                                  IDS_NFO_IMPORT_SOURCE, fileName) == IDNO)
         {
             return;
         }
@@ -741,10 +800,10 @@ ImportConfigFile(const TCHAR* source, bool prompt_user)
 
     if (!CopyFile(source, destination, no_overwrite))
     {
-       MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Copy file <%ls> to <%ls> failed (error = %lu)",
-                     source, destination, GetLastError());
-       ShowLocalizedMsg(IDS_ERR_IMPORT_FAILED, destination);
-       return;
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Copy file <%ls> to <%ls> failed (error = %lu)",
+                      source, destination, GetLastError());
+        ShowLocalizedMsg(IDS_ERR_IMPORT_FAILED, destination);
+        return;
     }
 
     ShowTrayBalloon(LoadLocalizedString(IDS_NFO_IMPORT_SUCCESS), fileName);
@@ -900,7 +959,9 @@ MsgToEventLog(WORD type, wchar_t *format, ...)
     {
         o.event_log = RegisterEventSource(NULL, TEXT(PACKAGE_NAME));
         if (!o.event_log)
+        {
             return;
+        }
     }
 
     va_list args;
@@ -908,7 +969,10 @@ MsgToEventLog(WORD type, wchar_t *format, ...)
     int nchar = vswprintf(buf, size-1, format, args);
     va_end(args);
 
-    if (nchar == -1) return;
+    if (nchar == -1)
+    {
+        return;
+    }
 
     buf[size - 1] = '\0';
 
@@ -954,11 +1018,13 @@ GetPLAPRegistrationStatus(void)
     wchar_t dllPath[MAX_PATH];
 
     _sntprintf_0(dllPath, L"%ls%ls", o.install_path, L"bin\\libopenvpn_plap.dll");
-    if (!CheckFileAccess(dllPath, GENERIC_READ)) {
+    if (!CheckFileAccess(dllPath, GENERIC_READ))
+    {
         res = -1;
     }
     else if (RegOpenKeyExW(HKEY_CLASSES_ROOT, L"CLSID\\"PLAP_CLASSID, 0, KEY_READ, &regkey)
-              == ERROR_SUCCESS) {
+             == ERROR_SUCCESS)
+    {
         res = 1;
         RegCloseKey(regkey);
     }
@@ -975,19 +1041,24 @@ SetPLAPRegistration(BOOL value)
 
     /* Run only if the state has changed */
     int plap_status = GetPLAPRegistrationStatus();
-    if (plap_status > 0 && (BOOL) plap_status == value)  return 0;
+    if (plap_status > 0 && (BOOL) plap_status == value)
+    {
+        return 0;
+    }
 
-    if (value) {
+    if (value)
+    {
         _sntprintf_0( params, L"import \"%ls%ls\"", o.install_path, L"bin\\openvpn-plap-install.reg");
     }
-    else {
+    else
+    {
         _sntprintf_0( params, L"import \"%ls%ls\"", o.install_path, L"bin\\openvpn-plap-uninstall.reg");
     }
 
     res = RunAsAdmin(cmd, params);
     if (res != 0)
     {
-        ShowLocalizedMsg(value? IDS_ERR_PLAP_REG  : IDS_ERR_PLAP_UNREG, res);
+        ShowLocalizedMsg(value ? IDS_ERR_PLAP_REG  : IDS_ERR_PLAP_UNREG, res);
     }
     return res;
 }
@@ -1003,7 +1074,7 @@ RunAsAdmin(const WCHAR *cmd, const WCHAR *params)
     SHELLEXECUTEINFO shinfo;
     DWORD status = -1;
 
-    CLEAR (shinfo);
+    CLEAR(shinfo);
     shinfo.cbSize = sizeof(shinfo);
     shinfo.fMask = SEE_MASK_NOCLOSEPROCESS;
     shinfo.hwnd = NULL;
@@ -1038,7 +1109,7 @@ OVPNMsgWait(DWORD timeout, HWND hdlg)
         if (MsgWaitForMultipleObjectsEx(0, NULL, end - now, QS_ALLINPUT, MWMO_INPUTAVAILABLE) == WAIT_OBJECT_0)
         {
             MSG msg;
-            while(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+            while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
             {
                 if (msg.message == WM_QUIT)
                 {
@@ -1069,14 +1140,20 @@ GetRandomPassword(char *buf, size_t len)
     unsigned i;
 
     if (!CryptAcquireContext(&cp, NULL, NULL, PROV_DSS, CRYPT_VERIFYCONTEXT))
+    {
         return FALSE;
+    }
 
     if (!CryptGenRandom(cp, len, (PBYTE) buf))
+    {
         goto out;
+    }
 
     /* Make sure all values are between 0x21 '!' and 0x7e '~' */
     for (i = 0; i < len; ++i)
+    {
         buf[i] = (buf[i] & 0x5d) + 0x21;
+    }
 
     retval = TRUE;
 out:

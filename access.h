@@ -24,6 +24,6 @@
 
 #include "options.h"
 
-BOOL AuthorizeConfig (const connection_t *c);
+BOOL AuthorizeConfig(const connection_t *c);
 
 #endif

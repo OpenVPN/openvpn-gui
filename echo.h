@@ -54,4 +54,4 @@ void echo_msg_clear(connection_t *c, BOOL clear_history);
 /* Load echo msg history from the registry */
 void echo_msg_load(connection_t *c);
 
-#endif
+#endif /* ifndef ECHO_H */

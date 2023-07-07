@@ -27,30 +27,44 @@
 #include "options.h"
 
 BOOL ManagementCommandFromInput(connection_t *, LPCSTR, HWND, int);
-BOOL ManagementCommandFromTwoInputsBase64(connection_t*, LPCSTR, HWND, int, int);
+
+BOOL ManagementCommandFromTwoInputsBase64(connection_t *, LPCSTR, HWND, int, int);
+
 BOOL ManagementCommandFromInputBase64(connection_t *, LPCSTR, HWND, int);
 
 BOOL EnsureDirExists(LPTSTR);
 
 BOOL streq(LPCSTR, LPCSTR);
+
 BOOL strbegins(const char *str, const char *begin);
+
 BOOL wcsbegins(LPCWSTR, LPCWSTR);
 
 BOOL ForceForegroundWindow(HWND);
-void DpiSetScale(options_t*, UINT dpix);
+
+void DpiSetScale(options_t *, UINT dpix);
 
 BOOL IsUserAdmin(VOID);
-HANDLE InitSemaphore (WCHAR *);
-BOOL CheckFileAccess (const TCHAR *path, int access);
+
+HANDLE InitSemaphore(WCHAR *);
+
+BOOL CheckFileAccess(const TCHAR *path, int access);
 
 BOOL Base64Encode(const char *input, int input_len, char **output);
+
 int Base64Decode(const char *input, char **output);
+
 WCHAR *Widen(const char *utf8);
+
 WCHAR *WidenEx(UINT codepage, const char *utf8);
+
 BOOL validate_input(const WCHAR *input, const WCHAR *exclude);
+
 /* Concatenate two wide strings with a separator */
 void wcs_concat2(WCHAR *dest, int len, const WCHAR *src1, const WCHAR *src2, const WCHAR *sep);
+
 void CloseSemaphore(HANDLE sem);
+
 /* Close a handle if not null or invalid */
 void CloseHandleEx(LPHANDLE h);
 
@@ -61,25 +75,27 @@ char *url_decode(const char *src);
 
 /* digest functions */
 typedef struct md_ctx {
-     HCRYPTPROV prov;
-     HCRYPTHASH hash;
+    HCRYPTPROV prov;
+    HCRYPTHASH hash;
 } md_ctx;
 
 DWORD md_init(md_ctx *ctx, ALG_ID hash_type);
+
 DWORD md_update(md_ctx *ctx, const BYTE *data, size_t size);
+
 DWORD md_final(md_ctx *ctx, BYTE *md);
 
 /* Open specified http/https URL using ShellExecute. */
 BOOL open_url(const wchar_t *url);
 
-void ImportConfigFile(const TCHAR* path, bool prompt_user);
+void ImportConfigFile(const TCHAR *path, bool prompt_user);
 
 /*
  * Helper function to convert UCS-2 text from a dialog item to UTF-8.
  * Caller must free *str if *len != 0.
  */
 BOOL
-GetDlgItemTextUtf8(HWND hDlg, int id, LPSTR* str, int* len);
+GetDlgItemTextUtf8(HWND hDlg, int id, LPSTR *str, int *len);
 
 /* Return escaped copy of a string */
 char *escape_string(const char *str);
@@ -157,6 +173,7 @@ bool OVPNMsgWait(DWORD timeout, HWND hdlg);
 bool GetRandomPassword(char *buf, size_t len);
 
 void ResetPasswordReveal(HWND edit, HWND btn, WPARAM wParam);
+
 void ChangePasswordVisibility(HWND edit, HWND btn, WPARAM wParam);
 
-#endif
+#endif /* ifndef MISC_H */

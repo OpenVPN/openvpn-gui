@@ -41,6 +41,6 @@ void process_setenv(connection_t *c, time_t timestamp, const char *msg);
  * as the env block or NULL on error. The caller must free the returned
  * pointer.
  */
-wchar_t * merge_env_block(const struct env_item *es);
+wchar_t *merge_env_block(const struct env_item *es);
 
 #endif
