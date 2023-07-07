@@ -50,37 +50,37 @@
 extern options_t o;
 
 static version_t
-MakeVersion (short ma, short mi, short b, short r)
+MakeVersion(short ma, short mi, short b, short r)
 {
     version_t v = {ma, mi, b, r};
     return v;
 }
 
 static void
-ExpandString (WCHAR *str, int max_len)
+ExpandString(WCHAR *str, int max_len)
 {
-  WCHAR expanded_string[MAX_PATH];
-  int len = ExpandEnvironmentStringsW (str, expanded_string, _countof(expanded_string));
+    WCHAR expanded_string[MAX_PATH];
+    int len = ExpandEnvironmentStringsW(str, expanded_string, _countof(expanded_string));
 
-  if (len > max_len || len > (int) _countof(expanded_string))
-  {
-      PrintDebug (L"Failed to expanded env vars in '%ls'. String too long", str);
-      return;
-  }
-  wcsncpy (str, expanded_string, max_len);
+    if (len > max_len || len > (int) _countof(expanded_string))
+    {
+        PrintDebug(L"Failed to expanded env vars in '%ls'. String too long", str);
+        return;
+    }
+    wcsncpy(str, expanded_string, max_len);
 }
 
 void
-ExpandOptions (void)
+ExpandOptions(void)
 {
-    ExpandString (o.exe_path, _countof(o.exe_path));
-    ExpandString (o.config_dir, _countof(o.config_dir));
-    ExpandString (o.global_config_dir, _countof(o.global_config_dir));
-    ExpandString (o.config_auto_dir, _countof(o.config_auto_dir));
-    ExpandString (o.log_dir, _countof(o.log_dir));
-    ExpandString (o.editor, _countof(o.editor));
-    ExpandString (o.log_viewer, _countof(o.log_viewer));
-    ExpandString (o.install_path, _countof(o.install_path));
+    ExpandString(o.exe_path, _countof(o.exe_path));
+    ExpandString(o.config_dir, _countof(o.config_dir));
+    ExpandString(o.global_config_dir, _countof(o.global_config_dir));
+    ExpandString(o.config_auto_dir, _countof(o.config_auto_dir));
+    ExpandString(o.log_dir, _countof(o.log_dir));
+    ExpandString(o.editor, _countof(o.editor));
+    ExpandString(o.log_viewer, _countof(o.log_viewer));
+    ExpandString(o.install_path, _countof(o.install_path));
 }
 
 static int
@@ -157,8 +157,8 @@ add_option(options_t *options, int i, TCHAR **p)
         ++i;
         _tcsncpy(options->priority_string, p[1], _countof(options->priority_string) - 1);
     }
-    else if ( (streq(p[0], _T("append_string")) ||
-             streq(p[0], _T("log_append"))) && p[1] )
+    else if ( (streq(p[0], _T("append_string"))
+               || streq(p[0], _T("log_append"))) && p[1])
     {
         ++i;
         options->log_append = _ttoi(p[1]) ? 1 : 0;
@@ -181,22 +181,22 @@ add_option(options_t *options, int i, TCHAR **p)
     else if (streq(p[0], _T("allow_edit")) && p[1])
     {
         ++i;
-        PrintDebug (L"Deprecated option: '%ls' ignored.", p[0]);
+        PrintDebug(L"Deprecated option: '%ls' ignored.", p[0]);
     }
     else if (streq(p[0], _T("allow_service")) && p[1])
     {
         ++i;
-        PrintDebug (L"Deprecated option: '%ls' ignored.", p[0]);
+        PrintDebug(L"Deprecated option: '%ls' ignored.", p[0]);
     }
     else if (streq(p[0], _T("allow_password")) && p[1])
     {
         ++i;
-        PrintDebug (L"Deprecated option: '%ls' ignored.", p[0]);
+        PrintDebug(L"Deprecated option: '%ls' ignored.", p[0]);
     }
     else if (streq(p[0], _T("allow_proxy")) && p[1])
     {
         ++i;
-        PrintDebug (L"Deprecated option: '%ls' ignored.", p[0]);
+        PrintDebug(L"Deprecated option: '%ls' ignored.", p[0]);
     }
     else if (streq(p[0], _T("show_balloon")) && p[1])
     {
@@ -206,7 +206,7 @@ add_option(options_t *options, int i, TCHAR **p)
     else if (streq(p[0], _T("service_only")) && p[1])
     {
         ++i;
-        PrintDebug (L"Deprecated option: '%ls' ignored.", p[0]);
+        PrintDebug(L"Deprecated option: '%ls' ignored.", p[0]);
     }
     else if (streq(p[0], _T("show_script_window")) && p[1])
     {
@@ -221,7 +221,7 @@ add_option(options_t *options, int i, TCHAR **p)
     else if (streq(p[0], _T("passphrase_attempts")) && p[1])
     {
         ++i;
-        PrintDebug (L"Deprecated option: '%ls' ignored.", p[0]);
+        PrintDebug(L"Deprecated option: '%ls' ignored.", p[0]);
     }
     else if (streq(p[0], _T("connectscript_timeout")) && p[1])
     {
@@ -362,7 +362,9 @@ parse_argv(options_t *options, int argc, TCHAR **argv)
             {
                 TCHAR *arg = argv[i + j];
                 if (_tcsncmp(arg, _T("--"), 2) == 0)
+                {
                     break;
+                }
                 p[j] = arg;
             }
         }
@@ -375,8 +377,8 @@ void
 InitOptions(options_t *opt)
 {
     CLEAR(*opt);
-    opt->netcmd_semaphore = InitSemaphore (NULL);
-    opt->version = MakeVersion (PACKAGE_VERSION_RESOURCE);
+    opt->netcmd_semaphore = InitSemaphore(NULL);
+    opt->version = MakeVersion(PACKAGE_VERSION_RESOURCE);
     opt->clr_warning = RGB(0xff, 0, 0);
     opt->clr_error = RGB(0xff, 0, 0);
 }
@@ -393,49 +395,67 @@ ProcessCommandLine(options_t *options, TCHAR *command_line)
     do
     {
         while (*pos == _T(' '))
+        {
             ++pos;
+        }
 
         if (*pos == _T('\0'))
+        {
             break;
+        }
 
         ++argc;
 
         while (*pos != _T('\0') && *pos != _T(' '))
-           ++pos;
+        {
+            ++pos;
+        }
     }
     while (*pos != _T('\0'));
 
     if (argc == 0)
+    {
         return;
+    }
 
     /* Tokenize the arguments */
-    argv = (TCHAR**) malloc(argc * sizeof(TCHAR*));
+    argv = (TCHAR **) malloc(argc * sizeof(TCHAR *));
     pos = command_line;
     argc = 0;
 
     do
     {
         while (*pos == _T(' '))
+        {
             pos++;
+        }
 
         if (*pos == _T('\0'))
+        {
             break;
+        }
 
         if (*pos == _T('\"'))
         {
             argv[argc++] = ++pos;
             while (*pos != _T('\0') && *pos != _T('\"'))
+            {
                 ++pos;
+            }
         }
         else
         {
             argv[argc++] = pos;
             while (*pos != _T('\0') && *pos != _T(' '))
+            {
                 ++pos;
+            }
         }
 
         if (*pos == _T('\0'))
+        {
             break;
+        }
 
         *pos++ = _T('\0');
     }
@@ -445,7 +465,7 @@ ProcessCommandLine(options_t *options, TCHAR *command_line)
 
     free(argv);
 
-    ExpandOptions ();
+    ExpandOptions();
 }
 
 
@@ -458,52 +478,58 @@ CountConnState(conn_state_t check)
     for (connection_t *c = o.chead; c; c = c->next)
     {
         if (c->state == check)
+        {
             ++count;
+        }
     }
 
     return count;
 }
 
-connection_t*
+connection_t *
 GetConnByManagement(SOCKET sk)
 {
     for (connection_t *c = o.chead; c; c = c->next)
     {
         if (c->manage.sk == sk)
+        {
             return c;
+        }
     }
     return NULL;
 }
 
-connection_t*
+connection_t *
 GetConnByName(const WCHAR *name)
 {
     for (connection_t *c = o.chead; c; c = c->next)
     {
-        if (wcsicmp (c->config_file, name) == 0
+        if (wcsicmp(c->config_file, name) == 0
             || wcsicmp(c->config_name, name) == 0)
+        {
             return c;
+        }
     }
     return NULL;
 }
 
 static BOOL
-BrowseFolder (const WCHAR* initial_path, WCHAR* selected_path, size_t selected_path_size)
+BrowseFolder(const WCHAR *initial_path, WCHAR *selected_path, size_t selected_path_size)
 {
-    IFileOpenDialog* pfd;
+    IFileOpenDialog *pfd;
     HRESULT initResult, result, dialogResult = E_FAIL;
 
-    // Create dialog
+    /* Create dialog */
     initResult = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
     if (FAILED(initResult))
     {
         return false;
     }
 
-    result = CoCreateInstance(&CLSID_FileOpenDialog, NULL, CLSCTX_ALL, &IID_IFileOpenDialog, (void**)&pfd);
+    result = CoCreateInstance(&CLSID_FileOpenDialog, NULL, CLSCTX_ALL, &IID_IFileOpenDialog, (void **)&pfd);
     if (SUCCEEDED(result))
     {
-        // Select folders, not files
+        /* Select folders, not files */
         DWORD dwOptions;
         result = pfd->lpVtbl->GetOptions(pfd, &dwOptions);
         if (SUCCEEDED(result))
@@ -512,24 +538,24 @@ BrowseFolder (const WCHAR* initial_path, WCHAR* selected_path, size_t selected_p
             result = pfd->lpVtbl->SetOptions(pfd, dwOptions);
         }
 
-        // Set initial path
-        IShellItem* psi;
-        result = SHCreateItemFromParsingName(initial_path, NULL, &IID_IShellItem, (void**)&psi);
+        /* Set initial path */
+        IShellItem *psi;
+        result = SHCreateItemFromParsingName(initial_path, NULL, &IID_IShellItem, (void **)&psi);
         if (SUCCEEDED(result))
         {
             pfd->lpVtbl->SetFolder(pfd, psi);
             psi->lpVtbl->Release(psi);
         }
 
-        // Show dialog and copy the selected file path if the user didn't cancel
+        /* Show dialog and copy the selected file path if the user didn't cancel */
         dialogResult = pfd->lpVtbl->Show(pfd, NULL);
         if (SUCCEEDED(dialogResult))
         {
-            IShellItem* psi;
+            IShellItem *psi;
             LPOLESTR path = NULL;
 
             result = pfd->lpVtbl->GetResult(pfd, &psi);
-            if(SUCCEEDED(result))
+            if (SUCCEEDED(result))
             {
                 result = psi->lpVtbl->GetDisplayName(psi, SIGDN_FILESYSPATH, &path);
             }
@@ -548,65 +574,71 @@ BrowseFolder (const WCHAR* initial_path, WCHAR* selected_path, size_t selected_p
             }
         }
 
-        // Cleanup
+        /* Cleanup */
         pfd->lpVtbl->Release(pfd);
     }
 
     if (initResult != RPC_E_CHANGED_MODE && SUCCEEDED(initResult))
     {
-        CoUninitialize(); //All successful CoInitializeEx calls must be balanced by a corresponding CoUninitialize
+        CoUninitialize(); /*All successful CoInitializeEx calls must be balanced by a corresponding CoUninitialize */
     }
 
     return SUCCEEDED(dialogResult);
 }
 
 static BOOL
-CheckAdvancedDlgParams (HWND hdlg)
+CheckAdvancedDlgParams(HWND hdlg)
 {
     WCHAR tmp_path[MAX_PATH];
 
     /* replace empty entries by current values */
-    if (GetWindowTextLength (GetDlgItem(hdlg, ID_EDT_CONFIG_DIR)) == 0)
-        SetDlgItemText (hdlg, ID_EDT_CONFIG_DIR, o.config_dir);
-    if (GetWindowTextLength (GetDlgItem(hdlg, ID_EDT_LOG_DIR)) == 0)
-        SetDlgItemText (hdlg, ID_EDT_LOG_DIR, o.log_dir);
-    if (GetWindowTextLength (GetDlgItem(hdlg, ID_EDT_CONFIG_EXT)) == 0)
-        SetDlgItemText (hdlg, ID_EDT_CONFIG_EXT, o.ext_string);
+    if (GetWindowTextLength(GetDlgItem(hdlg, ID_EDT_CONFIG_DIR)) == 0)
+    {
+        SetDlgItemText(hdlg, ID_EDT_CONFIG_DIR, o.config_dir);
+    }
+    if (GetWindowTextLength(GetDlgItem(hdlg, ID_EDT_LOG_DIR)) == 0)
+    {
+        SetDlgItemText(hdlg, ID_EDT_LOG_DIR, o.log_dir);
+    }
+    if (GetWindowTextLength(GetDlgItem(hdlg, ID_EDT_CONFIG_EXT)) == 0)
+    {
+        SetDlgItemText(hdlg, ID_EDT_CONFIG_EXT, o.ext_string);
+    }
 
     /* ensure paths are absolute */
-    GetDlgItemText (hdlg, ID_EDT_CONFIG_DIR, tmp_path, _countof(tmp_path));
-    ExpandString (tmp_path, _countof(tmp_path));
-    if (PathIsRelativeW (tmp_path))
+    GetDlgItemText(hdlg, ID_EDT_CONFIG_DIR, tmp_path, _countof(tmp_path));
+    ExpandString(tmp_path, _countof(tmp_path));
+    if (PathIsRelativeW(tmp_path))
     {
-        MessageBox (hdlg, L"Specified config directory is not an absolute path",
-                    L"Option error", MB_OK);
+        MessageBox(hdlg, L"Specified config directory is not an absolute path",
+                   L"Option error", MB_OK);
         return false;
     }
 
-    GetDlgItemText (hdlg, ID_EDT_LOG_DIR, tmp_path, _countof(tmp_path));
-    ExpandString (tmp_path, _countof(tmp_path));
-    if (PathIsRelativeW (tmp_path))
+    GetDlgItemText(hdlg, ID_EDT_LOG_DIR, tmp_path, _countof(tmp_path));
+    ExpandString(tmp_path, _countof(tmp_path));
+    if (PathIsRelativeW(tmp_path))
     {
-        MessageBox (hdlg, L"Specified log directory is not an absolute path",
-                    L"Option error", MB_OK);
+        MessageBox(hdlg, L"Specified log directory is not an absolute path",
+                   L"Option error", MB_OK);
         return false;
     }
 
     BOOL status;
-    int tmp = GetDlgItemInt (hdlg, ID_EDT_MGMT_PORT, &status, FALSE);
+    int tmp = GetDlgItemInt(hdlg, ID_EDT_MGMT_PORT, &status, FALSE);
     /* Restrict the port offset to sensible range -- port used is this + upto ~4000 as connection index */
     if (!status || (tmp < 1 || tmp > 61000))
     {
-        MessageBox (hdlg, L"Specified port is not valid (must be in the range 1 to 61000)",
-                    L"Option error", MB_OK);
+        MessageBox(hdlg, L"Specified port is not valid (must be in the range 1 to 61000)",
+                   L"Option error", MB_OK);
         return false;
     }
 
-    tmp = GetDlgItemInt (hdlg, ID_EDT_POPUP_MUTE, &status, FALSE);
+    tmp = GetDlgItemInt(hdlg, ID_EDT_POPUP_MUTE, &status, FALSE);
     if (!status || tmp < 0)
     {
-        MessageBox (hdlg, L"Specified mute interval is not valid (must be a positive integer)",
-                    L"Option error", MB_OK);
+        MessageBox(hdlg, L"Specified mute interval is not valid (must be a positive integer)",
+                   L"Option error", MB_OK);
         return false;
     }
 
@@ -614,159 +646,202 @@ CheckAdvancedDlgParams (HWND hdlg)
 }
 
 static BOOL
-SaveAdvancedDlgParams (HWND hdlg)
+SaveAdvancedDlgParams(HWND hdlg)
 {
     WCHAR tmp_path[MAX_PATH], tmp_path1[MAX_PATH];
     UINT tmp;
     BOOL status;
 
-    GetDlgItemText (hdlg, ID_EDT_CONFIG_DIR, o.config_dir, _countof(o.config_dir));
+    GetDlgItemText(hdlg, ID_EDT_CONFIG_DIR, o.config_dir, _countof(o.config_dir));
 
-    GetDlgItemText (hdlg, ID_EDT_LOG_DIR, tmp_path, _countof(tmp_path));
-    wcsncpy (tmp_path1, tmp_path, _countof(tmp_path1));
-    ExpandString (tmp_path1, _countof(tmp_path1));
+    GetDlgItemText(hdlg, ID_EDT_LOG_DIR, tmp_path, _countof(tmp_path));
+    wcsncpy(tmp_path1, tmp_path, _countof(tmp_path1));
+    ExpandString(tmp_path1, _countof(tmp_path1));
 
-    if (EnsureDirExists (tmp_path1)) /* this will try to create the path if needed */
-        wcsncpy (o.log_dir, tmp_path, _countof(o.log_dir)); /* save unexpanded path */
+    if (EnsureDirExists(tmp_path1))  /* this will try to create the path if needed */
+    {
+        wcsncpy(o.log_dir, tmp_path, _countof(o.log_dir));  /* save unexpanded path */
+    }
     else
     {
         ShowLocalizedMsg(IDS_ERR_CREATE_PATH, L"Log", tmp_path1);
         return false;
     }
 
-    GetDlgItemText (hdlg, ID_EDT_CONFIG_EXT, o.ext_string, _countof(o.ext_string));
+    GetDlgItemText(hdlg, ID_EDT_CONFIG_EXT, o.ext_string, _countof(o.ext_string));
 
-    tmp = GetDlgItemInt (hdlg, ID_EDT_PRECONNECT_TIMEOUT, &status, FALSE);
-    if (status && tmp > 0) o.preconnectscript_timeout = tmp;
+    tmp = GetDlgItemInt(hdlg, ID_EDT_PRECONNECT_TIMEOUT, &status, FALSE);
+    if (status && tmp > 0)
+    {
+        o.preconnectscript_timeout = tmp;
+    }
 
-    tmp = GetDlgItemInt (hdlg, ID_EDT_CONNECT_TIMEOUT, &status, FALSE);
-    if (status) o.connectscript_timeout = tmp;
+    tmp = GetDlgItemInt(hdlg, ID_EDT_CONNECT_TIMEOUT, &status, FALSE);
+    if (status)
+    {
+        o.connectscript_timeout = tmp;
+    }
 
-    tmp = GetDlgItemInt (hdlg, ID_EDT_DISCONNECT_TIMEOUT, &status, FALSE);
-    if (status && tmp > 0) o.disconnectscript_timeout = tmp;
+    tmp = GetDlgItemInt(hdlg, ID_EDT_DISCONNECT_TIMEOUT, &status, FALSE);
+    if (status && tmp > 0)
+    {
+        o.disconnectscript_timeout = tmp;
+    }
 
-    tmp = GetDlgItemInt (hdlg, ID_EDT_MGMT_PORT, &status, FALSE);
-    if (status) o.mgmt_port_offset = tmp;
+    tmp = GetDlgItemInt(hdlg, ID_EDT_MGMT_PORT, &status, FALSE);
+    if (status)
+    {
+        o.mgmt_port_offset = tmp;
+    }
 
-    tmp = GetDlgItemInt (hdlg, ID_EDT_POPUP_MUTE, &status, FALSE);
-    if (status) o.popup_mute_interval = tmp;
+    tmp = GetDlgItemInt(hdlg, ID_EDT_POPUP_MUTE, &status, FALSE);
+    if (status)
+    {
+        o.popup_mute_interval = tmp;
+    }
 
     o.ovpn_engine = IsDlgButtonChecked(hdlg, ID_RB_ENGINE_OVPN3) ?
-        OPENVPN_ENGINE_OVPN3 : OPENVPN_ENGINE_OVPN2;
+                    OPENVPN_ENGINE_OVPN3 : OPENVPN_ENGINE_OVPN2;
 
-    SaveRegistryKeys ();
-    ExpandOptions ();
+    SaveRegistryKeys();
+    ExpandOptions();
 
     return true;
 }
 
 static void
-LoadAdvancedDlgParams (HWND hdlg)
+LoadAdvancedDlgParams(HWND hdlg)
 {
-    SetDlgItemText (hdlg, ID_EDT_CONFIG_DIR, o.config_dir);
-    SetDlgItemText (hdlg, ID_EDT_CONFIG_EXT, o.ext_string);
-    SetDlgItemText (hdlg, ID_EDT_LOG_DIR, o.log_dir);
-    SetDlgItemInt (hdlg, ID_EDT_PRECONNECT_TIMEOUT, o.preconnectscript_timeout, FALSE);
-    SetDlgItemInt (hdlg, ID_EDT_CONNECT_TIMEOUT, o.connectscript_timeout, FALSE);
-    SetDlgItemInt (hdlg, ID_EDT_DISCONNECT_TIMEOUT, o.disconnectscript_timeout, FALSE);
-    SetDlgItemInt (hdlg, ID_EDT_MGMT_PORT, o.mgmt_port_offset, FALSE);
-    SetDlgItemInt (hdlg, ID_EDT_POPUP_MUTE, o.popup_mute_interval, FALSE);
+    SetDlgItemText(hdlg, ID_EDT_CONFIG_DIR, o.config_dir);
+    SetDlgItemText(hdlg, ID_EDT_CONFIG_EXT, o.ext_string);
+    SetDlgItemText(hdlg, ID_EDT_LOG_DIR, o.log_dir);
+    SetDlgItemInt(hdlg, ID_EDT_PRECONNECT_TIMEOUT, o.preconnectscript_timeout, FALSE);
+    SetDlgItemInt(hdlg, ID_EDT_CONNECT_TIMEOUT, o.connectscript_timeout, FALSE);
+    SetDlgItemInt(hdlg, ID_EDT_DISCONNECT_TIMEOUT, o.disconnectscript_timeout, FALSE);
+    SetDlgItemInt(hdlg, ID_EDT_MGMT_PORT, o.mgmt_port_offset, FALSE);
+    SetDlgItemInt(hdlg, ID_EDT_POPUP_MUTE, o.popup_mute_interval, FALSE);
     if (o.config_menu_view == 0)
-        CheckRadioButton (hdlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON0);
+    {
+        CheckRadioButton(hdlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON0);
+    }
     else if (o.config_menu_view == 1)
-        CheckRadioButton (hdlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON1);
+    {
+        CheckRadioButton(hdlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON1);
+    }
     else if (o.config_menu_view == 2)
-        CheckRadioButton (hdlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON2);
+    {
+        CheckRadioButton(hdlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON2);
+    }
 
     /* BALLOON3 sets echo msg display to  auto, BALLOON4 to never */
     if (o.disable_popup_messages)
-        CheckRadioButton (hdlg, ID_RB_BALLOON3, ID_RB_BALLOON4, ID_RB_BALLOON4);
+    {
+        CheckRadioButton(hdlg, ID_RB_BALLOON3, ID_RB_BALLOON4, ID_RB_BALLOON4);
+    }
     else
-        CheckRadioButton (hdlg, ID_RB_BALLOON3, ID_RB_BALLOON4, ID_RB_BALLOON3);
+    {
+        CheckRadioButton(hdlg, ID_RB_BALLOON3, ID_RB_BALLOON4, ID_RB_BALLOON3);
+    }
 
 #ifdef ENABLE_OVPN3
     CheckRadioButton(hdlg, ID_RB_ENGINE_OVPN2, ID_RB_ENGINE_OVPN3,
-        o.ovpn_engine == OPENVPN_ENGINE_OVPN3 ? ID_RB_ENGINE_OVPN3 : ID_RB_ENGINE_OVPN2);
+                     o.ovpn_engine == OPENVPN_ENGINE_OVPN3 ? ID_RB_ENGINE_OVPN3 : ID_RB_ENGINE_OVPN2);
 #endif
 }
 
 INT_PTR CALLBACK
-AdvancedSettingsDlgProc (HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
+AdvancedSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
 {
     LPPSHNOTIFY psn;
 
-    switch(msg) {
+    switch (msg)
+    {
 
-    case WM_INITDIALOG:
-        /* Limit extension editbox to 4 chars. */
-        SendMessage (GetDlgItem(hwndDlg, ID_EDT_CONFIG_EXT), EM_SETLIMITTEXT, 4, 0);
-        /* Limit management port editbox to 5 chars */
-        SendMessage(GetDlgItem(hwndDlg, ID_EDT_MGMT_PORT), EM_SETLIMITTEXT, 5, 0);
-        /* Populate UI */
-        LoadAdvancedDlgParams (hwndDlg);
-        break;
-
-    case WM_COMMAND:
-        switch (LOWORD(wParam)) {
-        WCHAR path[MAX_PATH];
-
-        case ID_BTN_CONFIG_DIR:
-            GetDlgItemText (hwndDlg, ID_EDT_CONFIG_DIR, path, _countof(path));
-            if (BrowseFolder (path, path, _countof(path)))
-                SetDlgItemText (hwndDlg, ID_EDT_CONFIG_DIR, path);
+        case WM_INITDIALOG:
+            /* Limit extension editbox to 4 chars. */
+            SendMessage(GetDlgItem(hwndDlg, ID_EDT_CONFIG_EXT), EM_SETLIMITTEXT, 4, 0);
+            /* Limit management port editbox to 5 chars */
+            SendMessage(GetDlgItem(hwndDlg, ID_EDT_MGMT_PORT), EM_SETLIMITTEXT, 5, 0);
+            /* Populate UI */
+            LoadAdvancedDlgParams(hwndDlg);
             break;
 
-        case ID_BTN_LOG_DIR:
-            GetDlgItemText (hwndDlg, ID_EDT_LOG_DIR, path, _countof(path));
-            if (BrowseFolder (path, path, _countof(path)))
-                SetDlgItemText (hwndDlg, ID_EDT_LOG_DIR, path);
-            break;
-        }
-        break;
+        case WM_COMMAND:
+            switch (LOWORD(wParam))
+            {
+                WCHAR path[MAX_PATH];
 
-    case WM_NOTIFY:
-        psn = (LPPSHNOTIFY) lParam;
-        if (psn->hdr.code == (UINT) PSN_KILLACTIVE)
-        {
-            SetWindowLongPtr (hwndDlg, DWLP_MSGRESULT, (CheckAdvancedDlgParams(hwndDlg) ? FALSE : TRUE));
-            return TRUE;
-        }
-        if (psn->hdr.code == (UINT) PSN_APPLY)
-        {
-            BOOL status = SaveAdvancedDlgParams (hwndDlg);
-            SetWindowLongPtr (hwndDlg, DWLP_MSGRESULT, status? PSNRET_NOERROR:PSNRET_INVALID);
-            return TRUE;
-        }
-        if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON2))
-            o.config_menu_view = 2;
-        else if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON1))
-            o.config_menu_view = 1;
-        else if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON0))
-            o.config_menu_view = 0;
-        else if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON3))
-            o.disable_popup_messages = 0;
-        else if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON4))
-            o.disable_popup_messages = 1;
-        break;
+                case ID_BTN_CONFIG_DIR:
+                    GetDlgItemText(hwndDlg, ID_EDT_CONFIG_DIR, path, _countof(path));
+                    if (BrowseFolder(path, path, _countof(path)))
+                    {
+                        SetDlgItemText(hwndDlg, ID_EDT_CONFIG_DIR, path);
+                    }
+                    break;
+
+                case ID_BTN_LOG_DIR:
+                    GetDlgItemText(hwndDlg, ID_EDT_LOG_DIR, path, _countof(path));
+                    if (BrowseFolder(path, path, _countof(path)))
+                    {
+                        SetDlgItemText(hwndDlg, ID_EDT_LOG_DIR, path);
+                    }
+                    break;
+            }
+            break;
+
+        case WM_NOTIFY:
+            psn = (LPPSHNOTIFY) lParam;
+            if (psn->hdr.code == (UINT) PSN_KILLACTIVE)
+            {
+                SetWindowLongPtr(hwndDlg, DWLP_MSGRESULT, (CheckAdvancedDlgParams(hwndDlg) ? FALSE : TRUE));
+                return TRUE;
+            }
+            if (psn->hdr.code == (UINT) PSN_APPLY)
+            {
+                BOOL status = SaveAdvancedDlgParams(hwndDlg);
+                SetWindowLongPtr(hwndDlg, DWLP_MSGRESULT, status ? PSNRET_NOERROR : PSNRET_INVALID);
+                return TRUE;
+            }
+            if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON2))
+            {
+                o.config_menu_view = 2;
+            }
+            else if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON1))
+            {
+                o.config_menu_view = 1;
+            }
+            else if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON0))
+            {
+                o.config_menu_view = 0;
+            }
+            else if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON3))
+            {
+                o.disable_popup_messages = 0;
+            }
+            else if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON4))
+            {
+                o.disable_popup_messages = 1;
+            }
+            break;
     }
 
     return FALSE;
 }
 
 int
-CompareStringExpanded (const WCHAR *str1, const WCHAR *str2)
+CompareStringExpanded(const WCHAR *str1, const WCHAR *str2)
 {
     WCHAR str1_cpy[MAX_PATH], str2_cpy[MAX_PATH];
 
-    wcsncpy (str1_cpy, str1, _countof(str1_cpy));
-    wcsncpy (str2_cpy, str2, _countof(str2_cpy));
+    wcsncpy(str1_cpy, str1, _countof(str1_cpy));
+    wcsncpy(str2_cpy, str2, _countof(str2_cpy));
     str1_cpy[MAX_PATH-1] = L'\0';
     str2_cpy[MAX_PATH-1] = L'\0';
 
-    ExpandString (str1_cpy, _countof(str1_cpy));
-    ExpandString (str2_cpy, _countof(str2_cpy));
+    ExpandString(str1_cpy, _countof(str1_cpy));
+    ExpandString(str2_cpy, _countof(str2_cpy));
 
-    return wcsicmp (str1_cpy, str2_cpy);
+    return wcsicmp(str1_cpy, str2_cpy);
 }
 
 /* Hide the password save options from user */

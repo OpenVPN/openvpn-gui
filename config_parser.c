@@ -43,7 +43,7 @@ is_comment(wchar_t *s)
 }
 
 static int
-copy_token(wchar_t **dest, wchar_t **src, wchar_t* delim)
+copy_token(wchar_t **dest, wchar_t **src, wchar_t *delim)
 {
     wchar_t *p = *src;
     wchar_t *s = *dest;
@@ -61,7 +61,9 @@ copy_token(wchar_t **dest, wchar_t **src, wchar_t* delim)
             return -1; /* parse error -- illegal backslash in input */
         }
         else
+        {
             *s = *p;
+        }
     }
     /* at this point p is one of the delimiters or null */
     *s = L'\0';
@@ -79,9 +81,12 @@ tokenize(config_entry_t *ce)
     unsigned int i = 0;
     int status = 0;
 
-    for ( ; *p != L'\0';  p++, s++)
+    for ( ; *p != L'\0'; p++, s++)
     {
-        if (*p == L' ' || *p == L'\t') continue;
+        if (*p == L' ' || *p == L'\t')
+        {
+            continue;
+        }
 
         if (_countof(ce->tokens) <= i)
         {
@@ -89,7 +94,7 @@ tokenize(config_entry_t *ce)
         }
         ce->tokens[i++] = s;
 
-        if (*p == L'\'' )
+        if (*p == L'\'')
         {
             int len = wcscspn(++p, L"\'");
             wcsncpy(s, p, len);
@@ -119,7 +124,10 @@ tokenize(config_entry_t *ce)
             return status;
         }
 
-        if (*p == L'\0') break;
+        if (*p == L'\0')
+        {
+            break;
+        }
     }
     ce->ntokens = i;
     return 0;
@@ -145,8 +153,8 @@ config_readline(FILE *fd, int first)
     config_entry_t *ce = calloc(sizeof(*ce), 1);
     if (!ce)
     {
-       MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Out of memory in config_readline");
-       return NULL;
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Out of memory in config_readline");
+        return NULL;
     }
 
     mbstowcs(ce->line, &tmp[offset], _countof(ce->line)-1);

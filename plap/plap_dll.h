@@ -33,10 +33,12 @@ extern HINSTANCE hinst_global;
 HRESULT OpenVPNProvider_CreateInstance(REFIID riid, void **ppv);
 
 void dll_addref();
+
 void dll_release();
 
 STDAPI DllCanUnloadNow();
-STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, void** ppv);
+
+STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, void **ppv);
 
 #ifdef __cplusplus
 }

@@ -46,10 +46,10 @@ crypt_protect(BYTE *data, int szdata, char *entropy, BYTE **out)
 
     data_in.pbData = data;
     data_in.cbData = szdata;
-    e.pbData = (BYTE*) entropy;
-    e.cbData = entropy? strlen(entropy) : 0;
+    e.pbData = (BYTE *) entropy;
+    e.cbData = entropy ? strlen(entropy) : 0;
 
-    if(CryptProtectData(&data_in, NULL, &e, NULL, NULL, 0, &data_out))
+    if (CryptProtectData(&data_in, NULL, &e, NULL, NULL, 0, &data_out))
     {
         *out = data_out.pbData;
         return data_out.cbData;
@@ -62,15 +62,15 @@ static DWORD
 crypt_unprotect(BYTE *data, int szdata, char *entropy, BYTE **out)
 {
     DATA_BLOB data_in;
-    DATA_BLOB data_out = {0,0};
+    DATA_BLOB data_out = {0, 0};
     DATA_BLOB e;
 
     data_in.pbData = data;
     data_in.cbData = szdata;
     e.pbData = (BYTE *) entropy;
-    e.cbData = entropy? strlen(entropy) : 0;
+    e.cbData = entropy ? strlen(entropy) : 0;
 
-    if(CryptUnprotectData(&data_in, NULL, &e, NULL, NULL, 0, &data_out))
+    if (CryptUnprotectData(&data_in, NULL, &e, NULL, NULL, 0, &data_out))
     {
         *out = data_out.pbData;
         return data_out.cbData;
@@ -78,7 +78,7 @@ crypt_unprotect(BYTE *data, int szdata, char *entropy, BYTE **out)
     else
     {
         PrintDebug(L"CryptUnprotectData: decryption failed");
-        LocalFree (data_out.pbData);
+        LocalFree(data_out.pbData);
         return 0;
     }
 }
@@ -105,10 +105,14 @@ get_entropy(const WCHAR *config_name, char *e, int sz, BOOL generate)
         e[sz-1] = '\0';
         PrintDebug(L"Created new entropy string : %hs", e);
         if (SetConfigRegistryValueBinary(config_name, ENTROPY_DATA, (BYTE *)e, sz))
+        {
             return;
+        }
     }
     if (generate)
+    {
         PrintDebug(L"Failed to generate or save new entropy string -- using null string");
+    }
     *e = '\0';
     return;
 }
@@ -125,15 +129,17 @@ save_encrypted(const WCHAR *config_name, const WCHAR *password, const WCHAR *nam
     char entropy[ENTROPY_LEN+1];
 
     get_entropy(config_name, entropy, sizeof(entropy), true);
-    len = crypt_protect((BYTE*) password, len, entropy, &out);
-    if(len > 0)
+    len = crypt_protect((BYTE *) password, len, entropy, &out);
+    if (len > 0)
     {
         SetConfigRegistryValueBinary(config_name, name, out, len);
         LocalFree(out);
         return 1;
     }
     else
+    {
         return 0;
+    }
 }
 
 /*
@@ -171,15 +177,19 @@ recall_encrypted(const WCHAR *config_name, WCHAR *password, DWORD capacity, cons
 
     get_entropy(config_name, entropy, sizeof(entropy), false);
 
-    memset (password, 0, capacity);
+    memset(password, 0, capacity);
 
     len = GetConfigRegistryValue(config_name, name, in, sizeof(in));
-    if(len == 0)
+    if (len == 0)
+    {
         return 0;
+    }
 
     len = crypt_unprotect(in, len, entropy, &out);
-    if(len == 0)
+    if (len == 0)
+    {
         return 0;
+    }
 
     if (len <= capacity * sizeof(*password))
     {
@@ -188,7 +198,9 @@ recall_encrypted(const WCHAR *config_name, WCHAR *password, DWORD capacity, cons
         retval = 1;
     }
     else
+    {
         PrintDebug(L"recall_encrypted: saved '%ls' too long (len = %d bytes)", name, len);
+    }
 
     SecureZeroMemory(out, len);
     LocalFree(out);
@@ -222,7 +234,7 @@ int
 SaveUsername(const WCHAR *config_name, const WCHAR *username)
 {
     DWORD len = (wcslen(username) + 1) * sizeof(*username);
-    SetConfigRegistryValueBinary(config_name, AUTH_USER_DATA,(BYTE *) username, len);
+    SetConfigRegistryValueBinary(config_name, AUTH_USER_DATA, (BYTE *) username, len);
     return 1;
 }
 /*
@@ -237,7 +249,9 @@ RecallUsername(const WCHAR *config_name, WCHAR *username)
 
     len = GetConfigRegistryValue(config_name, AUTH_USER_DATA, (BYTE *) username,  capacity);
     if (len == 0)
+    {
         return 0;
+    }
     username[USER_PASS_LEN-1] = L'\0';
     return 1;
 }

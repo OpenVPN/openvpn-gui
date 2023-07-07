@@ -52,4 +52,4 @@ config_entry_t *config_parse(wchar_t *fname);
  */
 void config_list_free(config_entry_t *head);
 
-#endif
+#endif /* ifndef CONFIG_PARSER_H */

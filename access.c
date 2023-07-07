@@ -44,7 +44,9 @@ extern options_t o;
 #define MAX_UNAME_LEN (UNLEN + DNLEN + 2) /* UNLEN, DNLEN from lmcons.h +2 for '\' and NULL */
 
 static BOOL GetOwnerSID(PSID sid, DWORD sid_size);
+
 static BOOL IsUserInGroup(PSID sid, PTOKEN_GROUPS token_groups, const WCHAR *group_name);
+
 static PTOKEN_GROUPS GetProcessTokenGroups(void);
 
 /*
@@ -52,7 +54,7 @@ static PTOKEN_GROUPS GetProcessTokenGroups(void);
  * Get the local name of the group using the SID.
  */
 static BOOL
-GetBuiltinAdminGroupName (WCHAR *name, DWORD nlen)
+GetBuiltinAdminGroupName(WCHAR *name, DWORD nlen)
 {
     BOOL b = FALSE;
     PSID admin_sid = NULL;
@@ -64,19 +66,21 @@ GetBuiltinAdminGroupName (WCHAR *name, DWORD nlen)
 
     admin_sid = malloc(sid_size);
     if (!admin_sid)
+    {
         return FALSE;
+    }
 
     b = CreateWellKnownSid(WinBuiltinAdministratorsSid, NULL, admin_sid,
-                            &sid_size);
-    if(b)
+                           &sid_size);
+    if (b)
     {
         b = LookupAccountSidW(NULL, admin_sid, name, &nlen, domain, &dlen, &su);
     }
 #ifdef DEBUG
-        PrintDebug (L"builtin admin group name = %ls", name);
+    PrintDebug(L"builtin admin group name = %ls", name);
 #endif
 
-    free (admin_sid);
+    free(admin_sid);
 
     return b;
 }
@@ -86,7 +90,7 @@ GetBuiltinAdminGroupName (WCHAR *name, DWORD nlen)
  * Reject if the group name contains certain illegal characters.
  */
 static BOOL
-AddUserToGroup (const WCHAR *group)
+AddUserToGroup(const WCHAR *group)
 {
     WCHAR username[MAX_UNAME_LEN];
     WCHAR cmd[MAX_PATH] = L"C:\\windows\\system32\\cmd.exe";
@@ -109,17 +113,19 @@ AddUserToGroup (const WCHAR *group)
     if (wcspbrk(group, reject) != NULL)
     {
 #ifdef DEBUG
-        PrintDebug (L"AddUSerToGroup: illegal characters in group name: '%ls'.", group);
+        PrintDebug(L"AddUSerToGroup: illegal characters in group name: '%ls'.", group);
 #endif
         return retval;
     }
 
     size = _countof(username);
-    if (!GetUserNameExW (NameSamCompatible, username, &size))
+    if (!GetUserNameExW(NameSamCompatible, username, &size))
+    {
         return retval;
+    }
 
     size = _countof(syspath);
-    if (GetSystemDirectory (syspath, size))
+    if (GetSystemDirectory(syspath, size))
     {
         syspath[size-1] = L'\0';
         size = _countof(cmd);
@@ -130,26 +136,34 @@ AddUserToGroup (const WCHAR *group)
         netcmd[size-1] = L'\0';
     }
     size = (wcslen(fmt) + wcslen(username) + 2*wcslen(group) + 2*wcslen(netcmd)+ 1);
-    if ((params = malloc (size*sizeof(WCHAR))) == NULL)
+    if ((params = malloc(size*sizeof(WCHAR))) == NULL)
+    {
         return retval;
+    }
 
     _snwprintf(params, size, fmt, netcmd, group, netcmd, group, username);
     params[size-1] = L'\0';
 
-    status = RunAsAdmin (cmd, params);
+    status = RunAsAdmin(cmd, params);
     if (status == 0)
+    {
         retval = TRUE;
+    }
 
 #ifdef DEBUG
     if (status == (DWORD) -1)
+    {
         PrintDebug(L"RunAsAdmin: failed to execute the command [%ls %ls] : error = 0x%x",
-                    cmd, params, GetLastError());
+                   cmd, params, GetLastError());
+    }
     else if (status)
+    {
         PrintDebug(L"RunAsAdmin: command [%ls %ls] returned exit_code = %lu",
-                    cmd, params, status);
+                   cmd, params, status);
+    }
 #endif
 
-    free (params);
+    free(params);
     return retval;
 }
 
@@ -158,18 +172,22 @@ AddUserToGroup (const WCHAR *group)
  * interactive service.
  */
 static BOOL
-CheckConfigPath (const WCHAR *config_dir)
+CheckConfigPath(const WCHAR *config_dir)
 {
     BOOL ret = FALSE;
     int size = wcslen(o.global_config_dir);
 
     /* if interactive service is not running, no access control: return TRUE */
     if (!CheckIServiceStatus(FALSE))
+    {
         ret = TRUE;
+    }
     /* if config is from the global location allow it */
     else if (wcsncmp(config_dir, o.global_config_dir, size) == 0
              && wcsstr(config_dir + size, L"..") == NULL)
+    {
         ret = TRUE;
+    }
 
     return ret;
 }
@@ -192,19 +210,27 @@ AuthorizeConfig(const connection_t *c)
     PTOKEN_GROUPS groups = NULL;
 
     if (GetBuiltinAdminGroupName(sysadmin_group, _countof(sysadmin_group)))
+    {
         admin_group = sysadmin_group;
+    }
     else
+    {
         admin_group = L"Administrators";
+    }
 
     PrintDebug(L"Authorized groups: '%ls', '%ls'", admin_group, o.ovpn_admin_group);
 
     if (CheckConfigPath(c->config_dir))
+    {
         return TRUE;
+    }
 
     if (!GetOwnerSID(sid, sid_size))
     {
         if (!o.silent_connection)
+        {
             MessageBoxW(NULL, L"Failed to determine process owner SID", L""PACKAGE_NAME, MB_OK);
+        }
         return FALSE;
     }
     groups = GetProcessTokenGroups();
@@ -225,7 +251,7 @@ AuthorizeConfig(const connection_t *c)
         return FALSE;
     }
 
-    if (WaitForSingleObject (o.netcmd_semaphore, 0) != WAIT_OBJECT_0)
+    if (WaitForSingleObject(o.netcmd_semaphore, 0) != WAIT_OBJECT_0)
     {
         /* Could not lock semaphore -- auth dialog already running? */
         ShowLocalizedMsg(IDS_NFO_CONFIG_AUTH_PENDING, c->config_name, o.ovpn_admin_group);
@@ -237,17 +263,21 @@ AuthorizeConfig(const connection_t *c)
                              o.ovpn_admin_group);
     if (res == IDYES)
     {
-        AddUserToGroup (o.ovpn_admin_group);
+        AddUserToGroup(o.ovpn_admin_group);
         /*
          * Check the success of above by testing the group membership again
          */
         if (IsUserInGroup(sid, NULL, o.ovpn_admin_group))
+        {
             retval = TRUE;
+        }
         else
+        {
             ShowLocalizedMsg(IDS_ERR_ADD_USER_TO_ADMIN_GROUP, o.ovpn_admin_group);
-        SetForegroundWindow (o.hWnd);
+        }
+        SetForegroundWindow(o.hWnd);
     }
-    ReleaseSemaphore (o.netcmd_semaphore, 1, NULL);
+    ReleaseSemaphore(o.netcmd_semaphore, 1, NULL);
 
     return retval;
 }
@@ -287,7 +317,9 @@ GetProcessTokenGroups(void)
     DWORD buf_size = 0;
 
     if (!OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &token))
+    {
         return NULL;
+    }
     if (!GetTokenInformation(token, TokenGroups, NULL, 0, &buf_size)
         && GetLastError() == ERROR_INSUFFICIENT_BUFFER)
     {
@@ -301,7 +333,7 @@ GetProcessTokenGroups(void)
     if (!GetTokenInformation(token, TokenGroups, groups, buf_size, &buf_size))
     {
         PrintDebug(L"Failed to get Token Group Information: error = %lu", GetLastError);
-        free (groups);
+        free(groups);
         groups = NULL;
     }
 
@@ -345,7 +377,9 @@ IsUserInGroup(PSID sid, const PTOKEN_GROUPS token_groups, const WCHAR *group_nam
     }
 
     if (!sid)
+    {
         return FALSE;
+    }
 
     do
     {
@@ -354,7 +388,9 @@ IsUserInGroup(PSID sid, const PTOKEN_GROUPS token_groups, const WCHAR *group_nam
         err = NetLocalGroupGetMembers(NULL, group_name, 0, (LPBYTE *) &members,
                                       MAX_PREFERRED_LENGTH, &nread, &nmax, &resume);
         if (err != NERR_Success && err != ERROR_MORE_DATA)
+        {
             break;
+        }
 
         /* If a match is already found, ret = TRUE, the loop is skipped */
         for (DWORD i = 0; i < nread && !ret; ++i)
@@ -362,13 +398,17 @@ IsUserInGroup(PSID sid, const PTOKEN_GROUPS token_groups, const WCHAR *group_nam
             ret = EqualSid(members[i].lgrmi0_sid, sid);
         }
         NetApiBufferFree(members);
-    /* MSDN says the lookup should always iterate until err != ERROR_MORE_DATA */
+        /* MSDN says the lookup should always iterate until err != ERROR_MORE_DATA */
     } while (err == ERROR_MORE_DATA && nloop++ < 100);
 
     if (err != NERR_Success && err != NERR_GroupNotFound)
+    {
         PrintDebug(L"NetLocalGroupGetMembers for group '%ls' failed: error = %lu", group_name, err);
+    }
     if (ret)
+    {
         PrintDebug(L"User is in group '%ls'", group_name);
+    }
     return ret;
 }
 

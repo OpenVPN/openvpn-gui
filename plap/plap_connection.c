@@ -59,36 +59,55 @@ extern DWORD status_menu_id;
 /* Methods in IConnectableCredentialProviderCredential that we need to define */
 
 /* IUnknown */
-static HRESULT WINAPI QueryInterface(ICCPC *this, REFIID riid, void** ppv);
+static HRESULT WINAPI QueryInterface(ICCPC *this, REFIID riid, void **ppv);
+
 static ULONG WINAPI AddRef(ICCPC *this);
+
 static ULONG WINAPI Release(ICCPC *this);
 
 /* ICredentialProviderCredential */
 static HRESULT WINAPI Advise(ICCPC *this, ICredentialProviderCredentialEvents *e);
+
 static HRESULT WINAPI UnAdvise(ICCPC *this);
+
 static HRESULT WINAPI SetSelected(ICCPC *this, BOOL *auto_logon);
+
 static HRESULT WINAPI SetDeselected(ICCPC *this);
+
 static HRESULT WINAPI GetFieldState(ICCPC *this, DWORD field, CREDENTIAL_PROVIDER_FIELD_STATE *fs,
-        CREDENTIAL_PROVIDER_FIELD_INTERACTIVE_STATE *fis);
+                                    CREDENTIAL_PROVIDER_FIELD_INTERACTIVE_STATE *fis);
+
 static HRESULT WINAPI GetStringValue(ICCPC *this, DWORD index, WCHAR **ws);
+
 static HRESULT WINAPI GetBitmapValue(ICCPC *this, DWORD field, HBITMAP *bmp);
+
 static HRESULT WINAPI GetSubmitButtonValue(ICCPC *this, DWORD field, DWORD *adjacent);
+
 static HRESULT WINAPI SetStringValue(ICCPC *this, DWORD field, const WCHAR *ws);
+
 static HRESULT WINAPI GetCheckboxValue(ICCPC *this, DWORD field, BOOL *checked, wchar_t **label);
+
 static HRESULT WINAPI GetComboBoxValueCount(ICCPC *this, DWORD field, DWORD *items, DWORD *selected_item);
+
 static HRESULT WINAPI GetComboBoxValueAt(ICCPC *this, DWORD field, DWORD item, wchar_t **item_value);
+
 static HRESULT WINAPI SetCheckboxValue(ICCPC *this, DWORD field, BOOL checked);
+
 static HRESULT WINAPI SetComboBoxSelectedValue(ICCPC *this, DWORD field, DWORD selected_item);
+
 static HRESULT WINAPI CommandLinkClicked(ICCPC *this, DWORD field);
+
 static HRESULT WINAPI GetSerialization(ICCPC *this,
-    CREDENTIAL_PROVIDER_GET_SERIALIZATION_RESPONSE *response,
-    CREDENTIAL_PROVIDER_CREDENTIAL_SERIALIZATION *cs, wchar_t **text,
-    CREDENTIAL_PROVIDER_STATUS_ICON *icon);
+                                       CREDENTIAL_PROVIDER_GET_SERIALIZATION_RESPONSE *response,
+                                       CREDENTIAL_PROVIDER_CREDENTIAL_SERIALIZATION *cs, wchar_t **text,
+                                       CREDENTIAL_PROVIDER_STATUS_ICON *icon);
+
 static HRESULT WINAPI ReportResult(ICCPC *this, NTSTATUS status, NTSTATUS substatus,
-    wchar_t **status_text, CREDENTIAL_PROVIDER_STATUS_ICON *icon);
+                                   wchar_t **status_text, CREDENTIAL_PROVIDER_STATUS_ICON *icon);
 
 /* IConnectableCredentialProviderCredential */
 static HRESULT WINAPI Connect(ICCPC *this, IQueryContinueWithStatus *qc);
+
 static HRESULT WINAPI Disconnect(ICCPC *this);
 
 /* use a static table for filling in the methods */
@@ -169,7 +188,7 @@ Release(ICCPC *this)
 }
 
 static HRESULT WINAPI
-QueryInterface(ICCPC *this, REFIID riid, void** ppv)
+QueryInterface(ICCPC *this, REFIID riid, void **ppv)
 {
     HRESULT hr;
 
@@ -205,7 +224,8 @@ QueryInterface(ICCPC *this, REFIID riid, void** ppv)
  * making callbacks to notify changes asynchronously
  */
 static HRESULT
-WINAPI Advise(ICCPC *this, ICredentialProviderCredentialEvents *e)
+WINAPI
+Advise(ICCPC *this, ICredentialProviderCredentialEvents *e)
 {
     HWND hwnd;
 
@@ -214,7 +234,9 @@ WINAPI Advise(ICCPC *this, ICredentialProviderCredentialEvents *e)
     OpenVPNConnection *oc = (OpenVPNConnection *) this;
 
     if (oc->events)
+    {
         RELEASE(oc->events);
+    }
     oc->events = e;
     ADDREF(e);
 
@@ -236,7 +258,9 @@ UnAdvise(ICCPC *this)
     OpenVPNConnection *oc = (OpenVPNConnection *) this;
 
     if (oc->events)
+    {
         RELEASE(oc->events);
+    }
     oc->events = NULL;
     return S_OK;
 }
@@ -282,8 +306,8 @@ SetDeselected(ICCPC *this)
  */
 static HRESULT WINAPI
 GetFieldState(UNUSED ICCPC *this, DWORD field,
-        CREDENTIAL_PROVIDER_FIELD_STATE *fs,
-        CREDENTIAL_PROVIDER_FIELD_INTERACTIVE_STATE *fis)
+              CREDENTIAL_PROVIDER_FIELD_STATE *fs,
+              CREDENTIAL_PROVIDER_FIELD_INTERACTIVE_STATE *fis)
 {
     HRESULT hr;
 
@@ -292,9 +316,13 @@ GetFieldState(UNUSED ICCPC *this, DWORD field,
     if (field < _countof(field_states))
     {
         if (fs)
+        {
             *fs = field_states[field];
+        }
         if (fis)
+        {
             *fis = (field_desc[field].cpft == CPFT_SUBMIT_BUTTON) ?  CPFIS_FOCUSED : CPFIS_NONE;
+        }
         hr = S_OK;
     }
     else
@@ -418,7 +446,7 @@ SetStringValue(UNUSED ICCPC *this, UNUSED DWORD field, UNUSED const WCHAR *ws )
 
 static HRESULT WINAPI
 GetCheckboxValue(UNUSED ICCPC *this, UNUSED DWORD field,
-    UNUSED BOOL *checked, UNUSED wchar_t **label)
+                 UNUSED BOOL *checked, UNUSED wchar_t **label)
 {
     dmsg(L"Entry");
     return E_NOTIMPL;
@@ -426,7 +454,7 @@ GetCheckboxValue(UNUSED ICCPC *this, UNUSED DWORD field,
 
 static HRESULT WINAPI
 GetComboBoxValueCount(UNUSED ICCPC *this, UNUSED DWORD field, UNUSED DWORD *items,
-    UNUSED DWORD *selected_item)
+                      UNUSED DWORD *selected_item)
 {
     dmsg(L"Entry");
     return E_NOTIMPL;
@@ -434,7 +462,7 @@ GetComboBoxValueCount(UNUSED ICCPC *this, UNUSED DWORD field, UNUSED DWORD *item
 
 static HRESULT WINAPI
 GetComboBoxValueAt(UNUSED ICCPC *this, UNUSED DWORD field, UNUSED DWORD item,
-    UNUSED wchar_t **item_value)
+                   UNUSED wchar_t **item_value)
 {
     dmsg(L"Entry");
     return E_NOTIMPL;
@@ -470,8 +498,8 @@ CommandLinkClicked(UNUSED ICCPC *this, UNUSED DWORD field)
  */
 static HRESULT WINAPI
 GetSerialization(ICCPC *this, CREDENTIAL_PROVIDER_GET_SERIALIZATION_RESPONSE *response,
-    UNUSED CREDENTIAL_PROVIDER_CREDENTIAL_SERIALIZATION *cs, wchar_t **text,
-    CREDENTIAL_PROVIDER_STATUS_ICON *icon)
+                 UNUSED CREDENTIAL_PROVIDER_CREDENTIAL_SERIALIZATION *cs, wchar_t **text,
+                 CREDENTIAL_PROVIDER_STATUS_ICON *icon)
 {
     HRESULT hr = S_OK;
 
@@ -490,9 +518,13 @@ GetSerialization(ICCPC *this, CREDENTIAL_PROVIDER_GET_SERIALIZATION_RESPONSE *re
         if (text && icon)
         {
             if (oc->connect_cancelled)
+            {
                 hr = SHStrDupW(LoadLocalizedString(IDS_NFO_CONN_CANCELLED), text);
+            }
             else
+            {
                 hr = SHStrDupW(LoadLocalizedString(IDS_NFO_CONN_FAILED, oc->display_name), text);
+            }
 
             *icon = CPSI_ERROR;
         }
@@ -513,7 +545,7 @@ GetSerialization(ICCPC *this, CREDENTIAL_PROVIDER_GET_SERIALIZATION_RESPONSE *re
 
 static HRESULT WINAPI
 ReportResult(UNUSED ICCPC *this, UNUSED NTSTATUS status, UNUSED NTSTATUS substatus,
-    UNUSED wchar_t **status_text, UNUSED CREDENTIAL_PROVIDER_STATUS_ICON *icon)
+             UNUSED wchar_t **status_text, UNUSED CREDENTIAL_PROVIDER_STATUS_ICON *icon)
 {
     dmsg(L"Entry");
     return E_NOTIMPL;
@@ -525,8 +557,8 @@ NotifyEvents(OpenVPNConnection *oc, const wchar_t *status)
 {
     if (oc->events)
     {
-        oc->events->lpVtbl->SetFieldString(oc->events, (ICredentialProviderCredential*) oc,
-            STATUS_FIELD_INDEX, status);
+        oc->events->lpVtbl->SetFieldString(oc->events, (ICredentialProviderCredential *) oc,
+                                           STATUS_FIELD_INDEX, status);
     }
     if (oc->qc)
     {
@@ -646,7 +678,7 @@ again:
     oc->qc = NULL;
     SetActiveProfile(NULL);
 
-    dmsg (L"Exit with: <%ls>", ISCONNECTED(oc->c) ? L"success" : L"error/cancel");
+    dmsg(L"Exit with: <%ls>", ISCONNECTED(oc->c) ? L"success" : L"error/cancel");
 
     return ISCONNECTED(oc->c) ? S_OK : E_FAIL;
 }
@@ -655,7 +687,7 @@ static HRESULT WINAPI
 Disconnect(ICCPC *this)
 {
     OpenVPNConnection *oc = (OpenVPNConnection *) this;
-    dmsg (L"profile <%ls>", oc->display_name);
+    dmsg(L"profile <%ls>", oc->display_name);
 
     NotifyEvents(oc, LoadLocalizedString(IDS_NFO_STATE_DISCONNECTING));
 
@@ -679,8 +711,9 @@ OVPNConnection_Initialize(OpenVPNConnection *this, connection_t *conn, const wch
 }
 
 /* Copy field descriptor -- caller will free using CoTaskMemFree, alloc using compatible allocator */
-HRESULT CopyFieldDescriptor(CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR *fd_out,
-                        const CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR *fd_in)
+HRESULT
+CopyFieldDescriptor(CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR *fd_out,
+                    const CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR *fd_in)
 {
     HRESULT hr = S_OK;
 

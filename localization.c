@@ -52,18 +52,24 @@ FindResourceLang(PTSTR resType, PTSTR resId, LANGID langId)
     /* try to find the resource in requested language */
     res = FindResourceEx(o.hInstance, resType, resId, langId);
     if (res)
+    {
         return res;
+    }
 
     /* try to find the resource in the default sublanguage */
     LANGID defLangId = MAKELANGID(PRIMARYLANGID(langId), SUBLANG_DEFAULT);
     res = FindResourceEx(o.hInstance, resType, resId, defLangId);
     if (res)
+    {
         return res;
+    }
 
     /* try to find the resource in the default language */
     res = FindResourceEx(o.hInstance, resType, resId, fallbackLangId);
     if (res)
+    {
         return res;
+    }
 
     /* try to find the resource in any language */
     return FindResource(o.hInstance, resId, resType);
@@ -90,7 +96,9 @@ LANGID
 GetGUILanguage(void)
 {
     if (gui_language != 0)
+    {
         return gui_language;
+    }
 
     HKEY regkey;
     DWORD value = 0;
@@ -113,8 +121,10 @@ SetGUILanguage(LANGID langId)
 {
     HKEY regkey;
     if (RegCreateKeyEx(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, 0, NULL, 0,
-        KEY_WRITE, NULL, &regkey, NULL) != ERROR_SUCCESS )
+                       KEY_WRITE, NULL, &regkey, NULL) != ERROR_SUCCESS)
+    {
         ShowLocalizedMsg(IDS_ERR_CREATE_REG_HKCU_KEY, GUI_REGKEY_HKCU);
+    }
 
     SetRegistryValueNumeric(regkey, _T("ui_language"), langId);
     InitMUILanguage(langId);
@@ -197,12 +207,16 @@ LoadStringLang(UINT stringId, LANGID langId, PTSTR buffer, int bufferSize, va_li
     /* find resource block for string */
     HRSRC res = FindResourceLang(RT_STRING, resBlockId, langId);
     if (res == NULL)
+    {
         goto err;
+    }
 
     /* get pointer to first entry in resource block */
     entry = (PWCH) LoadResource(o.hInstance, res);
     if (entry == NULL)
+    {
         goto err;
+    }
 
     /* search for string in block */
     for (int i = 0; i < 16; i++)
@@ -216,12 +230,16 @@ LoadStringLang(UINT stringId, LANGID langId, PTSTR buffer, int bufferSize, va_li
 
         /* string does not exist */
         if (i == resIndex && *entry == 0)
+        {
             break;
+        }
 
         /* string found, copy it */
         PTSTR formatStr = (PTSTR) malloc((*entry + 1) * sizeof(TCHAR));
         if (formatStr == NULL)
+        {
             break;
+        }
         formatStr[*entry] = 0;
 
         wcsncpy(formatStr, entry + 1, *entry);
@@ -234,7 +252,9 @@ LoadStringLang(UINT stringId, LANGID langId, PTSTR buffer, int bufferSize, va_li
 err:
     /* not found, try again with the default language */
     if (langId != fallbackLangId)
+    {
         return LoadStringLang(stringId, fallbackLangId, buffer, bufferSize, args);
+    }
 
     return 0;
 }
@@ -276,7 +296,7 @@ static int
 __ShowLocalizedMsgEx(const UINT type, HANDLE parent, LPCTSTR caption, const UINT stringId, va_list args)
 {
     return MessageBoxEx(parent, __LoadLocalizedString(stringId, args), caption,
-        type | MB_SETFOREGROUND | MBOX_RTL_FLAGS, GetGUILanguage());
+                        type | MB_SETFOREGROUND | MBOX_RTL_FLAGS, GetGUILanguage());
 }
 
 int
@@ -305,12 +325,16 @@ LoadLocalizedIconEx(const UINT iconId, int cxDesired, int cyDesired)
     LANGID langId = GetGUILanguage();
 
     HICON hIcon =
-            (HICON) LoadImage (o.hInstance, MAKEINTRESOURCE(iconId),
-                    IMAGE_ICON, cxDesired, cyDesired, LR_DEFAULTSIZE|LR_SHARED);
+        (HICON) LoadImage(o.hInstance, MAKEINTRESOURCE(iconId),
+                          IMAGE_ICON, cxDesired, cyDesired, LR_DEFAULTSIZE|LR_SHARED);
     if (hIcon)
+    {
         return hIcon;
+    }
     else
-        PrintDebug (L"Loading icon using LoadImage failed.");
+    {
+        PrintDebug(L"Loading icon using LoadImage failed.");
+    }
 
     /* Fallback to CreateIconFromResource which always scales
      * from the first image in the resource
@@ -318,51 +342,63 @@ LoadLocalizedIconEx(const UINT iconId, int cxDesired, int cyDesired)
     /* find group icon resource */
     HRSRC res = FindResourceLang(RT_GROUP_ICON, MAKEINTRESOURCE(iconId), langId);
     if (res == NULL)
+    {
         return NULL;
+    }
 
     HGLOBAL resInfo = LoadResource(o.hInstance, res);
     if (resInfo == NULL)
+    {
         return NULL;
+    }
 
     int id = LookupIconIdFromDirectory(resInfo, TRUE);
     if (id == 0)
+    {
         return NULL;
+    }
 
     /* find the actual icon */
     res = FindResourceLang(RT_ICON, MAKEINTRESOURCE(id), langId);
     if (res == NULL)
+    {
         return NULL;
+    }
 
     resInfo = LoadResource(o.hInstance, res);
     if (resInfo == NULL)
+    {
         return NULL;
+    }
 
     DWORD resSize = SizeofResource(o.hInstance, res);
     if (resSize == 0)
+    {
         return NULL;
+    }
 
     /* Note: this uses the first icon in the resource and scales it */
     hIcon = CreateIconFromResourceEx(resInfo, resSize, TRUE, 0x30000,
-            cxDesired, cyDesired, LR_DEFAULTSIZE|LR_SHARED);
+                                     cxDesired, cyDesired, LR_DEFAULTSIZE|LR_SHARED);
     return hIcon;
 }
 
 HICON
 LoadLocalizedIcon(const UINT iconId)
 {
-   /* get the required normal icon size (e.g., taskbar icon) */
-   int cx = GetSystemMetrics(SM_CXICON);
-   int cy = GetSystemMetrics(SM_CYICON);
-   return LoadLocalizedIconEx(iconId, cx, cy);
+    /* get the required normal icon size (e.g., taskbar icon) */
+    int cx = GetSystemMetrics(SM_CXICON);
+    int cy = GetSystemMetrics(SM_CYICON);
+    return LoadLocalizedIconEx(iconId, cx, cy);
 }
 
 HICON
 LoadLocalizedSmallIcon(const UINT iconId)
 {
-   /* get the required small icon size (e.g., tray icon) */
-   int cx = GetSystemMetrics(SM_CXSMICON);
-   int cy = GetSystemMetrics(SM_CYSMICON);
-   return LoadLocalizedIconEx(iconId, cx, cy);
+    /* get the required small icon size (e.g., tray icon) */
+    int cx = GetSystemMetrics(SM_CXSMICON);
+    int cy = GetSystemMetrics(SM_CYSMICON);
+    return LoadLocalizedIconEx(iconId, cx, cy);
 }
 
 LPCDLGTEMPLATE
@@ -371,7 +407,9 @@ LocalizedDialogResource(const UINT dialogId)
     /* find dialog resource */
     HRSRC res = FindResourceLang(RT_DIALOG, MAKEINTRESOURCE(dialogId), GetGUILanguage());
     if (res == NULL)
+    {
         return NULL;
+    }
 
     return LoadResource(o.hInstance, res);
 }
@@ -388,7 +426,9 @@ LocalizedDialogBoxParamEx(const UINT dialogId, HWND owner, DLGPROC dialogFunc, c
 {
     LPCDLGTEMPLATE resInfo = LocalizedDialogResource(dialogId);
     if (resInfo == NULL)
+    {
         return -1;
+    }
 
     return DialogBoxIndirectParam(o.hInstance, resInfo, owner, dialogFunc, param);
 }
@@ -399,11 +439,15 @@ CreateLocalizedDialogParam(const UINT dialogId, DLGPROC dialogFunc, const LPARAM
     /* find dialog resource */
     HRSRC res = FindResourceLang(RT_DIALOG, MAKEINTRESOURCE(dialogId), GetGUILanguage());
     if (res == NULL)
+    {
         return NULL;
+    }
 
     HGLOBAL resInfo = LoadResource(o.hInstance, res);
     if (resInfo == NULL)
+    {
         return NULL;
+    }
 
     return CreateDialogIndirectParam(o.hInstance, resInfo, o.hWnd, dialogFunc, param);
 }
@@ -438,59 +482,71 @@ typedef struct {
 static BOOL
 FillLangListProc(UNUSED HANDLE module, UNUSED PTSTR type, UNUSED PTSTR stringId, WORD langId, LONG_PTR lParam)
 {
-    langProcData *data = (langProcData*) lParam;
+    langProcData *data = (langProcData *) lParam;
 
     int index = ComboBox_AddString(data->languages, LangListEntry(IDS_LANGUAGE_NAME, langId));
     ComboBox_SetItemData(data->languages, index, langId);
 
     /* Select this item if it is the currently displayed language */
     if (langId == data->language
-    ||  (PRIMARYLANGID(langId) == PRIMARYLANGID(data->language)
-     && ComboBox_GetCurSel(data->languages) == CB_ERR) )
+        ||  (PRIMARYLANGID(langId) == PRIMARYLANGID(data->language)
+             && ComboBox_GetCurSel(data->languages) == CB_ERR) )
+    {
         ComboBox_SetCurSel(data->languages, index);
+    }
 
     return TRUE;
 }
 
-static BOOL 
+static BOOL
 GetLaunchOnStartup()
 {
-	
-    WCHAR regPath[MAX_PATH], exePath[MAX_PATH];	
+
+    WCHAR regPath[MAX_PATH], exePath[MAX_PATH];
     BOOL result = FALSE;
     HKEY regkey;
 
-    if (RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_READ, &regkey) == ERROR_SUCCESS) {
+    if (RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_READ, &regkey) == ERROR_SUCCESS)
+    {
 
-        if (GetRegistryValue(regkey, L"OpenVPN-GUI", regPath, MAX_PATH) &&
-            GetModuleFileNameW(NULL, exePath, MAX_PATH)) {
+        if (GetRegistryValue(regkey, L"OpenVPN-GUI", regPath, MAX_PATH)
+            && GetModuleFileNameW(NULL, exePath, MAX_PATH))
+        {
             if (_wcsicmp(regPath, exePath) == 0)
+            {
                 result = TRUE;
+            }
         }
 
         RegCloseKey(regkey);
 
     }
-	
+
     return result;
 
 }
 
 static void
-SetLaunchOnStartup(BOOL value) 
+SetLaunchOnStartup(BOOL value)
 {
 
     WCHAR exePath[MAX_PATH];
     HKEY regkey;
 
-    if (RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_WRITE, &regkey) == ERROR_SUCCESS) {
+    if (RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_WRITE, &regkey) == ERROR_SUCCESS)
+    {
 
-        if (value) {
-            if (GetModuleFileNameW(NULL, exePath, MAX_PATH)) 
+        if (value)
+        {
+            if (GetModuleFileNameW(NULL, exePath, MAX_PATH))
+            {
                 SetRegistryValue(regkey, L"OpenVPN-GUI", exePath);
+            }
         }
-        else 
-            RegDeleteValue(regkey, L"OpenVPN-GUI");            
+        else
+        {
+            RegDeleteValue(regkey, L"OpenVPN-GUI");
+        }
 
         RegCloseKey(regkey);
 
@@ -507,108 +563,155 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
         .language = GetGUILanguage()
     };
 
-    switch(msg) {
+    switch (msg)
+    {
 
-    case WM_INITDIALOG:
-        /* Populate UI language selection combo box */
-        EnumResourceLanguages( NULL, RT_STRING, MAKEINTRESOURCE(IDS_LANGUAGE_NAME / 16 + 1),
-            (ENUMRESLANGPROC) FillLangListProc, (LONG_PTR) &langData );
+        case WM_INITDIALOG:
+            /* Populate UI language selection combo box */
+            EnumResourceLanguages( NULL, RT_STRING, MAKEINTRESOURCE(IDS_LANGUAGE_NAME / 16 + 1),
+                                   (ENUMRESLANGPROC) FillLangListProc, (LONG_PTR) &langData );
 
-        /* If none of the available languages matched, select the fallback */
-        if (ComboBox_GetCurSel(langData.languages) == CB_ERR)
-            ComboBox_SelectString(langData.languages, -1,
-                LangListEntry(IDS_LANGUAGE_NAME, fallbackLangId));
+            /* If none of the available languages matched, select the fallback */
+            if (ComboBox_GetCurSel(langData.languages) == CB_ERR)
+            {
+                ComboBox_SelectString(langData.languages, -1,
+                                      LangListEntry(IDS_LANGUAGE_NAME, fallbackLangId));
+            }
 
-        /* Clear language id data for the selected item */
-        ComboBox_SetItemData(langData.languages, ComboBox_GetCurSel(langData.languages), 0);
+            /* Clear language id data for the selected item */
+            ComboBox_SetItemData(langData.languages, ComboBox_GetCurSel(langData.languages), 0);
 
-        if (GetLaunchOnStartup())
-            Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_STARTUP), BST_CHECKED);
+            if (GetLaunchOnStartup())
+            {
+                Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_STARTUP), BST_CHECKED);
+            }
 
-        if (o.log_append)
-            Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_LOG_APPEND), BST_CHECKED);
-        if (o.silent_connection)
-            Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SILENT), BST_CHECKED);
-        if (o.iservice_admin)
-            Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_ALWAYS_USE_ISERVICE), BST_CHECKED);
-        if (o.show_balloon == 0)
-            CheckRadioButton (hwndDlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON0);
-        else if (o.show_balloon == 1)
-            CheckRadioButton (hwndDlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON1);
-        else if (o.show_balloon == 2)
-            CheckRadioButton (hwndDlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON2);
-        if (o.show_script_window)
-            Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SHOW_SCRIPT_WIN), BST_CHECKED);
-        if (o.enable_persistent == 0) /* Never */
-            CheckRadioButton (hwndDlg, ID_RB_BALLOON3, ID_RB_BALLOON5, ID_RB_BALLOON5);
-        else if (o.enable_persistent == 1) /* Enabled, but no auto-attach */
-            CheckRadioButton (hwndDlg, ID_RB_BALLOON3, ID_RB_BALLOON5, ID_RB_BALLOON4);
-        else if (o.enable_persistent == 2) /* Enabled and auto-attach */
-            CheckRadioButton (hwndDlg, ID_RB_BALLOON3, ID_RB_BALLOON5, ID_RB_BALLOON3);
+            if (o.log_append)
+            {
+                Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_LOG_APPEND), BST_CHECKED);
+            }
+            if (o.silent_connection)
+            {
+                Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SILENT), BST_CHECKED);
+            }
+            if (o.iservice_admin)
+            {
+                Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_ALWAYS_USE_ISERVICE), BST_CHECKED);
+            }
+            if (o.show_balloon == 0)
+            {
+                CheckRadioButton(hwndDlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON0);
+            }
+            else if (o.show_balloon == 1)
+            {
+                CheckRadioButton(hwndDlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON1);
+            }
+            else if (o.show_balloon == 2)
+            {
+                CheckRadioButton(hwndDlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON2);
+            }
+            if (o.show_script_window)
+            {
+                Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SHOW_SCRIPT_WIN), BST_CHECKED);
+            }
+            if (o.enable_persistent == 0) /* Never */
+            {
+                CheckRadioButton(hwndDlg, ID_RB_BALLOON3, ID_RB_BALLOON5, ID_RB_BALLOON5);
+            }
+            else if (o.enable_persistent == 1) /* Enabled, but no auto-attach */
+            {
+                CheckRadioButton(hwndDlg, ID_RB_BALLOON3, ID_RB_BALLOON5, ID_RB_BALLOON4);
+            }
+            else if (o.enable_persistent == 2) /* Enabled and auto-attach */
+            {
+                CheckRadioButton(hwndDlg, ID_RB_BALLOON3, ID_RB_BALLOON5, ID_RB_BALLOON3);
+            }
 
-        int plap_status = GetPLAPRegistrationStatus();
-        if (plap_status == -1) /* PLAP not supported in this version */
-            ShowWindow(GetDlgItem(hwndDlg, ID_CHK_PLAP_REG), SW_HIDE);
-        else if (plap_status != 0)
-            Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_PLAP_REG), BST_CHECKED);
-        if (o.enable_auto_restart)
-            Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_AUTO_RESTART), BST_CHECKED);
+            int plap_status = GetPLAPRegistrationStatus();
+            if (plap_status == -1) /* PLAP not supported in this version */
+            {
+                ShowWindow(GetDlgItem(hwndDlg, ID_CHK_PLAP_REG), SW_HIDE);
+            }
+            else if (plap_status != 0)
+            {
+                Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_PLAP_REG), BST_CHECKED);
+            }
+            if (o.enable_auto_restart)
+            {
+                Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_AUTO_RESTART), BST_CHECKED);
+            }
 
-        break;
+            break;
 
-    case WM_COMMAND:
-        if (LOWORD(wParam) == ID_CHK_PLAP_REG && HIWORD(wParam) == BN_CLICKED)
-        {
-            /* change PLAPRegistration state */
-            HWND h = GetDlgItem(hwndDlg, ID_CHK_PLAP_REG);
-            BOOL newstate = Button_GetCheck(h) == BST_CHECKED ?  TRUE : FALSE;
-            if (SetPLAPRegistration(newstate) != 0) /* failed or user cancelled -- reset checkmark */
-                Button_SetCheck(h, newstate  ? BST_UNCHECKED : BST_CHECKED);
-        }
-        break;
+        case WM_COMMAND:
+            if (LOWORD(wParam) == ID_CHK_PLAP_REG && HIWORD(wParam) == BN_CLICKED)
+            {
+                /* change PLAPRegistration state */
+                HWND h = GetDlgItem(hwndDlg, ID_CHK_PLAP_REG);
+                BOOL newstate = Button_GetCheck(h) == BST_CHECKED ?  TRUE : FALSE;
+                if (SetPLAPRegistration(newstate) != 0) /* failed or user cancelled -- reset checkmark */
+                {
+                    Button_SetCheck(h, newstate  ? BST_UNCHECKED : BST_CHECKED);
+                }
+            }
+            break;
 
-    case WM_NOTIFY:
-        psn = (LPPSHNOTIFY) lParam;
-        if (psn->hdr.code == (UINT) PSN_APPLY)
-        {
-            LANGID langId = (LANGID) ComboBox_GetItemData(langData.languages,
-                ComboBox_GetCurSel(langData.languages));
+        case WM_NOTIFY:
+            psn = (LPPSHNOTIFY) lParam;
+            if (psn->hdr.code == (UINT) PSN_APPLY)
+            {
+                LANGID langId = (LANGID) ComboBox_GetItemData(langData.languages,
+                                                              ComboBox_GetCurSel(langData.languages));
 
-            if (langId != 0)
-                SetGUILanguage(langId);
+                if (langId != 0)
+                {
+                    SetGUILanguage(langId);
+                }
 
-            SetLaunchOnStartup(Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_STARTUP)) == BST_CHECKED);
+                SetLaunchOnStartup(Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_STARTUP)) == BST_CHECKED);
 
-            o.log_append =
-                (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_LOG_APPEND)) == BST_CHECKED);
-            o.silent_connection =
-                (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_SILENT)) == BST_CHECKED);
-            o.iservice_admin =
-                (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_ALWAYS_USE_ISERVICE)) == BST_CHECKED);
-            if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON0))
-                o.show_balloon = 0;
-            else if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON2))
-                o.show_balloon = 2;
-            else
-                o.show_balloon = 1;
-            if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON3))
-                o.enable_persistent = 2;
-            else if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON4))
-                o.enable_persistent = 1;
-            else
-                o.enable_persistent = 0;
-            o.show_script_window =
-                (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_SHOW_SCRIPT_WIN)) == BST_CHECKED);
-            o.enable_auto_restart =
-                (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_AUTO_RESTART)) == BST_CHECKED);
+                o.log_append =
+                    (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_LOG_APPEND)) == BST_CHECKED);
+                o.silent_connection =
+                    (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_SILENT)) == BST_CHECKED);
+                o.iservice_admin =
+                    (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_ALWAYS_USE_ISERVICE)) == BST_CHECKED);
+                if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON0))
+                {
+                    o.show_balloon = 0;
+                }
+                else if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON2))
+                {
+                    o.show_balloon = 2;
+                }
+                else
+                {
+                    o.show_balloon = 1;
+                }
+                if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON3))
+                {
+                    o.enable_persistent = 2;
+                }
+                else if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON4))
+                {
+                    o.enable_persistent = 1;
+                }
+                else
+                {
+                    o.enable_persistent = 0;
+                }
+                o.show_script_window =
+                    (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_SHOW_SCRIPT_WIN)) == BST_CHECKED);
+                o.enable_auto_restart =
+                    (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_AUTO_RESTART)) == BST_CHECKED);
 
 
-            SaveRegistryKeys();
+                SaveRegistryKeys();
 
-            SetWindowLongPtr(hwndDlg, DWLP_MSGRESULT, PSNRET_NOERROR);
-            return TRUE;
-        }
-        break;
+                SetWindowLongPtr(hwndDlg, DWLP_MSGRESULT, PSNRET_NOERROR);
+                return TRUE;
+            }
+            break;
     }
 
     return FALSE;

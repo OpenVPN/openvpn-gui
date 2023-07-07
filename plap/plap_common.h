@@ -36,14 +36,17 @@ extern "C" {
 #endif
 
 #ifdef DEBUG
-#define dmsg(fmt, ...) x_dmsg(__FILE__, __func__, fmt, ##__VA_ARGS__)
+#define dmsg(fmt, ...) x_dmsg(__FILE__, __func__, fmt, ## __VA_ARGS__)
 #else
-#define dmsg(...) do { ; } while (0)
+#define dmsg(...) do {; } while (0)
 #endif
 
 void x_dmsg(const char *file, const char *func, const wchar_t *fmt, ...);
+
 void init_debug();
+
 void uninit_debug();
+
 void debug_print_guid(const GUID *riid, const wchar_t *context);
 
 /* Shortcuts for cumbersome calls to COM methods of an object through its v-table */
@@ -64,6 +67,5 @@ void debug_print_guid(const GUID *riid, const wchar_t *context);
  */
 #ifdef DEFINE_GUID
 DEFINE_GUID(CLSID_OpenVPNProvider, 0x4fbb8b67, 0xcf02, 0x4982, 0xa7, 0xa8,
-                                   0x3d, 0xd0, 0x6a, 0x2c, 0x2e, 0xbd);
+            0x3d, 0xd0, 0x6a, 0x2c, 0x2e, 0xbd);
 #endif
-

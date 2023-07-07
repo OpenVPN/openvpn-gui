@@ -50,13 +50,14 @@ NOTIFYICONDATA ni;
 extern options_t o;
 
 #define USE_NESTED_CONFIG_MENU ((o.config_menu_view == CONFIG_VIEW_AUTO && o.num_configs > 25)   \
-                                 || (o.config_menu_view == CONFIG_VIEW_NESTED))
+                                || (o.config_menu_view == CONFIG_VIEW_NESTED))
 
 
 static void
 DeleteMenuBitmaps(void)
 {
-    if (hbmpConnecting) {
+    if (hbmpConnecting)
+    {
         DeleteObject(hbmpConnecting);
         hbmpConnecting = NULL;
     }
@@ -92,8 +93,14 @@ CreateMenuBitmaps(void)
     {
         DeleteObject(iconinfo.hbmMask);
         DeleteObject(iconinfo.hbmColor);
-        if (maskDC) DeleteDC(maskDC);
-        if (imgDC) DeleteDC(imgDC);
+        if (maskDC)
+        {
+            DeleteDC(maskDC);
+        }
+        if (imgDC)
+        {
+            DeleteDC(imgDC);
+        }
         MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Error creating DCs for drawing");
         return;
     }
@@ -106,10 +113,14 @@ CreateMenuBitmaps(void)
     COLORREF ref = RGB(255, 255, 255);
     COLORREF bg = GetSysColor(COLOR_MENU);
 
-    for (int x = 0; x < cx; x++) {
-        for (int y = 0; y < cy; y++) {
+    for (int x = 0; x < cx; x++)
+    {
+        for (int y = 0; y < cy; y++)
+        {
             if (GetPixel(maskDC, x, y) == ref)
+            {
                 SetPixel(imgDC, x, y, bg);
+            }
         }
     }
 
@@ -132,13 +143,18 @@ CreateMenuBitmaps(void)
 void
 AllocateConnectionMenu()
 {
-    if (hmenu_size >= o.num_configs) return;
+    if (hmenu_size >= o.num_configs)
+    {
+        return;
+    }
     HMENU *tmp  = (HMENU *) realloc(hMenuConn, sizeof(HMENU)*(o.num_configs + 50));
-    if (tmp) {
+    if (tmp)
+    {
         hmenu_size = o.num_configs + 50;
         hMenuConn = tmp;
     }
-    else {
+    else
+    {
         o.num_configs = hmenu_size;
         MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Allocation of hMenuConn failed. Ignoring configs beyond index = %d", o.num_configs);
     }
@@ -175,7 +191,9 @@ CreatePopupMenus()
     for (int i = 0; i < o.num_groups; i++)
     {
         if (!o.groups[i].active)
+        {
             continue;
+        }
         o.groups[i].menu = CreatePopupMenu();
         o.groups[i].children = 0; /* we have to recount this when assigning menu position index */
     }
@@ -188,7 +206,8 @@ CreatePopupMenus()
     minfo.dwStyle |= MNS_NOTIFYBYPOS;
     SetMenuInfo(hMenu, &minfo);
 
-    if (o.num_configs == 1 && o.chead) {
+    if (o.num_configs == 1 && o.chead)
+    {
         /* Set main menu's menudata to first connection */
         minfo.fMask = MIM_MENUDATA;
         GetMenuInfo(hMenu, &minfo);
@@ -215,12 +234,13 @@ CreatePopupMenus()
         AppendMenu(hMenuImport, MF_STRING, IDM_IMPORT_AS, LoadLocalizedString(IDS_MENU_IMPORT_AS));
         AppendMenu(hMenuImport, MF_STRING, IDM_IMPORT_URL, LoadLocalizedString(IDS_MENU_IMPORT_URL));
 
-        AppendMenu(hMenu, MF_STRING ,IDM_SETTINGS, LoadLocalizedString(IDS_MENU_SETTINGS));
-        AppendMenu(hMenu, MF_STRING ,IDM_CLOSE, LoadLocalizedString(IDS_MENU_CLOSE));
+        AppendMenu(hMenu, MF_STRING, IDM_SETTINGS, LoadLocalizedString(IDS_MENU_SETTINGS));
+        AppendMenu(hMenu, MF_STRING, IDM_CLOSE, LoadLocalizedString(IDS_MENU_CLOSE));
 
         SetMenuStatus(o.chead,  o.chead->state);
     }
-    else {
+    else
+    {
         /* construct the submenu tree first */
         /* i = 0 is the root menu and has no parent */
         for (int i = 1; i < o.num_groups; i++)
@@ -240,7 +260,7 @@ CreatePopupMenus()
             this->pos = parent->children++;
 
             PrintDebug(L"Submenu %d named %ls added to parent %ls with position %d",
-                    i, this->name, parent->name, this->pos);
+                       i, this->name, parent->name, this->pos);
         }
 
         /* add config file (connection) entries */
@@ -268,11 +288,13 @@ CreatePopupMenus()
             c->pos = parent->children++;
 
             PrintDebug(L"Config %d named %ls added to submenu %ls with position %d",
-                        c->id, c->config_name, parent->name, c->pos);
+                       c->id, c->config_name, parent->name, c->pos);
         }
 
         if (o.num_configs > 0)
+        {
             AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
+        }
 
         hMenuImport = CreatePopupMenu();
         AppendMenu(hMenu, MF_POPUP, (UINT_PTR) hMenuImport, LoadLocalizedString(IDS_MENU_IMPORT));
@@ -337,17 +359,18 @@ OnNotifyTray(LPARAM lParam)
 {
     POINT pt;
 
-    switch (lParam) {
-    case WM_RBUTTONUP:
-        RecreatePopupMenus();
+    switch (lParam)
+    {
+        case WM_RBUTTONUP:
+            RecreatePopupMenus();
 
-        GetCursorPos(&pt);
-        SetForegroundWindow(o.hWnd);
-        TrackPopupMenu(hMenu, TPM_RIGHTALIGN, pt.x, pt.y, 0, o.hWnd, NULL);
-        PostMessage(o.hWnd, WM_NULL, 0, 0);
-        break;
+            GetCursorPos(&pt);
+            SetForegroundWindow(o.hWnd);
+            TrackPopupMenu(hMenu, TPM_RIGHTALIGN, pt.x, pt.y, 0, o.hWnd, NULL);
+            PostMessage(o.hWnd, WM_NULL, 0, 0);
+            break;
 
-    case WM_LBUTTONDBLCLK:
+        case WM_LBUTTONDBLCLK:
         {
             int disconnected_conns = CountConnState(disconnected);
 
@@ -355,26 +378,33 @@ OnNotifyTray(LPARAM lParam)
 
             /* Start connection if only one config exist */
             if (o.num_configs == 1 && o.chead->state == disconnected)
-                    StartOpenVPN(o.chead);
+            {
+                StartOpenVPN(o.chead);
+            }
             /* show the status window of all connected/connecting profiles upto a max of 10 */
-            else if (disconnected_conns < o.num_configs) {
+            else if (disconnected_conns < o.num_configs)
+            {
                 int num_shown = 0;
                 for (connection_t *c = o.chead; c; c = c->next)
                 {
-                    if (c->state != disconnected && c->hwndStatus) {
+                    if (c->state != disconnected && c->hwndStatus)
+                    {
                         ShowWindow(c->hwndStatus, SW_SHOW);
                         SetForegroundWindow(c->hwndStatus);
-                        if (++num_shown >= 10) break;
+                        if (++num_shown >= 10)
+                        {
+                            break;
+                        }
                     }
                 }
             }
         }
         break;
 
-    case WM_OVPN_RESCAN:
-        /* Rescan config folders and recreate popup menus */
-        RecreatePopupMenus();
-        break;
+        case WM_OVPN_RESCAN:
+            /* Rescan config folders and recreate popup menus */
+            RecreatePopupMenus();
+            break;
     }
 }
 
@@ -398,15 +428,15 @@ OnDestroyTray()
 void
 ShowTrayIcon()
 {
-  ni.cbSize = sizeof(ni);
-  ni.uID = 0;
-  ni.hWnd = o.hWnd;
-  ni.uFlags = NIF_MESSAGE | NIF_TIP | NIF_ICON;
-  ni.uCallbackMessage = WM_NOTIFYICONTRAY;
-  ni.hIcon = LoadLocalizedSmallIcon(ID_ICO_DISCONNECTED);
-  _tcsncpy(ni.szTip, LoadLocalizedString(IDS_TIP_DEFAULT), _countof(ni.szTip));
+    ni.cbSize = sizeof(ni);
+    ni.uID = 0;
+    ni.hWnd = o.hWnd;
+    ni.uFlags = NIF_MESSAGE | NIF_TIP | NIF_ICON;
+    ni.uCallbackMessage = WM_NOTIFYICONTRAY;
+    ni.hIcon = LoadLocalizedSmallIcon(ID_ICO_DISCONNECTED);
+    _tcsncpy(ni.szTip, LoadLocalizedString(IDS_TIP_DEFAULT), _countof(ni.szTip));
 
-  Shell_NotifyIcon(NIM_ADD, &ni);
+    Shell_NotifyIcon(NIM_ADD, &ni);
 }
 
 void
@@ -426,7 +456,8 @@ SetTrayIcon(conn_state_t state)
     first_conn = TRUE;
     for (connection_t *c = o.chead; c; c = c->next)
     {
-        if (c->state == connected) {
+        if (c->state == connected)
+        {
             /* Append connection name to Icon Tip Msg */
             _tcsncat(msg, (first_conn ? msg_connected : _T(", ")), _countof(msg) - _tcslen(msg) - 1);
             _tcsncat(msg, c->config_name, _countof(msg) - _tcslen(msg) - 1);
@@ -438,7 +469,8 @@ SetTrayIcon(conn_state_t state)
     first_conn = TRUE;
     for (connection_t *c = o.chead; c; c = c->next)
     {
-        if (c->state == connecting || c->state == resuming || c->state == reconnecting) {
+        if (c->state == connecting || c->state == resuming || c->state == reconnecting)
+        {
             /* Append connection name to Icon Tip Msg */
             _tcsncat(msg, (first_conn ? msg_connecting : _T(", ")), _countof(msg) - _tcslen(msg) - 1);
             _tcsncat(msg, c->config_name, _countof(msg) - _tcslen(msg) - 1);
@@ -446,7 +478,8 @@ SetTrayIcon(conn_state_t state)
         }
     }
 
-    if (CountConnState(connected) == 1 && cc) {
+    if (CountConnState(connected) == 1 && cc)
+    {
         /* Append "Connected since and assigned IP" to message */
         TCHAR time[50];
 
@@ -463,9 +496,13 @@ SetTrayIcon(conn_state_t state)
 
     icon_id = ID_ICO_CONNECTING;
     if (state == connected)
+    {
         icon_id = ID_ICO_CONNECTED;
+    }
     else if (state == disconnected)
+    {
         icon_id = ID_ICO_DISCONNECTED;
+    }
 
     ni.cbSize = sizeof(ni);
     ni.uID = 0;
@@ -490,9 +527,13 @@ CheckAndSetTrayIcon()
     {
         if (CountConnState(connecting) != 0 || CountConnState(reconnecting) != 0
             ||  CountConnState(resuming) != 0)
+        {
             SetTrayIcon(connecting);
+        }
         else
+        {
             SetTrayIcon(disconnected);
+        }
     }
 }
 
@@ -519,8 +560,14 @@ SetMenuStatus(connection_t *c, conn_state_t state)
     int checked = 0;
     int i = c->id;
 
-    if (state == connected || state == disconnecting) checked = 1;
-    else if (state != disconnected && state != detached && state != onhold) checked = 2;
+    if (state == connected || state == disconnecting)
+    {
+        checked = 1;
+    }
+    else if (state != disconnected && state != detached && state != onhold)
+    {
+        checked = 2;
+    }
 
     if (o.num_configs == 1)
     {
@@ -553,9 +600,13 @@ SetMenuStatus(connection_t *c, conn_state_t state)
             EnableMenuItem(hMenu, IDM_STATUSMENU, MF_ENABLED);
         }
         if (c->flags & (FLAG_SAVE_AUTH_PASS | FLAG_SAVE_KEY_PASS))
+        {
             EnableMenuItem(hMenu, IDM_CLEARPASSMENU, MF_ENABLED);
+        }
         else
+        {
             EnableMenuItem(hMenu, IDM_CLEARPASSMENU, MF_GRAYED);
+        }
     }
     else
     {
@@ -584,7 +635,7 @@ SetMenuStatus(connection_t *c, conn_state_t state)
         CheckMenuItem(parent->menu, pos, MF_BYPOSITION | (checked ? MF_CHECKED : MF_UNCHECKED));
 
         PrintDebug(L"Setting state of config %ls checked = %d, parent %ls, pos %d",
-                    c->config_name, checked, (parent->id == 0)? L"Main Menu" : L"SubMenu", pos);
+                   c->config_name, checked, (parent->id == 0) ? L"Main Menu" : L"SubMenu", pos);
 
         if (checked) /* also check all parent groups */
         {
@@ -625,8 +676,12 @@ SetMenuStatus(connection_t *c, conn_state_t state)
             EnableMenuItem(hMenuConn[i], IDM_STATUSMENU, MF_ENABLED);
         }
         if (c->flags & (FLAG_SAVE_AUTH_PASS | FLAG_SAVE_KEY_PASS))
+        {
             EnableMenuItem(hMenuConn[i], IDM_CLEARPASSMENU, MF_ENABLED);
+        }
         else
+        {
             EnableMenuItem(hMenuConn[i], IDM_CLEARPASSMENU, MF_GRAYED);
+        }
     }
 }

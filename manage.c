@@ -63,18 +63,22 @@ OpenManagement(connection_t *c)
 {
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
+    {
         return FALSE;
+    }
 
     c->manage.connected = 0;
     c->manage.sk = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (c->manage.sk == INVALID_SOCKET)
     {
-        WSACleanup ();
+        WSACleanup();
         return FALSE;
     }
     if (WSAAsyncSelect(c->manage.sk, c->hwndStatus, WM_MANAGEMENT,
-        FD_CONNECT|FD_READ|FD_WRITE|FD_CLOSE) != 0)
+                       FD_CONNECT|FD_READ|FD_WRITE|FD_CLOSE) != 0)
+    {
         return FALSE;
+    }
 
     connect(c->manage.sk, (SOCKADDR *)&c->manage.skaddr, sizeof(c->manage.skaddr));
     c->manage.timeout = time(NULL) + max_connect_time;
@@ -92,14 +96,20 @@ SendCommand(connection_t *c)
     int res;
     mgmt_cmd_t *cmd = c->manage.cmd_queue;
     if (cmd == NULL || cmd->size == 0)
+    {
         return;
+    }
 
     res = send(c->manage.sk, cmd->command, cmd->size, 0);
     if (res < 1)
+    {
         return;
+    }
 
     if (res != cmd->size)
+    {
         memmove(cmd->command, cmd->command + res, cmd->size - res);
+    }
 
     cmd->size -= res;
 }
@@ -113,7 +123,9 @@ ManagementCommand(connection_t *c, char *command, mgmt_msg_func handler, mgmt_cm
 {
     mgmt_cmd_t *cmd = calloc(1, sizeof(*cmd));
     if (cmd == NULL)
+    {
         return FALSE;
+    }
 
     cmd->size = strlen(command) + 1;
     cmd->command = malloc(cmd->size);
@@ -141,7 +153,9 @@ ManagementCommand(connection_t *c, char *command, mgmt_msg_func handler, mgmt_cm
     }
 
     if (c->manage.cmd_queue == cmd)
+    {
         SendCommand(c);
+    }
 
     return TRUE;
 }
@@ -155,7 +169,9 @@ UnqueueCommand(connection_t *c)
 {
     mgmt_cmd_t *cmd = c->manage.cmd_queue;
     if (!cmd)
+    {
         return FALSE;
+    }
 
     /* Wipe command as it may contain passwords */
     memset(cmd->command, 'x', cmd->size);
@@ -197,241 +213,281 @@ OnManagement(SOCKET sk, LPARAM lParam)
 
     connection_t *c = GetConnByManagement(sk);
     if (c == NULL)
+    {
         return;
+    }
 
     switch (WSAGETSELECTEVENT(lParam))
     {
-    case FD_CONNECT:
-        if (WSAGETSELECTERROR(lParam))
-        {
-            /* keep trying for connections with persistent daemons */
-            if (c->flags & FLAG_DAEMON_PERSISTENT
-                || time(NULL) < c->manage.timeout)
+        case FD_CONNECT:
+            if (WSAGETSELECTERROR(lParam))
             {
-                /* show a message on status window */
-                if (rtmsg_handler[log_] && (c->flags & FLAG_DAEMON_PERSISTENT))
+                /* keep trying for connections with persistent daemons */
+                if (c->flags & FLAG_DAEMON_PERSISTENT
+                    || time(NULL) < c->manage.timeout)
                 {
-                    char buf[256];
-                    _snprintf_0(buf, "%lld,W,Waiting for the management interface to come up",
-                                (long long)time(NULL))
-                    rtmsg_handler[log_](c, buf);
-                }
+                    /* show a message on status window */
+                    if (rtmsg_handler[log_] && (c->flags & FLAG_DAEMON_PERSISTENT))
+                    {
+                        char buf[256];
+                        _snprintf_0(buf, "%lld,W,Waiting for the management interface to come up",
+                                    (long long)time(NULL))
+                        rtmsg_handler[log_](c, buf);
+                    }
 
-                connect(c->manage.sk, (SOCKADDR *)&c->manage.skaddr, sizeof(c->manage.skaddr));
+                    connect(c->manage.sk, (SOCKADDR *)&c->manage.skaddr, sizeof(c->manage.skaddr));
+                }
+                else
+                {
+                    /* Connection to MI timed out. */
+                    CloseManagement(c);
+                    if (c->state != disconnected)
+                    {
+                        rtmsg_handler[timeout_](c, "");
+                    }
+                }
             }
             else
             {
-                /* Connection to MI timed out. */
-                CloseManagement (c);
-                if (c->state != disconnected)
-                    rtmsg_handler[timeout_](c, "");
+                c->manage.connected = 1;
             }
-        }
-        else
-            c->manage.connected = 1;
-        break;
+            break;
 
-    case FD_READ:
-        if (ioctlsocket(c->manage.sk, FIONREAD, &data_size) != 0
-        ||  data_size == 0)
-            return;
-
-        data = malloc(c->manage.saved_size + data_size);
-        if (data == NULL)
-            return;
-
-        res = recv(c->manage.sk, data + c->manage.saved_size, data_size, 0);
-        if (res != (int) data_size)
-        {
-            free(data);
-            return;
-        }
-
-        /* Copy previously saved management data */
-        if (c->manage.saved_size)
-        {
-            memcpy(data, c->manage.saved_data, c->manage.saved_size);
-            data_size += c->manage.saved_size;
-            free(c->manage.saved_data);
-            c->manage.saved_data = NULL;
-            c->manage.saved_size = 0;
-        }
-
-        offset = 0;
-        while (offset < data_size)
-        {
-            char *pos;
-            char *line = data + offset;
-            size_t line_size = data_size - offset;
-            BOOL passwd_request = false;
-            const char *passwd_prompt = "ENTER PASSWORD:";
-
-            if (line_size >= strlen(passwd_prompt)
-                && memcmp(line, passwd_prompt, strlen(passwd_prompt)) == 0)
+        case FD_READ:
+            if (ioctlsocket(c->manage.sk, FIONREAD, &data_size) != 0
+                ||  data_size == 0)
             {
-                pos = memchr(line, ':', line_size);
-                passwd_request = true;
-            }
-            else
-            {
-                pos = memchr(line, '\n', line_size);
+                return;
             }
 
-            if (pos == NULL)
+            data = malloc(c->manage.saved_size + data_size);
+            if (data == NULL)
             {
-                c->manage.saved_data = malloc(line_size);
-                if (c->manage.saved_data)
-                {
-                    c->manage.saved_size = line_size;
-                    memcpy(c->manage.saved_data, line, c->manage.saved_size);
-                }
-                break;
+                return;
             }
 
-            offset += (pos - line) + 1;
-
-            /* Reply to a management password request */
-            if (*c->manage.password && passwd_request)
+            res = recv(c->manage.sk, data + c->manage.saved_size, data_size, 0);
+            if (res != (int) data_size)
             {
-                ManagementCommand(c, c->manage.password, NULL, regular);
-                SecureZeroMemory(c->manage.password, sizeof(c->manage.password));
-
-                continue;
+                free(data);
+                return;
             }
 
-            if (!*c->manage.password && passwd_request)
+            /* Copy previously saved management data */
+            if (c->manage.saved_size)
             {
-                /* either we don't have a password or we used it and didn't match */
-                MsgToEventLog(EVENTLOG_WARNING_TYPE, L"%ls: management password mismatch",
-                              c->config_name);
-                c->state = disconnecting;
-                CloseManagement (c);
-                rtmsg_handler[stop_](c, "");
-
-                continue;
+                memcpy(data, c->manage.saved_data, c->manage.saved_size);
+                data_size += c->manage.saved_size;
+                free(c->manage.saved_data);
+                c->manage.saved_data = NULL;
+                c->manage.saved_size = 0;
             }
 
-            /* Handle regular management interface output */
-            line[pos - line - 1] = '\0';
-            if (line[0] == '>')
+            offset = 0;
+            while (offset < data_size)
             {
-                /* Real time notifications */
-                pos = line + 1;
-                if (strncmp(pos, "LOG:", 4) == 0)
+                char *pos;
+                char *line = data + offset;
+                size_t line_size = data_size - offset;
+                BOOL passwd_request = false;
+                const char *passwd_prompt = "ENTER PASSWORD:";
+
+                if (line_size >= strlen(passwd_prompt)
+                    && memcmp(line, passwd_prompt, strlen(passwd_prompt)) == 0)
                 {
-                    if (rtmsg_handler[log_])
-                        rtmsg_handler[log_](c, pos + 4);
+                    pos = memchr(line, ':', line_size);
+                    passwd_request = true;
                 }
-                else if (strncmp(pos, "STATE:", 6) == 0)
+                else
                 {
-                    if (rtmsg_handler[state_])
-                        rtmsg_handler[state_](c, pos + 6);
+                    pos = memchr(line, '\n', line_size);
                 }
-                else if (strncmp(pos, "HOLD:", 5) == 0)
+
+                if (pos == NULL)
                 {
-                    if (rtmsg_handler[hold_])
-                        rtmsg_handler[hold_](c, pos + 5);
+                    c->manage.saved_data = malloc(line_size);
+                    if (c->manage.saved_data)
+                    {
+                        c->manage.saved_size = line_size;
+                        memcpy(c->manage.saved_data, line, c->manage.saved_size);
+                    }
+                    break;
                 }
-                else if (strncmp(pos, "PASSWORD:", 9) == 0)
+
+                offset += (pos - line) + 1;
+
+                /* Reply to a management password request */
+                if (*c->manage.password && passwd_request)
                 {
-                    if (rtmsg_handler[password_])
-                        rtmsg_handler[password_](c, pos + 9);
+                    ManagementCommand(c, c->manage.password, NULL, regular);
+                    SecureZeroMemory(c->manage.password, sizeof(c->manage.password));
+
+                    continue;
                 }
-                else if (strncmp(pos, "PROXY:", 6) == 0)
+
+                if (!*c->manage.password && passwd_request)
                 {
-                    if (rtmsg_handler[proxy_])
-                        rtmsg_handler[proxy_](c, pos + 6);
+                    /* either we don't have a password or we used it and didn't match */
+                    MsgToEventLog(EVENTLOG_WARNING_TYPE, L"%ls: management password mismatch",
+                                  c->config_name);
+                    c->state = disconnecting;
+                    CloseManagement(c);
+                    rtmsg_handler[stop_](c, "");
+
+                    continue;
                 }
-                else if (strncmp(pos, "INFO:", 5) == 0)
+
+                /* Handle regular management interface output */
+                line[pos - line - 1] = '\0';
+                if (line[0] == '>')
                 {
-                    /* delay until management interface accepts input */
-                    /* use real sleep here, since WM_MANAGEMENT might arrive before management is ready */
-                    Sleep(100);
-                    c->manage.connected = 2;
-                    if (rtmsg_handler[ready_])
-                        rtmsg_handler[ready_](c, pos + 5);
+                    /* Real time notifications */
+                    pos = line + 1;
+                    if (strncmp(pos, "LOG:", 4) == 0)
+                    {
+                        if (rtmsg_handler[log_])
+                        {
+                            rtmsg_handler[log_](c, pos + 4);
+                        }
+                    }
+                    else if (strncmp(pos, "STATE:", 6) == 0)
+                    {
+                        if (rtmsg_handler[state_])
+                        {
+                            rtmsg_handler[state_](c, pos + 6);
+                        }
+                    }
+                    else if (strncmp(pos, "HOLD:", 5) == 0)
+                    {
+                        if (rtmsg_handler[hold_])
+                        {
+                            rtmsg_handler[hold_](c, pos + 5);
+                        }
+                    }
+                    else if (strncmp(pos, "PASSWORD:", 9) == 0)
+                    {
+                        if (rtmsg_handler[password_])
+                        {
+                            rtmsg_handler[password_](c, pos + 9);
+                        }
+                    }
+                    else if (strncmp(pos, "PROXY:", 6) == 0)
+                    {
+                        if (rtmsg_handler[proxy_])
+                        {
+                            rtmsg_handler[proxy_](c, pos + 6);
+                        }
+                    }
+                    else if (strncmp(pos, "INFO:", 5) == 0)
+                    {
+                        /* delay until management interface accepts input */
+                        /* use real sleep here, since WM_MANAGEMENT might arrive before management is ready */
+                        Sleep(100);
+                        c->manage.connected = 2;
+                        if (rtmsg_handler[ready_])
+                        {
+                            rtmsg_handler[ready_](c, pos + 5);
+                        }
+                    }
+                    else if (strncmp(pos, "NEED-OK:", 8) == 0)
+                    {
+                        if (rtmsg_handler[needok_])
+                        {
+                            rtmsg_handler[needok_](c, pos + 8);
+                        }
+                    }
+                    else if (strncmp(pos, "NEED-STR:", 9) == 0)
+                    {
+                        if (rtmsg_handler[needstr_])
+                        {
+                            rtmsg_handler[needstr_](c, pos + 9);
+                        }
+                    }
+                    else if (strncmp(pos, "ECHO:", 5) == 0)
+                    {
+                        if (rtmsg_handler[echo_])
+                        {
+                            rtmsg_handler[echo_](c, pos + 5);
+                        }
+                    }
+                    else if (strncmp(pos, "BYTECOUNT:", 10) == 0)
+                    {
+                        if (rtmsg_handler[bytecount_])
+                        {
+                            rtmsg_handler[bytecount_](c, pos + 10);
+                        }
+                    }
+                    else if (strncmp(pos, "INFOMSG:", 8) == 0)
+                    {
+                        if (rtmsg_handler[infomsg_])
+                        {
+                            rtmsg_handler[infomsg_](c, pos + 8);
+                        }
+                    }
+                    else if (strncmp(pos, "PKCS11ID", 8) == 0
+                             && c->manage.cmd_queue)
+                    {
+                        /* This is not a real-time message, but unfortunately implemented
+                         * in the core as one. Work around by handling the response here.
+                         */
+                        mgmt_cmd_t *cmd = c->manage.cmd_queue;
+                        if (cmd->handler)
+                        {
+                            cmd->handler(c, line);
+                        }
+                        UnqueueCommand(c);
+                    }
                 }
-                else if (strncmp(pos, "NEED-OK:", 8) == 0)
+                else if (c->manage.cmd_queue)
                 {
-                    if (rtmsg_handler[needok_])
-                        rtmsg_handler[needok_](c, pos + 8);
-                }
-                else if (strncmp(pos, "NEED-STR:", 9) == 0)
-                {
-                    if (rtmsg_handler[needstr_])
-                        rtmsg_handler[needstr_](c, pos + 9);
-                }
-                else if (strncmp(pos, "ECHO:", 5) == 0)
-                {
-                    if (rtmsg_handler[echo_])
-                        rtmsg_handler[echo_](c, pos + 5);
-                }
-                else if (strncmp(pos, "BYTECOUNT:", 10) == 0)
-                {
-                    if (rtmsg_handler[bytecount_])
-                        rtmsg_handler[bytecount_](c, pos + 10);
-                }
-                else if (strncmp(pos, "INFOMSG:", 8) == 0)
-                {
-                    if (rtmsg_handler[infomsg_])
-                        rtmsg_handler[infomsg_](c, pos + 8);
-                }
-                else if (strncmp(pos, "PKCS11ID", 8) == 0
-                         && c->manage.cmd_queue)
-                {
-                    /* This is not a real-time message, but unfortunately implemented
-                     * in the core as one. Work around by handling the response here.
-                     */
+                    /* Response to commands */
                     mgmt_cmd_t *cmd = c->manage.cmd_queue;
-                    if (cmd->handler)
+                    if (strncmp(line, "SUCCESS:", 8) == 0)
+                    {
+                        if (cmd->handler)
+                        {
+                            cmd->handler(c, line + 9);
+                        }
+                        UnqueueCommand(c);
+                    }
+                    else if (strncmp(line, "ERROR:", 6) == 0)
+                    {
+                        /* Response sent to management is not processed. Log an error in status window  */
+                        char buf[256];
+                        _snprintf_0(buf, "%lld,N,Previous command sent to management failed: %s",
+                                    (long long)time(NULL), line)
+                        rtmsg_handler[log_](c, buf);
+
+                        if (cmd->handler)
+                        {
+                            cmd->handler(c, NULL);
+                        }
+                        UnqueueCommand(c);
+                    }
+                    else if (strcmp(line, "END") == 0)
+                    {
+                        UnqueueCommand(c);
+                    }
+                    else if (cmd->handler)
+                    {
                         cmd->handler(c, line);
-                    UnqueueCommand(c);
+                    }
                 }
             }
-            else if (c->manage.cmd_queue)
+            free(data);
+            break;
+
+        case FD_WRITE:
+            SendCommand(c);
+            break;
+
+        case FD_CLOSE:
+            CloseManagement(c);
+            if (rtmsg_handler[stop_])
             {
-                /* Response to commands */
-                mgmt_cmd_t *cmd = c->manage.cmd_queue;
-                if (strncmp(line, "SUCCESS:", 8) == 0)
-                {
-                    if (cmd->handler)
-                        cmd->handler(c, line + 9);
-                    UnqueueCommand(c);
-                }
-                else if (strncmp(line, "ERROR:", 6) == 0)
-                {
-                    /* Response sent to management is not processed. Log an error in status window  */
-                    char buf[256];
-                    _snprintf_0(buf, "%lld,N,Previous command sent to management failed: %s",
-                                (long long)time(NULL), line)
-                    rtmsg_handler[log_](c, buf);
-
-                    if (cmd->handler)
-                        cmd->handler(c, NULL);
-                    UnqueueCommand(c);
-                }
-                else if (strcmp(line, "END") == 0)
-                {
-                    UnqueueCommand(c);
-                }
-                else if (cmd->handler)
-                {
-                    cmd->handler(c, line);
-                }
+                rtmsg_handler[stop_](c, "");
             }
-        }
-        free(data);
-        break;
-
-    case FD_WRITE:
-        SendCommand(c);
-        break;
-
-    case FD_CLOSE:
-        CloseManagement (c);
-        if (rtmsg_handler[stop_])
-            rtmsg_handler[stop_](c, "");
-        break;
+            break;
     }
 }
 
@@ -450,7 +506,8 @@ CloseManagement(connection_t *c)
         c->manage.sk = INVALID_SOCKET;
         c->manage.connected = 0;
         while (UnqueueCommand(c))
-            ;
+        {
+        }
         WSACleanup();
     }
 }

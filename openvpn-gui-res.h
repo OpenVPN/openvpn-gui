@@ -409,4 +409,4 @@
 /* Timer IDs */
 #define IDT_STOP_TIMER                  2500  /* Timer used to trigger force termination */
 
-#endif
+#endif /* ifndef OPENVPN_GUI_RES_H */

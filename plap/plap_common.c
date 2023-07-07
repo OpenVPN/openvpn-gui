@@ -37,7 +37,9 @@ void
 init_debug()
 {
     if (!fp)
+    {
         fp = _wfopen(L"C:\\Windows\\Temp\\openvpn-plap-debug.txt", L"a+,ccs=UTF-8");
+    }
     InitializeCriticalSection(&log_write);
 }
 
@@ -45,7 +47,9 @@ void
 uninit_debug()
 {
     if (fp)
+    {
         fclose(fp);
+    }
     DeleteCriticalSection(&log_write);
 }
 
@@ -58,8 +62,8 @@ x_dmsg(const char *file, const char *func, const wchar_t *fmt, ...)
         return;
     }
 
-    va_list  args;
-    va_start (args, fmt);
+    va_list args;
+    va_start(args, fmt);
     vswprintf(buf, _countof(buf), fmt, args);
     va_end(args);
 
@@ -93,7 +97,7 @@ void
 debug_print_guid(const GUID *riid, const wchar_t *context)
 {
     RPC_CSTR str = NULL;
-    if (UuidToStringA((GUID*) riid, &str) == RPC_S_OK)
+    if (UuidToStringA((GUID *) riid, &str) == RPC_S_OK)
     {
         x_dmsg(NULL, NULL, L"%ls %hs", context, str);
         RpcStringFreeA(&str);

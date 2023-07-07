@@ -94,7 +94,10 @@ env_item_del(struct env_item *head, const wchar_t *name)
 {
     struct env_item *item, *prev = NULL;
 
-    if (!name) return head;
+    if (!name)
+    {
+        return head;
+    }
 
     for (item = head; item; item = item->next)
     {
@@ -102,9 +105,13 @@ env_item_del(struct env_item *head, const wchar_t *name)
         {
             /* matching item found */
             if (prev)
+            {
                 prev->next = item->next;
+            }
             else /* head is going to be deleted */
+            {
                 head = item->next;
+            }
             env_item_free(item);
             break;
         }
@@ -132,7 +139,7 @@ env_item_insert(struct env_item *head, struct env_item *item)
         cmp = env_name_compare(item->nameval, tmp->nameval);
         if (cmp <= 0) /* found the position to add */
         {
-             break;
+            break;
         }
         prev = tmp;
         continue;
@@ -148,9 +155,13 @@ env_item_insert(struct env_item *head, struct env_item *item)
     }
 
     if (prev)
+    {
         prev->next = item;
+    }
     else
+    {
         head = item;
+    }
 
     return head;
 }
@@ -194,13 +205,15 @@ env_item_new_utf8(const char *nameval)
 /* Insert an env item to the set given nameval: name=val.
  * Returns new head of the list.
  */
-static struct env_item*
+static struct env_item *
 env_item_insert_utf8(struct env_item *head, const char *nameval)
 {
     struct env_item *item = env_item_new_utf8(nameval);
 
     if (!item)
+    {
         return head;
+    }
 
     return env_item_insert(head, item);
 }
@@ -247,11 +260,10 @@ merge_env_block(const struct env_item *es)
 
     for (pe = e; *pe; pe += wcslen(pe)+1)
     {
-       ;
     }
     len = (pe + 1 - e); /* including the extra '\0' at the end */
 
-    for(item = es; item; item = item->next)
+    for (item = es; item; item = item->next)
     {
         len += wcslen(item->nameval) + 1;
     }
@@ -291,7 +303,9 @@ merge_env_block(const struct env_item *es)
         {
             pe += len;
             if (*pe) /* update len */
+            {
                 len = wcslen(pe) + 1;
+            }
         }
     }
     /* Add any remaining entries -- either item or *pe is NULL at this point.
@@ -326,7 +340,9 @@ process_setenv(connection_t *c, UNUSED time_t timestamp, const char *msg)
     char *nameval;
 
     if (!strbegins(msg, "setenv "))
+    {
         return;
+    }
 
     msg += strlen("setenv ");    /* character following "setenv" */
     msg += strspn(msg, " \t");   /* skip leading space */

@@ -249,16 +249,27 @@ typedef struct {
 } options_t;
 
 void InitOptions(options_t *);
+
 void ProcessCommandLine(options_t *, TCHAR *);
+
 int CountConnState(conn_state_t);
-connection_t* GetConnByManagement(SOCKET);
-connection_t* GetConnByName(const WCHAR *config_name);
+
+connection_t *GetConnByManagement(SOCKET);
+
+connection_t *GetConnByName(const WCHAR *config_name);
+
 INT_PTR CALLBACK ScriptSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
+
 INT_PTR CALLBACK ConnectionSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
+
 INT_PTR CALLBACK AdvancedSettingsDlgProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam);
+
 void DisableSavePasswords(connection_t *);
+
 void DisablePopupMessages(connection_t *);
 
 void ExpandOptions(void);
+
 int CompareStringExpanded(const WCHAR *str1, const WCHAR *str2);
-#endif
+
+#endif /* ifndef OPTIONS_H */

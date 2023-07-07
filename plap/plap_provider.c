@@ -47,25 +47,31 @@ typedef struct OpenVPNProvider
 
 /* methods we have to implement */
 static HRESULT WINAPI QueryInterface(ICredentialProvider *this, REFIID riid, void **ppv);
+
 static ULONG WINAPI AddRef(ICredentialProvider *this);
+
 static ULONG WINAPI Release(ICredentialProvider *this);
 
 static HRESULT WINAPI SetUsageScenario(ICredentialProvider *this,
-    CREDENTIAL_PROVIDER_USAGE_SCENARIO us, DWORD flags);
+                                       CREDENTIAL_PROVIDER_USAGE_SCENARIO us, DWORD flags);
+
 static HRESULT WINAPI SetSerialization(ICredentialProvider *this,
-    const CREDENTIAL_PROVIDER_CREDENTIAL_SERIALIZATION *cs);
+                                       const CREDENTIAL_PROVIDER_CREDENTIAL_SERIALIZATION *cs);
 
 static HRESULT WINAPI Advise(ICredentialProvider *this, ICredentialProviderEvents *e, UINT_PTR context);
+
 static HRESULT WINAPI UnAdvise(ICredentialProvider *this);
 
 static HRESULT WINAPI GetFieldDescriptorCount(ICredentialProvider *this, DWORD *count);
+
 static HRESULT WINAPI GetFieldDescriptorAt(ICredentialProvider *this, DWORD index,
-    CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR **fd);
+                                           CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR **fd);
 
 static HRESULT WINAPI GetCredentialCount(ICredentialProvider *this, DWORD *count,
-    DWORD *default_cred, BOOL *autologon_default);
+                                         DWORD *default_cred, BOOL *autologon_default);
+
 static HRESULT WINAPI GetCredentialAt(ICredentialProvider *this, DWORD index,
-    ICredentialProviderCredential **c);
+                                      ICredentialProviderCredential **c);
 
 /* a helper function for generating our connection array */
 static HRESULT CreateOVPNConnectionArray(OpenVPNProvider *op);
@@ -118,7 +124,7 @@ OpenVPNProvider_free(OpenVPNProvider *this)
     {
         if (this->connections[i])
         {
-            RELEASE((ICCPC*) this->connections[i]);
+            RELEASE((ICCPC *) this->connections[i]);
         }
     }
     /* Destroy GUI threads and any associated data */
@@ -200,7 +206,7 @@ QueryInterface(ICredentialProvider *this, REFIID riid, void **ppv)
  */
 static HRESULT WINAPI
 SetUsageScenario(ICredentialProvider *this,
-    CREDENTIAL_PROVIDER_USAGE_SCENARIO us, UNUSED DWORD flags)
+                 CREDENTIAL_PROVIDER_USAGE_SCENARIO us, UNUSED DWORD flags)
 {
     /* I think flags may be ignored for PLAP */
 
@@ -223,7 +229,7 @@ SetUsageScenario(ICredentialProvider *this,
  */
 static HRESULT WINAPI
 SetSerialization(UNUSED ICredentialProvider *this,
-    UNUSED const CREDENTIAL_PROVIDER_CREDENTIAL_SERIALIZATION *cs)
+                 UNUSED const CREDENTIAL_PROVIDER_CREDENTIAL_SERIALIZATION *cs)
 {
     dmsg(L"Entry");
     return E_NOTIMPL;
@@ -234,7 +240,7 @@ SetSerialization(UNUSED ICredentialProvider *this,
  */
 static HRESULT WINAPI
 Advise(UNUSED ICredentialProvider *this,
-    UNUSED ICredentialProviderEvents *e, UNUSED UINT_PTR ctx)
+       UNUSED ICredentialProviderEvents *e, UNUSED UINT_PTR ctx)
 {
     dmsg(L"Entry");
     return S_OK;
@@ -273,7 +279,7 @@ GetFieldDescriptorCount(UNUSED ICredentialProvider *this, DWORD *count)
  */
 static HRESULT WINAPI
 GetFieldDescriptorAt(UNUSED ICredentialProvider *this, DWORD index,
-    CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR **fd)
+                     CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR **fd)
 {
     HRESULT hr = E_OUTOFMEMORY;
 
@@ -315,7 +321,7 @@ GetFieldDescriptorAt(UNUSED ICredentialProvider *this, DWORD index,
  */
 static HRESULT WINAPI
 GetCredentialCount(ICredentialProvider *this, DWORD *count, DWORD *default_cred,
-    BOOL *autologon_default)
+                   BOOL *autologon_default)
 {
     OpenVPNProvider *op = (OpenVPNProvider *) this;
 
@@ -341,7 +347,7 @@ GetCredentialAt(ICredentialProvider *this, DWORD index, ICredentialProviderCrede
 
     OpenVPNProvider *op = (OpenVPNProvider *) this;
 
-    if(index < op->conn_count && ic)
+    if (index < op->conn_count && ic)
     {
         hr = QUERY_INTERFACE((ICredentialProviderCredential *) op->connections[index],
                              &IID_ICredentialProviderCredential, (void **)ic);
@@ -374,7 +380,7 @@ CreateOVPNConnectionArray(OpenVPNProvider *op)
     /* delete previous connections if any */
     for (size_t i = 0; i < op->conn_count; i++)
     {
-        RELEASE((ICCPC*) op->connections[i]);
+        RELEASE((ICCPC *) op->connections[i]);
     }
     op->conn_count = 0;
 
@@ -404,7 +410,7 @@ CreateOVPNConnectionArray(OpenVPNProvider *op)
             }
             else
             {
-                RELEASE((ICCPC*) oc);
+                RELEASE((ICCPC *) oc);
             }
         }
         else

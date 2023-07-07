@@ -80,9 +80,11 @@ echo_msg_add_fp(struct echo_msg *msg, time_t timestamp)
 
     msg->fp.timestamp = timestamp;
     if (md_init(&ctx, CALG_SHA1) != 0)
+    {
         return;
-    md_update(&ctx, (BYTE*) msg->text, msg->txtlen*sizeof(msg->text[0]));
-    md_update(&ctx, (BYTE*) msg->title, wcslen(msg->title)*sizeof(msg->title[0]));
+    }
+    md_update(&ctx, (BYTE *) msg->text, msg->txtlen*sizeof(msg->text[0]));
+    md_update(&ctx, (BYTE *) msg->title, wcslen(msg->title)*sizeof(msg->title[0]));
     md_final(&ctx, msg->fp.digest);
     return;
 }
@@ -91,15 +93,18 @@ echo_msg_add_fp(struct echo_msg *msg, time_t timestamp)
 static struct echo_msg_history *
 echo_msg_recall(const BYTE *digest, struct echo_msg_history *hist)
 {
-    for( ; hist; hist = hist->next)
+    for (; hist; hist = hist->next)
     {
-        if (memcmp(hist->fp.digest, digest, HASHLEN) == 0) break;
+        if (memcmp(hist->fp.digest, digest, HASHLEN) == 0)
+        {
+            break;
+        }
     }
     return hist;
 }
 
 /* Add an item to message history and return the head of the list */
-static struct echo_msg_history*
+static struct echo_msg_history *
 echo_msg_history_add(struct echo_msg_history *head, const struct echo_msg_fp *fp)
 {
     struct echo_msg_history *hist = malloc(sizeof(struct echo_msg_history));
@@ -137,10 +142,15 @@ echo_msg_persist(connection_t *c)
     for (hist = c->echo_msg.history; hist; hist = hist->next)
     {
         len++;
-        if (len > 99) break; /* max 100 history items persisted */
+        if (len > 99)
+        {
+            break;           /* max 100 history items persisted */
+        }
     }
     if (len == 0)
+    {
         return;
+    }
 
     size_t size = len*sizeof(struct echo_msg_fp);
     struct echo_msg_fp *data = malloc(size);
@@ -156,7 +166,9 @@ echo_msg_persist(connection_t *c)
         data[i++] = hist->fp;
     }
     if (!SetConfigRegistryValueBinary(c->config_name, L"echo_msg_history", (BYTE *) data, size))
+    {
         WriteStatusLog(c, L"GUI> ", L"Failed to persist echo msg history: error writing to registry", false);
+    }
 
     free(data);
     return;
@@ -171,7 +183,9 @@ echo_msg_load(connection_t *c)
 
     size_t size = GetConfigRegistryValue(c->config_name, L"echo_msg_history", NULL, 0);
     if (size == 0)
+    {
         return; /* no history in registry */
+    }
     else if (size%item_len != 0)
     {
         WriteStatusLog(c, L"GUI> ", L"echo msg history in registry has invalid size", false);
@@ -179,11 +193,13 @@ echo_msg_load(connection_t *c)
     }
 
     data = malloc(size);
-    if (!data || !GetConfigRegistryValue(c->config_name, L"echo_msg_history", (BYTE*) data, size))
+    if (!data || !GetConfigRegistryValue(c->config_name, L"echo_msg_history", (BYTE *) data, size))
+    {
         goto out;
+    }
 
     size_t len = size/item_len;
-    for(size_t i = 0; i < len; i++)
+    for (size_t i = 0; i < len; i++)
     {
         c->echo_msg.history = echo_msg_history_add(c->echo_msg.history, &data[i]);
     }
@@ -255,7 +271,7 @@ echo_msg_display(connection_t *c, time_t timestamp, const char *title, int type)
     }
     echo_msg_add_fp(&c->echo_msg, timestamp); /* add fingerprint: digest+timestamp */
 
-     /* Check whether the message is muted */
+    /* Check whether the message is muted */
     if (c->flags & FLAG_DISABLE_ECHO_MSG || echo_msg_repeated(&c->echo_msg))
     {
         return;
@@ -356,7 +372,9 @@ static wchar_t *
 get_text_in_range(HWND h, CHARRANGE chrg)
 {
     if (chrg.cpMax <= chrg.cpMin)
-	return NULL;
+    {
+        return NULL;
+    }
 
     size_t len = chrg.cpMax - chrg.cpMin;
     wchar_t *txt = malloc((len + 1)*sizeof(wchar_t));
@@ -365,9 +383,13 @@ get_text_in_range(HWND h, CHARRANGE chrg)
     {
         TEXTRANGEW txtrg = {chrg, txt};
         if (SendMessage(h, EM_GETTEXTRANGE, 0, (LPARAM)&txtrg) <= 0)
+        {
             txt[0] = '\0';
+        }
         else
+        {
             txt[len] = '\0'; /* safety */
+        }
     }
     return txt;
 }
@@ -392,7 +414,9 @@ OnEnLinkNotify(HWND UNUSED hwnd, ENLINK *el)
         /* get the link text */
         wchar_t *url = get_text_in_range(el->nmhdr.hwndFrom, el->chrg);
         if (url)
+        {
             open_url(url);
+        }
         free(url);
         return 1;
     }
@@ -431,7 +455,7 @@ AddMessageBoxText(HWND hwnd, const wchar_t *text, const wchar_t *title, const wc
         cfm.dwEffects |= CFE_ITALIC;
 
         SendMessage(hmsg, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM) &cfm);
-       /* Align to right */
+        /* Align to right */
         pf.wAlignment = align[1];
         SendMessage(hmsg, EM_SETPARAFORMAT, 0, (LPARAM) &pf);
         SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM) from);
@@ -500,69 +524,70 @@ MessageDialogFunc(HWND hwnd, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
 
     switch (msg)
     {
-    case WM_INITDIALOG:
-        hIcon = LoadLocalizedIcon(ID_ICO_APP);
-        if (hIcon) {
-            SendMessage(hwnd, WM_SETICON, (WPARAM) (ICON_SMALL), (LPARAM) (hIcon));
-            SendMessage(hwnd, WM_SETICON, (WPARAM) (ICON_BIG), (LPARAM) (hIcon));
-        }
-        hmsg = GetDlgItem(hwnd, ID_TXT_MESSAGE);
-        SetWindowText(hwnd, L"OpenVPN Messages");
-        SendMessage(hmsg, EM_SETMARGINS, EC_LEFTMARGIN|EC_RIGHTMARGIN,
-                         MAKELPARAM(side_margin, side_margin));
-        if (LangFlowDirection() == 1)
-        {
-            LONG exstyle = GetWindowLong(hwnd, GWL_EXSTYLE);
-            SetWindowLong(hwnd, GWL_EXSTYLE, exstyle | WS_EX_RTLREADING | WS_EX_LAYOUTRTL);
-            exstyle = GetWindowLong(hmsg, GWL_EXSTYLE);
-            SetWindowLong(hmsg, GWL_EXSTYLE, exstyle | WS_EX_LEFTSCROLLBAR);
-	}
-
-        enable_url_detection(hmsg);
-
-        /* Position the window close to top right corner of the screen */
-        RECT rc;
-        GetWindowRect(hwnd, &rc);
-        OffsetRect(&rc, -rc.left, -rc.top);
-        int ox = GetSystemMetrics(SM_CXSCREEN); /* screen size along x */
-        ox -= rc.right + DPI_SCALE(rand()%50 + 25);
-        int oy = DPI_SCALE(rand()%50 + 25);
-        SetWindowPos(hwnd, HWND_TOP, ox > 0 ? ox:0, oy, 0, 0, SWP_NOSIZE);
-
-        return TRUE;
-
-    case WM_SIZE:
-        hmsg = GetDlgItem(hwnd, ID_TXT_MESSAGE);
-        /* leave some space as top margin */
-        SetWindowPos(hmsg, NULL, 0, top_margin, LOWORD(lParam), HIWORD(lParam)-top_margin, 0);
-        InvalidateRect(hwnd, NULL, TRUE);
-        break;
-
-    /* set the whole client area background to white */
-    case WM_CTLCOLORDLG:
-    case WM_CTLCOLORSTATIC:
-        return (INT_PTR) GetStockObject(WHITE_BRUSH);
-        break;
-
-    case WM_COMMAND:
-        if (LOWORD(wParam) == ID_TXT_MESSAGE)
-        {
-            /* The caret is distracting in a readonly msg box: hide it when we get focus */
-            if (HIWORD(wParam) == EN_SETFOCUS)
+        case WM_INITDIALOG:
+            hIcon = LoadLocalizedIcon(ID_ICO_APP);
+            if (hIcon)
             {
-                HideCaret((HWND)lParam);
+                SendMessage(hwnd, WM_SETICON, (WPARAM) (ICON_SMALL), (LPARAM) (hIcon));
+                SendMessage(hwnd, WM_SETICON, (WPARAM) (ICON_BIG), (LPARAM) (hIcon));
             }
-            else if (HIWORD(wParam) == EN_KILLFOCUS)
+            hmsg = GetDlgItem(hwnd, ID_TXT_MESSAGE);
+            SetWindowText(hwnd, L"OpenVPN Messages");
+            SendMessage(hmsg, EM_SETMARGINS, EC_LEFTMARGIN|EC_RIGHTMARGIN,
+                        MAKELPARAM(side_margin, side_margin));
+            if (LangFlowDirection() == 1)
             {
-                ShowCaret((HWND)lParam);
+                LONG exstyle = GetWindowLong(hwnd, GWL_EXSTYLE);
+                SetWindowLong(hwnd, GWL_EXSTYLE, exstyle | WS_EX_RTLREADING | WS_EX_LAYOUTRTL);
+                exstyle = GetWindowLong(hmsg, GWL_EXSTYLE);
+                SetWindowLong(hmsg, GWL_EXSTYLE, exstyle | WS_EX_LEFTSCROLLBAR);
             }
-        }
-        break;
 
-    /* Must be sent with lParam = connection pointer
-     * Adds the current echo message and shows the window.
-     */
-    case WM_OVPN_ECHOMSG:
+            enable_url_detection(hmsg);
+
+            /* Position the window close to top right corner of the screen */
+            RECT rc;
+            GetWindowRect(hwnd, &rc);
+            OffsetRect(&rc, -rc.left, -rc.top);
+            int ox = GetSystemMetrics(SM_CXSCREEN); /* screen size along x */
+            ox -= rc.right + DPI_SCALE(rand()%50 + 25);
+            int oy = DPI_SCALE(rand()%50 + 25);
+            SetWindowPos(hwnd, HWND_TOP, ox > 0 ? ox : 0, oy, 0, 0, SWP_NOSIZE);
+
+            return TRUE;
+
+        case WM_SIZE:
+            hmsg = GetDlgItem(hwnd, ID_TXT_MESSAGE);
+            /* leave some space as top margin */
+            SetWindowPos(hmsg, NULL, 0, top_margin, LOWORD(lParam), HIWORD(lParam)-top_margin, 0);
+            InvalidateRect(hwnd, NULL, TRUE);
+            break;
+
+        /* set the whole client area background to white */
+        case WM_CTLCOLORDLG:
+        case WM_CTLCOLORSTATIC:
+            return (INT_PTR) GetStockObject(WHITE_BRUSH);
+            break;
+
+        case WM_COMMAND:
+            if (LOWORD(wParam) == ID_TXT_MESSAGE)
+            {
+                /* The caret is distracting in a readonly msg box: hide it when we get focus */
+                if (HIWORD(wParam) == EN_SETFOCUS)
+                {
+                    HideCaret((HWND)lParam);
+                }
+                else if (HIWORD(wParam) == EN_KILLFOCUS)
+                {
+                    ShowCaret((HWND)lParam);
+                }
+            }
+            break;
+
+        /* Must be sent with lParam = connection pointer
+         * Adds the current echo message and shows the window.
+         */
+        case WM_OVPN_ECHOMSG:
         {
             connection_t *c = (connection_t *) lParam;
             wchar_t from[256];
@@ -570,7 +595,9 @@ MessageDialogFunc(HWND hwnd, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
 
             /* strip \n added by _wctime */
             if (wcslen(from) > 0)
+            {
                 from[wcslen(from)-1] = L'\0';
+            }
 
             AddMessageBoxText(hwnd, c->echo_msg.text, c->echo_msg.title, from);
             SetForegroundWindow(hwnd);
@@ -578,16 +605,18 @@ MessageDialogFunc(HWND hwnd, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
         }
         break;
 
-    case WM_NOTIFY:
-        nmh = (NMHDR*) lParam;
-        /* We handle only EN_LINK messages */
-        if (nmh->idFrom == ID_TXT_MESSAGE && nmh->code == EN_LINK)
-            return OnEnLinkNotify(hwnd, (ENLINK*)lParam);
-        break;
+        case WM_NOTIFY:
+            nmh = (NMHDR *) lParam;
+            /* We handle only EN_LINK messages */
+            if (nmh->idFrom == ID_TXT_MESSAGE && nmh->code == EN_LINK)
+            {
+                return OnEnLinkNotify(hwnd, (ENLINK *)lParam);
+            }
+            break;
 
-    case WM_CLOSE:
-        ShowWindow(hwnd, SW_HIDE);
-        return TRUE;
+        case WM_CLOSE:
+            ShowWindow(hwnd, SW_HIDE);
+            return TRUE;
     }
 
     return 0;

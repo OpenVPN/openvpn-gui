@@ -72,7 +72,7 @@ OnStop_(connection_t *c, UNUSED char *msg)
  * in PLAP context.
  */
 static void
-OnInfoMsg_(connection_t* c, char* msg)
+OnInfoMsg_(connection_t *c, char *msg)
 {
     if (strbegins(msg, "CR_TEXT:"))
     {
@@ -167,7 +167,7 @@ InitializeUI(HINSTANCE hinstance)
     WSADATA wsaData;
 
     /* a session local semaphore to detect second instance */
-    HANDLE session_semaphore = InitSemaphore(L"Local\\"PACKAGE_NAME"-PLAP");
+    HANDLE session_semaphore = InitSemaphore(L"Local\\"PACKAGE_NAME "-PLAP");
 
     srand(time(NULL));
     /* try to lock the semaphore, else we are not the first instance */
@@ -188,7 +188,7 @@ InitializeUI(HINSTANCE hinstance)
 
     dmsg(L"Starting OpenVPN UI v%hs", PACKAGE_VERSION);
 
-    if(!GetModuleHandle(_T("RICHED20.DLL")))
+    if (!GetModuleHandle(_T("RICHED20.DLL")))
     {
         LoadLibrary(_T("RICHED20.DLL"));
     }
@@ -202,20 +202,20 @@ InitializeUI(HINSTANCE hinstance)
      * Some handlers are replaced by local functions
      */
     mgmt_rtmsg_handler handler[] = {
-      { ready_,    OnReady },
-      { hold_,     OnHold },
-      { log_,      OnLogLine },
-      { state_,    OnStateChange_ },
-      { password_, OnPassword_ },
-      { proxy_,    OnProxy_ },
-      { stop_,     OnStop_ },
-      { needok_,   OnNeedOk_ },
-      { needstr_,  OnNeedStr_ },
-      { echo_,     OnEcho },
-      { bytecount_,OnByteCount },
-      { infomsg_,  OnInfoMsg_ },
-      { timeout_,  OnTimeout },
-      { 0,         NULL}
+        { ready_,    OnReady },
+        { hold_,     OnHold },
+        { log_,      OnLogLine },
+        { state_,    OnStateChange_ },
+        { password_, OnPassword_ },
+        { proxy_,    OnProxy_ },
+        { stop_,     OnStop_ },
+        { needok_,   OnNeedOk_ },
+        { needstr_,  OnNeedStr_ },
+        { echo_,     OnEcho },
+        { bytecount_, OnByteCount },
+        { infomsg_,  OnInfoMsg_ },
+        { timeout_,  OnTimeout },
+        { 0,         NULL}
     };
 
     InitManagement(handler);
@@ -267,10 +267,14 @@ InitializeUI(HINSTANCE hinstance)
 
     for (connection_t *c = o.chead; c; c = c->next)
     {
-        if (c->flags & FLAG_DAEMON_PERSISTENT) num_persistent++;
+        if (c->flags & FLAG_DAEMON_PERSISTENT)
+        {
+            num_persistent++;
+        }
     }
 
-    if (o.service_state == service_disconnected && num_persistent > 0) {
+    if (o.service_state == service_disconnected && num_persistent > 0)
+    {
         dmsg(L"Attempting to start automatic service");
         StartAutomaticService();
         CheckServiceStatus();
@@ -301,7 +305,7 @@ FindPLAPConnections(connection_t *conn[], size_t max_count)
 }
 
 static void
-WaitOnThread (connection_t *c, DWORD timeout)
+WaitOnThread(connection_t *c, DWORD timeout)
 {
     HANDLE h = OpenThread(THREAD_ALL_ACCESS, FALSE, c->threadId);
     if (!h)
@@ -311,8 +315,8 @@ WaitOnThread (connection_t *c, DWORD timeout)
     }
 
     DWORD exit_code;
-    if (WaitForSingleObject(h, timeout) == WAIT_OBJECT_0 &&
-        GetExitCodeThread(h, &exit_code) && exit_code != STILL_ACTIVE)
+    if (WaitForSingleObject(h, timeout) == WAIT_OBJECT_0
+        && GetExitCodeThread(h, &exit_code) && exit_code != STILL_ACTIVE)
     {
         dmsg(L"Connection thread closed");
         goto out;
@@ -320,7 +324,7 @@ WaitOnThread (connection_t *c, DWORD timeout)
 
     /* Kill the thread */
     dmsg(L"Force terminating a connection thread");
-    TerminateThread (h, 1);
+    TerminateThread(h, 1);
     c->hwndStatus = NULL;
     c->threadId = 0;
 
@@ -365,7 +369,7 @@ GetConnectionStatusText(connection_t *c, wchar_t *status, DWORD len)
 void
 SetParentWindow(HWND hwnd)
 {
-   o.hWnd = hwnd;
+    o.hWnd = hwnd;
 }
 
 void
@@ -442,7 +446,7 @@ DeleteUI(void)
     FreeConfigList(&o);
     CloseSemaphore(o.session_semaphore);
     WSACleanup();
-    memset (&o, 0, sizeof(o));
+    memset(&o, 0, sizeof(o));
 }
 
 void
@@ -527,7 +531,7 @@ RunProgressDialog(connection_t *c, PFTASKDIALOGCALLBACK cb_fn, LONG_PTR cb_data)
         .cButtons = _countof(extra_buttons),
         .pButtons = extra_buttons,
         .dwCommonButtons = TDCBF_CANCEL_BUTTON|TDCBF_RETRY_BUTTON,
-        .pszWindowTitle = L""PACKAGE_NAME" PLAP",
+        .pszWindowTitle = L""PACKAGE_NAME " PLAP",
         .pszMainInstruction = main_text,
         .pszContent = L"Starting", /* updated in progress callback */
         .pfCallback = cb_fn,
