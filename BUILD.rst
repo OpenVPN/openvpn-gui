@@ -6,9 +6,26 @@ This is the recommended way of building openvpn-gui on Windows, which is also us
 Prerequisites
 -------------
 
- - Visual Studio 2022 (build tools should be enough)
+ - Visual Studio 2022 (see below for details)
  - CMake
  - vcpkg (add the environment variable ``VCPKG_ROOT`` which points to vcpkg installation)
+
+Visual Studio Components
+------------------------
+
+Having the Build Tools is enough, you do not need the actual IDE.
+In addition to the Microsoft.VisualStudio.Workload.VCTools workload,
+you might also need the following additional components dependending
+on which architectures you build for:
+
+* Microsoft.VisualStudio.Component.VC.ATL.Spectre
+* Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre
+* Microsoft.VisualStudio.Component.UWP.VC.ARM64
+* Microsoft.VisualStudio.Component.VC.Tools.ARM64
+* Microsoft.VisualStudio.Component.VC.ATL.ARM64.Spectre
+* Microsoft.VisualStudio.Component.VC.MFC.ARM64.Spectre
+* Microsoft.VisualStudio.Component.VC.Runtimes.ARM64.Spectre
+* Microsoft.VisualStudio.Component.VC.Runtimes.x86.x64.Spectre
 
 Build steps
 -----------
