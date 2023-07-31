@@ -30,7 +30,7 @@ BEGIN
     LTEXT "Entrez un mot de passe:", 201, 6, 6, 100, 10
     EDITTEXT ID_EDT_PASSPHRASE, 6, 17, 107, 12, ES_PASSWORD | ES_AUTOHSCROLL
     ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 126, 18, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
-    CHECKBOX "Se souvenir du mot de passe", ID_CHK_SAVE_PASS, 6, 33, 100, 10
+    CHECKBOX "Enregistrer mot de passe", ID_CHK_SAVE_PASS, 6, 33, 100, 10
     PUSHBUTTON "OK", IDOK, 20, 49, 50, 14
     PUSHBUTTON "Annuler", IDCANCEL, 90, 49, 50, 14
     LTEXT "", ID_TXT_WARNING, 6, 65, 100, 10
@@ -48,7 +48,7 @@ BEGIN
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 24, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
-    CHECKBOX "Se souvenir du mot de passe", ID_CHK_SAVE_PASS, 6, 42, 100, 10
+    CHECKBOX "Enregistrer mot de passe", ID_CHK_SAVE_PASS, 6, 42, 100, 10
     PUSHBUTTON "OK", IDOK, 20, 58, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_DISABLED
     PUSHBUTTON "Annuler", IDCANCEL, 90, 58, 52, 14
     LTEXT "", ID_TXT_WARNING, 6, 80, 150, 10
@@ -70,7 +70,7 @@ BEGIN
     ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 24, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
     LTEXT "", ID_TXT_AUTH_CHALLENGE, 6, 43, 148, 10
     EDITTEXT ID_EDT_AUTH_CHALLENGE, 60, 57, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Se souvenir du mot de passe", ID_CHK_SAVE_PASS, 6, 76, 100, 10
+    CHECKBOX "Enregistrer mot de passe", ID_CHK_SAVE_PASS, 6, 76, 100, 10
     PUSHBUTTON "OK", IDOK, 20, 92, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
     PUSHBUTTON "Annuler", IDCANCEL, 90, 92, 52, 14
     LTEXT "", ID_TXT_WARNING, 6, 108, 150, 10
@@ -116,9 +116,9 @@ CAPTION "Changer le mot de passe"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_FRENCH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "Ancien Mot de passe:", 171, 6, 9, 85, 10
-    LTEXT "Nouveau Mot de passe:", 172, 6, 26, 85, 10
-    LTEXT "Confirmer le Mot de passe:", 173, 6, 42, 85, 10
+    LTEXT "Ancien mot de passe:", 171, 6, 9, 85, 10
+    LTEXT "Nouveau mot de passe:", 172, 6, 26, 85, 10
+    LTEXT "Confirmer le mot de passe:", 173, 6, 42, 85, 10
     EDITTEXT ID_EDT_PASS_CUR, 95, 6, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
     EDITTEXT ID_EDT_PASS_NEW, 95, 23, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
     EDITTEXT ID_EDT_PASS_NEW2, 95, 39, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
@@ -443,12 +443,12 @@ Options pour corriger la configuration de registre:\n\
 --editor\t\t\t: Chemin vers l'éditeur de la configuration.\n\
 --allow_edit\t\t: 1=Afficher le menu de la configuration pour l'élément.\n\
 --allow_service\t\t: 1=Afficher le menu Services.\n\
---allow_password\t\t: 1=Afficher le menu de Changement de Mot de passe.\n\
+--allow_password\t\t: 1=Afficher le menu de Changement de mot de passe.\n\
 --allow_proxy\t\t: 1=Afficher le menu de la configuration du Proxy.\n\
 --show_balloon\t\t: 0=Jamais, 1=A la connexion initiale, 2=A toutes les reconnexions.\n\
 --silent_connection\t\t: 1=Ne pas ouvrir le dialogue de Statut à la connexion.\n\
 --show_script_window\t: 0=Cacher la fenêtre d'exécution du script, 1=Afficher la fenêtre.\n\
---passphrase_attempts\t: Nombre de tentatives de Mot de passe permises.\n\
+--passphrase_attempts\t: Nombre de tentatives de mot de passe permises.\n\
 --connectscript_timeout\t: Temps d'attente de terminaison du script.\n\
 --disconnectscript_timeout\t: Temps d'attente de terminaison du script de déconnexion.\n\
 --preconnectscript_timeout\t: Temps d'attente pour la fin du script de préconnexion.\n\
@@ -467,29 +467,29 @@ Utiliser openvpn-gui --help pour plus d'informations."
 
     /* passphrase - Resources */
     IDS_ERR_CREATE_PASS_THREAD "CreateThread pour afficher la dialogue ChangePassphrase échoué."
-    IDS_NFO_CHANGE_PWD "Modification du Mot de passe (%ls)"
+    IDS_NFO_CHANGE_PWD "Modification du mot de passe (%ls)"
     IDS_ERR_PWD_DONT_MATCH "Les mots de passe que vous avez tappé ne correspondent pas, essayez encore."
     IDS_ERR_PWD_TO_SHORT "Le mot de passe que vous avez tappé doit avoir au moins %d caractères."
-    IDS_NFO_EMPTY_PWD "Vous êtes sûr de définir un Mot de passe VIDE ?"
+    IDS_NFO_EMPTY_PWD "Vous êtes sûr de définir un mot de passe VIDE ?"
     IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Format du fichier de clé inconnu."
     IDS_ERR_OPEN_PRIVATE_KEY_FILE "Erreur à l'ouverture de la clé privée (%ls)."
-    IDS_ERR_OLD_PWD_INCORRECT "L'ancien Mot de passe est incorrect."
+    IDS_ERR_OLD_PWD_INCORRECT "L'ancien mot de passe est incorrect."
     IDS_ERR_OPEN_WRITE_KEY "Erreur d'ouverture du fichier de clé privé pour écriture (%ls)."
     IDS_ERR_WRITE_NEW_KEY "Erreur d'écriture du fichier de clé privé (%ls)."
-    IDS_NFO_PWD_CHANGED "Votre Mot de passe a été modifié."
+    IDS_NFO_PWD_CHANGED "Votre mot de passe a été modifié."
     IDS_ERR_READ_PKCS12 "Erreur de lecture du fichier PKCS #12 X509 (%ls)."
-    IDS_ERR_CREATE_PKCS12 "Erreur de création du nouveau fichier PKCS #12 X509. La modification du Mot de passe a échouée."
+    IDS_ERR_CREATE_PKCS12 "Erreur de création du nouveau fichier PKCS #12 X509. La modification du mot de passe a échouée."
     IDS_ERR_OPEN_CONFIG "Impossible d'ouvrir le fichier de la configuration en mode de lecture: (%ls)"
     IDS_ERR_ONLY_ONE_KEY_OPTION "Vous ne pouvez pas avoir plus d'une option ""key"" dans votre fichier de configuration."
     IDS_ERR_ONLY_KEY_OR_PKCS12 "Vous ne pouvez pas avoir à la fois les options ""key"" et ""pkcs12"" dans votre configuration."
     IDS_ERR_ONLY_ONE_PKCS12_OPTION "Vous ne pouvez pas avoir plus d'une option ""pkcs12"" dans votre configuration."
     IDS_ERR_HAVE_KEY_OR_PKCS12 "Votre fichier de configuration ne contient aucune option ""key"" ou ""pkcs12""."
     IDS_ERR_KEY_FILENAME_TO_LONG "Le nom de votre fichier clé est trop long !"
-    IDS_ERR_PASSPHRASE2STDIN "Erreur d'envoi du Mot de passe vers stdin."
+    IDS_ERR_PASSPHRASE2STDIN "Erreur d'envoi du mot de passe vers stdin."
     IDS_ERR_AUTH_USERNAME2STDIN "Erreur d'envoi d'authentification du nom d'utilisateur vers stdin."
-    IDS_ERR_AUTH_PASSWORD2STDIN "Erreur d'envoi d'authentification du Mot de passe vers stdin."
+    IDS_ERR_AUTH_PASSWORD2STDIN "Erreur d'envoi d'authentification du mot de passe vers stdin."
     IDS_ERR_CR2STDIN "Erreur d'envoi du CR vers stdin."
-    IDS_ERR_INVALID_CHARS_IN_PSW "Votre nouveau Mot de passe ne contient des caractères invalides. \
+    IDS_ERR_INVALID_CHARS_IN_PSW "Votre nouveau mot de passe ne contient des caractères invalides. \
 Merci de choisir un autre."
 
     /* settings */
@@ -558,7 +558,7 @@ en tant qu'Administrator pour mettre à jour la base de registre."
     IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN - Mot de passe Token"
     IDS_NFO_TOKEN_PASSWORD_REQUEST "Entrer le mot de passe/PIN pour Token '%hs'"
 
-    IDS_NFO_AUTH_PASS_RETRY "Nom d'utilisateur ou mot de passe incorrect. Réessayer..."
+    IDS_NFO_AUTH_PASS_RETRY "Nom d'utilisateur ou mot de passe incorrect."
     IDS_NFO_KEY_PASS_RETRY  "Mauvais mot de passe. Réessayer..."
     IDS_ERR_INVALID_PASSWORD_INPUT "Caractère invalide dans le mot de passe"
     IDS_ERR_INVALID_USERNAME_INPUT "Caractère invalide dans le nom d'utilisateur"
