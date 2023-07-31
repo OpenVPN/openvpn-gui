@@ -175,9 +175,9 @@ BEGIN
     LTEXT "Connexions persistantes", ID_TXT_PERSISTENT, 17, 185, 100, 10
     AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 200, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "&Manuel", ID_RB_BALLOON4, 86, 200, 90, 10
-    AUTORADIOBUTTON "&Désactiver", ID_RB_BALLOON5, 181, 200, 40, 10
+    AUTORADIOBUTTON "&Désactivé", ID_RB_BALLOON5, 181, 200, 40, 10
     AUTOCHECKBOX "Activer le fournisseur d'&accès à la pré-ouverture de session (nécessite un accès administrateur)", ID_CHK_PLAP_REG, 17, 215, 200, 10
-    AUTOCHECKBOX "Activer le redémarrage automatique des connexions actives", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
+    AUTOCHECKBOX "Activer le redémarrage automatique des connexions activées", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
 END
 
 /* Advanced Dialog */
@@ -546,7 +546,7 @@ en tant qu'Administrator pour mettre à jour la base de registre."
     IDS_ERR_IMPORT_FAILED "Impossible d'importer un fichier. Le chemin suivant n'a pas pu être créé.\n\n\
 %ls\n\nAssurez-vous d'avoir les bonnes autorisations."
     IDS_NFO_IMPORT_SUCCESS "Fichier importé avec succès."
-    IDS_NFO_IMPORT_OVERWRITE "Une configuration nommée ""%ls"" existe déjà. Voulez-vous le remplacer?"
+    IDS_NFO_IMPORT_OVERWRITE "Une configuration nommée ""%ls"" existe déjà. Voulez-vous la remplacer?"
     IDS_NFO_IMPORT_SOURCE "Voulez-vous importer le profil <%ls>?"
     IDS_ERR_IMPORT_SOURCE "Impossible d'importer le fichier <%ls> car il se trouve déjà dans le répertoire de configuration global ou local"
     IDS_ERR_IMPORT_ACCESS "Impossible d'importer <%ls> car il est manquant ou illisible"
@@ -562,7 +562,7 @@ en tant qu'Administrator pour mettre à jour la base de registre."
     IDS_NFO_KEY_PASS_RETRY  "Mauvais mot de passe. Réessayer..."
     IDS_ERR_INVALID_PASSWORD_INPUT "Caractère invalide dans le mot de passe"
     IDS_ERR_INVALID_USERNAME_INPUT "Caractère invalide dans le nom d'utilisateur"
-    IDS_NFO_AUTO_CONNECT    "Connexion automatique dans %u secondes…"
+    IDS_NFO_AUTO_CONNECT    "Connecter automatiquement dans %u secondes…"
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI est déjà en cours d'exécution. Faites un clic droit sur l'icône de la barre d'état pour commencer."
     IDS_NFO_BYTECOUNT "Octets entrants : %ls sortants : %ls"
 
@@ -580,22 +580,22 @@ en tant qu'Administrator pour mettre à jour la base de registre."
     /* PLAP related */
     IDS_NFO_STATE_RETRYING "Réessayer"
     IDS_NFO_STATE_CANCELLING "Annulation"
-    IDS_NFO_STATE_DISCONNECTING Déconnexion"
+    IDS_NFO_STATE_DISCONNECTING "Déconnexion"
     IDS_NFO_CONN_CANCELLED "Connexion annulée par l'utilisateur"
 
     /* openvpn daemon state names -- these are shown on progress dialog in PLAP */
     IDS_NFO_OVPN_STATE_INITIAL      "Initialisation"
-    IDS_NFO_OVPN_STATE_CONNECTING   "Connexion"
+    IDS_NFO_OVPN_STATE_CONNECTING   "Connecté"
     IDS_NFO_OVPN_STATE_ASSIGN_IP    "Attribution d'une adresse IP"
     IDS_NFO_OVPN_STATE_ADD_ROUTES   "Ajouter routes"
     IDS_NFO_OVPN_STATE_CONNECTED    "Connecté"
-    IDS_NFO_OVPN_STATE_RECONNECTING "Reconnexion"
-    IDS_NFO_OVPN_STATE_EXITING      "Sortie"
+    IDS_NFO_OVPN_STATE_RECONNECTING "Reconnecter"
+    IDS_NFO_OVPN_STATE_EXITING      "Quitter"
     IDS_NFO_OVPN_STATE_WAIT         "En attente"
     IDS_NFO_OVPN_STATE_AUTH         "Authentification"
     IDS_NFO_OVPN_STATE_GET_CONFIG   "Extraire la configuration du serveur"
     IDS_NFO_OVPN_STATE_RESOLVE      "Résolution de l'hôte distant"
-    IDS_NFO_OVPN_STATE_TCP_CONNECT  "Établissement de la connexion TCP"
+    IDS_NFO_OVPN_STATE_TCP_CONNECT  "Établir la connexion TCP"
     IDS_NFO_OVPN_STATE_AUTH_PENDING "Authentification en attente"
     IDS_NFO_OVPN_STATE_UNKNOWN      "?"
 
