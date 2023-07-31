@@ -175,9 +175,9 @@ BEGIN
     LTEXT "Connexions persistantes", ID_TXT_PERSISTENT, 17, 185, 100, 10
     AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 200, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "&Manuel", ID_RB_BALLOON4, 86, 200, 90, 10
-    AUTORADIOBUTTON "&Désactivé", ID_RB_BALLOON5, 181, 200, 40, 10
-    AUTOCHECKBOX "Activer le fournisseur d'&accès à la pré-ouverture de session (nécessite un accès administrateur)", ID_CHK_PLAP_REG, 17, 215, 200, 10
-    AUTOCHECKBOX "Activer le redémarrage automatique des connexions activées", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
+    AUTORADIOBUTTON "&Inactif", ID_RB_BALLOON5, 181, 200, 40, 10
+    AUTOCHECKBOX "Activer le fournisseur d'&accès à la pré-ouverture de session", ID_CHK_PLAP_REG, 17, 215, 200, 10
+    AUTOCHECKBOX "Activer le redémarrage auto des connexions activées", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
 END
 
 /* Advanced Dialog */
@@ -219,7 +219,7 @@ BEGIN
     GROUPBOX "Affichage des messages d'écho", 207, 6, 233, 235, 45
     AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 245, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Ja&mais", ID_RB_BALLOON4, 88, 245, 50, 10
-    LTEXT "Les messages répétés sont coupés pour:", 208, 17, 260, 125, 10
+    LTEXT "Aucun messages répétés pour:", 208, 17, 260, 125, 10
     EDITTEXT ID_EDT_POPUP_MUTE, 150, 258, 30, 12, ES_AUTOHSCROLL
     LTEXT "heures", 209, 190, 260, 40, 10
 
@@ -278,7 +278,7 @@ LANGUAGE LANG_FRENCH, SUBLANG_DEFAULT
 BEGIN
     LTEXT "U&RL:", 201, 6, 9, 50, 10
     EDITTEXT ID_EDT_URL, 60, 6, 183, 12, ES_AUTOHSCROLL
-    LTEXT "&Nom d'utilisateur:", 202, 6, 26, 50, 10
+    LTEXT "&Nom:", 202, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 23, 94, 12, ES_AUTOHSCROLL
     LTEXT "&Mot de passe:", ID_LTEXT_PASSWORD, 6, 42, 50, 10
     EDITTEXT ID_EDT_AUTH_PASS, 60, 40, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
@@ -323,7 +323,7 @@ BEGIN
     IDS_MENU_CLOSE "Quitter"
     IDS_MENU_CONNECT "Connecter"
     IDS_MENU_DISCONNECT "Déconnecter"
-    IDS_MENU_RECONNECT "Reconnect"
+    IDS_MENU_RECONNECT "Reprise"
     IDS_MENU_STATUS "Afficher le statut"
     IDS_MENU_VIEWLOG "Voir le log"
     IDS_MENU_EDITCONFIG "Editer la configuration"
