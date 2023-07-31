@@ -219,7 +219,7 @@ BEGIN
     GROUPBOX "Affichage des messages d'écho", 207, 6, 233, 235, 45
     AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 245, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Ja&mais", ID_RB_BALLOON4, 88, 245, 50, 10
-    LTEXT "Aucun messages répétés pour:", 208, 17, 260, 125, 10
+    LTEXT "Aucun messages répétés pendant:", 208, 17, 260, 125, 10
     EDITTEXT ID_EDT_POPUP_MUTE, 150, 258, 30, 12, ES_AUTOHSCROLL
     LTEXT "heures", 209, 190, 260, 40, 10
 
