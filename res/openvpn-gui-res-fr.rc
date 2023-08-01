@@ -104,7 +104,7 @@ BEGIN
     LTEXT "OpenVPN GUI 11.y.0.0/2.4.x", ID_TXT_VERSION, 220, 175, 150, 10
     LTEXT "", ID_TXT_IP, 20, 160, 300, 10
     PUSHBUTTON "Déconnecter", ID_DISCONNECT, 50, 190, 50, 14
-    PUSHBUTTON "Reconnecter", ID_RESTART, 150, 190, 50, 14
+    PUSHBUTTON "Reprendre", ID_RESTART, 150, 190, 50, 14
     PUSHBUTTON "Séparer", ID_DETACH, 180, 190, 50, 14, WS_DISABLED
     PUSHBUTTON "Fermer", ID_HIDE, 100, 190, 50, 14
 END
@@ -323,7 +323,7 @@ BEGIN
     IDS_MENU_CLOSE "Quitter"
     IDS_MENU_CONNECT "Connecter"
     IDS_MENU_DISCONNECT "Déconnecter"
-    IDS_MENU_RECONNECT "Reprise"
+    IDS_MENU_RECONNECT "Reprendre"
     IDS_MENU_STATUS "Afficher le statut"
     IDS_MENU_VIEWLOG "Voir le log"
     IDS_MENU_EDITCONFIG "Editer la configuration"
@@ -334,7 +334,7 @@ BEGIN
     IDS_MENU_SERVICE_RESTART "Redémarrer"
     IDS_MENU_SERVICEONLY_START "Connecter"
     IDS_MENU_SERVICEONLY_STOP "Déconnecter"
-    IDS_MENU_SERVICEONLY_RESTART "Reconnecter"
+    IDS_MENU_SERVICEONLY_RESTART "Reprendre"
     IDS_MENU_ASK_STOP_SERVICE "Voulez-vous vous déconnecter (arrêter le service OpenVPN) ?"
 
     /* Logviewer - Resources */
@@ -589,7 +589,7 @@ en tant qu'Administrator pour mettre à jour la base de registre."
     IDS_NFO_OVPN_STATE_ASSIGN_IP    "Attribution d'une adresse IP"
     IDS_NFO_OVPN_STATE_ADD_ROUTES   "Ajouter routes"
     IDS_NFO_OVPN_STATE_CONNECTED    "Connecté"
-    IDS_NFO_OVPN_STATE_RECONNECTING "Reconnecter"
+    IDS_NFO_OVPN_STATE_RECONNECTING "Reprendre"
     IDS_NFO_OVPN_STATE_EXITING      "Quitter"
     IDS_NFO_OVPN_STATE_WAIT         "En attente"
     IDS_NFO_OVPN_STATE_AUTH         "Authentification"
