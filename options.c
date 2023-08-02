@@ -96,7 +96,7 @@ add_option(options_t *options, int i, TCHAR **p)
 
         LoadLocalizedStringBuf(caption, _countof(caption), IDS_NFO_USAGECAPTION);
         LoadLocalizedStringBuf(msg, _countof(msg), IDS_NFO_USAGE);
-        MessageBoxExW(NULL, msg, caption, MB_OK | MB_SETFOREGROUND | MBOX_RTL_FLAGS, GetGUILanguage());
+        MessageBoxExW(NULL, msg, caption, MB_OK | MB_SETFOREGROUND | MBOX_RTL_FLAGS | MB_ICONINFORMATION, GetGUILanguage());
         exit(0);
     }
     else if (streq(p[0], _T("connect")) && p[1])
