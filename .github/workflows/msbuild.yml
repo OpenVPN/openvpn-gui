@@ -31,6 +31,9 @@ jobs:
     strategy:
       matrix:
         arch: [x86, x64, arm64]
+        conf:
+          - name: ""
+            value: "release"
         ovpn3:
           - preset: ""
             name: ""
@@ -38,8 +41,13 @@ jobs:
           - preset: -ovpn3
             name: "- ovpn3"
             upload_name: "_ovpn3"
+        include:
+          - conf:
+              name: " ASAN"
+              value: "asan"
+            arch: x64
 
-    name: 'msvc - ${{matrix.arch}} ${{ matrix.ovpn3.name }}'
+    name: 'msvc - ${{matrix.arch}} ${{ matrix.ovpn3.name }}${{ matrix.conf.name }}'
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
@@ -55,14 +63,14 @@ jobs:
       uses: lukka/run-cmake@v10
       with:
         configurePreset: '${{ matrix.arch }}${{ matrix.ovpn3.preset }}'
-        buildPreset: '${{ matrix.arch }}-release${{ matrix.ovpn3.preset }}'
+        buildPreset: '${{ matrix.arch }}-${{ matrix.conf.value }}${{ matrix.ovpn3.preset }}'
 
     - uses: actions/upload-artifact@v3
       with:
-        name: openvpn-gui_${{ matrix.arch }}${{ matrix.ovpn3.upload_name }}
+        name: openvpn-gui_${{ matrix.arch }}_${{ matrix.conf }}${{ matrix.ovpn3.upload_name }}
         path: |
-          out/build/${{ matrix.arch }}${{ matrix.ovpn3.preset }}/Release/*.dll
-          out/build/${{ matrix.arch }}${{ matrix.ovpn3.preset }}/Release/*.exe
+          out/build/${{ matrix.arch }}${{ matrix.ovpn3.preset }}/${{ matrix.conf.value }}/*.dll
+          out/build/${{ matrix.arch }}${{ matrix.ovpn3.preset }}/${{ matrix.conf.value }}/*.exe
 
   mingw:
     strategy:
@@ -107,4 +115,3 @@ jobs:
       - name: make
         run: make
         working-directory: openvpn-gui
-

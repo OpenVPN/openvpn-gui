@@ -28,8 +28,24 @@ add_executable(${PROJECT_NAME} WIN32
     res/openvpn-gui-res.rc)
 
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG")
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} /guard:cf /Qspectre")
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /guard:cf /Qspectre")
+if(MSVC)
+    list(APPEND CMAKE_CONFIGURATION_TYPES Asan)
+endif(MSVC)
+
+set(CMAKE_C_FLAGS_ASAN
+    "${CMAKE_C_FLAGS_DEBUG} /fsanitize=address" CACHE STRING
+    "Flags used by the C compiler during AddressSanitizer builds." FORCE)
+
+set(CMAKE_EXE_LINKER_FLAGS_ASAN
+    "${CMAKE_EXE_LINKER_FLAGS_DEBUG}" CACHE STRING
+    "Flags used by the linker during AddressSanitizer builds." FORCE)
+
+set(CMAKE_SHARED_LINKER_FLAGS_ASAN
+    "${CMAKE_SHARED_LINKER_FLAGS_DEBUG}" CACHE STRING
+    "Flags used by the linker during AddressSanitizer builds." FORCE)
+
 set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} /guard:cf /DYNAMICBASE")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd4996 /wd4267 /wd4244")
@@ -160,5 +176,6 @@ if(MSVC)
         "$<$<CONFIG:Release>:/OPT:ICF>")
 endif(MSVC)
 
-set_target_properties(${TEST_PLAP_EXE} PROPERTIES
-                      LINK_FLAGS " /MANIFEST:EMBED /MANIFESTINPUT:${CMAKE_SOURCE_DIR}/plap/test-plap.manifest ")
+target_link_options(${TEST_PLAP_EXE} PRIVATE
+    "/MANIFEST:EMBED"
+    "/MANIFESTINPUT:${CMAKE_SOURCE_DIR}/plap/test-plap.manifest")
