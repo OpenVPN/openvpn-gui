@@ -153,12 +153,6 @@ target_compile_definitions(${TEST_PLAP_EXE} PRIVATE
     HAVE_CONFIG_H)
 
 if(MSVC)
-    # work around msvc generator Debug/Release directory ugliness, doesn't apply for Ninja
-    set_target_properties(${PROJECT_NAME} ${PROJECT_NAME_PLAP} ${TEST_PLAP_EXE} PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<0:>
-        LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<0:>
-        ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<0:>)
-
     target_compile_options(${PROJECT_NAME} PRIVATE "$<$<CONFIG:Release>:/Zi>")
     target_link_options(${PROJECT_NAME} PRIVATE
         "$<$<CONFIG:Release>:/DEBUG:FULL>"
