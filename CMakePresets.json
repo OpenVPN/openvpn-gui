@@ -77,6 +77,11 @@
             "configuration": "Debug"
         },
         {
+            "name": "x64-asan",
+            "configurePreset": "x64",
+            "configuration": "Asan"
+        },
+        {
             "name": "x86-debug",
             "configurePreset": "x86",
             "configuration": "Debug"
