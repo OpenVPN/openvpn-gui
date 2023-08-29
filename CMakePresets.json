@@ -16,37 +16,23 @@
         },
         {
             "name": "x64",
-            "hidden": true,
+            "inherits": "base",
             "architecture": {
                 "value": "x64"
             }
         },
         {
             "name": "arm64",
-            "hidden": true,
+            "inherits": "base",
             "architecture": {
                 "value": "arm64"
             }
         },
         {
             "name": "x86",
-            "hidden": true,
+            "inherits": "base",
             "architecture": {
                 "value": "Win32"
-            }
-        },
-        {
-            "name": "debug",
-            "hidden": true,
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug"
-            }
-        },
-        {
-            "name": "release",
-            "hidden": true,
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release"
             }
         },
         {
@@ -57,113 +43,77 @@
             }
         },
         {
-            "name": "x64-debug",
-            "inherits": [ "base", "x64", "debug" ]
+            "name": "x64-ovpn3",
+            "inherits": [ "x64", "ovpn3" ]
         },
         {
-            "name": "arm64-debug",
-            "inherits": [ "base", "arm64", "debug" ]
+            "name": "arm64-ovpn3",
+            "inherits": [ "arm64", "ovpn3" ]
         },
         {
-            "name": "x86-debug",
-            "inherits": [ "base", "x86", "debug" ]
-        },
-        {
-            "name": "x64-release",
-            "inherits": [ "base", "x64", "release" ]
-        },
-        {
-            "name": "arm64-release",
-            "inherits": [ "base", "arm64", "release" ]
-        },
-        {
-            "name": "x86-release",
-            "inherits": [ "base", "x86", "release" ]
-        },
-        {
-            "name": "x64-debug-ovpn3",
-            "inherits": [ "x64-debug", "ovpn3" ]
-        },
-        {
-            "name": "arm64-debug-ovpn3",
-            "inherits": [ "arm64-debug", "ovpn3" ]
-        },
-        {
-            "name": "x86-debug-ovpn3",
-            "inherits": [ "x86-debug", "ovpn3" ]
-        },
-        {
-            "name": "x64-release-ovpn3",
-            "inherits": [ "x64-release", "ovpn3" ]
-        },
-        {
-            "name": "arm64-release-ovpn3",
-            "inherits": [ "arm64-release", "ovpn3" ]
-        },
-        {
-            "name": "x86-release-ovpn3",
-            "inherits": [ "x86-release", "ovpn3" ]
+            "name": "x86-ovpn3",
+            "inherits": [ "x86", "ovpn3" ]
         }
     ],
     "buildPresets": [
         {
             "name": "x64-release",
-            "configurePreset": "x64-release",
+            "configurePreset": "x64",
             "configuration": "Release"
         },
         {
             "name": "x86-release",
-            "configurePreset": "x86-release",
+            "configurePreset": "x86",
             "configuration": "Release"
         },
         {
             "name": "arm64-release",
-            "configurePreset": "arm64-release",
+            "configurePreset": "arm64",
             "configuration": "Release"
         },
         {
             "name": "x64-debug",
-            "configurePreset": "x64-debug",
+            "configurePreset": "x64",
             "configuration": "Debug"
         },
         {
             "name": "x86-debug",
-            "configurePreset": "x86-debug",
+            "configurePreset": "x86",
             "configuration": "Debug"
         },
         {
             "name": "arm64-debug",
-            "configurePreset": "arm64-debug",
+            "configurePreset": "arm64",
             "configuration": "Debug"
         },
         {
             "name": "x64-release-ovpn3",
-            "configurePreset": "x64-release-ovpn3",
+            "configurePreset": "x64-ovpn3",
             "configuration": "Release"
         },
         {
             "name": "x86-release-ovpn3",
-            "configurePreset": "x86-release-ovpn3",
+            "configurePreset": "x86-ovpn3",
             "configuration": "Release"
         },
         {
             "name": "arm64-release-ovpn3",
-            "configurePreset": "arm64-release-ovpn3",
+            "configurePreset": "arm64-ovpn3",
             "configuration": "Release"
         },
         {
             "name": "x64-debug-ovpn3",
-            "configurePreset": "x64-debug-ovpn3",
+            "configurePreset": "x64-ovpn3",
             "configuration": "Debug"
         },
         {
             "name": "x86-debug-ovpn3",
-            "configurePreset": "x86-debug-ovpn3",
+            "configurePreset": "x86-ovpn3",
             "configuration": "Debug"
         },
         {
             "name": "arm64-debug-ovpn3",
-            "configurePreset": "arm64-debug-ovpn3",
+            "configurePreset": "arm64-ovpn3",
             "configuration": "Debug"
         }
     ]
