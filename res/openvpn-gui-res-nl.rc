@@ -310,7 +310,6 @@ BEGIN
     IDS_LANGUAGE_NAME "Nederlands - Dutch"
 
     /* Tray – Resources */
-    IDS_TIP_DEFAULT "OpenVPN GUI "
     IDS_TIP_CONNECTED "\nVerbonden met: "
     IDS_TIP_CONNECTING "\nVerbinden met: "
     IDS_TIP_CONNECTED_SINCE "\nVerbonden sinds: "

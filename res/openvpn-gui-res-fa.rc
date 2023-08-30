@@ -318,7 +318,6 @@ BEGIN
     IDS_LANGUAGE_NAME "فارسی - Persian(Farsi)"
 
     /* Tray – Resources */
-    IDS_TIP_DEFAULT "رابط گرافیکی OpenVPN "
     IDS_TIP_CONNECTED "\nاتصال به: "
     IDS_TIP_CONNECTING "\nدر حال اتصال به: "
     IDS_TIP_CONNECTED_SINCE "\nمتصل شده به: "

@@ -310,7 +310,6 @@ BEGIN
     IDS_LANGUAGE_NAME "Українська - Ukrainian"
 
     /* Tray - Resources */
-    IDS_TIP_DEFAULT "OpenVPN GUI "
     IDS_TIP_CONNECTED "\nЗ'єднано з узлом: "
     IDS_TIP_CONNECTING "\nЗ'єднання з: "
     IDS_TIP_CONNECTED_SINCE "\nЗ'єднано з такого часу: "

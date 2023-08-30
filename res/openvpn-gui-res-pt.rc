@@ -308,7 +308,6 @@ BEGIN
     IDS_LANGUAGE_NAME "Português - Portuguese"
 
     /* Tray - Resources */
-    IDS_TIP_DEFAULT "OpenVPN GUI "
     IDS_TIP_CONNECTED "\nConectado a: "
     IDS_TIP_CONNECTING "\nConectando a: "
     IDS_TIP_CONNECTED_SINCE "\nConectado desde: "

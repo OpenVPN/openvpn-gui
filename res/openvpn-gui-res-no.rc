@@ -309,7 +309,6 @@ BEGIN
     IDS_LANGUAGE_NAME "Norsk - Norwegian"
 
     /* Tray - Resources */
-    IDS_TIP_DEFAULT "OpenVPN Brukergrensesnitt"
     IDS_TIP_CONNECTED "\nTilkoblet: "
     IDS_TIP_CONNECTING "\nKobler til: "
     IDS_TIP_CONNECTED_SINCE "\nTilkoblet siden: "

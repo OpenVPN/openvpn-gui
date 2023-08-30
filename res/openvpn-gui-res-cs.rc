@@ -310,7 +310,6 @@ BEGIN
     IDS_LANGUAGE_NAME "Česky - Czech"
 
     /* Tray - Resources */
-    IDS_TIP_DEFAULT "OpenVPN GUI "
     IDS_TIP_CONNECTED "\nPřipojeno: "
     IDS_TIP_CONNECTING "\nPřipojování: "
     IDS_TIP_CONNECTED_SINCE "\nPřipojeno od: "
