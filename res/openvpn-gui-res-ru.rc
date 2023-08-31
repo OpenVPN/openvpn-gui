@@ -311,7 +311,6 @@ BEGIN
     IDS_LANGUAGE_NAME "Русский - Russian"
 
     /* Tray - Resources */
-    IDS_TIP_DEFAULT "Графический интерфейс OpenVPN"
     IDS_TIP_CONNECTED "\nПодключен к: "
     IDS_TIP_CONNECTING "\nПодключение к: "
     IDS_TIP_CONNECTED_SINCE "\nПодключен с: "

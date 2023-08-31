@@ -171,7 +171,6 @@
  */
 
 /* Tray Tooltips */
-#define IDS_TIP_DEFAULT                 1000
 #define IDS_TIP_CONNECTED               1001
 #define IDS_TIP_CONNECTING              1003
 #define IDS_TIP_CONNECTED_SINCE         1004

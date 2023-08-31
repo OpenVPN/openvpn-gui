@@ -311,7 +311,6 @@ BEGIN
     IDS_LANGUAGE_NAME "Deutsch – German"
 
     /* Tray – Resources */
-    IDS_TIP_DEFAULT "OpenVPN GUI"
     IDS_TIP_CONNECTED "\nVerbunden mit: "
     IDS_TIP_CONNECTING "\nVerbinden mit: "
     IDS_TIP_CONNECTED_SINCE "\nVerbunden seit: "

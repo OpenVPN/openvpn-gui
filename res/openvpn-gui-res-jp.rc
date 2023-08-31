@@ -310,7 +310,6 @@ BEGIN
     IDS_LANGUAGE_NAME "日本語 - Japanese"
 
     /* Tray - Resources */
-    IDS_TIP_DEFAULT "OpenVPN GUI "
     IDS_TIP_CONNECTED "\n接続済み: "
     IDS_TIP_CONNECTING "\n接続中: "
     IDS_TIP_CONNECTED_SINCE "\n接続時間: "

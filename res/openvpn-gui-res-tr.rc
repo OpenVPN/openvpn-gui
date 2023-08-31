@@ -310,7 +310,6 @@ BEGIN
     IDS_LANGUAGE_NAME "Türkçe - Turkish"
 
     /* Tray - Resources */
-    IDS_TIP_DEFAULT "OpenVPN GUI "
     IDS_TIP_CONNECTED "\nBağlanıldı: "
     IDS_TIP_CONNECTING "\nBağlanılıyor: "
     IDS_TIP_CONNECTED_SINCE "\nBağlanıldı: "

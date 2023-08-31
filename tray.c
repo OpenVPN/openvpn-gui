@@ -434,7 +434,7 @@ ShowTrayIcon()
     ni.uFlags = NIF_MESSAGE | NIF_TIP | NIF_ICON;
     ni.uCallbackMessage = WM_NOTIFYICONTRAY;
     ni.hIcon = LoadLocalizedSmallIcon(ID_ICO_DISCONNECTED);
-    _tcsncpy(ni.szTip, LoadLocalizedString(IDS_TIP_DEFAULT), _countof(ni.szTip));
+    _tcsncpy(ni.szTip, _T(PACKAGE_NAME), _countof(_T(PACKAGE_NAME)));
 
     Shell_NotifyIcon(NIM_ADD, &ni);
 }
@@ -449,7 +449,7 @@ SetTrayIcon(conn_state_t state)
     UINT icon_id;
     connection_t *cc = NULL; /* a connected config */
 
-    _tcsncpy(msg, LoadLocalizedString(IDS_TIP_DEFAULT), _countof(ni.szTip));
+    _tcsncpy(msg, _T(PACKAGE_NAME), _countof(_T(PACKAGE_NAME)));
     _tcsncpy(msg_connected, LoadLocalizedString(IDS_TIP_CONNECTED), _countof(msg_connected));
     _tcsncpy(msg_connecting, LoadLocalizedString(IDS_TIP_CONNECTING), _countof(msg_connecting));
 
