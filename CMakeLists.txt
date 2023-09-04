@@ -30,9 +30,7 @@ add_executable(${PROJECT_NAME} WIN32
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG")
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} /guard:cf /Qspectre")
 
-if(MSVC)
-    list(APPEND CMAKE_CONFIGURATION_TYPES Asan)
-endif(MSVC)
+list(APPEND CMAKE_CONFIGURATION_TYPES Asan)
 
 set(CMAKE_C_FLAGS_ASAN
     "${CMAKE_C_FLAGS_DEBUG} /fsanitize=address" CACHE STRING
@@ -168,13 +166,11 @@ target_compile_definitions(${TEST_PLAP_EXE} PRIVATE
     WIN32_LEAN_AND_MEAN
     HAVE_CONFIG_H)
 
-if(MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE "$<$<CONFIG:Release>:/Zi>")
-    target_link_options(${PROJECT_NAME} PRIVATE
-        "$<$<CONFIG:Release>:/DEBUG:FULL>"
-        "$<$<CONFIG:Release>:/OPT:REF>"
-        "$<$<CONFIG:Release>:/OPT:ICF>")
-endif(MSVC)
+target_compile_options(${PROJECT_NAME} PRIVATE "$<$<CONFIG:Release>:/Zi>")
+target_link_options(${PROJECT_NAME} PRIVATE
+    "$<$<CONFIG:Release>:/DEBUG:FULL>"
+    "$<$<CONFIG:Release>:/OPT:REF>"
+    "$<$<CONFIG:Release>:/OPT:ICF>")
 
 target_link_options(${TEST_PLAP_EXE} PRIVATE
     "/MANIFEST:EMBED"
