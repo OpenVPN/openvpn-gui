@@ -9,9 +9,6 @@
 /* Define to the full name of this package. */
 #define PACKAGE_NAME "OpenVPN GUI"
 
-/* Define to the full name and version of this package. */
-#define PACKAGE_STRING "OpenVPN GUI 11"
-
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "openvpn-gui"
 

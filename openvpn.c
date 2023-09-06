@@ -2719,11 +2719,11 @@ LaunchOpenVPN(connection_t *c)
 
     /* Construct command line -- put log first */
     _sntprintf_0(cmdline, _T("openvpn --log%ls \"%ls\" --config \"%ls\" "
-                             "--setenv IV_GUI_VER \"%hs\" --setenv IV_SSO openurl,webauth,crtext --service %ls 0 --auth-retry interact "
+                             "--setenv IV_GUI_VER \"%hs %hs\" --setenv IV_SSO openurl,webauth,crtext --service %ls 0 --auth-retry interact "
                              "--management %hs %hd stdin --management-query-passwords %ls"
                              "--management-hold"),
                  (o.log_append ? _T("-append") : _T("")), c->log_path,
-                 c->config_file, PACKAGE_STRING, exit_event_name,
+                 c->config_file, PACKAGE_NAME, PACKAGE_VERSION_RESOURCE_STR, exit_event_name,
                  inet_ntoa(c->manage.skaddr.sin_addr), ntohs(c->manage.skaddr.sin_port),
                  (o.proxy_source != config ? _T("--management-query-proxy ") : _T("")));
 
