@@ -34,7 +34,7 @@ Run inside MSVC command prompt:
 
 .. code-block::
 
-    c:\Temp\openvpn-gui>cmake -S . --preset x64-release
+    c:\Temp\openvpn-gui>cmake -S . --preset x64
     c:\Temp\openvpn-gui>cmake --build --preset x64-release
 
 To see all presets, run:
@@ -43,12 +43,12 @@ To see all presets, run:
 
   C:\Users\lev\Projects\openvpn-gui>cmake -S c:\Users\lev\Projects\openvpn-gui --list-presets
   Available configure presets:
-  "x64-debug"
-  "arm64-debug"
-  "x86-debug"
-  "x64-release"
-  "arm64-release"
-  "x86-release"
+  "x64"
+  "arm64"
+  "x86"
+  "x64-ovpn3"
+  "arm64-ovpn3"
+  "x86-ovpn3"
 
 You could also open CMake project from MSVC IDE and build from there.
 
