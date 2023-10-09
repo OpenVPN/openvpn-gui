@@ -426,7 +426,7 @@ View log file (%ls) for more details."
     IDS_NFO_ACTIVE_CONN_EXIT "There are still active connections that will be closed if you exit OpenVPN GUI.\
 \n\nAre you sure you want to exit?"
     IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>. \
-The management parameter is required for configs located in the config-auto folder."
+Attaching to auto-started connections require --management option in the config file."
     IDS_NFO_SERVICE_ACTIVE_EXIT "You are currently connected (the OpenVPN Service is running). \
 You will stay connected even if you exit OpenVPN GUI.\n\n\
 Do you want to proceed and exit OpenVPN GUI?"
