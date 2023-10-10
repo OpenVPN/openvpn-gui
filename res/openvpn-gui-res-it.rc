@@ -411,7 +411,8 @@ Per maggiori dettagli consulta il file log (%ls) ."
     IDS_NFO_SERVICE_STOPPED "Servizio OpenVPN arrestato."
     IDS_NFO_ACTIVE_CONN_EXIT "Ci sono ancora connessioni attive che verranno chiuse se esci dall'interfaccia di OpenVPN.\
 \n\nSei sicuro di voler uscire?"
-    IDS_ERR_PARSE_MGMT_OPTION "Impossibile analizzare l'opzione --management in <%ls%ls>."
+    IDS_ERR_PARSE_MGMT_OPTION "Impossibile analizzare l'opzione --management in <%ls%ls>. \
+L'allegato alla connessione automatica richiede l'opzione --management nel file config."
     IDS_NFO_SERVICE_ACTIVE_EXIT "Al momento sei connesso (il servizio di OpenVPN è in funzione). \
 Se esci dall'interfaccia di OpenVPN rimarrai comunque connesso.\n\n\
 Vuoi continuare e uscire dall'interfaccia di OpenVPN?"
