@@ -28,6 +28,7 @@
 #include <shellapi.h>
 #include <tchar.h>
 #include <time.h>
+#include <commctrl.h>
 
 #include "tray.h"
 #include "main.h"
@@ -47,6 +48,10 @@ int hmenu_size = 0; /* allocated size of hMenuConn array */
 HBITMAP hbmpConnecting;
 
 NOTIFYICONDATA ni;
+HWND traytip; /* handle of tooltip window for tray icon */
+TOOLINFO ti;  /* global tool info structure for tool tip of tray icon*/
+WCHAR tip_msg[500]; /* global buffer for tray tip message */
+
 extern options_t o;
 
 #define USE_NESTED_CONFIG_MENU ((o.config_menu_view == CONFIG_VIEW_AUTO && o.num_configs > 25)   \
@@ -352,6 +357,33 @@ RecreatePopupMenus(void)
 }
 
 /*
+ * Position tool tip window so that it does not overlap with the mouse position
+ * and does not spill out of the screen. If mouse location overlaps, NIM_POPUPCLOSE
+ * and NIM_POPUPOPEN will trigger continuously.
+ * Account for the possibility that the taskbar could be at the bottom, right, top
+ * or left edge of the screen.
+ *
+ * On input (x, y) is the mouse position that triggered the display of tooltip
+ */
+static void
+PositionTrayToolTip(LONG x, LONG y)
+{
+    RECT r;
+    LONG cxmax = GetSystemMetrics(SM_CXSCREEN);
+    GetWindowRect(traytip, &r);
+    LONG w = r.right - r.left;
+    LONG h = r.bottom - r.top;
+    /* - vertically, position the bottom of the window 10 pixels above y or top of the window
+     *   10 pixels below y depending on whether we are closer to the bottom or top of the screen.
+     * - horizontally, try to centre around x adjusting for overflow to the right or left
+     */
+    r.left = (x < w/2) ? 0 : ((x + w/2 < cxmax) ? x - w/2 : cxmax - w);
+    r.top = (y > h + 10) ?  y - (h + 10) : y + 10;
+    SendMessageW(traytip, TTM_TRACKPOSITION, 0, MAKELONG(r.left, r.top));
+    SetWindowPos(traytip, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE|SWP_NOMOVE);
+}
+
+/*
  * Handle mouse clicks on tray icon
  */
 void
@@ -359,7 +391,8 @@ OnNotifyTray(LPARAM lParam)
 {
     POINT pt;
 
-    switch (lParam)
+    /* Use LOWORD(lParam)  as HIWORD() contains the icon id if uVersion >= 4 */
+    switch (LOWORD(lParam))
     {
         case WM_RBUTTONUP:
             RecreatePopupMenus();
@@ -401,6 +434,23 @@ OnNotifyTray(LPARAM lParam)
         }
         break;
 
+        /* handle messages when mouse enters and leaves the icon -- we show the custom tooltip window */
+        case NIN_POPUPOPEN:
+            if (traytip)
+            {
+                GetCursorPos(&pt);
+                SendMessageW(traytip, TTM_TRACKACTIVATE, (WPARAM)TRUE, (LPARAM) &ti);
+                PositionTrayToolTip(pt.x, pt.y); /* taking position from wParam do snot work on Win11! */
+            }
+            break;
+
+        case NIN_POPUPCLOSE:
+            if (traytip)
+            {
+                SendMessageW(traytip, TTM_TRACKACTIVATE, (WPARAM)FALSE, 0);
+            }
+            break;
+
         case WM_OVPN_RESCAN:
             /* Rescan config folders and recreate popup menus */
             RecreatePopupMenus();
@@ -415,6 +465,11 @@ RemoveTrayIcon()
     {
         Shell_NotifyIcon(NIM_DELETE, &ni);
         CLEAR(ni);
+    }
+    if (traytip)
+    {
+        DestroyWindow(traytip);
+        traytip = NULL;
     }
 }
 
@@ -435,32 +490,59 @@ ShowTrayIcon()
     ni.uCallbackMessage = WM_NOTIFYICONTRAY;
     ni.hIcon = LoadLocalizedSmallIcon(ID_ICO_DISCONNECTED);
     _tcsncpy(ni.szTip, _T(PACKAGE_NAME), _countof(_T(PACKAGE_NAME)));
+    ni.uVersion = NOTIFYICON_VERSION_4;
 
     Shell_NotifyIcon(NIM_ADD, &ni);
+
+    /* try to set version 4 and a custom tooltip window */
+    if (Shell_NotifyIcon(NIM_SETVERSION, &ni))
+    {
+        /* create a custom tooltip for the tray */
+        traytip = CreateWindowEx(0, TOOLTIPS_CLASS, NULL, WS_POPUP |TTS_ALWAYSTIP,
+                                 CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+                                 o.hWnd, NULL, o.hInstance, NULL);
+        if (!traytip) /* revert the version back so that we can use legacy ni.szTip for tip text */
+        {
+            ni.uVersion = 0;
+            Shell_NotifyIcon(NIM_SETVERSION, &ni);
+        }
+    }
+
+    if (traytip)
+    {
+        LONG cx = GetSystemMetrics(SM_CXSCREEN)/4; /* max width of tray tooltip = 25% of screen */
+        ti.cbSize = sizeof(ti);
+        ti.uId = (UINT_PTR) traytip;
+        ti.uFlags = TTF_ABSOLUTE|TTF_TRACK|TTF_IDISHWND;
+        ti.hwnd = o.hWnd;
+        ti.lpszText = L" ";
+        SendMessage(traytip, TTM_ADDTOOL, 0, (LPARAM)&ti);
+        SendMessage(traytip, TTM_SETTITLE, TTI_NONE, (LPARAM) _T(PACKAGE_NAME));
+        SendMessage(traytip, TTM_SETMAXTIPWIDTH, 0, (LPARAM) cx);
+    }
 }
 
 void
 SetTrayIcon(conn_state_t state)
 {
-    TCHAR msg[500];
     TCHAR msg_connected[100];
     TCHAR msg_connecting[100];
     BOOL first_conn;
     UINT icon_id;
     connection_t *cc = NULL; /* a connected config */
 
-    _tcsncpy(msg, _T(PACKAGE_NAME), _countof(_T(PACKAGE_NAME)));
     _tcsncpy(msg_connected, LoadLocalizedString(IDS_TIP_CONNECTED), _countof(msg_connected));
     _tcsncpy(msg_connecting, LoadLocalizedString(IDS_TIP_CONNECTING), _countof(msg_connecting));
 
+    tip_msg[0] = L'\0';
     first_conn = TRUE;
     for (connection_t *c = o.chead; c; c = c->next)
     {
         if (c->state == connected)
         {
             /* Append connection name to Icon Tip Msg */
-            _tcsncat(msg, (first_conn ? msg_connected : _T(", ")), _countof(msg) - _tcslen(msg) - 1);
-            _tcsncat(msg, c->config_name, _countof(msg) - _tcslen(msg) - 1);
+            _tcsncat(tip_msg, (first_conn ? msg_connected : _T(", ")), _countof(tip_msg) - _tcslen(tip_msg) - 1);
+            _tcsncat(tip_msg, c->config_name, _countof(tip_msg) - _tcslen(tip_msg) - 1);
             first_conn = FALSE;
             cc = c;
         }
@@ -472,8 +554,8 @@ SetTrayIcon(conn_state_t state)
         if (c->state == connecting || c->state == resuming || c->state == reconnecting)
         {
             /* Append connection name to Icon Tip Msg */
-            _tcsncat(msg, (first_conn ? msg_connecting : _T(", ")), _countof(msg) - _tcslen(msg) - 1);
-            _tcsncat(msg, c->config_name, _countof(msg) - _tcslen(msg) - 1);
+            _tcsncat(tip_msg, (first_conn ? msg_connecting : _T(", ")), _countof(tip_msg) - _tcslen(tip_msg) - 1);
+            _tcsncat(tip_msg, c->config_name, _countof(tip_msg) - _tcslen(tip_msg) - 1);
             first_conn = FALSE;
         }
     }
@@ -482,16 +564,26 @@ SetTrayIcon(conn_state_t state)
     {
         /* Append "Connected since and assigned IP" to message */
         TCHAR time[50];
+        WCHAR ip[64];
+
+        /* If there is not enough space in the message to add time and IP, truncate it.
+         * This works only if custom tooltip window is in use.
+         * Include about 50 characters for "Connected since:" and "Assigned IP:" prefixes.
+         */
+        size_t max_msglen = _countof(tip_msg) - (_countof(time) + _countof(ip) + 50);
+        if (wcslen(tip_msg)  > max_msglen && traytip)
+        {
+            wcsncpy_s(&tip_msg[max_msglen-1], 2, L"…", _TRUNCATE);
+        }
 
         LocalizedTime(cc->connected_since, time, _countof(time));
-        _tcsncat(msg, LoadLocalizedString(IDS_TIP_CONNECTED_SINCE), _countof(msg) - _tcslen(msg) - 1);
-        _tcsncat(msg, time, _countof(msg) - _tcslen(msg) - 1);
+        _tcsncat(tip_msg, LoadLocalizedString(IDS_TIP_CONNECTED_SINCE), _countof(tip_msg) - _tcslen(tip_msg) - 1);
+        _tcsncat(tip_msg, time, _countof(tip_msg) - _tcslen(tip_msg) - 1);
 
         /* concatenate ipv4 and ipv6 addresses into one string */
-        WCHAR ip[64];
         wcs_concat2(ip, _countof(ip), cc->ip, cc->ipv6, L", ");
         WCHAR *assigned_ip = LoadLocalizedString(IDS_TIP_ASSIGNED_IP, ip);
-        _tcsncat(msg, assigned_ip, _countof(msg) - _tcslen(msg) - 1);
+        _tcsncat(tip_msg, assigned_ip, _countof(tip_msg) - _tcslen(tip_msg) - 1);
     }
 
     icon_id = ID_ICO_CONNECTING;
@@ -508,9 +600,24 @@ SetTrayIcon(conn_state_t state)
     ni.uID = 0;
     ni.hWnd = o.hWnd;
     ni.hIcon = LoadLocalizedSmallIcon(icon_id);
-    ni.uFlags = NIF_MESSAGE | NIF_TIP | NIF_ICON;
+    ni.uFlags = NIF_MESSAGE | NIF_ICON;
     ni.uCallbackMessage = WM_NOTIFYICONTRAY;
-    _tcsncpy(ni.szTip, msg, _countof(ni.szTip));
+
+    if (traytip)
+    {
+        /* Set msg as the tool tip text -- skip the leading "\n" */
+        WCHAR *msgp = tip_msg;
+        msgp += (msgp[0] == L'\n') ? 1 : 0;
+        /* tool tip window needs a non-empty text to show */
+        ti.lpszText = wcslen(msgp) ? msgp : L" ";
+        SendMessage(traytip, TTM_UPDATETIPTEXT, 0, (LPARAM) &ti);
+    }
+    else
+    {
+        wcsncpy_s(ni.szTip, _countof(ni.szTip), _T(PACKAGE_NAME), _TRUNCATE);
+        wcsncat_s(ni.szTip, _countof(ni.szTip), tip_msg, _TRUNCATE);
+        ni.uFlags |= NIF_TIP;
+    }
 
     Shell_NotifyIcon(NIM_MODIFY, &ni);
 }
