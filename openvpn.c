@@ -438,6 +438,10 @@ OnStateChange(connection_t *c, char *data)
             SetStatusWinIcon(c->hwndStatus, ID_ICO_CONNECTING);
         }
     }
+    else
+    {
+        CheckAndSetTrayIcon();
+    }
 }
 
 static void
