@@ -1,3 +1,38 @@
+Version 11.49.0
+===============
+
+Bugfixes
+--------
+* Fix crash when password contains space, \ or "
+
+Version 11.48.0
+===============
+
+Bugfixes
+--------
+* Fix truncation of text in tooltip
+
+Version 11.47.0
+===============
+
+Bugfixes
+--------
+* Fix tray icon state change for persistent connections
+
+Version 11.46.0
+===============
+
+Version 11.45.0
+===============
+* Cmake build system updates
+* Include full version in IV_GUI_VER
+
+Version 11.44.0
+===============
+* BUILD.rst documentation updates
+* Reformat using uncrustify
+* Remove obsolete options from --help output
+
 Version 11.43.0
 ===============
 
