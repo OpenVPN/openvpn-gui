@@ -50,7 +50,6 @@ HBITMAP hbmpConnecting;
 NOTIFYICONDATA ni;
 HWND traytip; /* handle of tooltip window for tray icon */
 TOOLINFO ti;  /* global tool info structure for tool tip of tray icon*/
-WCHAR tip_msg[500]; /* global buffer for tray tip message */
 
 extern options_t o;
 
@@ -515,9 +514,8 @@ ShowTrayIcon()
         ti.uId = (UINT_PTR) traytip;
         ti.uFlags = TTF_ABSOLUTE|TTF_TRACK|TTF_IDISHWND;
         ti.hwnd = o.hWnd;
-        ti.lpszText = L" ";
+        ti.lpszText = _T(PACKAGE_NAME);
         SendMessage(traytip, TTM_ADDTOOL, 0, (LPARAM)&ti);
-        SendMessage(traytip, TTM_SETTITLE, TTI_NONE, (LPARAM) _T(PACKAGE_NAME));
         SendMessage(traytip, TTM_SETMAXTIPWIDTH, 0, (LPARAM) cx);
     }
 }
@@ -525,6 +523,7 @@ ShowTrayIcon()
 void
 SetTrayIcon(conn_state_t state)
 {
+    WCHAR tip_msg[500];
     TCHAR msg_connected[100];
     TCHAR msg_connecting[100];
     BOOL first_conn;
@@ -534,7 +533,7 @@ SetTrayIcon(conn_state_t state)
     _tcsncpy(msg_connected, LoadLocalizedString(IDS_TIP_CONNECTED), _countof(msg_connected));
     _tcsncpy(msg_connecting, LoadLocalizedString(IDS_TIP_CONNECTING), _countof(msg_connecting));
 
-    tip_msg[0] = L'\0';
+    wcsncpy_s(tip_msg, _countof(tip_msg), _T(PACKAGE_NAME), _TRUNCATE);
     first_conn = TRUE;
     for (connection_t *c = o.chead; c; c = c->next)
     {
@@ -605,17 +604,12 @@ SetTrayIcon(conn_state_t state)
 
     if (traytip)
     {
-        /* Set msg as the tool tip text -- skip the leading "\n" */
-        WCHAR *msgp = tip_msg;
-        msgp += (msgp[0] == L'\n') ? 1 : 0;
-        /* tool tip window needs a non-empty text to show */
-        ti.lpszText = wcslen(msgp) ? msgp : L" ";
+        ti.lpszText = tip_msg;
         SendMessage(traytip, TTM_UPDATETIPTEXT, 0, (LPARAM) &ti);
     }
     else
     {
-        wcsncpy_s(ni.szTip, _countof(ni.szTip), _T(PACKAGE_NAME), _TRUNCATE);
-        wcsncat_s(ni.szTip, _countof(ni.szTip), tip_msg, _TRUNCATE);
+        wcsncpy_s(ni.szTip, _countof(ni.szTip), tip_msg, _TRUNCATE);
         ni.uFlags |= NIF_TIP;
     }
 
