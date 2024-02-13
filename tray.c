@@ -39,6 +39,11 @@
 #include "localization.h"
 #include "misc.h"
 
+#ifndef GUID_NULL
+#include <initguid.h>
+DEFINE_GUID(GUID_NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+#endif
+
 /* Popup Menus */
 HMENU hMenu;
 HMENU *hMenuConn;
@@ -437,9 +442,12 @@ OnNotifyTray(LPARAM lParam)
         case NIN_POPUPOPEN:
             if (traytip)
             {
-                GetCursorPos(&pt);
+                NOTIFYICONIDENTIFIER nid = {.cbSize = sizeof(nid), .hWnd = o.hWnd,
+                                            .uID = HIWORD(lParam), .guidItem = GUID_NULL};
+                RECT r = {0};
+                Shell_NotifyIconGetRect(&nid, &r);
                 SendMessageW(traytip, TTM_TRACKACTIVATE, (WPARAM)TRUE, (LPARAM) &ti);
-                PositionTrayToolTip(pt.x, pt.y); /* taking position from wParam do snot work on Win11! */
+                PositionTrayToolTip((r.left+r.right)/2, r.top);
             }
             break;
 
@@ -513,6 +521,10 @@ ShowTrayIcon()
         ti.cbSize = sizeof(ti);
         ti.uId = (UINT_PTR) traytip;
         ti.uFlags = TTF_ABSOLUTE|TTF_TRACK|TTF_IDISHWND;
+        if (LangFlowDirection() == 1)
+        {
+            ti.uFlags |= TTF_RTLREADING;
+        }
         ti.hwnd = o.hWnd;
         ti.lpszText = _T(PACKAGE_NAME);
         SendMessage(traytip, TTM_ADDTOOL, 0, (LPARAM)&ti);
