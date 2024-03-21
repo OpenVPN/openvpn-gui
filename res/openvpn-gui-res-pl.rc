@@ -4,6 +4,7 @@
  *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
  *                2009 Heiko Hund <heikoh@users.sf.net>
  *                2011 skesicki <skesicki@users.sourceforge.net>
+ *                2024 Bogdan Szczurek <thebodzio@gmail.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -107,7 +108,7 @@ BEGIN
     LTEXT "", ID_TXT_IP, 20, 160, 300, 10
     PUSHBUTTON "Rozłącz", ID_DISCONNECT, 50, 190, 50, 14
     PUSHBUTTON "Poł. ponownie", ID_RESTART, 150, 190, 50, 14
-    PUSHBUTTON "De&tach", ID_DETACH, 180, 190, 50, 14, WS_DISABLED
+    PUSHBUTTON "Odłącz", ID_DETACH, 180, 190, 50, 14, WS_DISABLED
     PUSHBUTTON "Ukryj", ID_HIDE, 100, 190, 50, 14
 END
 
@@ -165,20 +166,20 @@ BEGIN
     AUTOCHECKBOX "Uruchamiaj po zalogowaniu się użytkownika", ID_CHK_STARTUP, 17, 59, 200, 12
 
     GROUPBOX "Preferencje", ID_GROUPBOX3, 6, 82, 235, 165
-    AUTOCHECKBOX "Dodaj do dziennika", ID_CHK_LOG_APPEND, 17, 95, 60, 10
+    AUTOCHECKBOX "Dopis. do logów", ID_CHK_LOG_APPEND, 17, 95, 60, 10
     AUTOCHECKBOX "Pokaż okno skryptu", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
-    AUTOCHECKBOX "Połączenie dyskretne", ID_CHK_SILENT, 17, 125, 200, 10
+    AUTOCHECKBOX "Ukryj okno statusu przy łączeniu", ID_CHK_SILENT, 17, 125, 200, 10
     AUTOCHECKBOX "Zawsze używaj usługi interaktywnej", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
     LTEXT "Pokaż powiadomienie", ID_TXT_BALLOON, 17, 155, 100, 10
-    AUTORADIOBUTTON "Przy połączeniu", ID_RB_BALLOON1, 28, 170, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Przy połączeniu/rozłączeniu", ID_RB_BALLOON2, 86, 170, 90, 10
+    AUTORADIOBUTTON "Przy poł.", ID_RB_BALLOON1, 28, 170, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Przy poł./rozł.", ID_RB_BALLOON2, 86, 170, 90, 10
     AUTORADIOBUTTON "Nigdy", ID_RB_BALLOON0, 181, 170, 40, 10
-    LTEXT "Persistent Connections", ID_TXT_PERSISTENT, 17, 185, 100, 10
-    AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 200, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "&Manual", ID_RB_BALLOON4, 86, 200, 90, 10
-    AUTORADIOBUTTON "&Disable", ID_RB_BALLOON5, 181, 200, 40, 10
-    AUTOCHECKBOX "Enable Pre-Logon A&ccess Provider (requires admin access)", ID_CHK_PLAP_REG, 17, 215, 200, 10
-    AUTOCHECKBOX "Enable auto restart of active connections", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
+    LTEXT "Połączenia trwałe", ID_TXT_PERSISTENT, 17, 185, 100, 10
+    AUTORADIOBUTTON "Automatyczne", ID_RB_BALLOON3, 28, 200, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Ręczne", ID_RB_BALLOON4, 86, 200, 90, 10
+    AUTORADIOBUTTON "Wyłącz", ID_RB_BALLOON5, 181, 200, 40, 10
+    AUTOCHECKBOX "Połącz przed zalogowaniem (wymagane uprawnienia admin.)", ID_CHK_PLAP_REG, 17, 215, 200, 10
+    AUTOCHECKBOX "Automatycznie restartuj aktywne połączenia", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
 END
 
 /* Advanced Dialog */
@@ -190,7 +191,7 @@ LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 BEGIN
     GROUPBOX "Pliki konfiguracyjne", 201, 6, 12, 235, 45
     LTEXT "Folder:", ID_TXT_FOLDER, 17, 25, 32, 10
-    LTEXT "Rozszerzenie:", ID_TXT_EXTENSION, 17, 40, 52, 10
+    LTEXT "Rozszerz.:", ID_TXT_EXTENSION, 17, 40, 52, 10
     EDITTEXT ID_EDT_CONFIG_DIR, 53, 23, 150, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_CONFIG_EXT, 53, 38, 25, 12, ES_AUTOHSCROLL
     PUSHBUTTON "…", ID_BTN_CONFIG_DIR, 208, 23, 25, 12
@@ -200,34 +201,34 @@ BEGIN
     EDITTEXT ID_EDT_LOG_DIR, 53, 72, 150, 12, ES_AUTOHSCROLL
     PUSHBUTTON "…", ID_BTN_LOG_DIR, 208, 72, 25, 12
 
-    GROUPBOX "Script Timeout", 203, 6, 97, 235, 60
-    LTEXT "Preconnect script timeout:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
-    LTEXT "Connect script timeout:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
-    LTEXT "Disconnect script timeout:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
+    GROUPBOX "Timeouty skryptów", 203, 6, 97, 235, 60
+    LTEXT "Przed połączeniem:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
+    LTEXT "Po połączeniu:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
+    LTEXT "Po rozłączeniu:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
     EDITTEXT ID_EDT_PRECONNECT_TIMEOUT, 103, 108, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_CONNECT_TIMEOUT, 103, 123, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 103, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
 
-    GROUPBOX "Management interface", 204, 6, 163, 235, 30
-    LTEXT "Port offset:", 205, 17, 175, 75, 10
+    GROUPBOX "Interface zarządzania", 204, 6, 163, 235, 30
+    LTEXT "Offset portu:", 205, 17, 175, 75, 10
     EDITTEXT ID_EDT_MGMT_PORT, 103, 173, 30, 12, ES_AUTOHSCROLL
 
-    GROUPBOX "Config menu view", 206, 6, 198, 235, 30
-    AUTORADIOBUTTON "&Auto", ID_RB_BALLOON0, 28, 210, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "&Flat", ID_RB_BALLOON1, 88, 210, 50, 10
-    AUTORADIOBUTTON "&Nested", ID_RB_BALLOON2, 148, 210, 50, 10
+    GROUPBOX "Wygląd menu połączeń", 206, 6, 198, 235, 30
+    AUTORADIOBUTTON "Automatyczny", ID_RB_BALLOON0, 28, 210, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Płaski", ID_RB_BALLOON1, 88, 210, 50, 10
+    AUTORADIOBUTTON "Zagnieżdżony", ID_RB_BALLOON2, 148, 210, 50, 10
 
-    GROUPBOX "Echo message display", 207, 6, 233, 235, 45
-    AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 245, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Ne&ver", ID_RB_BALLOON4, 88, 245, 50, 10
-    LTEXT "Repeated messages are muted for: ", 208, 17, 260, 125, 10
+    GROUPBOX "Powiadomienia wyskakujące", 207, 6, 233, 235, 45
+    AUTORADIOBUTTON "Włączone", ID_RB_BALLOON3, 28, 245, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Wyłączone", ID_RB_BALLOON4, 88, 245, 50, 10
+    LTEXT "Wycisz powtarzające się powiadomienia na: ", 208, 17, 260, 125, 10
     EDITTEXT ID_EDT_POPUP_MUTE, 150, 258, 30, 12, ES_AUTOHSCROLL
-    LTEXT "hours", 209, 190, 260, 40, 10
+    LTEXT "godzin", 209, 190, 260, 40, 10
 
 #if ENABLE_OVPN3
-    GROUPBOX "OpenVPN Engine", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
+    GROUPBOX "Silnik OpenVPN", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
     AUTORADIOBUTTON "OpenVPN2", ID_RB_ENGINE_OVPN2, 18, 296, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "OpenVPN3 (experimental)", ID_RB_ENGINE_OVPN3, 76, 296, 90, 10
+    AUTORADIOBUTTON "OpenVPN3 (eksperymentalny)", ID_RB_ENGINE_OVPN3, 76, 296, 90, 10
 #endif
 
 END
@@ -273,20 +274,20 @@ END
 /* URL Profile Import Dialog */
 ID_DLG_URL_PROFILE_IMPORT DIALOGEX 6, 18, 249, 95
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFOREGROUND
-CAPTION "Import Profile from Access Server"
+CAPTION "Importuj profil z Access Servera"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "U&RL:", 201, 6, 9, 50, 10
+    LTEXT "URL:", 201, 6, 9, 50, 10
     EDITTEXT ID_EDT_URL, 60, 6, 183, 12, ES_AUTOHSCROLL
-    LTEXT "&Username:", 202, 6, 26, 50, 10
+    LTEXT "Użytkownik:", 202, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 23, 94, 12, ES_AUTOHSCROLL
-    LTEXT "&Password:", ID_LTEXT_PASSWORD, 6, 42, 50, 10
+    LTEXT "Hasło:", ID_LTEXT_PASSWORD, 6, 42, 50, 10
     EDITTEXT ID_EDT_AUTH_PASS, 60, 40, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 41, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
-    AUTOCHECKBOX "&Autologin", ID_CHK_AUTOLOGIN, 6, 59, 100, 10
-    PUSHBUTTON "&OK", IDOK, 20, 76, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
-    PUSHBUTTON "&Cancel", IDCANCEL, 90, 76, 52, 14
+    AUTOCHECKBOX "Loguj automatycznie", ID_CHK_AUTOLOGIN, 6, 59, 100, 10
+    PUSHBUTTON "OK", IDOK, 20, 76, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "Anuluj", IDCANCEL, 90, 76, 52, 14
 END
 
 /* Query PKCS11-ID Dialog */
@@ -296,11 +297,11 @@ CAPTION "Select Certificate"
 FONT 8, "Segoe UI"
 LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "PKCS11 Certificates available:", ID_TXT_PKCS11, 17, 12, 171, 12
+    LTEXT "Dostępny jest certyfikat PKCS11:", ID_TXT_PKCS11, 17, 12, 171, 12
     CONTROL "", ID_LVW_PKCS11, "SysListView32", LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP, 17, 25, 171,150
-    PUSHBUTTON "&OK", IDOK, 20, 200, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP
-    PUSHBUTTON "&Cancel", IDCANCEL, 90, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
-    PUSHBUTTON "&Retry", IDRETRY, 160, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "OK", IDOK, 20, 200, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "Anuluj", IDCANCEL, 90, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "Odśwież", IDRETRY, 160, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
     LTEXT "", ID_TXT_WARNING, 6, 222, 190, 10
 END
 
@@ -316,8 +317,8 @@ BEGIN
     IDS_TIP_ASSIGNED_IP "\nPrzyznany IP: %ls"
     IDS_MENU_SERVICE "Usługa OpenVPN"
     IDS_MENU_IMPORT "Import"
-    IDS_MENU_IMPORT_AS "Import from Access Server…"
-    IDS_MENU_IMPORT_URL "Import from URL…"
+    IDS_MENU_IMPORT_AS "Importuj z Access Servera…"
+    IDS_MENU_IMPORT_URL "Importuj z URLa…"
     IDS_MENU_IMPORT_FILE "Importuj plik…"
     IDS_MENU_SETTINGS "Ustawienia…"
     IDS_MENU_CLOSE "Zakończ"
@@ -371,7 +372,7 @@ Proszę uzupełnić poprzednie okno autoryzacji."
     IDS_ERR_CREATE_THREAD_STATUS "Utworzenie wątku dla okna statusu zakończone niepowodzeniem."
     IDS_NFO_STATE_WAIT_TERM "Stan obecny: Oczekiwanie na zakończenie OpenVPN-a…"
     IDS_NFO_STATE_CONNECTED "Stan obecny: Połączony"
-    IDS_NFO_STATE_ONHOLD "Current State: On Hold (disconnected)"
+    IDS_NFO_STATE_ONHOLD "Stan obecny: Wstrzymany (rozłączony)"
     IDS_NFO_NOW_CONNECTED "%ls jest teraz połączony."
     IDS_NFO_ASSIGN_IP "Przyznany IP: %ls"
     IDS_ERR_CERT_EXPIRED "Połączenie nie jest możliwe z powodu wygaśnięcia certyfikatu lub błędnie ustawionego czasu systemowego."
@@ -409,7 +410,7 @@ umieszczone są w innych katalogach."
     IDS_NFO_SERVICE_STOPPED "Usługa OpenVPN zatrzymana."
     IDS_NFO_ACTIVE_CONN_EXIT "Istnieją aktywne połączenia, które zostaną zakończone jeśli zamkniesz OpenVPN GUI.\
 \n\nCzy chcesz kontynuować?"
-    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
+    IDS_ERR_PARSE_MGMT_OPTION "Nieprawidłowa wartość opcji --management w <%ls%ls>."
     IDS_NFO_SERVICE_ACTIVE_EXIT "Obecnie jesteś połączony (usługa OpenVPN jest uruchomiona). \
 Połączenie zostanie aktywne nawet po zakończeniu programu OpenVPN GUI.\n\n\
 Czy chcesz kontynuować i zakończyć OpenVPN GUI?"
@@ -420,15 +421,15 @@ Czy chcesz kontynuować i zakończyć OpenVPN GUI?"
 \t\t\t   Przykład: openvpn-gui --connect office.ovpn\n\
 --command cmd [args]\t: Send a command to a running instance of the GUI\n\
 Supported commands:\n\
-    connect cnn            \t: connect the config named ""cnn""\n\
-    disconnect cnn         \t: disconnect the config named ""cnn""\n\
-    reconnect cnn          \t: reconnect the config named ""cnn""\n\
-    disconnect_all         \t: disconnect all connected configs\n\
-    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n\
-    status cnn           \t\t: show the status window of config ""cnn"" if connected\n\
-    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n\
-    import path          \t\t: Import the config file pointed to by path\n\
-\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n\
+    connect cnn            \t: nawiąż połączenie o nazwie ""cnn""\n\
+    disconnect cnn         \t: zakończ połączenie o nazwie ""cnn""\n\
+    reconnect cnn          \t: połącz ponownie połączenie o nazwie ""cnn""\n\
+    disconnect_all         \t: zakończ wszystkie połączenia\n\
+    exit                 \t\t: zakończ pracę GUI (może wymagać potwierdzenia)\n\
+    status cnn           \t\t: pokaż status połączenia ""cnn"" jeśli jest aktywne\n\
+    silent_connection [0|1]\t: ukryj (1) lub pokaż (0) okno statusu przy łączeniu\n\
+    import path          \t\t: importuj plik konfiguracyjny z podanego położenia\n\
+\t\t\tPrzykład: openvpn-gui.exe --command disconnect moje-połączenie\n\
 \n\
 Opcje oddalające ustawienia rejestru:\n\
 --exe_path\t\t: Ścieżka do openvpn.exe.\n\
@@ -444,12 +445,12 @@ Opcje oddalające ustawienia rejestru:\n\
 --show_script_window\t: 0=Ukryj okno wykonywania skryptu, 1=Wyświetl je.\n\
 --connectscript_timeout\t: Czas oczekiwania na zakończenie skryptu łączenia.\n\
 --disconnectscript_timeout\t: Czas oczekiwania na zakończenie skryptu rozłączenia.\n\
---preconnectscript_timeout\t: Time to wait for preconnect script to finish.\n\
---iservice_admin\t\t: 0=Do not use interactive service when started as admin (default is 1 for Windows 7 and newer)\n\
---disable_popup_messages\t: Do not popup (i.e., show) the echo message window. Default is to show.\n\
---popup_mute_interval\t: Time in hours for which a previously shown echo message is not re-displayed. Default=24 hours.\n\
---management_port_offset\t: Offset value added to config index to determine the management port for a connection.\n\
-\t\t\t Must be in the range 1 to 61000. Maximum number of configs is limited by 65536 minus this value. Default=25340.\n"
+--preconnectscript_timeout\t: Czas oczekiwania na zakończenie skryptu przed połączeniem.\n\
+--iservice_admin\t\t: 0=Nie używaj interaktywnej usługi jeśli jest uruchomiona z uprawnieniami administratora (domyślnie 1 dla Windows 7 i nowszych)\n\
+--disable_popup_messages\t: Wyłącz powiadomienia wyskakujące. Domyślnie włączone.\n\
+--popup_mute_interval\t: Czas w godzinach na który wyciszane są powtarzające się powiadomienia. Domyślnie=24 godziny.\n\
+--management_port_offset\t: Wartość dodawana do indeksu profilu połączenia w celu określenia portu interfaceu zarządzania.\n\
+\t\t\t Musi być w zakresie od 1 do 61000. Maksymalna liczba profili to 65536 minus ta wartość. Domyślnie=25340.\n"
 
 
     IDS_NFO_USAGECAPTION "OpenVPN GUI składnia"
@@ -531,8 +532,8 @@ Prawdopodobnie OpenVPN nie jest zainstalowany."
 z prawami administratora aby uaktualnić rejestr."
     IDS_ERR_READ_SET_KEY "Błąd odczytu/zmiany klucza rejestru ""%ls""."
     IDS_ERR_WRITE_REGVALUE "Błąd zapisu rejestru ""HKEY_CURRENT_USER\\%ls\\%ls""."
-    IDS_ERR_PLAP_REG "Failed to enable Start Before Logon (error = %d)"
-    IDS_ERR_PLAP_UNREG "Failed to disable Start Before Logon (error = %d)"
+    IDS_ERR_PLAP_REG "Błąd podczas włączania łączenia przed logowaniem (błąd = %d)"
+    IDS_ERR_PLAP_UNREG "Błąd podczas wyłączania łączenia przed logowaniem (błąd = %d)"
 
     /* importation */
     IDS_ERR_IMPORT_EXISTS "Konfiguracja o nazwie ""%ls"" już istnieje."
@@ -540,9 +541,9 @@ z prawami administratora aby uaktualnić rejestr."
 %ls\n\nUpewnij się, że posiadasz właściwe uprawnienia."
     IDS_NFO_IMPORT_SUCCESS "Plik został zaimportowany."
     IDS_NFO_IMPORT_OVERWRITE "Konfiguracja o nazwie ""%ls"" już istnieje. Czy chcesz ją zamienić?"
-    IDS_NFO_IMPORT_SOURCE "Do you want to import the profile <%ls>?"
-    IDS_ERR_IMPORT_SOURCE "Nie można zaimportować pliku <%ls> ponieważistnieje on już w globalnym lub lokalnym katalogu konfiguracji"
-    IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
+    IDS_NFO_IMPORT_SOURCE "Zaimportować profil <%ls>?"
+    IDS_ERR_IMPORT_SOURCE "Nie można zaimportować pliku <%ls> ponieważ istnieje on już w globalnym lub lokalnym katalogu konfiguracji"
+    IDS_ERR_IMPORT_ACCESS "Nie można zaimportować pliku <%ls>. Plik nie istnieje lub nie można go odczytać"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "Naciśnij OK aby usunąć zapisane hasła dla konfiguracji ""%ls"""
@@ -560,36 +561,36 @@ z prawami administratora aby uaktualnić rejestr."
     IDS_NFO_BYTECOUNT "Bajtów pobranych: %ls  wysłanych: %ls"
 
     /* AS profile import */
-    IDS_ERR_URL_IMPORT_PROFILE "Error fetching profile from URL: [%d] %ls"
+    IDS_ERR_URL_IMPORT_PROFILE "Błąd podczas pobierania profilu z URLa: [%d] %ls"
 
-    IDS_ERR_NO_PKCS11 "No certificates found. If you have a token insert it and press retry."
-    IDS_ERR_SELECT_PKCS11 "No certificates selected."
+    IDS_ERR_NO_PKCS11 "Nie znaleziono certyfikatu. Jeśli posiadasz token, to wprowadź go i ponów próbę."
+    IDS_ERR_SELECT_PKCS11 "Nie wybrano żadnych certyfikatow."
     /* column headers for pkcs11 certificate list */
-    IDS_CERT_DISPLAYNAME "Issued to"
-    IDS_CERT_ISSUER "Issued by"
-    IDS_CERT_NOTAFTER "Valid until"
+    IDS_CERT_DISPLAYNAME "Wydany dla"
+    IDS_CERT_ISSUER "Wydany przez"
+    IDS_CERT_NOTAFTER "Ważny do"
 
 
     /* PLAP related */
-    IDS_NFO_STATE_RETRYING "Retrying"
-    IDS_NFO_STATE_CANCELLING "Cancelling"
-    IDS_NFO_STATE_DISCONNECTING "Disconnecting"
-    IDS_NFO_CONN_CANCELLED "Connection cancelled by user"
+    IDS_NFO_STATE_RETRYING "Ponowna próba"
+    IDS_NFO_STATE_CANCELLING "Anulowanie"
+    IDS_NFO_STATE_DISCONNECTING "Rozłączanie"
+    IDS_NFO_CONN_CANCELLED "Połączenie anulowane przez użytkownika"
 
     /* openvpn daemon state names -- these are shown on progress dialog in PLAP */
-    IDS_NFO_OVPN_STATE_INITIAL      "Initializing"
-    IDS_NFO_OVPN_STATE_CONNECTING   "Connecting"
-    IDS_NFO_OVPN_STATE_ASSIGN_IP    "Assigning IP address"
-    IDS_NFO_OVPN_STATE_ADD_ROUTES   "Adding routes"
-    IDS_NFO_OVPN_STATE_CONNECTED    "Connected"
-    IDS_NFO_OVPN_STATE_RECONNECTING "Reconnecting"
-    IDS_NFO_OVPN_STATE_EXITING      "Exiting"
-    IDS_NFO_OVPN_STATE_WAIT         "Waiting"
-    IDS_NFO_OVPN_STATE_AUTH         "Authenticating"
-    IDS_NFO_OVPN_STATE_GET_CONFIG   "Pulling configuration from server"
-    IDS_NFO_OVPN_STATE_RESOLVE      "Resolving remote host"
-    IDS_NFO_OVPN_STATE_TCP_CONNECT  "Establishing TCP connection"
-    IDS_NFO_OVPN_STATE_AUTH_PENDING "Authentication pending"
+    IDS_NFO_OVPN_STATE_INITIAL      "Inicjalizacja"
+    IDS_NFO_OVPN_STATE_CONNECTING   "Łączenie"
+    IDS_NFO_OVPN_STATE_ASSIGN_IP    "Przydzielanie adresu IP"
+    IDS_NFO_OVPN_STATE_ADD_ROUTES   "Dodawanie tras"
+    IDS_NFO_OVPN_STATE_CONNECTED    "Połączono"
+    IDS_NFO_OVPN_STATE_RECONNECTING "Ponowne łączenie"
+    IDS_NFO_OVPN_STATE_EXITING      "Kończenie"
+    IDS_NFO_OVPN_STATE_WAIT         "Oczekiwanie"
+    IDS_NFO_OVPN_STATE_AUTH         "Autentykacja"
+    IDS_NFO_OVPN_STATE_GET_CONFIG   "Pobieranie konfiguracji z serwera"
+    IDS_NFO_OVPN_STATE_RESOLVE      "Odnajdywanie zdalnego hosta"
+    IDS_NFO_OVPN_STATE_TCP_CONNECT  "Ustanawianie połączenia TCP"
+    IDS_NFO_OVPN_STATE_AUTH_PENDING "Potrzebna autentykacja"
     IDS_NFO_OVPN_STATE_UNKNOWN      "?"
 
 END
