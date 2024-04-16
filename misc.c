@@ -208,7 +208,7 @@ escape_string(const char *input)
                 return NULL;
             }
             out = buf;
-            memmove(out + pos + 1, out + pos, len - pos + 1);
+            memmove(out + pos + 1, out + pos, len - pos);
             out[pos] = '\\';
             pos += 1;
         }
