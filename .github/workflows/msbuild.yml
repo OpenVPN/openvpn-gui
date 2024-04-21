@@ -67,7 +67,7 @@ jobs:
 
     - uses: actions/upload-artifact@v3
       with:
-        name: openvpn-gui_${{ matrix.arch }}_${{ matrix.conf }}${{ matrix.ovpn3.upload_name }}
+        name: openvpn-gui_${{ matrix.arch }}_${{ matrix.conf.value }}${{ matrix.ovpn3.upload_name }}
         path: |
           out/build/${{ matrix.arch }}${{ matrix.ovpn3.preset }}/${{ matrix.conf.value }}/*.dll
           out/build/${{ matrix.arch }}${{ matrix.ovpn3.preset }}/${{ matrix.conf.value }}/*.exe
