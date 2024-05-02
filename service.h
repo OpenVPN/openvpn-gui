@@ -25,3 +25,6 @@ BOOL CheckIServiceStatus(BOOL warn);
 
 /* Attempt to start OpenVPN Automatc Service */
 void StartAutomaticService(void);
+
+/* Get the processId of the Interactive Service */
+ULONG GetServicePid(void);

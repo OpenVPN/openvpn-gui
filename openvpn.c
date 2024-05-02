@@ -60,6 +60,7 @@
 #include "env_set.h"
 #include "echo.h"
 #include "pkcs11.h"
+#include "service.h"
 
 #define OPENVPN_SERVICE_PIPE_NAME_OVPN2 L"\\\\.\\pipe\\openvpn\\service"
 #define OPENVPN_SERVICE_PIPE_NAME_OVPN3 L"\\\\.\\pipe\\ovpnagent"
@@ -1874,6 +1875,26 @@ HandleServiceIO(DWORD err, DWORD bytes, LPOVERLAPPED lpo)
     /* Any error in the above call will get checked in next round */
 }
 
+static BOOL
+ValidatePipe(connection_t *c)
+{
+    ULONG ppid = 0, spid = 0;
+
+    if (!c->iserv.pipe)
+    {
+        return FALSE;
+    }
+    if (!GetNamedPipeServerProcessId(c->iserv.pipe, &ppid))
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs:%d Failed to get pipe server process id: (error = 0x%08x)",
+                      __func__, __LINE__, GetLastError());
+        return FALSE;
+    }
+    spid = GetServicePid();
+
+    return (ppid > 0) && (spid > 0) && (spid == ppid);
+}
+
 /*
  * Write size bytes in buf to the pipe with a timeout.
  * Retun value: TRUE on success FLASE on error
@@ -2736,6 +2757,13 @@ LaunchOpenVPN(connection_t *c)
     if (use_iservice && InitServiceIO(&c->iserv))
     {
         BOOL res = FALSE;
+
+        if (!ValidatePipe(c))
+        {
+            CloseHandle(c->exit_event);
+            CloseServiceIO(&c->iserv);
+            goto out;
+        }
 
         if (o.ovpn_engine == OPENVPN_ENGINE_OVPN3)
         {

@@ -188,3 +188,40 @@ StartAutomaticService(void)
     }
     return;
 }
+
+/*
+ * Returns the processId of the Interactive Service or zero on error
+ * which includes service not running.
+ */
+ULONG
+GetServicePid(void)
+{
+    SC_HANDLE schManager;
+    SC_HANDLE schService;
+    ULONG pid = 0;
+
+    schManager = OpenSCManager(NULL, NULL, SC_MANAGER_CONNECT);
+    if (schManager)
+    {
+        schService = OpenService(schManager, o.ovpn_engine == OPENVPN_ENGINE_OVPN3 ?
+                                 OPENVPN_SERVICE_NAME_OVPN3 : OPENVPN_SERVICE_NAME_OVPN2, SERVICE_QUERY_STATUS);
+        if (schService)
+        {
+            SERVICE_STATUS_PROCESS ssp = {0};
+            DWORD nbytes = 0;
+            if (QueryServiceStatusEx(schService, SC_STATUS_PROCESS_INFO, (BYTE *)&ssp, sizeof(ssp), &nbytes)
+                && ssp.dwCurrentState == SERVICE_RUNNING)
+            {
+                pid = ssp.dwProcessId;
+            }
+            CloseServiceHandle(schService);
+        }
+        CloseServiceHandle(schManager);
+    }
+    if (pid == 0)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs:%d Failed to get service process id: (error = 0x%08x)",
+                      __func__, __LINE__, GetLastError());
+    }
+    return pid;
+}
