@@ -1424,8 +1424,9 @@ OnPassword(connection_t *c, char *msg)
         }
         else if ( (chstr = strstr(msg, "SC:")) && strlen(chstr) > 5)
         {
-            param->flags |= FLAG_CR_TYPE_SCRV1;
-            param->flags |= (*(chstr + 3) != '0') ? FLAG_CR_ECHO : 0;
+            ULONG flags = strtoul(chstr+3, NULL, 10);
+            param->flags |= (flags & 0x2) ? FLAG_CR_TYPE_CONCAT : FLAG_CR_TYPE_SCRV1;
+            param->flags |= (flags & 0x1) ? FLAG_CR_ECHO : 0;
             param->str = strdup(chstr + 5);
             LocalizedDialogBoxParamEx(ID_DLG_AUTH_CHALLENGE, c->hwndStatus, UserAuthDialogFunc, (LPARAM) param);
         }
