@@ -94,6 +94,7 @@ void WriteStatusLog(connection_t *c, const WCHAR *prefix, const WCHAR *line, BOO
 #define FLAG_STRING_PKCS11  0x20   /* PKCS11 id needed */
 #define FLAG_PASS_PKEY      0x40   /* Private key password needed */
 #define FLAG_CR_TYPE_CRTEXT 0x80   /* crtext */
+#define FLAG_CR_TYPE_CONCAT 0x100  /* concatenate otp with password */
 
 typedef struct {
     connection_t *c;

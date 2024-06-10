@@ -589,7 +589,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             if (RecallAuthPass(param->c->config_name, password))
             {
                 SetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password);
-                if (username[0] != L'\0' && !(param->flags & FLAG_CR_TYPE_SCRV1)
+                if (username[0] != L'\0' && !(param->flags & (FLAG_CR_TYPE_SCRV1|FLAG_CR_TYPE_CONCAT))
                     && password[0] != L'\0' && param->c->failed_auth_attempts == 0)
                 {
                     /* user/pass available and no challenge response needed: skip dialog
@@ -605,7 +605,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 {
                     SendMessage(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS), EM_SETSEL, 0, MAKELONG(0, -1));
                 }
-                else if (param->flags & FLAG_CR_TYPE_SCRV1)
+                else if (param->flags & (FLAG_CR_TYPE_SCRV1|FLAG_CR_TYPE_CONCAT))
                 {
                     SetFocus(GetDlgItem(hwndDlg, ID_EDT_AUTH_CHALLENGE));
                 }
@@ -662,7 +662,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                         /* enable OK button only if username and either password or response are filled */
                         BOOL enableOK = GetWindowTextLength(GetDlgItem(hwndDlg, ID_EDT_AUTH_USER))
                                         && (GetWindowTextLength(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS))
-                                            || ((param->flags & FLAG_CR_TYPE_SCRV1)
+                                            || ((param->flags & (FLAG_CR_TYPE_SCRV1|FLAG_CR_TYPE_CONCAT))
                                                 && GetWindowTextLength(GetDlgItem(hwndDlg, ID_EDT_AUTH_CHALLENGE)))
                                             );
                         EnableWindow(GetDlgItem(hwndDlg, IDOK), enableOK);
@@ -706,9 +706,19 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                         {
                             SaveAuthPass(param->c->config_name, password);
                         }
+                        if (param->flags & FLAG_CR_TYPE_CONCAT)
+                        {
+                            GetDlgItemTextW(hwndDlg, ID_EDT_AUTH_CHALLENGE, password + wcslen(password), _countof(password)-wcslen(password));
+                            SetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password);
+                            /* erase potentially secret contents in the response text box */
+                            memset(password, L'x', wcslen(password));
+                            SetDlgItemTextW(hwndDlg, ID_EDT_AUTH_CHALLENGE, password);
+                        }
+
                         SecureZeroMemory(password, sizeof(password));
                     }
                     ManagementCommandFromInput(param->c, "username \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_USER);
+
                     if (param->flags & FLAG_CR_TYPE_SCRV1)
                     {
                         ManagementCommandFromTwoInputsBase64(param->c, "password \"Auth\" \"SCRV1:%s:%s\"", hwndDlg, ID_EDT_AUTH_PASS, ID_EDT_AUTH_CHALLENGE);
