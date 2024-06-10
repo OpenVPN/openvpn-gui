@@ -581,6 +581,10 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 }
 
             }
+            else if (param->flags & FLAG_CR_TYPE_CONCAT)
+            {
+                SetDlgItemTextW(hwndDlg, ID_TXT_AUTH_CHALLENGE, LoadLocalizedString(IDS_NFO_OTP_PROMPT));
+            }
             if (RecallUsername(param->c->config_name, username))
             {
                 SetDlgItemTextW(hwndDlg, ID_EDT_AUTH_USER, username);
@@ -1428,6 +1432,11 @@ OnPassword(connection_t *c, char *msg)
             param->flags |= (flags & 0x2) ? FLAG_CR_TYPE_CONCAT : FLAG_CR_TYPE_SCRV1;
             param->flags |= (flags & 0x1) ? FLAG_CR_ECHO : 0;
             param->str = strdup(chstr + 5);
+            LocalizedDialogBoxParamEx(ID_DLG_AUTH_CHALLENGE, c->hwndStatus, UserAuthDialogFunc, (LPARAM) param);
+        }
+        else if (o.auth_pass_concat_otp)
+        {
+            param->flags |= FLAG_CR_ECHO | FLAG_CR_TYPE_CONCAT;
             LocalizedDialogBoxParamEx(ID_DLG_AUTH_CHALLENGE, c->hwndStatus, UserAuthDialogFunc, (LPARAM) param);
         }
         else

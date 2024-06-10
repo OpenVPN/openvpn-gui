@@ -640,6 +640,10 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
             {
                 Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_AUTO_RESTART), BST_CHECKED);
             }
+            if (o.auth_pass_concat_otp)
+            {
+                Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_CONCAT_OTP), BST_CHECKED);
+            }
 
             break;
 
@@ -704,7 +708,8 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
                     (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_SHOW_SCRIPT_WIN)) == BST_CHECKED);
                 o.enable_auto_restart =
                     (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_AUTO_RESTART)) == BST_CHECKED);
-
+                o.auth_pass_concat_otp =
+                    (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_CONCAT_OTP)) == BST_CHECKED);
 
                 SaveRegistryKeys();
 

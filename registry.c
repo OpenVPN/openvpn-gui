@@ -67,6 +67,7 @@ struct regkey_int {
     {L"management_port_offset", &o.mgmt_port_offset, 25340},
     {L"enable_peristent_connections", &o.enable_persistent, 2},
     {L"enable_auto_restart", &o.enable_auto_restart, 1},
+    {L"auth_pass_concat_otp", &o.auth_pass_concat_otp, 0},
     {L"ovpn_engine", &o.ovpn_engine, OPENVPN_ENGINE_OVPN2}
 };
 

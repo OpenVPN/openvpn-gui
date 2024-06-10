@@ -206,6 +206,7 @@ typedef struct {
     TCHAR priority_string[64];
     TCHAR ovpn_admin_group[MAX_NAME];
     DWORD disable_save_passwords;
+    DWORD auth_pass_concat_otp;
     /* HKCU registry values */
     TCHAR config_dir[MAX_PATH];
     TCHAR ext_string[16];

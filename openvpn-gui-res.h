@@ -166,6 +166,10 @@
 #define ID_LVW_PKCS11                    451
 #define ID_TXT_PKCS11                    452
 
+/* General settings contd.. */
+
+#define ID_CHK_CONCAT_OTP                470
+
 /*
  * String Table Resources
  */
@@ -263,6 +267,7 @@
 #define IDS_NFO_CONN_CANCELLED          1264
 #define IDS_NFO_STATE_ROUTE_ERROR       1265
 #define IDS_NFO_NOTIFY_ROUTE_ERROR      1266
+#define IDS_NFO_OTP_PROMPT              1267
 
 /* Program Startup Related */
 #define IDS_ERR_OPEN_DEBUG_FILE         1301
