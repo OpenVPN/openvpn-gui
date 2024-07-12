@@ -166,7 +166,7 @@ BEGIN
     GROUPBOX "启动", 202, 6, 47, 235, 30
     AUTOCHECKBOX "在 Windows 开机时启动", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "偏好设置", ID_GROUPBOX3, 6, 82, 235, 165
+    GROUPBOX "偏好设置", ID_GROUPBOX3, 6, 82, 235, 180
     AUTOCHECKBOX "追加日志文件", ID_CHK_LOG_APPEND, 17, 95, 60, 10
     AUTOCHECKBOX "显示脚本窗口", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "静默连接", ID_CHK_SILENT, 17, 125, 200, 10
@@ -181,6 +181,7 @@ BEGIN
     AUTORADIOBUTTON "禁用", ID_RB_BALLOON5, 181, 200, 40, 10
     AUTOCHECKBOX "启用预登录访问提供程序（需要管理员访问权限）", ID_CHK_PLAP_REG, 17, 215, 200, 10
     AUTOCHECKBOX "启用活动连接的自动重新启动", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
+    AUTOCHECKBOX "Prompt for &OTP and combine with password", ID_CHK_CONCAT_OTP, 17, 245, 200, 10
 END
 
 /* Advanced Dialog */
@@ -560,6 +561,7 @@ Wintun驱动程序将无法正常工作。"
     IDS_NFO_AUTO_CONNECT    "在 %u 秒后自动连接..."
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI 已经运行. 右击任务栏图标启动."
     IDS_NFO_BYTECOUNT "接收字节: %ls  发送字节: %ls"
+    IDS_NFO_OTP_PROMPT "Input OTP or passcode"
 
     /* AS profile import */
     IDS_ERR_URL_IMPORT_PROFILE "从URL获取配置文件时出错:[%d] %ls"
