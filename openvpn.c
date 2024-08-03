@@ -1417,6 +1417,11 @@ OnPassword(connection_t *c, char *msg)
             param->flags |= FLAG_CR_TYPE_SCRV1;
             param->flags |= (*(chstr + 3) != '0') ? FLAG_CR_ECHO : 0;
             param->str = strdup(chstr + 5);
+            if (!param->str)
+            {
+                WriteStatusLog(c, L"GUI> ", L"Error: Out of memory - ignoring dynamic challenge", false);
+                return;
+            }
             LocalizedDialogBoxParamEx(ID_DLG_AUTH_CHALLENGE, c->hwndStatus, UserAuthDialogFunc, (LPARAM) param);
         }
         else
