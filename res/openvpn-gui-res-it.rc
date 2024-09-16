@@ -179,7 +179,7 @@ BEGIN
     AUTOCHECKBOX "Abilita provider di pre-accesso/accesso", ID_CHK_PLAP_REG, 17, 215, 200, 10
     LTEXT "(richiede accesso come amministratore)", 220, 28, 225, 200, 10
     AUTOCHECKBOX "Abilita riavvio automatico connessioni attive", ID_CHK_AUTO_RESTART, 17, 240, 200, 10
-    AUTOCHECKBOX "Prompt for &OTP and combine with password", ID_CHK_CONCAT_OTP, 17, 255, 200, 10
+    AUTOCHECKBOX "Richiedi &OTP e combinalo con la password", ID_CHK_CONCAT_OTP, 17, 255, 200, 10
 END
 
 /* Advanced Dialog */
@@ -563,7 +563,7 @@ Puoi far partire questa applicazione una volta che l'amministratore ha aggiornat
     IDS_NFO_AUTO_CONNECT    "Connessione automatica tra %u secondi…"
     IDS_NFO_CLICK_HERE_TO_START "L'interfaccia di OpenVPN è già in esecuzione.\nPer avviare fai clic con il tasto destro sull'icona nell'area di notifica."
     IDS_NFO_BYTECOUNT "Byte in: %ls out: %ls"
-    IDS_NFO_OTP_PROMPT "Input OTP or passcode"
+    IDS_NFO_OTP_PROMPT "Inserisci OTP o passcode"
 
     /* AS profile import */
     IDS_ERR_URL_IMPORT_PROFILE "Errore durante il recupero del profilo dall'URL: [%d] %ls"
