@@ -181,7 +181,7 @@ BEGIN
     AUTORADIOBUTTON "禁用", ID_RB_BALLOON5, 181, 200, 40, 10
     AUTOCHECKBOX "启用预登录访问提供程序（需要管理员访问权限）", ID_CHK_PLAP_REG, 17, 215, 200, 10
     AUTOCHECKBOX "启用活动连接的自动重新启动", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
-    AUTOCHECKBOX "Prompt for &OTP and combine with password", ID_CHK_CONCAT_OTP, 17, 245, 200, 10
+    AUTOCHECKBOX "提示输入&OTP并与密码结合", ID_CHK_CONCAT_OTP, 17, 245, 200, 10
 END
 
 /* Advanced Dialog */
@@ -561,7 +561,7 @@ Wintun驱动程序将无法正常工作。"
     IDS_NFO_AUTO_CONNECT    "在 %u 秒后自动连接..."
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI 已经运行. 右击任务栏图标启动."
     IDS_NFO_BYTECOUNT "接收字节: %ls  发送字节: %ls"
-    IDS_NFO_OTP_PROMPT "Input OTP or passcode"
+    IDS_NFO_OTP_PROMPT "输入OTP"
 
     /* AS profile import */
     IDS_ERR_URL_IMPORT_PROFILE "从URL获取配置文件时出错:[%d] %ls"
