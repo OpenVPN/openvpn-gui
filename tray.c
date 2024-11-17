@@ -374,6 +374,8 @@ PositionTrayToolTip(LONG x, LONG y)
 {
     RECT r;
     LONG cxmax = GetSystemMetrics(SM_CXSCREEN);
+    LONG cymax = GetSystemMetrics(SM_CYSCREEN);
+    APPBARDATA abd = {.cbSize = sizeof(APPBARDATA) };
     GetWindowRect(traytip, &r);
     LONG w = r.right - r.left;
     LONG h = r.bottom - r.top;
@@ -383,6 +385,14 @@ PositionTrayToolTip(LONG x, LONG y)
      */
     r.left = (x < w/2) ? 0 : ((x + w/2 < cxmax) ? x - w/2 : cxmax - w);
     r.top = (y > h + 10) ?  y - (h + 10) : y + 10;
+
+    /* If taskbar is at top, move the top of the window to the bottom of the taskbar */
+    if (SHAppBarMessage(ABM_GETTASKBARPOS, &abd)
+        && (abd.rc.bottom < cymax/2))
+    {
+        r.top = abd.rc.bottom;
+    }
+
     SendMessageW(traytip, TTM_TRACKPOSITION, 0, MAKELONG(r.left, r.top));
     SetWindowPos(traytip, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE|SWP_NOMOVE);
 }
