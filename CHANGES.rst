@@ -1,3 +1,16 @@
+Version 11.51.0
+===============
+
+* Higher resolution eye icons
+* Support for concatenating OTP with password
+* Optionally always prompt for OTP
+* Fix tooltip positioning when the taskbar is at top
+
+Version 11.50.0
+===============
+
+* Translation improvements (Italian)
+
 Version 11.49.0
 ===============
 
