@@ -121,6 +121,10 @@
 #define ID_TXT_PERSISTENT                247
 #define ID_CHK_PLAP_REG                  248
 #define ID_CHK_AUTO_RESTART              249
+#define ID_TXT_CONCAT_OTP                470
+#define ID_RB_APPEND_OTP                 471
+#define ID_RB_PREPEND_OTP                472
+#define ID_RB_DISABLE_OTP                473
 
 /* Proxy Auth Dialog */
 #define ID_DLG_PROXY_AUTH                250
@@ -165,10 +169,6 @@
 #define ID_DLG_PKCS11_QUERY              450
 #define ID_LVW_PKCS11                    451
 #define ID_TXT_PKCS11                    452
-
-/* General settings contd.. */
-
-#define ID_CHK_CONCAT_OTP                470
 
 /*
  * String Table Resources

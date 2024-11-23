@@ -163,7 +163,7 @@ BEGIN
     GROUPBOX "Démarrage", 202, 6, 47, 235, 30
     AUTOCHECKBOX "Lancer au démarrage de Windows", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "Préférences", ID_GROUPBOX3, 6, 82, 235, 180
+    GROUPBOX "Préférences", ID_GROUPBOX3, 6, 82, 235, 195
     AUTOCHECKBOX "Ajouter au fichier log", ID_CHK_LOG_APPEND, 17, 95, 81, 10
     AUTOCHECKBOX "Afficher la fenêtre des scripts", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "Connexion silencieuse", ID_CHK_SILENT, 17, 125, 200, 10
@@ -178,7 +178,10 @@ BEGIN
     AUTORADIOBUTTON "&Inactif", ID_RB_BALLOON5, 181, 200, 40, 10
     AUTOCHECKBOX "Activer le fournisseur d'&accès à la pré-ouverture de session", ID_CHK_PLAP_REG, 17, 215, 200, 10
     AUTOCHECKBOX "Activer le redémarrage auto des connexions activées", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
-    AUTOCHECKBOX "Prompt for &OTP and combine with password", ID_CHK_CONCAT_OTP, 17, 245, 200, 10
+    LTEXT "Demander un code OTP et le combiner avec le mot de passe", ID_TXT_CONCAT_OTP, 17, 245, 200, 10
+    AUTORADIOBUTTON "&OTP à la fin", ID_RB_APPEND_OTP, 28, 260, 55, 10
+    AUTORADIOBUTTON "O&TP au début", ID_RB_PREPEND_OTP, 86, 260, 90, 10
+    AUTORADIOBUTTON "I&nactif", ID_RB_DISABLE_OTP, 181, 260, 40, 10
 END
 
 /* Advanced Dialog */
