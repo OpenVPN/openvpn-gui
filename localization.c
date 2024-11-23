@@ -626,6 +626,18 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
             {
                 CheckRadioButton(hwndDlg, ID_RB_BALLOON3, ID_RB_BALLOON5, ID_RB_BALLOON3);
             }
+            if (o.show_balloon == 0)
+            {
+                CheckRadioButton(hwndDlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON0);
+            }
+            else if (o.show_balloon == 1)
+            {
+                CheckRadioButton(hwndDlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON1);
+            }
+            else if (o.show_balloon == 2)
+            {
+                CheckRadioButton(hwndDlg, ID_RB_BALLOON0, ID_RB_BALLOON2, ID_RB_BALLOON2);
+            }
 
             int plap_status = GetPLAPRegistrationStatus();
             if (plap_status == -1) /* PLAP not supported in this version */
@@ -640,9 +652,17 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
             {
                 Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_AUTO_RESTART), BST_CHECKED);
             }
-            if (o.auth_pass_concat_otp)
+            if (o.auth_pass_concat_otp == 0)
             {
-                Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_CONCAT_OTP), BST_CHECKED);
+                CheckRadioButton(hwndDlg, ID_RB_APPEND_OTP, ID_RB_DISABLE_OTP, ID_RB_DISABLE_OTP);
+            }
+            else if (o.auth_pass_concat_otp == 1)
+            {
+                CheckRadioButton(hwndDlg, ID_RB_APPEND_OTP, ID_RB_DISABLE_OTP, ID_RB_APPEND_OTP);
+            }
+            else if (o.auth_pass_concat_otp == 2)
+            {
+                CheckRadioButton(hwndDlg, ID_RB_APPEND_OTP, ID_RB_DISABLE_OTP, ID_RB_PREPEND_OTP);
             }
 
             break;
@@ -708,8 +728,18 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
                     (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_SHOW_SCRIPT_WIN)) == BST_CHECKED);
                 o.enable_auto_restart =
                     (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_AUTO_RESTART)) == BST_CHECKED);
-                o.auth_pass_concat_otp =
-                    (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_CONCAT_OTP)) == BST_CHECKED);
+                if (IsDlgButtonChecked(hwndDlg, ID_RB_APPEND_OTP))
+                {
+                    o.auth_pass_concat_otp = 1;
+                }
+                else if (IsDlgButtonChecked(hwndDlg, ID_RB_PREPEND_OTP))
+                {
+                    o.auth_pass_concat_otp = 2;
+                }
+                else
+                {
+                    o.auth_pass_concat_otp = 0;
+                }
 
                 SaveRegistryKeys();
 

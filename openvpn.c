@@ -712,7 +712,15 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                         }
                         if (param->flags & FLAG_CR_TYPE_CONCAT)
                         {
-                            GetDlgItemTextW(hwndDlg, ID_EDT_AUTH_CHALLENGE, password + wcslen(password), _countof(password)-wcslen(password));
+                            if (o.auth_pass_concat_otp == 1) {
+                                /* Append to password */
+                                GetDlgItemTextW(hwndDlg, ID_EDT_AUTH_CHALLENGE, password + wcslen(password), _countof(password) - wcslen(password));
+                            }
+                            else {
+                                /* Prepend to password */
+                                GetDlgItemTextW(hwndDlg, ID_EDT_AUTH_CHALLENGE, password, _countof(password));
+                                GetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password + wcslen(password), _countof(password) - wcslen(password));
+                            }
                             SetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password);
                             /* erase potentially secret contents in the response text box */
                             memset(password, L'x', wcslen(password));
@@ -1434,7 +1442,7 @@ OnPassword(connection_t *c, char *msg)
             param->str = strdup(chstr + 5);
             LocalizedDialogBoxParamEx(ID_DLG_AUTH_CHALLENGE, c->hwndStatus, UserAuthDialogFunc, (LPARAM) param);
         }
-        else if (o.auth_pass_concat_otp)
+        else if (o.auth_pass_concat_otp != 0)
         {
             param->flags |= FLAG_CR_ECHO | FLAG_CR_TYPE_CONCAT;
             LocalizedDialogBoxParamEx(ID_DLG_AUTH_CHALLENGE, c->hwndStatus, UserAuthDialogFunc, (LPARAM) param);
@@ -1637,7 +1645,7 @@ OnByteCount(connection_t *c, char *msg)
     format_bytecount(in, _countof(in), c->bytes_in);
     format_bytecount(out, _countof(out), c->bytes_out);
     SetDlgItemTextW(c->hwndStatus, ID_TXT_BYTECOUNT,
-                    LoadLocalizedString(IDS_NFO_BYTECOUNT, in, out));
+        LoadLocalizedString(IDS_NFO_BYTECOUNT, in, out));
 }
 
 /*
