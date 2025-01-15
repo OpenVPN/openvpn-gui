@@ -23,7 +23,7 @@
 #include <config.h>
 #endif
 
-#if !defined (UNICODE)
+#if !defined(UNICODE)
 #error UNICODE and _UNICODE must be defined. This version only supports unicode builds.
 #endif
 
@@ -51,9 +51,9 @@
 #include "echo.h"
 #include "as.h"
 
-#define OVPN_EXITCODE_ERROR      1
-#define OVPN_EXITCODE_TIMEOUT    2
-#define OVPN_EXITCODE_NOTREADY   3
+#define OVPN_EXITCODE_ERROR    1
+#define OVPN_EXITCODE_TIMEOUT  2
+#define OVPN_EXITCODE_NOTREADY 3
 
 /*  Declare Windows procedure  */
 LRESULT CALLBACK WindowProcedure(HWND, UINT, WPARAM, LPARAM);
@@ -81,7 +81,7 @@ options_t o;
 __declspec(dllexport) char aslr_workaround;
 
 /* globals */
-static HWND settings_window;   /* Handle of Settings window */
+static HWND settings_window; /* Handle of Settings window */
 
 static int
 VerifyAutoConnections()
@@ -118,8 +118,8 @@ NotifyRunningInstance()
     {
         /* GUI up and running -- send a message if any action is pecified,
          * else show the balloon */
-        COPYDATASTRUCT config_data = {0};
-        int timeout = 30*1000;             /* 30 seconds */
+        COPYDATASTRUCT config_data = { 0 };
+        int timeout = 30 * 1000; /* 30 seconds */
         if (!o.action)
         {
             o.action = WM_OVPN_NOTIFY;
@@ -128,23 +128,25 @@ NotifyRunningInstance()
         config_data.dwData = o.action;
         if (o.action_arg)
         {
-            config_data.cbData = (wcslen(o.action_arg)+1)*sizeof(o.action_arg[0]);
-            config_data.lpData = (void *) o.action_arg;
+            config_data.cbData = (wcslen(o.action_arg) + 1) * sizeof(o.action_arg[0]);
+            config_data.lpData = (void *)o.action_arg;
         }
         PrintDebug(L"Instance 2: called with action %d : %ls", o.action, o.action_arg);
-        if (!SendMessageTimeout(hwnd_master, WM_COPYDATA, 0,
-                                (LPARAM) &config_data, 0, timeout, NULL))
+        if (!SendMessageTimeout(
+                hwnd_master, WM_COPYDATA, 0, (LPARAM)&config_data, 0, timeout, NULL))
         {
             DWORD error = GetLastError();
             if (error == ERROR_TIMEOUT)
             {
                 exit_code = OVPN_EXITCODE_TIMEOUT;
-                MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Sending command to running instance timed out.");
+                MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                              L"Sending command to running instance timed out.");
             }
             else
             {
                 exit_code = OVPN_EXITCODE_ERROR;
-                MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Sending command to running instance failed (error = %lu).",
+                MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                              L"Sending command to running instance failed (error = %lu).",
                               error);
             }
         }
@@ -153,7 +155,8 @@ NotifyRunningInstance()
     {
         /* An instance is already running but its main window not yet initialized */
         exit_code = OVPN_EXITCODE_NOTREADY;
-        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Previous instance not yet ready to accept commands. "
+        MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                      L"Previous instance not yet ready to accept commands. "
                       "Try again later.");
     }
 
@@ -166,38 +169,28 @@ _tWinMain(HINSTANCE hThisInstance,
           UNUSED LPTSTR lpszArgument,
           UNUSED int nCmdShow)
 {
-    MSG messages;          /* Here messages to the application are saved */
-    WNDCLASSEX wincl;      /* Data structure for the windowclass */
+    MSG messages;     /* Here messages to the application are saved */
+    WNDCLASSEX wincl; /* Data structure for the windowclass */
     DWORD shell32_version;
     BOOL first_instance = TRUE;
     /* a session local semaphore to detect second instance */
-    HANDLE session_semaphore = InitSemaphore(L"Local\\"PACKAGE_NAME);
+    HANDLE session_semaphore = InitSemaphore(L"Local\\" PACKAGE_NAME);
 
     srand(time(NULL));
     /* try to lock the semaphore, else we are not the first instance */
-    if (session_semaphore
-        && WaitForSingleObject(session_semaphore, 200) != WAIT_OBJECT_0)
+    if (session_semaphore && WaitForSingleObject(session_semaphore, 200) != WAIT_OBJECT_0)
     {
         first_instance = FALSE;
     }
 
     /* Initialize handlers for manangement interface notifications */
-    mgmt_rtmsg_handler handler[] = {
-        { ready_,    OnReady },
-        { hold_,     OnHold },
-        { log_,      OnLogLine },
-        { state_,    OnStateChange },
-        { password_, OnPassword },
-        { proxy_,    OnProxy },
-        { stop_,     OnStop },
-        { needok_,   OnNeedOk },
-        { needstr_,  OnNeedStr },
-        { echo_,     OnEcho },
-        { bytecount_, OnByteCount },
-        { infomsg_,  OnInfoMsg },
-        { timeout_,  OnTimeout },
-        { 0,        NULL }
-    };
+    mgmt_rtmsg_handler handler[] = { { ready_, OnReady },         { hold_, OnHold },
+                                     { log_, OnLogLine },         { state_, OnStateChange },
+                                     { password_, OnPassword },   { proxy_, OnProxy },
+                                     { stop_, OnStop },           { needok_, OnNeedOk },
+                                     { needstr_, OnNeedStr },     { echo_, OnEcho },
+                                     { bytecount_, OnByteCount }, { infomsg_, OnInfoMsg },
+                                     { timeout_, OnTimeout },     { 0, NULL } };
     InitManagement(handler);
 
     /* initialize options to default state */
@@ -247,7 +240,6 @@ _tWinMain(HINSTANCE hThisInstance,
     if (first_instance)
     {
         UpdateRegistry(); /* Checks version change and update keys/values */
-
     }
     GetRegistryKeys();
     /* Parse command-line options */
@@ -270,7 +262,8 @@ _tWinMain(HINSTANCE hThisInstance,
     }
     else if (o.action)
     {
-        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Called with --command when no previous instance available");
+        MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                      L"Called with --command when no previous instance available");
         exit(OVPN_EXITCODE_ERROR);
     }
 
@@ -304,19 +297,19 @@ _tWinMain(HINSTANCE hThisInstance,
     /* The Window structure */
     wincl.hInstance = hThisInstance;
     wincl.lpszClassName = szClassName;
-    wincl.lpfnWndProc = WindowProcedure;    /* This function is called by windows */
-    wincl.style = CS_DBLCLKS;               /* Catch double-clicks */
+    wincl.lpfnWndProc = WindowProcedure; /* This function is called by windows */
+    wincl.style = CS_DBLCLKS;            /* Catch double-clicks */
     wincl.cbSize = sizeof(WNDCLASSEX);
 
     /* Use default icon and mouse-pointer */
     wincl.hIcon = LoadLocalizedIcon(ID_ICO_APP);
     wincl.hIconSm = LoadLocalizedIcon(ID_ICO_APP);
     wincl.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wincl.lpszMenuName = NULL;               /* No menu */
-    wincl.cbClsExtra = 0;                    /* No extra bytes after the window class */
-    wincl.cbWndExtra = 0;                    /* structure or the window instance */
+    wincl.lpszMenuName = NULL; /* No menu */
+    wincl.cbClsExtra = 0;      /* No extra bytes after the window class */
+    wincl.cbWndExtra = 0;      /* structure or the window instance */
     /* Use Windows's default color as the background of the window */
-    wincl.hbrBackground = (HBRUSH) COLOR_3DSHADOW; /*COLOR_BACKGROUND; */
+    wincl.hbrBackground = (HBRUSH)COLOR_3DSHADOW; /*COLOR_BACKGROUND; */
 
     /* Register the window class, and if it fails quit the program */
     if (!RegisterClassEx(&wincl))
@@ -325,20 +318,19 @@ _tWinMain(HINSTANCE hThisInstance,
     }
 
     /* The class is registered, let's create the program*/
-    CreateWindowEx(
-        0,                      /* Extended possibilites for variation */
-        szClassName,            /* Classname */
-        szTitleText,            /* Title Text */
-        WS_OVERLAPPEDWINDOW,    /* default window */
-        (int)CW_USEDEFAULT,     /* Windows decides the position */
-        (int)CW_USEDEFAULT,     /* where the window ends up on the screen */
-        230,                    /* The programs width */
-        200,                    /* and height in pixels */
-        HWND_DESKTOP,           /* The window is a child-window to desktop */
-        NULL,                   /* No menu */
-        hThisInstance,          /* Program Instance handler */
-        NULL                    /* No Window Creation data */
-        );
+    CreateWindowEx(0,                   /* Extended possibilites for variation */
+                   szClassName,         /* Classname */
+                   szTitleText,         /* Title Text */
+                   WS_OVERLAPPEDWINDOW, /* default window */
+                   (int)CW_USEDEFAULT,  /* Windows decides the position */
+                   (int)CW_USEDEFAULT,  /* where the window ends up on the screen */
+                   230,                 /* The programs width */
+                   200,                 /* and height in pixels */
+                   HWND_DESKTOP,        /* The window is a child-window to desktop */
+                   NULL,                /* No menu */
+                   hThisInstance,       /* Program Instance handler */
+                   NULL                 /* No Window Creation data */
+    );
 
 
     /* Run the message loop. It will run until GetMessage() returns 0 */
@@ -441,11 +433,13 @@ HandleCopyDataMessage(const COPYDATASTRUCT *copy_data)
     WCHAR *str = NULL;
     connection_t *c = NULL;
     PrintDebug(L"WM_COPYDATA message received. (dwData: %lu, cbData: %lu, lpData: %ls)",
-               copy_data->dwData, copy_data->cbData, copy_data->lpData);
+               copy_data->dwData,
+               copy_data->cbData,
+               copy_data->lpData);
     if (copy_data->cbData >= sizeof(WCHAR) && copy_data->lpData)
     {
-        str = (WCHAR *) copy_data->lpData;
-        str[copy_data->cbData/sizeof(WCHAR)-1] = L'\0'; /* in case not nul-terminated */
+        str = (WCHAR *)copy_data->lpData;
+        str[copy_data->cbData / sizeof(WCHAR) - 1] = L'\0'; /* in case not nul-terminated */
         c = GetConnByName(str);
     }
     if (copy_data->dwData == WM_OVPN_START && c)
@@ -506,9 +500,12 @@ HandleCopyDataMessage(const COPYDATASTRUCT *copy_data)
     }
     else
     {
-        MsgToEventLog(EVENTLOG_ERROR_TYPE,
-                      L"Unknown WM_COPYDATA message ignored. (dwData: %lu, cbData: %lu, lpData: %ls)",
-                      copy_data->dwData, copy_data->cbData, copy_data->lpData);
+        MsgToEventLog(
+            EVENTLOG_ERROR_TYPE,
+            L"Unknown WM_COPYDATA message ignored. (dwData: %lu, cbData: %lu, lpData: %ls)",
+            copy_data->dwData,
+            copy_data->cbData,
+            copy_data->lpData);
         return FALSE;
     }
     return TRUE; /* indicate we handled the message */
@@ -529,8 +526,7 @@ ManagePersistent(HWND hwnd, UINT UNUSED msg, UINT_PTR id, DWORD UNUSED now)
     {
         for (connection_t *c = o.chead; c; c = c->next)
         {
-            if (c->flags & FLAG_DAEMON_PERSISTENT
-                && c->auto_connect
+            if (c->flags & FLAG_DAEMON_PERSISTENT && c->auto_connect
                 && (c->state == disconnected || c->state == detached))
             {
                 /* disable auto-connect to avoid repeated re-connect
@@ -539,7 +535,7 @@ ManagePersistent(HWND hwnd, UINT UNUSED msg, UINT_PTR id, DWORD UNUSED now)
                  */
                 c->auto_connect = false;
                 c->state = detached; /* this is required to retain management-hold on re-attach */
-                StartOpenVPN(c); /* attach to the management i/f */
+                StartOpenVPN(c);     /* attach to the management i/f */
             }
         }
     }
@@ -556,8 +552,7 @@ HandleSessionLock(void)
 {
     for (connection_t *c = o.chead; c; c = c->next)
     {
-        if (c->flags & FLAG_DAEMON_PERSISTENT
-            && (c->state != disconnected && c->state != detached))
+        if (c->flags & FLAG_DAEMON_PERSISTENT && (c->state != disconnected && c->state != detached))
         {
             c->auto_connect = false;
             DetachOpenVPN(c);
@@ -586,7 +581,7 @@ LRESULT CALLBACK
 WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     static UINT s_uTaskbarRestart;
-    MENUINFO minfo = {.cbSize = sizeof(MENUINFO)};
+    MENUINFO minfo = { .cbSize = sizeof(MENUINFO) };
     connection_t *c = NULL;
 
     switch (message)
@@ -605,8 +600,8 @@ WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
             HICON hIcon = LoadLocalizedIcon(ID_ICO_APP);
             if (hIcon)
             {
-                SendMessage(hwnd, WM_SETICON, (WPARAM) (ICON_SMALL), (LPARAM) (hIcon));
-                SendMessage(hwnd, WM_SETICON, (WPARAM) (ICON_BIG), (LPARAM) (hIcon));
+                SendMessage(hwnd, WM_SETICON, (WPARAM)(ICON_SMALL), (LPARAM)(hIcon));
+                SendMessage(hwnd, WM_SETICON, (WPARAM)(ICON_BIG), (LPARAM)(hIcon));
             }
 
             /* Enable next line to accept WM_COPYDATA messages from lower level processes */
@@ -645,12 +640,12 @@ WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_COPYDATA: /* custom messages with data from other processes */
-            HandleCopyDataMessage((COPYDATASTRUCT *) lParam);
-            return TRUE; /* lets the sender free copy_data */
+            HandleCopyDataMessage((COPYDATASTRUCT *)lParam);
+            return TRUE;  /* lets the sender free copy_data */
 
         case WM_MENUCOMMAND:
             /* Get the menu item id and save it in wParam for use below */
-            wParam = GetMenuItemID((HMENU) lParam, wParam);
+            wParam = GetMenuItemID((HMENU)lParam, wParam);
 
             /* we first check global menu items which do not require a connnection index */
             if (LOWORD(wParam) == IDM_IMPORT_FILE)
@@ -677,15 +672,16 @@ WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
             else
             {
                 minfo.fMask = MIM_MENUDATA;
-                GetMenuInfo((HMENU) lParam, &minfo);
-                c  = (connection_t *) minfo.dwMenuData;
+                GetMenuInfo((HMENU)lParam, &minfo);
+                c = (connection_t *)minfo.dwMenuData;
                 if (!c)
                 {
                     break; /* ignore invalid connection */
                 }
             }
 
-            /* reach here only if the command did not match any global items and a valid connection id is available */
+            /* reach here only if the command did not match any global items and a valid connection
+             * id is available */
 
             if (LOWORD(wParam) == IDM_CONNECTMENU)
             {
@@ -729,7 +725,7 @@ WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_QUERYENDSESSION:
-            return(TRUE);
+            return (TRUE);
 
         case WM_ENDSESSION:
             SaveAutoRestartList();
@@ -745,7 +741,9 @@ WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
                     o.session_locked = TRUE;
                     /* Detach persistent connections so that other users can connect to it */
                     HandleSessionLock();
-                    KillTimer(hwnd, 1); /* This ensure ManagePersistent is not called when session is locked */
+                    KillTimer(
+                        hwnd,
+                        1); /* This ensure ManagePersistent is not called when session is locked */
                     break;
 
                 case WTS_SESSION_UNLOCK:
@@ -765,7 +763,7 @@ WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
             break;
 
-        default:                /* for messages that we don't deal with */
+        default: /* for messages that we don't deal with */
             if (message == s_uTaskbarRestart)
             {
                 /* Explorer has restarted, re-register the tray icon. */
@@ -808,8 +806,8 @@ AboutDialogFunc(UNUSED HWND hDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_NOTIFY:
-            psn = (LPPSHNOTIFY) lParam;
-            if (psn->hdr.code == (UINT) PSN_APPLY)
+            psn = (LPPSHNOTIFY)lParam;
+            if (psn->hdr.code == (UINT)PSN_APPLY)
             {
                 return TRUE;
             }
@@ -885,14 +883,15 @@ ShowSettingsDialog()
 
     PROPSHEETHEADER psh;
     psh.dwSize = sizeof(PROPSHEETHEADER);
-    psh.dwFlags = PSH_USEHICON | PSH_PROPSHEETPAGE | PSH_NOAPPLYNOW | PSH_NOCONTEXTHELP | PSH_USECALLBACK;
+    psh.dwFlags =
+        PSH_USEHICON | PSH_PROPSHEETPAGE | PSH_NOAPPLYNOW | PSH_NOCONTEXTHELP | PSH_USECALLBACK;
     psh.hwndParent = o.hWnd;
     psh.hInstance = o.hInstance;
     psh.hIcon = LoadLocalizedIcon(ID_ICO_APP);
     psh.pszCaption = LoadLocalizedString(IDS_SETTINGS_CAPTION);
     psh.nPages = page_number;
     psh.nStartPage = 0;
-    psh.ppsp = (LPCPROPSHEETPAGE) &psp;
+    psh.ppsp = (LPCPROPSHEETPAGE)&psp;
     psh.pfnCallback = SettingsPsCallback;
 
     PropertySheet(&psh);
@@ -907,14 +906,15 @@ CloseApplication(HWND hwnd, BOOL ask_user)
     /* Show a message if any non-persistent connections are active */
     for (connection_t *c = o.chead; c && ask_user; c = c->next)
     {
-        if (c->state == disconnected
-            || c->flags & FLAG_DAEMON_PERSISTENT)
+        if (c->state == disconnected || c->flags & FLAG_DAEMON_PERSISTENT)
         {
             continue;
         }
 
         /* Ask for confirmation if still connected */
-        if (ShowLocalizedMsgEx(MB_YESNO|MB_TOPMOST, o.hWnd, _T("Exit OpenVPN"), IDS_NFO_ACTIVE_CONN_EXIT) == IDNO)
+        if (ShowLocalizedMsgEx(
+                MB_YESNO | MB_TOPMOST, o.hWnd, _T("Exit OpenVPN"), IDS_NFO_ACTIVE_CONN_EXIT)
+            == IDNO)
         {
             /* recreate the tray icon */
             ShowTrayIcon();
@@ -932,7 +932,7 @@ CloseApplication(HWND hwnd, BOOL ask_user)
 void
 ImportConfigFileFromDisk()
 {
-    TCHAR filter[2*_countof(o.ext_string)+5];
+    TCHAR filter[2 * _countof(o.ext_string) + 5];
 
     _sntprintf_0(filter, _T("*.%ls%lc*.%ls%lc"), o.ext_string, _T('\0'), o.ext_string, _T('\0'));
 
@@ -968,7 +968,9 @@ PrintDebugMsg(TCHAR *msg)
 
     log_time = time(NULL);
     time_struct = localtime(&log_time);
-    _sntprintf(date, _countof(date), _T("%d-%.2d-%.2d %.2d:%.2d:%.2d"),
+    _sntprintf(date,
+               _countof(date),
+               _T("%d-%.2d-%.2d %.2d:%.2d:%.2d"),
                time_struct->tm_year + 1900,
                time_struct->tm_mon + 1,
                time_struct->tm_mday,
@@ -996,8 +998,7 @@ GetDllVersion(LPCTSTR lpszDllName)
     if (hinstDll)
     {
         DLLGETVERSIONPROC pDllGetVersion;
-        pDllGetVersion = (DLLGETVERSIONPROC)GetProcAddress(hinstDll,
-                                                           "DllGetVersion");
+        pDllGetVersion = (DLLGETVERSIONPROC)GetProcAddress(hinstDll, "DllGetVersion");
 
         /* Because some DLLs might not implement this function, you
          * must test for it explicitly. Depending on the particular
@@ -1030,8 +1031,11 @@ ErrorExit(int exit_code, const wchar_t *msg)
 {
     if (msg)
     {
-        MessageBoxExW(NULL, msg, TEXT(PACKAGE_NAME),
-                      MB_OK | MB_SETFOREGROUND | MB_ICONERROR | MBOX_RTL_FLAGS, GetGUILanguage());
+        MessageBoxExW(NULL,
+                      msg,
+                      TEXT(PACKAGE_NAME),
+                      MB_OK | MB_SETFOREGROUND | MB_ICONERROR | MBOX_RTL_FLAGS,
+                      GetGUILanguage());
     }
     if (o.hWnd)
     {
@@ -1064,7 +1068,7 @@ SaveAutoRestartList()
         return;
     }
 
-    connection_t **active_conns = malloc((size_t) max_active*sizeof(connection_t *));
+    connection_t **active_conns = malloc((size_t)max_active * sizeof(connection_t *));
 
     if (!active_conns)
     {
@@ -1074,8 +1078,7 @@ SaveAutoRestartList()
 
     for (connection_t *c = o.chead; c && nactive < max_active; c = c->next)
     {
-        if (c->state == disconnected
-            || c->flags & FLAG_DAEMON_PERSISTENT)
+        if (c->state == disconnected || c->flags & FLAG_DAEMON_PERSISTENT)
         {
             continue;
         }
@@ -1087,8 +1090,7 @@ SaveAutoRestartList()
 
     if (len == 1)
     {
-        len++;           /* two nuls for empty string */
-
+        len++; /* two nuls for empty string */
     }
     /* Make a double nul terminated list of active connections */
     wchar_t *list = calloc(len, sizeof(wchar_t));
@@ -1108,8 +1110,12 @@ SaveAutoRestartList()
     }
 
     /* Save the list in registry for auto-connect on restart */
-    LSTATUS status = RegSetKeyValueW(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, L"auto_restart_list",
-                                     REG_MULTI_SZ, list, (DWORD) len*sizeof(wchar_t));
+    LSTATUS status = RegSetKeyValueW(HKEY_CURRENT_USER,
+                                     GUI_REGKEY_HKCU,
+                                     L"auto_restart_list",
+                                     REG_MULTI_SZ,
+                                     list,
+                                     (DWORD)len * sizeof(wchar_t));
     if (status != ERROR_SUCCESS)
     {
         MsgToEventLog(EVENTLOG_ERROR_TYPE, L"RegSetKeyValue returned error: status = %lu", status);
@@ -1128,8 +1134,13 @@ LoadAutoRestartList()
     wchar_t *list;
     DWORD len = 0;
 
-    LSTATUS status = RegGetValueW(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, L"auto_restart_list",
-                                  RRF_RT_REG_MULTI_SZ, NULL, NULL, &len);
+    LSTATUS status = RegGetValueW(HKEY_CURRENT_USER,
+                                  GUI_REGKEY_HKCU,
+                                  L"auto_restart_list",
+                                  RRF_RT_REG_MULTI_SZ,
+                                  NULL,
+                                  NULL,
+                                  &len);
     if (status != ERROR_SUCCESS || len == 0)
     {
         return;
@@ -1142,8 +1153,13 @@ LoadAutoRestartList()
         return;
     }
 
-    status = RegGetValueW(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, L"auto_restart_list",
-                          RRF_RT_REG_MULTI_SZ, NULL, list, &len);
+    status = RegGetValueW(HKEY_CURRENT_USER,
+                          GUI_REGKEY_HKCU,
+                          L"auto_restart_list",
+                          RRF_RT_REG_MULTI_SZ,
+                          NULL,
+                          list,
+                          &len);
     if (status != ERROR_SUCCESS)
     {
         MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Error reading state from registry");

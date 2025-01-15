@@ -28,12 +28,14 @@
 #define HASHLEN 20
 
 /* message finger print consists of a SHA1 hash and a timestamp */
-struct echo_msg_fp {
+struct echo_msg_fp
+{
     BYTE digest[HASHLEN];
     time_t timestamp;
 };
 struct echo_msg_history;
-struct echo_msg {
+struct echo_msg
+{
     struct echo_msg_fp fp; /* keep this as the first element */
     wchar_t *title;
     wchar_t *text;

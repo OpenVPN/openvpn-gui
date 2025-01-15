@@ -42,8 +42,11 @@ ErrorExit(UNUSED int exit_code, const wchar_t *msg)
 {
     if (msg)
     {
-        MessageBoxExW(NULL, msg, TEXT(PACKAGE_NAME),
-                      MB_OK | MB_SETFOREGROUND|MB_ICONERROR, GetGUILanguage());
+        MessageBoxExW(NULL,
+                      msg,
+                      TEXT(PACKAGE_NAME),
+                      MB_OK | MB_SETFOREGROUND | MB_ICONERROR,
+                      GetGUILanguage());
     }
     DetachAllOpenVPN();
     /* do not exit */

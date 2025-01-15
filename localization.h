@@ -60,6 +60,6 @@ LANGID GetGUILanguage(void);
  */
 int LangFlowDirection(void);
 
-#define MBOX_RTL_FLAGS ((LangFlowDirection() == 1) ? MB_RIGHT|MB_RTLREADING : 0)
+#define MBOX_RTL_FLAGS ((LangFlowDirection() == 1) ? MB_RIGHT | MB_RTLREADING : 0)
 
 #endif /* ifndef LOCALIZATION_H */

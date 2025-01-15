@@ -61,8 +61,7 @@ match(const WIN32_FIND_DATA *find, const TCHAR *ext)
 
     i = _tcslen(find->cFileName) - ext_len - 1;
 
-    if (i > 0 && find->cFileName[i] == '.'
-        && _tcsicmp(find->cFileName + i + 1, ext) == 0)
+    if (i > 0 && find->cFileName[i] == '.' && _tcsicmp(find->cFileName + i + 1, ext) == 0)
     {
         return match_file;
     }
@@ -170,9 +169,9 @@ AddConfigFileToList(int group, const TCHAR *filename, const TCHAR *config_dir)
     }
 }
 
-#define FLAG_WARN_DUPLICATES        (0x1)
-#define FLAG_WARN_MAX_CONFIGS       (0x2)
-#define FLAG_ADD_CONFIG_GROUPS      (0x4)
+#define FLAG_WARN_DUPLICATES   (0x1)
+#define FLAG_WARN_MAX_CONFIGS  (0x2)
+#define FLAG_ADD_CONFIG_GROUPS (0x4)
 
 /*
  * Create a new group with the given name as a child of the
@@ -191,7 +190,7 @@ NewConfigGroup(const wchar_t *name, int parent, int flags)
     if (!o.groups || o.num_groups == o.max_groups)
     {
         o.max_groups += 10;
-        void *tmp = realloc(o.groups, sizeof(*o.groups)*o.max_groups);
+        void *tmp = realloc(o.groups, sizeof(*o.groups) * o.max_groups);
         if (!tmp)
         {
             o.max_groups -= 10;
@@ -264,8 +263,7 @@ ActivateConfigGroups(void)
         config_group_t *cg = CONFIG_GROUP(c);
 
         /* if not root and has only this config as child -- squash it */
-        if (PARENT_GROUP(cg) && cg->children == 1
-            && !wcscmp(cg->name, c->config_name))
+        if (PARENT_GROUP(cg) && cg->children == 1 && !wcscmp(cg->name, c->config_name))
         {
             cg->children--;
             c->group = cg->parent;
@@ -351,8 +349,7 @@ BuildFileList0(const TCHAR *config_dir, int recurse_depth, int group, int flags)
         match_t match_type = match(&find_obj, o.ext_string);
         if (match_type == match_dir)
         {
-            if (wcscmp(find_obj.cFileName, _T("."))
-                &&  wcscmp(find_obj.cFileName, _T("..")))
+            if (wcscmp(find_obj.cFileName, _T(".")) && wcscmp(find_obj.cFileName, _T("..")))
             {
                 /* recurse into subdirectory */
                 _sntprintf_0(subdir_name, _T("%ls\\%ls"), config_dir, find_obj.cFileName);
@@ -376,23 +373,39 @@ GetFileInfo(const wchar_t *path, BY_HANDLE_FILE_INFORMATION *info)
     bool ret = false;
 
     /* FILE_FLAG_BACKUP_SEMANTICS required to open directories */
-    HANDLE fd = CreateFileW(path, 0, FILE_SHARE_READ|FILE_SHARE_WRITE,
-                            NULL, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, NULL);
+    HANDLE fd = CreateFileW(path,
+                            0,
+                            FILE_SHARE_READ | FILE_SHARE_WRITE,
+                            NULL,
+                            OPEN_EXISTING,
+                            FILE_FLAG_BACKUP_SEMANTICS,
+                            NULL);
 
     if (fd == INVALID_HANDLE_VALUE)
     {
-        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"GetFileInfo: Error opening path <%ls> (status = %lu)", path, GetLastError());
+        MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                      L"GetFileInfo: Error opening path <%ls> (status = %lu)",
+                      path,
+                      GetLastError());
         return ret;
     }
 
     ret = GetFileInformationByHandle(fd, info);
     if (!ret)
     {
-        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"GetFileInfo: Error accessing file information for path <%ls> (status = %lu)", path, GetLastError());
+        MsgToEventLog(
+            EVENTLOG_ERROR_TYPE,
+            L"GetFileInfo: Error accessing file information for path <%ls> (status = %lu)",
+            path,
+            GetLastError());
     }
     else
     {
-        PrintDebug(L"path = <%ls> volumeid = %lu file index = (%lu,%lu)", path, info->dwVolumeSerialNumber, info->nFileIndexLow, info->nFileIndexHigh);
+        PrintDebug(L"path = <%ls> volumeid = %lu file index = (%lu,%lu)",
+                   path,
+                   info->dwVolumeSerialNumber,
+                   info->nFileIndexLow,
+                   info->nFileIndexHigh);
     }
     CloseHandle(fd);
 
@@ -474,8 +487,7 @@ BuildFileList()
         BuildFileList0(o.global_config_dir, recurse_depth, system_gp, flags);
     }
 
-    if (o.service_state == service_connected
-        && o.enable_persistent)
+    if (o.service_state == service_connected && o.enable_persistent)
     {
         if (!IsSamePath(o.config_auto_dir, o.config_dir))
         {

@@ -74,8 +74,9 @@ OpenManagement(connection_t *c)
         WSACleanup();
         return FALSE;
     }
-    if (WSAAsyncSelect(c->manage.sk, c->hwndStatus, WM_MANAGEMENT,
-                       FD_CONNECT|FD_READ|FD_WRITE|FD_CLOSE) != 0)
+    if (WSAAsyncSelect(
+            c->manage.sk, c->hwndStatus, WM_MANAGEMENT, FD_CONNECT | FD_READ | FD_WRITE | FD_CLOSE)
+        != 0)
     {
         return FALSE;
     }
@@ -223,16 +224,15 @@ OnManagement(SOCKET sk, LPARAM lParam)
             if (WSAGETSELECTERROR(lParam))
             {
                 /* keep trying for connections with persistent daemons */
-                if (c->flags & FLAG_DAEMON_PERSISTENT
-                    || time(NULL) < c->manage.timeout)
+                if (c->flags & FLAG_DAEMON_PERSISTENT || time(NULL) < c->manage.timeout)
                 {
                     /* show a message on status window */
                     if (rtmsg_handler[log_] && (c->flags & FLAG_DAEMON_PERSISTENT))
                     {
                         char buf[256];
-                        _snprintf_0(buf, "%lld,W,Waiting for the management interface to come up",
-                                    (long long)time(NULL))
-                        rtmsg_handler[log_](c, buf);
+                        _snprintf_0(buf,
+                                    "%lld,W,Waiting for the management interface to come up",
+                                    (long long)time(NULL)) rtmsg_handler[log_](c, buf);
                     }
 
                     connect(c->manage.sk, (SOCKADDR *)&c->manage.skaddr, sizeof(c->manage.skaddr));
@@ -254,8 +254,7 @@ OnManagement(SOCKET sk, LPARAM lParam)
             break;
 
         case FD_READ:
-            if (ioctlsocket(c->manage.sk, FIONREAD, &data_size) != 0
-                ||  data_size == 0)
+            if (ioctlsocket(c->manage.sk, FIONREAD, &data_size) != 0 || data_size == 0)
             {
                 return;
             }
@@ -267,7 +266,7 @@ OnManagement(SOCKET sk, LPARAM lParam)
             }
 
             res = recv(c->manage.sk, data + c->manage.saved_size, data_size, 0);
-            if (res != (int) data_size)
+            if (res != (int)data_size)
             {
                 free(data);
                 return;
@@ -328,7 +327,8 @@ OnManagement(SOCKET sk, LPARAM lParam)
                 if (!*c->manage.password && passwd_request)
                 {
                     /* either we don't have a password or we used it and didn't match */
-                    MsgToEventLog(EVENTLOG_WARNING_TYPE, L"%ls: management password mismatch",
+                    MsgToEventLog(EVENTLOG_WARNING_TYPE,
+                                  L"%ls: management password mismatch",
                                   c->config_name);
                     c->state = disconnecting;
                     CloseManagement(c);
@@ -381,7 +381,8 @@ OnManagement(SOCKET sk, LPARAM lParam)
                     else if (strncmp(pos, "INFO:", 5) == 0)
                     {
                         /* delay until management interface accepts input */
-                        /* use real sleep here, since WM_MANAGEMENT might arrive before management is ready */
+                        /* use real sleep here, since WM_MANAGEMENT might arrive before management
+                         * is ready */
                         Sleep(100);
                         c->manage.connected = 2;
                         if (rtmsg_handler[ready_])
@@ -424,8 +425,7 @@ OnManagement(SOCKET sk, LPARAM lParam)
                             rtmsg_handler[infomsg_](c, pos + 8);
                         }
                     }
-                    else if (strncmp(pos, "PKCS11ID", 8) == 0
-                             && c->manage.cmd_queue)
+                    else if (strncmp(pos, "PKCS11ID", 8) == 0 && c->manage.cmd_queue)
                     {
                         /* This is not a real-time message, but unfortunately implemented
                          * in the core as one. Work around by handling the response here.
@@ -452,11 +452,13 @@ OnManagement(SOCKET sk, LPARAM lParam)
                     }
                     else if (strncmp(line, "ERROR:", 6) == 0)
                     {
-                        /* Response sent to management is not processed. Log an error in status window  */
+                        /* Response sent to management is not processed. Log an error in status
+                         * window  */
                         char buf[256];
-                        _snprintf_0(buf, "%lld,N,Previous command sent to management failed: %s",
-                                    (long long)time(NULL), line)
-                        rtmsg_handler[log_](c, buf);
+                        _snprintf_0(buf,
+                                    "%lld,N,Previous command sent to management failed: %s",
+                                    (long long)time(NULL),
+                                    line) rtmsg_handler[log_](c, buf);
 
                         if (cmd->handler)
                         {

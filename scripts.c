@@ -75,8 +75,13 @@ RunPreconnectScript(connection_t *c)
     sa.lpSecurityDescriptor = NULL;
     sa.bInheritHandle = TRUE;
 
-    HANDLE logfile_handle = CreateFile(script_log_filename, GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE,
-                                       &sa, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    HANDLE logfile_handle = CreateFile(script_log_filename,
+                                       GENERIC_WRITE,
+                                       FILE_SHARE_READ | FILE_SHARE_WRITE,
+                                       &sa,
+                                       CREATE_ALWAYS,
+                                       FILE_ATTRIBUTE_NORMAL,
+                                       NULL);
 
     /* fill in STARTUPINFO struct */
     GetStartupInfo(&si);
@@ -91,18 +96,24 @@ RunPreconnectScript(connection_t *c)
      * so we use the default process env here.
      */
 
-    if (!CreateProcess(NULL, cmdline, NULL, NULL, TRUE,
+    if (!CreateProcess(NULL,
+                       cmdline,
+                       NULL,
+                       NULL,
+                       TRUE,
                        (o.show_script_window ? CREATE_NEW_CONSOLE : CREATE_NO_WINDOW),
-                       NULL, c->config_dir, &si, &pi))
+                       NULL,
+                       c->config_dir,
+                       &si,
+                       &pi))
     {
         goto out;
     }
 
     /* Wait process without blocking msg pump */
-    for (i = 0; i <= (int) o.preconnectscript_timeout; i++)
+    for (i = 0; i <= (int)o.preconnectscript_timeout; i++)
     {
-        if (!GetExitCodeProcess(pi.hProcess, &exit_code)
-            || exit_code != STILL_ACTIVE
+        if (!GetExitCodeProcess(pi.hProcess, &exit_code) || exit_code != STILL_ACTIVE
             || !OVPNMsgWait(1000, NULL))
         {
             break;
@@ -141,7 +152,8 @@ RunConnectScript(connection_t *c, int run_as_service)
 
     if (!run_as_service)
     {
-        SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONN_SCRIPT));
+        SetDlgItemText(
+            c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_CONN_SCRIPT));
     }
 
     /* Create the filename of the logfile */
@@ -155,8 +167,13 @@ RunConnectScript(connection_t *c, int run_as_service)
     sa.lpSecurityDescriptor = NULL;
     sa.bInheritHandle = TRUE;
 
-    HANDLE logfile_handle = CreateFile(script_log_filename, GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE,
-                                       &sa, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    HANDLE logfile_handle = CreateFile(script_log_filename,
+                                       GENERIC_WRITE,
+                                       FILE_SHARE_READ | FILE_SHARE_WRITE,
+                                       &sa,
+                                       CREATE_ALWAYS,
+                                       FILE_ATTRIBUTE_NORMAL,
+                                       NULL);
 
     /* fill in STARTUPINFO struct */
     GetStartupInfo(&si);
@@ -171,12 +188,24 @@ RunConnectScript(connection_t *c, int run_as_service)
     WCHAR *env = c->es ? merge_env_block(c->es) : NULL;
     DWORD flags = CREATE_UNICODE_ENVIRONMENT;
 
-    if (!CreateProcess(NULL, cmdline, NULL, NULL, TRUE,
-                       (o.show_script_window ? flags|CREATE_NEW_CONSOLE : flags|CREATE_NO_WINDOW),
-                       env, c->config_dir, &si, &pi))
+    if (!CreateProcess(
+            NULL,
+            cmdline,
+            NULL,
+            NULL,
+            TRUE,
+            (o.show_script_window ? flags | CREATE_NEW_CONSOLE : flags | CREATE_NO_WINDOW),
+            env,
+            c->config_dir,
+            &si,
+            &pi))
     {
         PrintDebug(L"CreateProcess: error = %lu", GetLastError());
-        ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, c->hwndStatus, TEXT(PACKAGE_NAME), IDS_ERR_RUN_CONN_SCRIPT, cmdline);
+        ShowLocalizedMsgEx(MB_OK | MB_ICONERROR,
+                           c->hwndStatus,
+                           TEXT(PACKAGE_NAME),
+                           IDS_ERR_RUN_CONN_SCRIPT,
+                           cmdline);
         goto out;
     }
 
@@ -185,11 +214,15 @@ RunConnectScript(connection_t *c, int run_as_service)
         goto out;
     }
 
-    for (i = 0; i <= (int) o.connectscript_timeout; i++)
+    for (i = 0; i <= (int)o.connectscript_timeout; i++)
     {
         if (!GetExitCodeProcess(pi.hProcess, &exit_code))
         {
-            ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, c->hwndStatus, TEXT(PACKAGE_NAME), IDS_ERR_GET_EXIT_CODE, cmdline);
+            ShowLocalizedMsgEx(MB_OK | MB_ICONERROR,
+                               c->hwndStatus,
+                               TEXT(PACKAGE_NAME),
+                               IDS_ERR_GET_EXIT_CODE,
+                               cmdline);
             goto out;
         }
 
@@ -197,7 +230,11 @@ RunConnectScript(connection_t *c, int run_as_service)
         {
             if (exit_code != 0)
             {
-                ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, c->hwndStatus, TEXT(PACKAGE_NAME), IDS_ERR_CONN_SCRIPT_FAILED, exit_code);
+                ShowLocalizedMsgEx(MB_OK | MB_ICONERROR,
+                                   c->hwndStatus,
+                                   TEXT(PACKAGE_NAME),
+                                   IDS_ERR_CONN_SCRIPT_FAILED,
+                                   exit_code);
             }
             goto out;
         }
@@ -208,7 +245,11 @@ RunConnectScript(connection_t *c, int run_as_service)
         }
     }
 
-    ShowLocalizedMsgEx(MB_OK|MB_ICONERROR, c->hwndStatus, TEXT(PACKAGE_NAME), IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT, o.connectscript_timeout);
+    ShowLocalizedMsgEx(MB_OK | MB_ICONERROR,
+                       c->hwndStatus,
+                       TEXT(PACKAGE_NAME),
+                       IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT,
+                       o.connectscript_timeout);
 
 out:
     free(env);
@@ -243,7 +284,8 @@ RunDisconnectScript(connection_t *c, int run_as_service)
 
     if (!run_as_service)
     {
-        SetDlgItemText(c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_DISCONN_SCRIPT));
+        SetDlgItemText(
+            c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_DISCONN_SCRIPT));
     }
 
     /* Create the filename of the logfile */
@@ -257,8 +299,13 @@ RunDisconnectScript(connection_t *c, int run_as_service)
     sa.lpSecurityDescriptor = NULL;
     sa.bInheritHandle = TRUE;
 
-    HANDLE logfile_handle = CreateFile(script_log_filename, GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE,
-                                       &sa, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    HANDLE logfile_handle = CreateFile(script_log_filename,
+                                       GENERIC_WRITE,
+                                       FILE_SHARE_READ | FILE_SHARE_WRITE,
+                                       &sa,
+                                       CREATE_ALWAYS,
+                                       FILE_ATTRIBUTE_NORMAL,
+                                       NULL);
 
     /* fill in STARTUPINFO struct */
     GetStartupInfo(&si);
@@ -273,17 +320,24 @@ RunDisconnectScript(connection_t *c, int run_as_service)
     WCHAR *env = c->es ? merge_env_block(c->es) : NULL;
     DWORD flags = CREATE_UNICODE_ENVIRONMENT;
 
-    if (!CreateProcess(NULL, cmdline, NULL, NULL, TRUE,
-                       (o.show_script_window ? flags|CREATE_NEW_CONSOLE : flags|CREATE_NO_WINDOW),
-                       NULL, c->config_dir, &si, &pi))
+    if (!CreateProcess(
+            NULL,
+            cmdline,
+            NULL,
+            NULL,
+            TRUE,
+            (o.show_script_window ? flags | CREATE_NEW_CONSOLE : flags | CREATE_NO_WINDOW),
+            NULL,
+            c->config_dir,
+            &si,
+            &pi))
     {
         goto out;
     }
 
-    for (i = 0; i <= (int) o.disconnectscript_timeout; i++)
+    for (i = 0; i <= (int)o.disconnectscript_timeout; i++)
     {
-        if (!GetExitCodeProcess(pi.hProcess, &exit_code)
-            || exit_code != STILL_ACTIVE
+        if (!GetExitCodeProcess(pi.hProcess, &exit_code) || exit_code != STILL_ACTIVE
             || !OVPNMsgWait(1000, c->hwndStatus)) /* WM_QUIT -- do not popup error */
         {
             goto out;
