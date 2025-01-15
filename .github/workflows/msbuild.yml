@@ -94,24 +94,12 @@ jobs:
         run: sudo apt update && sudo apt install -y mingw-w64 libtool automake autoconf
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          path: openvpn-gui
 
       - name: autoconf
         run: autoreconf -fvi
-        working-directory: openvpn-gui
-
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: '~/mingw/'
-          key: mingw-${{ matrix.target }}
 
       - name: configure
-        run: PKG_CONFIG_PATH=${HOME}/mingw/opt/${LIB}/pkgconfig ./configure --host=${{ matrix.chost }}
-        working-directory: openvpn-gui
+        run: ./configure --host=${{ matrix.chost }}
 
       - name: make
         run: make
-        working-directory: openvpn-gui
