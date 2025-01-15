@@ -110,7 +110,7 @@ GetGUILanguage(void)
         RegCloseKey(regkey);
     }
 
-    gui_language = ( value != 0 ? value : GetUserDefaultUILanguage() );
+    gui_language = (value != 0 ? value : GetUserDefaultUILanguage());
     InitMUILanguage(gui_language);
     return gui_language;
 }
@@ -120,8 +120,9 @@ static void
 SetGUILanguage(LANGID langId)
 {
     HKEY regkey;
-    if (RegCreateKeyEx(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, 0, NULL, 0,
-                       KEY_WRITE, NULL, &regkey, NULL) != ERROR_SUCCESS)
+    if (RegCreateKeyEx(
+            HKEY_CURRENT_USER, GUI_REGKEY_HKCU, 0, NULL, 0, KEY_WRITE, NULL, &regkey, NULL)
+        != ERROR_SUCCESS)
     {
         ShowLocalizedMsg(IDS_ERR_CREATE_REG_HKCU_KEY, GUI_REGKEY_HKCU);
     }
@@ -144,12 +145,11 @@ LocalizedSystemTime(const SYSTEMTIME *st, wchar_t *buf, size_t size)
         return date_size + time_size;
     }
 
-    date_size = GetDateFormat(locale, DATE_SHORTDATE, st, NULL,
-                              buf, size);
-    if (size > (size_t) date_size)
+    date_size = GetDateFormat(locale, DATE_SHORTDATE, st, NULL, buf, size);
+    if (size > (size_t)date_size)
     {
-        time_size = GetTimeFormat(locale, TIME_NOSECONDS, st, NULL,
-                                  buf + date_size, size - date_size);
+        time_size =
+            GetTimeFormat(locale, TIME_NOSECONDS, st, NULL, buf + date_size, size - date_size);
     }
     if (date_size > 0 && time_size > 0)
     {
@@ -174,7 +174,7 @@ LocalizedFileTime(const FILETIME *ft)
     int size = LocalizedSystemTime(&st, NULL, 0);
     if (size > 0)
     {
-        buf = calloc(1, size*sizeof(wchar_t));
+        buf = calloc(1, size * sizeof(wchar_t));
         if (buf)
         {
             LocalizedSystemTime(&st, buf, size);
@@ -190,7 +190,7 @@ LocalizedTime(const time_t t, LPTSTR buf, size_t size)
     FILETIME lft;
     SYSTEMTIME st;
     LONGLONG tmp = (t * 10000000LL) + 116444736000000000LL;
-    FILETIME ft = { .dwLowDateTime = (DWORD) tmp, .dwHighDateTime = tmp >> 32};
+    FILETIME ft = { .dwLowDateTime = (DWORD)tmp, .dwHighDateTime = tmp >> 32 };
     FileTimeToLocalFileTime(&ft, &lft);
     FileTimeToSystemTime(&lft, &st);
 
@@ -212,7 +212,7 @@ LoadStringLang(UINT stringId, LANGID langId, PTSTR buffer, int bufferSize, va_li
     }
 
     /* get pointer to first entry in resource block */
-    entry = (PWCH) LoadResource(o.hInstance, res);
+    entry = (PWCH)LoadResource(o.hInstance, res);
     if (entry == NULL)
     {
         goto err;
@@ -235,7 +235,7 @@ LoadStringLang(UINT stringId, LANGID langId, PTSTR buffer, int bufferSize, va_li
         }
 
         /* string found, copy it */
-        PTSTR formatStr = (PTSTR) malloc((*entry + 1) * sizeof(TCHAR));
+        PTSTR formatStr = (PTSTR)malloc((*entry + 1) * sizeof(TCHAR));
         if (formatStr == NULL)
         {
             break;
@@ -293,10 +293,14 @@ LoadLocalizedStringBuf(PTSTR buffer, int bufferSize, const UINT stringId, ...)
 
 
 static int
-__ShowLocalizedMsgEx(const UINT type, HANDLE parent, LPCTSTR caption, const UINT stringId, va_list args)
+__ShowLocalizedMsgEx(
+    const UINT type, HANDLE parent, LPCTSTR caption, const UINT stringId, va_list args)
 {
-    return MessageBoxEx(parent, __LoadLocalizedString(stringId, args), caption,
-                        type | MB_SETFOREGROUND | MBOX_RTL_FLAGS, GetGUILanguage());
+    return MessageBoxEx(parent,
+                        __LoadLocalizedString(stringId, args),
+                        caption,
+                        type | MB_SETFOREGROUND | MBOX_RTL_FLAGS,
+                        GetGUILanguage());
 }
 
 int
@@ -324,9 +328,12 @@ LoadLocalizedIconEx(const UINT iconId, int cxDesired, int cyDesired)
 {
     LANGID langId = GetGUILanguage();
 
-    HICON hIcon =
-        (HICON) LoadImage(o.hInstance, MAKEINTRESOURCE(iconId),
-                          IMAGE_ICON, cxDesired, cyDesired, LR_DEFAULTSIZE|LR_SHARED);
+    HICON hIcon = (HICON)LoadImage(o.hInstance,
+                                   MAKEINTRESOURCE(iconId),
+                                   IMAGE_ICON,
+                                   cxDesired,
+                                   cyDesired,
+                                   LR_DEFAULTSIZE | LR_SHARED);
     if (hIcon)
     {
         return hIcon;
@@ -378,8 +385,8 @@ LoadLocalizedIconEx(const UINT iconId, int cxDesired, int cyDesired)
     }
 
     /* Note: this uses the first icon in the resource and scales it */
-    hIcon = CreateIconFromResourceEx(resInfo, resSize, TRUE, 0x30000,
-                                     cxDesired, cyDesired, LR_DEFAULTSIZE|LR_SHARED);
+    hIcon = CreateIconFromResourceEx(
+        resInfo, resSize, TRUE, 0x30000, cxDesired, cyDesired, LR_DEFAULTSIZE | LR_SHARED);
     return hIcon;
 }
 
@@ -473,24 +480,26 @@ LangListEntry(const UINT stringId, const LANGID langId, ...)
 }
 
 
-typedef struct {
+typedef struct
+{
     HWND languages;
     LANGID language;
 } langProcData;
 
 
 static BOOL
-FillLangListProc(UNUSED HANDLE module, UNUSED PTSTR type, UNUSED PTSTR stringId, WORD langId, LONG_PTR lParam)
+FillLangListProc(
+    UNUSED HANDLE module, UNUSED PTSTR type, UNUSED PTSTR stringId, WORD langId, LONG_PTR lParam)
 {
-    langProcData *data = (langProcData *) lParam;
+    langProcData *data = (langProcData *)lParam;
 
     int index = ComboBox_AddString(data->languages, LangListEntry(IDS_LANGUAGE_NAME, langId));
     ComboBox_SetItemData(data->languages, index, langId);
 
     /* Select this item if it is the currently displayed language */
     if (langId == data->language
-        ||  (PRIMARYLANGID(langId) == PRIMARYLANGID(data->language)
-             && ComboBox_GetCurSel(data->languages) == CB_ERR) )
+        || (PRIMARYLANGID(langId) == PRIMARYLANGID(data->language)
+            && ComboBox_GetCurSel(data->languages) == CB_ERR))
     {
         ComboBox_SetCurSel(data->languages, index);
     }
@@ -501,14 +510,17 @@ FillLangListProc(UNUSED HANDLE module, UNUSED PTSTR type, UNUSED PTSTR stringId,
 static BOOL
 GetLaunchOnStartup()
 {
-
     WCHAR regPath[MAX_PATH], exePath[MAX_PATH];
     BOOL result = FALSE;
     HKEY regkey;
 
-    if (RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_READ, &regkey) == ERROR_SUCCESS)
+    if (RegOpenKeyExW(HKEY_CURRENT_USER,
+                      L"Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+                      0,
+                      KEY_READ,
+                      &regkey)
+        == ERROR_SUCCESS)
     {
-
         if (GetRegistryValue(regkey, L"OpenVPN-GUI", regPath, MAX_PATH)
             && GetModuleFileNameW(NULL, exePath, MAX_PATH))
         {
@@ -519,23 +531,24 @@ GetLaunchOnStartup()
         }
 
         RegCloseKey(regkey);
-
     }
 
     return result;
-
 }
 
 static void
 SetLaunchOnStartup(BOOL value)
 {
-
     WCHAR exePath[MAX_PATH];
     HKEY regkey;
 
-    if (RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_WRITE, &regkey) == ERROR_SUCCESS)
+    if (RegOpenKeyExW(HKEY_CURRENT_USER,
+                      L"Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+                      0,
+                      KEY_WRITE,
+                      &regkey)
+        == ERROR_SUCCESS)
     {
-
         if (value)
         {
             if (GetModuleFileNameW(NULL, exePath, MAX_PATH))
@@ -549,33 +562,31 @@ SetLaunchOnStartup(BOOL value)
         }
 
         RegCloseKey(regkey);
-
     }
-
 }
 
 INT_PTR CALLBACK
 GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
 {
     LPPSHNOTIFY psn;
-    langProcData langData = {
-        .languages = GetDlgItem(hwndDlg, ID_CMB_LANGUAGE),
-        .language = GetGUILanguage()
-    };
+    langProcData langData = { .languages = GetDlgItem(hwndDlg, ID_CMB_LANGUAGE),
+                              .language = GetGUILanguage() };
 
     switch (msg)
     {
-
         case WM_INITDIALOG:
             /* Populate UI language selection combo box */
-            EnumResourceLanguages( NULL, RT_STRING, MAKEINTRESOURCE(IDS_LANGUAGE_NAME / 16 + 1),
-                                   (ENUMRESLANGPROC) FillLangListProc, (LONG_PTR) &langData );
+            EnumResourceLanguages(NULL,
+                                  RT_STRING,
+                                  MAKEINTRESOURCE(IDS_LANGUAGE_NAME / 16 + 1),
+                                  (ENUMRESLANGPROC)FillLangListProc,
+                                  (LONG_PTR)&langData);
 
             /* If none of the available languages matched, select the fallback */
             if (ComboBox_GetCurSel(langData.languages) == CB_ERR)
             {
-                ComboBox_SelectString(langData.languages, -1,
-                                      LangListEntry(IDS_LANGUAGE_NAME, fallbackLangId));
+                ComboBox_SelectString(
+                    langData.languages, -1, LangListEntry(IDS_LANGUAGE_NAME, fallbackLangId));
             }
 
             /* Clear language id data for the selected item */
@@ -652,34 +663,36 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
             {
                 /* change PLAPRegistration state */
                 HWND h = GetDlgItem(hwndDlg, ID_CHK_PLAP_REG);
-                BOOL newstate = Button_GetCheck(h) == BST_CHECKED ?  TRUE : FALSE;
-                if (SetPLAPRegistration(newstate) != 0) /* failed or user cancelled -- reset checkmark */
+                BOOL newstate = Button_GetCheck(h) == BST_CHECKED ? TRUE : FALSE;
+                if (SetPLAPRegistration(newstate)
+                    != 0) /* failed or user cancelled -- reset checkmark */
                 {
-                    Button_SetCheck(h, newstate  ? BST_UNCHECKED : BST_CHECKED);
+                    Button_SetCheck(h, newstate ? BST_UNCHECKED : BST_CHECKED);
                 }
             }
             break;
 
         case WM_NOTIFY:
-            psn = (LPPSHNOTIFY) lParam;
-            if (psn->hdr.code == (UINT) PSN_APPLY)
+            psn = (LPPSHNOTIFY)lParam;
+            if (psn->hdr.code == (UINT)PSN_APPLY)
             {
-                LANGID langId = (LANGID) ComboBox_GetItemData(langData.languages,
-                                                              ComboBox_GetCurSel(langData.languages));
+                LANGID langId = (LANGID)ComboBox_GetItemData(
+                    langData.languages, ComboBox_GetCurSel(langData.languages));
 
                 if (langId != 0)
                 {
                     SetGUILanguage(langId);
                 }
 
-                SetLaunchOnStartup(Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_STARTUP)) == BST_CHECKED);
+                SetLaunchOnStartup(Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_STARTUP))
+                                   == BST_CHECKED);
 
                 o.log_append =
                     (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_LOG_APPEND)) == BST_CHECKED);
                 o.silent_connection =
                     (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_SILENT)) == BST_CHECKED);
-                o.iservice_admin =
-                    (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_ALWAYS_USE_ISERVICE)) == BST_CHECKED);
+                o.iservice_admin = (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_ALWAYS_USE_ISERVICE))
+                                    == BST_CHECKED);
                 if (IsDlgButtonChecked(hwndDlg, ID_RB_BALLOON0))
                 {
                     o.show_balloon = 0;

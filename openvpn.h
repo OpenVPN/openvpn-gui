@@ -25,13 +25,15 @@
 
 #include "options.h"
 
-#define TRY_SETPROP(hwnd, name, p)                                                   \
-    do { if (SetPropW(hwnd, name, p)) break;                                 \
-         MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs:%d GetProp returned null", \
-                       __func__, __LINE__);                                  \
-         EndDialog(hwnd, IDABORT);                                           \
-         return false;                                                       \
-    } while(0)
+#define TRY_SETPROP(hwnd, name, p)                                                               \
+    do                                                                                           \
+    {                                                                                            \
+        if (SetPropW(hwnd, name, p))                                                             \
+            break;                                                                               \
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs:%d GetProp returned null", __func__, __LINE__); \
+        EndDialog(hwnd, IDABORT);                                                                \
+        return false;                                                                            \
+    } while (0)
 
 BOOL StartOpenVPN(connection_t *);
 
@@ -79,24 +81,25 @@ extern const TCHAR *cfgProp;
 
 /* These error codes are from openvpn service sources */
 #define ERROR_OPENVPN_STARTUP 0x20000000
-#define ERROR_STARTUP_DATA 0x20000001
-#define ERROR_MESSAGE_DATA 0x20000002
-#define ERROR_MESSAGE_TYPE 0x20000003
+#define ERROR_STARTUP_DATA    0x20000001
+#define ERROR_MESSAGE_DATA    0x20000002
+#define ERROR_MESSAGE_TYPE    0x20000003
 
 /* Write a line to status window and optionally to the log file */
 void WriteStatusLog(connection_t *c, const WCHAR *prefix, const WCHAR *line, BOOL fileio);
 
-#define FLAG_CR_TYPE_SCRV1  0x1    /* static challenege */
-#define FLAG_CR_TYPE_CRV1   0x2    /* dynamic challenege */
-#define FLAG_CR_ECHO        0x4    /* echo the response */
-#define FLAG_CR_RESPONSE    0x8    /* response needed */
-#define FLAG_PASS_TOKEN     0x10   /* PKCS11 token password needed */
-#define FLAG_STRING_PKCS11  0x20   /* PKCS11 id needed */
-#define FLAG_PASS_PKEY      0x40   /* Private key password needed */
-#define FLAG_CR_TYPE_CRTEXT 0x80   /* crtext */
-#define FLAG_CR_TYPE_CONCAT 0x100  /* concatenate otp with password */
+#define FLAG_CR_TYPE_SCRV1  0x1   /* static challenege */
+#define FLAG_CR_TYPE_CRV1   0x2   /* dynamic challenege */
+#define FLAG_CR_ECHO        0x4   /* echo the response */
+#define FLAG_CR_RESPONSE    0x8   /* response needed */
+#define FLAG_PASS_TOKEN     0x10  /* PKCS11 token password needed */
+#define FLAG_STRING_PKCS11  0x20  /* PKCS11 id needed */
+#define FLAG_PASS_PKEY      0x40  /* Private key password needed */
+#define FLAG_CR_TYPE_CRTEXT 0x80  /* crtext */
+#define FLAG_CR_TYPE_CONCAT 0x100 /* concatenate otp with password */
 
-typedef struct {
+typedef struct
+{
     connection_t *c;
     unsigned int flags;
     char *str;
@@ -110,11 +113,9 @@ typedef struct {
  * true on success. The caller must free param->str and param->id
  * even on error.
  */
-BOOL
-parse_dynamic_cr(const char *str, auth_param_t *param);
+BOOL parse_dynamic_cr(const char *str, auth_param_t *param);
 
-void
-free_auth_param(auth_param_t *param);
+void free_auth_param(auth_param_t *param);
 
 /*
  * Given an OpenVPN state as reported by the management interface

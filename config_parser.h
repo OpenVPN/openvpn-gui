@@ -26,7 +26,8 @@
 
 typedef struct config_entry config_entry_t;
 
-struct config_entry {
+struct config_entry
+{
     wchar_t line[MAX_LINE_LENGTH];
     wchar_t sline[MAX_LINE_LENGTH];
     wchar_t *tokens[16];

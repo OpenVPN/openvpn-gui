@@ -36,34 +36,38 @@ typedef struct connection connection_t;
 #include "echo.h"
 #include "pkcs11.h"
 
-#define MAX_NAME (UNLEN + 1)
+#define MAX_NAME  (UNLEN + 1)
 
 /*
  * Maximum number of parameters associated with an option,
  * including the option name itself.
  */
-#define MAX_PARMS           5   /* Max number of parameters per option */
+#define MAX_PARMS 5 /* Max number of parameters per option */
 
-typedef enum {
-    service_noaccess     = -1,
-    service_disconnected =  0,
-    service_connecting   =  1,
-    service_connected    =  2
+typedef enum
+{
+    service_noaccess = -1,
+    service_disconnected = 0,
+    service_connecting = 1,
+    service_connected = 2
 } service_state_t;
 
-typedef enum {
+typedef enum
+{
     config,
     windows,
     manual
 } proxy_source_t;
 
-typedef enum {
+typedef enum
+{
     http,
     socks
 } proxy_t;
 
 /* connection states */
-typedef enum {
+typedef enum
+{
     disconnected,
     onhold,
     connecting,
@@ -78,29 +82,31 @@ typedef enum {
 } conn_state_t;
 
 /* Interactive Service IO parameters */
-typedef struct {
+typedef struct
+{
     OVERLAPPED o; /* This has to be the first element */
     HANDLE pipe;
     HANDLE hEvent;
     WCHAR readbuf[512];
 } service_io_t;
 
-#define FLAG_ALLOW_CHANGE_PASSPHRASE (1<<1)
-#define FLAG_SAVE_KEY_PASS  (1<<4)
-#define FLAG_SAVE_AUTH_PASS (1<<5)
-#define FLAG_DISABLE_SAVE_PASS (1<<6)
-#define FLAG_DISABLE_ECHO_MSG  (1<<7)
-#define FLAG_DAEMON_PERSISTENT  (1<<8)
-#define FLAG_WAIT_UNLOCK        (1<<9)
+#define FLAG_ALLOW_CHANGE_PASSPHRASE (1 << 1)
+#define FLAG_SAVE_KEY_PASS           (1 << 4)
+#define FLAG_SAVE_AUTH_PASS          (1 << 5)
+#define FLAG_DISABLE_SAVE_PASS       (1 << 6)
+#define FLAG_DISABLE_ECHO_MSG        (1 << 7)
+#define FLAG_DAEMON_PERSISTENT       (1 << 8)
+#define FLAG_WAIT_UNLOCK             (1 << 9)
 
-#define CONFIG_VIEW_AUTO      (0)
-#define CONFIG_VIEW_FLAT      (1)
-#define CONFIG_VIEW_NESTED    (2)
+#define CONFIG_VIEW_AUTO             (0)
+#define CONFIG_VIEW_FLAT             (1)
+#define CONFIG_VIEW_NESTED           (2)
 
-#define OPENVPN_ENGINE_OVPN2  (0)
-#define OPENVPN_ENGINE_OVPN3  (1)
+#define OPENVPN_ENGINE_OVPN2         (0)
+#define OPENVPN_ENGINE_OVPN3         (1)
 
-typedef struct {
+typedef struct
+{
     unsigned short major, minor, build, revision;
 } version_t;
 
@@ -110,92 +116,96 @@ typedef struct {
  * Not a complete tree: only navigation from child to parent is supported
  * which is enough for our purposes.
  */
-typedef struct config_group {
-    int id;                      /* A unique id for the group >= 0*/
-    wchar_t name[40];            /* Name of the group -- possibly truncated */
-    int parent;                  /* Id of parent group. -1 implies no parent */
-    BOOL active;                 /* Displayed in the menu if true -- used to prune empty groups */
-    int children;                /* Number of children groups and configs */
-    int pos;                     /* Index within the parent group -- used for rendering */
-    HMENU menu;                  /* Handle to menu entry for this group */
+typedef struct config_group
+{
+    int id;           /* A unique id for the group >= 0*/
+    wchar_t name[40]; /* Name of the group -- possibly truncated */
+    int parent;       /* Id of parent group. -1 implies no parent */
+    BOOL active;      /* Displayed in the menu if true -- used to prune empty groups */
+    int children;     /* Number of children groups and configs */
+    int pos;          /* Index within the parent group -- used for rendering */
+    HMENU menu;       /* Handle to menu entry for this group */
 } config_group_t;
 
 /* short hand for pointer to the group a config belongs to */
-#define CONFIG_GROUP(c) (&o.groups[(c)->group])
-#define PARENT_GROUP(cg) ((cg)->parent < 0 ? NULL : &o.groups[(cg)->parent])
+#define CONFIG_GROUP(c)       (&o.groups[(c)->group])
+#define PARENT_GROUP(cg)      ((cg)->parent < 0 ? NULL : &o.groups[(cg)->parent])
 #define PERSISTENT_ROOT_GROUP (&o.groups[1])
 
 /* Connections parameters */
-struct connection {
-    TCHAR config_file[MAX_PATH];    /* Name of the config file */
-    TCHAR config_name[MAX_PATH];    /* Name of the connection */
-    TCHAR config_dir[MAX_PATH];     /* Path to this configs dir */
-    TCHAR log_path[MAX_PATH];       /* Path to Logfile */
-    TCHAR ip[16];                   /* Assigned IP address for this connection */
-    TCHAR ipv6[46];                 /* Assigned IPv6 address */
-    BOOL auto_connect;              /* AutoConnect at startup id TRUE */
-    conn_state_t state;             /* State the connection currently is in */
-    int failed_psw_attempts;        /* # of failed attempts entering password(s) */
-    int failed_auth_attempts;       /* # of failed user-auth attempts */
-    time_t connected_since;         /* Time when the connection was established */
-    proxy_t proxy_type;             /* Set during querying proxy credentials */
-    int group;                      /* ID of the group this config belongs to */
-    int pos;                        /* Index of the config within its group */
+struct connection
+{
+    TCHAR config_file[MAX_PATH]; /* Name of the config file */
+    TCHAR config_name[MAX_PATH]; /* Name of the connection */
+    TCHAR config_dir[MAX_PATH];  /* Path to this configs dir */
+    TCHAR log_path[MAX_PATH];    /* Path to Logfile */
+    TCHAR ip[16];                /* Assigned IP address for this connection */
+    TCHAR ipv6[46];              /* Assigned IPv6 address */
+    BOOL auto_connect;           /* AutoConnect at startup id TRUE */
+    conn_state_t state;          /* State the connection currently is in */
+    int failed_psw_attempts;     /* # of failed attempts entering password(s) */
+    int failed_auth_attempts;    /* # of failed user-auth attempts */
+    time_t connected_since;      /* Time when the connection was established */
+    proxy_t proxy_type;          /* Set during querying proxy credentials */
+    int group;                   /* ID of the group this config belongs to */
+    int pos;                     /* Index of the config within its group */
 
-    struct {
+    struct
+    {
         SOCKET sk;
         SOCKADDR_IN skaddr;
         time_t timeout;
-        char password[4096];        /* match with largest possible passwd in openvpn.exe */
+        char password[4096]; /* match with largest possible passwd in openvpn.exe */
         char *saved_data;
         size_t saved_size;
         mgmt_cmd_t *cmd_queue;
-        DWORD connected;             /* 1: management interface connected, 2: connected and ready */
+        DWORD connected; /* 1: management interface connected, 2: connected and ready */
     } manage;
 
-    HANDLE hProcess;                /* Handle of openvpn process if directly started */
+    HANDLE hProcess; /* Handle of openvpn process if directly started */
     service_io_t iserv;
 
     HANDLE exit_event;
     DWORD threadId;
     HWND hwndStatus;
     int flags;
-    char *dynamic_cr;              /* Pointer to buffer for dynamic challenge string received */
+    char *dynamic_cr; /* Pointer to buffer for dynamic challenge string received */
     unsigned long long int bytes_in;
     unsigned long long int bytes_out;
-    struct env_item *es;           /* Pointer to the head of config-specific env variables list */
-    struct echo_msg echo_msg;      /* Message echo-ed from server or client config and related data */
+    struct env_item *es;      /* Pointer to the head of config-specific env variables list */
+    struct echo_msg echo_msg; /* Message echo-ed from server or client config and related data */
     struct pkcs11_list pkcs11_list;
-    char daemon_state[20];         /* state of openvpn.ex: WAIT, AUTH, GET_CONFIG etc.. */
-    int id;                        /* index of config -- treat as immutable once assigned */
+    char daemon_state[20];    /* state of openvpn.ex: WAIT, AUTH, GET_CONFIG etc.. */
+    int id;                   /* index of config -- treat as immutable once assigned */
     connection_t *next;
 };
 
 /* All options used within OpenVPN GUI */
-typedef struct {
+typedef struct
+{
     /* Array of configs to autostart */
     const TCHAR **auto_connect;
 
     /* Connection parameters */
-    connection_t *chead;              /* Head of connection list */
-    connection_t *ctail;              /* Tail of connection list */
-    config_group_t *groups;           /* Array of nodes defining the config groups tree */
-    int num_configs;                  /* Number of configs */
-    int num_auto_connect;             /* Number of auto-connect configs */
-    int num_groups;                   /* Number of config groups */
-    int max_configs;                  /* Current capacity of conn array */
-    int max_auto_connect;             /* Current capacity of auto_connect array */
-    int max_groups;                   /* Current capacity of groups array */
+    connection_t *chead;           /* Head of connection list */
+    connection_t *ctail;           /* Tail of connection list */
+    config_group_t *groups;        /* Array of nodes defining the config groups tree */
+    int num_configs;               /* Number of configs */
+    int num_auto_connect;          /* Number of auto-connect configs */
+    int num_groups;                /* Number of config groups */
+    int max_configs;               /* Current capacity of conn array */
+    int max_auto_connect;          /* Current capacity of auto_connect array */
+    int max_groups;                /* Current capacity of groups array */
 
-    service_state_t service_state;    /* State of the OpenVPN Service */
+    service_state_t service_state; /* State of the OpenVPN Service */
 
     /* Proxy Settings */
-    proxy_source_t proxy_source;      /* Where to get proxy information from */
-    proxy_t proxy_type;               /* The type of proxy to use */
-    TCHAR proxy_http_address[100];    /* HTTP Proxy Address */
-    TCHAR proxy_http_port[6];         /* HTTP Proxy Port */
-    TCHAR proxy_socks_address[100];   /* SOCKS Proxy Address */
-    TCHAR proxy_socks_port[6];        /* SOCKS Proxy Address */
+    proxy_source_t proxy_source;    /* Where to get proxy information from */
+    proxy_t proxy_type;             /* The type of proxy to use */
+    TCHAR proxy_http_address[100];  /* HTTP Proxy Address */
+    TCHAR proxy_http_port[6];       /* HTTP Proxy Port */
+    TCHAR proxy_socks_address[100]; /* SOCKS Proxy Address */
+    TCHAR proxy_socks_port[6];      /* SOCKS Proxy Address */
 
     /* HKLM Registry values */
     TCHAR exe_path[MAX_PATH];
@@ -218,18 +228,19 @@ typedef struct {
     DWORD iservice_admin;
     DWORD show_balloon;
     DWORD show_script_window;
-    DWORD connectscript_timeout;        /* Connect Script execution timeout (sec) */
-    DWORD disconnectscript_timeout;     /* Disconnect Script execution timeout (sec) */
-    DWORD preconnectscript_timeout;     /* Preconnect Script execution timeout (sec) */
-    DWORD config_menu_view;             /* 0 for auto, 1 for original flat menu, 2 for hierarchical */
-    DWORD disable_popup_messages;       /* set nonzero to suppress all echo msg messages */
-    DWORD popup_mute_interval;          /* Interval in hours to suppress repeated echo messages */
-    DWORD mgmt_port_offset;             /* management interface port = this offset + index of connection profile */
+    DWORD connectscript_timeout;    /* Connect Script execution timeout (sec) */
+    DWORD disconnectscript_timeout; /* Disconnect Script execution timeout (sec) */
+    DWORD preconnectscript_timeout; /* Preconnect Script execution timeout (sec) */
+    DWORD config_menu_view;         /* 0 for auto, 1 for original flat menu, 2 for hierarchical */
+    DWORD disable_popup_messages;   /* set nonzero to suppress all echo msg messages */
+    DWORD popup_mute_interval;      /* Interval in hours to suppress repeated echo messages */
+    DWORD mgmt_port_offset; /* management interface port = this offset + index of connection profile
+                             */
 
-    DWORD ovpn_engine;                  /* 0 - openvpn2, 1 - openvpn3 */
-    DWORD enable_persistent;            /* 0 - disabled, 1 - enabled, 2 - enabled & auto attach */
-    DWORD enable_auto_restart;          /* 0 - disabled, >0 enabled */
-    DWORD disable_password_reveal;      /* read from group policy */
+    DWORD ovpn_engine;      /* 0 - openvpn2, 1 - openvpn3 */
+    DWORD enable_persistent;       /* 0 - disabled, 1 - enabled, 2 - enabled & auto attach */
+    DWORD enable_auto_restart;     /* 0 - disabled, >0 enabled */
+    DWORD disable_password_reveal; /* read from group policy */
 #ifdef DEBUG
     FILE *debug_fp;
 #endif
@@ -243,7 +254,7 @@ typedef struct {
     unsigned int dpi_scale;
     COLORREF clr_warning;
     COLORREF clr_error;
-    int action;            /* action to send to a running instance */
+    int action; /* action to send to a running instance */
     TCHAR *action_arg;
     HANDLE session_semaphore;
     HANDLE event_log;

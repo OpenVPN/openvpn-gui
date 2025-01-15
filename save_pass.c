@@ -31,11 +31,11 @@
 #include "save_pass.h"
 #include "misc.h"
 
-#define KEY_PASS_DATA     L"key-data"
-#define AUTH_PASS_DATA    L"auth-data"
-#define ENTROPY_DATA      L"entropy"
-#define AUTH_USER_DATA    L"username"
-#define ENTROPY_LEN 16
+#define KEY_PASS_DATA  L"key-data"
+#define AUTH_PASS_DATA L"auth-data"
+#define ENTROPY_DATA   L"entropy"
+#define AUTH_USER_DATA L"username"
+#define ENTROPY_LEN    16
 
 static DWORD
 crypt_protect(BYTE *data, int szdata, char *entropy, BYTE **out)
@@ -46,7 +46,7 @@ crypt_protect(BYTE *data, int szdata, char *entropy, BYTE **out)
 
     data_in.pbData = data;
     data_in.cbData = szdata;
-    e.pbData = (BYTE *) entropy;
+    e.pbData = (BYTE *)entropy;
     e.cbData = entropy ? strlen(entropy) : 0;
 
     if (CryptProtectData(&data_in, NULL, &e, NULL, NULL, 0, &data_out))
@@ -62,12 +62,12 @@ static DWORD
 crypt_unprotect(BYTE *data, int szdata, char *entropy, BYTE **out)
 {
     DATA_BLOB data_in;
-    DATA_BLOB data_out = {0, 0};
+    DATA_BLOB data_out = { 0, 0 };
     DATA_BLOB e;
 
     data_in.pbData = data;
     data_in.cbData = szdata;
-    e.pbData = (BYTE *) entropy;
+    e.pbData = (BYTE *)entropy;
     e.cbData = entropy ? strlen(entropy) : 0;
 
     if (CryptUnprotectData(&data_in, NULL, &e, NULL, NULL, 0, &data_out))
@@ -93,16 +93,16 @@ get_entropy(const WCHAR *config_name, char *e, int sz, BOOL generate)
 {
     int len;
 
-    len = GetConfigRegistryValue(config_name, ENTROPY_DATA, (BYTE *) e, sz);
+    len = GetConfigRegistryValue(config_name, ENTROPY_DATA, (BYTE *)e, sz);
     if (len > 0)
     {
-        e[len-1] = '\0';
+        e[len - 1] = '\0';
         PrintDebug(L"Got entropy from registry: %hs (len = %d)", e, len);
         return;
     }
     else if (generate && GetRandomPassword(e, sz))
     {
-        e[sz-1] = '\0';
+        e[sz - 1] = '\0';
         PrintDebug(L"Created new entropy string : %hs", e);
         if (SetConfigRegistryValueBinary(config_name, ENTROPY_DATA, (BYTE *)e, sz))
         {
@@ -126,10 +126,10 @@ save_encrypted(const WCHAR *config_name, const WCHAR *password, const WCHAR *nam
 {
     BYTE *out;
     DWORD len = (wcslen(password) + 1) * sizeof(WCHAR);
-    char entropy[ENTROPY_LEN+1];
+    char entropy[ENTROPY_LEN + 1];
 
     get_entropy(config_name, entropy, sizeof(entropy), true);
-    len = crypt_protect((BYTE *) password, len, entropy, &out);
+    len = crypt_protect((BYTE *)password, len, entropy, &out);
     if (len > 0)
     {
         SetConfigRegistryValueBinary(config_name, name, out, len);
@@ -173,7 +173,7 @@ recall_encrypted(const WCHAR *config_name, WCHAR *password, DWORD capacity, cons
     BYTE *out;
     DWORD len;
     int retval = 0;
-    char entropy[ENTROPY_LEN+1];
+    char entropy[ENTROPY_LEN + 1];
 
     get_entropy(config_name, entropy, sizeof(entropy), false);
 
@@ -194,7 +194,7 @@ recall_encrypted(const WCHAR *config_name, WCHAR *password, DWORD capacity, cons
     if (len <= capacity * sizeof(*password))
     {
         memcpy(password, out, len);
-        password[capacity-1] = L'\0'; /* in case the data was corrupted */
+        password[capacity - 1] = L'\0'; /* in case the data was corrupted */
         retval = 1;
     }
     else
@@ -234,7 +234,7 @@ int
 SaveUsername(const WCHAR *config_name, const WCHAR *username)
 {
     DWORD len = (wcslen(username) + 1) * sizeof(*username);
-    SetConfigRegistryValueBinary(config_name, AUTH_USER_DATA, (BYTE *) username, len);
+    SetConfigRegistryValueBinary(config_name, AUTH_USER_DATA, (BYTE *)username, len);
     return 1;
 }
 /*
@@ -247,12 +247,12 @@ RecallUsername(const WCHAR *config_name, WCHAR *username)
     DWORD capacity = USER_PASS_LEN * sizeof(WCHAR);
     DWORD len;
 
-    len = GetConfigRegistryValue(config_name, AUTH_USER_DATA, (BYTE *) username,  capacity);
+    len = GetConfigRegistryValue(config_name, AUTH_USER_DATA, (BYTE *)username, capacity);
     if (len == 0)
     {
         return 0;
     }
-    username[USER_PASS_LEN-1] = L'\0';
+    username[USER_PASS_LEN - 1] = L'\0';
     return 1;
 }
 

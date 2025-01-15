@@ -24,7 +24,8 @@
 
 #include <winsock2.h>
 
-typedef enum {
+typedef enum
+{
     ready_,
     stop_,
     bytecount_,
@@ -42,19 +43,22 @@ typedef enum {
     mgmt_rtmsg_type_max
 } mgmt_rtmsg_type;
 
-typedef enum {
+typedef enum
+{
     regular,
     combined
 } mgmt_cmd_type;
 
 typedef void (*mgmt_msg_func)(connection_t *, char *);
 
-typedef struct {
+typedef struct
+{
     mgmt_rtmsg_type type;
     mgmt_msg_func handler;
 } mgmt_rtmsg_handler;
 
-typedef struct mgmt_cmd {
+typedef struct mgmt_cmd
+{
     struct mgmt_cmd *prev, *next;
     char *command;
     int size;

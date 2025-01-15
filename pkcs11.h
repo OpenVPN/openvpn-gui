@@ -24,10 +24,10 @@
 
 struct pkcs11_list
 {
-    unsigned int count;            /* number of pkcs11 entries */
-    unsigned int selected;         /* entry selected by user: -1 if no selection */
-    unsigned int state;            /* a flag indicating list filling status */
-    struct pkcs11_entry *pe;       /* array of pkcs11-id entries */
+    unsigned int count;      /* number of pkcs11 entries */
+    unsigned int selected;   /* entry selected by user: -1 if no selection */
+    unsigned int state;      /* a flag indicating list filling status */
+    struct pkcs11_entry *pe; /* array of pkcs11-id entries */
 };
 
 struct connection;

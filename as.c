@@ -32,11 +32,11 @@
 #include "openvpn-gui-res.h"
 #include "save_pass.h"
 
-#define URL_LEN 1024
-#define PROFILE_NAME_LEN 128
-#define READ_CHUNK_LEN 65536
+#define URL_LEN             1024
+#define PROFILE_NAME_LEN    128
+#define READ_CHUNK_LEN      65536
 
-#define PROFILE_NAME_TOKEN L"# OVPN_ACCESS_SERVER_PROFILE="
+#define PROFILE_NAME_TOKEN  L"# OVPN_ACCESS_SERVER_PROFILE="
 #define FRIENDLY_NAME_TOKEN L"# OVPN_ACCESS_SERVER_FRIENDLY_NAME="
 
 /** Replace characters not allowed in Windows filenames with '_' */
@@ -69,7 +69,10 @@ SanitizeFilename(wchar_t *fname)
  * @param out_name_length max length of out_name char array
  */
 void
-ExtractProfileName(const WCHAR *profile, const WCHAR *default_name, WCHAR *out_name, size_t out_name_length)
+ExtractProfileName(const WCHAR *profile,
+                   const WCHAR *default_name,
+                   WCHAR *out_name,
+                   size_t out_name_length)
 {
     WCHAR friendly_name[PROFILE_NAME_LEN] = { 0 };
     WCHAR profile_name[PROFILE_NAME_LEN] = { 0 };
@@ -123,9 +126,15 @@ void
 ShowWinInetError(HANDLE hWnd)
 {
     WCHAR err[256] = { 0 };
-    FormatMessageW(FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_FROM_SYSTEM, GetModuleHandleW(L"wininet.dll"),
-                   GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), err, _countof(err), NULL);
-    ShowLocalizedMsgEx(MB_OK, hWnd, _T(PACKAGE_NAME), IDS_ERR_URL_IMPORT_PROFILE, GetLastError(), err);
+    FormatMessageW(FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_FROM_SYSTEM,
+                   GetModuleHandleW(L"wininet.dll"),
+                   GetLastError(),
+                   MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                   err,
+                   _countof(err),
+                   NULL);
+    ShowLocalizedMsgEx(
+        MB_OK, hWnd, _T(PACKAGE_NAME), IDS_ERR_URL_IMPORT_PROFILE, GetLastError(), err);
 }
 
 struct UrlComponents
@@ -185,7 +194,8 @@ ParseUrl(const WCHAR *url, struct UrlComponents *comps)
  *
  * @param hWnd handle of window which initiated download
  * @param hRequest WinInet request handle
- * @param pbuf pointer to a buffer, will be allocated by this function. Caller must free it after use.
+ * @param pbuf pointer to a buffer, will be allocated by this function. Caller must free it after
+ * use.
  * @param psize pointer to a profile size, assigned by this function
  */
 BOOL
@@ -272,8 +282,8 @@ CRDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
             /* disable OK button by default - not disabled in resources */
             EnableWindow(GetDlgItem(hwndDlg, IDOK), FALSE);
-            ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_RESPONSE),
-                                GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), 0);
+            ResetPasswordReveal(
+                GetDlgItem(hwndDlg, ID_EDT_RESPONSE), GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), 0);
             break;
 
         case WM_COMMAND:
@@ -285,7 +295,8 @@ CRDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                     if (!(param->flags & FLAG_CR_ECHO))
                     {
                         ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_RESPONSE),
-                                            GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), wParam);
+                                            GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL),
+                                            wParam);
                     }
                     if (HIWORD(wParam) == EN_UPDATE)
                     {
@@ -295,7 +306,8 @@ CRDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                     }
                     break;
 
-                case IDOK: {
+                case IDOK:
+                {
                     int len = 0;
                     GetDlgItemTextUtf8(hwndDlg, ID_EDT_RESPONSE, &param->cr_response, &len);
                     EndDialog(hwndDlg, LOWORD(wParam));
@@ -308,7 +320,8 @@ CRDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
                 case ID_PASSWORD_REVEAL: /* password reveal symbol clicked */
                     ChangePasswordVisibility(GetDlgItem(hwndDlg, ID_EDT_RESPONSE),
-                                             GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), wParam);
+                                             GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL),
+                                             wParam);
                     return TRUE;
             }
             break;
@@ -335,10 +348,12 @@ CRDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 static void
 GetASUrl(const WCHAR *host, bool autologin, struct UrlComponents *comps)
 {
-
     ParseUrl(host, comps);
 
-    swprintf(comps->path, URL_LEN, L"/rest/%ls?tls-cryptv2=1&action=import", autologin ? L"GetAutologin" : L"GetUserlogin");
+    swprintf(comps->path,
+             URL_LEN,
+             L"/rest/%ls?tls-cryptv2=1&action=import",
+             autologin ? L"GetAutologin" : L"GetUserlogin");
     comps->path[URL_LEN - 1] = L'\0';
 }
 
@@ -368,8 +383,7 @@ ExtractFilenameFromHeader(HINTERNET hRequest, wchar_t *name, size_t len)
         /* try again with more space */
         free(buf);
         buf = malloc(buflen);
-        if (!buf
-            || !HttpQueryInfoA(hRequest, HTTP_QUERY_CONTENT_DISPOSITION, buf, &buflen, &index))
+        if (!buf || !HttpQueryInfoA(hRequest, HTTP_QUERY_CONTENT_DISPOSITION, buf, &buflen, &index))
         {
             goto done;
         }
@@ -378,7 +392,7 @@ ExtractFilenameFromHeader(HINTERNET hRequest, wchar_t *name, size_t len)
     /* look for filename=<name> */
     char *p = strtok(buf, ";");
     char *fn = NULL;
-    for ( ; p; p = strtok(NULL, ";"))
+    for (; p; p = strtok(NULL, ";"))
     {
         if ((fn = strstr(p, "filename=")) != NULL)
         {
@@ -427,8 +441,12 @@ done:
  * with the url hostname as a fallback.
  */
 static BOOL
-DownloadProfile(HANDLE hWnd, const struct UrlComponents *comps, const char *username,
-                const char *password_orig, WCHAR *out_path, size_t out_path_size)
+DownloadProfile(HANDLE hWnd,
+                const struct UrlComponents *comps,
+                const char *username,
+                const char *password_orig,
+                WCHAR *out_path,
+                size_t out_path_size)
 {
     HANDLE hInternet = NULL;
     HANDLE hConnect = NULL;
@@ -461,7 +479,8 @@ DownloadProfile(HANDLE hWnd, const struct UrlComponents *comps, const char *user
     /* wait cursor will be automatically reverted later */
     SetCursor(LoadCursorW(0, IDC_WAIT));
 
-    hConnect = InternetConnectW(hInternet, comps->host, comps->port, NULL, NULL, INTERNET_SERVICE_HTTP, 0, 0);
+    hConnect = InternetConnectW(
+        hInternet, comps->host, comps->port, NULL, NULL, INTERNET_SERVICE_HTTP, 0, 0);
     if (!hConnect)
     {
         ShowWinInetError(hWnd);
@@ -487,8 +506,10 @@ again:
     /* turns out that *A WinAPI function must be used with UTF-8 encoded parameters to get
      * correct Base64 encoding (used by Basic HTTP auth) for non-ASCII characters
      */
-    InternetSetOptionA(hRequest, INTERNET_OPTION_USERNAME, (LPVOID)username, (DWORD)strlen(username));
-    InternetSetOptionA(hRequest, INTERNET_OPTION_PASSWORD, (LPVOID)password, (DWORD)strlen(password));
+    InternetSetOptionA(
+        hRequest, INTERNET_OPTION_USERNAME, (LPVOID)username, (DWORD)strlen(username));
+    InternetSetOptionA(
+        hRequest, INTERNET_OPTION_PASSWORD, (LPVOID)password, (DWORD)strlen(password));
 
     /* handle cert errors */
     /* https://www.betaarchive.com/wiki/index.php/Microsoft_KB_Archive/182888 */
@@ -496,32 +517,34 @@ again:
     {
 #ifdef DEBUG
         DWORD err = GetLastError();
-        if ((err == ERROR_INTERNET_INVALID_CA)
-            || (err == ERROR_INTERNET_SEC_CERT_CN_INVALID)
+        if ((err == ERROR_INTERNET_INVALID_CA) || (err == ERROR_INTERNET_SEC_CERT_CN_INVALID)
             || (err == ERROR_INTERNET_SEC_CERT_DATE_INVALID)
             || (err == ERROR_INTERNET_SEC_CERT_REV_FAILED))
         {
-
             /* ask user what to do and modify options if needed */
-            DWORD dlg_result = InternetErrorDlg(hWnd, hRequest,
+            DWORD dlg_result = InternetErrorDlg(hWnd,
+                                                hRequest,
                                                 err,
                                                 FLAGS_ERROR_UI_FILTER_FOR_ERRORS
-                                                |FLAGS_ERROR_UI_FLAGS_GENERATE_DATA
-                                                |FLAGS_ERROR_UI_FLAGS_CHANGE_OPTIONS,
+                                                    | FLAGS_ERROR_UI_FLAGS_GENERATE_DATA
+                                                    | FLAGS_ERROR_UI_FLAGS_CHANGE_OPTIONS,
                                                 NULL);
 
             if (dlg_result == ERROR_SUCCESS)
             {
-                /* for unknown reasons InternetErrorDlg() doesn't change options for ERROR_INTERNET_SEC_CERT_REV_FAILED,
-                 * despite user is willing to continue, so we have to do it manually */
+                /* for unknown reasons InternetErrorDlg() doesn't change options for
+                 * ERROR_INTERNET_SEC_CERT_REV_FAILED, despite user is willing to continue, so we
+                 * have to do it manually */
                 if (err == ERROR_INTERNET_SEC_CERT_REV_FAILED)
                 {
                     DWORD flags;
                     DWORD len = sizeof(flags);
-                    InternetQueryOptionW(hRequest, INTERNET_OPTION_SECURITY_FLAGS, (LPVOID)&flags, &len);
+                    InternetQueryOptionW(
+                        hRequest, INTERNET_OPTION_SECURITY_FLAGS, (LPVOID)&flags, &len);
 
                     flags |= SECURITY_FLAG_IGNORE_REVOCATION;
-                    InternetSetOptionW(hRequest, INTERNET_OPTION_SECURITY_FLAGS, &flags, sizeof(flags));
+                    InternetSetOptionW(
+                        hRequest, INTERNET_OPTION_SECURITY_FLAGS, &flags, sizeof(flags));
                     goto again;
                 }
 
@@ -541,7 +564,8 @@ again:
     /* get http status code */
     DWORD status_code = 0;
     DWORD length = sizeof(DWORD);
-    HttpQueryInfoW(hRequest, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, &status_code, &length, NULL);
+    HttpQueryInfoW(
+        hRequest, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, &status_code, &length, NULL);
 
     size_t size = 0;
 
@@ -567,7 +591,8 @@ again:
             if (parse_dynamic_cr(msg_begin + 14, param))
             {
                 /* prompt user for dynamic challenge */
-                INT_PTR res = LocalizedDialogBoxParam(ID_DLG_CHALLENGE_RESPONSE, CRDialogFunc, (LPARAM)param);
+                INT_PTR res =
+                    LocalizedDialogBoxParam(ID_DLG_CHALLENGE_RESPONSE, CRDialogFunc, (LPARAM)param);
                 if (res == IDOK)
                 {
                     _snprintf_0(password, "CRV1::%s::%s", param->id, param->cr_response);
@@ -589,7 +614,8 @@ again:
 
     if (status_code != 200)
     {
-        ShowLocalizedMsgEx(MB_OK, hWnd, _T(PACKAGE_NAME), IDS_ERR_URL_IMPORT_PROFILE, status_code, L"HTTP error");
+        ShowLocalizedMsgEx(
+            MB_OK, hWnd, _T(PACKAGE_NAME), IDS_ERR_URL_IMPORT_PROFILE, status_code, L"HTTP error");
         goto done;
     }
 
@@ -601,13 +627,17 @@ again:
         BOOL res = HttpQueryInfoA(hRequest, HTTP_QUERY_CONTENT_TYPE, tmp, &len, NULL);
         if (!res || stricmp(comps->content_type, tmp))
         {
-            ShowLocalizedMsgEx(MB_OK, hWnd, _T(PACKAGE_NAME), IDS_ERR_URL_IMPORT_PROFILE, 0,
+            ShowLocalizedMsgEx(MB_OK,
+                               hWnd,
+                               _T(PACKAGE_NAME),
+                               IDS_ERR_URL_IMPORT_PROFILE,
+                               0,
                                L"HTTP content-type mismatch");
             goto done;
         }
     }
 
-    WCHAR name[MAX_PATH] = {0};
+    WCHAR name[MAX_PATH] = { 0 };
     /* read filename from header or from the profile metadata */
     if (strlen(comps->content_type) == 0 /* AS profile */
         || !ExtractFilenameFromHeader(hRequest, name, MAX_PATH))
@@ -615,7 +645,8 @@ again:
         WCHAR *wbuf = Widen(buf);
         if (!wbuf)
         {
-            MessageBoxW(hWnd, L"Failed to convert profile content to wchar", _T(PACKAGE_NAME), MB_OK);
+            MessageBoxW(
+                hWnd, L"Failed to convert profile content to wchar", _T(PACKAGE_NAME), MB_OK);
             goto done;
         }
         ExtractProfileName(wbuf, comps->host, name, MAX_PATH);
@@ -669,7 +700,8 @@ done:
     return result;
 }
 
-typedef enum {
+typedef enum
+{
     server_as = 1,
     server_generic = 2
 } server_type_t;
@@ -677,14 +709,14 @@ typedef enum {
 INT_PTR CALLBACK
 ImportProfileFromURLDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    WCHAR url[URL_LEN] = {0};
+    WCHAR url[URL_LEN] = { 0 };
     BOOL autologin = FALSE;
     server_type_t type;
 
     switch (msg)
     {
         case WM_INITDIALOG:
-            type = (server_type_t) lParam;
+            type = (server_type_t)lParam;
             TRY_SETPROP(hwndDlg, cfgProp, (HANDLE)lParam);
             SetStatusWinIcon(hwndDlg, ID_ICO_APP);
 
@@ -696,17 +728,18 @@ ImportProfileFromURLDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
             }
             /* disable OK button until required data is filled in */
             EnableWindow(GetDlgItem(hwndDlg, IDOK), FALSE);
-            ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS),
-                                GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), 0);
+            ResetPasswordReveal(
+                GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS), GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), 0);
             break;
 
         case WM_COMMAND:
-            type = (server_type_t) GetProp(hwndDlg, cfgProp);
+            type = (server_type_t)GetProp(hwndDlg, cfgProp);
             switch (LOWORD(wParam))
             {
                 case ID_EDT_AUTH_PASS:
                     ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS),
-                                        GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), wParam);
+                                        GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL),
+                                        wParam);
 
                 /* fall through */
                 case ID_EDT_AUTH_USER:
@@ -714,8 +747,9 @@ ImportProfileFromURLDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
                     if (HIWORD(wParam) == EN_UPDATE)
                     {
                         /* enable OK button only if url and username are filled */
-                        BOOL enableOK = GetWindowTextLengthW(GetDlgItem(hwndDlg, ID_EDT_URL))
-                                        && GetWindowTextLengthW(GetDlgItem(hwndDlg, ID_EDT_AUTH_USER));
+                        BOOL enableOK =
+                            GetWindowTextLengthW(GetDlgItem(hwndDlg, ID_EDT_URL))
+                            && GetWindowTextLengthW(GetDlgItem(hwndDlg, ID_EDT_AUTH_USER));
                         EnableWindow(GetDlgItem(hwndDlg, IDOK), enableOK);
                     }
                     break;
@@ -733,20 +767,22 @@ ImportProfileFromURLDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
                     GetDlgItemTextUtf8(hwndDlg, ID_EDT_AUTH_PASS, &password, &password_len);
 
                     WCHAR path[MAX_PATH + 1] = { 0 };
-                    struct UrlComponents comps = {0};
+                    struct UrlComponents comps = { 0 };
                     if (type == server_as)
                     {
-
                         autologin = IsDlgButtonChecked(hwndDlg, ID_CHK_AUTOLOGIN) == BST_CHECKED;
                         GetASUrl(url, autologin, &comps);
                     }
                     else
                     {
                         ParseUrl(url, &comps);
-                        strncpy_s(comps.content_type, _countof(comps.content_type),
-                                  "application/x-openvpn-profile", _TRUNCATE);
+                        strncpy_s(comps.content_type,
+                                  _countof(comps.content_type),
+                                  "application/x-openvpn-profile",
+                                  _TRUNCATE);
                     }
-                    BOOL downloaded = DownloadProfile(hwndDlg, &comps, username, password, path, _countof(path));
+                    BOOL downloaded =
+                        DownloadProfile(hwndDlg, &comps, username, password, path, _countof(path));
 
                     if (username_len > 0)
                     {
@@ -774,7 +810,8 @@ ImportProfileFromURLDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
 
                 case ID_PASSWORD_REVEAL: /* password reveal symbol clicked */
                     ChangePasswordVisibility(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS),
-                                             GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), wParam);
+                                             GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL),
+                                             wParam);
                     return TRUE;
             }
             break;
@@ -795,11 +832,13 @@ ImportProfileFromURLDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
 void
 ImportConfigFromAS()
 {
-    LocalizedDialogBoxParam(ID_DLG_URL_PROFILE_IMPORT, ImportProfileFromURLDialogFunc, (LPARAM) server_as);
+    LocalizedDialogBoxParam(
+        ID_DLG_URL_PROFILE_IMPORT, ImportProfileFromURLDialogFunc, (LPARAM)server_as);
 }
 
 void
 ImportConfigFromURL()
 {
-    LocalizedDialogBoxParam(ID_DLG_URL_PROFILE_IMPORT, ImportProfileFromURLDialogFunc, (LPARAM) server_generic);
+    LocalizedDialogBoxParam(
+        ID_DLG_URL_PROFILE_IMPORT, ImportProfileFromURLDialogFunc, (LPARAM)server_generic);
 }

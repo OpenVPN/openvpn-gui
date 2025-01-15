@@ -19,7 +19,7 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#if !defined (UNICODE)
+#if !defined(UNICODE)
 #error UNICODE and _UNICODE must be defined. This version only supports unicode builds.
 #endif
 
@@ -45,8 +45,7 @@
 /* Global options structure */
 options_t o;
 
-int state_connected = connected, state_disconnected = disconnected,
-    state_onhold = onhold;
+int state_connected = connected, state_disconnected = disconnected, state_onhold = onhold;
 
 static connection_t *active_profile;
 DWORD status_menu_id = IDM_STATUSMENU;
@@ -167,12 +166,11 @@ InitializeUI(HINSTANCE hinstance)
     WSADATA wsaData;
 
     /* a session local semaphore to detect second instance */
-    HANDLE session_semaphore = InitSemaphore(L"Local\\"PACKAGE_NAME "-PLAP");
+    HANDLE session_semaphore = InitSemaphore(L"Local\\" PACKAGE_NAME "-PLAP");
 
     srand(time(NULL));
     /* try to lock the semaphore, else we are not the first instance */
-    if (session_semaphore
-        && WaitForSingleObject(session_semaphore, 200) != WAIT_OBJECT_0)
+    if (session_semaphore && WaitForSingleObject(session_semaphore, 200) != WAIT_OBJECT_0)
     {
         if (hinstance == o.hInstance)
         {
@@ -181,7 +179,9 @@ InitializeUI(HINSTANCE hinstance)
         }
         else
         {
-            MsgToEventLog(EVENTLOG_ERROR_TYPE, L"InitializeUI called a second time with a different hinstance -- multiple instances of the UI not supported.");
+            MsgToEventLog(
+                EVENTLOG_ERROR_TYPE,
+                L"InitializeUI called a second time with a different hinstance -- multiple instances of the UI not supported.");
             return 1;
         }
     }
@@ -201,22 +201,13 @@ InitializeUI(HINSTANCE hinstance)
     /* Initialize handlers for management interface notifications
      * Some handlers are replaced by local functions
      */
-    mgmt_rtmsg_handler handler[] = {
-        { ready_,    OnReady },
-        { hold_,     OnHold },
-        { log_,      OnLogLine },
-        { state_,    OnStateChange_ },
-        { password_, OnPassword_ },
-        { proxy_,    OnProxy_ },
-        { stop_,     OnStop_ },
-        { needok_,   OnNeedOk_ },
-        { needstr_,  OnNeedStr_ },
-        { echo_,     OnEcho },
-        { bytecount_, OnByteCount },
-        { infomsg_,  OnInfoMsg_ },
-        { timeout_,  OnTimeout },
-        { 0,         NULL}
-    };
+    mgmt_rtmsg_handler handler[] = { { ready_, OnReady },         { hold_, OnHold },
+                                     { log_, OnLogLine },         { state_, OnStateChange_ },
+                                     { password_, OnPassword_ },  { proxy_, OnProxy_ },
+                                     { stop_, OnStop_ },          { needok_, OnNeedOk_ },
+                                     { needstr_, OnNeedStr_ },    { echo_, OnEcho },
+                                     { bytecount_, OnByteCount }, { infomsg_, OnInfoMsg_ },
+                                     { timeout_, OnTimeout },     { 0, NULL } };
 
     InitManagement(handler);
     dmsg(L"Init Management done");
@@ -294,8 +285,7 @@ FindPLAPConnections(connection_t *conn[], size_t max_count)
     DWORD count = 0;
     for (connection_t *c = o.chead; c && count < max_count; c = c->next)
     {
-        if (!(c->flags & FLAG_DAEMON_PERSISTENT)
-            || !ParseManagementAddress(c))
+        if (!(c->flags & FLAG_DAEMON_PERSISTENT) || !ParseManagementAddress(c))
         {
             continue;
         }
@@ -315,8 +305,8 @@ WaitOnThread(connection_t *c, DWORD timeout)
     }
 
     DWORD exit_code;
-    if (WaitForSingleObject(h, timeout) == WAIT_OBJECT_0
-        && GetExitCodeThread(h, &exit_code) && exit_code != STILL_ACTIVE)
+    if (WaitForSingleObject(h, timeout) == WAIT_OBJECT_0 && GetExitCodeThread(h, &exit_code)
+        && exit_code != STILL_ACTIVE)
     {
         dmsg(L"Connection thread closed");
         goto out;
@@ -507,7 +497,8 @@ RunProgressDialog(connection_t *c, PFTASKDIALOGCALLBACK cb_fn, LONG_PTR cb_data)
 {
     dmsg(L"Entry with profile = <%ls>", c->config_name);
 
-    TASKDIALOG_FLAGS flags = TDF_SHOW_MARQUEE_PROGRESS_BAR|TDF_CALLBACK_TIMER|TDF_USE_HICON_MAIN;
+    TASKDIALOG_FLAGS flags =
+        TDF_SHOW_MARQUEE_PROGRESS_BAR | TDF_CALLBACK_TIMER | TDF_USE_HICON_MAIN;
     wchar_t main_text[256];
     wchar_t details_btn_text[256];
 
@@ -519,7 +510,7 @@ RunProgressDialog(connection_t *c, PFTASKDIALOGCALLBACK cb_fn, LONG_PTR cb_data)
     LoadLocalizedStringBuf(details_btn_text, _countof(details_btn_text), IDS_MENU_STATUS);
 
     const TASKDIALOG_BUTTON extra_buttons[] = {
-        {status_menu_id, details_btn_text},
+        { status_menu_id, details_btn_text },
     };
 
     const TASKDIALOGCONFIG taskcfg = {
@@ -530,8 +521,8 @@ RunProgressDialog(connection_t *c, PFTASKDIALOGCALLBACK cb_fn, LONG_PTR cb_data)
         .hMainIcon = LoadLocalizedIcon(ID_ICO_APP),
         .cButtons = _countof(extra_buttons),
         .pButtons = extra_buttons,
-        .dwCommonButtons = TDCBF_CANCEL_BUTTON|TDCBF_RETRY_BUTTON,
-        .pszWindowTitle = L""PACKAGE_NAME " PLAP",
+        .dwCommonButtons = TDCBF_CANCEL_BUTTON | TDCBF_RETRY_BUTTON,
+        .pszWindowTitle = L"" PACKAGE_NAME " PLAP",
         .pszMainInstruction = main_text,
         .pszContent = L"Starting", /* updated in progress callback */
         .pfCallback = cb_fn,

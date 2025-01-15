@@ -101,9 +101,7 @@ static IClassFactoryVtbl cf_vtbl = {
     .LockServer = LockServer,
 };
 
-static IClassFactory cf = {
-    .lpVtbl = &cf_vtbl
-};
+static IClassFactory cf = { .lpVtbl = &cf_vtbl };
 
 /* Implementation */
 static ULONG WINAPI
@@ -225,8 +223,8 @@ DllGetClassObject(REFCLSID rclsid, REFIID riid, void **ppv)
     if (IsEqualIID(&CLSID_OpenVPNProvider, rclsid))
     {
         ADDREF(&cf); /* though we are reusing a static instance, follow the usual COM semantics */
-        hr = QUERY_INTERFACE((IClassFactory *) &cf, riid, ppv);
-        RELEASE((IClassFactory *) &cf);
+        hr = QUERY_INTERFACE((IClassFactory *)&cf, riid, ppv);
+        RELEASE((IClassFactory *)&cf);
     }
     else
     {

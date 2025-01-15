@@ -51,14 +51,15 @@ CheckIServiceStatus(BOOL warn)
 
     if (NULL == schSCManager)
     {
-        return(false);
+        return (false);
     }
 
-    schService = OpenService(schSCManager, o.ovpn_engine == OPENVPN_ENGINE_OVPN3 ?
-                             OPENVPN_SERVICE_NAME_OVPN3 : OPENVPN_SERVICE_NAME_OVPN2, SERVICE_QUERY_STATUS);
+    schService = OpenService(schSCManager,
+                             o.ovpn_engine == OPENVPN_ENGINE_OVPN3 ? OPENVPN_SERVICE_NAME_OVPN3
+                                                                   : OPENVPN_SERVICE_NAME_OVPN2,
+                             SERVICE_QUERY_STATUS);
 
-    if (schService == NULL
-        && GetLastError() == ERROR_SERVICE_DOES_NOT_EXIST)
+    if (schService == NULL && GetLastError() == ERROR_SERVICE_DOES_NOT_EXIST)
     {
         /* warn that iservice is not installed */
         if (warn)
@@ -111,10 +112,9 @@ CheckServiceStatus()
     SERVICE_STATUS ssStatus;
 
     /* Open a handle to the SC Manager database. */
-    schSCManager = OpenSCManager(
-        NULL,                    /* local machine */
-        NULL,                    /* ServicesActive database */
-        SC_MANAGER_CONNECT);     /* Connect rights */
+    schSCManager = OpenSCManager(NULL,                /* local machine */
+                                 NULL,                /* ServicesActive database */
+                                 SC_MANAGER_CONNECT); /* Connect rights */
 
     if (NULL == schSCManager)
     {
@@ -122,10 +122,9 @@ CheckServiceStatus()
         goto out;
     }
 
-    schService = OpenService(
-        schSCManager,          /* SCM database */
-        _T("OpenVPNService"),  /* service name */
-        SERVICE_QUERY_STATUS);
+    schService = OpenService(schSCManager,         /* SCM database */
+                             _T("OpenVPNService"), /* service name */
+                             SERVICE_QUERY_STATUS);
 
     if (schService == NULL)
     {
@@ -133,9 +132,8 @@ CheckServiceStatus()
         goto out;
     }
 
-    if (!QueryServiceStatus(
-            schService,   /* handle to service */
-            &ssStatus) )  /* address of status information structure */
+    if (!QueryServiceStatus(schService, /* handle to service */
+                            &ssStatus)) /* address of status information structure */
     {
         /* query failed */
         o.service_state = service_noaccess;
@@ -203,13 +201,16 @@ GetServicePid(void)
     schManager = OpenSCManager(NULL, NULL, SC_MANAGER_CONNECT);
     if (schManager)
     {
-        schService = OpenService(schManager, o.ovpn_engine == OPENVPN_ENGINE_OVPN3 ?
-                                 OPENVPN_SERVICE_NAME_OVPN3 : OPENVPN_SERVICE_NAME_OVPN2, SERVICE_QUERY_STATUS);
+        schService = OpenService(schManager,
+                                 o.ovpn_engine == OPENVPN_ENGINE_OVPN3 ? OPENVPN_SERVICE_NAME_OVPN3
+                                                                       : OPENVPN_SERVICE_NAME_OVPN2,
+                                 SERVICE_QUERY_STATUS);
         if (schService)
         {
-            SERVICE_STATUS_PROCESS ssp = {0};
+            SERVICE_STATUS_PROCESS ssp = { 0 };
             DWORD nbytes = 0;
-            if (QueryServiceStatusEx(schService, SC_STATUS_PROCESS_INFO, (BYTE *)&ssp, sizeof(ssp), &nbytes)
+            if (QueryServiceStatusEx(
+                    schService, SC_STATUS_PROCESS_INFO, (BYTE *)&ssp, sizeof(ssp), &nbytes)
                 && ssp.dwCurrentState == SERVICE_RUNNING)
             {
                 pid = ssp.dwProcessId;
@@ -220,8 +221,11 @@ GetServicePid(void)
     }
     if (pid == 0)
     {
-        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs:%d Failed to get service process id: (error = 0x%08x)",
-                      __func__, __LINE__, GetLastError());
+        MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                      L"%hs:%d Failed to get service process id: (error = 0x%08x)",
+                      __func__,
+                      __LINE__,
+                      GetLastError());
     }
     return pid;
 }

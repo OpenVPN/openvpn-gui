@@ -55,7 +55,7 @@ struct cert_info
 
 struct pkcs11_entry
 {
-    char *id; /* pkcs11-id string value as received from daemon */
+    char *id;              /* pkcs11-id string value as received from daemon */
     struct cert_info cert; /* decoded certificate structure */
 };
 
@@ -115,14 +115,18 @@ pkcs11_list_clear(struct pkcs11_list *l)
 static wchar_t *
 extract_name_entry(const CERT_CONTEXT *ctx, bool issuer)
 {
-    DWORD size = CertGetNameStringW(ctx, CERT_NAME_FRIENDLY_DISPLAY_TYPE,
-                                    issuer ? CERT_NAME_ISSUER_FLAG : 0, NULL, NULL, 0);
+    DWORD size = CertGetNameStringW(
+        ctx, CERT_NAME_FRIENDLY_DISPLAY_TYPE, issuer ? CERT_NAME_ISSUER_FLAG : 0, NULL, NULL, 0);
 
-    wchar_t *name = malloc(size*sizeof(wchar_t));
+    wchar_t *name = malloc(size * sizeof(wchar_t));
     if (name)
     {
-        size = CertGetNameStringW(ctx, CERT_NAME_FRIENDLY_DISPLAY_TYPE,
-                                  issuer ? CERT_NAME_ISSUER_FLAG : 0, NULL, name, size);
+        size = CertGetNameStringW(ctx,
+                                  CERT_NAME_FRIENDLY_DISPLAY_TYPE,
+                                  issuer ? CERT_NAME_ISSUER_FLAG : 0,
+                                  NULL,
+                                  name,
+                                  size);
     }
 
     return name;
@@ -138,14 +142,13 @@ decode_certificate(struct cert_info *cert, const char *b64)
     unsigned char *der = NULL;
     bool ret = false;
 
-    int len = Base64Decode(b64, (char **) &der);
+    int len = Base64Decode(b64, (char **)&der);
     if (len < 0)
     {
         goto out;
     }
 
-    const CERT_CONTEXT *ctx =
-        CertCreateCertificateContext(X509_ASN_ENCODING,  der, (DWORD) len);
+    const CERT_CONTEXT *ctx = CertCreateCertificateContext(X509_ASN_ENCODING, der, (DWORD)len);
 
     if (!ctx)
     {
@@ -171,7 +174,7 @@ static UINT
 pkcs11_entry_parse(const char *data, struct pkcs11_list *l)
 {
     char *token = NULL;
-    UINT index = (UINT) -1;
+    UINT index = (UINT)-1;
     const char *quotes = " '";
     struct pkcs11_entry *pe = NULL;
 
@@ -212,7 +215,7 @@ pkcs11_entry_parse(const char *data, struct pkcs11_list *l)
             if (!decode_certificate(&pe->cert, tmp))
             {
                 pkcs11_entry_free(pe);
-                index = (UINT) -1;
+                index = (UINT)-1;
                 goto out;
             }
         }
@@ -234,7 +237,7 @@ pkcs11_id_send(connection_t *c, const char *id)
     if (cmd)
     {
         snprintf(cmd, len, format, id ? id : "");
-        cmd[len-1] = '\0';
+        cmd[len - 1] = '\0';
         ManagementCommand(c, cmd, NULL, regular);
     }
     else
@@ -254,12 +257,13 @@ OnPkcs11(connection_t *c, UNUSED char *msg)
     struct pkcs11_list *l = &c->pkcs11_list;
 
     pkcs11_list_clear(l);
-    l->selected = (UINT) -1; /* set selection to an invalid index */
+    l->selected = (UINT)-1; /* set selection to an invalid index */
 
     /* prompt user to select a certificate */
-    if (IDOK == LocalizedDialogBoxParamEx(ID_DLG_PKCS11_QUERY, c->hwndStatus, QueryPkcs11DialogProc, (LPARAM)c)
-        && l->state & STATE_SELECTED
-        && l->selected < l->count)
+    if (IDOK
+            == LocalizedDialogBoxParamEx(
+                ID_DLG_PKCS11_QUERY, c->hwndStatus, QueryPkcs11DialogProc, (LPARAM)c)
+        && l->state & STATE_SELECTED && l->selected < l->count)
     {
         pkcs11_id_send(c, l->pe[l->selected].id);
     }
@@ -272,7 +276,7 @@ pkcs11_count_recv(connection_t *c, char *msg)
     struct pkcs11_list *l = &c->pkcs11_list;
     if (msg && strbegins(msg, ">PKCS11ID-COUNT:"))
     {
-        l->count = strtoul(msg+16, NULL, 10);
+        l->count = strtoul(msg + 16, NULL, 10);
     }
     else
     {
@@ -293,19 +297,19 @@ static void
 pkcs11_entry_recv(connection_t *c, char *msg)
 {
     struct pkcs11_list *l = &c->pkcs11_list;
-    UINT index = (UINT) -1;
+    UINT index = (UINT)-1;
 
     if (msg && strbegins(msg, ">PKCS11ID-ENTRY:"))
     {
-        index = pkcs11_entry_parse(msg+16, l);
+        index = pkcs11_entry_parse(msg + 16, l);
     }
 
-    if (index == (UINT) -1)
+    if (index == (UINT)-1)
     {
         WriteStatusLog(c, L"GUI> ", L"Invalid pkcs11 entry ignored.", false);
         return;
     }
-    else if (index + 1  == l->count) /* done */
+    else if (index + 1 == l->count) /* done */
     {
         l->state |= STATE_FILLED;
     }
@@ -326,15 +330,14 @@ pkcs11_list_update(connection_t *c)
 {
     struct pkcs11_list *l = &c->pkcs11_list;
 
-    if ((l->state & STATE_GET_COUNT)  == 0)
+    if ((l->state & STATE_GET_COUNT) == 0)
     {
         ManagementCommand(c, "pkcs11-id-count", pkcs11_count_recv, regular);
         l->state |= STATE_GET_COUNT;
     }
     else if (l->count > 0 && (l->state & STATE_GET_ENTRY) == 0)
     {
-        if (!l->pe
-            && !pkcs11_list_alloc(l))
+        if (!l->pe && !pkcs11_list_alloc(l))
         {
             WriteStatusLog(c, L"GUI> ", L"Out of memory for pkcs11 entry list", false);
             l->count = 0;
@@ -374,18 +377,37 @@ pkcs11_listview_resize(HWND hwnd, UINT w, UINT h)
 {
     HWND lv = GetDlgItem(hwnd, ID_LVW_PKCS11);
 
-    MoveWindow(lv, DPI_SCALE(20), DPI_SCALE(25),
-               w - DPI_SCALE(40), h - DPI_SCALE(120), TRUE);
-    MoveWindow(GetDlgItem(hwnd, ID_TXT_PKCS11), DPI_SCALE(20), DPI_SCALE(5),
-               w-DPI_SCALE(30), DPI_SCALE(15), TRUE);
-    MoveWindow(GetDlgItem(hwnd, ID_TXT_WARNING), DPI_SCALE(20), h - DPI_SCALE(80),
-               w-DPI_SCALE(20), DPI_SCALE(30), TRUE);
-    MoveWindow(GetDlgItem(hwnd, IDOK), DPI_SCALE(20), h - DPI_SCALE(30),
-               DPI_SCALE(60), DPI_SCALE(23), TRUE);
-    MoveWindow(GetDlgItem(hwnd, IDCANCEL), DPI_SCALE(90), h - DPI_SCALE(30),
-               DPI_SCALE(60), DPI_SCALE(23), TRUE);
-    MoveWindow(GetDlgItem(hwnd, IDRETRY), DPI_SCALE(200), h - DPI_SCALE(30),
-               DPI_SCALE(60), DPI_SCALE(23), TRUE);
+    MoveWindow(lv, DPI_SCALE(20), DPI_SCALE(25), w - DPI_SCALE(40), h - DPI_SCALE(120), TRUE);
+    MoveWindow(GetDlgItem(hwnd, ID_TXT_PKCS11),
+               DPI_SCALE(20),
+               DPI_SCALE(5),
+               w - DPI_SCALE(30),
+               DPI_SCALE(15),
+               TRUE);
+    MoveWindow(GetDlgItem(hwnd, ID_TXT_WARNING),
+               DPI_SCALE(20),
+               h - DPI_SCALE(80),
+               w - DPI_SCALE(20),
+               DPI_SCALE(30),
+               TRUE);
+    MoveWindow(GetDlgItem(hwnd, IDOK),
+               DPI_SCALE(20),
+               h - DPI_SCALE(30),
+               DPI_SCALE(60),
+               DPI_SCALE(23),
+               TRUE);
+    MoveWindow(GetDlgItem(hwnd, IDCANCEL),
+               DPI_SCALE(90),
+               h - DPI_SCALE(30),
+               DPI_SCALE(60),
+               DPI_SCALE(23),
+               TRUE);
+    MoveWindow(GetDlgItem(hwnd, IDRETRY),
+               DPI_SCALE(200),
+               h - DPI_SCALE(30),
+               DPI_SCALE(60),
+               DPI_SCALE(23),
+               TRUE);
 
     listview_set_column_width(lv);
 }
@@ -406,7 +428,7 @@ pkcs11_listview_init(HWND parent)
     SendMessage(lv, LVM_SETEXTENDEDLISTVIEWSTYLE, 0, LVS_EX_FULLROWSELECT);
 
     /* Use bold font for header */
-    HFONT hf = (HFONT) SendMessage(lv, WM_GETFONT, 0, 0);
+    HFONT hf = (HFONT)SendMessage(lv, WM_GETFONT, 0, 0);
     if (hf)
     {
         LOGFONT lf;
@@ -425,7 +447,7 @@ pkcs11_listview_init(HWND parent)
     }
 
     /* Add column headings */
-    int hdrs[] = {IDS_CERT_DISPLAYNAME, IDS_CERT_ISSUER, IDS_CERT_NOTAFTER};
+    int hdrs[] = { IDS_CERT_DISPLAYNAME, IDS_CERT_ISSUER, IDS_CERT_NOTAFTER };
 
     LVCOLUMNW lvc;
     lvc.mask = LVCF_TEXT | LVCF_SUBITEM;
@@ -438,7 +460,7 @@ pkcs11_listview_init(HWND parent)
     }
 
     GetClientRect(parent, &rc);
-    pkcs11_listview_resize(parent, rc.right-rc.left, rc.bottom-rc.top);
+    pkcs11_listview_resize(parent, rc.right - rc.left, rc.bottom - rc.top);
 
     EnableWindow(lv, FALSE); /* disable until filled in */
     EnableWindow(GetDlgItem(parent, IDOK), FALSE);
@@ -454,13 +476,13 @@ pkcs11_listview_init(HWND parent)
 static void CALLBACK
 pkcs11_listview_fill(HWND hwnd, UINT UNUSED msg, UINT_PTR id, DWORD UNUSED now)
 {
-    connection_t *c = (connection_t *) GetProp(hwnd, cfgProp);
+    connection_t *c = (connection_t *)GetProp(hwnd, cfgProp);
     struct pkcs11_list *l = &c->pkcs11_list;
 
     HWND lv = GetDlgItem(hwnd, ID_LVW_PKCS11);
 
-    LVITEMW lvi = {0};
-    lvi.mask = LVIF_TEXT|LVIF_PARAM;
+    LVITEMW lvi = { 0 };
+    lvi.mask = LVIF_TEXT | LVIF_PARAM;
 
     if ((l->state & STATE_FILLED) == 0)
     {
@@ -476,7 +498,7 @@ pkcs11_listview_fill(HWND hwnd, UINT UNUSED msg, UINT_PTR id, DWORD UNUSED now)
             lvi.iItem = i;
             lvi.iSubItem = 0;
             lvi.pszText = l->pe[i].cert.commonname;
-            lvi.lParam = (LPARAM) i;
+            lvi.lParam = (LPARAM)i;
             pos = ListView_InsertItem(lv, &lvi);
 
             ListView_SetItemText(lv, pos, 1, l->pe[i].cert.issuer);
@@ -517,7 +539,7 @@ pkcs11_listview_fill(HWND hwnd, UINT UNUSED msg, UINT_PTR id, DWORD UNUSED now)
 static void
 pkcs11_listview_reset(HWND parent)
 {
-    connection_t *c = (connection_t *) GetProp(parent, cfgProp);
+    connection_t *c = (connection_t *)GetProp(parent, cfgProp);
     struct pkcs11_list *l = &c->pkcs11_list;
     HWND lv = GetDlgItem(parent, ID_LVW_PKCS11);
 
@@ -551,12 +573,12 @@ display_certificate(HWND parent, connection_t *c, UINT i)
  * Remove this and corresponding check in configure.ac
  * when that changes.
  */
-#if defined(HAVE_LIBCRYPTUI) || defined (_MSC_VER)
-        CryptUIDlgViewContext(CERT_STORE_CERTIFICATE_CONTEXT, l->pe[i].cert.ctx,
-                              parent, L"Certificate", 0, NULL);
+#if defined(HAVE_LIBCRYPTUI) || defined(_MSC_VER)
+        CryptUIDlgViewContext(
+            CERT_STORE_CERTIFICATE_CONTEXT, l->pe[i].cert.ctx, parent, L"Certificate", 0, NULL);
 #else
-        (void) i;
-        (void) parent;
+        (void)i;
+        (void)parent;
         WriteStatusLog(c, L"GUI> ", L"Certificate display not supported in this build", false);
 #endif
     }
@@ -571,7 +593,7 @@ QueryPkcs11DialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
     switch (msg)
     {
         case WM_INITDIALOG:
-            c = (connection_t *) lParam;
+            c = (connection_t *)lParam;
             TRY_SETPROP(hwndDlg, cfgProp, (HANDLE)lParam);
             SetStatusWinIcon(hwndDlg, ID_ICO_APP);
 
@@ -588,21 +610,22 @@ QueryPkcs11DialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             return TRUE;
 
         case WM_COMMAND:
-            c = (connection_t *) GetProp(hwndDlg, cfgProp);
+            c = (connection_t *)GetProp(hwndDlg, cfgProp);
             if (LOWORD(wParam) == IDOK)
             {
                 HWND lv = GetDlgItem(hwndDlg, ID_LVW_PKCS11);
-                int id = (int) ListView_GetNextItem(lv, -1, LVNI_ALL|LVNI_SELECTED);
-                LVITEM lvi = {.iItem = id, .mask = LVIF_PARAM};
+                int id = (int)ListView_GetNextItem(lv, -1, LVNI_ALL | LVNI_SELECTED);
+                LVITEM lvi = { .iItem = id, .mask = LVIF_PARAM };
                 if (id >= 0 && ListView_GetItem(lv, &lvi))
                 {
-                    c->pkcs11_list.selected = (UINT) lvi.lParam;
+                    c->pkcs11_list.selected = (UINT)lvi.lParam;
                     c->pkcs11_list.state |= STATE_SELECTED;
                 }
                 else if (c->pkcs11_list.count > 0)
                 {
                     /* No selection -- show an error message */
-                    SetDlgItemTextW(hwndDlg, ID_TXT_WARNING, LoadLocalizedString(IDS_ERR_SELECT_PKCS11));
+                    SetDlgItemTextW(
+                        hwndDlg, ID_TXT_WARNING, LoadLocalizedString(IDS_ERR_SELECT_PKCS11));
                     return TRUE;
                 }
                 EndDialog(hwndDlg, wParam);
@@ -626,12 +649,12 @@ QueryPkcs11DialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             return TRUE;
 
         case WM_CTLCOLORSTATIC:
-            if (GetDlgCtrlID((HWND) lParam) == ID_TXT_WARNING)
+            if (GetDlgCtrlID((HWND)lParam) == ID_TXT_WARNING)
             {
-                HBRUSH br = (HBRUSH) DefWindowProc(hwndDlg, msg, wParam, lParam);
+                HBRUSH br = (HBRUSH)DefWindowProc(hwndDlg, msg, wParam, lParam);
                 COLORREF clr = o.clr_warning;
-                SetTextColor((HDC) wParam, clr);
-                return (INT_PTR) br;
+                SetTextColor((HDC)wParam, clr);
+                return (INT_PTR)br;
             }
             break;
 
@@ -641,10 +664,10 @@ QueryPkcs11DialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             return FALSE;
 
         case WM_NOTIFY:
-            c = (connection_t *) GetProp(hwndDlg, cfgProp);
+            c = (connection_t *)GetProp(hwndDlg, cfgProp);
             if (((NMHDR *)lParam)->idFrom == ID_LVW_PKCS11)
             {
-                NMITEMACTIVATE *ln = (NMITEMACTIVATE *) lParam;
+                NMITEMACTIVATE *ln = (NMITEMACTIVATE *)lParam;
                 if (ln->iItem >= 0 && ln->uNewState & LVNI_SELECTED)
                 {
                     /* remove the no-selection warning */
@@ -652,20 +675,20 @@ QueryPkcs11DialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 }
                 if (ln->hdr.code == NM_DBLCLK && ln->iItem >= 0)
                 {
-                    display_certificate(hwndDlg, c, (UINT) ln->iItem);
+                    display_certificate(hwndDlg, c, (UINT)ln->iItem);
                 }
             }
             break;
 
         case WM_CLOSE:
-            c = (connection_t *) GetProp(hwndDlg, cfgProp);
+            c = (connection_t *)GetProp(hwndDlg, cfgProp);
             StopOpenVPN(c);
             EndDialog(hwndDlg, wParam);
             return TRUE;
 
         case WM_NCDESTROY:
             RemoveProp(hwndDlg, cfgProp);
-            HFONT hf = (HFONT) GetProp(hwndDlg, hfontProp);
+            HFONT hf = (HFONT)GetProp(hwndDlg, hfontProp);
             if (hf)
             {
                 DeleteObject(hf);

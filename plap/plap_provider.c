@@ -43,7 +43,7 @@ typedef struct OpenVPNProvider
     OpenVPNConnection *connections[MAX_PROFILES];
 
     LONG ref_count;
-}  OpenVPNProvider;
+} OpenVPNProvider;
 
 /* methods we have to implement */
 static HRESULT WINAPI QueryInterface(ICredentialProvider *this, REFIID riid, void **ppv);
@@ -53,24 +53,31 @@ static ULONG WINAPI AddRef(ICredentialProvider *this);
 static ULONG WINAPI Release(ICredentialProvider *this);
 
 static HRESULT WINAPI SetUsageScenario(ICredentialProvider *this,
-                                       CREDENTIAL_PROVIDER_USAGE_SCENARIO us, DWORD flags);
+                                       CREDENTIAL_PROVIDER_USAGE_SCENARIO us,
+                                       DWORD flags);
 
 static HRESULT WINAPI SetSerialization(ICredentialProvider *this,
                                        const CREDENTIAL_PROVIDER_CREDENTIAL_SERIALIZATION *cs);
 
-static HRESULT WINAPI Advise(ICredentialProvider *this, ICredentialProviderEvents *e, UINT_PTR context);
+static HRESULT WINAPI Advise(ICredentialProvider *this,
+                             ICredentialProviderEvents *e,
+                             UINT_PTR context);
 
 static HRESULT WINAPI UnAdvise(ICredentialProvider *this);
 
 static HRESULT WINAPI GetFieldDescriptorCount(ICredentialProvider *this, DWORD *count);
 
-static HRESULT WINAPI GetFieldDescriptorAt(ICredentialProvider *this, DWORD index,
+static HRESULT WINAPI GetFieldDescriptorAt(ICredentialProvider *this,
+                                           DWORD index,
                                            CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR **fd);
 
-static HRESULT WINAPI GetCredentialCount(ICredentialProvider *this, DWORD *count,
-                                         DWORD *default_cred, BOOL *autologon_default);
+static HRESULT WINAPI GetCredentialCount(ICredentialProvider *this,
+                                         DWORD *count,
+                                         DWORD *default_cred,
+                                         BOOL *autologon_default);
 
-static HRESULT WINAPI GetCredentialAt(ICredentialProvider *this, DWORD index,
+static HRESULT WINAPI GetCredentialAt(ICredentialProvider *this,
+                                      DWORD index,
                                       ICredentialProviderCredential **c);
 
 /* a helper function for generating our connection array */
@@ -78,20 +85,18 @@ static HRESULT CreateOVPNConnectionArray(OpenVPNProvider *op);
 
 /* make a static object for function table */
 
-#define M_(x) .x = x   /* I hate typing */
-static const ICredentialProviderVtbl icp_vtbl = {
-    M_(QueryInterface),
-    M_(AddRef),
-    M_(Release),
-    M_(SetUsageScenario),
-    M_(SetSerialization),
-    M_(Advise),
-    M_(UnAdvise),
-    M_(GetFieldDescriptorCount),
-    M_(GetFieldDescriptorAt),
-    M_(GetCredentialCount),
-    M_(GetCredentialAt)
-};
+#define M_(x) .x = x /* I hate typing */
+static const ICredentialProviderVtbl icp_vtbl = { M_(QueryInterface),
+                                                  M_(AddRef),
+                                                  M_(Release),
+                                                  M_(SetUsageScenario),
+                                                  M_(SetSerialization),
+                                                  M_(Advise),
+                                                  M_(UnAdvise),
+                                                  M_(GetFieldDescriptorCount),
+                                                  M_(GetFieldDescriptorAt),
+                                                  M_(GetCredentialCount),
+                                                  M_(GetCredentialAt) };
 
 #define ICCPC IConnectableCredentialProviderCredential /* save some more typing */
 
@@ -124,7 +129,7 @@ OpenVPNProvider_free(OpenVPNProvider *this)
     {
         if (this->connections[i])
         {
-            RELEASE((ICCPC *) this->connections[i]);
+            RELEASE((ICCPC *)this->connections[i]);
         }
     }
     /* Destroy GUI threads and any associated data */
@@ -139,9 +144,9 @@ OpenVPNProvider_free(OpenVPNProvider *this)
 static ULONG WINAPI
 AddRef(ICredentialProvider *this)
 {
-    OpenVPNProvider *op = (OpenVPNProvider *) this;
+    OpenVPNProvider *op = (OpenVPNProvider *)this;
 
-    dmsg(L"ref_count after addref = %d", op->ref_count+1);
+    dmsg(L"ref_count after addref = %d", op->ref_count + 1);
 
     return InterlockedIncrement(&op->ref_count);
 }
@@ -149,7 +154,7 @@ AddRef(ICredentialProvider *this)
 static ULONG WINAPI
 Release(ICredentialProvider *this)
 {
-    OpenVPNProvider *op = (OpenVPNProvider *) this;
+    OpenVPNProvider *op = (OpenVPNProvider *)this;
 
     ULONG count = InterlockedDecrement(&op->ref_count);
 
@@ -178,8 +183,7 @@ QueryInterface(ICredentialProvider *this, REFIID riid, void **ppv)
         dmsg(L"ppv is NULL!");
         return E_POINTER;
     }
-    if (IsEqualIID(riid, &IID_IUnknown)
-        || IsEqualIID(riid, &IID_ICredentialProvider))
+    if (IsEqualIID(riid, &IID_IUnknown) || IsEqualIID(riid, &IID_ICredentialProvider))
     {
         *ppv = this;
         ADDREF(this);
@@ -206,13 +210,14 @@ QueryInterface(ICredentialProvider *this, REFIID riid, void **ppv)
  */
 static HRESULT WINAPI
 SetUsageScenario(ICredentialProvider *this,
-                 CREDENTIAL_PROVIDER_USAGE_SCENARIO us, UNUSED DWORD flags)
+                 CREDENTIAL_PROVIDER_USAGE_SCENARIO us,
+                 UNUSED DWORD flags)
 {
     /* I think flags may be ignored for PLAP */
 
     dmsg(L"cpus = %lu", us);
 
-    OpenVPNProvider *op = (OpenVPNProvider *) this;
+    OpenVPNProvider *op = (OpenVPNProvider *)this;
 
     if (us == CPUS_PLAP)
     {
@@ -239,8 +244,7 @@ SetSerialization(UNUSED ICredentialProvider *this,
  * called by LogonUI to pass in events ptr -- we ignore this
  */
 static HRESULT WINAPI
-Advise(UNUSED ICredentialProvider *this,
-       UNUSED ICredentialProviderEvents *e, UNUSED UINT_PTR ctx)
+Advise(UNUSED ICredentialProvider *this, UNUSED ICredentialProviderEvents *e, UNUSED UINT_PTR ctx)
 {
     dmsg(L"Entry");
     return S_OK;
@@ -278,7 +282,8 @@ GetFieldDescriptorCount(UNUSED ICredentialProvider *this, DWORD *count)
  * methods as the caller will use CoTaskMemFree to release memory.
  */
 static HRESULT WINAPI
-GetFieldDescriptorAt(UNUSED ICredentialProvider *this, DWORD index,
+GetFieldDescriptorAt(UNUSED ICredentialProvider *this,
+                     DWORD index,
                      CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR **fd)
 {
     HRESULT hr = E_OUTOFMEMORY;
@@ -289,8 +294,8 @@ GetFieldDescriptorAt(UNUSED ICredentialProvider *this, DWORD index,
     {
         /* LogonUI frees this using CoTaskMemFree, so we should not use malloc */
         CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR *tmp =
-            (CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR *)
-            CoTaskMemAlloc(sizeof(CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR));
+            (CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR *)CoTaskMemAlloc(
+                sizeof(CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR));
         if (tmp)
         {
             /* call our copy helper for deep copy */
@@ -320,10 +325,12 @@ GetFieldDescriptorAt(UNUSED ICredentialProvider *this, DWORD index,
  * for the default item. We don't want this, so set no default.
  */
 static HRESULT WINAPI
-GetCredentialCount(ICredentialProvider *this, DWORD *count, DWORD *default_cred,
+GetCredentialCount(ICredentialProvider *this,
+                   DWORD *count,
+                   DWORD *default_cred,
                    BOOL *autologon_default)
 {
-    OpenVPNProvider *op = (OpenVPNProvider *) this;
+    OpenVPNProvider *op = (OpenVPNProvider *)this;
 
     *count = op->conn_count;
 
@@ -345,12 +352,13 @@ GetCredentialAt(ICredentialProvider *this, DWORD index, ICredentialProviderCrede
 
     dmsg(L"index = %lu", index);
 
-    OpenVPNProvider *op = (OpenVPNProvider *) this;
+    OpenVPNProvider *op = (OpenVPNProvider *)this;
 
     if (index < op->conn_count && ic)
     {
-        hr = QUERY_INTERFACE((ICredentialProviderCredential *) op->connections[index],
-                             &IID_ICredentialProviderCredential, (void **)ic);
+        hr = QUERY_INTERFACE((ICredentialProviderCredential *)op->connections[index],
+                             &IID_ICredentialProviderCredential,
+                             (void **)ic);
         /* In our case the same as *ic = op->connections[index], but the above is standard COM way
          * which checks the IID and increments ref-count as well */
     }
@@ -380,7 +388,7 @@ CreateOVPNConnectionArray(OpenVPNProvider *op)
     /* delete previous connections if any */
     for (size_t i = 0; i < op->conn_count; i++)
     {
-        RELEASE((ICCPC *) op->connections[i]);
+        RELEASE((ICCPC *)op->connections[i]);
     }
     op->conn_count = 0;
 
@@ -410,7 +418,7 @@ CreateOVPNConnectionArray(OpenVPNProvider *op)
             }
             else
             {
-                RELEASE((ICCPC *) oc);
+                RELEASE((ICCPC *)oc);
             }
         }
         else
@@ -438,8 +446,8 @@ OpenVPNProvider_CreateInstance(REFIID riid, void **ppv)
     OpenVPNProvider *p = OpenVPNProvider_new();
     if (p)
     {
-        hr = QUERY_INTERFACE((ICredentialProvider *) p, riid, ppv);
-        RELEASE((ICredentialProvider *) p);
+        hr = QUERY_INTERFACE((ICredentialProvider *)p, riid, ppv);
+        RELEASE((ICredentialProvider *)p);
     }
     else
     {

@@ -52,7 +52,7 @@ extern options_t o;
 static version_t
 MakeVersion(short ma, short mi, short b, short r)
 {
-    version_t v = {ma, mi, b, r};
+    version_t v = { ma, mi, b, r };
     return v;
 }
 
@@ -62,7 +62,7 @@ ExpandString(WCHAR *str, int max_len)
     WCHAR expanded_string[MAX_PATH];
     int len = ExpandEnvironmentStringsW(str, expanded_string, _countof(expanded_string));
 
-    if (len > max_len || len > (int) _countof(expanded_string))
+    if (len > max_len || len > (int)_countof(expanded_string))
     {
         PrintDebug(L"Failed to expanded env vars in '%ls'. String too long", str);
         return;
@@ -96,7 +96,11 @@ add_option(options_t *options, int i, TCHAR **p)
 
         LoadLocalizedStringBuf(caption, _countof(caption), IDS_NFO_USAGECAPTION);
         LoadLocalizedStringBuf(msg, _countof(msg), IDS_NFO_USAGE);
-        MessageBoxExW(NULL, msg, caption, MB_OK | MB_SETFOREGROUND | MBOX_RTL_FLAGS | MB_ICONINFORMATION, GetGUILanguage());
+        MessageBoxExW(NULL,
+                      msg,
+                      caption,
+                      MB_OK | MB_SETFOREGROUND | MBOX_RTL_FLAGS | MB_ICONINFORMATION,
+                      GetGUILanguage());
         exit(0);
     }
     else if (streq(p[0], _T("connect")) && p[1])
@@ -105,7 +109,8 @@ add_option(options_t *options, int i, TCHAR **p)
         if (!options->auto_connect || options->num_auto_connect == options->max_auto_connect)
         {
             options->max_auto_connect += 10;
-            void *tmp = realloc(options->auto_connect, sizeof(wchar_t *)*options->max_auto_connect);
+            void *tmp =
+                realloc(options->auto_connect, sizeof(wchar_t *) * options->max_auto_connect);
             if (!tmp)
             {
                 options->max_auto_connect -= 10;
@@ -157,8 +162,7 @@ add_option(options_t *options, int i, TCHAR **p)
         ++i;
         _tcsncpy(options->priority_string, p[1], _countof(options->priority_string) - 1);
     }
-    else if ( (streq(p[0], _T("append_string"))
-               || streq(p[0], _T("log_append"))) && p[1])
+    else if ((streq(p[0], _T("append_string")) || streq(p[0], _T("log_append"))) && p[1])
     {
         ++i;
         options->log_append = _ttoi(p[1]) ? 1 : 0;
@@ -316,9 +320,11 @@ add_option(options_t *options, int i, TCHAR **p)
     {
         ++i;
         int tmp = _wtoi(p[1]);
-        if (tmp < 1  || tmp > 61000)
+        if (tmp < 1 || tmp > 61000)
         {
-            MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Specified management port offset is not valid (must be in the range 1 to 61000). Ignored.");
+            MsgToEventLog(
+                EVENTLOG_ERROR_TYPE,
+                L"Specified management port offset is not valid (must be in the range 1 to 61000). Ignored.");
         }
         else
         {
@@ -410,8 +416,7 @@ ProcessCommandLine(options_t *options, TCHAR *command_line)
         {
             ++pos;
         }
-    }
-    while (*pos != _T('\0'));
+    } while (*pos != _T('\0'));
 
     if (argc == 0)
     {
@@ -419,7 +424,7 @@ ProcessCommandLine(options_t *options, TCHAR *command_line)
     }
 
     /* Tokenize the arguments */
-    argv = (TCHAR **) malloc(argc * sizeof(TCHAR *));
+    argv = (TCHAR **)malloc(argc * sizeof(TCHAR *));
     pos = command_line;
     argc = 0;
 
@@ -458,8 +463,7 @@ ProcessCommandLine(options_t *options, TCHAR *command_line)
         }
 
         *pos++ = _T('\0');
-    }
-    while (*pos != _T('\0'));
+    } while (*pos != _T('\0'));
 
     parse_argv(options, argc, argv);
 
@@ -504,8 +508,7 @@ GetConnByName(const WCHAR *name)
 {
     for (connection_t *c = o.chead; c; c = c->next)
     {
-        if (wcsicmp(c->config_file, name) == 0
-            || wcsicmp(c->config_name, name) == 0)
+        if (wcsicmp(c->config_file, name) == 0 || wcsicmp(c->config_name, name) == 0)
         {
             return c;
         }
@@ -526,7 +529,8 @@ BrowseFolder(const WCHAR *initial_path, WCHAR *selected_path, size_t selected_pa
         return false;
     }
 
-    result = CoCreateInstance(&CLSID_FileOpenDialog, NULL, CLSCTX_ALL, &IID_IFileOpenDialog, (void **)&pfd);
+    result = CoCreateInstance(
+        &CLSID_FileOpenDialog, NULL, CLSCTX_ALL, &IID_IFileOpenDialog, (void **)&pfd);
     if (SUCCEEDED(result))
     {
         /* Select folders, not files */
@@ -580,7 +584,8 @@ BrowseFolder(const WCHAR *initial_path, WCHAR *selected_path, size_t selected_pa
 
     if (initResult != RPC_E_CHANGED_MODE && SUCCEEDED(initResult))
     {
-        CoUninitialize(); /*All successful CoInitializeEx calls must be balanced by a corresponding CoUninitialize */
+        CoUninitialize(); /*All successful CoInitializeEx calls must be balanced by a corresponding
+                             CoUninitialize */
     }
 
     return SUCCEEDED(dialogResult);
@@ -610,8 +615,8 @@ CheckAdvancedDlgParams(HWND hdlg)
     ExpandString(tmp_path, _countof(tmp_path));
     if (PathIsRelativeW(tmp_path))
     {
-        MessageBox(hdlg, L"Specified config directory is not an absolute path",
-                   L"Option error", MB_OK);
+        MessageBox(
+            hdlg, L"Specified config directory is not an absolute path", L"Option error", MB_OK);
         return false;
     }
 
@@ -619,26 +624,31 @@ CheckAdvancedDlgParams(HWND hdlg)
     ExpandString(tmp_path, _countof(tmp_path));
     if (PathIsRelativeW(tmp_path))
     {
-        MessageBox(hdlg, L"Specified log directory is not an absolute path",
-                   L"Option error", MB_OK);
+        MessageBox(
+            hdlg, L"Specified log directory is not an absolute path", L"Option error", MB_OK);
         return false;
     }
 
     BOOL status;
     int tmp = GetDlgItemInt(hdlg, ID_EDT_MGMT_PORT, &status, FALSE);
-    /* Restrict the port offset to sensible range -- port used is this + upto ~4000 as connection index */
+    /* Restrict the port offset to sensible range -- port used is this + upto ~4000 as connection
+     * index */
     if (!status || (tmp < 1 || tmp > 61000))
     {
-        MessageBox(hdlg, L"Specified port is not valid (must be in the range 1 to 61000)",
-                   L"Option error", MB_OK);
+        MessageBox(hdlg,
+                   L"Specified port is not valid (must be in the range 1 to 61000)",
+                   L"Option error",
+                   MB_OK);
         return false;
     }
 
     tmp = GetDlgItemInt(hdlg, ID_EDT_POPUP_MUTE, &status, FALSE);
     if (!status || tmp < 0)
     {
-        MessageBox(hdlg, L"Specified mute interval is not valid (must be a positive integer)",
-                   L"Option error", MB_OK);
+        MessageBox(hdlg,
+                   L"Specified mute interval is not valid (must be a positive integer)",
+                   L"Option error",
+                   MB_OK);
         return false;
     }
 
@@ -658,9 +668,9 @@ SaveAdvancedDlgParams(HWND hdlg)
     wcsncpy(tmp_path1, tmp_path, _countof(tmp_path1));
     ExpandString(tmp_path1, _countof(tmp_path1));
 
-    if (EnsureDirExists(tmp_path1))  /* this will try to create the path if needed */
+    if (EnsureDirExists(tmp_path1)) /* this will try to create the path if needed */
     {
-        wcsncpy(o.log_dir, tmp_path, _countof(o.log_dir));  /* save unexpanded path */
+        wcsncpy(o.log_dir, tmp_path, _countof(o.log_dir)); /* save unexpanded path */
     }
     else
     {
@@ -700,8 +710,8 @@ SaveAdvancedDlgParams(HWND hdlg)
         o.popup_mute_interval = tmp;
     }
 
-    o.ovpn_engine = IsDlgButtonChecked(hdlg, ID_RB_ENGINE_OVPN3) ?
-                    OPENVPN_ENGINE_OVPN3 : OPENVPN_ENGINE_OVPN2;
+    o.ovpn_engine =
+        IsDlgButtonChecked(hdlg, ID_RB_ENGINE_OVPN3) ? OPENVPN_ENGINE_OVPN3 : OPENVPN_ENGINE_OVPN2;
 
     SaveRegistryKeys();
     ExpandOptions();
@@ -744,8 +754,11 @@ LoadAdvancedDlgParams(HWND hdlg)
     }
 
 #ifdef ENABLE_OVPN3
-    CheckRadioButton(hdlg, ID_RB_ENGINE_OVPN2, ID_RB_ENGINE_OVPN3,
-                     o.ovpn_engine == OPENVPN_ENGINE_OVPN3 ? ID_RB_ENGINE_OVPN3 : ID_RB_ENGINE_OVPN2);
+    CheckRadioButton(hdlg,
+                     ID_RB_ENGINE_OVPN2,
+                     ID_RB_ENGINE_OVPN3,
+                     o.ovpn_engine == OPENVPN_ENGINE_OVPN3 ? ID_RB_ENGINE_OVPN3
+                                                           : ID_RB_ENGINE_OVPN2);
 #endif
 }
 
@@ -756,7 +769,6 @@ AdvancedSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPa
 
     switch (msg)
     {
-
         case WM_INITDIALOG:
             /* Limit extension editbox to 4 chars. */
             SendMessage(GetDlgItem(hwndDlg, ID_EDT_CONFIG_EXT), EM_SETLIMITTEXT, 4, 0);
@@ -790,13 +802,14 @@ AdvancedSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPa
             break;
 
         case WM_NOTIFY:
-            psn = (LPPSHNOTIFY) lParam;
-            if (psn->hdr.code == (UINT) PSN_KILLACTIVE)
+            psn = (LPPSHNOTIFY)lParam;
+            if (psn->hdr.code == (UINT)PSN_KILLACTIVE)
             {
-                SetWindowLongPtr(hwndDlg, DWLP_MSGRESULT, (CheckAdvancedDlgParams(hwndDlg) ? FALSE : TRUE));
+                SetWindowLongPtr(
+                    hwndDlg, DWLP_MSGRESULT, (CheckAdvancedDlgParams(hwndDlg) ? FALSE : TRUE));
                 return TRUE;
             }
-            if (psn->hdr.code == (UINT) PSN_APPLY)
+            if (psn->hdr.code == (UINT)PSN_APPLY)
             {
                 BOOL status = SaveAdvancedDlgParams(hwndDlg);
                 SetWindowLongPtr(hwndDlg, DWLP_MSGRESULT, status ? PSNRET_NOERROR : PSNRET_INVALID);
@@ -835,8 +848,8 @@ CompareStringExpanded(const WCHAR *str1, const WCHAR *str2)
 
     wcsncpy(str1_cpy, str1, _countof(str1_cpy));
     wcsncpy(str2_cpy, str2, _countof(str2_cpy));
-    str1_cpy[MAX_PATH-1] = L'\0';
-    str2_cpy[MAX_PATH-1] = L'\0';
+    str1_cpy[MAX_PATH - 1] = L'\0';
+    str2_cpy[MAX_PATH - 1] = L'\0';
 
     ExpandString(str1_cpy, _countof(str1_cpy));
     ExpandString(str2_cpy, _countof(str2_cpy));

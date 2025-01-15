@@ -26,32 +26,37 @@
 #include <windows.h>
 
 #ifdef __GNUC__
-#define UNUSED __attribute__ ((unused))
+#define UNUSED __attribute__((unused))
 #else
 #define UNUSED
 #endif
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #ifdef DEBUG
-#define dmsg(fmt, ...) x_dmsg(__FILE__, __func__, fmt, ## __VA_ARGS__)
+#define dmsg(fmt, ...) x_dmsg(__FILE__, __func__, fmt, ##__VA_ARGS__)
 #else
-#define dmsg(...) do {; } while (0)
+#define dmsg(...) \
+    do            \
+    {             \
+        ;         \
+    } while (0)
 #endif
 
-void x_dmsg(const char *file, const char *func, const wchar_t *fmt, ...);
+    void x_dmsg(const char *file, const char *func, const wchar_t *fmt, ...);
 
-void init_debug();
+    void init_debug();
 
-void uninit_debug();
+    void uninit_debug();
 
-void debug_print_guid(const GUID *riid, const wchar_t *context);
+    void debug_print_guid(const GUID *riid, const wchar_t *context);
 
 /* Shortcuts for cumbersome calls to COM methods of an object through its v-table */
-#define ADDREF(p) (p)->lpVtbl->AddRef(p)
-#define RELEASE(p) (p)->lpVtbl->Release(p)
+#define ADDREF(p)                     (p)->lpVtbl->AddRef(p)
+#define RELEASE(p)                    (p)->lpVtbl->Release(p)
 #define QUERY_INTERFACE(p, riid, ppv) (p)->lpVtbl->QueryInterface(p, riid, ppv)
 
 #ifdef __cplusplus
@@ -66,6 +71,16 @@ void debug_print_guid(const GUID *riid, const wchar_t *context);
  * In other places this will get defined as an extern.
  */
 #ifdef DEFINE_GUID
-DEFINE_GUID(CLSID_OpenVPNProvider, 0x4fbb8b67, 0xcf02, 0x4982, 0xa7, 0xa8,
-            0x3d, 0xd0, 0x6a, 0x2c, 0x2e, 0xbd);
+DEFINE_GUID(CLSID_OpenVPNProvider,
+            0x4fbb8b67,
+            0xcf02,
+            0x4982,
+            0xa7,
+            0xa8,
+            0x3d,
+            0xd0,
+            0x6a,
+            0x2c,
+            0x2e,
+            0xbd);
 #endif

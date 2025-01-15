@@ -25,25 +25,25 @@
 
 #include "options.h"
 
-#define IDM_SERVICE_START       100
-#define IDM_SERVICE_STOP        101
-#define IDM_SERVICE_RESTART     102
+#define IDM_SERVICE_START   100
+#define IDM_SERVICE_STOP    101
+#define IDM_SERVICE_RESTART 102
 
-#define IDM_SETTINGS            221
-#define IDM_CLOSE               223
-#define IDM_IMPORT              224
-#define IDM_IMPORT_FILE         225
-#define IDM_IMPORT_AS           226
-#define IDM_IMPORT_URL          227
+#define IDM_SETTINGS        221
+#define IDM_CLOSE           223
+#define IDM_IMPORT          224
+#define IDM_IMPORT_FILE     225
+#define IDM_IMPORT_AS       226
+#define IDM_IMPORT_URL      227
 
-#define IDM_CONNECTMENU         300
-#define IDM_DISCONNECTMENU      (1 + IDM_CONNECTMENU)
-#define IDM_STATUSMENU          (1 + IDM_DISCONNECTMENU)
-#define IDM_VIEWLOGMENU         (1 + IDM_STATUSMENU)
-#define IDM_EDITMENU            (1 + IDM_VIEWLOGMENU)
-#define IDM_PASSPHRASEMENU      (1 + IDM_EDITMENU)
-#define IDM_CLEARPASSMENU       (1 + IDM_PASSPHRASEMENU)
-#define IDM_RECONNECTMENU       (1 + IDM_CLEARPASSMENU)
+#define IDM_CONNECTMENU     300
+#define IDM_DISCONNECTMENU  (1 + IDM_CONNECTMENU)
+#define IDM_STATUSMENU      (1 + IDM_DISCONNECTMENU)
+#define IDM_VIEWLOGMENU     (1 + IDM_STATUSMENU)
+#define IDM_EDITMENU        (1 + IDM_VIEWLOGMENU)
+#define IDM_PASSPHRASEMENU  (1 + IDM_EDITMENU)
+#define IDM_CLEARPASSMENU   (1 + IDM_PASSPHRASEMENU)
+#define IDM_RECONNECTMENU   (1 + IDM_CLEARPASSMENU)
 
 void RecreatePopupMenus(void);
 
