@@ -11,7 +11,7 @@ jobs:
       - name: Install dependencies
         run: sudo apt update && sudo apt install -y uncrustify
       - name: Checkout OpenVPN-GUI
-        uses: actions/checkout@v3
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Show uncrustify version
         run: uncrustify --version
       - name: Run uncrustify
@@ -20,7 +20,7 @@ jobs:
         run: git diff --output=uncrustify-changes.patch
       - name: Show changes on standard output
         run: git diff
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
           name: uncrustify-changes.patch
           path: uncrustify-changes.patch
@@ -50,7 +50,7 @@ jobs:
     name: 'msvc - ${{matrix.arch}} ${{ matrix.ovpn3.name }}${{ matrix.conf.name }}'
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
     - uses: lukka/get-cmake@latest
 
     - name: Restore artifacts, or setup vcpkg (do not install any package)
@@ -65,7 +65,7 @@ jobs:
         configurePreset: '${{ matrix.arch }}${{ matrix.ovpn3.preset }}'
         buildPreset: '${{ matrix.arch }}-${{ matrix.conf.value }}${{ matrix.ovpn3.preset }}'
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
       with:
         name: openvpn-gui_${{ matrix.arch }}_${{ matrix.conf.value }}${{ matrix.ovpn3.upload_name }}
         path: |
@@ -93,7 +93,7 @@ jobs:
       - name: Install dependencies
         run: sudo apt update && sudo apt install -y mingw-w64 libtool automake autoconf
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: autoconf
         run: autoreconf -fvi
