@@ -81,7 +81,7 @@ jobs:
             chost: i686-w64-mingw32
 
     name: "gcc-mingw - ${{matrix.target}}"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     env:
       MAKEFLAGS: -j3
