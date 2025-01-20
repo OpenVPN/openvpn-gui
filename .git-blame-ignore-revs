@@ -1,0 +1,17 @@
+# This FILE allows git blame to ignore reformatting changes and instead
+# shows the previous commit that changed the line.
+#
+# To avoid manually building the list of commits this commit
+# adds a file with a list of reformatting commits. TO use:
+#
+#   git blame --ignore-revs-file=.git-blame-ignore-revs file
+#
+# or to automatically always use the file
+#
+#   git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# Initial formatting with uncrustify
+2cb3c6e4173c07e08bb2d6b440ad09fa76ac4182
+
+# Switch from uncrustify to clang-format
+d2bcb940dcf958ea5457e158b379af60bb9cc4e2
