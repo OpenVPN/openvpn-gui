@@ -77,7 +77,7 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
-test "${GCC}" = "yes" && CFLAGS="${CFLAGS} -pedantic -Wall -Wextra"
+test "${GCC}" = "yes" && CFLAGS="${CFLAGS} -pedantic -Wall -Wextra -Wno-cast-function-type -Werror"
 
 AC_CONFIG_FILES([Makefile plap/Makefile])
 AC_OUTPUT
