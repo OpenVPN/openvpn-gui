@@ -780,7 +780,7 @@ SetMenuStatus(connection_t *c, conn_state_t state)
         config_group_t *parent = &o.groups[0];
         int pos = c->pos;
 
-        if (USE_NESTED_CONFIG_MENU && CONFIG_GROUP(c))
+        if (USE_NESTED_CONFIG_MENU)
         {
             parent = CONFIG_GROUP(c);
         }
