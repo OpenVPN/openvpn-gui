@@ -218,7 +218,8 @@ echo_msg_repeated(const struct echo_msg *msg)
     const struct echo_msg_history *hist;
 
     hist = echo_msg_recall(msg->fp.digest, msg->history);
-    return (hist && (hist->fp.timestamp + o.popup_mute_interval * 3600 > msg->fp.timestamp));
+    return (hist
+            && (hist->fp.timestamp + (time_t)(o.popup_mute_interval * 3600) > msg->fp.timestamp));
 }
 
 /* Append a line of echo msg */
