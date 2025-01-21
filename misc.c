@@ -937,8 +937,9 @@ ParseManagementAddress(connection_t *c)
             wcsncpy_s(pw_path, MAX_PATH, pw_file, _TRUNCATE);
         }
 
-        FILE *fp = _wfopen(pw_path, L"r");
-        if (!fp || !fgets(c->manage.password, sizeof(c->manage.password), fp))
+        FILE *fp;
+        if (_wfopen_s(&fp, pw_path, L"r")
+            || !fgets(c->manage.password, sizeof(c->manage.password), fp))
         {
             /* This may be normal as not all users may be given access to this secret */
             ret = false;

@@ -662,8 +662,8 @@ again:
     }
     swprintf(out_path, out_path_size, L"%ls%ls", out_path, name);
     out_path[out_path_size - 1] = '\0';
-    FILE *f = _wfopen(out_path, L"w");
-    if (f == NULL)
+    FILE *f;
+    if (_wfopen_s(&f, out_path, L"w"))
     {
         MessageBoxW(hWnd, L"Unable to save downloaded profile", _T(PACKAGE_NAME), MB_OK);
         goto done;

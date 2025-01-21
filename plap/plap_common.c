@@ -38,7 +38,7 @@ init_debug()
 {
     if (!fp)
     {
-        fp = _wfopen(L"C:\\Windows\\Temp\\openvpn-plap-debug.txt", L"a+,ccs=UTF-8");
+        _wfopen_s(&fp, L"C:\\Windows\\Temp\\openvpn-plap-debug.txt", L"a+,ccs=UTF-8");
     }
     InitializeCriticalSection(&log_write);
 }
