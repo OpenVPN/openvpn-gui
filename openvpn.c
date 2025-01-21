@@ -1970,8 +1970,8 @@ HandleServiceIO(DWORD err, DWORD bytes, LPOVERLAPPED lpo)
     }
     if (err)
     {
-        _snwprintf(s->readbuf, len, L"0x%08x\nInteractive Service disconnected\n", err);
-        s->readbuf[len - 1] = L'\0';
+        _snwprintf_s(
+            s->readbuf, len, _TRUNCATE, L"0x%08x\nInteractive Service disconnected\n", err);
         SetEvent(s->hEvent);
         return;
     }
@@ -2133,12 +2133,12 @@ OnProcess(connection_t *c, UNUSED char *msg)
         return;
     }
 
-    _snwprintf(tmp,
-               _countof(tmp),
-               L"OpenVPN terminated with exit code %lu. "
-               L"See the log file for details",
-               err);
-    tmp[_countof(tmp) - 1] = L'\0';
+    _snwprintf_s(tmp,
+                 _countof(tmp),
+                 _TRUNCATE,
+                 L"OpenVPN terminated with exit code %lu. "
+                 L"See the log file for details",
+                 err);
     WriteStatusLog(c, L"OpenVPN GUI> ", tmp, false);
 
     OnStop(c, NULL);

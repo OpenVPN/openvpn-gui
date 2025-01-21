@@ -70,15 +70,16 @@ x_dmsg(const char *file, const char *func, const wchar_t *fmt, ...)
     wchar_t date[30];
     time_t log_time = time(NULL);
     struct tm *time_struct = localtime(&log_time);
-    _snwprintf(date,
-               _countof(date),
-               L"%d-%.2d-%.2d %.2d:%.2d:%.2d",
-               time_struct->tm_year + 1900,
-               time_struct->tm_mon + 1,
-               time_struct->tm_mday,
-               time_struct->tm_hour,
-               time_struct->tm_min,
-               time_struct->tm_sec);
+    _snwprintf_s(date,
+                 _countof(date),
+                 _TRUNCATE,
+                 L"%d-%.2d-%.2d %.2d:%.2d:%.2d",
+                 time_struct->tm_year + 1900,
+                 time_struct->tm_mon + 1,
+                 time_struct->tm_mday,
+                 time_struct->tm_hour,
+                 time_struct->tm_min,
+                 time_struct->tm_sec);
 
     EnterCriticalSection(&log_write);
 

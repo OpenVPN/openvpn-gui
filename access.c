@@ -127,12 +127,8 @@ AddUserToGroup(const WCHAR *group)
     if (GetSystemDirectory(syspath, size))
     {
         syspath[size - 1] = L'\0';
-        size = _countof(cmd);
-        _snwprintf(cmd, size, L"%ls\\%ls", syspath, L"cmd.exe");
-        cmd[size - 1] = L'\0';
-        size = _countof(netcmd);
-        _snwprintf(netcmd, size, L"%ls\\%ls", syspath, L"net.exe");
-        netcmd[size - 1] = L'\0';
+        _snwprintf_s(cmd, _countof(cmd), _TRUNCATE, L"%ls\\%ls", syspath, L"cmd.exe");
+        _snwprintf_s(netcmd, _countof(netcmd), _TRUNCATE, L"%ls\\%ls", syspath, L"net.exe");
     }
     size = (wcslen(fmt) + wcslen(username) + 2 * wcslen(group) + 2 * wcslen(netcmd) + 1);
     if ((params = malloc(size * sizeof(WCHAR))) == NULL)
@@ -140,8 +136,7 @@ AddUserToGroup(const WCHAR *group)
         return retval;
     }
 
-    _snwprintf(params, size, fmt, netcmd, group, netcmd, group, username);
-    params[size - 1] = L'\0';
+    _snwprintf_s(params, size, _TRUNCATE, fmt, netcmd, group, netcmd, group, username);
 
     status = RunAsAdmin(cmd, params);
     if (status == 0)
