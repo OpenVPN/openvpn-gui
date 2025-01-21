@@ -35,6 +35,7 @@
 #include <richedit.h>
 #include <time.h>
 #include <commctrl.h>
+#include <inttypes.h>
 
 #ifndef WM_DPICHANGED
 #define WM_DPICHANGED 0x02E0
@@ -1706,7 +1707,7 @@ format_bytecount(wchar_t *buf, size_t len, unsigned long long c)
 void
 OnByteCount(connection_t *c, char *msg)
 {
-    if (!msg || sscanf(msg, "%I64u,%I64u", &c->bytes_in, &c->bytes_out) != 2)
+    if (!msg || sscanf(msg, "%" SCNu64 ",%" SCNu64, &c->bytes_in, &c->bytes_out) != 2)
     {
         return;
     }
