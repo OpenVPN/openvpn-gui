@@ -167,22 +167,23 @@ void
 OnLogLine(connection_t *c, char *line)
 {
     HWND logWnd = GetDlgItem(c->hwndStatus, ID_EDT_LOG);
-    char *flags, *message;
     time_t timestamp;
     TCHAR *datetime;
     const SETTEXTEX ste = { .flags = ST_SELECTION, .codepage = CP_UTF8 };
 
-    flags = strchr(line, ',') + 1;
-    if (flags - 1 == NULL)
+    char *flags = strchr(line, ',');
+    if (flags == NULL)
     {
         return;
     }
+    flags++;
 
-    message = strchr(flags, ',') + 1;
-    if (message - 1 == NULL)
+    char *message = strchr(flags, ',');
+    if (message == NULL)
     {
         return;
     }
+    message++;
     size_t flag_size = message - flags - 1; /* message is always > flags */
 
     /* Remove lines from log window if it is getting full */
