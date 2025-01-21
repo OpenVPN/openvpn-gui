@@ -167,19 +167,18 @@ void
 OnLogLine(connection_t *c, char *line)
 {
     HWND logWnd = GetDlgItem(c->hwndStatus, ID_EDT_LOG);
-    char *flags, *message;
     time_t timestamp;
     TCHAR *datetime;
     const SETTEXTEX ste = { .flags = ST_SELECTION, .codepage = CP_UTF8 };
 
-    flags = strchr(line, ',') + 1;
-    if (flags - 1 == NULL)
+    char *flags = strchr(line, ',');
+    if (flags == NULL)
     {
         return;
     }
 
-    message = strchr(flags, ',') + 1;
-    if (message - 1 == NULL)
+    char *message = strchr(flags + 1, ',');
+    if (message == NULL)
     {
         return;
     }
