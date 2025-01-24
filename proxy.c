@@ -462,11 +462,11 @@ QueryWindowsProxySettings(const url_scheme scheme, LPCSTR host)
             NULL, WINHTTP_ACCESS_TYPE_NO_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
         if (session)
         {
-            int size = _snwprintf(NULL, 0, L"%ls://%hs", UrlSchemeStr(scheme), host) + 1;
+            int size = _scwprintf(L"%ls://%hs", UrlSchemeStr(scheme), host) + 1;
             LPWSTR url = malloc(size * sizeof(WCHAR));
             if (url)
             {
-                _snwprintf(url, size, L"%ls://%hs", UrlSchemeStr(scheme), host);
+                _snwprintf_s(url, size, _TRUNCATE, L"%ls://%hs", UrlSchemeStr(scheme), host);
 
                 LPWSTR old_proxy = proxy;
                 WINHTTP_PROXY_INFO proxy_info;

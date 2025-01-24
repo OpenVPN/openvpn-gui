@@ -183,11 +183,7 @@ config_parse(wchar_t *fname)
     FILE *fd = NULL;
     config_entry_t *head, *tail;
 
-    if (fname)
-    {
-        fd = _wfopen(fname, L"r");
-    }
-    if (!fd)
+    if (!fname || _wfopen_s(&fd, fname, L"r"))
     {
         MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Error opening <%ls> in config_parse", fname);
         return NULL;

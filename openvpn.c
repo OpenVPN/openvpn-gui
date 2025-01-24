@@ -35,6 +35,7 @@
 #include <richedit.h>
 #include <time.h>
 #include <commctrl.h>
+#include <inttypes.h>
 
 #ifndef WM_DPICHANGED
 #define WM_DPICHANGED 0x02E0
@@ -166,19 +167,18 @@ void
 OnLogLine(connection_t *c, char *line)
 {
     HWND logWnd = GetDlgItem(c->hwndStatus, ID_EDT_LOG);
-    char *flags, *message;
     time_t timestamp;
     TCHAR *datetime;
     const SETTEXTEX ste = { .flags = ST_SELECTION, .codepage = CP_UTF8 };
 
-    flags = strchr(line, ',') + 1;
-    if (flags - 1 == NULL)
+    char *flags = strchr(line, ',');
+    if (flags == NULL)
     {
         return;
     }
 
-    message = strchr(flags, ',') + 1;
-    if (message - 1 == NULL)
+    char *message = strchr(flags + 1, ',');
+    if (message == NULL)
     {
         return;
     }
@@ -1706,7 +1706,7 @@ format_bytecount(wchar_t *buf, size_t len, unsigned long long c)
 void
 OnByteCount(connection_t *c, char *msg)
 {
-    if (!msg || sscanf(msg, "%I64u,%I64u", &c->bytes_in, &c->bytes_out) != 2)
+    if (!msg || sscanf(msg, "%" SCNu64 ",%" SCNu64, &c->bytes_in, &c->bytes_out) != 2)
     {
         return;
     }
@@ -1969,8 +1969,8 @@ HandleServiceIO(DWORD err, DWORD bytes, LPOVERLAPPED lpo)
     }
     if (err)
     {
-        _snwprintf(s->readbuf, len, L"0x%08x\nInteractive Service disconnected\n", err);
-        s->readbuf[len - 1] = L'\0';
+        _snwprintf_s(
+            s->readbuf, len, _TRUNCATE, L"0x%08x\nInteractive Service disconnected\n", err);
         SetEvent(s->hEvent);
         return;
     }
@@ -2132,12 +2132,12 @@ OnProcess(connection_t *c, UNUSED char *msg)
         return;
     }
 
-    _snwprintf(tmp,
-               _countof(tmp),
-               L"OpenVPN terminated with exit code %lu. "
-               L"See the log file for details",
-               err);
-    tmp[_countof(tmp) - 1] = L'\0';
+    _snwprintf_s(tmp,
+                 _countof(tmp),
+                 _TRUNCATE,
+                 L"OpenVPN terminated with exit code %lu. "
+                 L"See the log file for details",
+                 err);
     WriteStatusLog(c, L"OpenVPN GUI> ", tmp, false);
 
     OnStop(c, NULL);

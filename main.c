@@ -202,7 +202,7 @@ _tWinMain(HINSTANCE hThisInstance,
 
 #ifdef DEBUG
     /* Open debug file for output */
-    if (!(o.debug_fp = _wfopen(DEBUG_FILE, L"a+,ccs=UTF-8")))
+    if (_wfopen_s(&o.debug_fp, DEBUG_FILE, L"a+,ccs=UTF-8"))
     {
         /* can't open debug file */
         ShowLocalizedMsg(IDS_ERR_OPEN_DEBUG_FILE, DEBUG_FILE);

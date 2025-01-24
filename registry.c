@@ -556,8 +556,7 @@ OpenConfigRegistryKey(const WCHAR *config_name, HKEY *regkey, BOOL create)
         return 0;
     }
 
-    _snwprintf(name, count, fmt, config_name);
-    name[count - 1] = L'\0';
+    _snwprintf_s(name, count, _TRUNCATE, fmt, config_name);
 
     if (!create)
     {
