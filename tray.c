@@ -740,7 +740,8 @@ SetMenuStatus(connection_t *c, conn_state_t state)
     {
         if (state == disconnected || state == detached)
         {
-            EnableMenuItem(hMenu, IDM_CONNECTMENU, MF_ENABLED);
+            EnableMenuItem(
+                hMenu, IDM_CONNECTMENU, (c->flags & FLAG_CONFIG_DISABLED) ? MF_GRAYED : MF_ENABLED);
             EnableMenuItem(hMenu, IDM_DISCONNECTMENU, MF_GRAYED);
             EnableMenuItem(hMenu, IDM_RECONNECTMENU, MF_GRAYED);
             EnableMenuItem(hMenu, IDM_STATUSMENU, MF_GRAYED);
@@ -819,10 +820,17 @@ SetMenuStatus(connection_t *c, conn_state_t state)
 
         if (state == disconnected || state == detached)
         {
-            EnableMenuItem(hMenuConn[i], IDM_CONNECTMENU, MF_ENABLED);
-            EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU, MF_GRAYED);
-            EnableMenuItem(hMenuConn[i], IDM_RECONNECTMENU, MF_GRAYED);
-            EnableMenuItem(hMenuConn[i], IDM_STATUSMENU, MF_GRAYED);
+            if (c->flags & FLAG_CONFIG_DISABLED)
+            {
+                EnableMenuItem(parent->menu, pos, MF_BYPOSITION | MF_GRAYED);
+            }
+            else
+            {
+                EnableMenuItem(hMenuConn[i], IDM_CONNECTMENU, MF_ENABLED);
+                EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU, MF_GRAYED);
+                EnableMenuItem(hMenuConn[i], IDM_RECONNECTMENU, MF_GRAYED);
+                EnableMenuItem(hMenuConn[i], IDM_STATUSMENU, MF_GRAYED);
+            }
         }
         else if (state == connecting || state == resuming || state == connected)
         {
