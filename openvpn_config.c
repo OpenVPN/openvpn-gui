@@ -280,6 +280,15 @@ ActivateConfigGroups(void)
             cg->active = true;
             cg = PARENT_GROUP(cg);
         }
+        /* also deactivate any configs that are no longer readable */
+        if (CheckReadAccess(c->config_dir, c->config_file))
+        {
+            c->flags &= ~FLAG_CONFIG_DISABLED;
+        }
+        else
+        {
+            c->flags |= FLAG_CONFIG_DISABLED;
+        }
     }
 }
 
