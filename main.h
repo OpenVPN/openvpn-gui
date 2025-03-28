@@ -29,7 +29,7 @@
 
 /* Define this to enable DEBUG build */
 /*#define DEBUG */
-#define DEBUG_FILE         L"C:\\windows\\temp\\openvpngui_debug.txt"
+#define DEBUG_FILE         L"openvpngui_debug.txt" /* will be created in GetTempPath() directory */
 
 /* Registry key for User Settings */
 #define GUI_REGKEY_HKCU    _T("Software\\OpenVPN-GUI")

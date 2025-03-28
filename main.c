@@ -201,11 +201,28 @@ _tWinMain(HINSTANCE hThisInstance,
     }
 
 #ifdef DEBUG
+    WCHAR tempPath[MAX_PATH];
+    DWORD pathLen = GetTempPath(MAX_PATH, tempPath);
+    if (pathLen == 0 || pathLen > MAX_PATH)
+    {
+        MsgToEventLog(
+            EVENTLOG_ERROR_TYPE, L"Failed to get temp path. Error: %lu\n", GetLastError());
+        exit(1);
+    }
+
+    WCHAR fullPath[MAX_PATH];
+    if (!PathCombine(fullPath, tempPath, DEBUG_FILE))
+    {
+        MsgToEventLog(
+            EVENTLOG_ERROR_TYPE, L"Failed to combine temp path. Error: %lu\n", GetLastError());
+        exit(1);
+    }
+
     /* Open debug file for output */
-    if (_wfopen_s(&o.debug_fp, DEBUG_FILE, L"a+,ccs=UTF-8"))
+    if (_wfopen_s(&o.debug_fp, fullPath, L"a+,ccs=UTF-8"))
     {
         /* can't open debug file */
-        ShowLocalizedMsg(IDS_ERR_OPEN_DEBUG_FILE, DEBUG_FILE);
+        ShowLocalizedMsg(IDS_ERR_OPEN_DEBUG_FILE, fullPath);
         exit(1);
     }
     PrintDebug(_T("Starting OpenVPN GUI v%hs"), PACKAGE_VERSION);
