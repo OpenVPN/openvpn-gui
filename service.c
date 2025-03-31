@@ -38,7 +38,7 @@
 
 extern options_t o;
 
-bool
+BOOL
 CheckIServiceStatus(BOOL warn)
 {
     SC_HANDLE schSCManager = NULL;
