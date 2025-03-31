@@ -166,6 +166,11 @@
 #define ID_LVW_PKCS11                   451
 #define ID_TXT_PKCS11                   452
 
+/* QR code dialog */
+#define ID_DLG_QR                       500
+#define ID_STATIC_QR                    501
+#define ID_TXT_QR                       502
+
 /* General settings contd.. */
 
 #define ID_CHK_CONCAT_OTP               470

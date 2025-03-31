@@ -259,6 +259,8 @@ typedef struct
     TCHAR *action_arg;
     HANDLE session_semaphore;
     HANDLE event_log;
+    DWORD use_qr_for_url; /* display QR code instead of opening a web browser with a URL, used by
+                             PLAP */
 } options_t;
 
 void InitOptions(options_t *);

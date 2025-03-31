@@ -58,6 +58,12 @@ WCHAR *Widen(const char *utf8);
 
 WCHAR *WidenEx(UINT codepage, const char *utf8);
 
+/**
+ * Convert a wide string to a UTF-8 string. The caller must
+ * free the returned pointer. Return NULL on error.
+ */
+char *WCharToUTF8(const WCHAR *wstr);
+
 BOOL validate_input(const WCHAR *input, const WCHAR *exclude);
 
 /* Concatenate two wide strings with a separator */

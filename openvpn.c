@@ -62,6 +62,7 @@
 #include "echo.h"
 #include "pkcs11.h"
 #include "service.h"
+#include "qr.h"
 
 #define OPENVPN_SERVICE_PIPE_NAME_OVPN2 L"\\\\.\\pipe\\openvpn\\service"
 #define OPENVPN_SERVICE_PIPE_NAME_OVPN3 L"\\\\.\\pipe\\ovpnagent"
@@ -447,6 +448,14 @@ OnStateChange(connection_t *c, char *data)
             SetDlgItemTextW(c->hwndStatus, ID_TXT_IP, L"");
             SetStatusWinIcon(c->hwndStatus, ID_ICO_CONNECTING);
         }
+
+        /* close QR dialog, if any */
+        CloseQRDialog();
+    }
+    else if (strcmp(state, "ASSIGN_IP") == 0)
+    {
+        /* first state after completion of web-based auth, now it is safe to close QR dialog */
+        CloseQRDialog();
     }
     else
     {
@@ -1755,9 +1764,16 @@ OnInfoMsg(connection_t *c, char *msg)
 
     if (url)
     {
-        if (!open_url(url))
+        if (o.use_qr_for_url)
         {
-            WriteStatusLog(c, L"GUI> ", L"Error: failed to open url from info msg", false);
+            OpenQRDialog(url, c->config_name);
+        }
+        else
+        {
+            if (!open_url(url))
+            {
+                WriteStatusLog(c, L"GUI> ", L"Error: failed to open url from info msg", false);
+            }
         }
         free(url);
     }
