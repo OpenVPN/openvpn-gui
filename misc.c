@@ -544,6 +544,21 @@ CheckFileAccess(const TCHAR *path, int access)
     return ret;
 }
 
+char *
+WCharToUTF8(const WCHAR *wstr)
+{
+    int utf8_len = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, NULL, 0, NULL, NULL);
+    if (utf8_len == 0)
+        return NULL;
+
+    char *utf8_str = (char *)malloc(utf8_len);
+    if (!utf8_str)
+        return NULL;
+
+    WideCharToMultiByte(CP_UTF8, 0, wstr, -1, utf8_str, utf8_len, NULL, NULL);
+    return utf8_str;
+}
+
 /**
  * Convert a NUL terminated narrow string to wide string using
  * specified codepage. The caller must free

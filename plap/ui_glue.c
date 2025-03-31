@@ -66,23 +66,16 @@ OnStop_(connection_t *c, UNUSED char *msg)
     SendMessage(c->hwndStatus, WM_CLOSE, 0, 0);
 }
 
-/* Override OnInfoMsg: We filter out anything other
- * than CR_TEXT: In particular, OPEN_URL is not supported
- * in PLAP context.
- */
 static void
 OnInfoMsg_(connection_t *c, char *msg)
 {
-    if (strbegins(msg, "CR_TEXT:"))
+    if (c == active_profile)
     {
-        if (c == active_profile)
-        {
-            OnInfoMsg(c, msg);
-        }
-        else
-        {
-            DetachOpenVPN(c); /* next attach will handle it */
-        }
+        OnInfoMsg(c, msg);
+    }
+    else
+    {
+        DetachOpenVPN(c); /* next attach will handle it */
     }
 }
 
@@ -236,6 +229,9 @@ InitializeUI(HINSTANCE hinstance)
      * We expect users who register the PLAP dll to also enable the service.
      */
     o.service_state = service_connected;
+
+    /* PLAP always uses QR */
+    o.use_qr_for_url = TRUE;
 
     o.hInstance = hinstance;
 

@@ -158,6 +158,13 @@ screen are setup in the `config-auto` folder, `OpenVPNService`
 is running, and these connections are visible and controllable
 from the GUI.
 
+In addition to that, PLAP profiles must contain::
+
+    setenv IV_SSO webauth
+
+to indicate that client supports web-based (as QR code for PLAP)
+authentication method.
+
 Once those pre-requisites are satisfied, the login screen will
 display an icon for `Pre-Logon Access Providers`, clicking which
 will bring up a list of OpenVPN connection profiles available, and

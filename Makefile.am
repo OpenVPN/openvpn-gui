@@ -110,6 +110,8 @@ openvpn_gui_SOURCES = \
 	as.c as.h \
 	pkcs11.c pkcs11.h \
 	config_parser.c config_parser.h \
+	qr.c qr.h \
+	qrcodegen/qrcodegen.c qrcodegen/qrcodegen.h
 	openvpn-gui-res.h
 
 openvpn_gui_LDFLAGS = -mwindows
