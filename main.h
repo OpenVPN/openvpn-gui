@@ -26,6 +26,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <tchar.h>
+#include <stdbool.h>
 
 /* Define this to enable DEBUG build */
 /*#define DEBUG */
@@ -63,11 +64,6 @@
 #define WM_OVPN_DETACH     (WM_APP + 24)
 
 #define MSGF_OVPN_WAIT     (MSGF_USER + 1)
-
-/* bool definitions */
-#define bool               int
-#define true               1
-#define false              0
 
 /* GCC function attributes */
 #ifdef _MSC_VER
