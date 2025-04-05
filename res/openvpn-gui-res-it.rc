@@ -312,7 +312,7 @@ FONT 8, "Segoe UI"
 LANGUAGE LANG_ITALIAN, SUBLANG_DEFAULT
 BEGIN
     CONTROL "", ID_STATIC_QR, "Static", SS_BITMAP | WS_VISIBLE | SS_CENTERIMAGE, 0, 0, 10, 10
-    LTEXT "Scan this QR code on your mobile to proceed with authentication.", ID_TXT_QR, 0, 0, 10, 10, SS_CENTER | WS_VISIBLE | SS_EDITCONTROL
+    LTEXT "Per procedere con l'autenticazione scansiona questo codice QR nel dispositivo mobile.", ID_TXT_QR, 0, 0, 10, 10, SS_CENTER | WS_VISIBLE | SS_EDITCONTROL
 END
 
 STRINGTABLE
