@@ -43,9 +43,10 @@ extern options_t o;
 #define ECHO_MSG_NOTIFY (2)
 
 /* Old text in the window is deleted when content grows beyond this many lines */
-#define MAX_MSG_LINES 1000
+#define MAX_MSG_LINES   1000
 
-struct echo_msg_history {
+struct echo_msg_history
+{
     struct echo_msg_fp fp;
     struct echo_msg_history *next;
 };
@@ -55,16 +56,17 @@ struct echo_msg_history {
 static HWND echo_msg_window;
 
 /* Forward declarations */
-static void
-AddMessageBoxText(HWND hwnd, const wchar_t *text, const wchar_t *title, const wchar_t *from);
+static void AddMessageBoxText(HWND hwnd,
+                              const wchar_t *text,
+                              const wchar_t *title,
+                              const wchar_t *from);
 
-static INT_PTR CALLBACK
-MessageDialogFunc(HWND hwnd, UINT msg, UNUSED WPARAM wParam, LPARAM lParam);
+static INT_PTR CALLBACK MessageDialogFunc(HWND hwnd, UINT msg, UNUSED WPARAM wParam, LPARAM lParam);
 
 void
 echo_msg_init(void)
 {
-    echo_msg_window = CreateLocalizedDialogParam(ID_DLG_MESSAGE, MessageDialogFunc, (LPARAM) 0);
+    echo_msg_window = CreateLocalizedDialogParam(ID_DLG_MESSAGE, MessageDialogFunc, (LPARAM)0);
 
     if (!echo_msg_window)
     {
@@ -83,8 +85,8 @@ echo_msg_add_fp(struct echo_msg *msg, time_t timestamp)
     {
         return;
     }
-    md_update(&ctx, (BYTE *) msg->text, msg->txtlen*sizeof(msg->text[0]));
-    md_update(&ctx, (BYTE *) msg->title, wcslen(msg->title)*sizeof(msg->title[0]));
+    md_update(&ctx, (BYTE *)msg->text, msg->txtlen * sizeof(msg->text[0]));
+    md_update(&ctx, (BYTE *)msg->title, wcslen(msg->title) * sizeof(msg->title[0]));
     md_final(&ctx, msg->fp.digest);
     return;
 }
@@ -126,7 +128,7 @@ echo_msg_save(struct echo_msg *msg)
     {
         hist->fp.timestamp = msg->fp.timestamp;
     }
-    else     /* add */
+    else /* add */
     {
         msg->history = echo_msg_history_add(msg->history, &msg->fp);
     }
@@ -144,7 +146,7 @@ echo_msg_persist(connection_t *c)
         len++;
         if (len > 99)
         {
-            break;           /* max 100 history items persisted */
+            break; /* max 100 history items persisted */
         }
     }
     if (len == 0)
@@ -152,7 +154,7 @@ echo_msg_persist(connection_t *c)
         return;
     }
 
-    size_t size = len*sizeof(struct echo_msg_fp);
+    size_t size = len * sizeof(struct echo_msg_fp);
     struct echo_msg_fp *data = malloc(size);
     if (data == NULL)
     {
@@ -165,9 +167,10 @@ echo_msg_persist(connection_t *c)
     {
         data[i++] = hist->fp;
     }
-    if (!SetConfigRegistryValueBinary(c->config_name, L"echo_msg_history", (BYTE *) data, size))
+    if (!SetConfigRegistryValueBinary(c->config_name, L"echo_msg_history", (BYTE *)data, size))
     {
-        WriteStatusLog(c, L"GUI> ", L"Failed to persist echo msg history: error writing to registry", false);
+        WriteStatusLog(
+            c, L"GUI> ", L"Failed to persist echo msg history: error writing to registry", false);
     }
 
     free(data);
@@ -186,19 +189,19 @@ echo_msg_load(connection_t *c)
     {
         return; /* no history in registry */
     }
-    else if (size%item_len != 0)
+    else if (size % item_len != 0)
     {
         WriteStatusLog(c, L"GUI> ", L"echo msg history in registry has invalid size", false);
         return;
     }
 
     data = malloc(size);
-    if (!data || !GetConfigRegistryValue(c->config_name, L"echo_msg_history", (BYTE *) data, size))
+    if (!data || !GetConfigRegistryValue(c->config_name, L"echo_msg_history", (BYTE *)data, size))
     {
         goto out;
     }
 
-    size_t len = size/item_len;
+    size_t len = size / item_len;
     for (size_t i = 0; i < len; i++)
     {
         c->echo_msg.history = echo_msg_history_add(c->echo_msg.history, &data[i]);
@@ -215,7 +218,8 @@ echo_msg_repeated(const struct echo_msg *msg)
     const struct echo_msg_history *hist;
 
     hist = echo_msg_recall(msg->fp.digest, msg->history);
-    return (hist && (hist->fp.timestamp + o.popup_mute_interval*3600 > msg->fp.timestamp));
+    return (hist
+            && (hist->fp.timestamp + (time_t)(o.popup_mute_interval * 3600) > msg->fp.timestamp));
 }
 
 /* Append a line of echo msg */
@@ -231,21 +235,21 @@ echo_msg_append(connection_t *c, time_t UNUSED timestamp, const char *msg, BOOL 
         goto out;
     }
 
-    size_t len = c->echo_msg.txtlen + wcslen(wmsg) + 1;  /* including null terminator */
+    size_t len = c->echo_msg.txtlen + wcslen(wmsg) + 1; /* including null terminator */
     if (addnl)
     {
         eol = L"\r\n";
         len += 2;
     }
-    WCHAR *s = realloc(c->echo_msg.text, len*sizeof(WCHAR));
+    WCHAR *s = realloc(c->echo_msg.text, len * sizeof(WCHAR));
     if (!s)
     {
         WriteStatusLog(c, L"GUI> ", L"Error: out of memory while processing echo msg", false);
         goto out;
     }
-    swprintf(s + c->echo_msg.txtlen, len - c->echo_msg.txtlen,  L"%ls%ls", wmsg, eol);
+    swprintf(s + c->echo_msg.txtlen, len - c->echo_msg.txtlen, L"%ls%ls", wmsg, eol);
 
-    s[len-1] = L'\0';
+    s[len - 1] = L'\0';
     c->echo_msg.text = s;
     c->echo_msg.txtlen = len - 1; /* exclude null terminator */
 
@@ -266,7 +270,8 @@ echo_msg_display(connection_t *c, time_t timestamp, const char *title, int type)
     }
     else
     {
-        WriteStatusLog(c, L"GUI> ", L"Error: out of memory converting echo message title to widechar", false);
+        WriteStatusLog(
+            c, L"GUI> ", L"Error: out of memory converting echo message title to widechar", false);
         c->echo_msg.title = L"Message from server";
     }
     echo_msg_add_fp(&c->echo_msg, timestamp); /* add fingerprint: digest+timestamp */
@@ -281,7 +286,9 @@ echo_msg_display(connection_t *c, time_t timestamp, const char *title, int type)
         DWORD_PTR res;
         UINT timeout = 5000; /* msec */
         if (echo_msg_window
-            && SendMessageTimeout(echo_msg_window, WM_OVPN_ECHOMSG, 0, (LPARAM) c, SMTO_BLOCK, timeout, &res) == 0)
+            && SendMessageTimeout(
+                   echo_msg_window, WM_OVPN_ECHOMSG, 0, (LPARAM)c, SMTO_BLOCK, timeout, &res)
+                   == 0)
         {
             WriteStatusLog(c, L"GUI> Failed to display echo message: ", c->echo_msg.title, false);
         }
@@ -312,7 +319,7 @@ echo_msg_process(connection_t *c, time_t timestamp, const char *s)
     }
     else if (streq(msg, "msg")) /* empty msg is treated as a new line */
     {
-        echo_msg_append(c, timestamp, msg+3, true);
+        echo_msg_append(c, timestamp, msg + 3, true);
     }
     else if (strbegins(msg, "msg-n "))
     {
@@ -377,11 +384,11 @@ get_text_in_range(HWND h, CHARRANGE chrg)
     }
 
     size_t len = chrg.cpMax - chrg.cpMin;
-    wchar_t *txt = malloc((len + 1)*sizeof(wchar_t));
+    wchar_t *txt = malloc((len + 1) * sizeof(wchar_t));
 
     if (txt)
     {
-        TEXTRANGEW txtrg = {chrg, txt};
+        TEXTRANGEW txtrg = { chrg, txt };
         if (SendMessage(h, EM_GETTEXTRANGE, 0, (LPARAM)&txtrg) <= 0)
         {
             txt[0] = '\0';
@@ -428,7 +435,7 @@ static void
 AddMessageBoxText(HWND hwnd, const wchar_t *text, const wchar_t *title, const wchar_t *from)
 {
     HWND hmsg = GetDlgItem(hwnd, ID_TXT_MESSAGE);
-    DWORD align[2] = {PFA_LEFT, PFA_RIGHT}; /* default alignments for text and title */
+    DWORD align[2] = { PFA_LEFT, PFA_RIGHT }; /* default alignments for text and title */
 
     if (LangFlowDirection() == 1)
     {
@@ -439,57 +446,57 @@ AddMessageBoxText(HWND hwnd, const wchar_t *text, const wchar_t *title, const wc
     /* Start adding new message at the top */
     SendMessage(hmsg, EM_SETSEL, 0, 0);
 
-    CHARFORMATW cfm = {.cbSize = sizeof(CHARFORMATW) };
+    CHARFORMATW cfm = { .cbSize = sizeof(CHARFORMATW) };
 
     /* save current alignment */
-    PARAFORMAT pf = {.cbSize = sizeof(PARAFORMAT) };
-    SendMessage(hmsg, EM_GETPARAFORMAT, 0, (LPARAM) &pf);
+    PARAFORMAT pf = { .cbSize = sizeof(PARAFORMAT) };
+    SendMessage(hmsg, EM_GETPARAFORMAT, 0, (LPARAM)&pf);
     WORD pf_align_saved = pf.dwMask & PFM_ALIGNMENT ? pf.wAlignment : align[0];
     pf.dwMask |= PFM_ALIGNMENT;
 
     if (from && wcslen(from))
     {
         /* Change font to italics */
-        SendMessage(hmsg, EM_GETCHARFORMAT, SCF_DEFAULT, (LPARAM) &cfm);
+        SendMessage(hmsg, EM_GETCHARFORMAT, SCF_DEFAULT, (LPARAM)&cfm);
         cfm.dwMask |= CFM_ITALIC;
         cfm.dwEffects |= CFE_ITALIC;
 
-        SendMessage(hmsg, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM) &cfm);
+        SendMessage(hmsg, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&cfm);
         /* Align to right */
         pf.wAlignment = align[1];
-        SendMessage(hmsg, EM_SETPARAFORMAT, 0, (LPARAM) &pf);
-        SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM) from);
-        SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM) L"\n");
+        SendMessage(hmsg, EM_SETPARAFORMAT, 0, (LPARAM)&pf);
+        SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM)from);
+        SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM)L"\n");
     }
 
     pf.wAlignment = align[0];
-    SendMessage(hmsg, EM_SETPARAFORMAT, 0, (LPARAM) &pf);
+    SendMessage(hmsg, EM_SETPARAFORMAT, 0, (LPARAM)&pf);
 
     if (title && wcslen(title))
     {
         /* Increase font size and set font color for title of the message */
-        SendMessage(hmsg, EM_GETCHARFORMAT, SCF_DEFAULT, (LPARAM) &cfm);
-        cfm.dwMask |= CFM_SIZE|CFM_COLOR;
+        SendMessage(hmsg, EM_GETCHARFORMAT, SCF_DEFAULT, (LPARAM)&cfm);
+        cfm.dwMask |= CFM_SIZE | CFM_COLOR;
         cfm.yHeight = MulDiv(cfm.yHeight, 4, 3); /* scale up by 1.33: 12 pt if default is 9 pt */
         cfm.crTextColor = RGB(0, 0x33, 0x99);
         cfm.dwEffects = 0;
 
-        SendMessage(hmsg, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM) &cfm);
-        SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM) title);
-        SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM) L"\n");
+        SendMessage(hmsg, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&cfm);
+        SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM)title);
+        SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM)L"\n");
     }
 
     /* Revert to default font and set the text */
-    SendMessage(hmsg, EM_GETCHARFORMAT, SCF_DEFAULT, (LPARAM) &cfm);
-    SendMessage(hmsg, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM) &cfm);
+    SendMessage(hmsg, EM_GETCHARFORMAT, SCF_DEFAULT, (LPARAM)&cfm);
+    SendMessage(hmsg, EM_SETCHARFORMAT, SCF_SELECTION, (LPARAM)&cfm);
     if (text)
     {
-        SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM) text);
-        SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM) L"\n");
+        SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM)text);
+        SendMessage(hmsg, EM_REPLACESEL, FALSE, (LPARAM)L"\n");
     }
     /* revert alignment */
     pf.wAlignment = pf_align_saved;
-    SendMessage(hmsg, EM_SETPARAFORMAT, 0, (LPARAM) &pf);
+    SendMessage(hmsg, EM_SETPARAFORMAT, 0, (LPARAM)&pf);
 
     /* Remove lines from the window if it is getting full
      * We allow the window to grow by upto 50 lines beyond a
@@ -528,12 +535,14 @@ MessageDialogFunc(HWND hwnd, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
             hIcon = LoadLocalizedIcon(ID_ICO_APP);
             if (hIcon)
             {
-                SendMessage(hwnd, WM_SETICON, (WPARAM) (ICON_SMALL), (LPARAM) (hIcon));
-                SendMessage(hwnd, WM_SETICON, (WPARAM) (ICON_BIG), (LPARAM) (hIcon));
+                SendMessage(hwnd, WM_SETICON, (WPARAM)(ICON_SMALL), (LPARAM)(hIcon));
+                SendMessage(hwnd, WM_SETICON, (WPARAM)(ICON_BIG), (LPARAM)(hIcon));
             }
             hmsg = GetDlgItem(hwnd, ID_TXT_MESSAGE);
             SetWindowText(hwnd, L"OpenVPN Messages");
-            SendMessage(hmsg, EM_SETMARGINS, EC_LEFTMARGIN|EC_RIGHTMARGIN,
+            SendMessage(hmsg,
+                        EM_SETMARGINS,
+                        EC_LEFTMARGIN | EC_RIGHTMARGIN,
                         MAKELPARAM(side_margin, side_margin));
             if (LangFlowDirection() == 1)
             {
@@ -550,8 +559,8 @@ MessageDialogFunc(HWND hwnd, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
             GetWindowRect(hwnd, &rc);
             OffsetRect(&rc, -rc.left, -rc.top);
             int ox = GetSystemMetrics(SM_CXSCREEN); /* screen size along x */
-            ox -= rc.right + DPI_SCALE(rand()%50 + 25);
-            int oy = DPI_SCALE(rand()%50 + 25);
+            ox -= rc.right + DPI_SCALE(rand() % 50 + 25);
+            int oy = DPI_SCALE(rand() % 50 + 25);
             SetWindowPos(hwnd, HWND_TOP, ox > 0 ? ox : 0, oy, 0, 0, SWP_NOSIZE);
 
             return TRUE;
@@ -559,14 +568,14 @@ MessageDialogFunc(HWND hwnd, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
         case WM_SIZE:
             hmsg = GetDlgItem(hwnd, ID_TXT_MESSAGE);
             /* leave some space as top margin */
-            SetWindowPos(hmsg, NULL, 0, top_margin, LOWORD(lParam), HIWORD(lParam)-top_margin, 0);
+            SetWindowPos(hmsg, NULL, 0, top_margin, LOWORD(lParam), HIWORD(lParam) - top_margin, 0);
             InvalidateRect(hwnd, NULL, TRUE);
             break;
 
         /* set the whole client area background to white */
         case WM_CTLCOLORDLG:
         case WM_CTLCOLORSTATIC:
-            return (INT_PTR) GetStockObject(WHITE_BRUSH);
+            return (INT_PTR)GetStockObject(WHITE_BRUSH);
             break;
 
         case WM_COMMAND:
@@ -589,14 +598,15 @@ MessageDialogFunc(HWND hwnd, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
          */
         case WM_OVPN_ECHOMSG:
         {
-            connection_t *c = (connection_t *) lParam;
+            connection_t *c = (connection_t *)lParam;
             wchar_t from[256];
-            _sntprintf_0(from, L"From: %ls %ls", c->config_name, _wctime(&c->echo_msg.fp.timestamp));
+            _sntprintf_0(
+                from, L"From: %ls %ls", c->config_name, _wctime(&c->echo_msg.fp.timestamp));
 
             /* strip \n added by _wctime */
             if (wcslen(from) > 0)
             {
-                from[wcslen(from)-1] = L'\0';
+                from[wcslen(from) - 1] = L'\0';
             }
 
             AddMessageBoxText(hwnd, c->echo_msg.text, c->echo_msg.title, from);
@@ -606,7 +616,7 @@ MessageDialogFunc(HWND hwnd, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
         break;
 
         case WM_NOTIFY:
-            nmh = (NMHDR *) lParam;
+            nmh = (NMHDR *)lParam;
             /* We handle only EN_LINK messages */
             if (nmh->idFrom == ID_TXT_MESSAGE && nmh->code == EN_LINK)
             {

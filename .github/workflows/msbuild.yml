@@ -3,29 +3,26 @@ name: Build
 on: [push, pull_request]
 
 jobs:
-  checkuncrustify:
-    name: "Check code style with Uncrustify"
-    # Ubuntu 22.04 has uncrustify 0.72_f
-    runs-on: ubuntu-22.04
+  checkformat:
+    name: "Check code style with clang-format"
+    runs-on: ubuntu-24.04
     steps:
-      - name: Install dependencies
-        run: sudo apt update && sudo apt install -y uncrustify
+      - name: Install pre-commit
+        run: pip3 install pre-commit
       - name: Checkout OpenVPN-GUI
-        uses: actions/checkout@v3
-      - name: Show uncrustify version
-        run: uncrustify --version
-      - name: Run uncrustify
-        run: ./dev-tools/reformat-all.sh
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Run pre-commit
+        run: pre-commit run -a || true
       - name: Check for changes
-        run: git diff --output=uncrustify-changes.patch
+        run: git diff --output=cf-changes.patch
       - name: Show changes on standard output
         run: git diff
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
-          name: uncrustify-changes.patch
-          path: uncrustify-changes.patch
+          name: cf-changes.patch
+          path: cf-changes.patch
       - name: Set job status
-        run: test ! -s uncrustify-changes.patch
+        run: test ! -s cf-changes.patch
 
   msvc:
     strategy:
@@ -50,14 +47,14 @@ jobs:
     name: 'msvc - ${{matrix.arch}} ${{ matrix.ovpn3.name }}${{ matrix.conf.name }}'
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
     - uses: lukka/get-cmake@latest
 
     - name: Restore artifacts, or setup vcpkg (do not install any package)
       uses: lukka/run-vcpkg@v11
       with:
         vcpkgDirectory: '${{ runner.workspace }}/b/vcpkg'
-        vcpkgGitCommitId: "1ba9a2591f15af5900f2ce2b3e2bf31771e3ac48"
+        vcpkgGitCommitId: d5ec528843d29e3a52d745a64b469f810b2cedbf
 
     - name: Run CMake consuming CMakePreset.json and vcpkg.json by mean of vcpkg.
       uses: lukka/run-cmake@v10
@@ -65,7 +62,7 @@ jobs:
         configurePreset: '${{ matrix.arch }}${{ matrix.ovpn3.preset }}'
         buildPreset: '${{ matrix.arch }}-${{ matrix.conf.value }}${{ matrix.ovpn3.preset }}'
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
       with:
         name: openvpn-gui_${{ matrix.arch }}_${{ matrix.conf.value }}${{ matrix.ovpn3.upload_name }}
         path: |
@@ -84,7 +81,7 @@ jobs:
             chost: i686-w64-mingw32
 
     name: "gcc-mingw - ${{matrix.target}}"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     env:
       MAKEFLAGS: -j3
@@ -93,25 +90,13 @@ jobs:
       - name: Install dependencies
         run: sudo apt update && sudo apt install -y mingw-w64 libtool automake autoconf
       - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          path: openvpn-gui
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: autoconf
         run: autoreconf -fvi
-        working-directory: openvpn-gui
-
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: '~/mingw/'
-          key: mingw-${{ matrix.target }}
 
       - name: configure
-        run: PKG_CONFIG_PATH=${HOME}/mingw/opt/${LIB}/pkgconfig ./configure --host=${{ matrix.chost }}
-        working-directory: openvpn-gui
+        run: ./configure --host=${{ matrix.chost }}
 
       - name: make
         run: make
-        working-directory: openvpn-gui

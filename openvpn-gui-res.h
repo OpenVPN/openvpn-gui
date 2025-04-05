@@ -23,152 +23,157 @@
 #define OPENVPN_GUI_RES_H
 
 /* Icons */
-#define ID_ICO_APP                        90
-#define ID_ICO_CONNECTED                  91
-#define ID_ICO_CONNECTING                 92
-#define ID_ICO_DISCONNECTED               93
-#define ID_ICO_EYE                        94
-#define ID_ICO_EYESTROKE                  95
+#define ID_ICO_APP                      90
+#define ID_ICO_CONNECTED                91
+#define ID_ICO_CONNECTING               92
+#define ID_ICO_DISCONNECTED             93
+#define ID_ICO_EYE                      94
+#define ID_ICO_EYESTROKE                95
 
 /* About Dialog */
-#define ID_DLG_ABOUT                     100
-#define ID_ICON_ABOUT                    110
-#define ID_LTEXT_ABOUT2                  122
-#define ID_LTEXT_ABOUT3                  123
-#define ID_LTEXT_ABOUT4                  124
+#define ID_DLG_ABOUT                    100
+#define ID_ICON_ABOUT                   110
+#define ID_LTEXT_ABOUT2                 122
+#define ID_LTEXT_ABOUT3                 123
+#define ID_LTEXT_ABOUT4                 124
 
 /* Ask for Passphrase Dialog */
-#define ID_DLG_PASSPHRASE                150
-#define ID_EDT_PASSPHRASE                151
-#define ID_LTEXT_PASSWORD                152
-#define ID_PASSWORD_REVEAL               153
+#define ID_DLG_PASSPHRASE               150
+#define ID_EDT_PASSPHRASE               151
+#define ID_LTEXT_PASSWORD               152
+#define ID_PASSWORD_REVEAL              153
 
 /* Status Dialog */
-#define ID_DLG_STATUS                    160
-#define ID_TXT_STATUS                    161
-#define ID_EDT_LOG                       162
-#define ID_DISCONNECT                    163
-#define ID_RESTART                       164
-#define ID_HIDE                          165
-#define ID_TXT_VERSION                   166
-#define ID_DETACH                        167
-#define ID_TXT_BYTECOUNT                 168
-#define ID_TXT_IP                        169
+#define ID_DLG_STATUS                   160
+#define ID_TXT_STATUS                   161
+#define ID_EDT_LOG                      162
+#define ID_DISCONNECT                   163
+#define ID_RESTART                      164
+#define ID_HIDE                         165
+#define ID_TXT_VERSION                  166
+#define ID_DETACH                       167
+#define ID_TXT_BYTECOUNT                168
+#define ID_TXT_IP                       169
 
 /* Change Passphrase Dialog */
-#define ID_DLG_CHGPASS                   170
-#define ID_EDT_PASS_CUR                  174
-#define ID_EDT_PASS_NEW                  175
-#define ID_EDT_PASS_NEW2                 176
-#define ID_TXT_KEYFILE                   177
-#define ID_TXT_KEYFORMAT                 178
+#define ID_DLG_CHGPASS                  170
+#define ID_EDT_PASS_CUR                 174
+#define ID_EDT_PASS_NEW                 175
+#define ID_EDT_PASS_NEW2                176
+#define ID_TXT_KEYFILE                  177
+#define ID_TXT_KEYFORMAT                178
 
 /* Auth Username/Password Dialog */
-#define ID_DLG_AUTH                      180
-#define ID_EDT_AUTH_USER                 181
-#define ID_EDT_AUTH_PASS                 182
+#define ID_DLG_AUTH                     180
+#define ID_EDT_AUTH_USER                181
+#define ID_EDT_AUTH_PASS                182
 
 /* Auth Username/Password/Challenge Dialog */
-#define ID_DLG_AUTH_CHALLENGE            183
-#define ID_TXT_AUTH_CHALLENGE            184
-#define ID_EDT_AUTH_CHALLENGE            185
-#define ID_CHK_SAVE_PASS                 186
-#define ID_TXT_WARNING                   187
-#define ID_LTEXT_USERNAME                188
-#define ID_LTEXT_RESPONSE                189
+#define ID_DLG_AUTH_CHALLENGE           183
+#define ID_TXT_AUTH_CHALLENGE           184
+#define ID_EDT_AUTH_CHALLENGE           185
+#define ID_CHK_SAVE_PASS                186
+#define ID_TXT_WARNING                  187
+#define ID_LTEXT_USERNAME               188
+#define ID_LTEXT_RESPONSE               189
 
 /* Challenege Response Dialog */
-#define ID_DLG_CHALLENGE_RESPONSE        190
-#define ID_TXT_DESCRIPTION               191
-#define ID_EDT_RESPONSE                  192
+#define ID_DLG_CHALLENGE_RESPONSE       190
+#define ID_TXT_DESCRIPTION              191
+#define ID_EDT_RESPONSE                 192
 
 /* Proxy Settings Dialog */
-#define ID_DLG_PROXY                     200
-#define ID_GROUPBOX1                     201
-#define ID_GROUPBOX2                     202
-#define ID_GROUPBOX3                     203
-#define ID_GROUPBOX4                     204
-#define ID_LTEXT_PORT_OFFSET             205
-#define ID_GROUPBOX5                     206
-#define ID_RB_PROXY_OPENVPN              210
-#define ID_RB_PROXY_MSIE                 211
-#define ID_RB_PROXY_MANUAL               212
-#define ID_RB_PROXY_HTTP                 213
-#define ID_RB_PROXY_SOCKS                219
-#define ID_EDT_PROXY_ADDRESS             214
-#define ID_EDT_PROXY_PORT                215
-#define ID_TXT_PROXY_ADDRESS             216
-#define ID_TXT_PROXY_PORT                217
+#define ID_DLG_PROXY                    200
+#define ID_GROUPBOX1                    201
+#define ID_GROUPBOX2                    202
+#define ID_GROUPBOX3                    203
+#define ID_GROUPBOX4                    204
+#define ID_LTEXT_PORT_OFFSET            205
+#define ID_GROUPBOX5                    206
+#define ID_RB_PROXY_OPENVPN             210
+#define ID_RB_PROXY_MSIE                211
+#define ID_RB_PROXY_MANUAL              212
+#define ID_RB_PROXY_HTTP                213
+#define ID_RB_PROXY_SOCKS               219
+#define ID_EDT_PROXY_ADDRESS            214
+#define ID_EDT_PROXY_PORT               215
+#define ID_TXT_PROXY_ADDRESS            216
+#define ID_TXT_PROXY_PORT               217
 
 /* General Settings Dialog */
-#define ID_DLG_GENERAL                   230
-#define ID_CMB_LANGUAGE                  231
-#define ID_TXT_LANGUAGE                  232
-#define ID_CHK_STARTUP                   233
+#define ID_DLG_GENERAL                  230
+#define ID_CMB_LANGUAGE                 231
+#define ID_TXT_LANGUAGE                 232
+#define ID_CHK_STARTUP                  233
 /* historic: #define ID_CHK_SERVICE_ONLY              234 */
-#define ID_TXT_LOG_APPEND                235
-#define ID_CHK_LOG_APPEND                236
-#define ID_CHK_SILENT                    237
-#define ID_TXT_BALLOON                   238
-#define ID_RB_BALLOON0                   239
-#define ID_RB_BALLOON1                   240
-#define ID_RB_BALLOON2                   241
-#define ID_CHK_SHOW_SCRIPT_WIN           242
-#define ID_CHK_ALWAYS_USE_ISERVICE       243
-#define ID_RB_BALLOON3                   244
-#define ID_RB_BALLOON4                   245
-#define ID_RB_BALLOON5                   246
-#define ID_TXT_PERSISTENT                247
-#define ID_CHK_PLAP_REG                  248
-#define ID_CHK_AUTO_RESTART              249
+#define ID_TXT_LOG_APPEND               235
+#define ID_CHK_LOG_APPEND               236
+#define ID_CHK_SILENT                   237
+#define ID_TXT_BALLOON                  238
+#define ID_RB_BALLOON0                  239
+#define ID_RB_BALLOON1                  240
+#define ID_RB_BALLOON2                  241
+#define ID_CHK_SHOW_SCRIPT_WIN          242
+#define ID_CHK_ALWAYS_USE_ISERVICE      243
+#define ID_RB_BALLOON3                  244
+#define ID_RB_BALLOON4                  245
+#define ID_RB_BALLOON5                  246
+#define ID_TXT_PERSISTENT               247
+#define ID_CHK_PLAP_REG                 248
+#define ID_CHK_AUTO_RESTART             249
 
 /* Proxy Auth Dialog */
-#define ID_DLG_PROXY_AUTH                250
-#define ID_EDT_PROXY_USER                251
-#define ID_EDT_PROXY_PASS                252
+#define ID_DLG_PROXY_AUTH               250
+#define ID_EDT_PROXY_USER               251
+#define ID_EDT_PROXY_PASS               252
 
 /* Advanced dialog */
-#define ID_DLG_ADVANCED                  270
-#define ID_TXT_FOLDER                    271
-#define ID_TXT_EXTENSION                 272
-#define ID_EDT_CONFIG_DIR                274
-#define ID_EDT_CONFIG_EXT                275
-#define ID_EDT_LOG_DIR                   276
-#define ID_BTN_CONFIG_DIR                277
-#define ID_BTN_LOG_DIR                   278
-#define ID_TXT_PRECONNECT_TIMEOUT        279
-#define ID_TXT_CONNECT_TIMEOUT           280
-#define ID_TXT_DISCONNECT_TIMEOUT        281
-#define ID_EDT_PRECONNECT_TIMEOUT        282
-#define ID_EDT_CONNECT_TIMEOUT           283
-#define ID_EDT_DISCONNECT_TIMEOUT        284
-#define ID_EDT_MGMT_PORT                 285
-#define ID_TXT_FOLDER1                   286
-#define ID_EDT_POPUP_MUTE                287
-#define ID_RB_ENGINE_SELECTION           288
-#define ID_RB_ENGINE_OVPN2               289
-#define ID_RB_ENGINE_OVPN3               290
+#define ID_DLG_ADVANCED                 270
+#define ID_TXT_FOLDER                   271
+#define ID_TXT_EXTENSION                272
+#define ID_EDT_CONFIG_DIR               274
+#define ID_EDT_CONFIG_EXT               275
+#define ID_EDT_LOG_DIR                  276
+#define ID_BTN_CONFIG_DIR               277
+#define ID_BTN_LOG_DIR                  278
+#define ID_TXT_PRECONNECT_TIMEOUT       279
+#define ID_TXT_CONNECT_TIMEOUT          280
+#define ID_TXT_DISCONNECT_TIMEOUT       281
+#define ID_EDT_PRECONNECT_TIMEOUT       282
+#define ID_EDT_CONNECT_TIMEOUT          283
+#define ID_EDT_DISCONNECT_TIMEOUT       284
+#define ID_EDT_MGMT_PORT                285
+#define ID_TXT_FOLDER1                  286
+#define ID_EDT_POPUP_MUTE               287
+#define ID_RB_ENGINE_SELECTION          288
+#define ID_RB_ENGINE_OVPN2              289
+#define ID_RB_ENGINE_OVPN3              290
 
 /* Connections dialog */
-#define ID_DLG_CONNECTIONS               290
+#define ID_DLG_CONNECTIONS              290
 
 /* Message Dialog */
-#define ID_DLG_MESSAGE                   300
-#define ID_TXT_MESSAGE                   301
+#define ID_DLG_MESSAGE                  300
+#define ID_TXT_MESSAGE                  301
 
-#define ID_DLG_URL_PROFILE_IMPORT        400
-#define ID_EDT_URL                       401
-#define ID_CHK_AUTOLOGIN                 402
-#define IDS_ERR_URL_IMPORT_PROFILE       403
+#define ID_DLG_URL_PROFILE_IMPORT       400
+#define ID_EDT_URL                      401
+#define ID_CHK_AUTOLOGIN                402
+#define IDS_ERR_URL_IMPORT_PROFILE      403
 
 /* pkcs11-id query dialog */
-#define ID_DLG_PKCS11_QUERY              450
-#define ID_LVW_PKCS11                    451
-#define ID_TXT_PKCS11                    452
+#define ID_DLG_PKCS11_QUERY             450
+#define ID_LVW_PKCS11                   451
+#define ID_TXT_PKCS11                   452
+
+/* QR code dialog */
+#define ID_DLG_QR                       500
+#define ID_STATIC_QR                    501
+#define ID_TXT_QR                       502
 
 /* General settings contd.. */
 
-#define ID_CHK_CONCAT_OTP                470
+#define ID_CHK_CONCAT_OTP               470
 
 /*
  * String Table Resources
@@ -411,6 +416,6 @@
 #define IDS_NFO_OVPN_STATE_UNKNOWN      2220
 
 /* Timer IDs */
-#define IDT_STOP_TIMER                  2500  /* Timer used to trigger force termination */
+#define IDT_STOP_TIMER                  2500 /* Timer used to trigger force termination */
 
-#endif /* ifndef OPENVPN_GUI_RES_H */
+#endif                                       /* ifndef OPENVPN_GUI_RES_H */

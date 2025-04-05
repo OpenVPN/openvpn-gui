@@ -52,7 +52,7 @@ BOOL
 Base64Encode(const char *input, int input_len, char **output)
 {
     DWORD output_len;
-    DWORD flags = CRYPT_STRING_BASE64|CRYPT_STRING_NOCRLF;
+    DWORD flags = CRYPT_STRING_BASE64 | CRYPT_STRING_NOCRLF;
 
     if (input_len == 0)
     {
@@ -60,8 +60,8 @@ Base64Encode(const char *input, int input_len, char **output)
         *output = calloc(1, sizeof(char));
         return TRUE;
     }
-    if (!CryptBinaryToStringA((const BYTE *) input, (DWORD) input_len,
-                              flags, NULL, &output_len) || output_len == 0)
+    if (!CryptBinaryToStringA((const BYTE *)input, (DWORD)input_len, flags, NULL, &output_len)
+        || output_len == 0)
     {
 #ifdef DEBUG
         PrintDebug(L"Error in CryptBinaryToStringA: input = '%.*hs'", input_len, input);
@@ -75,8 +75,7 @@ Base64Encode(const char *input, int input_len, char **output)
         return FALSE;
     }
 
-    if (!CryptBinaryToStringA((const BYTE *) input, (DWORD) input_len,
-                              flags, *output, &output_len))
+    if (!CryptBinaryToStringA((const BYTE *)input, (DWORD)input_len, flags, *output, &output_len))
     {
 #ifdef DEBUG
         PrintDebug(L"Error in CryptBinaryToStringA: input = '%.*hs'", input_len, input);
@@ -103,8 +102,8 @@ Base64Decode(const char *input, char **output)
     DWORD len;
 
     PrintDebug(L"decoding %hs", input);
-    if (!CryptStringToBinaryA(input, 0, CRYPT_STRING_BASE64_ANY,
-                              NULL, &len, NULL, NULL) || len == 0)
+    if (!CryptStringToBinaryA(input, 0, CRYPT_STRING_BASE64_ANY, NULL, &len, NULL, NULL)
+        || len == 0)
     {
         *output = NULL;
         return -1;
@@ -116,8 +115,7 @@ Base64Decode(const char *input, char **output)
         return -1;
     }
 
-    if (!CryptStringToBinaryA(input, 0,
-                              CRYPT_STRING_BASE64, (BYTE *) *output, &len, NULL, NULL))
+    if (!CryptStringToBinaryA(input, 0, CRYPT_STRING_BASE64, (BYTE *)*output, &len, NULL, NULL))
     {
         free(*output);
         *output = NULL;
@@ -260,7 +258,6 @@ out:
 
     return retval;
 }
-
 
 
 /*
@@ -407,8 +404,7 @@ EnsureDirExists(LPTSTR dir)
         }
 
         /* No error if directory already exists */
-        return (CreateDirectory(dir, NULL) == TRUE
-                ||  GetLastError() == ERROR_ALREADY_EXISTS);
+        return (CreateDirectory(dir, NULL) == TRUE || GetLastError() == ERROR_ALREADY_EXISTS);
     }
 
     return (attr & FILE_ATTRIBUTE_DIRECTORY ? TRUE : FALSE);
@@ -480,11 +476,19 @@ BOOL
 IsUserAdmin(VOID)
 {
     BOOL b;
-    SID_IDENTIFIER_AUTHORITY NtAuthority = {SECURITY_NT_AUTHORITY};
+    SID_IDENTIFIER_AUTHORITY NtAuthority = { SECURITY_NT_AUTHORITY };
     PSID AdministratorsGroup;
 
-    b = AllocateAndInitializeSid(&NtAuthority, 2, SECURITY_BUILTIN_DOMAIN_RID,
-                                 DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0, 0, 0,
+    b = AllocateAndInitializeSid(&NtAuthority,
+                                 2,
+                                 SECURITY_BUILTIN_DOMAIN_RID,
+                                 DOMAIN_ALIAS_RID_ADMINS,
+                                 0,
+                                 0,
+                                 0,
+                                 0,
+                                 0,
+                                 0,
                                  &AdministratorsGroup);
     if (b)
     {
@@ -495,7 +499,7 @@ IsUserAdmin(VOID)
         FreeSid(AdministratorsGroup);
     }
 
-    return(b);
+    return (b);
 }
 
 HANDLE
@@ -530,8 +534,7 @@ CheckFileAccess(const TCHAR *path, int access)
     HANDLE h;
     bool ret = FALSE;
 
-    h = CreateFile(path, access, FILE_SHARE_READ, NULL, OPEN_EXISTING,
-                   FILE_ATTRIBUTE_NORMAL, NULL);
+    h = CreateFile(path, access, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
     if (h != INVALID_HANDLE_VALUE)
     {
         ret = TRUE;
@@ -539,6 +542,21 @@ CheckFileAccess(const TCHAR *path, int access)
     }
 
     return ret;
+}
+
+char *
+WCharToUTF8(const WCHAR *wstr)
+{
+    int utf8_len = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, NULL, 0, NULL, NULL);
+    if (utf8_len == 0)
+        return NULL;
+
+    char *utf8_str = (char *)malloc(utf8_len);
+    if (!utf8_str)
+        return NULL;
+
+    WideCharToMultiByte(CP_UTF8, 0, wstr, -1, utf8_str, utf8_len, NULL, NULL);
+    return utf8_str;
 }
 
 /**
@@ -562,7 +580,7 @@ WidenEx(UINT codepage, const char *str)
     }
     if (wstr)
     {
-        nch =  MultiByteToWideChar(codepage, 0, str, -1, wstr, nch);
+        nch = MultiByteToWideChar(codepage, 0, str, -1, wstr, nch);
     }
 
     if (nch == 0 && wstr)
@@ -732,9 +750,10 @@ open_url(const wchar_t *url)
 
     HINSTANCE ret = ShellExecuteW(NULL, L"open", url, NULL, NULL, SW_SHOWNORMAL);
 
-    if (ret <= (HINSTANCE) 32)
+    if (ret <= (HINSTANCE)32)
     {
-        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"launch_url: ShellExecute <%ls> returned error: %d", url, ret);
+        MsgToEventLog(
+            EVENTLOG_ERROR_TYPE, L"launch_url: ShellExecute <%ls> returned error: %d", url, ret);
         return false;
     }
     return true;
@@ -763,7 +782,7 @@ ImportConfigFile(const TCHAR *source, bool prompt_user)
         return;
     }
 
-    WCHAR destination[MAX_PATH+1];
+    WCHAR destination[MAX_PATH + 1];
     bool no_overwrite = TRUE;
 
     /* profile name must be unique: check whether a config by same name exists */
@@ -771,7 +790,9 @@ ImportConfigFile(const TCHAR *source, bool prompt_user)
     if (c && wcsnicmp(c->config_dir, o.config_dir, wcslen(o.config_dir)) == 0)
     {
         /* Ask the user whether to replace the profile or not. */
-        if (ShowLocalizedMsgEx(MB_YESNO|MB_TOPMOST, o.hWnd, _T(PACKAGE_NAME), IDS_NFO_IMPORT_OVERWRITE, fileName) == IDNO)
+        if (ShowLocalizedMsgEx(
+                MB_YESNO | MB_TOPMOST, o.hWnd, _T(PACKAGE_NAME), IDS_NFO_IMPORT_OVERWRITE, fileName)
+            == IDNO)
         {
             return;
         }
@@ -781,12 +802,16 @@ ImportConfigFile(const TCHAR *source, bool prompt_user)
     else
     {
         if (prompt_user
-            && ShowLocalizedMsgEx(MB_YESNO|MB_TOPMOST, o.hWnd, TEXT(PACKAGE_NAME),
-                                  IDS_NFO_IMPORT_SOURCE, fileName) == IDNO)
+            && ShowLocalizedMsgEx(MB_YESNO | MB_TOPMOST,
+                                  o.hWnd,
+                                  TEXT(PACKAGE_NAME),
+                                  IDS_NFO_IMPORT_SOURCE,
+                                  fileName)
+                   == IDNO)
         {
             return;
         }
-        WCHAR dest_dir[MAX_PATH+1];
+        WCHAR dest_dir[MAX_PATH + 1];
         swprintf(dest_dir, MAX_PATH, L"%ls\\%ls", o.config_dir, fileName);
         dest_dir[MAX_PATH] = L'\0';
         if (!EnsureDirExists(dest_dir))
@@ -800,8 +825,11 @@ ImportConfigFile(const TCHAR *source, bool prompt_user)
 
     if (!CopyFile(source, destination, no_overwrite))
     {
-        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Copy file <%ls> to <%ls> failed (error = %lu)",
-                      source, destination, GetLastError());
+        MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                      L"Copy file <%ls> to <%ls> failed (error = %lu)",
+                      source,
+                      destination,
+                      GetLastError());
         ShowLocalizedMsg(IDS_ERR_IMPORT_FAILED, destination);
         return;
     }
@@ -835,7 +863,7 @@ find_free_tcp_port(SOCKADDR_IN *addr)
         MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs: socket open failed", __func__);
         goto out;
     }
-    while (bind(sk, (SOCKADDR *) addr, len))
+    while (bind(sk, (SOCKADDR *)addr, len))
     {
         if (addr->sin_port == 0)
         {
@@ -844,7 +872,7 @@ find_free_tcp_port(SOCKADDR_IN *addr)
         }
         addr->sin_port = 0;
     }
-    if (getsockname(sk, (SOCKADDR *) &addr_bound, &len))
+    if (getsockname(sk, (SOCKADDR *)&addr_bound, &len))
     {
         MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs: getsockname failed", __func__);
         goto out;
@@ -924,8 +952,8 @@ ParseManagementAddress(connection_t *c)
             wcsncpy_s(pw_path, MAX_PATH, pw_file, _TRUNCATE);
         }
 
-        FILE *fp = _wfopen(pw_path, L"r");
-        if (!fp
+        FILE *fp;
+        if (_wfopen_s(&fp, pw_path, L"r")
             || !fgets(c->manage.password, sizeof(c->manage.password), fp))
         {
             /* This may be normal as not all users may be given access to this secret */
@@ -942,7 +970,9 @@ ParseManagementAddress(connection_t *c)
     config_list_free(head);
 
     PrintDebug(L"ParseManagementAddress: host = %hs port = %d passwd_file = %s",
-               inet_ntoa(addr->sin_addr), ntohs(addr->sin_port), pw_path);
+               inet_ntoa(addr->sin_addr),
+               ntohs(addr->sin_port),
+               pw_path);
 
     return ret;
 }
@@ -966,7 +996,7 @@ MsgToEventLog(WORD type, wchar_t *format, ...)
 
     va_list args;
     va_start(args, format);
-    int nchar = vswprintf(buf, size-1, format, args);
+    int nchar = vswprintf(buf, size - 1, format, args);
     va_end(args);
 
     if (nchar == -1)
@@ -1022,7 +1052,7 @@ GetPLAPRegistrationStatus(void)
     {
         res = -1;
     }
-    else if (RegOpenKeyExW(HKEY_CLASSES_ROOT, L"CLSID\\"PLAP_CLASSID, 0, KEY_READ, &regkey)
+    else if (RegOpenKeyExW(HKEY_CLASSES_ROOT, L"CLSID\\" PLAP_CLASSID, 0, KEY_READ, &regkey)
              == ERROR_SUCCESS)
     {
         res = 1;
@@ -1041,24 +1071,26 @@ SetPLAPRegistration(BOOL value)
 
     /* Run only if the state has changed */
     int plap_status = GetPLAPRegistrationStatus();
-    if (plap_status > 0 && (BOOL) plap_status == value)
+    if (plap_status > 0 && (BOOL)plap_status == value)
     {
         return 0;
     }
 
     if (value)
     {
-        _sntprintf_0( params, L"import \"%ls%ls\"", o.install_path, L"bin\\openvpn-plap-install.reg");
+        _sntprintf_0(
+            params, L"import \"%ls%ls\"", o.install_path, L"bin\\openvpn-plap-install.reg");
     }
     else
     {
-        _sntprintf_0( params, L"import \"%ls%ls\"", o.install_path, L"bin\\openvpn-plap-uninstall.reg");
+        _sntprintf_0(
+            params, L"import \"%ls%ls\"", o.install_path, L"bin\\openvpn-plap-uninstall.reg");
     }
 
     res = RunAsAdmin(cmd, params);
     if (res != 0)
     {
-        ShowLocalizedMsg(value ? IDS_ERR_PLAP_REG  : IDS_ERR_PLAP_UNREG, res);
+        ShowLocalizedMsg(value ? IDS_ERR_PLAP_REG : IDS_ERR_PLAP_UNREG, res);
     }
     return res;
 }
@@ -1106,14 +1138,15 @@ OVPNMsgWait(DWORD timeout, HWND hdlg)
 
     while (end > now)
     {
-        if (MsgWaitForMultipleObjectsEx(0, NULL, end - now, QS_ALLINPUT, MWMO_INPUTAVAILABLE) == WAIT_OBJECT_0)
+        if (MsgWaitForMultipleObjectsEx(0, NULL, end - now, QS_ALLINPUT, MWMO_INPUTAVAILABLE)
+            == WAIT_OBJECT_0)
         {
             MSG msg;
             while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
             {
                 if (msg.message == WM_QUIT)
                 {
-                    PostQuitMessage((int) msg.wParam);
+                    PostQuitMessage((int)msg.wParam);
                     return false;
                 }
                 else if (!CallMsgFilter(&msg, MSGF_OVPN_WAIT)
@@ -1144,7 +1177,7 @@ GetRandomPassword(char *buf, size_t len)
         return FALSE;
     }
 
-    if (!CryptGenRandom(cp, len, (PBYTE) buf))
+    if (!CryptGenRandom(cp, len, (PBYTE)buf))
     {
         goto out;
     }
@@ -1182,7 +1215,7 @@ ResetPasswordReveal(HWND edit, HWND btn, WPARAM wParam)
 
     /* set the password field to be masked as a sane default */
     SendMessage(edit, EM_SETPASSWORDCHAR, (WPARAM)'*', 0);
-    SendMessage(btn, STM_SETIMAGE, (WPARAM) IMAGE_ICON, (LPARAM)LoadLocalizedSmallIcon(ID_ICO_EYE));
+    SendMessage(btn, STM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)LoadLocalizedSmallIcon(ID_ICO_EYE));
 
     /* if password is not masked on init, disable reveal "button" */
     if (wParam == 0 && SendMessage(edit, EM_GETPASSWORDCHAR, 0, 0) == 0)
@@ -1218,13 +1251,18 @@ ChangePasswordVisibility(HWND edit, HWND btn, WPARAM wParam)
         if (SendMessage(edit, EM_GETPASSWORDCHAR, 0, 0) == 0) /* currently visible */
         {
             SendMessage(edit, EM_SETPASSWORDCHAR, (WPARAM)'*', 0);
-            SendMessage(btn, STM_SETIMAGE, (WPARAM) IMAGE_ICON, (LPARAM)LoadLocalizedSmallIcon(ID_ICO_EYE));
+            SendMessage(
+                btn, STM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)LoadLocalizedSmallIcon(ID_ICO_EYE));
         }
         else
         {
             SendMessage(edit, EM_SETPASSWORDCHAR, 0, 0);
-            SendMessage(btn, STM_SETIMAGE, (WPARAM) IMAGE_ICON, (LPARAM)LoadLocalizedSmallIcon(ID_ICO_EYESTROKE));
+            SendMessage(btn,
+                        STM_SETIMAGE,
+                        (WPARAM)IMAGE_ICON,
+                        (LPARAM)LoadLocalizedSmallIcon(ID_ICO_EYESTROKE));
         }
-        InvalidateRect(edit, NULL, TRUE); /* without this the control doesn't seem to get redrawn promptly */
+        InvalidateRect(
+            edit, NULL, TRUE); /* without this the control doesn't seem to get redrawn promptly */
     }
 }

@@ -56,8 +56,8 @@ ProxySettingsDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPARAM lPa
             hIcon = LoadLocalizedIcon(ID_ICO_APP);
             if (hIcon)
             {
-                SendMessage(hwndDlg, WM_SETICON, (WPARAM) (ICON_SMALL), (LPARAM) (hIcon));
-                SendMessage(hwndDlg, WM_SETICON, (WPARAM) (ICON_BIG), (LPARAM) (hIcon));
+                SendMessage(hwndDlg, WM_SETICON, (WPARAM)(ICON_SMALL), (LPARAM)(hIcon));
+                SendMessage(hwndDlg, WM_SETICON, (WPARAM)(ICON_BIG), (LPARAM)(hIcon));
             }
 
             /* Limit Port editbox to 5 chars. */
@@ -124,13 +124,14 @@ ProxySettingsDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, UNUSED LPARAM lPa
             break;
 
         case WM_NOTIFY:
-            psn = (LPPSHNOTIFY) lParam;
-            if (psn->hdr.code == (UINT) PSN_KILLACTIVE)
+            psn = (LPPSHNOTIFY)lParam;
+            if (psn->hdr.code == (UINT)PSN_KILLACTIVE)
             {
-                SetWindowLongPtr(hwndDlg, DWLP_MSGRESULT, (CheckProxySettings(hwndDlg) ? FALSE : TRUE));
+                SetWindowLongPtr(
+                    hwndDlg, DWLP_MSGRESULT, (CheckProxySettings(hwndDlg) ? FALSE : TRUE));
                 return TRUE;
             }
-            else if (psn->hdr.code == (UINT) PSN_APPLY)
+            else if (psn->hdr.code == (UINT)PSN_APPLY)
             {
                 SaveProxySettings(hwndDlg);
                 SetWindowLongPtr(hwndDlg, DWLP_MSGRESULT, PSNRET_NOERROR);
@@ -175,7 +176,8 @@ CheckProxySettings(HWND hwndDlg)
         if ((port < 1) || (port > 65535))
         {
             /* proxy port range error */
-            ShowLocalizedMsg((http ? IDS_ERR_HTTP_PROXY_PORT_RANGE : IDS_ERR_SOCKS_PROXY_PORT_RANGE));
+            ShowLocalizedMsg(
+                (http ? IDS_ERR_HTTP_PROXY_PORT_RANGE : IDS_ERR_SOCKS_PROXY_PORT_RANGE));
             return 0;
         }
     }
@@ -249,26 +251,33 @@ SaveProxySettings(HWND hwndDlg)
         o.proxy_type = http;
         proxy_type_string[0] = _T('0');
 
-        GetDlgItemText(hwndDlg, ID_EDT_PROXY_ADDRESS, o.proxy_http_address,
-                       _countof(o.proxy_http_address));
-        GetDlgItemText(hwndDlg, ID_EDT_PROXY_PORT, o.proxy_http_port,
-                       _countof(o.proxy_http_port));
+        GetDlgItemText(
+            hwndDlg, ID_EDT_PROXY_ADDRESS, o.proxy_http_address, _countof(o.proxy_http_address));
+        GetDlgItemText(hwndDlg, ID_EDT_PROXY_PORT, o.proxy_http_port, _countof(o.proxy_http_port));
     }
     else
     {
         o.proxy_type = socks;
         proxy_type_string[0] = _T('1');
 
-        GetDlgItemText(hwndDlg, ID_EDT_PROXY_ADDRESS, o.proxy_socks_address,
-                       _countof(o.proxy_socks_address));
-        GetDlgItemText(hwndDlg, ID_EDT_PROXY_PORT, o.proxy_socks_port,
-                       _countof(o.proxy_socks_port));
+        GetDlgItemText(
+            hwndDlg, ID_EDT_PROXY_ADDRESS, o.proxy_socks_address, _countof(o.proxy_socks_address));
+        GetDlgItemText(
+            hwndDlg, ID_EDT_PROXY_PORT, o.proxy_socks_port, _countof(o.proxy_socks_port));
     }
 
     /* Open Registry for writing */
     _sntprintf_0(proxy_subkey, _T("%ls\\proxy"), GUI_REGKEY_HKCU);
-    if (RegCreateKeyEx(HKEY_CURRENT_USER, proxy_subkey, 0, _T(""), REG_OPTION_NON_VOLATILE,
-                       KEY_WRITE, NULL, &regkey, &dwDispos) != ERROR_SUCCESS)
+    if (RegCreateKeyEx(HKEY_CURRENT_USER,
+                       proxy_subkey,
+                       0,
+                       _T(""),
+                       REG_OPTION_NON_VOLATILE,
+                       KEY_WRITE,
+                       NULL,
+                       &regkey,
+                       &dwDispos)
+        != ERROR_SUCCESS)
     {
         /* error creating Registry-Key */
         ShowLocalizedMsg(IDS_ERR_CREATE_REG_HKCU_KEY, proxy_subkey);
@@ -305,11 +314,15 @@ GetProxyRegistrySettings()
     }
 
     /* get registry settings */
-    GetRegistryValue(regkey, _T("proxy_http_address"), o.proxy_http_address, _countof(o.proxy_http_address));
+    GetRegistryValue(
+        regkey, _T("proxy_http_address"), o.proxy_http_address, _countof(o.proxy_http_address));
     GetRegistryValue(regkey, _T("proxy_http_port"), o.proxy_http_port, _countof(o.proxy_http_port));
-    GetRegistryValue(regkey, _T("proxy_socks_address"), o.proxy_socks_address, _countof(o.proxy_socks_address));
-    GetRegistryValue(regkey, _T("proxy_socks_port"), o.proxy_socks_port, _countof(o.proxy_socks_port));
-    GetRegistryValue(regkey, _T("proxy_source"), proxy_source_string, _countof(proxy_source_string));
+    GetRegistryValue(
+        regkey, _T("proxy_socks_address"), o.proxy_socks_address, _countof(o.proxy_socks_address));
+    GetRegistryValue(
+        regkey, _T("proxy_socks_port"), o.proxy_socks_port, _countof(o.proxy_socks_port));
+    GetRegistryValue(
+        regkey, _T("proxy_source"), proxy_source_string, _countof(proxy_source_string));
     GetRegistryValue(regkey, _T("proxy_type"), proxy_type_string, _countof(proxy_type_string));
 
     if (proxy_source_string[0] == _T('0'))
@@ -342,8 +355,8 @@ ProxyAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
     {
         case WM_INITDIALOG:
             /* Set connection for this dialog and show it */
-            c = (connection_t *) lParam;
-            TRY_SETPROP(hwndDlg, cfgProp, (HANDLE) c);
+            c = (connection_t *)lParam;
+            TRY_SETPROP(hwndDlg, cfgProp, (HANDLE)c);
             if (c->state == resuming)
             {
                 ForceForegroundWindow(hwndDlg);
@@ -360,13 +373,13 @@ ProxyAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 case ID_EDT_PROXY_USER:
                     if (HIWORD(wParam) == EN_UPDATE)
                     {
-                        int len = Edit_GetTextLength((HWND) lParam);
+                        int len = Edit_GetTextLength((HWND)lParam);
                         EnableWindow(GetDlgItem(hwndDlg, IDOK), (len ? TRUE : FALSE));
                     }
                     break;
 
                 case IDOK:
-                    c = (connection_t *) GetProp(hwndDlg, cfgProp);
+                    c = (connection_t *)GetProp(hwndDlg, cfgProp);
                     proxy_type = (c->proxy_type == http ? "HTTP" : "SOCKS");
 
                     snprintf(fmt, sizeof(fmt), "username \"%s Proxy\" \"%%s\"", proxy_type);
@@ -400,11 +413,15 @@ void
 QueryProxyAuth(connection_t *c, proxy_t type)
 {
     c->proxy_type = type;
-    LocalizedDialogBoxParamEx(ID_DLG_PROXY_AUTH, c->hwndStatus, ProxyAuthDialogFunc, (LPARAM) c);
+    LocalizedDialogBoxParamEx(ID_DLG_PROXY_AUTH, c->hwndStatus, ProxyAuthDialogFunc, (LPARAM)c);
 }
 
 
-typedef enum { HTTPS_URL, SOCKS_URL } url_scheme;
+typedef enum
+{
+    HTTPS_URL,
+    SOCKS_URL
+} url_scheme;
 static LPCWSTR
 UrlSchemeStr(const url_scheme scheme)
 {
@@ -441,26 +458,24 @@ QueryWindowsProxySettings(const url_scheme scheme, LPCSTR host)
 
     if (auto_config_url)
     {
-        HINTERNET session = WinHttpOpen(NULL, WINHTTP_ACCESS_TYPE_NO_PROXY,
-                                        WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
+        HINTERNET session = WinHttpOpen(
+            NULL, WINHTTP_ACCESS_TYPE_NO_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
         if (session)
         {
-            int size = _snwprintf(NULL, 0, L"%ls://%hs", UrlSchemeStr(scheme), host) + 1;
+            int size = _scwprintf(L"%ls://%hs", UrlSchemeStr(scheme), host) + 1;
             LPWSTR url = malloc(size * sizeof(WCHAR));
             if (url)
             {
-                _snwprintf(url, size, L"%ls://%hs", UrlSchemeStr(scheme), host);
+                _snwprintf_s(url, size, _TRUNCATE, L"%ls://%hs", UrlSchemeStr(scheme), host);
 
                 LPWSTR old_proxy = proxy;
                 WINHTTP_PROXY_INFO proxy_info;
-                WINHTTP_AUTOPROXY_OPTIONS options = {
-                    .fAutoLogonIfChallenged = TRUE,
-                    .dwFlags = WINHTTP_AUTOPROXY_CONFIG_URL,
-                    .lpszAutoConfigUrl = auto_config_url,
-                    .dwAutoDetectFlags = 0,
-                    .lpvReserved = NULL,
-                    .dwReserved = 0
-                };
+                WINHTTP_AUTOPROXY_OPTIONS options = { .fAutoLogonIfChallenged = TRUE,
+                                                      .dwFlags = WINHTTP_AUTOPROXY_CONFIG_URL,
+                                                      .lpszAutoConfigUrl = auto_config_url,
+                                                      .dwAutoDetectFlags = 0,
+                                                      .lpvReserved = NULL,
+                                                      .dwReserved = 0 };
 
                 if (WinHttpGetProxyForUrl(session, url, &options, &proxy_info))
                 {
@@ -480,8 +495,7 @@ QueryWindowsProxySettings(const url_scheme scheme, LPCSTR host)
 
 
 static VOID
-ParseProxyString(LPWSTR proxy_str, url_scheme scheme,
-                 LPCSTR *type, LPCWSTR *host, LPCWSTR *port)
+ParseProxyString(LPWSTR proxy_str, url_scheme scheme, LPCSTR *type, LPCWSTR *host, LPCWSTR *port)
 {
     if (proxy_str == NULL)
     {

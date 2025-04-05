@@ -49,9 +49,9 @@ copy_token(wchar_t **dest, wchar_t **src, wchar_t *delim)
     wchar_t *s = *dest;
 
     /* copy src to dest until delim character with escaped chars converted */
-    for ( ; *p != L'\0' && wcschr(delim, *p) == NULL; p++, s++)
+    for (; *p != L'\0' && wcschr(delim, *p) == NULL; p++, s++)
     {
-        if (*p == L'\\' && legal_escape(*(p+1)))
+        if (*p == L'\\' && legal_escape(*(p + 1)))
         {
             *s = *(++p);
         }
@@ -81,7 +81,7 @@ tokenize(config_entry_t *ce)
     unsigned int i = 0;
     int status = 0;
 
-    for ( ; *p != L'\0'; p++, s++)
+    for (; *p != L'\0'; p++, s++)
     {
         if (*p == L' ' || *p == L'\t')
         {
@@ -140,7 +140,7 @@ config_readline(FILE *fd, int first)
     char tmp[MAX_LINE_LENGTH];
     int offset = 0;
 
-    if (fgets(tmp, _countof(tmp)-1, fd) == NULL)
+    if (fgets(tmp, _countof(tmp) - 1, fd) == NULL)
     {
         return NULL;
     }
@@ -157,7 +157,7 @@ config_readline(FILE *fd, int first)
         return NULL;
     }
 
-    mbstowcs(ce->line, &tmp[offset], _countof(ce->line)-1);
+    mbstowcs(ce->line, &tmp[offset], _countof(ce->line) - 1);
 
     len = wcscspn(ce->line, L"\n\r");
     ce->line[len] = L'\0';
@@ -183,11 +183,7 @@ config_parse(wchar_t *fname)
     FILE *fd = NULL;
     config_entry_t *head, *tail;
 
-    if (fname)
-    {
-        fd = _wfopen(fname, L"r");
-    }
-    if (!fd)
+    if (!fname || _wfopen_s(&fd, fname, L"r"))
     {
         MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Error opening <%ls> in config_parse", fname);
         return NULL;

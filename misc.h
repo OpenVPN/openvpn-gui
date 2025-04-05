@@ -58,6 +58,12 @@ WCHAR *Widen(const char *utf8);
 
 WCHAR *WidenEx(UINT codepage, const char *utf8);
 
+/**
+ * Convert a wide string to a UTF-8 string. The caller must
+ * free the returned pointer. Return NULL on error.
+ */
+char *WCharToUTF8(const WCHAR *wstr);
+
 BOOL validate_input(const WCHAR *input, const WCHAR *exclude);
 
 /* Concatenate two wide strings with a separator */
@@ -74,7 +80,8 @@ void CloseHandleEx(LPHANDLE h);
 char *url_decode(const char *src);
 
 /* digest functions */
-typedef struct md_ctx {
+typedef struct md_ctx
+{
     HCRYPTPROV prov;
     HCRYPTHASH hash;
 } md_ctx;
@@ -94,8 +101,7 @@ void ImportConfigFile(const TCHAR *path, bool prompt_user);
  * Helper function to convert UCS-2 text from a dialog item to UTF-8.
  * Caller must free *str if *len != 0.
  */
-BOOL
-GetDlgItemTextUtf8(HWND hDlg, int id, LPSTR *str, int *len);
+BOOL GetDlgItemTextUtf8(HWND hDlg, int id, LPSTR *str, int *len);
 
 /* Return escaped copy of a string */
 char *escape_string(const char *str);

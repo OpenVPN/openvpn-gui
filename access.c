@@ -70,8 +70,7 @@ GetBuiltinAdminGroupName(WCHAR *name, DWORD nlen)
         return FALSE;
     }
 
-    b = CreateWellKnownSid(WinBuiltinAdministratorsSid, NULL, admin_sid,
-                           &sid_size);
+    b = CreateWellKnownSid(WinBuiltinAdministratorsSid, NULL, admin_sid, &sid_size);
     if (b)
     {
         b = LookupAccountSidW(NULL, admin_sid, name, &nlen, domain, &dlen, &su);
@@ -127,22 +126,17 @@ AddUserToGroup(const WCHAR *group)
     size = _countof(syspath);
     if (GetSystemDirectory(syspath, size))
     {
-        syspath[size-1] = L'\0';
-        size = _countof(cmd);
-        _snwprintf(cmd, size, L"%ls\\%ls", syspath, L"cmd.exe");
-        cmd[size-1] = L'\0';
-        size = _countof(netcmd);
-        _snwprintf(netcmd, size, L"%ls\\%ls", syspath, L"net.exe");
-        netcmd[size-1] = L'\0';
+        syspath[size - 1] = L'\0';
+        _snwprintf_s(cmd, _countof(cmd), _TRUNCATE, L"%ls\\%ls", syspath, L"cmd.exe");
+        _snwprintf_s(netcmd, _countof(netcmd), _TRUNCATE, L"%ls\\%ls", syspath, L"net.exe");
     }
-    size = (wcslen(fmt) + wcslen(username) + 2*wcslen(group) + 2*wcslen(netcmd)+ 1);
-    if ((params = malloc(size*sizeof(WCHAR))) == NULL)
+    size = (wcslen(fmt) + wcslen(username) + 2 * wcslen(group) + 2 * wcslen(netcmd) + 1);
+    if ((params = malloc(size * sizeof(WCHAR))) == NULL)
     {
         return retval;
     }
 
-    _snwprintf(params, size, fmt, netcmd, group, netcmd, group, username);
-    params[size-1] = L'\0';
+    _snwprintf_s(params, size, _TRUNCATE, fmt, netcmd, group, netcmd, group, username);
 
     status = RunAsAdmin(cmd, params);
     if (status == 0)
@@ -151,15 +145,16 @@ AddUserToGroup(const WCHAR *group)
     }
 
 #ifdef DEBUG
-    if (status == (DWORD) -1)
+    if (status == (DWORD)-1)
     {
         PrintDebug(L"RunAsAdmin: failed to execute the command [%ls %ls] : error = 0x%x",
-                   cmd, params, GetLastError());
+                   cmd,
+                   params,
+                   GetLastError());
     }
     else if (status)
     {
-        PrintDebug(L"RunAsAdmin: command [%ls %ls] returned exit_code = %lu",
-                   cmd, params, status);
+        PrintDebug(L"RunAsAdmin: command [%ls %ls] returned exit_code = %lu", cmd, params, status);
     }
 #endif
 
@@ -206,7 +201,7 @@ AuthorizeConfig(const connection_t *c)
     WCHAR sysadmin_group[MAX_NAME];
     BYTE sid_buf[SECURITY_MAX_SID_SIZE];
     DWORD sid_size = SECURITY_MAX_SID_SIZE;
-    PSID sid = (PSID) sid_buf;
+    PSID sid = (PSID)sid_buf;
     PTOKEN_GROUPS groups = NULL;
 
     if (GetBuiltinAdminGroupName(sysadmin_group, _countof(sysadmin_group)))
@@ -229,13 +224,12 @@ AuthorizeConfig(const connection_t *c)
     {
         if (!o.silent_connection)
         {
-            MessageBoxW(NULL, L"Failed to determine process owner SID", L""PACKAGE_NAME, MB_OK);
+            MessageBoxW(NULL, L"Failed to determine process owner SID", L"" PACKAGE_NAME, MB_OK);
         }
         return FALSE;
     }
     groups = GetProcessTokenGroups();
-    if (IsUserInGroup(sid, groups, admin_group)
-        || IsUserInGroup(sid, groups, o.ovpn_admin_group))
+    if (IsUserInGroup(sid, groups, admin_group) || IsUserInGroup(sid, groups, o.ovpn_admin_group))
     {
         free(groups);
         return TRUE;
@@ -243,8 +237,7 @@ AuthorizeConfig(const connection_t *c)
     free(groups);
 
     /* do not attempt to add user to sysadmin_group or a no-name group */
-    if (wcscmp(admin_group, o.ovpn_admin_group) == 0
-        || wcslen(o.ovpn_admin_group) == 0
+    if (wcscmp(admin_group, o.ovpn_admin_group) == 0 || wcslen(o.ovpn_admin_group) == 0
         || !o.netcmd_semaphore)
     {
         ShowLocalizedMsg(IDS_ERR_CONFIG_NOT_AUTHORIZED, c->config_name, o.ovpn_admin_group);
@@ -258,8 +251,11 @@ AuthorizeConfig(const connection_t *c)
         return FALSE;
     }
     /* semaphore locked -- relase before return */
-    res = ShowLocalizedMsgEx(MB_YESNO|MB_ICONWARNING, NULL, TEXT(PACKAGE_NAME),
-                             IDS_ERR_CONFIG_TRY_AUTHORIZE, c->config_name,
+    res = ShowLocalizedMsgEx(MB_YESNO | MB_ICONWARNING,
+                             NULL,
+                             TEXT(PACKAGE_NAME),
+                             IDS_ERR_CONFIG_TRY_AUTHORIZE,
+                             c->config_name,
                              o.ovpn_admin_group);
     if (res == IDYES)
     {
@@ -364,11 +360,11 @@ IsUserInGroup(PSID sid, const PTOKEN_GROUPS token_groups, const WCHAR *group_nam
     int nloop = 0; /* a counter used to not get stuck in the do .. while() */
 
     /* first check in the token groups */
-    if (token_groups && LookupSID(group_name, (PSID) grp_sid, _countof(grp_sid)))
+    if (token_groups && LookupSID(group_name, (PSID)grp_sid, _countof(grp_sid)))
     {
         for (DWORD i = 0; i < token_groups->GroupCount; ++i)
         {
-            if (EqualSid((PSID) grp_sid, token_groups->Groups[i].Sid))
+            if (EqualSid((PSID)grp_sid, token_groups->Groups[i].Sid))
             {
                 PrintDebug(L"Found group in token at position %lu", i);
                 return TRUE;
@@ -385,8 +381,8 @@ IsUserInGroup(PSID sid, const PTOKEN_GROUPS token_groups, const WCHAR *group_nam
     {
         DWORD nread, nmax;
         LOCALGROUP_MEMBERS_INFO_0 *members = NULL;
-        err = NetLocalGroupGetMembers(NULL, group_name, 0, (LPBYTE *) &members,
-                                      MAX_PREFERRED_LENGTH, &nread, &nmax, &resume);
+        err = NetLocalGroupGetMembers(
+            NULL, group_name, 0, (LPBYTE *)&members, MAX_PREFERRED_LENGTH, &nread, &nmax, &resume);
         if (err != NERR_Success && err != ERROR_MORE_DATA)
         {
             break;

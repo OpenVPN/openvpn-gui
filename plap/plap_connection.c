@@ -41,18 +41,18 @@ struct OpenVPNConnection
 
     /* "private" members */
     ICredentialProviderCredentialEvents *events; /* Passed in by Logon UI for callbacks */
-    connection_t *c;                 /* GUI connection data */
+    connection_t *c;                             /* GUI connection data */
     const wchar_t *display_name;
-    IQueryContinueWithStatus *qc;    /* Passed in by LogonUI for checking status of connect */
-    BOOL connect_cancelled;          /* we set this true if user cancels the connect operation */
+    IQueryContinueWithStatus *qc; /* Passed in by LogonUI for checking status of connect */
+    BOOL connect_cancelled;       /* we set this true if user cancels the connect operation */
     LONG ref_count;
 };
 
-#define ICCPC IConnectableCredentialProviderCredential /* shorthand for a long name */
+#define ICCPC             IConnectableCredentialProviderCredential /* shorthand for a long name */
 
-#define ISCONNECTED(c) (ConnectionState(c) == state_connected)
+#define ISCONNECTED(c)    (ConnectionState(c) == state_connected)
 #define ISDISCONNECTED(c) (ConnectionState(c) == state_disconnected)
-#define ISONHOLD(c) (ConnectionState(c) == state_onhold)
+#define ISONHOLD(c)       (ConnectionState(c) == state_onhold)
 
 extern DWORD status_menu_id;
 
@@ -74,7 +74,9 @@ static HRESULT WINAPI SetSelected(ICCPC *this, BOOL *auto_logon);
 
 static HRESULT WINAPI SetDeselected(ICCPC *this);
 
-static HRESULT WINAPI GetFieldState(ICCPC *this, DWORD field, CREDENTIAL_PROVIDER_FIELD_STATE *fs,
+static HRESULT WINAPI GetFieldState(ICCPC *this,
+                                    DWORD field,
+                                    CREDENTIAL_PROVIDER_FIELD_STATE *fs,
                                     CREDENTIAL_PROVIDER_FIELD_INTERACTIVE_STATE *fis);
 
 static HRESULT WINAPI GetStringValue(ICCPC *this, DWORD index, WCHAR **ws);
@@ -87,9 +89,15 @@ static HRESULT WINAPI SetStringValue(ICCPC *this, DWORD field, const WCHAR *ws);
 
 static HRESULT WINAPI GetCheckboxValue(ICCPC *this, DWORD field, BOOL *checked, wchar_t **label);
 
-static HRESULT WINAPI GetComboBoxValueCount(ICCPC *this, DWORD field, DWORD *items, DWORD *selected_item);
+static HRESULT WINAPI GetComboBoxValueCount(ICCPC *this,
+                                            DWORD field,
+                                            DWORD *items,
+                                            DWORD *selected_item);
 
-static HRESULT WINAPI GetComboBoxValueAt(ICCPC *this, DWORD field, DWORD item, wchar_t **item_value);
+static HRESULT WINAPI GetComboBoxValueAt(ICCPC *this,
+                                         DWORD field,
+                                         DWORD item,
+                                         wchar_t **item_value);
 
 static HRESULT WINAPI SetCheckboxValue(ICCPC *this, DWORD field, BOOL checked);
 
@@ -99,11 +107,15 @@ static HRESULT WINAPI CommandLinkClicked(ICCPC *this, DWORD field);
 
 static HRESULT WINAPI GetSerialization(ICCPC *this,
                                        CREDENTIAL_PROVIDER_GET_SERIALIZATION_RESPONSE *response,
-                                       CREDENTIAL_PROVIDER_CREDENTIAL_SERIALIZATION *cs, wchar_t **text,
+                                       CREDENTIAL_PROVIDER_CREDENTIAL_SERIALIZATION *cs,
+                                       wchar_t **text,
                                        CREDENTIAL_PROVIDER_STATUS_ICON *icon);
 
-static HRESULT WINAPI ReportResult(ICCPC *this, NTSTATUS status, NTSTATUS substatus,
-                                   wchar_t **status_text, CREDENTIAL_PROVIDER_STATUS_ICON *icon);
+static HRESULT WINAPI ReportResult(ICCPC *this,
+                                   NTSTATUS status,
+                                   NTSTATUS substatus,
+                                   wchar_t **status_text,
+                                   CREDENTIAL_PROVIDER_STATUS_ICON *icon);
 
 /* IConnectableCredentialProviderCredential */
 static HRESULT WINAPI Connect(ICCPC *this, IQueryContinueWithStatus *qc);
@@ -146,7 +158,7 @@ OpenVPNConnection_new()
     OpenVPNConnection *oc = calloc(sizeof(*oc), 1);
     if (oc)
     {
-        oc->lpVtbl =  &iccpc_vtbl;
+        oc->lpVtbl = &iccpc_vtbl;
         oc->ref_count = 1;
 
         dll_addref();
@@ -167,7 +179,7 @@ OpenVPNConnection_free(OpenVPNConnection *oc)
 static ULONG WINAPI
 AddRef(ICCPC *this)
 {
-    OpenVPNConnection *oc = (OpenVPNConnection *) this;
+    OpenVPNConnection *oc = (OpenVPNConnection *)this;
 
     dmsg(L"Connection: ref_count after increment = %lu", oc->ref_count + 1);
     return InterlockedIncrement(&oc->ref_count);
@@ -176,7 +188,7 @@ AddRef(ICCPC *this)
 static ULONG WINAPI
 Release(ICCPC *this)
 {
-    OpenVPNConnection *oc = (OpenVPNConnection *) this;
+    OpenVPNConnection *oc = (OpenVPNConnection *)this;
 
     int count = InterlockedDecrement(&oc->ref_count);
     dmsg(L"Connection: ref_count after decrement = %lu", count);
@@ -198,8 +210,7 @@ QueryInterface(ICCPC *this, REFIID riid, void **ppv)
 
     if (ppv != NULL)
     {
-        if (IsEqualIID(riid, &IID_IUnknown)
-            || IsEqualIID(riid, &IID_ICredentialProviderCredential)
+        if (IsEqualIID(riid, &IID_IUnknown) || IsEqualIID(riid, &IID_ICredentialProviderCredential)
             || IsEqualIID(riid, &IID_IConnectableCredentialProviderCredential))
         {
             *ppv = this;
@@ -223,15 +234,14 @@ QueryInterface(ICCPC *this, REFIID riid, void **ppv)
  * LogonUI calls Advise first and the passed in events may be used for
  * making callbacks to notify changes asynchronously
  */
-static HRESULT
-WINAPI
+static HRESULT WINAPI
 Advise(ICCPC *this, ICredentialProviderCredentialEvents *e)
 {
     HWND hwnd;
 
     dmsg(L"Entry");
 
-    OpenVPNConnection *oc = (OpenVPNConnection *) this;
+    OpenVPNConnection *oc = (OpenVPNConnection *)this;
 
     if (oc->events)
     {
@@ -240,8 +250,7 @@ Advise(ICCPC *this, ICredentialProviderCredentialEvents *e)
     oc->events = e;
     ADDREF(e);
 
-    if (e
-        && e->lpVtbl->OnCreatingWindow(e, &hwnd) == S_OK)
+    if (e && e->lpVtbl->OnCreatingWindow(e, &hwnd) == S_OK)
     {
         dmsg(L"Setting hwnd");
         SetParentWindow(hwnd);
@@ -255,7 +264,7 @@ UnAdvise(ICCPC *this)
 {
     dmsg(L"Entry");
 
-    OpenVPNConnection *oc = (OpenVPNConnection *) this;
+    OpenVPNConnection *oc = (OpenVPNConnection *)this;
 
     if (oc->events)
     {
@@ -273,10 +282,10 @@ static HRESULT WINAPI
 SetSelected(ICCPC *this, BOOL *auto_logon)
 {
 #ifdef DEBUG
-    OpenVPNConnection *oc = (OpenVPNConnection *) this;
+    OpenVPNConnection *oc = (OpenVPNConnection *)this;
     dmsg(L"profile: %ls", oc->display_name);
 #else
-    (void) this;
+    (void)this;
 #endif
 
     /* setting true here will autoconnect the first entry and Windows will
@@ -292,10 +301,10 @@ static HRESULT WINAPI
 SetDeselected(ICCPC *this)
 {
 #ifdef DEBUG
-    OpenVPNConnection *oc = (OpenVPNConnection *) this;
+    OpenVPNConnection *oc = (OpenVPNConnection *)this;
     dmsg(L"profile: %ls", oc->display_name);
 #else
-    (void) this;
+    (void)this;
 #endif
 
     return S_OK;
@@ -305,7 +314,8 @@ SetDeselected(ICCPC *this)
  * Return display states for a particular field of a tile
  */
 static HRESULT WINAPI
-GetFieldState(UNUSED ICCPC *this, DWORD field,
+GetFieldState(UNUSED ICCPC *this,
+              DWORD field,
               CREDENTIAL_PROVIDER_FIELD_STATE *fs,
               CREDENTIAL_PROVIDER_FIELD_INTERACTIVE_STATE *fis)
 {
@@ -321,7 +331,7 @@ GetFieldState(UNUSED ICCPC *this, DWORD field,
         }
         if (fis)
         {
-            *fis = (field_desc[field].cpft == CPFT_SUBMIT_BUTTON) ?  CPFIS_FOCUSED : CPFIS_NONE;
+            *fis = (field_desc[field].cpft == CPFT_SUBMIT_BUTTON) ? CPFIS_FOCUSED : CPFIS_NONE;
         }
         hr = S_OK;
     }
@@ -342,7 +352,7 @@ GetStringValue(ICCPC *this, DWORD index, WCHAR **ws)
 
     dmsg(L"index = %lu", index);
 
-    OpenVPNConnection *oc = (OpenVPNConnection *) this;
+    OpenVPNConnection *oc = (OpenVPNConnection *)this;
 
     const wchar_t *val = L"";
 
@@ -408,7 +418,7 @@ GetBitmapValue(UNUSED ICCPC *this, DWORD field, HBITMAP *bmp)
  * Return the index of the field the button should be placed adjacent to.
  */
 static HRESULT WINAPI
-GetSubmitButtonValue(UNUSED ICCPC *this, DWORD field, DWORD *adjacent )
+GetSubmitButtonValue(UNUSED ICCPC *this, DWORD field, DWORD *adjacent)
 {
     HRESULT hr;
 
@@ -432,7 +442,7 @@ GetSubmitButtonValue(UNUSED ICCPC *this, DWORD field, DWORD *adjacent )
  * This gets called as user types into a field.
  */
 static HRESULT WINAPI
-SetStringValue(UNUSED ICCPC *this, UNUSED DWORD field, UNUSED const WCHAR *ws )
+SetStringValue(UNUSED ICCPC *this, UNUSED DWORD field, UNUSED const WCHAR *ws)
 {
     HRESULT hr;
 
@@ -445,15 +455,19 @@ SetStringValue(UNUSED ICCPC *this, UNUSED DWORD field, UNUSED const WCHAR *ws )
 }
 
 static HRESULT WINAPI
-GetCheckboxValue(UNUSED ICCPC *this, UNUSED DWORD field,
-                 UNUSED BOOL *checked, UNUSED wchar_t **label)
+GetCheckboxValue(UNUSED ICCPC *this,
+                 UNUSED DWORD field,
+                 UNUSED BOOL *checked,
+                 UNUSED wchar_t **label)
 {
     dmsg(L"Entry");
     return E_NOTIMPL;
 }
 
 static HRESULT WINAPI
-GetComboBoxValueCount(UNUSED ICCPC *this, UNUSED DWORD field, UNUSED DWORD *items,
+GetComboBoxValueCount(UNUSED ICCPC *this,
+                      UNUSED DWORD field,
+                      UNUSED DWORD *items,
                       UNUSED DWORD *selected_item)
 {
     dmsg(L"Entry");
@@ -461,7 +475,9 @@ GetComboBoxValueCount(UNUSED ICCPC *this, UNUSED DWORD field, UNUSED DWORD *item
 }
 
 static HRESULT WINAPI
-GetComboBoxValueAt(UNUSED ICCPC *this, UNUSED DWORD field, UNUSED DWORD item,
+GetComboBoxValueAt(UNUSED ICCPC *this,
+                   UNUSED DWORD field,
+                   UNUSED DWORD item,
                    UNUSED wchar_t **item_value)
 {
     dmsg(L"Entry");
@@ -497,13 +513,15 @@ CommandLinkClicked(UNUSED ICCPC *this, UNUSED DWORD field)
  * we got correct credentials for the Connect process or not.
  */
 static HRESULT WINAPI
-GetSerialization(ICCPC *this, CREDENTIAL_PROVIDER_GET_SERIALIZATION_RESPONSE *response,
-                 UNUSED CREDENTIAL_PROVIDER_CREDENTIAL_SERIALIZATION *cs, wchar_t **text,
+GetSerialization(ICCPC *this,
+                 CREDENTIAL_PROVIDER_GET_SERIALIZATION_RESPONSE *response,
+                 UNUSED CREDENTIAL_PROVIDER_CREDENTIAL_SERIALIZATION *cs,
+                 wchar_t **text,
                  CREDENTIAL_PROVIDER_STATUS_ICON *icon)
 {
     HRESULT hr = S_OK;
 
-    OpenVPNConnection *oc = (OpenVPNConnection *) this;
+    OpenVPNConnection *oc = (OpenVPNConnection *)this;
     dmsg(L"Entry: profile <%ls>", oc->display_name);
 
     if (oc->connect_cancelled || !ISCONNECTED(oc->c))
@@ -544,8 +562,11 @@ GetSerialization(ICCPC *this, CREDENTIAL_PROVIDER_GET_SERIALIZATION_RESPONSE *re
 }
 
 static HRESULT WINAPI
-ReportResult(UNUSED ICCPC *this, UNUSED NTSTATUS status, UNUSED NTSTATUS substatus,
-             UNUSED wchar_t **status_text, UNUSED CREDENTIAL_PROVIDER_STATUS_ICON *icon)
+ReportResult(UNUSED ICCPC *this,
+             UNUSED NTSTATUS status,
+             UNUSED NTSTATUS substatus,
+             UNUSED wchar_t **status_text,
+             UNUSED CREDENTIAL_PROVIDER_STATUS_ICON *icon)
 {
     dmsg(L"Entry");
     return E_NOTIMPL;
@@ -557,8 +578,8 @@ NotifyEvents(OpenVPNConnection *oc, const wchar_t *status)
 {
     if (oc->events)
     {
-        oc->events->lpVtbl->SetFieldString(oc->events, (ICredentialProviderCredential *) oc,
-                                           STATUS_FIELD_INDEX, status);
+        oc->events->lpVtbl->SetFieldString(
+            oc->events, (ICredentialProviderCredential *)oc, STATUS_FIELD_INDEX, status);
     }
     if (oc->qc)
     {
@@ -571,7 +592,7 @@ ProgressCallback(HWND hwnd, UINT msg, WPARAM wParam, UNUSED LPARAM lParam, LONG_
 {
     assert(ref_data);
 
-    OpenVPNConnection *oc = (OpenVPNConnection *) ref_data;
+    OpenVPNConnection *oc = (OpenVPNConnection *)ref_data;
     connection_t *c = oc->c;
     IQueryContinueWithStatus *qc = oc->qc;
 
@@ -617,7 +638,7 @@ ProgressCallback(HWND hwnd, UINT msg, WPARAM wParam, UNUSED LPARAM lParam, LONG_
     {
         GetConnectionStatusText(c, status, _countof(status));
         NotifyEvents(oc, status);
-        SendMessageW(hwnd, TDM_UPDATE_ELEMENT_TEXT, TDE_CONTENT, (LPARAM) status);
+        SendMessageW(hwnd, TDM_UPDATE_ELEMENT_TEXT, TDE_CONTENT, (LPARAM)status);
         dmsg(L"Connection status <%ls>", status);
     }
 
@@ -627,7 +648,7 @@ ProgressCallback(HWND hwnd, UINT msg, WPARAM wParam, UNUSED LPARAM lParam, LONG_
 static HRESULT WINAPI
 Connect(ICCPC *this, IQueryContinueWithStatus *qc)
 {
-    OpenVPNConnection *oc = (OpenVPNConnection *) this;
+    OpenVPNConnection *oc = (OpenVPNConnection *)this;
     wchar_t status[256] = L"";
 
     dmsg(L"profile: <%ls>", oc->display_name);
@@ -650,7 +671,7 @@ again:
     if (!ISCONNECTED(oc->c) && !ISDISCONNECTED(oc->c))
     {
         dmsg(L"Runninng progress dialog");
-        int res = RunProgressDialog(oc->c, ProgressCallback, (LONG_PTR) oc);
+        int res = RunProgressDialog(oc->c, ProgressCallback, (LONG_PTR)oc);
         dmsg(L"Out of progress dialog with res = %d", res);
 
         if (res == IDRETRY && !ISCONNECTED(oc->c))
@@ -661,7 +682,7 @@ again:
             DisconnectHelper(oc->c);
             goto again;
         }
-        else if (res == IDCANCEL  && !ISCONNECTED(oc->c) && !ISDISCONNECTED(oc->c))
+        else if (res == IDCANCEL && !ISCONNECTED(oc->c) && !ISDISCONNECTED(oc->c))
         {
             LoadLocalizedStringBuf(status, _countof(status), IDS_NFO_STATE_CANCELLING);
             NotifyEvents(oc, status);
@@ -686,7 +707,7 @@ again:
 static HRESULT WINAPI
 Disconnect(ICCPC *this)
 {
-    OpenVPNConnection *oc = (OpenVPNConnection *) this;
+    OpenVPNConnection *oc = (OpenVPNConnection *)this;
     dmsg(L"profile <%ls>", oc->display_name);
 
     NotifyEvents(oc, LoadLocalizedString(IDS_NFO_STATE_DISCONNECTING));
@@ -710,7 +731,8 @@ OVPNConnection_Initialize(OpenVPNConnection *this, connection_t *conn, const wch
     return hr;
 }
 
-/* Copy field descriptor -- caller will free using CoTaskMemFree, alloc using compatible allocator */
+/* Copy field descriptor -- caller will free using CoTaskMemFree, alloc using compatible allocator
+ */
 HRESULT
 CopyFieldDescriptor(CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR *fd_out,
                     const CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR *fd_in)

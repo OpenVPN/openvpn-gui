@@ -1,7 +1,7 @@
 /*
- *  OpenVPN-PLAP-Provider
+ *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
  *
- *  Copyright (C) 2017-2022 Selva Nair <selva.nair@gmail.com>
+ *  Copyright (C) 2025 Lev Stipakov <lstipakov@gmail.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,29 +19,6 @@
  *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef PLAP_DLL_H
-#define PLAP_DLL_H
+void CloseQRDialog();
 
-#include <windows.h>
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
-    extern HINSTANCE hinst_global;
-    HRESULT OpenVPNProvider_CreateInstance(REFIID riid, void **ppv);
-
-    void dll_addref();
-
-    void dll_release();
-
-    STDAPI DllCanUnloadNow();
-
-    STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, void **ppv);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* PLAP_DLL_H */
+void OpenQRDialog(const wchar_t *url, const wchar_t *config_name);

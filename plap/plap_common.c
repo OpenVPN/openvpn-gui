@@ -38,7 +38,7 @@ init_debug()
 {
     if (!fp)
     {
-        fp = _wfopen(L"C:\\Windows\\Temp\\openvpn-plap-debug.txt", L"a+,ccs=UTF-8");
+        _wfopen_s(&fp, L"C:\\Windows\\Temp\\openvpn-plap-debug.txt", L"a+,ccs=UTF-8");
     }
     InitializeCriticalSection(&log_write);
 }
@@ -70,13 +70,16 @@ x_dmsg(const char *file, const char *func, const wchar_t *fmt, ...)
     wchar_t date[30];
     time_t log_time = time(NULL);
     struct tm *time_struct = localtime(&log_time);
-    _snwprintf(date, _countof(date), L"%d-%.2d-%.2d %.2d:%.2d:%.2d",
-               time_struct->tm_year + 1900,
-               time_struct->tm_mon + 1,
-               time_struct->tm_mday,
-               time_struct->tm_hour,
-               time_struct->tm_min,
-               time_struct->tm_sec);
+    _snwprintf_s(date,
+                 _countof(date),
+                 _TRUNCATE,
+                 L"%d-%.2d-%.2d %.2d:%.2d:%.2d",
+                 time_struct->tm_year + 1900,
+                 time_struct->tm_mon + 1,
+                 time_struct->tm_mday,
+                 time_struct->tm_hour,
+                 time_struct->tm_min,
+                 time_struct->tm_sec);
 
     EnterCriticalSection(&log_write);
 
@@ -97,7 +100,7 @@ void
 debug_print_guid(const GUID *riid, const wchar_t *context)
 {
     RPC_CSTR str = NULL;
-    if (UuidToStringA((GUID *) riid, &str) == RPC_S_OK)
+    if (UuidToStringA((GUID *)riid, &str) == RPC_S_OK)
     {
         x_dmsg(NULL, NULL, L"%ls %hs", context, str);
         RpcStringFreeA(&str);

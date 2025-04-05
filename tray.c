@@ -58,8 +58,9 @@ TOOLINFO ti;  /* global tool info structure for tool tip of tray icon*/
 
 extern options_t o;
 
-#define USE_NESTED_CONFIG_MENU ((o.config_menu_view == CONFIG_VIEW_AUTO && o.num_configs > 25)   \
-                                || (o.config_menu_view == CONFIG_VIEW_NESTED))
+#define USE_NESTED_CONFIG_MENU                                      \
+    ((o.config_menu_view == CONFIG_VIEW_AUTO && o.num_configs > 25) \
+     || (o.config_menu_view == CONFIG_VIEW_NESTED))
 
 
 static void
@@ -82,7 +83,6 @@ DeleteMenuBitmaps(void)
 static void
 CreateMenuBitmaps(void)
 {
-
     DeleteMenuBitmaps();
 
     int cx = GetSystemMetrics(SM_CXMENUCHECK);
@@ -115,8 +115,8 @@ CreateMenuBitmaps(void)
     }
 
     /* Load the image and mask bitmaps into the DCs saving the default one's */
-    HBITMAP def1 = (HBITMAP) SelectObject(imgDC, iconinfo.hbmColor);
-    HBITMAP def2 = (HBITMAP) SelectObject(maskDC, iconinfo.hbmMask);
+    HBITMAP def1 = (HBITMAP)SelectObject(imgDC, iconinfo.hbmColor);
+    HBITMAP def2 = (HBITMAP)SelectObject(maskDC, iconinfo.hbmMask);
 
     /* White mask pixels mark the background region */
     COLORREF ref = RGB(255, 255, 255);
@@ -134,7 +134,7 @@ CreateMenuBitmaps(void)
     }
 
     /* Save the result and restore the default bitmaps back in the DC */
-    hbmpConnecting = (HBITMAP) SelectObject(imgDC, def1);
+    hbmpConnecting = (HBITMAP)SelectObject(imgDC, def1);
     SelectObject(maskDC, def2);
 
     /* We don't need the mask bitmap -- free it */
@@ -156,7 +156,7 @@ AllocateConnectionMenu()
     {
         return;
     }
-    HMENU *tmp  = (HMENU *) realloc(hMenuConn, sizeof(HMENU)*(o.num_configs + 50));
+    HMENU *tmp = (HMENU *)realloc(hMenuConn, sizeof(HMENU) * (o.num_configs + 50));
     if (tmp)
     {
         hmenu_size = o.num_configs + 50;
@@ -165,7 +165,9 @@ AllocateConnectionMenu()
     else
     {
         o.num_configs = hmenu_size;
-        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"Allocation of hMenuConn failed. Ignoring configs beyond index = %d", o.num_configs);
+        MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                      L"Allocation of hMenuConn failed. Ignoring configs beyond index = %d",
+                      o.num_configs);
     }
     return;
 }
@@ -180,21 +182,22 @@ CreatePopupMenus()
      */
     if (o.num_groups <= 0)
     {
-        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs:%d Logic error - no config groups", __func__, __LINE__);
+        MsgToEventLog(
+            EVENTLOG_ERROR_TYPE, L"%hs:%d Logic error - no config groups", __func__, __LINE__);
         return;
     }
 
     AllocateConnectionMenu();
 
     CreateMenuBitmaps();
-    MENUINFO minfo = {.cbSize = sizeof(MENUINFO)};
+    MENUINFO minfo = { .cbSize = sizeof(MENUINFO) };
 
     for (connection_t *c = o.chead; c; c = c->next)
     {
         hMenuConn[c->id] = CreatePopupMenu();
         /* Save the connection index in the menu.*/
         minfo.fMask = MIM_MENUDATA;
-        minfo.dwMenuData = (ULONG_PTR) c;
+        minfo.dwMenuData = (ULONG_PTR)c;
         SetMenuInfo(hMenuConn[c->id], &minfo);
     }
     for (int i = 0; i < o.num_groups; i++)
@@ -220,7 +223,7 @@ CreatePopupMenus()
         /* Set main menu's menudata to first connection */
         minfo.fMask = MIM_MENUDATA;
         GetMenuInfo(hMenu, &minfo);
-        minfo.dwMenuData = (ULONG_PTR) o.chead;
+        minfo.dwMenuData = (ULONG_PTR)o.chead;
         SetMenuInfo(hMenu, &minfo);
 
         /* Create Main menu with actions */
@@ -238,15 +241,17 @@ CreatePopupMenus()
         AppendMenu(hMenu, MF_SEPARATOR, 0, 0);
 
         hMenuImport = CreatePopupMenu();
-        AppendMenu(hMenu, MF_POPUP, (UINT_PTR) hMenuImport, LoadLocalizedString(IDS_MENU_IMPORT));
-        AppendMenu(hMenuImport, MF_STRING, IDM_IMPORT_FILE, LoadLocalizedString(IDS_MENU_IMPORT_FILE));
+        AppendMenu(hMenu, MF_POPUP, (UINT_PTR)hMenuImport, LoadLocalizedString(IDS_MENU_IMPORT));
+        AppendMenu(
+            hMenuImport, MF_STRING, IDM_IMPORT_FILE, LoadLocalizedString(IDS_MENU_IMPORT_FILE));
         AppendMenu(hMenuImport, MF_STRING, IDM_IMPORT_AS, LoadLocalizedString(IDS_MENU_IMPORT_AS));
-        AppendMenu(hMenuImport, MF_STRING, IDM_IMPORT_URL, LoadLocalizedString(IDS_MENU_IMPORT_URL));
+        AppendMenu(
+            hMenuImport, MF_STRING, IDM_IMPORT_URL, LoadLocalizedString(IDS_MENU_IMPORT_URL));
 
         AppendMenu(hMenu, MF_STRING, IDM_SETTINGS, LoadLocalizedString(IDS_MENU_SETTINGS));
         AppendMenu(hMenu, MF_STRING, IDM_CLOSE, LoadLocalizedString(IDS_MENU_CLOSE));
 
-        SetMenuStatus(o.chead,  o.chead->state);
+        SetMenuStatus(o.chead, o.chead->state);
     }
     else
     {
@@ -265,11 +270,14 @@ CreatePopupMenus()
             {
                 continue;
             }
-            AppendMenu(parent->menu, MF_POPUP, (UINT_PTR) this->menu, this->name);
+            AppendMenu(parent->menu, MF_POPUP, (UINT_PTR)this->menu, this->name);
             this->pos = parent->children++;
 
             PrintDebug(L"Submenu %d named %ls added to parent %ls with position %d",
-                       i, this->name, parent->name, this->pos);
+                       i,
+                       this->name,
+                       parent->name,
+                       this->pos);
         }
 
         /* add config file (connection) entries */
@@ -288,16 +296,20 @@ CreatePopupMenus()
             }
             if (!parent)
             {
-                MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs:%d Logic error - parent = NULL", __func__, __LINE__);
+                MsgToEventLog(
+                    EVENTLOG_ERROR_TYPE, L"%hs:%d Logic error - parent = NULL", __func__, __LINE__);
                 continue; /* ignore this config */
             }
 
             /* Add config to the current sub menu */
-            AppendMenu(parent->menu, MF_POPUP, (UINT_PTR) hMenuConn[c->id], c->config_name);
+            AppendMenu(parent->menu, MF_POPUP, (UINT_PTR)hMenuConn[c->id], c->config_name);
             c->pos = parent->children++;
 
             PrintDebug(L"Config %d named %ls added to submenu %ls with position %d",
-                       c->id, c->config_name, parent->name, c->pos);
+                       c->id,
+                       c->config_name,
+                       parent->name,
+                       c->pos);
         }
 
         if (o.num_configs > 0)
@@ -306,10 +318,12 @@ CreatePopupMenus()
         }
 
         hMenuImport = CreatePopupMenu();
-        AppendMenu(hMenu, MF_POPUP, (UINT_PTR) hMenuImport, LoadLocalizedString(IDS_MENU_IMPORT));
-        AppendMenu(hMenuImport, MF_STRING, IDM_IMPORT_FILE, LoadLocalizedString(IDS_MENU_IMPORT_FILE));
+        AppendMenu(hMenu, MF_POPUP, (UINT_PTR)hMenuImport, LoadLocalizedString(IDS_MENU_IMPORT));
+        AppendMenu(
+            hMenuImport, MF_STRING, IDM_IMPORT_FILE, LoadLocalizedString(IDS_MENU_IMPORT_FILE));
         AppendMenu(hMenuImport, MF_STRING, IDM_IMPORT_AS, LoadLocalizedString(IDS_MENU_IMPORT_AS));
-        AppendMenu(hMenuImport, MF_STRING, IDM_IMPORT_URL, LoadLocalizedString(IDS_MENU_IMPORT_URL));
+        AppendMenu(
+            hMenuImport, MF_STRING, IDM_IMPORT_URL, LoadLocalizedString(IDS_MENU_IMPORT_URL));
 
         AppendMenu(hMenu, MF_STRING, IDM_SETTINGS, LoadLocalizedString(IDS_MENU_SETTINGS));
         AppendMenu(hMenu, MF_STRING, IDM_CLOSE, LoadLocalizedString(IDS_MENU_CLOSE));
@@ -318,16 +332,29 @@ CreatePopupMenus()
         for (connection_t *c = o.chead; c; c = c->next)
         {
             int i = c->id;
-            AppendMenu(hMenuConn[i], MF_STRING, IDM_CONNECTMENU, LoadLocalizedString(IDS_MENU_CONNECT));
-            AppendMenu(hMenuConn[i], MF_STRING, IDM_DISCONNECTMENU, LoadLocalizedString(IDS_MENU_DISCONNECT));
-            AppendMenu(hMenuConn[i], MF_STRING, IDM_RECONNECTMENU, LoadLocalizedString(IDS_MENU_RECONNECT));
-            AppendMenu(hMenuConn[i], MF_STRING, IDM_STATUSMENU, LoadLocalizedString(IDS_MENU_STATUS));
+            AppendMenu(
+                hMenuConn[i], MF_STRING, IDM_CONNECTMENU, LoadLocalizedString(IDS_MENU_CONNECT));
+            AppendMenu(hMenuConn[i],
+                       MF_STRING,
+                       IDM_DISCONNECTMENU,
+                       LoadLocalizedString(IDS_MENU_DISCONNECT));
+            AppendMenu(hMenuConn[i],
+                       MF_STRING,
+                       IDM_RECONNECTMENU,
+                       LoadLocalizedString(IDS_MENU_RECONNECT));
+            AppendMenu(
+                hMenuConn[i], MF_STRING, IDM_STATUSMENU, LoadLocalizedString(IDS_MENU_STATUS));
             AppendMenu(hMenuConn[i], MF_SEPARATOR, 0, 0);
 
-            AppendMenu(hMenuConn[i], MF_STRING, IDM_VIEWLOGMENU, LoadLocalizedString(IDS_MENU_VIEWLOG));
+            AppendMenu(
+                hMenuConn[i], MF_STRING, IDM_VIEWLOGMENU, LoadLocalizedString(IDS_MENU_VIEWLOG));
 
-            AppendMenu(hMenuConn[i], MF_STRING, IDM_EDITMENU, LoadLocalizedString(IDS_MENU_EDITCONFIG));
-            AppendMenu(hMenuConn[i], MF_STRING, IDM_CLEARPASSMENU, LoadLocalizedString(IDS_MENU_CLEARPASS));
+            AppendMenu(
+                hMenuConn[i], MF_STRING, IDM_EDITMENU, LoadLocalizedString(IDS_MENU_EDITCONFIG));
+            AppendMenu(hMenuConn[i],
+                       MF_STRING,
+                       IDM_CLEARPASSMENU,
+                       LoadLocalizedString(IDS_MENU_CLEARPASS));
 
             SetMenuStatus(c, c->state);
         }
@@ -374,6 +401,8 @@ PositionTrayToolTip(LONG x, LONG y)
 {
     RECT r;
     LONG cxmax = GetSystemMetrics(SM_CXSCREEN);
+    LONG cymax = GetSystemMetrics(SM_CYSCREEN);
+    APPBARDATA abd = { .cbSize = sizeof(APPBARDATA) };
     GetWindowRect(traytip, &r);
     LONG w = r.right - r.left;
     LONG h = r.bottom - r.top;
@@ -381,10 +410,17 @@ PositionTrayToolTip(LONG x, LONG y)
      *   10 pixels below y depending on whether we are closer to the bottom or top of the screen.
      * - horizontally, try to centre around x adjusting for overflow to the right or left
      */
-    r.left = (x < w/2) ? 0 : ((x + w/2 < cxmax) ? x - w/2 : cxmax - w);
-    r.top = (y > h + 10) ?  y - (h + 10) : y + 10;
+    r.left = (x < w / 2) ? 0 : ((x + w / 2 < cxmax) ? x - w / 2 : cxmax - w);
+    r.top = (y > h + 10) ? y - (h + 10) : y + 10;
+
+    /* If taskbar is at top, move the top of the window to the bottom of the taskbar */
+    if (SHAppBarMessage(ABM_GETTASKBARPOS, &abd) && (abd.rc.bottom < cymax / 2))
+    {
+        r.top = abd.rc.bottom;
+    }
+
     SendMessageW(traytip, TTM_TRACKPOSITION, 0, MAKELONG(r.left, r.top));
-    SetWindowPos(traytip, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE|SWP_NOMOVE);
+    SetWindowPos(traytip, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
 }
 
 /*
@@ -438,16 +474,19 @@ OnNotifyTray(LPARAM lParam)
         }
         break;
 
-        /* handle messages when mouse enters and leaves the icon -- we show the custom tooltip window */
+        /* handle messages when mouse enters and leaves the icon -- we show the custom tooltip
+         * window */
         case NIN_POPUPOPEN:
             if (traytip)
             {
-                NOTIFYICONIDENTIFIER nid = {.cbSize = sizeof(nid), .hWnd = o.hWnd,
-                                            .uID = HIWORD(lParam), .guidItem = GUID_NULL};
-                RECT r = {0};
+                NOTIFYICONIDENTIFIER nid = { .cbSize = sizeof(nid),
+                                             .hWnd = o.hWnd,
+                                             .uID = HIWORD(lParam),
+                                             .guidItem = GUID_NULL };
+                RECT r = { 0 };
                 Shell_NotifyIconGetRect(&nid, &r);
-                SendMessageW(traytip, TTM_TRACKACTIVATE, (WPARAM)TRUE, (LPARAM) &ti);
-                PositionTrayToolTip((r.left+r.right)/2, r.top);
+                SendMessageW(traytip, TTM_TRACKACTIVATE, (WPARAM)TRUE, (LPARAM)&ti);
+                PositionTrayToolTip((r.left + r.right) / 2, r.top);
             }
             break;
 
@@ -505,9 +544,18 @@ ShowTrayIcon()
     if (Shell_NotifyIcon(NIM_SETVERSION, &ni))
     {
         /* create a custom tooltip for the tray */
-        traytip = CreateWindowEx(0, TOOLTIPS_CLASS, NULL, WS_POPUP |TTS_ALWAYSTIP,
-                                 CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
-                                 o.hWnd, NULL, o.hInstance, NULL);
+        traytip = CreateWindowEx(0,
+                                 TOOLTIPS_CLASS,
+                                 NULL,
+                                 WS_POPUP | TTS_ALWAYSTIP,
+                                 CW_USEDEFAULT,
+                                 CW_USEDEFAULT,
+                                 CW_USEDEFAULT,
+                                 CW_USEDEFAULT,
+                                 o.hWnd,
+                                 NULL,
+                                 o.hInstance,
+                                 NULL);
         if (!traytip) /* revert the version back so that we can use legacy ni.szTip for tip text */
         {
             ni.uVersion = 0;
@@ -517,10 +565,10 @@ ShowTrayIcon()
 
     if (traytip)
     {
-        LONG cx = GetSystemMetrics(SM_CXSCREEN)/4; /* max width of tray tooltip = 25% of screen */
+        LONG cx = GetSystemMetrics(SM_CXSCREEN) / 4; /* max width of tray tooltip = 25% of screen */
         ti.cbSize = sizeof(ti);
-        ti.uId = (UINT_PTR) traytip;
-        ti.uFlags = TTF_ABSOLUTE|TTF_TRACK|TTF_IDISHWND;
+        ti.uId = (UINT_PTR)traytip;
+        ti.uFlags = TTF_ABSOLUTE | TTF_TRACK | TTF_IDISHWND;
         if (LangFlowDirection() == 1)
         {
             ti.uFlags |= TTF_RTLREADING;
@@ -528,7 +576,7 @@ ShowTrayIcon()
         ti.hwnd = o.hWnd;
         ti.lpszText = _T(PACKAGE_NAME);
         SendMessage(traytip, TTM_ADDTOOL, 0, (LPARAM)&ti);
-        SendMessage(traytip, TTM_SETMAXTIPWIDTH, 0, (LPARAM) cx);
+        SendMessage(traytip, TTM_SETMAXTIPWIDTH, 0, (LPARAM)cx);
     }
 }
 
@@ -552,7 +600,9 @@ SetTrayIcon(conn_state_t state)
         if (c->state == connected)
         {
             /* Append connection name to Icon Tip Msg */
-            _tcsncat(tip_msg, (first_conn ? msg_connected : _T(", ")), _countof(tip_msg) - _tcslen(tip_msg) - 1);
+            _tcsncat(tip_msg,
+                     (first_conn ? msg_connected : _T(", ")),
+                     _countof(tip_msg) - _tcslen(tip_msg) - 1);
             _tcsncat(tip_msg, c->config_name, _countof(tip_msg) - _tcslen(tip_msg) - 1);
             first_conn = FALSE;
             cc = c;
@@ -565,7 +615,9 @@ SetTrayIcon(conn_state_t state)
         if (c->state == connecting || c->state == resuming || c->state == reconnecting)
         {
             /* Append connection name to Icon Tip Msg */
-            _tcsncat(tip_msg, (first_conn ? msg_connecting : _T(", ")), _countof(tip_msg) - _tcslen(tip_msg) - 1);
+            _tcsncat(tip_msg,
+                     (first_conn ? msg_connecting : _T(", ")),
+                     _countof(tip_msg) - _tcslen(tip_msg) - 1);
             _tcsncat(tip_msg, c->config_name, _countof(tip_msg) - _tcslen(tip_msg) - 1);
             first_conn = FALSE;
         }
@@ -582,13 +634,15 @@ SetTrayIcon(conn_state_t state)
          * Include about 50 characters for "Connected since:" and "Assigned IP:" prefixes.
          */
         size_t max_msglen = _countof(tip_msg) - (_countof(time) + _countof(ip) + 50);
-        if (wcslen(tip_msg)  > max_msglen && traytip)
+        if (wcslen(tip_msg) > max_msglen && traytip)
         {
-            wcsncpy_s(&tip_msg[max_msglen-1], 2, L"…", _TRUNCATE);
+            wcsncpy_s(&tip_msg[max_msglen - 1], 2, L"…", _TRUNCATE);
         }
 
         LocalizedTime(cc->connected_since, time, _countof(time));
-        _tcsncat(tip_msg, LoadLocalizedString(IDS_TIP_CONNECTED_SINCE), _countof(tip_msg) - _tcslen(tip_msg) - 1);
+        _tcsncat(tip_msg,
+                 LoadLocalizedString(IDS_TIP_CONNECTED_SINCE),
+                 _countof(tip_msg) - _tcslen(tip_msg) - 1);
         _tcsncat(tip_msg, time, _countof(tip_msg) - _tcslen(tip_msg) - 1);
 
         /* concatenate ipv4 and ipv6 addresses into one string */
@@ -617,7 +671,7 @@ SetTrayIcon(conn_state_t state)
     if (traytip)
     {
         ti.lpszText = tip_msg;
-        SendMessage(traytip, TTM_UPDATETIPTEXT, 0, (LPARAM) &ti);
+        SendMessage(traytip, TTM_UPDATETIPTEXT, 0, (LPARAM)&ti);
     }
     else
     {
@@ -639,7 +693,7 @@ CheckAndSetTrayIcon()
     else
     {
         if (CountConnState(connecting) != 0 || CountConnState(reconnecting) != 0
-            ||  CountConnState(resuming) != 0)
+            || CountConnState(resuming) != 0)
         {
             SetTrayIcon(connecting);
         }
@@ -686,7 +740,8 @@ SetMenuStatus(connection_t *c, conn_state_t state)
     {
         if (state == disconnected || state == detached)
         {
-            EnableMenuItem(hMenu, IDM_CONNECTMENU, MF_ENABLED);
+            EnableMenuItem(
+                hMenu, IDM_CONNECTMENU, (c->flags & FLAG_CONFIG_DISABLED) ? MF_GRAYED : MF_ENABLED);
             EnableMenuItem(hMenu, IDM_DISCONNECTMENU, MF_GRAYED);
             EnableMenuItem(hMenu, IDM_RECONNECTMENU, MF_GRAYED);
             EnableMenuItem(hMenu, IDM_STATUSMENU, MF_GRAYED);
@@ -726,7 +781,7 @@ SetMenuStatus(connection_t *c, conn_state_t state)
         config_group_t *parent = &o.groups[0];
         int pos = c->pos;
 
-        if (USE_NESTED_CONFIG_MENU && CONFIG_GROUP(c))
+        if (USE_NESTED_CONFIG_MENU)
         {
             parent = CONFIG_GROUP(c);
         }
@@ -738,17 +793,20 @@ SetMenuStatus(connection_t *c, conn_state_t state)
         if (checked == 1)
         {
             /* Connected: use system-default check mark */
-            SetMenuItemBitmaps(parent->menu, pos,  MF_BYPOSITION, NULL, NULL);
+            SetMenuItemBitmaps(parent->menu, pos, MF_BYPOSITION, NULL, NULL);
         }
         else if (checked == 2)
         {
             /* Connecting: use our custom check mark */
-            SetMenuItemBitmaps(parent->menu, pos,  MF_BYPOSITION, NULL, hbmpConnecting);
+            SetMenuItemBitmaps(parent->menu, pos, MF_BYPOSITION, NULL, hbmpConnecting);
         }
         CheckMenuItem(parent->menu, pos, MF_BYPOSITION | (checked ? MF_CHECKED : MF_UNCHECKED));
 
         PrintDebug(L"Setting state of config %ls checked = %d, parent %ls, pos %d",
-                   c->config_name, checked, (parent->id == 0) ? L"Main Menu" : L"SubMenu", pos);
+                   c->config_name,
+                   checked,
+                   (parent->id == 0) ? L"Main Menu" : L"SubMenu",
+                   pos);
 
         if (checked) /* also check all parent groups */
         {
@@ -762,10 +820,17 @@ SetMenuStatus(connection_t *c, conn_state_t state)
 
         if (state == disconnected || state == detached)
         {
-            EnableMenuItem(hMenuConn[i], IDM_CONNECTMENU, MF_ENABLED);
-            EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU, MF_GRAYED);
-            EnableMenuItem(hMenuConn[i], IDM_RECONNECTMENU, MF_GRAYED);
-            EnableMenuItem(hMenuConn[i], IDM_STATUSMENU, MF_GRAYED);
+            if (c->flags & FLAG_CONFIG_DISABLED)
+            {
+                EnableMenuItem(parent->menu, pos, MF_BYPOSITION | MF_GRAYED);
+            }
+            else
+            {
+                EnableMenuItem(hMenuConn[i], IDM_CONNECTMENU, MF_ENABLED);
+                EnableMenuItem(hMenuConn[i], IDM_DISCONNECTMENU, MF_GRAYED);
+                EnableMenuItem(hMenuConn[i], IDM_RECONNECTMENU, MF_GRAYED);
+                EnableMenuItem(hMenuConn[i], IDM_STATUSMENU, MF_GRAYED);
+            }
         }
         else if (state == connecting || state == resuming || state == connected)
         {

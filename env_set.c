@@ -31,7 +31,8 @@
 #include "openvpn.h"
 #include "env_set.h"
 
-struct env_item {
+struct env_item
+{
     wchar_t *nameval;
     struct env_item *next;
 };
@@ -170,7 +171,7 @@ void
 env_item_del_all(struct env_item *head)
 {
     struct env_item *next;
-    for ( ; head; head = next)
+    for (; head; head = next)
     {
         next = head->next;
         env_item_free(head);
@@ -258,7 +259,7 @@ merge_env_block(const struct env_item *es)
         return NULL;
     }
 
-    for (pe = e; *pe; pe += wcslen(pe)+1)
+    for (pe = e; *pe; pe += wcslen(pe) + 1)
     {
     }
     len = (pe + 1 - e); /* including the extra '\0' at the end */
@@ -268,7 +269,7 @@ merge_env_block(const struct env_item *es)
         len += wcslen(item->nameval) + 1;
     }
 
-    wchar_t *env = malloc(sizeof(wchar_t)*len);
+    wchar_t *env = malloc(sizeof(wchar_t) * len);
     if (!env)
     {
         /* no memory -- return NULL */
@@ -294,7 +295,7 @@ merge_env_block(const struct env_item *es)
             p += wcslen(item->nameval) + 1;
             item = item->next;
         }
-        else  /* add entry from process env */
+        else /* add entry from process env */
         {
             wcscpy(p, pe);
             p += len;
@@ -311,12 +312,12 @@ merge_env_block(const struct env_item *es)
     /* Add any remaining entries -- either item or *pe is NULL at this point.
      * So only one of the two following loops will run.
      */
-    for ( ; item; item = item->next)
+    for (; item; item = item->next)
     {
         wcscpy(p, item->nameval);
         p += wcslen(item->nameval) + 1;
     }
-    for ( ; *pe; pe += len, p += len)
+    for (; *pe; pe += len, p += len)
     {
         wcscpy(p, pe);
         len = wcslen(pe) + 1;
@@ -344,8 +345,8 @@ process_setenv(connection_t *c, UNUSED time_t timestamp, const char *msg)
         return;
     }
 
-    msg += strlen("setenv ");    /* character following "setenv" */
-    msg += strspn(msg, " \t");   /* skip leading space */
+    msg += strlen("setenv ");  /* character following "setenv" */
+    msg += strspn(msg, " \t"); /* skip leading space */
     if (msg[0] == '\0')
     {
         WriteStatusLog(c, L"GUI> ", L"Error: Name empty in echo setenv", false);

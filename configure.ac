@@ -20,7 +20,7 @@ dnl  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 AC_PREREQ(2.59)
 define([_GUI_VERSION_MAJOR], [11])
-define([_GUI_VERSION_MINOR], [50])
+define([_GUI_VERSION_MINOR], [52])
 AC_INIT([OpenVPN GUI],[_GUI_VERSION_MAJOR],[openvpn-devel@lists.sourceforge.net],[openvpn-gui],[https://github.com/openvpn/openvpn-gui/])
 AC_DEFINE([PACKAGE_VERSION_RESOURCE], [_GUI_VERSION_MAJOR,_GUI_VERSION_MINOR,0,0], [Version in windows resource format])
 AC_DEFINE([PACKAGE_VERSION_RESOURCE_STR], ["_GUI_VERSION_MAJOR._GUI_VERSION_MINOR.0.0"], [Version as a string])
@@ -77,7 +77,7 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
-test "${GCC}" = "yes" && CFLAGS="${CFLAGS} -pedantic -Wall -Wextra"
+test "${GCC}" = "yes" && CFLAGS="${CFLAGS} -pedantic -Wall -Wextra -Wno-cast-function-type -Werror"
 
 AC_CONFIG_FILES([Makefile plap/Makefile])
 AC_OUTPUT

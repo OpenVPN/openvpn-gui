@@ -25,7 +25,7 @@
 #include <wchar.h>
 
 #define USER_PASS_LEN 128
-#define KEY_PASS_LEN 128
+#define KEY_PASS_LEN  128
 
 int SaveKeyPass(const WCHAR *config_name, const WCHAR *password);
 

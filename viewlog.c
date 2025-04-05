@@ -40,7 +40,7 @@ extern options_t o;
 void
 ViewLog(connection_t *c)
 {
-    TCHAR filename[2*MAX_PATH];
+    TCHAR filename[2 * MAX_PATH];
 
     STARTUPINFO start_info;
     PROCESS_INFORMATION proc_info;
@@ -54,17 +54,21 @@ ViewLog(connection_t *c)
     CLEAR(sd);
 
     /* Try first using file association */
-    CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE); /* Safe to init COM multiple times */
+    CoInitializeEx(NULL,
+                   COINIT_APARTMENTTHREADED
+                       | COINIT_DISABLE_OLE1DDE); /* Safe to init COM multiple times */
     status = ShellExecuteW(o.hWnd, L"open", c->log_path, NULL, o.log_dir, SW_SHOWNORMAL);
 
-    if (status > (HINSTANCE) 32) /* Success */
+    if (status > (HINSTANCE)32) /* Success */
     {
         return;
     }
     else
     {
         PrintDebug(L"Opening log file using ShellExecute with verb = open failed"
-                   " for config '%ls' (status = %lu)", c->config_name, status);
+                   " for config '%ls' (status = %lu)",
+                   c->config_name,
+                   status);
     }
 
     _sntprintf_0(filename, _T("%ls \"%ls\""), o.log_viewer, c->log_path);
@@ -100,7 +104,7 @@ ViewLog(connection_t *c)
 void
 EditConfig(connection_t *c)
 {
-    TCHAR filename[2*MAX_PATH];
+    TCHAR filename[2 * MAX_PATH];
 
     STARTUPINFO start_info;
     PROCESS_INFORMATION proc_info;
@@ -116,16 +120,20 @@ EditConfig(connection_t *c)
     /* Try first using file association */
     _sntprintf_0(filename, L"%ls\\%ls", c->config_dir, c->config_file);
 
-    CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE); /* Safe to init COM multiple times */
+    CoInitializeEx(NULL,
+                   COINIT_APARTMENTTHREADED
+                       | COINIT_DISABLE_OLE1DDE); /* Safe to init COM multiple times */
     status = ShellExecuteW(o.hWnd, L"open", filename, NULL, c->config_dir, SW_SHOWNORMAL);
-    if (status > (HINSTANCE) 32)
+    if (status > (HINSTANCE)32)
     {
         return;
     }
     else
     {
         PrintDebug(L"Opening config file using ShellExecute with verb = open failed"
-                   " for config '%ls' (status = %lu)", c->config_name, status);
+                   " for config '%ls' (status = %lu)",
+                   c->config_name,
+                   status);
     }
 
     _sntprintf_0(filename, _T("%ls \"%ls\\%ls\""), o.editor, c->config_dir, c->config_file);
@@ -145,7 +153,7 @@ EditConfig(connection_t *c)
                        TRUE,
                        CREATE_NEW_CONSOLE,
                        NULL,
-                       c->config_dir,   /*start-up dir */
+                       c->config_dir, /*start-up dir */
                        &start_info,
                        &proc_info))
     {

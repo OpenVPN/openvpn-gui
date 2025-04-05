@@ -37,39 +37,39 @@
 
 extern options_t o;
 
-struct regkey_str {
+struct regkey_str
+{
     const WCHAR *name;
     WCHAR *var;
     int len;
     const WCHAR *value;
 } regkey_str[] = {
-    {L"config_dir", o.config_dir, _countof(o.config_dir), L"%USERPROFILE%\\OpenVPN\\config"},
-    {L"config_ext", o.ext_string, _countof(o.ext_string), L"ovpn"},
-    {L"log_dir", o.log_dir, _countof(o.log_dir), L"%USERPROFILE%\\OpenVPN\\log"}
+    { L"config_dir", o.config_dir, _countof(o.config_dir), L"%USERPROFILE%\\OpenVPN\\config" },
+    { L"config_ext", o.ext_string, _countof(o.ext_string), L"ovpn" },
+    { L"log_dir", o.log_dir, _countof(o.log_dir), L"%USERPROFILE%\\OpenVPN\\log" }
 };
 
-struct regkey_int {
+struct regkey_int
+{
     const WCHAR *name;
     DWORD *var;
     DWORD value;
-} regkey_int[] = {
-    {L"log_append", &o.log_append, 0},
-    {L"iservice_admin", &o.iservice_admin, 1},
-    {L"show_balloon", &o.show_balloon, 1},
-    {L"silent_connection", &o.silent_connection, 0},
-    {L"preconnectscript_timeout", &o.preconnectscript_timeout, 10},
-    {L"connectscript_timeout", &o.connectscript_timeout, 30},
-    {L"disconnectscript_timeout", &o.disconnectscript_timeout, 10},
-    {L"show_script_window", &o.show_script_window, 0},
-    {L"config_menu_view", &o.config_menu_view, CONFIG_VIEW_AUTO},
-    {L"popup_mute_interval", &o.popup_mute_interval, 24},
-    {L"disable_popup_messages", &o.disable_popup_messages, 0},
-    {L"management_port_offset", &o.mgmt_port_offset, 25340},
-    {L"enable_peristent_connections", &o.enable_persistent, 2},
-    {L"enable_auto_restart", &o.enable_auto_restart, 1},
-    {L"auth_pass_concat_otp", &o.auth_pass_concat_otp, 0},
-    {L"ovpn_engine", &o.ovpn_engine, OPENVPN_ENGINE_OVPN2}
-};
+} regkey_int[] = { { L"log_append", &o.log_append, 0 },
+                   { L"iservice_admin", &o.iservice_admin, 1 },
+                   { L"show_balloon", &o.show_balloon, 1 },
+                   { L"silent_connection", &o.silent_connection, 0 },
+                   { L"preconnectscript_timeout", &o.preconnectscript_timeout, 10 },
+                   { L"connectscript_timeout", &o.connectscript_timeout, 30 },
+                   { L"disconnectscript_timeout", &o.disconnectscript_timeout, 10 },
+                   { L"show_script_window", &o.show_script_window, 0 },
+                   { L"config_menu_view", &o.config_menu_view, CONFIG_VIEW_AUTO },
+                   { L"popup_mute_interval", &o.popup_mute_interval, 24 },
+                   { L"disable_popup_messages", &o.disable_popup_messages, 0 },
+                   { L"management_port_offset", &o.mgmt_port_offset, 25340 },
+                   { L"enable_peristent_connections", &o.enable_persistent, 2 },
+                   { L"enable_auto_restart", &o.enable_auto_restart, 1 },
+                   { L"auth_pass_concat_otp", &o.auth_pass_concat_otp, 0 },
+                   { L"ovpn_engine", &o.ovpn_engine, OPENVPN_ENGINE_OVPN2 } };
 
 static int
 RegValueExists(HKEY regkey, const WCHAR *name)
@@ -120,27 +120,34 @@ GetGlobalRegistryKeys()
     }
 
     /* an admin-defined global config dir defined in HKLM\OpenVPN\config_dir */
-    if (!regkey || !GetRegistryValue(regkey, _T("config_dir"), o.global_config_dir, _countof(o.global_config_dir)))
+    if (!regkey
+        || !GetRegistryValue(
+            regkey, _T("config_dir"), o.global_config_dir, _countof(o.global_config_dir)))
     {
         /* use default = openvpnpath\config */
         _sntprintf_0(o.global_config_dir, _T("%lsconfig"), o.install_path);
     }
 
-    if (!regkey || !GetRegistryValue(regkey, _T("autostart_config_dir"), o.config_auto_dir, _countof(o.config_auto_dir)))
+    if (!regkey
+        || !GetRegistryValue(
+            regkey, _T("autostart_config_dir"), o.config_auto_dir, _countof(o.config_auto_dir)))
     {
         /* use default = openvpnpath\config-auto */
         _sntprintf_0(o.config_auto_dir, L"%lsconfig-auto", o.install_path);
     }
 
-    if (!regkey || !GetRegistryValue(regkey, _T("log_dir"), o.global_log_dir, _countof(o.global_log_dir)))
+    if (!regkey
+        || !GetRegistryValue(regkey, _T("log_dir"), o.global_log_dir, _countof(o.global_log_dir)))
     {
         /* use default = openvpnpath\log */
         _sntprintf_0(o.global_log_dir, L"%lslog", o.install_path);
     }
 
-    if (!regkey || !GetRegistryValue(regkey, _T("ovpn_admin_group"), o.ovpn_admin_group, _countof(o.ovpn_admin_group)))
+    if (!regkey
+        || !GetRegistryValue(
+            regkey, _T("ovpn_admin_group"), o.ovpn_admin_group, _countof(o.ovpn_admin_group)))
     {
-        _tcsncpy(o.ovpn_admin_group, OVPN_ADMIN_GROUP, _countof(o.ovpn_admin_group)-1);
+        _tcsncpy(o.ovpn_admin_group, OVPN_ADMIN_GROUP, _countof(o.ovpn_admin_group) - 1);
     }
 
     if (!regkey || !GetRegistryValue(regkey, _T("exe_path"), o.exe_path, _countof(o.exe_path)))
@@ -148,11 +155,15 @@ GetGlobalRegistryKeys()
         _sntprintf_0(o.exe_path, _T("%lsbin\\openvpn.exe"), o.install_path);
     }
 
-    if (!regkey || !GetRegistryValue(regkey, _T("priority"), o.priority_string, _countof(o.priority_string)))
+    if (!regkey
+        || !GetRegistryValue(
+            regkey, _T("priority"), o.priority_string, _countof(o.priority_string)))
     {
-        _tcsncpy(o.priority_string, _T("NORMAL_PRIORITY_CLASS"), _countof(o.priority_string)-1);
+        _tcsncpy(o.priority_string, _T("NORMAL_PRIORITY_CLASS"), _countof(o.priority_string) - 1);
     }
-    if (!regkey || !GetRegistryValueNumeric(regkey, _T("disable_save_passwords"), &o.disable_save_passwords))
+    if (!regkey
+        || !GetRegistryValueNumeric(
+            regkey, _T("disable_save_passwords"), &o.disable_save_passwords))
     {
         o.disable_save_passwords = 0;
     }
@@ -177,14 +188,14 @@ GetRegistryKeys()
 
     status = RegOpenKeyEx(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, 0, KEY_READ, &regkey);
 
-    for (i = 0; i < (int) _countof(regkey_str); ++i)
+    for (i = 0; i < (int)_countof(regkey_str); ++i)
     {
         if (status != ERROR_SUCCESS
             || !GetRegistryValue(regkey, regkey_str[i].name, regkey_str[i].var, regkey_str[i].len))
         {
             /* no value found in registry, use the default */
             wcsncpy(regkey_str[i].var, regkey_str[i].value, regkey_str[i].len);
-            regkey_str[i].var[regkey_str[i].len-1] = L'\0';
+            regkey_str[i].var[regkey_str[i].len - 1] = L'\0';
             PrintDebug(L"default: %ls = %ls", regkey_str[i].name, regkey_str[i].var);
         }
         else
@@ -193,7 +204,7 @@ GetRegistryKeys()
         }
     }
 
-    for (i = 0; i < (int) _countof(regkey_int); ++i)
+    for (i = 0; i < (int)_countof(regkey_int); ++i)
     {
         if (status != ERROR_SUCCESS
             || !GetRegistryValueNumeric(regkey, regkey_int[i].name, regkey_int[i].var))
@@ -229,7 +240,8 @@ GetRegistryKeys()
     }
 
     /* Read group policy setting for password reveal */
-    status = RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\Policies\\Microsoft\\Windows\\CredUI", 0, KEY_READ, &regkey);
+    status = RegOpenKeyExW(
+        HKEY_CURRENT_USER, L"Software\\Policies\\Microsoft\\Windows\\CredUI", 0, KEY_READ, &regkey);
     if (status != ERROR_SUCCESS
         || !GetRegistryValueNumeric(regkey, L"DisablePasswordReveal", &o.disable_password_reveal))
     {
@@ -257,18 +269,25 @@ SaveRegistryKeys()
     int i;
     int ret = false;
 
-    status = RegCreateKeyEx(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, 0, NULL, REG_OPTION_NON_VOLATILE,
-                            KEY_WRITE|KEY_READ, NULL, &regkey, NULL);
+    status = RegCreateKeyEx(HKEY_CURRENT_USER,
+                            GUI_REGKEY_HKCU,
+                            0,
+                            NULL,
+                            REG_OPTION_NON_VOLATILE,
+                            KEY_WRITE | KEY_READ,
+                            NULL,
+                            &regkey,
+                            NULL);
     if (status != ERROR_SUCCESS)
     {
         ShowLocalizedMsg(IDS_ERR_CREATE_REG_HKCU_KEY, GUI_REGKEY_HKCU);
         goto out;
     }
-    for (i = 0; i < (int) _countof(regkey_str); ++i)
+    for (i = 0; i < (int)_countof(regkey_str); ++i)
     {
         /* save only if the value differs from default or already present in registry */
         if (CompareStringExpanded(regkey_str[i].var, regkey_str[i].value) != 0
-            || RegValueExists(regkey, regkey_str[i].name) )
+            || RegValueExists(regkey, regkey_str[i].name))
         {
             if (!SetRegistryValue(regkey, regkey_str[i].name, regkey_str[i].var))
             {
@@ -277,10 +296,9 @@ SaveRegistryKeys()
         }
     }
 
-    for (i = 0; i < (int) _countof(regkey_int); ++i)
+    for (i = 0; i < (int)_countof(regkey_int); ++i)
     {
-        if (*regkey_int[i].var != regkey_int[i].value
-            || RegValueExists(regkey, regkey_int[i].name) )
+        if (*regkey_int[i].var != regkey_int[i].value || RegValueExists(regkey, regkey_int[i].name))
         {
             if (!SetRegistryValueNumeric(regkey, regkey_int[i].name, *regkey_int[i].var))
             {
@@ -325,11 +343,19 @@ SetRegistryVersion(const version_t *v)
     DWORD status;
     BOOL ret = false;
 
-    status = RegCreateKeyEx(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, 0, NULL, REG_OPTION_NON_VOLATILE,
-                            KEY_WRITE, NULL, &regkey, NULL);
+    status = RegCreateKeyEx(HKEY_CURRENT_USER,
+                            GUI_REGKEY_HKCU,
+                            0,
+                            NULL,
+                            REG_OPTION_NON_VOLATILE,
+                            KEY_WRITE,
+                            NULL,
+                            &regkey,
+                            NULL);
     if (status == ERROR_SUCCESS)
     {
-        if (RegSetValueEx(regkey, L"version", 0, REG_BINARY, (const BYTE *) v, sizeof(*v)) == ERROR_SUCCESS)
+        if (RegSetValueEx(regkey, L"version", 0, REG_BINARY, (const BYTE *)v, sizeof(*v))
+            == ERROR_SUCCESS)
         {
             ret = true;
         }
@@ -349,15 +375,21 @@ MigrateNilingsKeys()
     BOOL ret = false;
     HKEY regkey, regkey_proxy, regkey_nilings;
 
-    status = RegOpenKeyEx(HKEY_CURRENT_USER, L"Software\\Nilings\\OpenVPN-GUI", 0,
-                          KEY_READ, &regkey_nilings);
+    status = RegOpenKeyEx(
+        HKEY_CURRENT_USER, L"Software\\Nilings\\OpenVPN-GUI", 0, KEY_READ, &regkey_nilings);
     if (status != ERROR_SUCCESS)
     {
         return true; /* No old keys to migrate */
-
     }
-    status = RegCreateKeyEx(HKEY_CURRENT_USER, GUI_REGKEY_HKCU, 0, NULL, REG_OPTION_NON_VOLATILE,
-                            KEY_ALL_ACCESS, NULL, &regkey, NULL);
+    status = RegCreateKeyEx(HKEY_CURRENT_USER,
+                            GUI_REGKEY_HKCU,
+                            0,
+                            NULL,
+                            REG_OPTION_NON_VOLATILE,
+                            KEY_ALL_ACCESS,
+                            NULL,
+                            &regkey,
+                            NULL);
     if (status != ERROR_SUCCESS)
     {
         ShowLocalizedMsg(IDS_ERR_CREATE_REG_HKCU_KEY, GUI_REGKEY_HKCU);
@@ -366,8 +398,15 @@ MigrateNilingsKeys()
     }
 
     /* For some reason this needs ALL_ACCESS for the CopyTree below to work */
-    status = RegCreateKeyEx(regkey, L"proxy", 0, NULL, REG_OPTION_NON_VOLATILE,
-                            KEY_ALL_ACCESS, NULL, &regkey_proxy, NULL);
+    status = RegCreateKeyEx(regkey,
+                            L"proxy",
+                            0,
+                            NULL,
+                            REG_OPTION_NON_VOLATILE,
+                            KEY_ALL_ACCESS,
+                            NULL,
+                            &regkey_proxy,
+                            NULL);
     if (status == ERROR_SUCCESS)
     {
         DWORD ui_lang;
@@ -380,7 +419,7 @@ MigrateNilingsKeys()
         status = RegCopyTree(regkey_nilings, NULL, regkey_proxy);
         if (status == ERROR_SUCCESS)
         {
-            RegDeleteValue(regkey_proxy, L"ui_language");  /* in case copied here */
+            RegDeleteValue(regkey_proxy, L"ui_language"); /* in case copied here */
             ret = true;
         }
         RegCloseKey(regkey_proxy);
@@ -412,7 +451,7 @@ UpdateRegistry(void)
     {
         case 0: /* Cleanup GUI_REGKEY_HKCU and migrate any values under Nilings */
 
-            RegDeleteTree(HKEY_CURRENT_USER, GUI_REGKEY_HKCU);  /* delete all values and subkeys */
+            RegDeleteTree(HKEY_CURRENT_USER, GUI_REGKEY_HKCU); /* delete all values and subkeys */
 
             if (!MigrateNilingsKeys())
             {
@@ -444,10 +483,10 @@ GetRegistryValue(HKEY regkey, const TCHAR *name, TCHAR *data, DWORD len)
     data_len = len * sizeof(*data);
 
     /* get a registry string */
-    status = RegQueryValueEx(regkey, name, NULL, &type, (byte *) data, &data_len);
+    status = RegQueryValueEx(regkey, name, NULL, &type, (byte *)data, &data_len);
     if (status != ERROR_SUCCESS || type != REG_SZ)
     {
-        return(0);
+        return (0);
     }
 
     data_len /= sizeof(*data);
@@ -460,8 +499,7 @@ GetRegistryValue(HKEY regkey, const TCHAR *name, TCHAR *data, DWORD len)
         data[0] = L'\0';
     }
 
-    return(data_len);
-
+    return (data_len);
 }
 
 LONG
@@ -469,7 +507,7 @@ GetRegistryValueNumeric(HKEY regkey, const TCHAR *name, DWORD *data)
 {
     DWORD type;
     DWORD size = sizeof(*data);
-    LONG status = RegQueryValueEx(regkey, name, NULL, &type, (PBYTE) data, &size);
+    LONG status = RegQueryValueEx(regkey, name, NULL, &type, (PBYTE)data, &size);
     return (type == REG_DWORD && status == ERROR_SUCCESS) ? 1 : 0;
 }
 
@@ -478,20 +516,20 @@ SetRegistryValue(HKEY regkey, const TCHAR *name, const TCHAR *data)
 {
     /* set a registry string */
     DWORD size = (_tcslen(data) + 1) * sizeof(*data);
-    if (RegSetValueEx(regkey, name, 0, REG_SZ, (PBYTE) data, size) != ERROR_SUCCESS)
+    if (RegSetValueEx(regkey, name, 0, REG_SZ, (PBYTE)data, size) != ERROR_SUCCESS)
     {
         /* Error writing registry value */
         ShowLocalizedMsg(IDS_ERR_WRITE_REGVALUE, GUI_REGKEY_HKCU, name);
-        return(0);
+        return (0);
     }
 
-    return(1);
+    return (1);
 }
 
 int
 SetRegistryValueNumeric(HKEY regkey, const TCHAR *name, DWORD data)
 {
-    LONG status = RegSetValueEx(regkey, name, 0, REG_DWORD, (PBYTE) &data, sizeof(data));
+    LONG status = RegSetValueEx(regkey, name, 0, REG_DWORD, (PBYTE)&data, sizeof(data));
     if (status == ERROR_SUCCESS)
     {
         return 1;
@@ -518,8 +556,7 @@ OpenConfigRegistryKey(const WCHAR *config_name, HKEY *regkey, BOOL create)
         return 0;
     }
 
-    _snwprintf(name, count, fmt, config_name);
-    name[count-1] = L'\0';
+    _snwprintf_s(name, count, _TRUNCATE, fmt, config_name);
 
     if (!create)
     {
@@ -528,8 +565,15 @@ OpenConfigRegistryKey(const WCHAR *config_name, HKEY *regkey, BOOL create)
     else
     {
         /* create if key doesn't exist */
-        status = RegCreateKeyEx(HKEY_CURRENT_USER, name, 0, NULL,
-                                REG_OPTION_NON_VOLATILE, KEY_READ | KEY_WRITE, NULL, regkey, NULL);
+        status = RegCreateKeyEx(HKEY_CURRENT_USER,
+                                name,
+                                0,
+                                NULL,
+                                REG_OPTION_NON_VOLATILE,
+                                KEY_READ | KEY_WRITE,
+                                NULL,
+                                regkey,
+                                NULL);
     }
     free(name);
 
@@ -537,7 +581,10 @@ OpenConfigRegistryKey(const WCHAR *config_name, HKEY *regkey, BOOL create)
 }
 
 int
-SetConfigRegistryValueBinary(const WCHAR *config_name, const WCHAR *name, const BYTE *data, DWORD len)
+SetConfigRegistryValueBinary(const WCHAR *config_name,
+                             const WCHAR *name,
+                             const BYTE *data,
+                             DWORD len)
 {
     HKEY regkey;
     DWORD status;
