@@ -911,14 +911,16 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             {
                 ShowWindow(GetDlgItem(hwndDlg, ID_LTEXT_RESPONSE), SW_HIDE);
                 ShowWindow(GetDlgItem(hwndDlg, ID_EDT_RESPONSE), SW_HIDE);
+                ShowWindow(GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), SW_HIDE);
             }
             else
             {
                 /* disable OK button until response is filled-in */
                 EnableWindow(GetDlgItem(hwndDlg, IDOK), FALSE);
+                ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_RESPONSE),
+                                    GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL),
+                                    0);
             }
-            ResetPasswordReveal(
-                GetDlgItem(hwndDlg, ID_EDT_RESPONSE), GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), 0);
 
             break;
 
