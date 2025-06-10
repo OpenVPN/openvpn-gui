@@ -843,6 +843,7 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         case WM_INITDIALOG:
             param = (auth_param_t *)lParam;
             TRY_SETPROP(hwndDlg, cfgProp, (HANDLE)param);
+            BOOL lenableOKBtn = FALSE;
 
             WCHAR *wstr = Widen(param->str);
             if (!wstr)
@@ -880,6 +881,7 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                     SetWindowPos(hwndDlg, NULL, 0, 0, rect.right, rect.bottom, SWP_NOMOVE);
                     PrintDebug(L"Window resized to = %d %d", rect.right, rect.bottom);
                 }
+                ShowWindow(GetDlgItem(hwndDlg, ID_CHK_SAVE_PASS), SW_HIDE);
             }
             else if (param->flags & FLAG_PASS_TOKEN)
             {
@@ -887,11 +889,37 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 SetDlgItemText(hwndDlg,
                                ID_TXT_DESCRIPTION,
                                LoadLocalizedString(IDS_NFO_TOKEN_PASSWORD_REQUEST, param->id));
+
+                if (RecallSmartCardPin(param->c->config_name, password))
+                {
+                    SetDlgItemTextW(hwndDlg, ID_EDT_RESPONSE, password);
+                    Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
+                    lenableOKBtn = TRUE;
+
+                    if (password[0] != L'\0' && param->c->failed_auth_attempts == 0)
+                    {
+                        /* smart card pin available: skip dialog
+                        * if silent_connection is on, else auto submit after a few seconds.
+                        * User can interrupt.
+                        */
+                        SetFocus(GetDlgItem(hwndDlg, IDOK));
+                        UINT timeout = o.silent_connection ? 0 : 6; /* in seconds */
+                        AutoCloseSetup(hwndDlg, IDOK, timeout, ID_TXT_WARNING, IDS_NFO_AUTO_CONNECT);
+                    }
+                    else if (param->c->failed_auth_attempts)
+                    {
+                        SendMessage(
+                            GetDlgItem(hwndDlg, ID_EDT_RESPONSE), EM_SETSEL, 0, MAKELONG(0, -1));
+                    }
+
+                    SecureZeroMemory(password, sizeof(password));
+                }
             }
             else
             {
                 WriteStatusLog(param->c, L"GUI> ", L"Unknown password request", false);
                 SetDlgItemText(hwndDlg, ID_TXT_DESCRIPTION, wstr);
+                ShowWindow(GetDlgItem(hwndDlg, ID_CHK_SAVE_PASS), SW_HIDE);
             }
             free(wstr);
 
@@ -916,7 +944,7 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             else
             {
                 /* disable OK button until response is filled-in */
-                EnableWindow(GetDlgItem(hwndDlg, IDOK), FALSE);
+                EnableWindow(GetDlgItem(hwndDlg, IDOK), lenableOKBtn);
                 ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_RESPONSE),
                                     GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL),
                                     0);
@@ -931,7 +959,7 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             switch (LOWORD(wParam))
             {
                 case ID_EDT_RESPONSE:
-                    if (!(param->flags & FLAG_CR_ECHO))
+                    if (!(param->flags & FLAG_CR_ECHO) && HIWORD(wParam) != EN_KILLFOCUS)
                     {
                         ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_RESPONSE),
                                             GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL),
@@ -944,6 +972,19 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                         EnableWindow(GetDlgItem(hwndDlg, IDOK), enableOK);
                     }
                     break;
+
+                case ID_CHK_SAVE_PASS:
+                    param->c->flags ^= FLAG_SAVE_AUTH_PASS;
+                    if (param->c->flags & FLAG_SAVE_AUTH_PASS)
+                    {
+                        Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
+                    }
+                    else
+                    {
+                        DeleteSavedSmartCardPin(param->c->config_name);
+                        Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SAVE_PASS), BST_UNCHECKED);
+                    }
+                    break; 
 
                 case IDOK:
                     if (GetDlgItemTextW(hwndDlg, ID_EDT_RESPONSE, password, _countof(password))
@@ -1001,6 +1042,11 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                         PrintDebug(L"Send passwd to mgmt with format: '%hs'", fmt);
                         ManagementCommandFromInput(param->c, fmt, hwndDlg, ID_EDT_RESPONSE);
                         free(fmt);
+
+                        if (param->flags & FLAG_PASS_TOKEN && param->c->flags & FLAG_SAVE_AUTH_PASS)
+                        {
+                            SaveSmartCardPin(param->c->config_name, password);
+                        }
                     }
                     else /* no memory? send stop signal */
                     {

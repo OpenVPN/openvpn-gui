@@ -129,6 +129,13 @@ SaveAuthPass(UNUSED const WCHAR *config_name, UNUSED const WCHAR *password)
 {
     return 1;
 }
+
+int
+SaveSmartCardPin(UNUSED const WCHAR *config_name, UNUSED const WCHAR *username)
+{
+    return 1;
+}
+
 int
 SaveUsername(UNUSED const WCHAR *config_name, UNUSED const WCHAR *username)
 {
@@ -151,8 +158,20 @@ RecallUsername(UNUSED const WCHAR *config_name, UNUSED WCHAR *username)
     return 0;
 }
 
+int
+RecallSmartCardPin(UNUSED const WCHAR *config_name, UNUSED  WCHAR *pin)
+{
+    return 0;
+}
+
 void
 DeleteSavedAuthPass(UNUSED const WCHAR *config_name)
+{
+    return;
+}
+
+void
+DeleteSavedSmartCardPin(const WCHAR *config_name)
 {
     return;
 }
