@@ -104,8 +104,8 @@ BEGIN
     LTEXT "", ID_TXT_BYTECOUNT, 20, 175, 200, 10
     LTEXT "OpenVPN GUI 11.y.0.0/2.4.x", ID_TXT_VERSION, 220, 175, 150, 10
     LTEXT "", ID_TXT_IP, 20, 160, 300, 10
-    PUSHBUTTON "Déconnecter", ID_DISCONNECT, 50, 190, 50, 14
-    PUSHBUTTON "Reprendre", ID_RESTART, 150, 190, 50, 14
+    PUSHBUTTON "Se déconnecter", ID_DISCONNECT, 50, 190, 50, 14
+    PUSHBUTTON "Reconnexion", ID_RESTART, 150, 190, 50, 14
     PUSHBUTTON "Séparer", ID_DETACH, 180, 190, 50, 14, WS_DISABLED
     PUSHBUTTON "Fermer", ID_HIDE, 100, 190, 50, 14
 END
@@ -179,7 +179,7 @@ BEGIN
     AUTORADIOBUTTON "&Inactif", ID_RB_BALLOON5, 181, 200, 40, 10
     AUTOCHECKBOX "Activer le fournisseur d'&accès à la pré-ouverture de session", ID_CHK_PLAP_REG, 17, 215, 200, 10
     AUTOCHECKBOX "Activer le redémarrage auto des connexions activées", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
-    AUTOCHECKBOX "Prompt for &OTP and combine with password", ID_CHK_CONCAT_OTP, 17, 245, 200, 10
+    AUTOCHECKBOX "Demande d'OTP et combinaison avec le mot de passe", ID_CHK_CONCAT_OTP, 17, 245, 200, 10
 END
 
 /* Advanced Dialog */
@@ -301,7 +301,7 @@ BEGIN
     CONTROL "", ID_LVW_PKCS11, "SysListView32", LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP, 17, 25, 171,150
     PUSHBUTTON "&OK", IDOK, 20, 200, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP
     PUSHBUTTON "&Annuler", IDCANCEL, 90, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
-    PUSHBUTTON "&Recommencer", IDRETRY, 160, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "&Relancer", IDRETRY, 160, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
     LTEXT "", ID_TXT_WARNING, 6, 222, 190, 10
 END
 
@@ -312,7 +312,7 @@ FONT 8, "Segoe UI"
 LANGUAGE LANG_FRENCH, SUBLANG_DEFAULT
 BEGIN
     CONTROL "", ID_STATIC_QR, "Static", SS_BITMAP | WS_VISIBLE | SS_CENTERIMAGE, 0, 0, 10, 10
-    LTEXT "Scan this QR code on your mobile to proceed with authentication.", ID_TXT_QR, 0, 0, 10, 10, SS_CENTER | WS_VISIBLE | SS_EDITCONTROL
+    LTEXT "Scannez ce code QR sur votre téléphone portable pour procéder à l'authentification.", ID_TXT_QR, 0, 0, 10, 10, SS_CENTER | WS_VISIBLE | SS_EDITCONTROL
 END
 
 STRINGTABLE
@@ -332,9 +332,9 @@ BEGIN
     IDS_MENU_IMPORT_FILE "Importer fichier…"
     IDS_MENU_SETTINGS "Configuration…"
     IDS_MENU_CLOSE "Quitter"
-    IDS_MENU_CONNECT "Connecter"
-    IDS_MENU_DISCONNECT "Déconnecter"
-    IDS_MENU_RECONNECT "Reprendre"
+    IDS_MENU_CONNECT "Se connecter"
+    IDS_MENU_DISCONNECT "Se déconnecter"
+    IDS_MENU_RECONNECT "Reconnexion"
     IDS_MENU_STATUS "Afficher le statut"
     IDS_MENU_VIEWLOG "Voir le log"
     IDS_MENU_EDITCONFIG "Editer la configuration"
@@ -343,9 +343,9 @@ BEGIN
     IDS_MENU_SERVICE_START "Démarrer"
     IDS_MENU_SERVICE_STOP "Arrêter"
     IDS_MENU_SERVICE_RESTART "Redémarrer"
-    IDS_MENU_SERVICEONLY_START "Connecter"
-    IDS_MENU_SERVICEONLY_STOP "Déconnecter"
-    IDS_MENU_SERVICEONLY_RESTART "Reprendre"
+    IDS_MENU_SERVICEONLY_START "Se connecter"
+    IDS_MENU_SERVICEONLY_STOP "Se déconnecter"
+    IDS_MENU_SERVICEONLY_RESTART "Reconnexion"
     IDS_MENU_ASK_STOP_SERVICE "Voulez-vous vous déconnecter (arrêter le service OpenVPN) ?"
 
     /* Logviewer - Resources */
@@ -388,8 +388,8 @@ Veuillez compléter la boîte de dialogue d'autorisation précédente."
     IDS_ERR_CERT_EXPIRED "Connexion impossible car votre certificat a expiré ou la date de votre système est incorrecte."
     IDS_ERR_CERT_NOT_YET_VALID "Connexion impossible car votre certificat n'est plus valide. Véfifiez que la date de votre système est correcte."
     IDS_NFO_STATE_RECONNECTING "Etat actuel: Reconnexion"
-    IDS_NFO_STATE_DISCONNECTED "Etat actuel: Deconnecté"
-    IDS_NFO_CONN_TERMINATED "La Connexion à %ls était terminée."
+    IDS_NFO_STATE_DISCONNECTED "Etat actuel: Déconnecté"
+    IDS_NFO_CONN_TERMINATED "La connexion à %ls était terminée."
     IDS_NFO_STATE_FAILED "Etat actuel: connexion échouée"
     IDS_NFO_CONN_FAILED "La connexion à %ls a échouée."
     IDS_NFO_STATE_FAILED_RECONN "Etat actuel: Reconnexion échouée"
@@ -571,7 +571,7 @@ en tant qu'Administrator pour mettre à jour la base de registre."
     IDS_NFO_AUTO_CONNECT    "Connecter automatiquement dans %u secondes…"
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI est déjà en cours d'exécution. Faites un clic droit sur l'icône de la barre d'état pour commencer."
     IDS_NFO_BYTECOUNT "Octets entrants : %ls sortants : %ls"
-    IDS_NFO_OTP_PROMPT "Input OTP or passcode"
+    IDS_NFO_OTP_PROMPT "Saisir l'OTP ou le code d'accès"
 
     /* AS profile import */
     IDS_ERR_URL_IMPORT_PROFILE "Erreur lors de la récupération du profil à partir de l'URL: [%d] %ls"
