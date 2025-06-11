@@ -890,29 +890,36 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                                ID_TXT_DESCRIPTION,
                                LoadLocalizedString(IDS_NFO_TOKEN_PASSWORD_REQUEST, param->id));
 
-                if (RecallSmartCardPin(param->c->config_name, password))
+                if (param->c->flags & FLAG_DISABLE_SAVE_PASS) 
                 {
-                    SetDlgItemTextW(hwndDlg, ID_EDT_RESPONSE, password);
-                    Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
-                    lenableOKBtn = TRUE;
-
-                    if (password[0] != L'\0' && param->c->failed_auth_attempts == 0)
+                    ShowWindow(GetDlgItem(hwndDlg, ID_CHK_SAVE_PASS), SW_HIDE);
+                }
+                else
+                {
+                    if (RecallSmartCardPin(param->c->config_name, password))
                     {
-                        /* smart card pin available: skip dialog
-                        * if silent_connection is on, else auto submit after a few seconds.
-                        * User can interrupt.
-                        */
-                        SetFocus(GetDlgItem(hwndDlg, IDOK));
-                        UINT timeout = o.silent_connection ? 0 : 6; /* in seconds */
-                        AutoCloseSetup(hwndDlg, IDOK, timeout, ID_TXT_WARNING, IDS_NFO_AUTO_CONNECT);
-                    }
-                    else if (param->c->failed_auth_attempts)
-                    {
-                        SendMessage(
-                            GetDlgItem(hwndDlg, ID_EDT_RESPONSE), EM_SETSEL, 0, MAKELONG(0, -1));
-                    }
+                        SetDlgItemTextW(hwndDlg, ID_EDT_RESPONSE, password);
+                        Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
+                        lenableOKBtn = TRUE;
 
-                    SecureZeroMemory(password, sizeof(password));
+                        if (password[0] != L'\0' && param->c->failed_auth_attempts == 0)
+                        {
+                            /* smart card pin available: skip dialog
+                            * if silent_connection is on, else auto submit after a few seconds.
+                            * User can interrupt.
+                            */
+                            SetFocus(GetDlgItem(hwndDlg, IDOK));
+                            UINT timeout = o.silent_connection ? 0 : 6; /* in seconds */
+                            AutoCloseSetup(hwndDlg, IDOK, timeout, ID_TXT_WARNING, IDS_NFO_AUTO_CONNECT);
+                        }
+                        else if (param->c->failed_auth_attempts)
+                        {
+                            SendMessage(
+                                GetDlgItem(hwndDlg, ID_EDT_RESPONSE), EM_SETSEL, 0, MAKELONG(0, -1));
+                        }
+
+                        SecureZeroMemory(password, sizeof(password));
+                    }
                 }
             }
             else
@@ -974,8 +981,8 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                     break;
 
                 case ID_CHK_SAVE_PASS:
-                    param->c->flags ^= FLAG_SAVE_AUTH_PASS;
-                    if (param->c->flags & FLAG_SAVE_AUTH_PASS)
+                    param->c->flags ^= FLAG_SAVE_KEY_PASS;
+                    if (param->c->flags & FLAG_SAVE_KEY_PASS)
                     {
                         Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
                     }
@@ -1043,7 +1050,7 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                         ManagementCommandFromInput(param->c, fmt, hwndDlg, ID_EDT_RESPONSE);
                         free(fmt);
 
-                        if (param->flags & FLAG_PASS_TOKEN && param->c->flags & FLAG_SAVE_AUTH_PASS)
+                        if (param->flags & FLAG_PASS_TOKEN && param->c->flags & FLAG_SAVE_KEY_PASS)
                         {
                             SaveSmartCardPin(param->c->config_name, password);
                         }
