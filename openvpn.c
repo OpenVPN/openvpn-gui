@@ -843,7 +843,6 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
         case WM_INITDIALOG:
             param = (auth_param_t *)lParam;
             TRY_SETPROP(hwndDlg, cfgProp, (HANDLE)param);
-            BOOL lenableOKBtn = FALSE;
 
             WCHAR *wstr = Widen(param->str);
             if (!wstr)
@@ -978,7 +977,7 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             else
             {
                 /* disable OK button until response is filled-in */
-                EnableWindow(GetDlgItem(hwndDlg, IDOK), lenableOKBtn);
+                EnableWindow(GetDlgItem(hwndDlg, IDOK), FALSE);
                 ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_RESPONSE),
                                     GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL),
                                     0);
