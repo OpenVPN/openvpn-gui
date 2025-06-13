@@ -856,7 +856,6 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             if (param->flags & FLAG_CR_TYPE_CRV1 || param->flags & FLAG_CR_TYPE_CRTEXT)
             {
                 SetDlgItemTextW(hwndDlg, ID_TXT_DESCRIPTION, wstr);
-                SetDlgItemTextW(hwndDlg, ID_TXT_WARNING, NULL);
 
                 /* Set password echo on if needed */
                 if (param->flags & FLAG_CR_ECHO)
@@ -903,15 +902,27 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                         {
                             SetDlgItemTextW(hwndDlg, ID_EDT_RESPONSE, password);
                             Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
-                            lenableOKBtn = TRUE;
 
-                            /* smart card pin available: skip dialog
-                            * if silent_connection is on, else auto submit after a few seconds.
-                            * User can interrupt.
-                            */
-                            SetFocus(GetDlgItem(hwndDlg, IDOK));
-                            UINT timeout = o.silent_connection ? 0 : 6; /* in seconds */
-                            AutoCloseSetup(hwndDlg, IDOK, timeout, ID_TXT_WARNING, IDS_NFO_AUTO_CONNECT);
+                            const char * template = "password \"%s\" \"%%s\"";
+                            char* fmt = malloc(strlen(template) + strlen(param->id));
+                            if (fmt)
+                            {
+                                sprintf(fmt, template, param->id);
+                                PrintDebug(L"Send passwd to mgmt with format: '%hs'", fmt);
+                                ManagementCommandFromInput(param->c, fmt, hwndDlg, ID_EDT_RESPONSE);
+                                free(fmt);
+
+                                EndDialog(hwndDlg, IDOK);
+                                return TRUE;
+                            }
+                            else /* no memory? send stop signal */
+                            {
+                                WriteStatusLog(param->c,
+                                            L"GUI> ",
+                                            L"Out of memory in password dialog: sending stop signal",
+                                            false);
+                                StopOpenVPN(param->c);
+                            }
                         } 
                         else if (param->c->failed_auth_attempts > 0)
                         {
@@ -920,6 +931,18 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
                             SetDlgItemTextW(
                                 hwndDlg, ID_TXT_WARNING, LoadLocalizedString(IDS_NFO_KEY_PASS_RETRY));
+
+                            // Extend window size for Warning
+                            RECT rect = { 0 };
+                            GetWindowRect(hwndDlg, &rect);
+                            rect.right -= rect.left;
+                            rect.bottom -= rect.top;
+
+                            HWND warningText = GetDlgItem(hwndDlg, ID_TXT_WARNING);
+                            RECT warningRect = { 0 };
+                            GetWindowRect(warningText, &warningRect);
+
+                            SetWindowPos(hwndDlg, NULL, 0, 0, rect.right, rect.bottom + warningRect.bottom - warningRect.top + DPI_SCALE(4), SWP_NOMOVE);
                         }
 
                         SecureZeroMemory(password, sizeof(password));
