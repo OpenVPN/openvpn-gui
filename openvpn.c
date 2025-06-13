@@ -856,6 +856,7 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             if (param->flags & FLAG_CR_TYPE_CRV1 || param->flags & FLAG_CR_TYPE_CRTEXT)
             {
                 SetDlgItemTextW(hwndDlg, ID_TXT_DESCRIPTION, wstr);
+                SetDlgItemTextW(hwndDlg, ID_TXT_WARNING, NULL);
 
                 /* Set password echo on if needed */
                 if (param->flags & FLAG_CR_ECHO)
@@ -898,12 +899,12 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 {
                     if (RecallSmartCardPin(param->c->config_name, password))
                     {
-                        SetDlgItemTextW(hwndDlg, ID_EDT_RESPONSE, password);
-                        Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
-                        lenableOKBtn = TRUE;
-
                         if (password[0] != L'\0' && param->c->failed_auth_attempts == 0)
                         {
+                            SetDlgItemTextW(hwndDlg, ID_EDT_RESPONSE, password);
+                            Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
+                            lenableOKBtn = TRUE;
+
                             /* smart card pin available: skip dialog
                             * if silent_connection is on, else auto submit after a few seconds.
                             * User can interrupt.
@@ -911,11 +912,14 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                             SetFocus(GetDlgItem(hwndDlg, IDOK));
                             UINT timeout = o.silent_connection ? 0 : 6; /* in seconds */
                             AutoCloseSetup(hwndDlg, IDOK, timeout, ID_TXT_WARNING, IDS_NFO_AUTO_CONNECT);
-                        }
-                        else if (param->c->failed_auth_attempts)
+                        } 
+                        else if (param->c->failed_auth_attempts > 0)
                         {
                             SendMessage(
                                 GetDlgItem(hwndDlg, ID_EDT_RESPONSE), EM_SETSEL, 0, MAKELONG(0, -1));
+
+                            SetDlgItemTextW(
+                                hwndDlg, ID_TXT_WARNING, LoadLocalizedString(IDS_NFO_KEY_PASS_RETRY));
                         }
 
                         SecureZeroMemory(password, sizeof(password));
