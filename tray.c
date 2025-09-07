@@ -427,17 +427,20 @@ PositionTrayToolTip(LONG x, LONG y)
  * Handle mouse clicks on tray icon
  */
 void
-OnNotifyTray(LPARAM lParam)
+OnNotifyTray(WPARAM wParam, LPARAM lParam)
 {
     POINT pt;
 
     /* Use LOWORD(lParam)  as HIWORD() contains the icon id if uVersion >= 4 */
     switch (LOWORD(lParam))
     {
-        case WM_RBUTTONUP:
+        case WM_CONTEXTMENU:
             RecreatePopupMenus();
+            /* wParam contains the upper left corner of the anchor point */
 
-            GetCursorPos(&pt);
+            pt.x = (int)LOWORD(wParam);
+            pt.y = (int)HIWORD(wParam);
+
             SetForegroundWindow(o.hWnd);
             TrackPopupMenu(hMenu, TPM_RIGHTALIGN, pt.x, pt.y, 0, o.hWnd, NULL);
             PostMessage(o.hWnd, WM_NULL, 0, 0);
