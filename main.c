@@ -513,7 +513,7 @@ HandleCopyDataMessage(const COPYDATASTRUCT *copy_data)
     }
     else if (copy_data->dwData == WM_OVPN_RESCAN)
     {
-        OnNotifyTray(WM_OVPN_RESCAN);
+        OnNotifyTray(0, WM_OVPN_RESCAN);
     }
     else
     {
@@ -653,7 +653,7 @@ WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_NOTIFYICONTRAY:
-            OnNotifyTray(lParam); /* Manages message from tray */
+            OnNotifyTray(wParam, lParam); /* Manages message from tray */
             break;
 
         case WM_COPYDATA: /* custom messages with data from other processes */
