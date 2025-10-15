@@ -35,6 +35,7 @@
 #define AUTH_PASS_DATA L"auth-data"
 #define ENTROPY_DATA   L"entropy"
 #define AUTH_USER_DATA L"username"
+#define AUTH_SMARTCARD_DATA L"auth-smartcard-pin"
 #define ENTROPY_LEN    16
 
 static DWORD
@@ -162,6 +163,12 @@ SaveAuthPass(const WCHAR *config_name, const WCHAR *password)
     return save_encrypted(config_name, password, AUTH_PASS_DATA);
 }
 
+int
+SaveSmartCardPin(const WCHAR *config_name, const WCHAR *pin)
+{
+    return save_encrypted(config_name, pin, AUTH_SMARTCARD_DATA);
+}
+
 /*
  * Returns 1 on success, 0 on failure. password should have space
  * for up to capacity wide chars incluing nul termination
@@ -231,12 +238,19 @@ RecallAuthPass(const WCHAR *config_name, WCHAR *password)
 }
 
 int
+RecallSmartCardPin(const WCHAR *config_name, WCHAR *pin)
+{
+    return recall_encrypted(config_name, pin, USER_PASS_LEN, AUTH_SMARTCARD_DATA);
+}
+
+int
 SaveUsername(const WCHAR *config_name, const WCHAR *username)
 {
     DWORD len = (wcslen(username) + 1) * sizeof(*username);
     SetConfigRegistryValueBinary(config_name, AUTH_USER_DATA, (BYTE *)username, len);
     return 1;
 }
+
 /*
  * The buffer username should be have space for up to USER_PASS_LEN
  * WCHARs including nul.
@@ -268,6 +282,12 @@ DeleteSavedAuthPass(const WCHAR *config_name)
     DeleteConfigRegistryValue(config_name, AUTH_PASS_DATA);
 }
 
+void
+DeleteSavedSmartCardPin(const WCHAR *config_name)
+{
+    DeleteConfigRegistryValue(config_name, AUTH_SMARTCARD_DATA);
+}
+
 /* delete saved config-specific auth password and private key passphrase */
 void
 DeleteSavedPasswords(const WCHAR *config_name)
@@ -275,6 +295,7 @@ DeleteSavedPasswords(const WCHAR *config_name)
     DeleteConfigRegistryValue(config_name, KEY_PASS_DATA);
     DeleteConfigRegistryValue(config_name, AUTH_PASS_DATA);
     DeleteConfigRegistryValue(config_name, ENTROPY_DATA);
+    DeleteConfigRegistryValue(config_name, AUTH_SMARTCARD_DATA);
 }
 
 /* check if auth password is saved */

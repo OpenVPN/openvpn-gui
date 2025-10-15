@@ -31,15 +31,21 @@ int SaveKeyPass(const WCHAR *config_name, const WCHAR *password);
 
 int SaveAuthPass(const WCHAR *config_name, const WCHAR *password);
 
+int SaveSmartCardPin(const WCHAR *config_name, const WCHAR *pin);
+
 int SaveUsername(const WCHAR *config_name, const WCHAR *username);
 
 int RecallKeyPass(const WCHAR *config_name, WCHAR *password);
 
 int RecallAuthPass(const WCHAR *config_name, WCHAR *password);
 
+int RecallSmartCardPin(const WCHAR *config_name, WCHAR *pin);
+
 int RecallUsername(const WCHAR *config_name, WCHAR *username);
 
 void DeleteSavedAuthPass(const WCHAR *config_name);
+
+void DeleteSavedSmartCardPin(const WCHAR *config_name);
 
 void DeleteSavedKeyPass(const WCHAR *config_name);
 

@@ -880,6 +880,7 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                     SetWindowPos(hwndDlg, NULL, 0, 0, rect.right, rect.bottom, SWP_NOMOVE);
                     PrintDebug(L"Window resized to = %d %d", rect.right, rect.bottom);
                 }
+                ShowWindow(GetDlgItem(hwndDlg, ID_CHK_SAVE_PASS), SW_HIDE);
             }
             else if (param->flags & FLAG_PASS_TOKEN)
             {
@@ -887,11 +888,71 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                 SetDlgItemText(hwndDlg,
                                ID_TXT_DESCRIPTION,
                                LoadLocalizedString(IDS_NFO_TOKEN_PASSWORD_REQUEST, param->id));
+
+                if (param->c->flags & FLAG_DISABLE_SAVE_PASS) 
+                {
+                    ShowWindow(GetDlgItem(hwndDlg, ID_CHK_SAVE_PASS), SW_HIDE);
+                }
+                else
+                {
+                    if (RecallSmartCardPin(param->c->config_name, password))
+                    {
+                        if (password[0] != L'\0' && param->c->failed_auth_attempts == 0)
+                        {
+                            SetDlgItemTextW(hwndDlg, ID_EDT_RESPONSE, password);
+                            Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
+
+                            const char * template = "password \"%s\" \"%%s\"";
+                            char* fmt = malloc(strlen(template) + strlen(param->id));
+                            if (fmt)
+                            {
+                                sprintf(fmt, template, param->id);
+                                PrintDebug(L"Send passwd to mgmt with format: '%hs'", fmt);
+                                ManagementCommandFromInput(param->c, fmt, hwndDlg, ID_EDT_RESPONSE);
+                                free(fmt);
+
+                                EndDialog(hwndDlg, IDOK);
+                                return TRUE;
+                            }
+                            else /* no memory? send stop signal */
+                            {
+                                WriteStatusLog(param->c,
+                                            L"GUI> ",
+                                            L"Out of memory in password dialog: sending stop signal",
+                                            false);
+                                StopOpenVPN(param->c);
+                            }
+                        } 
+                        else if (param->c->failed_auth_attempts > 0)
+                        {
+                            SendMessage(
+                                GetDlgItem(hwndDlg, ID_EDT_RESPONSE), EM_SETSEL, 0, MAKELONG(0, -1));
+
+                            SetDlgItemTextW(
+                                hwndDlg, ID_TXT_WARNING, LoadLocalizedString(IDS_NFO_KEY_PASS_RETRY));
+
+                            // Extend window size for Warning
+                            RECT rect = { 0 };
+                            GetWindowRect(hwndDlg, &rect);
+                            rect.right -= rect.left;
+                            rect.bottom -= rect.top;
+
+                            HWND warningText = GetDlgItem(hwndDlg, ID_TXT_WARNING);
+                            RECT warningRect = { 0 };
+                            GetWindowRect(warningText, &warningRect);
+
+                            SetWindowPos(hwndDlg, NULL, 0, 0, rect.right, rect.bottom + warningRect.bottom - warningRect.top + DPI_SCALE(4), SWP_NOMOVE);
+                        }
+
+                        SecureZeroMemory(password, sizeof(password));
+                    }
+                }
             }
             else
             {
                 WriteStatusLog(param->c, L"GUI> ", L"Unknown password request", false);
                 SetDlgItemText(hwndDlg, ID_TXT_DESCRIPTION, wstr);
+                ShowWindow(GetDlgItem(hwndDlg, ID_CHK_SAVE_PASS), SW_HIDE);
             }
             free(wstr);
 
@@ -931,7 +992,7 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             switch (LOWORD(wParam))
             {
                 case ID_EDT_RESPONSE:
-                    if (!(param->flags & FLAG_CR_ECHO))
+                    if (!(param->flags & FLAG_CR_ECHO) && HIWORD(wParam) != EN_KILLFOCUS)
                     {
                         ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_RESPONSE),
                                             GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL),
@@ -944,6 +1005,19 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                         EnableWindow(GetDlgItem(hwndDlg, IDOK), enableOK);
                     }
                     break;
+
+                case ID_CHK_SAVE_PASS:
+                    param->c->flags ^= FLAG_SAVE_KEY_PASS;
+                    if (param->c->flags & FLAG_SAVE_KEY_PASS)
+                    {
+                        Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SAVE_PASS), BST_CHECKED);
+                    }
+                    else
+                    {
+                        DeleteSavedSmartCardPin(param->c->config_name);
+                        Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SAVE_PASS), BST_UNCHECKED);
+                    }
+                    break; 
 
                 case IDOK:
                     if (GetDlgItemTextW(hwndDlg, ID_EDT_RESPONSE, password, _countof(password))
@@ -1001,6 +1075,11 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                         PrintDebug(L"Send passwd to mgmt with format: '%hs'", fmt);
                         ManagementCommandFromInput(param->c, fmt, hwndDlg, ID_EDT_RESPONSE);
                         free(fmt);
+
+                        if (param->flags & FLAG_PASS_TOKEN && param->c->flags & FLAG_SAVE_KEY_PASS)
+                        {
+                            SaveSmartCardPin(param->c->config_name, password);
+                        }
                     }
                     else /* no memory? send stop signal */
                     {
