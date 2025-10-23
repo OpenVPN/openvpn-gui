@@ -966,7 +966,7 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                         /* send username */
                         template = "username \"Auth\" \"%s\"";
                         char *username = escape_string(param->user);
-                        fmt = malloc(strlen(template) + strlen(username));
+                        fmt = malloc(strlen(template) + strlen(username) + 1);
 
                         if (fmt && username)
                         {
@@ -2188,7 +2188,7 @@ OnNeedOk(connection_t *c, char *msg)
     }
 
     /* allocate space for response : "needok param->id cancel/ok" */
-    resp = malloc(strlen(param->id) + strlen("needok \' \' cancel"));
+    resp = malloc(strlen(param->id) + strlen("needok \' \' cancel") + 1);
     wstr = Widen(param->str);
 
     if (!wstr || !resp)
