@@ -1584,6 +1584,21 @@ OnTimeout(connection_t *c, UNUSED char *msg)
     return;
 }
 
+/* Handle daemon validation request from manage.c -- called after FD_CONNECT */
+void
+OnMgmtValidate(connection_t *c, UNUSED char *msg)
+{
+    /* check the process we have connected to via the management port*/
+    if (!ValidateManagementDaemon(c))
+    {
+        /* clear sensitive data and close the management port right away */
+        SecureZeroMemory(c->manage.password, sizeof(c->manage.password));
+        CloseManagement(c);
+        StopOpenVPN(c);
+    }
+}
+
+
 /*
  * Handle exit of the OpenVPN process
  */

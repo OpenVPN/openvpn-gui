@@ -70,7 +70,9 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Comdlg32.lib
     Ole32.lib
     Cryptui.lib
-    Wininet.lib)
+    Wininet.lib
+    Iphlpapi.lib
+    Ntdll.lib)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
@@ -141,7 +143,9 @@ target_link_libraries(${PROJECT_NAME_PLAP} PRIVATE
     Secur32.lib
     Gdi32.lib
     Cryptui.lib
-    Rpcrt4.lib)
+    Rpcrt4.lib
+    Iphlpapi.lib
+    Ntdll.lib)
 
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /MANIFEST:NO")
 target_include_directories(${PROJECT_NAME_PLAP} PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR})
