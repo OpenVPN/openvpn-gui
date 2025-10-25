@@ -75,6 +75,20 @@ static BOOL LaunchOpenVPN(connection_t *c);
 
 const TCHAR *cfgProp = _T("conn");
 
+/* Replace excluded characters by specified one */
+static void
+string_mod(char *in, const char *exclude, char replace)
+{
+    while (*in)
+    {
+        if (strchr(exclude, *in))
+        {
+            *in = replace;
+        }
+        in++;
+    }
+}
+
 void
 free_auth_param(auth_param_t *param)
 {
@@ -997,6 +1011,7 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                     fmt = malloc(strlen(template) + strlen(param->id));
                     if (fmt)
                     {
+                        string_mod(param->id, "%", '_');
                         sprintf(fmt, template, param->id);
                         PrintDebug(L"Send passwd to mgmt with format: '%hs'", fmt);
                         ManagementCommandFromInput(param->c, fmt, hwndDlg, ID_EDT_RESPONSE);
