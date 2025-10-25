@@ -743,7 +743,7 @@ md_final(md_ctx *ctx, BYTE *md)
 BOOL
 open_url(const wchar_t *url)
 {
-    if (!url || !wcsbegins(url, L"http"))
+    if (!url || (!wcsbegins(url, L"http://") && !wcsbegins(url, L"https://")))
     {
         return false;
     }
