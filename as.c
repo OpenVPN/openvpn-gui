@@ -660,6 +660,11 @@ again:
         MessageBoxW(hWnd, L"Failed to get TMP path", _T(PACKAGE_NAME), MB_OK);
         goto done;
     }
+    if (out_path_size < (wcslen(out_path) + wcslen(name) + 1))
+    {
+        MessageBoxW(hWnd, L"Profile name is too long", _T(PACKAGE_NAME), MB_OK | MB_ICONERROR);
+        goto done;
+    }
     swprintf(out_path, out_path_size, L"%ls%ls", out_path, name);
     out_path[out_path_size - 1] = '\0';
     FILE *f;
