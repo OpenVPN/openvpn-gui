@@ -39,19 +39,35 @@
 #define PROFILE_NAME_TOKEN  L"# OVPN_ACCESS_SERVER_PROFILE="
 #define FRIENDLY_NAME_TOKEN L"# OVPN_ACCESS_SERVER_FRIENDLY_NAME="
 
-/** Replace characters not allowed in Windows filenames with '_' */
+/** Replace characters not allowed in Windows filenames with '_'
+ *  and replace special names with "TMP"
+ */
 void
-SanitizeFilename(wchar_t *fname)
+SanitizeFilename(wchar_t *fname, size_t name_length)
 {
     const wchar_t *reserved = L"<>:\"/\\|?*;"; /* remap these and ascii 1 to 31 */
-    while (*fname)
+    wchar_t *p = fname;
+    while (*p)
     {
-        wchar_t c = *fname;
+        wchar_t c = *p;
         if (c < 32 || wcschr(reserved, c))
         {
-            *fname = L'_';
+            *p = L'_';
         }
-        ++fname;
+        ++p;
+    }
+    /* Also disallow reserved names */
+    const wchar_t *special[] = { L"CON",  L"PRN",  L"AUX",  L"NUL",  L"COM1", L"COM2",
+                                 L"COM3", L"COM4", L"COM5", L"COM6", L"COM7", L"COM8",
+                                 L"COM9", L"LPT1", L"LPT2", L"LPT3", L"LPT4", L"LPT5",
+                                 L"LPT6", L"LPT7", L"LPT8", L"LPT9" };
+
+    for (DWORD i = 0; i < _countof(special); i++)
+    {
+        if (wcscmp(fname, special[i]) == 0)
+        {
+            wcsncpy_s(fname, name_length, L"TMP", _TRUNCATE);
+        }
     }
 }
 
@@ -117,7 +133,7 @@ ExtractProfileName(const WCHAR *profile,
 
     out_name[out_name_length - 1] = L'\0';
 
-    SanitizeFilename(out_name);
+    SanitizeFilename(out_name, out_name_length);
 
     free(buf);
 }
@@ -424,7 +440,7 @@ ExtractFilenameFromHeader(HINTERNET hRequest, wchar_t *name, size_t len)
         }
     }
 
-    SanitizeFilename(name);
+    SanitizeFilename(name, len);
 
 done:
     free(buf);
