@@ -192,4 +192,10 @@ void ChangePasswordVisibility(HWND edit, HWND btn, WPARAM wParam);
  */
 bool IsSamePath(const wchar_t *path1, const wchar_t *path2);
 
+/**
+ * Check that the process listening at management port is
+ * openvpn.exe as defined in o.exe_path. Returns true on success.
+ */
+bool ValidateManagementDaemon(connection_t *c);
+
 #endif /* ifndef MISC_H */

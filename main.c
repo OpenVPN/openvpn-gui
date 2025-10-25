@@ -184,13 +184,21 @@ _tWinMain(HINSTANCE hThisInstance,
     }
 
     /* Initialize handlers for manangement interface notifications */
-    mgmt_rtmsg_handler handler[] = { { ready_, OnReady },         { hold_, OnHold },
-                                     { log_, OnLogLine },         { state_, OnStateChange },
-                                     { password_, OnPassword },   { proxy_, OnProxy },
-                                     { stop_, OnStop },           { needok_, OnNeedOk },
-                                     { needstr_, OnNeedStr },     { echo_, OnEcho },
-                                     { bytecount_, OnByteCount }, { infomsg_, OnInfoMsg },
-                                     { timeout_, OnTimeout },     { 0, NULL } };
+    mgmt_rtmsg_handler handler[] = { { ready_, OnReady },
+                                     { hold_, OnHold },
+                                     { log_, OnLogLine },
+                                     { state_, OnStateChange },
+                                     { password_, OnPassword },
+                                     { proxy_, OnProxy },
+                                     { stop_, OnStop },
+                                     { needok_, OnNeedOk },
+                                     { needstr_, OnNeedStr },
+                                     { echo_, OnEcho },
+                                     { bytecount_, OnByteCount },
+                                     { infomsg_, OnInfoMsg },
+                                     { timeout_, OnTimeout },
+                                     { validate_, OnMgmtValidate },
+                                     { 0, NULL } };
     InitManagement(handler);
 
     /* initialize options to default state */

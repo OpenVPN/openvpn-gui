@@ -75,6 +75,8 @@ void OnInfoMsg(connection_t *, char *);
 
 void OnTimeout(connection_t *, char *);
 
+void OnMgmtValidate(connection_t *, char *);
+
 void ResetSavePasswords(connection_t *);
 
 extern const TCHAR *cfgProp;

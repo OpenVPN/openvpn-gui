@@ -250,6 +250,10 @@ OnManagement(SOCKET sk, LPARAM lParam)
             else
             {
                 c->manage.connected = 1;
+                if (rtmsg_handler[validate_])
+                {
+                    rtmsg_handler[validate_](c, "");
+                }
             }
             break;
 

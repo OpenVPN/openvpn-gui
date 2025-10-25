@@ -32,6 +32,8 @@
 #include <shellapi.h>
 #include <ws2tcpip.h>
 #include <shlwapi.h>
+#include <iphlpapi.h>
+#include <winternl.h>
 
 #include "localization.h"
 #include "options.h"
@@ -1335,4 +1337,132 @@ IsSamePath(const wchar_t *path1, const wchar_t *path2)
     }
 
     return ret;
+}
+
+/* Find pid of process listening on a TCP port. Returns 0 on error */
+static DWORD
+find_listening_pid(DWORD port)
+{
+    PMIB_TCPTABLE_OWNER_PID pTable = NULL;
+    DWORD size = 0;
+    DWORD result =
+        GetExtendedTcpTable(NULL, &size, FALSE, AF_INET, TCP_TABLE_OWNER_PID_LISTENER, 0);
+
+    if (result != ERROR_INSUFFICIENT_BUFFER)
+    {
+        return 0;
+    }
+
+    pTable = (PMIB_TCPTABLE_OWNER_PID)malloc(size);
+    if (!pTable)
+    {
+        return 0;
+    }
+    if (GetExtendedTcpTable(pTable, &size, FALSE, AF_INET, TCP_TABLE_OWNER_PID_LISTENER, 0)
+        != NO_ERROR)
+    {
+        free(pTable);
+        return 0;
+    }
+
+    DWORD pid = 0;
+    for (DWORD i = 0; i < pTable->dwNumEntries; i++)
+    {
+        DWORD localPort = ntohs((u_short)pTable->table[i].dwLocalPort);
+        if (localPort == port)
+        {
+            pid = pTable->table[i].dwOwningPid;
+            break;
+        }
+    }
+
+    free(pTable);
+    return pid;
+}
+
+/* Find the process image name given pid. name should have space
+ * for max_chars wide characters.
+ */
+static bool
+imagename_from_pid(DWORD pid, wchar_t *name, DWORD max_chars)
+{
+    /* Using undocumented API (vista and later).
+     * See https://www.geoffchappell.com/studies/windows/km/ntoskrnl/api/ex/sysinfo/query.htm
+     */
+    struct SYSTEM_PROCESS_ID_INFORMATION
+    {
+        PVOID ProcessId;
+        UNICODE_STRING ImageName;
+    } pinfo;
+
+    SYSTEM_INFORMATION_CLASS pinfo_class = 0x58; /* for querying SYSTEM_PROCESS_ID_INFORMATION */
+
+    pinfo.ProcessId = (PVOID)(UINT_PTR)pid;
+    pinfo.ImageName.Length = 0;
+    pinfo.ImageName.MaximumLength = (USHORT)max_chars;
+    pinfo.ImageName.Buffer = name;
+
+    NTSTATUS res = NtQuerySystemInformation(pinfo_class, &pinfo, sizeof(pinfo), NULL);
+
+    if (!NT_SUCCESS(res))
+    {
+        MsgToEventLog(EVENTLOG_WARNING_TYPE,
+                      L"Error querying process information for pid = %lu (error = %lu)",
+                      pid,
+                      RtlNtStatusToDosError(res));
+        return false;
+    }
+    /* Null terminate the result */
+    if (pinfo.ImageName.Length < (USHORT)max_chars)
+    {
+        name[pinfo.ImageName.Length] = L'\0';
+    }
+    else if (max_chars > 0)
+    {
+        name[max_chars - 1] = L'\0';
+    }
+    return true;
+}
+
+/* check the process listening on management port is legit openvpn.exe */
+bool
+ValidateManagementDaemon(connection_t *c)
+{
+    wchar_t nt_path[MAX_PATH];
+
+    DWORD port = ntohs(c->manage.skaddr.sin_port);
+    DWORD pid = find_listening_pid(port);
+
+    if (pid == 0)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                      L"Failed to get pid of process listening on management port <%lu>",
+                      port);
+        return false;
+    }
+
+    BOOL res = imagename_from_pid(pid, nt_path, _countof(nt_path));
+    if (!res)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                      L"Failed to get management daemon image name (error = %lu)",
+                      GetLastError());
+        return res;
+    }
+
+    /* imagename_from_pid() uses NtQuery.. which returns an NT path of the form
+     * \Device\HardDisk\Volume2... instead of a drive letter or UNC path.
+     * Convert this nt_path to a form that could be passed to win32 API
+     */
+    wchar_t win32_path[MAX_PATH];
+    swprintf(win32_path, _countof(win32_path), L"%ls%ls", L"\\\\?\\GLOBALROOT", nt_path);
+
+    res = IsSamePath(win32_path, o.exe_path);
+    if (!res)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                      L"Unknown process listening on management port (<%ls>)",
+                      win32_path);
+    }
+    return res;
 }
