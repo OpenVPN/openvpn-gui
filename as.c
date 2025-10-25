@@ -133,8 +133,12 @@ ShowWinInetError(HANDLE hWnd)
                    err,
                    _countof(err),
                    NULL);
-    ShowLocalizedMsgEx(
-        MB_OK, hWnd, _T(PACKAGE_NAME), IDS_ERR_URL_IMPORT_PROFILE, GetLastError(), err);
+    ShowLocalizedMsgEx(MB_OK | MB_ICONERROR,
+                       hWnd,
+                       _T(PACKAGE_NAME),
+                       IDS_ERR_URL_IMPORT_PROFILE,
+                       GetLastError(),
+                       err);
 }
 
 struct UrlComponents
@@ -208,7 +212,7 @@ DownloadProfileContent(HANDLE hWnd, HINTERNET hRequest, char **pbuf, size_t *psi
     char *buf = *pbuf;
     if (buf == NULL)
     {
-        MessageBoxW(hWnd, L"Out of memory", _T(PACKAGE_NAME), MB_OK);
+        MessageBoxW(hWnd, L"Out of memory", _T(PACKAGE_NAME), MB_OK | MB_ICONERROR);
         return FALSE;
     }
     while (true)
@@ -235,7 +239,7 @@ DownloadProfileContent(HANDLE hWnd, HINTERNET hRequest, char **pbuf, size_t *psi
             if (!*pbuf)
             {
                 free(buf);
-                MessageBoxW(hWnd, L"Out of memory", _T(PACKAGE_NAME), MB_OK);
+                MessageBoxW(hWnd, L"Out of memory", _T(PACKAGE_NAME), MB_OK | MB_ICONERROR);
                 return FALSE;
             }
             buf = *pbuf;
@@ -614,8 +618,12 @@ again:
 
     if (status_code != 200)
     {
-        ShowLocalizedMsgEx(
-            MB_OK, hWnd, _T(PACKAGE_NAME), IDS_ERR_URL_IMPORT_PROFILE, status_code, L"HTTP error");
+        ShowLocalizedMsgEx(MB_OK | MB_ICONERROR,
+                           hWnd,
+                           _T(PACKAGE_NAME),
+                           IDS_ERR_URL_IMPORT_PROFILE,
+                           status_code,
+                           L"HTTP error");
         goto done;
     }
 
@@ -627,7 +635,7 @@ again:
         BOOL res = HttpQueryInfoA(hRequest, HTTP_QUERY_CONTENT_TYPE, tmp, &len, NULL);
         if (!res || stricmp(comps->content_type, tmp))
         {
-            ShowLocalizedMsgEx(MB_OK,
+            ShowLocalizedMsgEx(MB_OK | MB_ICONERROR,
                                hWnd,
                                _T(PACKAGE_NAME),
                                IDS_ERR_URL_IMPORT_PROFILE,
@@ -645,8 +653,10 @@ again:
         WCHAR *wbuf = Widen(buf);
         if (!wbuf)
         {
-            MessageBoxW(
-                hWnd, L"Failed to convert profile content to wchar", _T(PACKAGE_NAME), MB_OK);
+            MessageBoxW(hWnd,
+                        L"Failed to convert profile content to wchar",
+                        _T(PACKAGE_NAME),
+                        MB_OK | MB_ICONERROR);
             goto done;
         }
         ExtractProfileName(wbuf, comps->host, name, MAX_PATH);
@@ -657,7 +667,7 @@ again:
     DWORD res = GetTempPathW((DWORD)out_path_size, out_path);
     if (res == 0 || res > out_path_size)
     {
-        MessageBoxW(hWnd, L"Failed to get TMP path", _T(PACKAGE_NAME), MB_OK);
+        MessageBoxW(hWnd, L"Failed to get TMP path", _T(PACKAGE_NAME), MB_OK | MB_ICONERROR);
         goto done;
     }
     if (out_path_size < (wcslen(out_path) + wcslen(name) + 1))
@@ -670,7 +680,8 @@ again:
     FILE *f;
     if (_wfopen_s(&f, out_path, L"w"))
     {
-        MessageBoxW(hWnd, L"Unable to save downloaded profile", _T(PACKAGE_NAME), MB_OK);
+        MessageBoxW(
+            hWnd, L"Unable to save downloaded profile", _T(PACKAGE_NAME), MB_OK | MB_ICONERROR);
         goto done;
     }
     fwrite(buf, sizeof(char), size, f);
