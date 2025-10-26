@@ -711,14 +711,18 @@ CheckAndSetTrayIcon()
 void
 ShowTrayBalloon(TCHAR *infotitle_msg, TCHAR *info_msg)
 {
+    if (!info_msg && !infotitle_msg)
+    {
+        return;
+    }
     ni.cbSize = sizeof(ni);
     ni.uID = 0;
     ni.hWnd = o.hWnd;
     ni.uFlags = NIF_INFO;
     ni.uTimeout = 5000;
     ni.dwInfoFlags = NIIF_INFO;
-    _tcsncpy(ni.szInfo, info_msg, _countof(ni.szInfo));
-    _tcsncpy(ni.szInfoTitle, infotitle_msg, _countof(ni.szInfoTitle));
+    wcsncpy(ni.szInfo, info_msg ? info_msg : L" ", _countof(ni.szInfo));
+    wcsncpy(ni.szInfoTitle, infotitle_msg ? infotitle_msg : L"", _countof(ni.szInfoTitle));
 
     Shell_NotifyIcon(NIM_MODIFY, &ni);
 }
