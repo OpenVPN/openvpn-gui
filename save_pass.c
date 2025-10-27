@@ -31,11 +31,12 @@
 #include "save_pass.h"
 #include "misc.h"
 
-#define KEY_PASS_DATA  L"key-data"
-#define AUTH_PASS_DATA L"auth-data"
-#define ENTROPY_DATA   L"entropy"
-#define AUTH_USER_DATA L"username"
-#define ENTROPY_LEN    16
+#define KEY_PASS_DATA      L"key-data"
+#define AUTH_PASS_DATA     L"auth-data"
+#define ENTROPY_DATA       L"entropy"
+#define AUTH_USER_DATA     L"username"     /* plain username - deprecated */
+#define AUTH_USER_ENC_DATA L"username-enc" /* encrypted user name */
+#define ENTROPY_LEN        16
 
 static DWORD
 crypt_protect(BYTE *data, int szdata, char *entropy, BYTE **out)
@@ -233,16 +234,14 @@ RecallAuthPass(const WCHAR *config_name, WCHAR *password)
 int
 SaveUsername(const WCHAR *config_name, const WCHAR *username)
 {
-    DWORD len = (wcslen(username) + 1) * sizeof(*username);
-    SetConfigRegistryValueBinary(config_name, AUTH_USER_DATA, (BYTE *)username, len);
-    return 1;
+    return save_encrypted(config_name, username, AUTH_USER_ENC_DATA);
 }
 /*
  * The buffer username should be have space for up to USER_PASS_LEN
  * WCHARs including nul.
  */
-int
-RecallUsername(const WCHAR *config_name, WCHAR *username)
+static int
+RecallUsernamePlain(const WCHAR *config_name, WCHAR *username)
 {
     DWORD capacity = USER_PASS_LEN * sizeof(WCHAR);
     DWORD len;
@@ -254,6 +253,23 @@ RecallUsername(const WCHAR *config_name, WCHAR *username)
     }
     username[USER_PASS_LEN - 1] = L'\0';
     return 1;
+}
+
+int
+RecallUsername(const WCHAR *config_name, WCHAR *username)
+{
+    int res = recall_encrypted(config_name, username, USER_PASS_LEN, AUTH_USER_ENC_DATA);
+    if (res)
+    {
+        return res;
+    }
+    /* Check whether old style plain username is available and migrate it */
+    res = RecallUsernamePlain(config_name, username);
+    if (res && SaveUsername(config_name, username))
+    {
+        DeleteConfigRegistryValue(config_name, AUTH_USER_DATA);
+    }
+    return res;
 }
 
 void
