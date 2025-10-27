@@ -292,6 +292,10 @@ echo_msg_display(connection_t *c, time_t timestamp, const char *title, int type)
         {
             WriteStatusLog(c, L"GUI> Failed to display echo message: ", c->echo_msg.title, false);
         }
+        else if (echo_msg_window)
+        {
+            SetForegroundWindow(echo_msg_window);
+        }
     }
     else /* notify */
     {
@@ -610,8 +614,7 @@ MessageDialogFunc(HWND hwnd, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
             }
 
             AddMessageBoxText(hwnd, c->echo_msg.text, c->echo_msg.title, from);
-            SetForegroundWindow(hwnd);
-            ShowWindow(hwnd, SW_SHOW);
+            ShowWindowAsync(hwnd, SW_SHOW);
         }
         break;
 
