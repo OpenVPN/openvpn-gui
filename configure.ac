@@ -33,6 +33,7 @@ AC_USE_SYSTEM_EXTENSIONS
 AC_PROG_CC_C99
 AC_PROG_CXX
 AC_CHECK_TOOL([WINDRES], [windres])
+AC_CHECK_TOOLS([WINDMC], [windmc mc.exe])
 LT_INIT([win32-dll])
 LT_LANG([Windows Resource])
 
