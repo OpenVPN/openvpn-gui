@@ -45,6 +45,7 @@
 #include "openvpn-gui-res.h"
 #include "tray.h"
 #include "config_parser.h"
+#include "eventmsg.h"
 
 /*
  * Helper function to do base64 conversion through CryptoAPI
@@ -1010,7 +1011,7 @@ MsgToEventLog(WORD type, wchar_t *format, ...)
 
     msg[0] = TEXT(PACKAGE_NAME);
     msg[1] = buf;
-    ReportEventW(o.event_log, type, 0, 0, NULL, 2, 0, msg, NULL);
+    ReportEventW(o.event_log, type, 0, EVT_TEXT_2, NULL, 2, 0, msg, NULL);
 }
 
 /*

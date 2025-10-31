@@ -111,8 +111,9 @@ openvpn_gui_SOURCES = \
 	pkcs11.c pkcs11.h \
 	config_parser.c config_parser.h \
 	qr.c qr.h \
-	qrcodegen/qrcodegen.c qrcodegen/qrcodegen.h
-	openvpn-gui-res.h
+	qrcodegen/qrcodegen.c qrcodegen/qrcodegen.h \
+	openvpn-gui-res.h \
+	eventmsg.mc
 
 openvpn_gui_LDFLAGS = -mwindows
 openvpn_gui_LDADD = \
@@ -131,5 +132,11 @@ openvpn_gui_LDADD = \
 	-lntdll \
 	$(JSON_LIBS)
 
+BUILT_SOURCES = eventmsg.h
+CLEANFILES = eventmsg.h
+
 openvpn-gui-res.o: $(openvpn_gui_RESOURCES) $(srcdir)/openvpn-gui-res.h
 	$(RCCOMPILE) -i $< -o $@
+
+eventmsg.h: eventmsg.mc
+	$(WINDMC) -U $<
