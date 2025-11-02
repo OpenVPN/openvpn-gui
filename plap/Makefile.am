@@ -39,6 +39,7 @@ AM_CPPFLAGS = -I$(srcdir)/..
 
 libopenvpn_plap_la_CFLAGS = -D_UNICODE -municode
 test_plap_CXXFLAGS = -DDEBUG -D_UNICODE -municode
+test_plap_CFLAGS = -DDEBUG -D_UNICODE -municode
 
 libopenvpn_plap_la_RESOURCES = \
 	$(top_srcdir)/res/openvpn-gui-res-cs.rc \
@@ -127,4 +128,4 @@ credentialprovider.h:
 
 test_plap_SOURCES = test_plap.cpp test-plap-res.rc test-plap.manifest plap_common.c credentialprovider.h
 test_plap_LDFLAGS = -static-libgcc -static-libstdc++
-test_plap_LDADD = -lrpcrt4 -lole32 -lgdi32 -lcomctl32
+test_plap_LDADD = -lrpcrt4 -lole32 -lgdi32 -lcomctl32 -lshlwapi
