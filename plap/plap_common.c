@@ -30,15 +30,34 @@
 #include <time.h>
 
 #include "localization.h"
+
 static FILE *fp;
 static CRITICAL_SECTION log_write;
 
 void
 init_debug()
 {
+    if (fp)
+    {
+        return;
+    }
+    /* try to open debug file in TempPath -- failure is not critical */
+    WCHAR tempPath[MAX_PATH];
+    DWORD pathLen = GetTempPathW(MAX_PATH, tempPath);
+    if (pathLen == 0 || pathLen > MAX_PATH)
+    {
+        return;
+    }
+
+    WCHAR fullPath[MAX_PATH];
+    if (!PathCombineW(fullPath, tempPath, L"openvpn-plap-debug.txt"))
+    {
+        return;
+    }
+    _wfopen_s(&fp, fullPath, L"a+,ccs=UTF-8");
     if (!fp)
     {
-        _wfopen_s(&fp, L"C:\\Windows\\Temp\\openvpn-plap-debug.txt", L"a+,ccs=UTF-8");
+        return;
     }
     InitializeCriticalSection(&log_write);
 }

@@ -166,6 +166,7 @@ add_executable(${TEST_PLAP_EXE}
 target_link_libraries(${TEST_PLAP_EXE} PRIVATE
     Rpcrt4
     Ole32
+    Shlwapi
     Gdi32)
 
 target_include_directories(${TEST_PLAP_EXE} PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR})
