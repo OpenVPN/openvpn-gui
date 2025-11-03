@@ -218,6 +218,9 @@ typedef struct
     TCHAR ovpn_admin_group[MAX_NAME];
     DWORD disable_save_passwords;
     DWORD auth_pass_concat_otp;
+#ifdef ENABLE_OVPN3
+    TCHAR omi_exe_path[MAX_PATH];
+#endif
     /* HKCU registry values */
     TCHAR config_dir[MAX_PATH];
     TCHAR ext_string[16];

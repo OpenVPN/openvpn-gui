@@ -157,6 +157,14 @@ GetGlobalRegistryKeys()
         _sntprintf_0(o.exe_path, _T("%lsbin\\openvpn.exe"), o.install_path);
     }
 
+#ifdef ENABLE_OVPN3
+    /* for OVPN3, always expect the value to be set in the registry */
+    if (regkey)
+    {
+        GetRegistryValue(regkey, _T("omi_exe_path"), o.omi_exe_path, _countof(o.omi_exe_path));
+    }
+#endif
+
     if (!regkey
         || !GetRegistryValue(
             regkey, _T("priority"), o.priority_string, _countof(o.priority_string)))
