@@ -258,18 +258,19 @@ RecallUsernamePlain(const WCHAR *config_name, WCHAR *username)
 int
 RecallUsername(const WCHAR *config_name, WCHAR *username)
 {
-    int res = recall_encrypted(config_name, username, USER_PASS_LEN, AUTH_USER_ENC_DATA);
-    if (res)
-    {
-        return res;
-    }
-    /* Check whether old style plain username is available and migrate it */
-    res = RecallUsernamePlain(config_name, username);
-    if (res && SaveUsername(config_name, username))
+    return recall_encrypted(config_name, username, USER_PASS_LEN, AUTH_USER_ENC_DATA);
+}
+
+/* Convert saved plain text username to encrypted form */
+void
+MigrateUsername(const WCHAR *config_name)
+{
+    WCHAR username[USER_PASS_LEN];
+
+    if (RecallUsernamePlain(config_name, username) && SaveUsername(config_name, username))
     {
         DeleteConfigRegistryValue(config_name, AUTH_USER_DATA);
     }
-    return res;
 }
 
 void
