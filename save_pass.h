@@ -49,4 +49,6 @@ BOOL IsAuthPassSaved(const WCHAR *config_name);
 
 BOOL IsKeyPassSaved(const WCHAR *config_name);
 
+void MigrateUsername(const WCHAR *config_name);
+
 #endif /* ifndef SAVEPASS_H */

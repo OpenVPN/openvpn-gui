@@ -34,6 +34,8 @@
 #include "openvpn-gui-res.h"
 #include "registry.h"
 #include "localization.h"
+#include "save_pass.h"
+#include "misc.h"
 
 extern options_t o;
 
@@ -435,6 +437,44 @@ MigrateNilingsKeys()
     return ret;
 }
 
+/*
+ * Enumerate subkeys under config registry and
+ * migrate any saved usernames under those subkeys.
+ */
+static void
+UpgradeUsernames(void)
+{
+    HKEY regkey;
+    DWORD status = RegOpenKeyEx(
+        HKEY_CURRENT_USER, L"SOFTWARE\\OpenVPN-GUI\\configs", 0, KEY_ENUMERATE_SUB_KEYS, &regkey);
+    if (status != ERROR_SUCCESS)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                      L"Error opening config registry key (error = %lu)",
+                      GetLastError());
+        return;
+    }
+
+    WCHAR config_name[MAX_PATH];
+    DWORD keylen = _countof(config_name);
+
+    int i = 0;
+    status = RegEnumKeyEx(regkey, i, config_name, &keylen, NULL, NULL, NULL, NULL);
+    while (status == ERROR_SUCCESS)
+    {
+        MigrateUsername(config_name);
+        keylen = _countof(config_name);
+        status = RegEnumKeyEx(regkey, ++i, config_name, &keylen, NULL, NULL, NULL, NULL);
+    }
+    if (status != ERROR_NO_MORE_ITEMS)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                      L"Migrating username failed for index = %d with error = %lu",
+                      i,
+                      status);
+    }
+}
+
 int
 UpdateRegistry(void)
 {
@@ -457,10 +497,14 @@ UpdateRegistry(void)
             {
                 return false;
             }
+            /* fall through */
 
-        /* fall through to handle further updates */
         case 11:
-            /* current version -- nothing to do */
+            /* Upgrade any usernames saved as plain text */
+            if (v.major < 11 || v.minor <= 57)
+            {
+                UpgradeUsernames();
+            }
             break;
 
         default:

@@ -217,3 +217,8 @@ CheckKeyFileWriteAccess(UNUSED connection_t *c)
 {
     return 0;
 }
+
+void
+MigrateUsername(UNUSED const WCHAR *config_name)
+{
+}
