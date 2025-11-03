@@ -1457,7 +1457,12 @@ ValidateManagementDaemon(connection_t *c)
     wchar_t win32_path[MAX_PATH];
     swprintf(win32_path, _countof(win32_path), L"%ls%ls", L"\\\\?\\GLOBALROOT", nt_path);
 
+#ifdef ENABLE_OVPN3
+    TCHAR *exe_path = o.ovpn_engine == OPENVPN_ENGINE_OVPN3 ? o.omi_exe_path : o.exe_path;
+    res = IsSamePath(win32_path, exe_path);
+#else
     res = IsSamePath(win32_path, o.exe_path);
+#endif
     if (!res)
     {
         MsgToEventLog(EVENTLOG_ERROR_TYPE,
