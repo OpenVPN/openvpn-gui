@@ -1,3 +1,57 @@
+Version 11.58.0
+===============
+
+* Check the return value of GetProp()
+* Make config path check similar to that in interactive service
+* Escape the type id of password message received from openvpn
+* Add a message source for event logging
+* Check correct management daemon path when OpenVPN3 is enabled
+* Fix OpenVPN3 radio button label size when OVPN3 is enabled
+* Use GetTempPath() for debug file in plap as well
+* Migrate all saved plain usernames to encrypted format
+
+Version 11.57.0
+===============
+
+* Explicitly check that urls start with http:// or https://
+* Replace % characters in param->id as it's used in format template
+* Disallow Windows special filenames for imported profile
+* Error out if imported profile file name is too long
+* Check the path of the process listening on management port
+* Avoid blocking calls during WM_OVPN_ECHOMSG processing
+* Check for null text in ShowTrayBalloon()
+* Encrypt username saved in registry
+
+Version 11.56.0
+===============
+
+* Use WM_CONTEXTMENU instead of WM_RBUTTONUP
+
+Version 11.55.0
+===============
+
+* Update Chinese (simplified) localization
+
+Version 11.54.0
+===============
+
+* Improve Turkish (tr) localization for OpenVPN GUI
+* Update French localization
+
+Version 11.53.0
+===============
+
+* Keep PLAP dialog alive by simulating user activity
+* Hide password reveal eye icon when no response box is shown
+* Italian language update
+* PLAP: add support for webauth
+
+Version 11.52.0
+===============
+
+* Use correct %TEMP% directory for debug log file
+* Disable config in menu listing if its ovpn file becomes inaccessible
+
 Version 11.51.0
 ===============
 
