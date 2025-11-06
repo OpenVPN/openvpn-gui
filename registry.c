@@ -481,6 +481,7 @@ UpgradeUsernames(void)
                       i,
                       status);
     }
+    RegCloseKey(regkey);
 }
 
 int
