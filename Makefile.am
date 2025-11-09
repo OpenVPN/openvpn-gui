@@ -129,6 +129,7 @@ openvpn_gui_LDADD = \
 	-lsecur32 \
 	-lwininet \
 	-liphlpapi \
+	-lpathcch \
 	-lntdll \
 	$(JSON_LIBS)
 
