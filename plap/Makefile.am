@@ -119,6 +119,7 @@ libopenvpn_plap_la_LIBADD = \
 	-lgdi32 \
 	-lrpcrt4 \
 	-liphlpapi \
+	-lpathcch \
 	-lntdll
 
 libopenvpn_plap_la_LDFLAGS = -no-undefined -avoid-version -static-libgcc

@@ -28,7 +28,8 @@
 #endif
 
 #include <windows.h>
-#include <shellapi.h>
+#include <shlwapi.h>
+#include <pathcch.h>
 #include <lm.h>
 #include <stdlib.h>
 #include <security.h>
