@@ -168,24 +168,34 @@ AddUserToGroup(const WCHAR *group)
  * interactive service.
  */
 static BOOL
-CheckConfigPath(const WCHAR *config_dir)
+CheckConfigPath(const WCHAR *config_dir, const WCHAR *config_file)
 {
-    BOOL ret = FALSE;
-    int size = wcslen(o.global_config_dir);
+    WCHAR config_path[MAX_PATH];
+    HRESULT res;
 
     /* if interactive service is not running, no access control: return TRUE */
     if (!CheckIServiceStatus(FALSE))
     {
-        ret = TRUE;
+        return TRUE;
     }
-    /* if config is from the global location allow it */
-    else if (wcsncmp(config_dir, o.global_config_dir, size) == 0
-             && wcsstr(config_dir + size, L"..") == NULL)
+    /* fname = stdin is special: do not treat it as a relative path */
+    if (wcscmp(config_file, L"stdin") == 0)
     {
-        ret = TRUE;
+        return FALSE;
+    }
+    /* convert fname to full canonical path */
+    if (PathIsRelativeW(config_file))
+    {
+        res = PathCchCombine(config_path, _countof(config_path), config_dir, config_file);
+    }
+    else
+    {
+        res = PathCchCanonicalize(config_path, _countof(config_path), config_file);
     }
 
-    return ret;
+    /* if config is from the global location allow it */
+    return res == S_OK
+           && wcsnicmp(config_path, o.global_config_dir, wcslen(o.global_config_dir)) == 0;
 }
 
 /*
@@ -216,7 +226,7 @@ AuthorizeConfig(const connection_t *c)
 
     PrintDebug(L"Authorized groups: '%ls', '%ls'", admin_group, o.ovpn_admin_group);
 
-    if (CheckConfigPath(c->config_dir))
+    if (CheckConfigPath(c->config_dir, c->config_file))
     {
         return TRUE;
     }
