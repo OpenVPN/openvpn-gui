@@ -307,7 +307,7 @@ CRDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_COMMAND:
-            param = (auth_param_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, param, FALSE);
 
             switch (LOWORD(wParam))
             {
@@ -765,7 +765,7 @@ ImportProfileFromURLDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
             break;
 
         case WM_COMMAND:
-            type = (server_type_t)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, type, FALSE);
             switch (LOWORD(wParam))
             {
                 case ID_EDT_AUTH_PASS:

@@ -476,7 +476,9 @@ pkcs11_listview_init(HWND parent)
 static void CALLBACK
 pkcs11_listview_fill(HWND hwnd, UINT UNUSED msg, UINT_PTR id, DWORD UNUSED now)
 {
-    connection_t *c = (connection_t *)GetProp(hwnd, cfgProp);
+    connection_t *c;
+    TRY_GETPROP(hwnd, cfgProp, c, );
+
     struct pkcs11_list *l = &c->pkcs11_list;
 
     HWND lv = GetDlgItem(hwnd, ID_LVW_PKCS11);
@@ -539,7 +541,8 @@ pkcs11_listview_fill(HWND hwnd, UINT UNUSED msg, UINT_PTR id, DWORD UNUSED now)
 static void
 pkcs11_listview_reset(HWND parent)
 {
-    connection_t *c = (connection_t *)GetProp(parent, cfgProp);
+    connection_t *c;
+    TRY_GETPROP(parent, cfgProp, c, );
     struct pkcs11_list *l = &c->pkcs11_list;
     HWND lv = GetDlgItem(parent, ID_LVW_PKCS11);
 
@@ -610,7 +613,7 @@ QueryPkcs11DialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             return TRUE;
 
         case WM_COMMAND:
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, c, FALSE);
             if (LOWORD(wParam) == IDOK)
             {
                 HWND lv = GetDlgItem(hwndDlg, ID_LVW_PKCS11);
@@ -664,7 +667,7 @@ QueryPkcs11DialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             return FALSE;
 
         case WM_NOTIFY:
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, c, FALSE);
             if (((NMHDR *)lParam)->idFrom == ID_LVW_PKCS11)
             {
                 NMITEMACTIVATE *ln = (NMITEMACTIVATE *)lParam;
@@ -681,9 +684,9 @@ QueryPkcs11DialogProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_CLOSE:
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
-            StopOpenVPN(c);
             EndDialog(hwndDlg, wParam);
+            TRY_GETPROP(hwndDlg, cfgProp, c, TRUE);
+            StopOpenVPN(c);
             return TRUE;
 
         case WM_NCDESTROY:

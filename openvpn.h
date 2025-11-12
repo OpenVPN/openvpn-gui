@@ -30,9 +30,23 @@
     {                                                                                            \
         if (SetPropW(hwnd, name, p))                                                             \
             break;                                                                               \
-        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs:%d GetProp returned null", __func__, __LINE__); \
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs:%d SetProp returned null", __func__, __LINE__); \
         EndDialog(hwnd, IDABORT);                                                                \
         return false;                                                                            \
+    } while (0)
+
+/* A macro to set lval = GetProp(hwnd, name) or log an error and return err_return */
+#define TRY_GETPROP(hwnd, name, lval, err_return)                                          \
+    do                                                                                     \
+    {                                                                                      \
+        HANDLE handle_##lval = GetProp(hwnd, name);                                        \
+        if (!handle_##lval)                                                                \
+        {                                                                                  \
+            MsgToEventLog(                                                                 \
+                EVENTLOG_ERROR_TYPE, L"%hs:%d GetProp returned null", __func__, __LINE__); \
+            return err_return;                                                             \
+        }                                                                                  \
+        lval = (__typeof__(lval))handle_##lval;                                            \
     } while (0)
 
 BOOL StartOpenVPN(connection_t *);
