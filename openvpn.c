@@ -695,7 +695,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_COMMAND:
-            param = (auth_param_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, param, FALSE);
             switch (LOWORD(wParam))
             {
                 case ID_EDT_AUTH_PASS:
@@ -828,7 +828,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
         case WM_CLOSE:
             EndDialog(hwndDlg, LOWORD(wParam));
-            param = (auth_param_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, param, TRUE);
             StopOpenVPN(param->c);
             return TRUE;
 
@@ -939,7 +939,7 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_COMMAND:
-            param = (auth_param_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, param, FALSE);
             const char *template;
             char *fmt;
             switch (LOWORD(wParam))
@@ -1050,7 +1050,7 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
              * other than GET_CONFIG. The state is in lParam.
              * For other auth dialogs any state change signals a restart: end the dialog
              */
-            param = (auth_param_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, param, TRUE);
             if (!(param->flags & FLAG_CR_TYPE_CRTEXT) || strcmp((const char *)lParam, "GET_CONFIG"))
             {
                 EndDialog(hwndDlg, LOWORD(wParam));
@@ -1127,7 +1127,7 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_COMMAND:
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, c, FALSE);
             switch (LOWORD(wParam))
             {
                 case ID_CHK_SAVE_PASS:
@@ -2508,7 +2508,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             return TRUE;
 
         case WM_COMMAND:
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, c, FALSE);
             switch (LOWORD(wParam))
             {
                 case ID_DISCONNECT:
@@ -2547,7 +2547,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             return FALSE;
 
         case WM_CLOSE:
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, c, TRUE);
             if (c->state != disconnected && c->state != detached)
             {
                 ShowWindow(hwndDlg, SW_HIDE);
@@ -2568,7 +2568,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_OVPN_RELEASE:
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, c, FALSE);
             c->state = reconnecting;
             SetDlgItemText(
                 c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_RECONNECTING));
@@ -2578,7 +2578,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_OVPN_STOP:
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, c, FALSE);
             /* external messages can trigger when we are not ready -- check the state */
             if (!IsWindowEnabled(GetDlgItem(c->hwndStatus, ID_DISCONNECT)) || c->state == onhold)
             {
@@ -2598,7 +2598,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_OVPN_DETACH:
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, c, FALSE);
             /* just stop the thread keeping openvpn.exe running */
             c->state = detaching;
             EnableWindow(GetDlgItem(c->hwndStatus, ID_DISCONNECT), FALSE);
@@ -2607,7 +2607,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_OVPN_SUSPEND:
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, c, FALSE);
             c->state = suspending;
             EnableWindow(GetDlgItem(c->hwndStatus, ID_DISCONNECT), FALSE);
             EnableWindow(GetDlgItem(c->hwndStatus, ID_RESTART), FALSE);
@@ -2620,7 +2620,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
         case WM_TIMER:
             PrintDebug(L"WM_TIMER message with wParam = %lu", wParam);
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, c, FALSE);
             if (wParam == IDT_STOP_TIMER)
             {
                 /* openvpn failed to respond to stop signal -- terminate */
@@ -2631,7 +2631,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_OVPN_RESTART:
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, c, FALSE);
             /* external messages can trigger when we are not ready -- check the state */
             if (IsWindowEnabled(GetDlgItem(c->hwndStatus, ID_RESTART)))
             {
