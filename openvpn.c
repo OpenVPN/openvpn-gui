@@ -1008,14 +1008,14 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                         template = "password \"%s\" \"%%s\"";
                     }
 
-                    fmt = malloc(strlen(template) + strlen(param->id));
-                    if (fmt)
+                    char *escaped_id = escape_string(param->id);
+                    fmt = malloc(strlen(template) + (escaped_id ? strlen(escaped_id) : 0));
+                    if (fmt && escaped_id)
                     {
                         string_mod(param->id, "%", '_');
-                        sprintf(fmt, template, param->id);
+                        sprintf(fmt, template, escaped_id);
                         PrintDebug(L"Send passwd to mgmt with format: '%hs'", fmt);
                         ManagementCommandFromInput(param->c, fmt, hwndDlg, ID_EDT_RESPONSE);
-                        free(fmt);
                     }
                     else /* no memory? send stop signal */
                     {
@@ -1025,6 +1025,8 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                                        false);
                         StopOpenVPN(param->c);
                     }
+                    free(fmt);
+                    free(escaped_id);
 
                     EndDialog(hwndDlg, LOWORD(wParam));
                     return TRUE;
