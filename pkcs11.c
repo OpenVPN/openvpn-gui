@@ -477,7 +477,7 @@ static void CALLBACK
 pkcs11_listview_fill(HWND hwnd, UINT UNUSED msg, UINT_PTR id, DWORD UNUSED now)
 {
     connection_t *c;
-    TRY_GETPROP(hwnd, cfgProp, c, );
+    TRY_GETPROP_VOID(hwnd, cfgProp, c);
 
     struct pkcs11_list *l = &c->pkcs11_list;
 
@@ -542,7 +542,7 @@ static void
 pkcs11_listview_reset(HWND parent)
 {
     connection_t *c;
-    TRY_GETPROP(parent, cfgProp, c, );
+    TRY_GETPROP_VOID(parent, cfgProp, c);
     struct pkcs11_list *l = &c->pkcs11_list;
     HWND lv = GetDlgItem(parent, ID_LVW_PKCS11);
 
