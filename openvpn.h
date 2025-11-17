@@ -35,8 +35,8 @@
         return false;                                                                            \
     } while (0)
 
-/* A macro to set lval = GetProp(hwnd, name) or log an error and return err_return */
-#define TRY_GETPROP(hwnd, name, lval, err_return)                                          \
+/* A macro to set lval = GetProp(hwnd, name) or log and execute on_fail statement on error */
+#define TRY_GETPROP_IMPL(hwnd, name, lval, on_fail)                                        \
     do                                                                                     \
     {                                                                                      \
         HANDLE handle_##lval = GetProp(hwnd, name);                                        \
@@ -44,10 +44,15 @@
         {                                                                                  \
             MsgToEventLog(                                                                 \
                 EVENTLOG_ERROR_TYPE, L"%hs:%d GetProp returned null", __func__, __LINE__); \
-            return err_return;                                                             \
+            on_fail;                                                                       \
         }                                                                                  \
         lval = (__typeof__(lval))handle_##lval;                                            \
     } while (0)
+
+#define TRY_GETPROP(hwnd, name, lval, err_return) \
+    TRY_GETPROP_IMPL(hwnd, name, lval, return err_return)
+
+#define TRY_GETPROP_VOID(hwnd, name, lval) TRY_GETPROP_IMPL(hwnd, name, lval, return)
 
 BOOL StartOpenVPN(connection_t *);
 
