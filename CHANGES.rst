@@ -1,3 +1,8 @@
+Version 11.59.0
+===============
+
+* Remove dependence on pathcch.dll not in Windows 7
+
 Version 11.58.0
 ===============
 

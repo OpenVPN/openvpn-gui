@@ -28,7 +28,8 @@
 #include <windows.h>
 #include <tchar.h>
 #include <shlobj.h>
-#include <pathcch.h>
+#include <shlwapi.h>
+#include <assert.h>
 
 #include "main.h"
 #include "options.h"
@@ -80,14 +81,6 @@ RegValueExists(HKEY regkey, const WCHAR *name)
     return (RegQueryValueEx(regkey, name, NULL, NULL, NULL, NULL) == ERROR_SUCCESS);
 }
 
-/* Add trailing slash to a path if not present */
-static BOOL
-AddTrailingBackslash(WCHAR *dir, size_t nchar)
-{
-    HRESULT res = PathCchAddBackslash(dir, nchar);
-    return (res == S_OK || res == S_FALSE) ? TRUE : FALSE;
-}
-
 static int
 GetGlobalRegistryKeys()
 {
@@ -114,9 +107,9 @@ GetGlobalRegistryKeys()
         regkey = NULL;
         ShowLocalizedMsg(IDS_ERR_OPEN_REGISTRY);
     }
+    static_assert(_countof(o.install_path) >= MAX_PATH); /* PathAddBackslash assumes this */
     if (!regkey || !GetRegistryValue(regkey, _T(""), o.install_path, _countof(o.install_path))
-        || _tcslen(o.install_path) == 0
-        || !AddTrailingBackslash(o.install_path, _countof(o.install_path)))
+        || _tcslen(o.install_path) == 0 || PathAddBackslashW(o.install_path) == NULL)
     {
         /* error reading registry value */
         if (regkey)
@@ -128,27 +121,30 @@ GetGlobalRegistryKeys()
     }
 
     /* an admin-defined global config dir defined in HKLM\OpenVPN\config_dir */
+    static_assert(_countof(o.global_config_dir) >= MAX_PATH); /* PathAddBackslash assumes this */
     if (!regkey
         || !GetRegistryValue(
             regkey, _T("config_dir"), o.global_config_dir, _countof(o.global_config_dir))
-        || !AddTrailingBackslash(o.global_config_dir, _countof(o.global_config_dir)))
+        || PathAddBackslashW(o.global_config_dir) == NULL)
     {
         /* use default = openvpnpath\config */
         _sntprintf_0(o.global_config_dir, _T("%lsconfig\\"), o.install_path);
     }
 
+    static_assert(_countof(o.config_auto_dir) >= MAX_PATH); /* PathAddBackslash assumes this */
     if (!regkey
         || !GetRegistryValue(
             regkey, _T("autostart_config_dir"), o.config_auto_dir, _countof(o.config_auto_dir))
-        || !AddTrailingBackslash(o.config_auto_dir, _countof(o.config_auto_dir)))
+        || PathAddBackslashW(o.config_auto_dir) == NULL)
     {
         /* use default = openvpnpath\config-auto */
         _sntprintf_0(o.config_auto_dir, L"%lsconfig-auto\\", o.install_path);
     }
 
+    static_assert(_countof(o.global_log_dir) >= MAX_PATH); /* PathAddBackslash assumes this */
     if (!regkey
         || !GetRegistryValue(regkey, _T("log_dir"), o.global_log_dir, _countof(o.global_log_dir))
-        || !AddTrailingBackslash(o.global_log_dir, _countof(o.global_log_dir)))
+        || PathAddBackslashW(o.global_log_dir) == NULL)
     {
         /* use default = openvpnpath\log */
         _sntprintf_0(o.global_log_dir, L"%lslog\\", o.install_path);
