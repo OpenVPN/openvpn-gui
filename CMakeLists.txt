@@ -72,7 +72,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Cryptui.lib
     Wininet.lib
     Iphlpapi.lib
-    Pathcch.lib
     Ntdll.lib)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
@@ -155,7 +154,6 @@ target_link_libraries(${PROJECT_NAME_PLAP} PRIVATE
     Cryptui.lib
     Rpcrt4.lib
     Iphlpapi.lib
-    Pathcch.lib
     Ntdll.lib)
 
 add_dependencies(${PROJECT_NAME_PLAP} msg_header_gen)

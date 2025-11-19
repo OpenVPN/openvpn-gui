@@ -29,10 +29,10 @@
 
 #include <windows.h>
 #include <shlwapi.h>
-#include <pathcch.h>
 #include <lm.h>
 #include <stdlib.h>
 #include <security.h>
+#include <assert.h>
 #include "main.h"
 #include "options.h"
 #include "service.h"
@@ -171,7 +171,7 @@ static BOOL
 CheckConfigPath(const WCHAR *config_dir, const WCHAR *config_file)
 {
     WCHAR config_path[MAX_PATH];
-    HRESULT res;
+    BOOL res = FALSE;
 
     /* if interactive service is not running, no access control: return TRUE */
     if (!CheckIServiceStatus(FALSE))
@@ -183,19 +183,26 @@ CheckConfigPath(const WCHAR *config_dir, const WCHAR *config_file)
     {
         return FALSE;
     }
+
     /* convert fname to full canonical path */
+    static_assert(_countof(config_path) >= MAX_PATH);
     if (PathIsRelativeW(config_file))
     {
-        res = PathCchCombine(config_path, _countof(config_path), config_dir, config_file);
+        WCHAR full_path[MAX_PATH];
+        static_assert(_countof(full_path) >= MAX_PATH);
+        if (PathCombineW(full_path, config_dir, config_file) == NULL)
+        {
+            return FALSE;
+        }
+        res = PathCanonicalizeW(config_path, full_path);
     }
     else
     {
-        res = PathCchCanonicalize(config_path, _countof(config_path), config_file);
+        res = PathCanonicalizeW(config_path, config_file);
     }
 
     /* if config is from the global location allow it */
-    return res == S_OK
-           && wcsnicmp(config_path, o.global_config_dir, wcslen(o.global_config_dir)) == 0;
+    return res && wcsnicmp(config_path, o.global_config_dir, wcslen(o.global_config_dir)) == 0;
 }
 
 /*
