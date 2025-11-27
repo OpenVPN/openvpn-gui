@@ -3022,8 +3022,15 @@ LaunchOpenVPN(connection_t *c)
         (o.proxy_source != config ? _T("--management-query-proxy ") : _T("")));
 
     BOOL use_iservice = (o.iservice_admin && IsWindows7OrGreater()) || !IsUserAdmin();
+
+    BOOL config_authorized = TRUE;
+    if (use_iservice && o.ovpn_engine == OPENVPN_ENGINE_OVPN2)
+    {
+        config_authorized = AuthorizeConfig(c);
+    }
+
     /* Try to open the service pipe */
-    if (use_iservice && InitServiceIO(&c->iserv))
+    if (use_iservice && config_authorized && InitServiceIO(&c->iserv))
     {
         BOOL res = FALSE;
 
@@ -3047,13 +3054,6 @@ LaunchOpenVPN(connection_t *c)
         {
             DWORD size = _tcslen(c->config_dir) + _tcslen(options) + passwd_len + 3;
             TCHAR startup_info[1024];
-
-            if (!AuthorizeConfig(c))
-            {
-                CloseHandle(c->exit_event);
-                CloseServiceIO(&c->iserv);
-                goto out;
-            }
 
             c->hProcess = NULL;
             c->manage.password[passwd_len - 1] = '\n';
