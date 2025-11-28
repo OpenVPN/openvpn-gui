@@ -1,6 +1,7 @@
 Version 11.59.0
 ===============
 
+* Authorize config before opening the service pipe
 * Remove dependence on pathcch.dll not in Windows 7
 
 Version 11.58.0
