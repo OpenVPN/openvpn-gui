@@ -252,7 +252,7 @@ BEGIN
     LTEXT "OpenVPN GUI v%ls – A Windows GUI for OpenVPN\n\
 Copyright (C) 2004-2005 Mathias Sundman ‪<info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund ‪<heikoh@users.sf.net>\n\
-Copyright (C) 2012-2024 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
+Copyright (C) 2012-2025 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
     LTEXT "https://github.com/OpenVPN/openvpn-gui", ID_LTEXT_ABOUT2, 36, 55, 206, 42
     LTEXT "OpenVPN - برنامه ای برای تونل ایمن شبکه های  IP \
 از طریق یک پورت  TCP/UDP، با پشتیبانی از جلسه \

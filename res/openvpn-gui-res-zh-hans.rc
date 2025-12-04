@@ -246,7 +246,7 @@ BEGIN
     LTEXT "OpenVPN GUI v%ls - OpenVPN 的 Windows 图形化界面\n\
 版权所有 (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 版权所有 (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
-版权所有 (C) 2012-2024 OpenVPN GUI 贡献者\n", ID_TXT_VERSION, 36, 15, 206, 50
+版权所有 (C) 2012-2025 OpenVPN GUI 贡献者\n", ID_TXT_VERSION, 36, 15, 206, 50
     LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_LTEXT_ABOUT2, 36, 55, 206, 42
     LTEXT "OpenVPN 是一套可以安全地通过单一 TCP/UDP 端口在 IP 网络建立隧道\
 的应用程序。它支持 SSL/TLS 为基础的连接验证与密钥交换、封包加密、\
