@@ -246,14 +246,14 @@ BEGIN
     LTEXT "OpenVPN GUI v%ls - OpenVPN 的 Windows 圖形化介面\n\
 版權所有 (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 版權所有 (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
-版權所有 (C) 2012-2024 OpenVPN GUI 貢獻者\n", ID_TXT_VERSION, 36, 15, 206, 50
+版權所有 (C) 2012-2025 OpenVPN GUI 貢獻者\n", ID_TXT_VERSION, 36, 15, 206, 50
     LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_LTEXT_ABOUT2, 36, 55, 206, 42
     LTEXT "OpenVPN 是一套可安全地透過單一 TCP/UDP 通訊埠穿隧 IP 網路\
 的應用程式。支援以 SSL/TLS 為基礎的連線驗證與金鑰交換\
 、封包加密、封包驗證，以及封包壓縮。\
 \n\
 \n", ID_LTEXT_ABOUT3, 8, 70, 240, 64
-    LTEXT "版權所有 (C) 2002-2024 OpenVPN Technologies, Inc <info@openvpn.net>\n\
+    LTEXT "版權所有 (C) 2002-2025 OpenVPN Technologies, Inc <info@openvpn.net>\n\
 https://openvpn.net/", ID_LTEXT_ABOUT4, 8, 106, 234, 64
 END
 
