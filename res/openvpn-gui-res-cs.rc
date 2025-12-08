@@ -106,7 +106,7 @@ BEGIN
     LTEXT "", ID_TXT_IP, 20, 160, 300, 10
     PUSHBUTTON "Odpojit", ID_DISCONNECT, 50, 190, 50, 14
     PUSHBUTTON "Restartovat", ID_RESTART, 150, 190, 50, 14
-    PUSHBUTTON "De&tach", ID_DETACH, 180, 190, 50, 14, WS_DISABLED
+    PUSHBUTTON "Od&pojit od služby", ID_DETACH, 180, 190, 50, 14, WS_DISABLED
     PUSHBUTTON "Skrýt", ID_HIDE, 100, 190, 50, 14
 END
 
@@ -168,18 +168,18 @@ BEGIN
     AUTOCHECKBOX "Připojovat záznamy na konec logu", ID_CHK_LOG_APPEND, 17, 95, 130, 10
     AUTOCHECKBOX "Zobrazit okno skriptu", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "Tiché spojení", ID_CHK_SILENT, 17, 125, 200, 10
-    AUTOCHECKBOX "Always use interactive service", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
+    AUTOCHECKBOX "Vždy používat interaktivní službu", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
     LTEXT "Ukazovat upozornění", ID_TXT_BALLOON, 17, 155, 100, 10
     AUTORADIOBUTTON "Při připojení", ID_RB_BALLOON1, 28, 170, 53, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Při připojení/obnovení spojení", ID_RB_BALLOON2, 86, 170, 115, 10
     AUTORADIOBUTTON "Nikdy", ID_RB_BALLOON0, 203, 170, 35, 10
-    LTEXT "Persistent Connections", ID_TXT_PERSISTENT, 17, 185, 100, 10
-    AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 200, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "&Manual", ID_RB_BALLOON4, 86, 200, 90, 10
-    AUTORADIOBUTTON "&Disable", ID_RB_BALLOON5, 181, 200, 40, 10
-    AUTOCHECKBOX "Enable Pre-Logon A&ccess Provider (requires admin access)", ID_CHK_PLAP_REG, 17, 215, 200, 10
-    AUTOCHECKBOX "Enable auto restart of active connections", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
-    AUTOCHECKBOX "Prompt for &OTP and combine with password", ID_CHK_CONCAT_OTP, 17, 245, 200, 10
+    LTEXT "Trvalá spojení", ID_TXT_PERSISTENT, 17, 185, 100, 10
+    AUTORADIOBUTTON "&Automaticky", ID_RB_BALLOON3, 28, 200, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "&Ručně", ID_RB_BALLOON4, 86, 200, 90, 10
+    AUTORADIOBUTTON "&Zakázat", ID_RB_BALLOON5, 181, 200, 40, 10
+    AUTOCHECKBOX "Připojení před přihlášením (vyžaduje práva správce)", ID_CHK_PLAP_REG, 17, 215, 200, 10
+    AUTOCHECKBOX "Povolit automatický restart aktivních spojení", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
+    AUTOCHECKBOX "Vyžadovat &OTP a spojit s heslem", ID_CHK_CONCAT_OTP, 17, 245, 200, 10
 END
 
 /* Advanced Dialog */
@@ -209,26 +209,26 @@ BEGIN
     EDITTEXT ID_EDT_CONNECT_TIMEOUT, 103, 123, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 103, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
 
-    GROUPBOX "Management interface", 204, 6, 163, 235, 30
-    LTEXT "Port offset:", 205, 17, 175, 75, 10
+    GROUPBOX "Rozhraní správy", 204, 6, 163, 235, 30
+    LTEXT "Počáteční port:", 205, 17, 175, 75, 10
     EDITTEXT ID_EDT_MGMT_PORT, 103, 173, 30, 12, ES_AUTOHSCROLL
 
-    GROUPBOX "Config menu view", 206, 6, 198, 235, 30
-    AUTORADIOBUTTON "&Auto", ID_RB_BALLOON0, 28, 210, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "&Flat", ID_RB_BALLOON1, 88, 210, 50, 10
-    AUTORADIOBUTTON "&Nested", ID_RB_BALLOON2, 148, 210, 50, 10
+    GROUPBOX "Zobrazení nabídky konfigurací", 206, 6, 198, 235, 30
+    AUTORADIOBUTTON "&Automaticky", ID_RB_BALLOON0, 28, 210, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "&Ploché", ID_RB_BALLOON1, 88, 210, 50, 10
+    AUTORADIOBUTTON "&Vnořené", ID_RB_BALLOON2, 148, 210, 50, 10
 
-    GROUPBOX "Echo message display", 207, 6, 233, 235, 45
-    AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 245, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Ne&ver", ID_RB_BALLOON4, 88, 245, 50, 10
-    LTEXT "Repeated messages are muted for: ", 208, 17, 260, 125, 10
+    GROUPBOX "Zobrazení zpráv z komunikace", 207, 6, 233, 235, 45
+    AUTORADIOBUTTON "&Automaticky", ID_RB_BALLOON3, 28, 245, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "&Nikdy", ID_RB_BALLOON4, 88, 245, 50, 10
+    LTEXT "Opakované zprávy potlačit na: ", 208, 17, 260, 125, 10
     EDITTEXT ID_EDT_POPUP_MUTE, 150, 258, 30, 12, ES_AUTOHSCROLL
-    LTEXT "hours", 209, 190, 260, 40, 10
+    LTEXT "hodin", 209, 190, 260, 40, 10
 
 #if ENABLE_OVPN3
     GROUPBOX "OpenVPN Engine", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
     AUTORADIOBUTTON "OpenVPN2", ID_RB_ENGINE_OVPN2, 18, 296, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "OpenVPN3 (experimental)", ID_RB_ENGINE_OVPN3, 76, 296, 100, 10
+    AUTORADIOBUTTON "OpenVPN3 (experimentální)", ID_RB_ENGINE_OVPN3, 76, 296, 100, 10
 #endif
 
 END
@@ -274,34 +274,34 @@ END
 /* URL Profile Import Dialog */
 ID_DLG_URL_PROFILE_IMPORT DIALOGEX 6, 18, 249, 95
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFOREGROUND
-CAPTION "Import Profile from Access Server"
+CAPTION "Import profilu z Access Serveru"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
 BEGIN
     LTEXT "U&RL:", 201, 6, 9, 50, 10
     EDITTEXT ID_EDT_URL, 60, 6, 183, 12, ES_AUTOHSCROLL
-    LTEXT "&Username:", 202, 6, 26, 50, 10
+    LTEXT "&Jméno:", 202, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 23, 94, 12, ES_AUTOHSCROLL
-    LTEXT "&Password:", ID_LTEXT_PASSWORD, 6, 42, 50, 10
+    LTEXT "&Heslo:", ID_LTEXT_PASSWORD, 6, 42, 50, 10
     EDITTEXT ID_EDT_AUTH_PASS, 60, 40, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 41, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
-    AUTOCHECKBOX "&Autologin", ID_CHK_AUTOLOGIN, 6, 59, 100, 10
+    AUTOCHECKBOX "&Automatické přihlášení", ID_CHK_AUTOLOGIN, 6, 59, 100, 10
     PUSHBUTTON "&OK", IDOK, 20, 76, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
-    PUSHBUTTON "&Cancel", IDCANCEL, 90, 76, 52, 14
+    PUSHBUTTON "&Zrušit", IDCANCEL, 90, 76, 52, 14
 END
 
 /* Query PKCS11-ID Dialog */
 ID_DLG_PKCS11_QUERY DIALOGEX 6, 18, 340, 242
 STYLE WS_SIZEBOX| WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFONT
-CAPTION "Select Certificate"
+CAPTION "Vyberte certifikát"
 FONT 8, "Segoe UI"
 LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "PKCS11 Certificates available:", ID_TXT_PKCS11, 17, 12, 171, 12
+    LTEXT "Dostupné certifikáty PKCS#11:", ID_TXT_PKCS11, 17, 12, 171, 12
     CONTROL "", ID_LVW_PKCS11, "SysListView32", LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP, 17, 25, 171,150
     PUSHBUTTON "&OK", IDOK, 20, 200, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP
-    PUSHBUTTON "&Cancel", IDCANCEL, 90, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
-    PUSHBUTTON "&Retry", IDRETRY, 160, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "&Zrušit", IDCANCEL, 90, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "&Zkusit znovu", IDRETRY, 160, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
     LTEXT "", ID_TXT_WARNING, 6, 222, 190, 10
 END
 
@@ -312,7 +312,7 @@ FONT 8, "Segoe UI"
 LANGUAGE LANG_CZECH, SUBLANG_DEFAULT
 BEGIN
     CONTROL "", ID_STATIC_QR, "Static", SS_BITMAP | WS_VISIBLE | SS_CENTERIMAGE, 0, 0, 10, 10
-    LTEXT "Scan this QR code on your mobile to proceed with authentication.", ID_TXT_QR, 0, 0, 10, 10, SS_CENTER | WS_VISIBLE | SS_EDITCONTROL
+    LTEXT "Naskenujte tento QR kód na svém mobilu pro pokračování ověření.", ID_TXT_QR, 0, 0, 10, 10, SS_CENTER | WS_VISIBLE | SS_EDITCONTROL
 END
 
 STRINGTABLE
@@ -327,14 +327,14 @@ BEGIN
     IDS_TIP_ASSIGNED_IP "\nPřiřazená IP: %ls"
     IDS_MENU_SERVICE "Služba OpenVPN"
     IDS_MENU_IMPORT "Import"
-    IDS_MENU_IMPORT_AS "Import from Access Server…"
-    IDS_MENU_IMPORT_URL "Import from URL…"
+    IDS_MENU_IMPORT_AS "Import z Access Serveru…"
+    IDS_MENU_IMPORT_URL "Import z URL…"
     IDS_MENU_IMPORT_FILE "Import souboru konfigurace…"
     IDS_MENU_SETTINGS "Nastavení…"
     IDS_MENU_CLOSE "Ukončit"
     IDS_MENU_CONNECT "Připojit"
     IDS_MENU_DISCONNECT "Odpojit"
-    IDS_MENU_RECONNECT "Reconnect"
+    IDS_MENU_RECONNECT "Restartovat spojení"
     IDS_MENU_STATUS "Zobrazit stav"
     IDS_MENU_VIEWLOG "Otevřít log"
     IDS_MENU_EDITCONFIG "Upravit konfiguraci"
@@ -382,7 +382,7 @@ Prosím dokončete předchozí autorizační dialog."
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread k zobrazení stavu selhal."
     IDS_NFO_STATE_WAIT_TERM "Aktuální stav: Čekání, než se OpenVPN ukončí…"
     IDS_NFO_STATE_CONNECTED "Aktuální stav: Připojeno"
-    IDS_NFO_STATE_ONHOLD "Current State: On Hold (disconnected)"
+    IDS_NFO_STATE_ONHOLD "Aktuální stav: Čekání (odpojeno)"
     IDS_NFO_NOW_CONNECTED "%ls je nyní připojeno."
     IDS_NFO_ASSIGN_IP "Přiřazená IP: %ls"
     IDS_ERR_CERT_EXPIRED "Spojení nelze navázat, protože certifikát expiroval, nebo není správně nastaven systémový čas."
@@ -422,7 +422,7 @@ Více informací najdete v logu (%ls)."
     IDS_NFO_SERVICE_STOPPED "Služba OpenVPN zastavena."
     IDS_NFO_ACTIVE_CONN_EXIT "Některá spojení jsou stále aktivní. Pokud OpenVPN GUI ukončíte, budou přerušena.\
 \n\nOpravdu chcete aplikaci ukončit?"
-    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
+    IDS_ERR_PARSE_MGMT_OPTION "Nepodařilo se zpracovat parametr --management v <%ls%ls>."
     IDS_NFO_SERVICE_ACTIVE_EXIT "Některá spojení jsou stále aktivní. Díky běžící službě OpenVPN \
 zůstanete připojeni, i když ukončíte OpenVPN GUI.\n\n\
 Chcete pokračovat a aplikaci ukončit?"
@@ -431,17 +431,17 @@ Chcete pokračovat a aplikaci ukončit?"
     IDS_NFO_USAGE "--help\t\t\t: Zobrazí tuto zprávu.\n\
 --connect cnn \t\t: Připojí se k ""cnn"" při spuštění. (musí být obsažena přípona souboru)\n\
 \t\t\t   Příklad: openvpn-gui --connect office.ovpn\n\
---command cmd [args]\t: Send a command to a running instance of the GUI\n\
+--command cmd [args]\t: Poslat příkaz k existující instanci GUI\n\
 Supported commands:\n\
-    connect cnn            \t: connect the config named ""cnn""\n\
-    disconnect cnn         \t: disconnect the config named ""cnn""\n\
-    reconnect cnn          \t: reconnect the config named ""cnn""\n\
-    disconnect_all         \t: disconnect all connected configs\n\
-    exit                 \t\t: terminate the running GUI instance (may ask for confirmation)\n\
-    status cnn           \t\t: show the status window of config ""cnn"" if connected\n\
-    silent_connection [0|1]\t: set the silent_connection flag on (1) or off (0)\n\
-    import path          \t\t: Import the config file pointed to by path\n\
-\t\t\tExample: openvpn-gui.exe --command disconnect myconfig\n\
+    connect cnn            \t: připojit k profilu s názvem ""cnn""\n\
+    disconnect cnn         \t: odpojit od profilu s názvem ""cnn""\n\
+    reconnect cnn          \t: restartovat spojení k profilu s názvem ""cnn""\n\
+    disconnect_all         \t: odpojit všechna spojení\n\
+    exit                 \t\t: ukončit spuštěnou instanci GUI (může požádat o potvrzení)\n\
+    status cnn           \t\t: zobrazit stav spojení profilu ""cnn"" pokud je připojeno\n\
+    silent_connection [0|1]\t: nastavit přepínač silent_connection na zapnuto (1) nebo vypnuto (0)\n\
+    import path          \t\t: importovat profil ze souboru\n\
+\t\t\tPříklad: openvpn-gui.exe --command disconnect myconfig\n\
 \n\
 Volby k použití explicitního nastavení namísto výchozího z registru:\n\
 --exe_path\t\t: Cesta k openvpn.exe.\n\
@@ -458,11 +458,11 @@ Volby k použití explicitního nastavení namísto výchozího z registru:\n\
 --connectscript_timeout\t: Časový limit skriptu v průběhu připojování.\n\
 --disconnectscript_timeout\t: Časový limit skriptu při odpojování.\n\
 --preconnectscript_timeout\t: Časový limit skriptu před připojením.\n\
---iservice_admin\t\t: 0=Do not use interactive service when started as admin (default is 1 for Windows 7 and newer)\n\
---disable_popup_messages\t: Do not popup (i.e., show) the echo message window. Default is to show.\n\
---popup_mute_interval\t: Time in hours for which a previously shown echo message is not re-displayed. Default=24 hours.\n\
---management_port_offset\t: Offset value added to config index to determine the management port for a connection.\n\
-\t\t\t Must be in the range 1 to 61000. Maximum number of configs is limited by 65536 minus this value. Default=25340.\n"
+--iservice_admin\t\t: 0=Nepoužívat interaktivní službu když je spuštěno jako správce (výchozí je 1 pro Windows 7 a novější)\n\
+--disable_popup_messages\t: Neukazovat okno se stavem spojení. Výchozí je okno ukázat.\n\
+--popup_mute_interval\t: Čas v hodinách, na jak dlouho se mají potlačit opakované zprávy. Výchozí=24 hodin.\n\
+--management_port_offset\t: Počáteční port pro správu spojení, naslouchání probíhá na dalších portech pro jednotlivé profily v jejich pořadí.\n\
+\t\t\t Musí být v rozmezí 1 až 61000. Maximální počet konfigurací je omezen zbylým počtem portů směrem nahoru. Výchozí=25340.\n"
 
     IDS_NFO_USAGECAPTION "Použití OpenVPN GUI"
     IDS_ERR_BAD_PARAMETER "Parametr ""%ls"" nebyl úspěšně zpracován, \
@@ -543,18 +543,18 @@ OpenVPN pravděpodobně není nainstalováno."
 jednou jako správce, aby se registr aktualizoval."
     IDS_ERR_READ_SET_KEY "Došlo k chybě při čtení a zápisu klíče registru ""%ls""."
     IDS_ERR_WRITE_REGVALUE "Došlo k chybě při zápisu hodnoty registru ""HKCU\\%ls\\%ls""."
-    IDS_ERR_PLAP_REG "Failed to enable Start Before Logon (error = %d)"
-    IDS_ERR_PLAP_UNREG "Failed to disable Start Before Logon (error = %d)"
+    IDS_ERR_PLAP_REG "Nepodařilo se povolit připojení před přihlášením (chyba = %d)"
+    IDS_ERR_PLAP_UNREG "Nepodařilo se zakázat připojení před přihlášením (chyba = %d)"
 
     /* importation */
     IDS_ERR_IMPORT_EXISTS "Konfigurace s názvem ""%ls"" již existuje."
     IDS_ERR_IMPORT_FAILED "Nepodařilo se importovat konfigurační soubor. Následující cestu se nepodařilo vytvořit.\n\n\
 %ls\n\nUjistěte se prosím, že máte potřebná oprávnění."
     IDS_NFO_IMPORT_SUCCESS "Konfigurace úspěšně importována."
-    IDS_NFO_IMPORT_OVERWRITE "A config named ""%ls"" already exists. Do you want to replace it?"
-    IDS_NFO_IMPORT_SOURCE "Do you want to import the profile <%ls>?"
-    IDS_ERR_IMPORT_SOURCE "Cannot import file <%ls> as it is already in the global or local config directory"
-    IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
+    IDS_NFO_IMPORT_OVERWRITE "Konfigurace s názvem ""%ls"" již existuje. Chcete ji nahradit?"
+    IDS_NFO_IMPORT_SOURCE "Chcete importovat profil <%ls>?"
+    IDS_ERR_IMPORT_SOURCE "Nelze importovat soubor <%ls>, protože již existuje v globální nebo lokální složce konfigurací."
+    IDS_ERR_IMPORT_ACCESS "Nelze importovat <%ls>, protože neexistuje nebo jej nelze číst."
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "Stiskněte OK pro odstranění uložených hesel pro konfiguraci ""%ls"""
@@ -563,46 +563,46 @@ jednou jako správce, aby se registr aktualizoval."
     IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN - Heslo tokenu"
     IDS_NFO_TOKEN_PASSWORD_REQUEST "Prosím zadejte heslo/PIN pro token '%hs'"
 
-    IDS_NFO_AUTH_PASS_RETRY "Wrong credentials. Try again…"
-    IDS_NFO_KEY_PASS_RETRY  "Wrong password. Try again…"
-    IDS_ERR_INVALID_PASSWORD_INPUT "Invalid character in password"
-    IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
-    IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds…"
-    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
-    IDS_NFO_BYTECOUNT "Bytes in: %ls  out: %ls"
-    IDS_NFO_OTP_PROMPT "Input OTP or passcode"
+    IDS_NFO_AUTH_PASS_RETRY "Špatné přihlašovací údaje. Zkuste to znovu…"
+    IDS_NFO_KEY_PASS_RETRY  "Špatné heslo. Zkuste to znovu…"
+    IDS_ERR_INVALID_PASSWORD_INPUT "Neplatný znak v hesle."
+    IDS_ERR_INVALID_USERNAME_INPUT "Neplatný znak v uživatelském jménu."
+    IDS_NFO_AUTO_CONNECT "Automatické připojení za %u sekund…"
+    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI již běží. Klikněte pravým tlačítkem na ikonu v oznamovací oblasti."
+    IDS_NFO_BYTECOUNT "Přijato: %ls  Odesláno: %ls"
+    IDS_NFO_OTP_PROMPT "Zadejte OTP nebo přístupový kód."
 
     /* AS profile import */
-    IDS_ERR_URL_IMPORT_PROFILE "Error fetching profile from URL: [%d] %ls"
+    IDS_ERR_URL_IMPORT_PROFILE "Chyba při získávání profilu z URL: [%d] %ls"
 
-    IDS_ERR_NO_PKCS11 "No certificates found. If you have a token insert it and press retry."
-    IDS_ERR_SELECT_PKCS11 "No certificates selected."
+    IDS_ERR_NO_PKCS11 "Nenalezeny žádné certifikáty. Pokud používáte token, vložte jej a stiskněte Zkusit znovu."
+    IDS_ERR_SELECT_PKCS11 "Nebyl vybrán žádný certifikát."
     /* column headers for pkcs11 certificate list */
-    IDS_CERT_DISPLAYNAME "Issued to"
-    IDS_CERT_ISSUER "Issued by"
-    IDS_CERT_NOTAFTER "Valid until"
+    IDS_CERT_DISPLAYNAME "Vydáno pro"
+    IDS_CERT_ISSUER "Vydal"
+    IDS_CERT_NOTAFTER "Platné do"
 
 
     /* PLAP related */
-    IDS_NFO_STATE_RETRYING "Retrying"
-    IDS_NFO_STATE_CANCELLING "Cancelling"
-    IDS_NFO_STATE_DISCONNECTING "Disconnecting"
-    IDS_NFO_CONN_CANCELLED "Connection cancelled by user"
+    IDS_NFO_STATE_RETRYING "Opakování pokusu"
+    IDS_NFO_STATE_CANCELLING "Rušení"
+    IDS_NFO_STATE_DISCONNECTING "Odpojování"
+    IDS_NFO_CONN_CANCELLED "Připojení zrušeno uživatelem"
 
     /* openvpn daemon state names -- these are shown on progress dialog in PLAP */
-    IDS_NFO_OVPN_STATE_INITIAL      "Initializing"
-    IDS_NFO_OVPN_STATE_CONNECTING   "Connecting"
-    IDS_NFO_OVPN_STATE_ASSIGN_IP    "Assigning IP address"
-    IDS_NFO_OVPN_STATE_ADD_ROUTES   "Adding routes"
-    IDS_NFO_OVPN_STATE_CONNECTED    "Connected"
-    IDS_NFO_OVPN_STATE_RECONNECTING "Reconnecting"
-    IDS_NFO_OVPN_STATE_EXITING      "Exiting"
-    IDS_NFO_OVPN_STATE_WAIT         "Waiting"
-    IDS_NFO_OVPN_STATE_AUTH         "Authenticating"
-    IDS_NFO_OVPN_STATE_GET_CONFIG   "Pulling configuration from server"
-    IDS_NFO_OVPN_STATE_RESOLVE      "Resolving remote host"
-    IDS_NFO_OVPN_STATE_TCP_CONNECT  "Establishing TCP connection"
-    IDS_NFO_OVPN_STATE_AUTH_PENDING "Authentication pending"
+    IDS_NFO_OVPN_STATE_INITIAL      "Inicializace"
+    IDS_NFO_OVPN_STATE_CONNECTING   "Připojování"
+    IDS_NFO_OVPN_STATE_ASSIGN_IP    "Přidělování IP adresy"
+    IDS_NFO_OVPN_STATE_ADD_ROUTES   "Přidávání směrování"
+    IDS_NFO_OVPN_STATE_CONNECTED    "Připojeno"
+    IDS_NFO_OVPN_STATE_RECONNECTING "Obnovování spojení"
+    IDS_NFO_OVPN_STATE_EXITING      "Ukončování"
+    IDS_NFO_OVPN_STATE_WAIT         "Čekání"
+    IDS_NFO_OVPN_STATE_AUTH         "Ověřování"
+    IDS_NFO_OVPN_STATE_GET_CONFIG   "Stahování konfigurace ze serveru"
+    IDS_NFO_OVPN_STATE_RESOLVE      "Zjišťování vzdáleného hostitele"
+    IDS_NFO_OVPN_STATE_TCP_CONNECT  "Navazování TCP spojení"
+    IDS_NFO_OVPN_STATE_AUTH_PENDING "Čekání na ověření"
     IDS_NFO_OVPN_STATE_UNKNOWN      "?"
 
 END
