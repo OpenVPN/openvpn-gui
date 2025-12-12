@@ -10,14 +10,14 @@ jobs:
       - name: Install pre-commit
         run: pip3 install pre-commit
       - name: Checkout OpenVPN-GUI
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
       - name: Run pre-commit
         run: pre-commit run -a || true
       - name: Check for changes
         run: git diff --output=cf-changes.patch
       - name: Show changes on standard output
         run: git diff
-      - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: cf-changes.patch
           path: cf-changes.patch
@@ -47,7 +47,7 @@ jobs:
     name: 'msvc - ${{matrix.arch}} ${{ matrix.ovpn3.name }}${{ matrix.conf.name }}'
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+    - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
     - uses: lukka/get-cmake@latest
 
     - name: Restore artifacts, or setup vcpkg (do not install any package)
@@ -62,7 +62,7 @@ jobs:
         configurePreset: '${{ matrix.arch }}${{ matrix.ovpn3.preset }}'
         buildPreset: '${{ matrix.arch }}-${{ matrix.conf.value }}${{ matrix.ovpn3.preset }}'
 
-    - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+    - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
       with:
         name: openvpn-gui_${{ matrix.arch }}_${{ matrix.conf.value }}${{ matrix.ovpn3.upload_name }}
         path: |
@@ -90,7 +90,7 @@ jobs:
       - name: Install dependencies
         run: sudo apt update && sudo apt install -y mingw-w64 libtool automake autoconf
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: autoconf
         run: autoreconf -fvi
