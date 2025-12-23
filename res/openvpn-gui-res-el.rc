@@ -1,0 +1,553 @@
+/*
+ * OpenVPN-GUI -- A Windows GUI for OpenVPN.
+ *
+ * Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
+ * 2009 Heiko Hund <heikoh@users.sf.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program (see the file COPYING included with this
+ * distribution); if not, write to the Free Software Foundation, Inc.,
+ * 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+/* Passphrase Dialog */
+ID_DLG_PASSPHRASE DIALOGEX 6, 18, 160, 83
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+EXSTYLE WS_EX_TOPMOST
+CAPTION "OpenVPN - Σύνθημα ιδιωτικού κλειδιού"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_GREEK, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Εισαγάγετε σύνθημα:", 201, 6, 6, 100, 10
+    EDITTEXT ID_EDT_PASSPHRASE, 6, 17, 107, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 126, 18, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
+    CHECKBOX "Αποθήκευση συνθήματος", ID_CHK_SAVE_PASS, 6, 33, 100, 10
+    PUSHBUTTON "OK", IDOK, 20, 49, 50, 14
+    PUSHBUTTON "Άκυρο", IDCANCEL, 90, 49, 50, 14
+    LTEXT "", ID_TXT_WARNING, 6, 65, 100, 10
+END
+
+/* Auth Username/Password Dialog */
+ID_DLG_AUTH DIALOGEX 6, 18, 180, 95
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFOREGROUND
+EXSTYLE WS_EX_TOPMOST
+CAPTION "OpenVPN - Ταυτοποίηση"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_GREEK, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Όνομα:", ID_LTEXT_USERNAME, 6, 9, 50, 10
+    LTEXT "Σύνθημα:", ID_LTEXT_PASSWORD, 6, 26, 50, 10
+    EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 24, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
+    CHECKBOX "Αποθήκευση συνθήματος", ID_CHK_SAVE_PASS, 6, 42, 100, 10
+    PUSHBUTTON "OK", IDOK, 20, 58, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "Άκυρο", IDCANCEL, 90, 58, 52, 14
+    LTEXT "", ID_TXT_WARNING, 6, 80, 150, 10
+END
+
+/* Auth Username/Password/Challenge Dialog */
+ID_DLG_AUTH_CHALLENGE DIALOGEX 6, 18, 180, 129
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+EXSTYLE WS_EX_TOPMOST
+CAPTION "OpenVPN - Επαλήθευση χρήστη"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_GREEK, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Όνομα:", ID_LTEXT_USERNAME, 6, 9, 50, 10
+    LTEXT "Σύνθημα:", ID_LTEXT_PASSWORD, 6, 26, 50, 10
+    LTEXT "Απάντηση:", ID_LTEXT_RESPONSE, 6, 60, 50, 10
+    EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 24, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
+    LTEXT "", ID_TXT_AUTH_CHALLENGE, 6, 43, 148, 10
+    EDITTEXT ID_EDT_AUTH_CHALLENGE, 60, 57, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    CHECKBOX "Αποθήκευση συνθήματος", ID_CHK_SAVE_PASS, 6, 76, 100, 10
+    PUSHBUTTON "OK", IDOK, 20, 92, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "Άκυρο", IDCANCEL, 90, 92, 52, 14
+    LTEXT "", ID_TXT_WARNING, 6, 108, 150, 10
+END
+
+/* Challenge Response Dialog */
+ID_DLG_CHALLENGE_RESPONSE DIALOGEX 6, 18, 212, 72
+STYLE WS_SIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+EXSTYLE WS_EX_TOPMOST
+CAPTION "OpenVPN - Απάντηση στην πρόκληση"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_GREEK, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "", ID_TXT_DESCRIPTION, 6, 9, 400, 20
+    LTEXT "Απάντηση:", ID_LTEXT_RESPONSE, 6, 30, 50, 10
+    EDITTEXT ID_EDT_RESPONSE, 60, 27, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 28, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
+    PUSHBUTTON "OK", IDOK, 20, 51, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "Άκυρο", IDCANCEL, 90, 51, 52, 14
+END
+
+/* Status Dialog */
+ID_DLG_STATUS DIALOG 6, 18, 380, 210
+STYLE WS_SIZEBOX | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | DS_CENTER
+CAPTION "OpenVPN"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_GREEK, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Σύνδεση...", ID_TXT_STATUS, 20, 5, 200, 10
+    LTEXT "", ID_TXT_BYTECOUNT, 20, 175, 200, 10
+    LTEXT "OpenVPN GUI 11.y.0.0/2.4.x", ID_TXT_VERSION, 220, 175, 150, 10
+    LTEXT "", ID_TXT_IP, 20, 160, 300, 10
+    PUSHBUTTON "Αποσύνδεση", ID_DISCONNECT, 50, 190, 50, 14
+    PUSHBUTTON "Επανεκκίνηση", ID_RESTART, 150, 190, 50, 14
+    PUSHBUTTON "Απόσπαση", ID_DETACH, 180, 190, 50, 14, WS_DISABLED
+    PUSHBUTTON "Απόκρυψη", ID_HIDE, 100, 190, 50, 14
+END
+
+/* Change Passphrase Dialog */
+ID_DLG_CHGPASS DIALOG 6, 18, 193, 82
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "OpenVPN - Αλλαγή συνθήματος ιδιωτικού κλειδιού"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_GREEK, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Παλιό σύνθημα:", 171, 6, 9, 85, 10
+    LTEXT "Νέο σύνθημα:", 172, 6, 26, 85, 10
+    LTEXT "Επιβεβαίωση νέου:", 173, 6, 42, 85, 10
+    EDITTEXT ID_EDT_PASS_CUR, 95, 6, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PASS_NEW, 95, 23, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PASS_NEW2, 95, 39, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "OK", IDOK, 40, 59, 50, 14
+    PUSHBUTTON "Άκυρο", IDCANCEL, 103, 59, 50, 14
+    LTEXT "", ID_TXT_KEYFORMAT, 0, 0, 0, 0
+    LTEXT "", ID_TXT_KEYFILE, 0, 0, 0, 0
+END
+
+/* Proxy Settings Dialog */
+ID_DLG_PROXY DIALOG 6, 18, 249, 104
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Proxy"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_GREEK, SUBLANG_DEFAULT
+BEGIN
+    GROUPBOX "   ", 201, 6, 46, 235, 52
+    AUTORADIOBUTTON "Χρήση ρυθμίσεων από το αρχείο παραμέτρων OpenVPN", ID_RB_PROXY_OPENVPN,
+                    13, 16, 210, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Χρήση ρυθμίσεων συστήματος (MSIE)",
+                    ID_RB_PROXY_MSIE, 13, 31, 210, 10
+    AUTORADIOBUTTON "Χειροκίνητη διαμόρφωση", ID_RB_PROXY_MANUAL, 13, 46, 100, 10
+    AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "SOCKS Proxy", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
+    LTEXT "Διεύθυνση:", ID_TXT_PROXY_ADDRESS, 20, 77, 40, 10
+    RTEXT "Θύρα:", ID_TXT_PROXY_PORT, 171, 77, 20, 10
+    EDITTEXT ID_EDT_PROXY_ADDRESS, 63, 75, 107, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_PROXY_PORT, 196, 75, 30, 12, ES_AUTOHSCROLL
+END
+
+/* General Settings Dialog */
+ID_DLG_GENERAL DIALOGEX 6, 18, 249, 104
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Γενικά"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_GREEK, SUBLANG_DEFAULT
+BEGIN
+    GROUPBOX "Διεπαφή χρήστη", 201, 6, 12, 235, 30
+    LTEXT "Γλώσσα:", ID_TXT_LANGUAGE, 17, 25, 52, 12
+    COMBOBOX ID_CMB_LANGUAGE, 57, 23, 171, 400, CBS_DROPDOWNLIST | WS_TABSTOP
+
+    GROUPBOX "Εκκίνηση", 202, 6, 47, 235, 30
+    AUTOCHECKBOX "Εκκίνηση μαζί με τα Windows", ID_CHK_STARTUP, 17, 59, 150, 12
+
+    GROUPBOX "Επιλογές", ID_GROUPBOX3, 6, 82, 235, 180
+    AUTOCHECKBOX "Προσθήκη εγγραφών στο τέλος του log", ID_CHK_LOG_APPEND, 17, 95, 200, 10
+    AUTOCHECKBOX "Εμφάνιση παραθύρου σεναρίου (script)", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
+    AUTOCHECKBOX "Αθόρυβη σύνδεση", ID_CHK_SILENT, 17, 125, 200, 10
+    AUTOCHECKBOX "Πάντα χρήση διαδραστικής υπηρεσίας", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
+    LTEXT "Εμφάνιση ειδοποιήσεων", ID_TXT_BALLOON, 17, 155, 100, 10
+    AUTORADIOBUTTON "Στη σύνδεση", ID_RB_BALLOON1, 28, 170, 53, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Στη σύνδεση/επανασύνδεση", ID_RB_BALLOON2, 86, 170, 115, 10
+    AUTORADIOBUTTON "Ποτέ", ID_RB_BALLOON0, 203, 170, 35, 10
+    LTEXT "Μόνιμες συνδέσεις", ID_TXT_PERSISTENT, 17, 185, 100, 10
+    AUTORADIOBUTTON "Αυτόματα", ID_RB_BALLOON3, 28, 200, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Χειροκίνητα", ID_RB_BALLOON4, 86, 200, 90, 10
+    AUTORADIOBUTTON "Απενεργοποίηση", ID_RB_BALLOON5, 181, 200, 60, 10
+    AUTOCHECKBOX "Ενεργοποίηση Pre-Logon Access Provider (απαιτεί admin)", ID_CHK_PLAP_REG, 17, 215, 220, 10
+    AUTOCHECKBOX "Ενεργοποίηση αυτόματης επανεκκίνησης ενεργών συνδέσεων", ID_CHK_AUTO_RESTART, 17, 230, 220, 10
+    AUTOCHECKBOX "Ερώτηση για OTP και συνδυασμός με σύνθημα", ID_CHK_CONCAT_OTP, 17, 245, 220, 10
+END
+
+/* Advanced Dialog */
+ID_DLG_ADVANCED DIALOGEX 6, 18, 252, ADVANCED_DIALOG_HEIGHT
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Για προχωρημένους"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_GREEK, SUBLANG_DEFAULT
+BEGIN
+    GROUPBOX "Αρχεία παραμέτρων (Config)", 201, 6, 12, 235, 45
+    LTEXT "Φάκελος:", ID_TXT_FOLDER, 17, 25, 32, 10
+    LTEXT "Επέκταση:", ID_TXT_EXTENSION, 17, 40, 52, 10
+    EDITTEXT ID_EDT_CONFIG_DIR, 53, 23, 150, 12, ES_AUTOHSCROLL
+    EDITTEXT ID_EDT_CONFIG_EXT, 53, 38, 25, 12, ES_AUTOHSCROLL
+    PUSHBUTTON "…", ID_BTN_CONFIG_DIR, 208, 23, 25, 12
+
+    GROUPBOX "Αρχεία καταγραφής (Logs)", 202, 6, 62, 235, 30
+    LTEXT "Φάκελος:", ID_TXT_FOLDER1, 17, 74, 32, 10
+    EDITTEXT ID_EDT_LOG_DIR, 53, 72, 150, 12, ES_AUTOHSCROLL
+    PUSHBUTTON "…", ID_BTN_LOG_DIR, 208, 72, 25, 12
+
+    GROUPBOX "Χρονικό όριο σεναρίου (Script timeout)", 203, 6, 97, 235, 60
+    LTEXT "Πριν τη σύνδεση:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
+    LTEXT "Κατά τη σύνδεση:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
+    LTEXT "Κατά την αποσύνδεση:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
+    EDITTEXT ID_EDT_PRECONNECT_TIMEOUT, 103, 108, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
+    EDITTEXT ID_EDT_CONNECT_TIMEOUT, 103, 123, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
+    EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 103, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
+
+    GROUPBOX "Διεπαφή διαχείρισης", 204, 6, 163, 235, 30
+    LTEXT "Offset θύρας:", 205, 17, 175, 75, 10
+    EDITTEXT ID_EDT_MGMT_PORT, 103, 173, 30, 12, ES_AUTOHSCROLL
+
+    GROUPBOX "Προβολή μενού Config", 206, 6, 198, 235, 30
+    AUTORADIOBUTTON "Αυτόματα", ID_RB_BALLOON0, 28, 210, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Επίπεδο", ID_RB_BALLOON1, 88, 210, 50, 10
+    AUTORADIOBUTTON "Δενδρικό", ID_RB_BALLOON2, 148, 210, 50, 10
+
+    GROUPBOX "Εμφάνιση μηνυμάτων Echo", 207, 6, 233, 235, 45
+    AUTORADIOBUTTON "Αυτόματα", ID_RB_BALLOON3, 28, 245, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Ποτέ", ID_RB_BALLOON4, 88, 245, 50, 10
+    LTEXT "Σίγαση επαναλαμβανόμενων μηνυμάτων για: ", 208, 17, 260, 150, 10
+    EDITTEXT ID_EDT_POPUP_MUTE, 170, 258, 30, 12, ES_AUTOHSCROLL
+    LTEXT "ώρες", 209, 210, 260, 40, 10
+
+#if ENABLE_OVPN3
+    GROUPBOX "Μηχανή OpenVPN", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
+    AUTORADIOBUTTON "OpenVPN2", ID_RB_ENGINE_OVPN2, 18, 296, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "OpenVPN3 (πειραματικό)", ID_RB_ENGINE_OVPN3, 76, 296, 110, 10
+#endif
+
+END
+
+/* About Dialog */
+ID_DLG_ABOUT DIALOG 6, 18, 249, 104
+STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Σχετικά με την εφαρμογή"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_GREEK, SUBLANG_DEFAULT
+BEGIN
+    ICON ID_ICO_APP, ID_ICON_ABOUT, 8, 16, 21, 20
+    LTEXT "OpenVPN GUI v%ls - Διεπαφή για το OpenVPN στα Windows\n\
+Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
+Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
+Copyright (C) 2012-2025 Συντελεστές OpenVPN GUI\n", ID_TXT_VERSION, 36, 15, 206, 50
+    LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_LTEXT_ABOUT2, 36, 55, 206, 42
+    LTEXT "OpenVPN - Μια εφαρμογή για τη δημιουργία ασφαλών τούνελ δικτύου IP \
+μέσω μιας θύρας TCP/UDP με υποστήριξη SSL/TLS ταυτοποίησης \
+και ανταλλαγής κλειδιών, κρυπτογράφησης και συμπίεσης πακέτων.\n\
+\n", ID_LTEXT_ABOUT3, 8, 70, 240, 64
+    LTEXT "Copyright (C) 2002-2025 OpenVPN Technologies, Inc <info@openvpn.net>\n\
+https://openvpn.net/", ID_LTEXT_ABOUT4, 8, 106, 240, 64
+END
+
+/* Proxy Authentication Dialog */
+ID_DLG_PROXY_AUTH DIALOGEX 29, 23, 170, 65
+STYLE DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER
+EXSTYLE WS_EX_TOPMOST
+CAPTION "OpenVPN - Σύνδεση στον Proxy"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_GREEK, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Όνομα:", 201, 9, 8, 38, 10
+    EDITTEXT ID_EDT_PROXY_USER, 49, 5, 94, 12, ES_AUTOHSCROLL
+    LTEXT "Σύνθημα:", 202, 9, 26, 38, 10
+    EDITTEXT ID_EDT_PROXY_PASS, 49, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 145, 24, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
+    PUSHBUTTON "OK", IDOK, 58, 43, 40, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+END
+
+/* URL Profile Import Dialog */
+ID_DLG_URL_PROFILE_IMPORT DIALOGEX 6, 18, 249, 95
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFOREGROUND
+CAPTION "Εισαγωγή προφίλ από Access Server"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_GREEK, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "U&RL:", 201, 6, 9, 50, 10
+    EDITTEXT ID_EDT_URL, 60, 6, 183, 12, ES_AUTOHSCROLL
+    LTEXT "Όνομα &Χρήστη:", 202, 6, 26, 50, 10
+    EDITTEXT ID_EDT_AUTH_USER, 60, 23, 94, 12, ES_AUTOHSCROLL
+    LTEXT "&Σύνθημα:", ID_LTEXT_PASSWORD, 6, 42, 50, 10
+    EDITTEXT ID_EDT_AUTH_PASS, 60, 40, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 41, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
+    AUTOCHECKBOX "&Αυτόματη σύνδεση", ID_CHK_AUTOLOGIN, 6, 59, 100, 10
+    PUSHBUTTON "&OK", IDOK, 20, 76, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "&Άκυρο", IDCANCEL, 90, 76, 52, 14
+END
+
+/* Query PKCS11-ID Dialog */
+ID_DLG_PKCS11_QUERY DIALOGEX 6, 18, 340, 242
+STYLE WS_SIZEBOX| WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFONT
+CAPTION "Επιλογή Πιστοποιητικού"
+FONT 8, "Segoe UI"
+LANGUAGE LANG_GREEK, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Διαθέσιμα Πιστοποιητικά PKCS11:", ID_TXT_PKCS11, 17, 12, 171, 12
+    CONTROL "", ID_LVW_PKCS11, "SysListView32", LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP, 17, 25, 171,150
+    PUSHBUTTON "&OK", IDOK, 20, 200, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "&Άκυρο", IDCANCEL, 90, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "&Επανάληψη", IDRETRY, 160, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    LTEXT "", ID_TXT_WARNING, 6, 222, 190, 10
+END
+
+/* QR code dialog */
+ID_DLG_QR DIALOGEX 0, 0, 10, 10
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Κωδικός QR"
+FONT 8, "Segoe UI"
+LANGUAGE LANG_GREEK, SUBLANG_DEFAULT
+BEGIN
+    CONTROL "", ID_STATIC_QR, "Static", SS_BITMAP | WS_VISIBLE | SS_CENTERIMAGE, 0, 0, 10, 10
+    LTEXT "Σαρώστε αυτόν τον κωδικό QR στο κινητό σας για να προχωρήσετε στην ταυτοποίηση.", ID_TXT_QR, 0, 0, 10, 10, SS_CENTER | WS_VISIBLE | SS_EDITCONTROL
+END
+
+STRINGTABLE
+LANGUAGE LANG_GREEK, SUBLANG_DEFAULT
+BEGIN
+    IDS_LANGUAGE_NAME "Ελληνικά - Greek"
+
+    /* Tray - Resources */
+    IDS_TIP_CONNECTED "\nΣυνδέθηκε: "
+    IDS_TIP_CONNECTING "\nΣύνδεση σε εξέλιξη: "
+    IDS_TIP_CONNECTED_SINCE "\nΣυνδεδεμένος από: "
+    IDS_TIP_ASSIGNED_IP "\nΑποδοθείσα IP: %ls"
+    IDS_MENU_SERVICE "Υπηρεσία OpenVPN"
+    IDS_MENU_IMPORT "Εισαγωγή"
+    IDS_MENU_IMPORT_AS "Εισαγωγή από Access Server…"
+    IDS_MENU_IMPORT_URL "Εισαγωγή από URL…"
+    IDS_MENU_IMPORT_FILE "Εισαγωγή αρχείου παραμέτρων…"
+    IDS_MENU_SETTINGS "Ρυθμίσεις…"
+    IDS_MENU_CLOSE "Έξοδος"
+    IDS_MENU_CONNECT "Σύνδεση"
+    IDS_MENU_DISCONNECT "Αποσύνδεση"
+    IDS_MENU_RECONNECT "Επανασύνδεση"
+    IDS_MENU_STATUS "Εμφάνιση κατάστασης"
+    IDS_MENU_VIEWLOG "Προβολή αρχείου καταγραφής"
+    IDS_MENU_EDITCONFIG "Επεξεργασία παραμέτρων"
+    IDS_MENU_PASSPHRASE "Αλλαγή συνθήματος"
+    IDS_MENU_CLEARPASS "Διαγραφή αποθηκευμένων συνθημάτων"
+    IDS_MENU_SERVICE_START "Εκκίνηση"
+    IDS_MENU_SERVICE_STOP "Διακοπή"
+    IDS_MENU_SERVICE_RESTART "Επανεκκίνηση"
+    IDS_MENU_SERVICEONLY_START "Σύνδεση"
+    IDS_MENU_SERVICEONLY_STOP "Αποσύνδεση"
+    IDS_MENU_SERVICEONLY_RESTART "Επανεκκίνηση"
+    IDS_MENU_ASK_STOP_SERVICE "Είστε σίγουροι ότι θέλετε να αποσυνδεθείτε (Διακοπή υπηρεσίας OpenVPN);"
+
+    /* Logviewer - Resources */
+    IDS_ERR_START_LOG_VIEWER "Σφάλμα κατά την εκκίνηση του προγράμματος προβολής log: %ls"
+    IDS_ERR_START_CONF_EDITOR "Σφάλμα κατά την εκκίνηση του προγράμματος επεξεργασίας: %ls"
+
+    /* OpenVPN */
+    IDS_ERR_MANY_CONFIGS "Το OpenVPN GUI δεν υποστηρίζει πάνω από %d αρχεία παραμέτρων. Επικοινωνήστε με τον δημιουργό αν χρειάζεστε περισσότερα."
+    IDS_NFO_NO_CONFIGS "Δεν βρέθηκαν αρχεία παραμέτρων.\n\
+Χρησιμοποιήστε την επιλογή ""Εισαγωγή αρχείου παραμέτρων…"" ή αντιγράψτε τα αρχεία στο ""%ls"" ή ""%ls""."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "Η δημιουργία αυτής της σύνδεσης (%ls) απαιτεί συμμετοχή στην ομάδα \
+""%ls"". Επικοινωνήστε με τον διαχειριστή συστήματος.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Η δημιουργία αυτής της σύνδεσης (%ls) απαιτεί συμμετοχή στην ομάδα \
+""%ls"".\n\n\
+Θέλετε να προστεθείτε σε αυτή την ομάδα;\n\
+Αυτή η ενέργεια μπορεί να απαιτεί δικαιώματα διαχειριστή."
+    IDS_NFO_CONFIG_AUTH_PENDING   "Η δημιουργία αυτής της σύνδεσης (%ls) απαιτεί συμμετοχή στην ομάδα \
+""%ls"".\n\n\
+Παρακαλώ ολοκληρώστε τον προηγούμενο διάλογο εξουσιοδότησης."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Η προσθήκη του χρήστη στην ομάδα ""%ls"" απέτυχε."
+    IDS_ERR_ONE_CONN_OLD_VER "Αν χρησιμοποιείτε OpenVPN παλαιότερο της έκδοσης 2.0-beta6, μπορείτε να έχετε μόνο μία ενεργή σύνδεση."
+    IDS_ERR_STOP_SERV_OLD_VER "Δεν είναι δυνατή η χρήση του OpenVPN GUI αν εκτελείται ήδη η υπηρεσία OpenVPN (εκδόσεις 1.5/1.6). Παρακαλώ διακόψτε την υπηρεσία πρώτα."
+    IDS_ERR_CREATE_EVENT "Η ενέργεια CreateEvent απέτυχε: %ls"
+    IDS_ERR_UNKNOWN_PRIORITY "Άγνωστο όνομα προτεραιότητας: %ls"
+    IDS_ERR_LOG_APPEND_BOOL "Η επιλογή προσθήκης στο log (αναγνωρισμένη ως '%ls') πρέπει να είναι '0' ή '1'"
+    IDS_ERR_GET_MSIE_PROXY "Αποτυχία ανάκτησης ρυθμίσεων proxy από τον MSIE."
+    IDS_ERR_INIT_SEC_DESC "Το InitializeSecurityDescriptor απέτυχε."
+    IDS_ERR_SET_SEC_DESC_ACL "Το SetSecurityDescriptorDacl απέτυχε."
+    IDS_ERR_CREATE_PIPE_OUTPUT "Το CreatePipe στο hOutputWrite απέτυχε."
+    IDS_ERR_CREATE_PIPE_INPUT "Το CreatePipe στο hInputRead απέτυχε."
+    IDS_ERR_DUP_HANDLE_OUT_READ "Το DuplicateHandle στο hOutputRead απέτυχε."
+    IDS_ERR_DUP_HANDLE_IN_WRITE "Το DuplicateHandle στο hInputWrite απέτυχε."
+    IDS_ERR_CREATE_PROCESS "Το CreateProcess απέτυχε, exe='%ls' cmdline='%ls' dir='%ls'"
+    IDS_ERR_CREATE_THREAD_STATUS "Το CreateThread για την προβολή κατάστασης απέτυχε."
+    IDS_NFO_STATE_WAIT_TERM "Τρέχουσα κατάσταση: Αναμονή για τερματισμό του OpenVPN…"
+    IDS_NFO_STATE_CONNECTED "Τρέχουσα κατάσταση: Συνδέθηκε"
+    IDS_NFO_STATE_ONHOLD "Τρέχουσα κατάσταση: Σε αναμονή (αποσυνδεδεμένο)"
+    IDS_NFO_NOW_CONNECTED "Το %ls είναι τώρα συνδεδεμένο."
+    IDS_NFO_ASSIGN_IP "Αποδοθείσα IP: %ls"
+    IDS_ERR_CERT_EXPIRED "Η σύνδεση απέτυχε επειδή το πιστοποιητικό έληξε ή η ώρα συστήματος είναι λάθος."
+    IDS_ERR_CERT_NOT_YET_VALID "Το πιστοποιητικό δεν είναι ακόμα έγκυρο. Ελέγξτε την ώρα συστήματος."
+    IDS_NFO_STATE_RECONNECTING "Τρέχουσα κατάσταση: Επανασύνδεση"
+    IDS_NFO_STATE_DISCONNECTED "Τρέχουσα κατάσταση: Αποσυνδεδεμένο"
+    IDS_NFO_CONN_TERMINATED "Η σύνδεση στο %ls τερματίστηκε."
+    IDS_NFO_STATE_FAILED "Τρέχουσα κατάσταση: Αποτυχία σύνδεσης"
+    IDS_NFO_CONN_FAILED "Η σύνδεση στο %ls απέτυχε."
+    IDS_NFO_STATE_FAILED_RECONN "Τρέχουσα κατάσταση: Αποτυχία επανεκκίνησης"
+    IDS_NFO_RECONN_FAILED "Η επανεκκίνηση της σύνδεσης στο %ls απέτυχε."
+    IDS_NFO_STATE_SUSPENDED "Τρέχουσα κατάσταση: Σε αναστολή"
+    IDS_ERR_READ_STDOUT_PIPE "Σφάλμα κατά την ανάγνωση από το OpenVPN StdOut Pipe."
+    IDS_ERR_CREATE_EDIT_LOGWINDOW "Σφάλμα κατά τη δημιουργία του παραθύρου log."
+    IDS_ERR_SET_SIZE "Αποτυχία ορισμού μεγέθους."
+    IDS_ERR_AUTOSTART_CONF "Δεν βρέθηκε η επιθυμητή παράμετρος για αυτόματη σύνδεση: %ls"
+    IDS_ERR_CREATE_PIPE_IN_READ "Το CreatePipe στο hInputRead απέτυχε."
+    IDS_NFO_STATE_CONNECTING "Τρέχουσα κατάσταση: Σύνδεση σε εξέλιξη"
+    IDS_NFO_CONNECTION_XXX "Σύνδεση OpenVPN (%ls)"
+    IDS_NFO_STATE_CONN_SCRIPT "Τρέχουσα κατάσταση: Εκτέλεση σεναρίου σύνδεσης"
+    IDS_NFO_STATE_DISCONN_SCRIPT "Τρέχουσα κατάσταση: Εκτέλεση σεναρίου αποσύνδεσης"
+    IDS_ERR_RUN_CONN_SCRIPT "Σφάλμα κατά την εκτέλεση του σεναρίου σύνδεσης: %ls"
+    IDS_ERR_GET_EXIT_CODE "Αποτυχία λήψης ExitCode από το σενάριο σύνδεσης (%ls)"
+    IDS_ERR_CONN_SCRIPT_FAILED "Το σενάριο σύνδεσης απέτυχε. (exitcode=%ld)"
+    IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Το σενάριο σύνδεσης έληξε μετά από %ds."
+    IDS_ERR_CONFIG_EXIST "Ένα αρχείο παραμέτρων με όνομα '%ls' υπάρχει ήδη."
+    IDS_NFO_CONN_TIMEOUT "Η σύνδεση στη διεπαφή διαχείρισης απέτυχε.\n\
+Δείτε το log για λεπτομέρειες (%ls)."
+
+    /* main - Resources */
+    IDS_ERR_OPEN_DEBUG_FILE "Αδυναμία ανοίγματος αρχείου debug (%ls)."
+    IDS_ERR_CREATE_PATH "Αποτυχία δημιουργίας φακέλου %ls:\n%ls"
+    IDS_ERR_LOAD_RICHED20 "Αποτυχία φόρτωσης του riched20.dll."
+    IDS_ERR_SHELL_DLL_VERSION "Η έκδοση του shell32.dll είναι παλιά (0x%lx). Απαιτείται έκδοση 5.0 ή νεότερη."
+    IDS_NFO_SERVICE_STARTED "Η υπηρεσία OpenVPN ξεκίνησε."
+    IDS_NFO_SERVICE_STOPPED "Η υπηρεσία OpenVPN διακόπηκε."
+    IDS_NFO_ACTIVE_CONN_EXIT "Υπάρχουν ενεργές συνδέσεις. Αν κλείσετε το OpenVPN GUI, θα διακοπούν.\
+\n\nΘέλετε σίγουρα να κλείσετε την εφαρμογή;"
+    IDS_ERR_PARSE_MGMT_OPTION "Αδυναμία ανάλυσης της επιλογής --management στο <%ls%ls>."
+    IDS_NFO_SERVICE_ACTIVE_EXIT "Υπάρχουν ενεργές συνδέσεις. Λόγω της υπηρεσίας OpenVPN, \
+θα παραμείνετε συνδεδεμένοι ακόμα και αν κλείσετε το OpenVPN GUI.\n\n\
+Θέλετε να συνεχίσετε;"
+
+    /* options - Resources */
+    IDS_NFO_USAGE "--help\t\t\t: Εμφάνιση αυτού του μηνύματος.\n\
+--connect cnn \t\t: Σύνδεση στο ""cnn"" κατά την εκκίνηση. (απαιτείται επέκταση αρχείου)\n\
+\t\t\t   Παράδειγμα: openvpn-gui --connect office.ovpn\n\
+--command cmd [args]\t: Αποστολή εντολής σε ενεργό GUI\n\
+Υποστηριζόμενες εντολές:\n\
+    connect cnn            \t: σύνδεση στο προφίλ ""cnn""\n\
+    disconnect cnn         \t: αποσύνδεση από το προφίλ ""cnn""\n\
+    reconnect cnn          \t: επανασύνδεση στο προφίλ ""cnn""\n\
+    disconnect_all         \t: αποσύνδεση όλων\n\
+    exit                 \t\t: τερματισμός του GUI\n\
+    status cnn           \t\t: εμφάνιση κατάστασης του ""cnn""\n\
+    import path          \t\t: Εισαγωγή αρχείου από τη διαδρομή\n"
+
+    IDS_NFO_USAGECAPTION "Χρήση OpenVPN GUI"
+    IDS_ERR_BAD_PARAMETER "Η παράμετρος ""%ls"" δεν αναγνωρίστηκε."
+    IDS_ERR_BAD_OPTION "Μη έγκυρη τιμή ή άγνωστη επιλογή: --%ls\n\
+Δείτε openvpn-gui --help για περισσότερα."
+
+    /* passphrase - Resources */
+    IDS_ERR_CREATE_PASS_THREAD "Αποτυχία CreateThread για τον διάλογο αλλαγής συνθήματος."
+    IDS_NFO_CHANGE_PWD "Αλλαγή συνθήματος ιδιωτικού κλειδιού (%ls)"
+    IDS_ERR_PWD_DONT_MATCH "Τα συνθήματα δεν ταιριάζουν. Δοκιμάστε ξανά."
+    IDS_ERR_PWD_TO_SHORT "Το ελάχιστο μήκος συνθήματος είναι %d χαρακτήρες."
+    IDS_NFO_EMPTY_PWD "Θέλετε σίγουρα να ορίσετε κενό σύνθημα;"
+    IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Άγνωστη μορφή αρχείου κλειδιού."
+    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Σφάλμα κατά τη φόρτωση του ιδιωτικού κλειδιού (%ls)."
+    IDS_ERR_OLD_PWD_INCORRECT "Το παλιό σύνθημα είναι λάθος."
+    IDS_ERR_OPEN_WRITE_KEY "Αποτυχία εγγραφής στο αρχείο ιδιωτικού κλειδιού (%ls)."
+    IDS_ERR_WRITE_NEW_KEY "Αποτυχία δημιουργίας νέου αρχείου ιδιωτικού κλειδιού (%ls)."
+    IDS_NFO_PWD_CHANGED "Το σύνθημα άλλαξε επιτυχώς."
+    IDS_ERR_READ_PKCS12 "Σφάλμα κατά τη φόρτωση του αρχείου PKCS #12 (%ls)."
+    IDS_ERR_CREATE_PKCS12 "Σφάλμα κατά τη δημιουργία νέου PKCS #12. Η αλλαγή απέτυχε."
+    IDS_ERR_OPEN_CONFIG "Αδυναμία ανοίγματος αρχείου παραμέτρων: (%ls)"
+    IDS_ERR_ONLY_ONE_KEY_OPTION "Δεν επιτρέπεται πάνω από ένας ορισμός ""key""."
+    IDS_ERR_ONLY_KEY_OR_PKCS12 "Δεν επιτρέπεται ""key"" και ""pkcs12"" στο ίδιο αρχείο."
+    IDS_ERR_ONLY_ONE_PKCS12_OPTION "Δεν επιτρέπεται πάνω από ένας ορισμός ""pkcs12""."
+    IDS_ERR_HAVE_KEY_OR_PKCS12 "Λείπει ο ορισμός ""key"" ή ""pkcs12""."
+    IDS_ERR_KEY_FILENAME_TO_LONG "Το όνομα του αρχείου κλειδιού είναι πολύ μεγάλο."
+    IDS_ERR_PASSPHRASE2STDIN "Σφάλμα κατά τη διαβίβαση του συνθήματος."
+    IDS_ERR_AUTH_USERNAME2STDIN "Σφάλμα κατά τη διαβίβαση του ονόματος χρήστη."
+    IDS_ERR_AUTH_PASSWORD2STDIN "Σφάλμα κατά τη διαβίβαση του συνθήματος πρόσβασης."
+    IDS_ERR_CR2STDIN "Σφάλμα κατά τη διαβίβαση της απάντησης στην πρόκληση."
+    IDS_ERR_INVALID_CHARS_IN_PSW "Το νέο σύνθημα περιέχει μη έγκυρους χαρακτήρες."
+
+    /* settings */
+    IDS_SETTINGS_CAPTION "OpenVPN - Ρυθμίσεις"
+
+    /* proxy */
+    IDS_ERR_HTTP_PROXY_ADDRESS "Πρέπει να ορίσετε διεύθυνση HTTP proxy."
+    IDS_ERR_HTTP_PROXY_PORT "Πρέπει να ορίσετε θύρα HTTP proxy."
+    IDS_ERR_HTTP_PROXY_PORT_RANGE "Η θύρα HTTP proxy πρέπει να είναι 1-65535"
+    IDS_ERR_SOCKS_PROXY_ADDRESS "Πρέπει να ορίσετε διεύθυνση SOCKS proxy."
+    IDS_ERR_SOCKS_PROXY_PORT "Πρέπει να ορίσετε θύρα SOCKS proxy."
+    IDS_ERR_SOCKS_PROXY_PORT_RANGE "Η θύρα SOCKS proxy πρέπει να είναι 1-65535"
+    IDS_ERR_CREATE_REG_HKCU_KEY "Σφάλμα κατά τη δημιουργία του κλειδιού ""HKCU\\%ls"" στο μητρώο."
+    IDS_ERR_GET_TEMP_PATH "Σφάλμα κατά την εύρεση της διαδρομής Temp."
+
+    /* service */
+    IDS_ERR_OPEN_VPN_SERVICE "Σφάλμα κατά τη φόρτωση της υπηρεσίας ""OpenVPNService""."
+    IDS_ERR_START_SERVICE "Σφάλμα κατά την εκκίνηση της υπηρεσίας ""OpenVPNService""."
+    IDS_ERR_QUERY_SERVICE "Σφάλμα κατά τον έλεγχο κατάστασης της υπηρεσίας."
+    IDS_ERR_SERVICE_START_FAILED "Η εκκίνηση της υπηρεσίας OpenVPN απέτυχε."
+    IDS_ERR_OPEN_SCMGR "Το OpenSCManager απέτυχε (%d)"
+    IDS_ERR_STOP_SERVICE "Η διακοπή της υπηρεσίας OpenVPN απέτυχε."
+    IDS_NFO_RESTARTED "Η υπηρεσία OpenVPN επανεκκινήθηκε."
+    IDS_ERR_ACCESS_SERVICE_PIPE "Αποτυχία πρόσβασης στο pipe της υπηρεσίας."
+    IDS_ERR_WRITE_SERVICE_PIPE "Αποτυχία εγγραφής στο pipe της υπηρεσίας."
+    IDS_ERR_INSTALL_ISERVICE     "Η υπηρεσία ""OpenVPNServiceInteractive"" δεν είναι εγκατεστημένη."
+    IDS_ERR_NOTSTARTED_ISERVICE  "Η υπηρεσία ""OpenVPNServiceInteractive"" δεν εκτελείται."
+    IDS_ERR_NOTSTARTED_ISERVICE_ADM  "Η υπηρεσία ""OpenVPNServiceInteractive"" δεν εκτελείται. Ο οδηγός Wintun δεν θα λειτουργήσει."
+
+    /* registry */
+    IDS_ERR_GET_WINDOWS_DIR "Αποτυχία εντοπισμού του φακέλου Windows."
+    IDS_ERR_GET_PROFILE_DIR "Αποτυχία εντοπισμού του φακέλου προφίλ χρήστη."
+    IDS_ERR_GET_PROGRAM_DIR "Αποτυχία εντοπισμού του φακέλου ""Program Files""."
+    IDS_ERR_OPEN_REGISTRY "Αποτυχία ανοίγματος του κλειδιού μητρώου (HKLM\\SOFTWARE\\OpenVPN)."
+    IDS_ERR_READING_REGISTRY "Σφάλμα κατά την ανάγνωση από το μητρώο."
+    IDS_ERR_PASSPHRASE_ATTEMPTS "Η τιμή ""passphrase_attempts"" πρέπει να είναι μεταξύ 1 και 9."
+    IDS_ERR_CONN_SCRIPT_TIMEOUT "Η τιμή ""connectscript_timeout"" πρέπει να είναι μεταξύ 0 και 99."
+    IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Η τιμή ""disconnectscript_timeout"" πρέπει να είναι μεταξύ 1 και 99."
+    IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Η τιμή ""preconnectscript_timeout"" πρέπει να είναι μεταξύ 1 και 99."
+    IDS_ERR_CREATE_REG_KEY "Αποτυχία δημιουργίας κλειδιού HKLM\\SOFTWARE\\OpenVPN-GUI."
+    IDS_ERR_OPEN_WRITE_REG "Αποτυχία ανοίγματος μητρώου για εγγραφή. Εκτελέστε την εφαρμογή ως διαχειριστής μία φορά."
+    IDS_ERR_READ_SET_KEY "Σφάλμα κατά την ανάγνωση/εγγραφή του κλειδιού ""%ls""."
+    IDS_ERR_WRITE_REGVALUE "Σφάλμα κατά την εγγραφή στο ""HKCU\\%ls\\%ls""."
+    IDS_ERR_PLAP_REG "Αποτυχία ενεργοποίησης του Start Before Logon (error = %d)"
+    IDS_ERR_PLAP_UNREG "Αποτυχία απενεργοποίησης του Start Before Logon (error = %d)"
+
+    /* importation */
+    IDS_ERR_IMPORT_EXISTS "Το προφίλ με όνομα ""%ls"" υπάρχει ήδη."
+    IDS_ERR_IMPORT_FAILED "Η εισαγωγή απέτυχε. Η διαδρομή δεν μπόρεσε να δημιουργηθεί:\n\n%ls"
+    IDS_NFO_IMPORT_SUCCESS "Το προφίλ εισήχθη επιτυχώς."
+    IDS_NFO_IMPORT_OVERWRITE "Το προφίλ ""%ls"" υπάρχει ήδη. Θέλετε να το αντικαταστήσετε;"
+    IDS_NFO_IMPORT_SOURCE "Θέλετε να εισάγετε το προφίλ <%ls>;"
+    IDS_ERR_IMPORT_SOURCE "Αδυναμία εισαγωγής του αρχείου <%ls> καθώς βρίσκεται ήδη στον φάκελο config"
+    IDS_ERR_IMPORT_ACCESS "Αδυναμία εισαγωγής του <%ls> (λείπει ή δεν είναι αναγνώσιμο)"
+
+    /* save/delete password */
+    IDS_NFO_DELETE_PASS "Πατήστε OK για να διαγράψετε τα αποθηκευμένα συνθήματα για το ""%ls"""
+
+    /* Token password related */
+    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN - Σύνθημα Token"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "Εισαγάγετε το σύνθημα/PIN για το token '%hs'"
+
+    IDS_NFO_AUTH_PASS_RETRY "Λάθος διαπιστευτήρια. Δοκιμάστε ξανά…"
+    IDS_NFO_KEY_PASS_RETRY  "Λάθος σύνθημα. Δοκιμάστε ξανά…"
+    IDS_ERR_INVALID_PASSWORD_INPUT "Μη έγκυρος χαρακτήρας στο σύνθημα"
+    IDS_ERR_INVALID_USERNAME_INPUT "Μη έγκυρος χαρακτήρας στο όνομα χρήστη"
+    IDS_NFO_AUTO_CONNECT    "Αυτόματη σύνδεση σε %u δευτερόλεπτα…"
+    IDS_NFO_CLICK_HERE_TO_START "Το OpenVPN GUI εκτελείται ήδη. Κάντε δεξί κλικ στο εικονίδιο για έναρξη."
+    IDS_NFO_BYTECOUNT "Bytes εισερχόμενα: %ls  εξερχόμενα: %ls"
+    IDS_NFO_OTP_PROMPT "Εισαγάγετε κωδικό OTP"
+
+    /* AS profile import */
+    IDS_ERR_URL_IMPORT_PROFILE "Σφάλμα κατά την ανάκτηση προφίλ από URL: [%d] %ls"
+
+    IDS_ERR_NO_PKCS11 "Δεν βρέθηκαν πιστοποιητικά. Αν έχετε token, τοποθετήστε το και πατήστε επανάληψη."
+    IDS_ERR_SELECT_PKCS11 "Δεν επιλέχθηκε πιστοποιητικό."
+    /* column headers for pkcs11 certificate list */
+    IDS_CERT_DISPLAYNAME "Εκδόθηκε σε"
+    IDS_CERT_ISSUER "Εκδόθηκε από"
+    IDS_CERT_NOTAFTER "Λήξη"
+END
