@@ -111,6 +111,7 @@ openvpn_gui_SOURCES = \
 	pkcs11.c pkcs11.h \
 	config_parser.c config_parser.h \
 	qr.c qr.h \
+	totp.c totp.h \
 	qrcodegen/qrcodegen.c qrcodegen/qrcodegen.h \
 	openvpn-gui-res.h \
 	eventmsg.mc
@@ -130,6 +131,7 @@ openvpn_gui_LDADD = \
 	-lwininet \
 	-liphlpapi \
 	-lntdll \
+	-lbcrypt \
 	$(JSON_LIBS)
 
 BUILT_SOURCES = eventmsg.h

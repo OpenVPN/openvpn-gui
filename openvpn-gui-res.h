@@ -76,6 +76,12 @@
 #define ID_TXT_WARNING                  187
 #define ID_LTEXT_USERNAME               188
 #define ID_LTEXT_RESPONSE               189
+#define ID_BTN_SET_OTP_SECRET           480
+#define ID_BTN_REMOVE_OTP_SECRET        481
+#define ID_DLG_OTP_SECRET               482
+#define ID_TXT_OTP_HINT                 483
+#define ID_LTEXT_OTP_SECRET             484
+#define ID_EDT_OTP_SECRET               485
 
 /* Challenege Response Dialog */
 #define ID_DLG_CHALLENGE_RESPONSE       190

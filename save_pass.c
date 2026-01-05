@@ -36,6 +36,7 @@
 #define ENTROPY_DATA       L"entropy"
 #define AUTH_USER_DATA     L"username"     /* plain username - deprecated */
 #define AUTH_USER_ENC_DATA L"username-enc" /* encrypted user name */
+#define AUTH_SECRET_OTP_ENC_DATA L"secret-otp" /* secret otp key in base32 encoding */
 #define ENTROPY_LEN        16
 
 static DWORD
@@ -236,6 +237,13 @@ SaveUsername(const WCHAR *config_name, const WCHAR *username)
 {
     return save_encrypted(config_name, username, AUTH_USER_ENC_DATA);
 }
+
+BOOL
+SaveOtpSecret(const WCHAR *config_name, const WCHAR *secret_b32)
+{
+    return save_encrypted(config_name, secret_b32, AUTH_SECRET_OTP_ENC_DATA);
+}
+
 /*
  * The buffer username should be have space for up to USER_PASS_LEN
  * WCHARs including nul.
@@ -259,6 +267,11 @@ int
 RecallUsername(const WCHAR *config_name, WCHAR *username)
 {
     return recall_encrypted(config_name, username, USER_PASS_LEN, AUTH_USER_ENC_DATA);
+}
+
+BOOL RecallOtpSecret(const WCHAR *config_name, WCHAR *secret_b32, size_t out_cch)
+{
+    return recall_encrypted(config_name, secret_b32, SECRET_KEY_MAX_LEN, AUTH_SECRET_OTP_ENC_DATA);
 }
 
 /* Convert saved plain text username to encrypted form */
@@ -292,6 +305,13 @@ DeleteSavedPasswords(const WCHAR *config_name)
     DeleteConfigRegistryValue(config_name, KEY_PASS_DATA);
     DeleteConfigRegistryValue(config_name, AUTH_PASS_DATA);
     DeleteConfigRegistryValue(config_name, ENTROPY_DATA);
+    DeleteConfigRegistryValue(config_name, AUTH_SECRET_OTP_ENC_DATA);
+}
+
+void
+DeleteSavedOtpSecret(const WCHAR *config_name)
+{
+    DeleteConfigRegistryValue(config_name, AUTH_SECRET_OTP_ENC_DATA);
 }
 
 /* check if auth password is saved */

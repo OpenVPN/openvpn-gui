@@ -28,6 +28,7 @@ add_executable(${PROJECT_NAME} WIN32
     qr.c
     qrcodegen/qrcodegen.c
     res/openvpn-gui-res.rc
+    totp.c
 )
 
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG")
@@ -72,7 +73,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Cryptui.lib
     Wininet.lib
     Iphlpapi.lib
-    Ntdll.lib)
+    Ntdll.lib
+    bcrypt.lib)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
@@ -140,7 +142,8 @@ add_library(${PROJECT_NAME_PLAP} SHARED
     plap/plap_connection.c
     plap/plap_dll.c
     plap/openvpn_plap.def
-    plap/openvpn-plap-res.rc)
+    plap/openvpn-plap-res.rc
+    totp.c)
 
 target_link_libraries(${PROJECT_NAME_PLAP} PRIVATE
     ws2_32.lib
@@ -154,7 +157,8 @@ target_link_libraries(${PROJECT_NAME_PLAP} PRIVATE
     Cryptui.lib
     Rpcrt4.lib
     Iphlpapi.lib
-    Ntdll.lib)
+    Ntdll.lib
+    bcrypt.lib)
 
 add_dependencies(${PROJECT_NAME_PLAP} msg_header_gen)
 
@@ -170,15 +174,30 @@ if (NOT TEST_PLAP_EXE)
     set(TEST_PLAP_EXE "test_plap")
 endif()
 
+if (NOT TEST_TOTP_EXE)
+    set(TEST_TOTP_EXE "test_totp")
+endif()
+
 add_executable(${TEST_PLAP_EXE}
     plap/test_plap.cpp
     plap/plap_common.c)
+
+add_executable(${TEST_TOTP_EXE}
+    totp.c
+    test_totp.c)
 
 target_link_libraries(${TEST_PLAP_EXE} PRIVATE
     Rpcrt4
     Ole32
     Shlwapi
     Gdi32)
+
+target_link_libraries(${TEST_TOTP_EXE} PRIVATE
+    Rpcrt4
+    Ole32
+    Shlwapi
+    Gdi32
+    bcrypt)
 
 target_include_directories(${TEST_PLAP_EXE} PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR})
 target_compile_definitions(${TEST_PLAP_EXE} PRIVATE

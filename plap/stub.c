@@ -222,3 +222,20 @@ void
 MigrateUsername(UNUSED const WCHAR *config_name)
 {
 }
+
+void
+DeleteSavedOtpSecret(const WCHAR *config_name)
+{
+}
+
+BOOL
+SaveOtpSecret(const WCHAR *config_name, const WCHAR *secret_b32)
+{
+    return 0;
+}
+
+BOOL
+RecallOtpSecret(const WCHAR *config_name, WCHAR *secret_b32, size_t out_cch)
+{
+    return 0;
+}
