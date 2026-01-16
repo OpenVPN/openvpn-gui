@@ -1,0 +1,47 @@
+# OpenVPN Channel Bonding Configuration
+# Profile: Example Bonding Profile
+# 
+# This is an example configuration file for channel bonding.
+# Copy this file and modify the parameters for your setup.
+
+# Bonding Mode
+# Options: round-robin, weighted, active-backup
+bonding-mode round-robin
+
+# Number of tunnels (must match number of [tunnel-N] sections below)
+tunnel-count 2
+
+# Tunnel 0 Configuration
+[tunnel-0]
+# Physical NIC name (must match a detected NIC)
+nic-name "Ethernet"
+
+# OpenVPN server endpoint
+server-host vpn.example.com
+server-port 1194
+
+# Base OpenVPN configuration file
+server-config base.ovpn
+
+# Distribution weight (for weighted mode, ignored in round-robin)
+weight 1
+
+# Tunnel 1 Configuration
+[tunnel-1]
+nic-name "Wi-Fi"
+server-host vpn.example.com
+server-port 1195
+server-config base.ovpn
+weight 1
+
+# Standard OpenVPN parameters (applied to all tunnels)
+# These can also be in the base.ovpn file referenced above
+remote vpn.example.com
+proto udp
+dev tun
+ca ca.crt
+cert client.crt
+key client.key
+cipher AES-256-GCM
+auth SHA256
+tls-version-min 1.2

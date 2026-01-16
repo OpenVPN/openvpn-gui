@@ -196,3 +196,6 @@ target_link_options(${PROJECT_NAME} PRIVATE
 target_link_options(${TEST_PLAP_EXE} PRIVATE
     "/MANIFEST:EMBED"
     "/MANIFESTINPUT:${CMAKE_SOURCE_DIR}/plap/test-plap.manifest")
+
+# Add bonding subdirectory
+add_subdirectory(bonding)

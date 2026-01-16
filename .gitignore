@@ -40,3 +40,10 @@ x64
 Debug
 out
 build
+
+# Bonding-specific build artifacts
+bonding/build/
+bonding/*.o
+bonding/*.obj
+bonding/*.exe
+bonding/tests/*.exe
