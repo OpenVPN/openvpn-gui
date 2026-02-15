@@ -136,6 +136,12 @@ show_error_tip(HWND editbox, const WCHAR *msg)
 void
 OnReady(connection_t *c, UNUSED char *msg)
 {
+    /* client version command is correctly supported only in 2.7.1 and above */
+    version_t version_2_7_1 = { 2, 7, 1, 0 };
+    if (version_compare(&o.ovpn_version, &version_2_7_1) >= 0)
+    {
+        ManagementCommand(c, "version 4", NULL, regular);
+    }
     ManagementCommand(c, "state on", NULL, regular);
     ManagementCommand(c, "log on all", OnLogLine, combined);
     ManagementCommand(c, "echo on all", OnEcho, combined);
@@ -684,6 +690,14 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             }
             ResetPasswordReveal(
                 GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS), GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), 0);
+
+            if (param->flags & FLAG_USERNAME_ONLY)
+            {
+                ShowWindow(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS), SW_HIDE);
+                ShowWindow(GetDlgItem(hwndDlg, ID_LTEXT_PASSWORD), SW_HIDE);
+                ShowWindow(GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), SW_HIDE);
+                ShowWindow(GetDlgItem(hwndDlg, ID_CHK_SAVE_PASS), SW_HIDE);
+            }
             break;
 
         case WM_LBUTTONDOWN:
@@ -709,10 +723,11 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                     if (HIWORD(wParam) == EN_UPDATE)
                     {
                         /* enable OK button only if username and either password or response are
-                         * filled */
+                         * filled or only username is required */
                         BOOL enableOK =
                             GetWindowTextLength(GetDlgItem(hwndDlg, ID_EDT_AUTH_USER))
                             && (GetWindowTextLength(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS))
+                                || param->flags & FLAG_USERNAME_ONLY
                                 || ((param->flags & (FLAG_CR_TYPE_SCRV1 | FLAG_CR_TYPE_CONCAT))
                                     && GetWindowTextLength(
                                         GetDlgItem(hwndDlg, ID_EDT_AUTH_CHALLENGE))));
@@ -746,7 +761,8 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                         }
                         SaveUsername(param->c->config_name, username);
                     }
-                    if (GetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password, _countof(password)))
+                    if (!(param->flags & FLAG_USERNAME_ONLY)
+                        && GetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password, _countof(password)))
                     {
                         if (!validate_input(password, L"\n"))
                         {
@@ -784,7 +800,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                                                              ID_EDT_AUTH_PASS,
                                                              ID_EDT_AUTH_CHALLENGE);
                     }
-                    else
+                    else if (!(param->flags & FLAG_USERNAME_ONLY))
                     {
                         ManagementCommandFromInput(
                             param->c, "password \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_PASS);
@@ -1501,6 +1517,11 @@ OnPassword(connection_t *c, char *msg)
             return;
         }
         param->c = c;
+        /* If 'Auth' msg ends with "username", we prompt for username only */
+        if (!strcmp(msg, "Need 'Auth' username"))
+        {
+            param->flags |= FLAG_USERNAME_ONLY;
+        }
 
         if (c->dynamic_cr)
         {
