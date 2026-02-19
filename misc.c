@@ -1472,3 +1472,28 @@ ValidateManagementDaemon(connection_t *c)
     }
     return res;
 }
+
+/* Return -1, 0 or +1 respectively for a < b, a = b, a > b */
+static int
+intcmp(int a, int b)
+{
+    return (a > b) - (a < b);
+}
+
+int
+version_compare(const version_t *a, const version_t *b)
+{
+    if (a->major != b->major)
+    {
+        return intcmp(a->major, b->major);
+    }
+    if (a->minor != b->minor)
+    {
+        return intcmp(a->minor, b->minor);
+    }
+    if (a->release != b->release)
+    {
+        return intcmp(a->release, b->release);
+    }
+    return intcmp(a->stage, b->stage);
+}

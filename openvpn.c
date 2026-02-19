@@ -2470,7 +2470,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                          L"%hs %hs/%hs",
                          PACKAGE_NAME,
                          PACKAGE_VERSION_RESOURCE_STR,
-                         o.ovpn_version);
+                         o.ovpn_version_str);
             SetDlgItemText(hwndDlg, ID_TXT_VERSION, version);
 
             /* Set size and position of controls */
@@ -3365,6 +3365,64 @@ ReadLineFromStdOut(HANDLE hStdOut, char *line, DWORD size)
 }
 
 
+/* Save p = "major.minor.release[_suffix]" as o.ovpn_version_str and
+ * fill version_t o.ovpn_version as {major, minor, release, stage}.
+ */
+static void
+parse_ovpn_version(const char *p)
+{
+    if (!p)
+    {
+        return;
+    }
+    strncpy(o.ovpn_version_str, p, _countof(o.ovpn_version_str) - 1);
+    o.ovpn_version_str[_countof(o.ovpn_version_str) - 1] = '\0';
+
+    o.ovpn_version = (version_t){ 0 };
+    version_t *v = &o.ovpn_version;
+    char *end;
+
+    if (!isdigit(*p))
+    {
+        return;
+    }
+    v->major = strtol(p, &end, 10);
+    p = end;
+
+    if (*p++ != '.' || !isdigit(*p))
+    {
+        return;
+    }
+    v->minor = strtol(p, &end, 10);
+    p = end;
+
+    /* optional .release */
+    if (*p == '.')
+    {
+        p++;
+        if (isdigit(*p))
+        {
+            v->release = strtol(p, &end, 10);
+            p = end;
+        }
+    }
+
+    /* detect development suffix and set stage such that
+       stable > rcX > betaX > alphaX > git */
+    if (*p)
+    {
+        if (strstr(p, "git"))
+            v->stage = -4;
+        else if (strstr(p, "alpha"))
+            v->stage = -3;
+        else if (strstr(p, "beta"))
+            v->stage = -2;
+        else if (strstr(p, "rc"))
+            v->stage = -1;
+        /* defaults to 0 = stable */
+    }
+}
+
 BOOL
 CheckVersion()
 {
@@ -3449,8 +3507,7 @@ CheckVersion()
         {
             retval = TRUE;
             p = strtok(p + 8, " ");
-            strncpy(o.ovpn_version, p, _countof(o.ovpn_version) - 1);
-            o.ovpn_version[_countof(o.ovpn_version) - 1] = '\0';
+            parse_ovpn_version(p);
         }
     }
 

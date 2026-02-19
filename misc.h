@@ -198,4 +198,9 @@ bool IsSamePath(const wchar_t *path1, const wchar_t *path2);
  */
 bool ValidateManagementDaemon(connection_t *c);
 
+/**
+ * Return -1, 0 or +1 for a < b, a = b and a > b
+ */
+int version_compare(const version_t *a, const version_t *b);
+
 #endif /* ifndef MISC_H */

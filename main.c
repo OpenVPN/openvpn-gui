@@ -304,7 +304,8 @@ _tWinMain(HINSTANCE hThisInstance,
     }
 
     BOOL use_iservice = (o.iservice_admin && IsWindows7OrGreater()) || !IsUserAdmin();
-    if (use_iservice && strtod(o.ovpn_version, NULL) > 2.3 && !o.silent_connection)
+    version_t version_2_3 = { 2, 3, 0, 0 };
+    if (use_iservice && version_compare(&o.ovpn_version, &version_2_3) > 0 && !o.silent_connection)
     {
         CheckIServiceStatus(TRUE);
     }
@@ -825,7 +826,8 @@ AboutDialogFunc(UNUSED HWND hDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
             if (GetDlgItemText(hDlg, ID_LTEXT_ABOUT3, tmp1, _countof(tmp1))
                 && wcsbegins(tmp1, prefix))
             {
-                _sntprintf_0(tmp2, L"%lsv%hs %ls", prefix, o.ovpn_version, tmp1 + wcslen(prefix));
+                _sntprintf_0(
+                    tmp2, L"%lsv%hs %ls", prefix, o.ovpn_version_str, tmp1 + wcslen(prefix));
                 SetDlgItemText(hDlg, ID_LTEXT_ABOUT3, tmp2);
             }
             break;

@@ -108,7 +108,8 @@ typedef struct
 
 typedef struct
 {
-    unsigned short major, minor, build, revision;
+    int major, minor, release, stage;
+    /* stage = -4 for _git, -3 for alphaX, -2 for betaX, -1 for rcX, 0 for stable */
 } version_t;
 
 /* A node of config groups tree that can be navigated from the end
@@ -254,7 +255,8 @@ typedef struct
     BOOL session_locked;
     HANDLE netcmd_semaphore;
     version_t version;
-    char ovpn_version[16]; /* OpenVPN version string: 2.3.12, 2.4_alpha2 etc.. */
+    version_t ovpn_version;
+    char ovpn_version_str[16]; /* OpenVPN version string: 2.3.12, 2.4_alpha2 etc.. */
     unsigned int dpi_scale;
     COLORREF clr_warning;
     COLORREF clr_error;
