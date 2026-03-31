@@ -89,7 +89,7 @@ struct security_attributes
     do                                                  \
     {                                                   \
         __sntprintf_0(buf, _countof(buf), __VA_ARGS__); \
-    } while (0);
+    } while (0)
 
 static inline int
 __sntprintf_0(TCHAR *buf, size_t size, TCHAR *format, ...)
@@ -108,7 +108,7 @@ __sntprintf_0(TCHAR *buf, size_t size, TCHAR *format, ...)
     do                                               \
     {                                                \
         __snprintf_0(buf, sizeof(buf), __VA_ARGS__); \
-    } while (0);
+    } while (0)
 static inline int
 __snprintf_0(char *buf, size_t size, char *format, ...)
 {

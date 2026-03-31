@@ -2466,9 +2466,12 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
             /* display version string as "OpenVPN GUI gui_version/core_version" */
             wchar_t version[256];
-            _sntprintf_0(
-                version, L"%hs %hs/%hs", PACKAGE_NAME, PACKAGE_VERSION_RESOURCE_STR, o.ovpn_version)
-                SetDlgItemText(hwndDlg, ID_TXT_VERSION, version);
+            _sntprintf_0(version,
+                         L"%hs %hs/%hs",
+                         PACKAGE_NAME,
+                         PACKAGE_VERSION_RESOURCE_STR,
+                         o.ovpn_version);
+            SetDlgItemText(hwndDlg, ID_TXT_VERSION, version);
 
             /* Set size and position of controls */
             RECT rect;

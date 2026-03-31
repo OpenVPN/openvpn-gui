@@ -232,7 +232,8 @@ OnManagement(SOCKET sk, LPARAM lParam)
                         char buf[256];
                         _snprintf_0(buf,
                                     "%lld,W,Waiting for the management interface to come up",
-                                    (long long)time(NULL)) rtmsg_handler[log_](c, buf);
+                                    (long long)time(NULL));
+                        rtmsg_handler[log_](c, buf);
                     }
 
                     connect(c->manage.sk, (SOCKADDR *)&c->manage.skaddr, sizeof(c->manage.skaddr));
@@ -462,7 +463,8 @@ OnManagement(SOCKET sk, LPARAM lParam)
                         _snprintf_0(buf,
                                     "%lld,N,Previous command sent to management failed: %s",
                                     (long long)time(NULL),
-                                    line) rtmsg_handler[log_](c, buf);
+                                    line);
+                        rtmsg_handler[log_](c, buf);
 
                         if (cmd->handler)
                         {
