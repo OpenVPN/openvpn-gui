@@ -326,7 +326,6 @@ BEGIN
     IDS_TIP_CONNECTING "\nVerbinden mit: "
     IDS_TIP_CONNECTED_SINCE "\nVerbunden seit: "
     IDS_TIP_ASSIGNED_IP "\nZugewiesene IP: %ls"
-    IDS_MENU_SERVICE "OpenVPN-Dienst"
     IDS_MENU_IMPORT "Import"
     IDS_MENU_IMPORT_AS "Import from Access Server…"
     IDS_MENU_IMPORT_URL "Import from URL…"
@@ -339,22 +338,13 @@ BEGIN
     IDS_MENU_STATUS "Status anzeigen"
     IDS_MENU_VIEWLOG "Log anzeigen"
     IDS_MENU_EDITCONFIG "Konfiguration ändern"
-    IDS_MENU_PASSPHRASE "Passwort ändern"
     IDS_MENU_CLEARPASS  "Gespeicherte Passwörter löschen"
-    IDS_MENU_SERVICE_START "Starten"
-    IDS_MENU_SERVICE_STOP "Beenden"
-    IDS_MENU_SERVICE_RESTART "Neu starten"
-    IDS_MENU_SERVICEONLY_START "Verbinden"
-    IDS_MENU_SERVICEONLY_STOP "Trennen"
-    IDS_MENU_SERVICEONLY_RESTART "Erneut verbinden"
-    IDS_MENU_ASK_STOP_SERVICE "Möchten Sie die Verbindung trennen (beendet den OpenVPN-Dienst)?"
 
     /* Logviewer – Resources */
     IDS_ERR_START_LOG_VIEWER "Fehler beim Starten der Log-Anzeige: %ls"
     IDS_ERR_START_CONF_EDITOR "Fehler beim Starten des Konfigurations-Editors: %ls"
 
     /* OpenVPN */
-    IDS_ERR_MANY_CONFIGS "OpenVPN GUI unterstützt nicht mehr als %d Konfigurationen. Bitte kontaktieren Sie bei Bedarf den Autor."
     IDS_NFO_NO_CONFIGS "Keine lesbaren Konfigurations-Profile (Konfigurationsdateien) gefunden.\n\
 Benutzen Sie das ""Datei importieren…"" Menü oder kopieren Sie Ihre Konfigurationsdateien nach ""%ls"" oder ""%ls""."
     IDS_ERR_CONFIG_NOT_AUTHORIZED "Zum Starten dieser Verbindung (%ls) müssen Sie Mitglied in der\
@@ -369,13 +359,8 @@ Bitte vervollständigen Sie den vorhergehenden Autorisierungsdialog."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Hinzufügen des Benutzers zur Gruppe ""%ls"" ist fehlgeschlagen."
     IDS_ERR_CREATE_EVENT "CreateEvent fehlgeschlagen beim Beenden. Event: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Unbekannte Priorität: %ls"
-    IDS_ERR_LOG_APPEND_BOOL "Logdatei-Anhängen-Flag (aktuell '%ls') muss '0' oder '1' sein."
-    IDS_ERR_GET_MSIE_PROXY "Konnte die MSIE-Proxy-Einstellungen nicht übernehmen."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor fehlgeschlagen."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl fehlgeschlagen."
-    IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe on hOutputWrite fehlgeschlagen."
-    IDS_ERR_CREATE_PIPE_INPUT "CreatePipe on hInputRead fehlgeschlagen."
-    IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle on hOutputRead fehlgeschlagen."
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite fehlgeschlagen."
     IDS_ERR_CREATE_PROCESS "CreateProcess fehlgeschlagen, exe='%ls' cmdline='%ls' dir='%ls'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread zum Anzeigen des Status-Fensters ist fehlgeschlagen."
@@ -384,8 +369,6 @@ Bitte vervollständigen Sie den vorhergehenden Autorisierungsdialog."
     IDS_NFO_STATE_ONHOLD "Current State: On Hold (disconnected)"
     IDS_NFO_NOW_CONNECTED "%ls ist nun verbunden."
     IDS_NFO_ASSIGN_IP "Zugewiesene IP: %ls"
-    IDS_ERR_CERT_EXPIRED "Es konnte keine Verbindung hergestellt werden, weil Ihr Zertifikat abgelaufen ist oder die Systemzeit nicht korrekt eingestellt ist."
-    IDS_ERR_CERT_NOT_YET_VALID "Es konnte keine Verbindung hergestellt werden, weil Ihr Zertifikat noch nicht gültig ist. Bitte überprüfen Sie Ihre Systemzeit."
     IDS_NFO_STATE_RECONNECTING "Aktueller Status: Erneut verbinden"
     IDS_NFO_STATE_DISCONNECTED "Aktueller Status: Getrennt"
     IDS_NFO_CONN_TERMINATED "Verbindung zu %ls wurde getrennt."
@@ -417,14 +400,9 @@ Konsultieren Sie die Log-Datei (%ls) für weitere Informationen."
     IDS_ERR_CREATE_PATH "Fehler beim Erstellen des %ls Pfads:\n%ls"
     IDS_ERR_LOAD_RICHED20 "Kann RICHED20.DLL nicht laden."
     IDS_ERR_SHELL_DLL_VERSION "Die shell32.dll Versionsnummer ist zu niedrig (0x%lx). Es muss mindestens Version 5.0 installiert sein."
-    IDS_NFO_SERVICE_STARTED "OpenVPN-Dienst gestartet."
-    IDS_NFO_SERVICE_STOPPED "OpenVPN-Dienst beendet."
     IDS_NFO_ACTIVE_CONN_EXIT "Es exisiert noch eine aktive Verbindung, welche geschlossen wird, wenn Sie OpenVPN GUI beenden.\
 \n\nSind Sie sicher, dass Sie das Programm beenden möchten?"
     IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
-    IDS_NFO_SERVICE_ACTIVE_EXIT "Der OpenVPN-Dienst ist gestartet und verbunden. \
-Die Verbindung besteht solange, bis Sie OpenVPN GUI beenden.\n\n\
-\n\nSind Sie sicher, dass Sie das Programm beenden möchten?"
 
     /* options – Resources */
     IDS_NFO_USAGE "--help\t\t\t: Zeigt diese Informationen.\n\
@@ -470,33 +448,6 @@ konnte jedoch kein '--' am Anfang des Parameters gefunden werden."
     IDS_ERR_BAD_OPTION "Fehler: Unbekannte Option oder fehlende(r) Parameter: --%ls\n\
 Geben Sie 'openvpn-gui --help' für mehr Informationen ein."
 
-    /* passphrase – Resources */
-    IDS_ERR_CREATE_PASS_THREAD "CreateThread, welcher den ChangePassphrase Dialog anzeigt, ist fehlgeschlagen."
-    IDS_NFO_CHANGE_PWD "Passwort ändern (%ls)"
-    IDS_ERR_PWD_DONT_MATCH "Das eingegebene Passwort ist falsch. Bitte versuchen Sie es erneut."
-    IDS_ERR_PWD_TO_SHORT "Das neue Passwort muss mindestens %d Zeichen lang sein."
-    IDS_NFO_EMPTY_PWD "Sind Sie sicher, dass Sie ein LEERES Passwort setzen möchten?"
-    IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Unbekanntes Schlüsseldatei Format."
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Fehler beim Öffnen des privaten Schlüssels (%ls)."
-    IDS_ERR_OLD_PWD_INCORRECT "Das alte Passwort ist falsch."
-    IDS_ERR_OPEN_WRITE_KEY "Fehler beim Öffnen des privaten Schlüssels (%ls)."
-    IDS_ERR_WRITE_NEW_KEY "Fehler beim Schreiben eines neuen privaten Schlüssel (%ls)."
-    IDS_NFO_PWD_CHANGED "Ihr Passwort wurde geändert."
-    IDS_ERR_READ_PKCS12 "Fehler beim Lesen der PKCS #12 Datei (%ls)."
-    IDS_ERR_CREATE_PKCS12 "Fehler beim Erstellen eines neuen PKCS #12 Objekts. Das Ändern des Passworts ist fehlgeschlagen."
-    IDS_ERR_OPEN_CONFIG "Die Konfigurationsdatei konnte nicht geöffnet werden: (%ls)"
-    IDS_ERR_ONLY_ONE_KEY_OPTION "Sie können nicht mehr als eine ""key"" Optionen in Ihrer Konfiguration verwenden."
-    IDS_ERR_ONLY_KEY_OR_PKCS12 "Sie können nicht beide ""key"" und ""pkcs12"" Optionen in Ihrer Konfiguration verwenden."
-    IDS_ERR_ONLY_ONE_PKCS12_OPTION "Sie können nicht mehr als eine ""pkcs12"" Option in Ihrer Konfiguration verwenden."
-    IDS_ERR_HAVE_KEY_OR_PKCS12 "Ihre Konfiguration enthält keine ""key"" oder ""pkcs12"" Optionen."
-    IDS_ERR_KEY_FILENAME_TO_LONG "Der Schlüsseldateiname in Ihrer Konfiguration ist zu lang!"
-    IDS_ERR_PASSPHRASE2STDIN "Fehler bei der Übergabe der Passphrase an stdin."
-    IDS_ERR_AUTH_USERNAME2STDIN "Fehler bei der Übergabe des auth Benutzernamen an stdin."
-    IDS_ERR_AUTH_PASSWORD2STDIN "Fehler bei der Übergabe des auth Passwortes an stdin."
-    IDS_ERR_CR2STDIN "Fehler bei der Übergabe des CR an stdin."
-    IDS_ERR_INVALID_CHARS_IN_PSW "Ihr neues Passwort enthält ungültige Zeichen. \
-Bitte verwenden Sie ein anderes Passwort."
-
     /* settings */
     IDS_SETTINGS_CAPTION "OpenVPN – Einstellungen"
 
@@ -508,17 +459,9 @@ Bitte verwenden Sie ein anderes Passwort."
     IDS_ERR_SOCKS_PROXY_PORT "Sie müssen einen SOCKS-Proxy-Port festlegen."
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "Sie müssen einen SOCKS-Proxy-Port zwischen 1 und 65535 festlegen."
     IDS_ERR_CREATE_REG_HKCU_KEY "Fehler beim Erstellen des ""HKEY_CURRENT_USER\\%ls"" Schlüssels."
-    IDS_ERR_GET_TEMP_PATH "Fehler beim Erkennen des TempPath mit GetTempPath(). Verwende stattdessen ""C:\\"""
 
     /* service */
-    IDS_ERR_OPEN_VPN_SERVICE "Fehler beim Öffnen des ""OpenVPNService""."
-    IDS_ERR_START_SERVICE "Fehler beim Starten des ""OpenVPNService""."
     IDS_ERR_QUERY_SERVICE "Konnte den Dienst-Status nicht abfragen."
-    IDS_ERR_SERVICE_START_FAILED "Der OpenVPN-Dienst konnte nicht gestarten werden."
-    IDS_ERR_OPEN_SCMGR "Fehler im OpenSCManager: (%d)."
-    IDS_ERR_STOP_SERVICE "Fehler beim Stoppen des OpenVPN-Dienstes."
-    IDS_NFO_RESTARTED "Der OpenVPN-Dienst wurde neugestartet."
-    IDS_ERR_ACCESS_SERVICE_PIPE "Zugriff auf die Service-Pipe ist fehlgeschlagen."
     IDS_ERR_WRITE_SERVICE_PIPE "Schreiben auf die Service-Pipe ist fehlgeschlagen."
     IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" wurde nicht installiert.\n\
 Aufgaben, die administrativen Zugriff benötigen, funktionieren möglicherweise nicht."
@@ -529,25 +472,16 @@ Wintun-Treiber kann nicht verwendet werden."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Konnte den Pfad der Windows-Installation nicht ermitteln."
-    IDS_ERR_GET_PROFILE_DIR "Konnte den Pfad zum Benutzerprofil nicht ermitteln."
-    IDS_ERR_GET_PROGRAM_DIR "Konnte Pfad zum ""Programme""-Verzeichnis nicht ermitteln."
     IDS_ERR_OPEN_REGISTRY "Fehler beim Lesen des Registry-Schlüssels (HKLM\\SOFTWARE\\OpenVPN).\n \
 OpenVPN ist vermutlich nicht installiert"
     IDS_ERR_READING_REGISTRY "Fehler beim Lesen des Registry-Schlüssels (HKLM\\SOFTWARE\\OpenVPN)."
-    IDS_ERR_PASSPHRASE_ATTEMPTS "Registrywert ""passphrase_attempts"" muss eine Zahl zwischen 1 und 9 sein."
-    IDS_ERR_CONN_SCRIPT_TIMEOUT "Registrywert ""connectscript_timeout"" muss eine Zahl zwischen 0 und 99 sein."
     IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Registrywert ""disconnectscript_timeout"" muss eine Zahl zwischen 1 und 99 sein."
     IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Registrywert ""preconnectscript_timeout"" muss eine Zahl zwischen 1 und 99 sein."
-    IDS_ERR_CREATE_REG_KEY "Fehler beim Erstellen des Registry-Schlüssels HKLM\\SOFTWARE\\OpenVPN-GUI."
-    IDS_ERR_OPEN_WRITE_REG "Fehler beim Öffnen der Registry. Sie müssen diese Anwendung einmal \
-als Administrator ausführen, um die Registry zu aktualisieren."
-    IDS_ERR_READ_SET_KEY "Fehler beim Lesen und Setzen des Registry-Schlüssels ""%ls""."
     IDS_ERR_WRITE_REGVALUE "Fehler beim Schreiben des Registry-Schlüssels ""HKEY_CURRENT_USER\\%ls\\%ls""."
     IDS_ERR_PLAP_REG "Failed to enable Start Before Logon (error = %d)"
     IDS_ERR_PLAP_UNREG "Failed to disable Start Before Logon (error = %d)"
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS "Eine Konfigurationsdatei namens ""%ls"" existiert bereits."
     IDS_ERR_IMPORT_FAILED "Fehler beim Importieren der Konfigurationsdatei. Der folgende Pfad konnte nicht erstellt werden:\n\n\
 %ls\n\nVergewissern Sie sich, dass Sie die erforderlichen Berechtigungen besitzen."
     IDS_NFO_IMPORT_SUCCESS "Die Konfigurationsdatei wurde erfolgreich importiert."

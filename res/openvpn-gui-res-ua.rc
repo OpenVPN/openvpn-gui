@@ -325,7 +325,6 @@ BEGIN
     IDS_TIP_CONNECTING "\nЗ'єднання з: "
     IDS_TIP_CONNECTED_SINCE "\nЗ'єднано з такого часу: "
     IDS_TIP_ASSIGNED_IP "\n IP: %ls"
-    IDS_MENU_SERVICE "Служба OpenVPN"
     IDS_MENU_IMPORT "Import"
     IDS_MENU_IMPORT_AS "Import from Access Server…"
     IDS_MENU_IMPORT_URL "Import from URL…"
@@ -338,22 +337,13 @@ BEGIN
     IDS_MENU_STATUS "Відобразити статус"
     IDS_MENU_VIEWLOG "Відобразити записи із лог файлу"
     IDS_MENU_EDITCONFIG "Редагувати конфігурацію"
-    IDS_MENU_PASSPHRASE "Змінити пароль"
     IDS_MENU_CLEARPASS  "Видалити збережені паролі"
-    IDS_MENU_SERVICE_START "Стартувати сервіс"
-    IDS_MENU_SERVICE_STOP "Зупинити сервіс"
-    IDS_MENU_SERVICE_RESTART "Перезапустити сервіс"
-    IDS_MENU_SERVICEONLY_START "З'єднатися"
-    IDS_MENU_SERVICEONLY_STOP "Від'єнатися"
-    IDS_MENU_SERVICEONLY_RESTART "З'єднатися знову"
-    IDS_MENU_ASK_STOP_SERVICE "Ви бажаєте відключитися (зупинити сервіс OpenVPN)?"
 
     /* Logviewer - Resources */
     IDS_ERR_START_LOG_VIEWER "Помилка старту переглядача лог файлу: %ls"
     IDS_ERR_START_CONF_EDITOR "Помилка старту редактора лог файлу: %ls"
 
     /* OpenVPN */
-    IDS_ERR_MANY_CONFIGS "OpenVPN GUI не підтримує більш ніж %d конфігурацій. Будь ласка, з'єднайтеся із автором, якщо вам потрібна більша кількість конфігурацій."
     IDS_NFO_NO_CONFIGS "Профілів для підключення (файлів конфігурації) не знайдено.\n\
 Скористайтеся меню ""Імпортувати файл"" або скопіюйте свої конфігураційні файли в ""%ls"" або в ""%ls""."
     IDS_ERR_CONFIG_NOT_AUTHORIZED "Запуск цього з’єднання (% s) вимагає членства в групі \
@@ -368,13 +358,8 @@ BEGIN
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Неможливо додати користувача до групи ""%ls""."
     IDS_ERR_CREATE_EVENT "Робоча помилка CreateEvent під час завершення %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Не задане найменування пріорітету: %ls"
-    IDS_ERR_LOG_APPEND_BOOL "Опція додання до файлу журналу (заданий як'%ls') має бути '0' або '1'"
-    IDS_ERR_GET_MSIE_PROXY "Не вдалось отримати конфігурацію проксі із Microsoft Internet Explorer та конфігурацію проксі з Microsoft Windows."
     IDS_ERR_INIT_SEC_DESC "Робоча помилка InitializeSecurityDescriptor."
     IDS_ERR_SET_SEC_DESC_ACL "Робоча помилка SetSecurityDescriptorDacl."
-    IDS_ERR_CREATE_PIPE_OUTPUT "Робоча помилка CreatePipe, а саме у час hOutputWrite."
-    IDS_ERR_CREATE_PIPE_INPUT "Робоча помилка CreatePipe, а саме у час hInputRead."
-    IDS_ERR_DUP_HANDLE_OUT_READ "Робоча помилка DuplicateHandle, а саме у час hOutputRead."
     IDS_ERR_DUP_HANDLE_IN_WRITE "Робоча помилка DuplicateHandle, а саме у час hInputWrite."
     IDS_ERR_CREATE_PROCESS "Робоча помилка CreateProcess, exe='%ls' cmdline='%ls' dir='%ls'"
     IDS_ERR_CREATE_THREAD_STATUS "Робоча помилка CreateThread, а саме у час відображення вікна статусу."
@@ -383,8 +368,6 @@ BEGIN
     IDS_NFO_STATE_ONHOLD "Current State: On Hold (disconnected)"
     IDS_NFO_NOW_CONNECTED "%ls зараз підключено."
     IDS_NFO_ASSIGN_IP "Отримано IP: %ls"
-    IDS_ERR_CERT_EXPIRED "Неможливо з'єднатися, бо час дії вашого сертифікату минув або системний час некорректний."
-    IDS_ERR_CERT_NOT_YET_VALID "Неможливо з'єднатися, бо ваш сертифікат ще не вступив у дію. Перевірте корректність налаштувань системного часу."
     IDS_NFO_STATE_RECONNECTING "Поточний статус: перепідключення"
     IDS_NFO_STATE_DISCONNECTED "Поточний статус: відключено"
     IDS_NFO_CONN_TERMINATED "З'єднання з %ls було втрачено."
@@ -414,14 +397,9 @@ BEGIN
     IDS_ERR_CREATE_PATH "Неможливо зробити новий %ls шлях:\n%ls"
     IDS_ERR_LOAD_RICHED20 "Не вдалося завантижити RICHED20.DLL."
     IDS_ERR_SHELL_DLL_VERSION "Ваша версія shell32.dll занадто стара (0x%lx). Вам необхідно використовувати, як мінімум, версію файлів 5.0."
-    IDS_NFO_SERVICE_STARTED "Служба OpenVPN стартувала."
-    IDS_NFO_SERVICE_STOPPED "Служба OpenVPN зупинена."
     IDS_NFO_ACTIVE_CONN_EXIT "Ще є активні з'єднання, які будуть зупинені, якщо ви завершите роботу OpenVPN GUI.\
 \n\nВи впевнені, що бажаєте завершити?"
     IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
-    IDS_NFO_SERVICE_ACTIVE_EXIT "У цей час система підключена (сервіс OpenVPN стартував). \
-Ви залишитися підключені, навіть якщо ви завершили роботу OpenVPN GUI.\n\n\
-Ви бажаєте залишити активним сервіс та завершити роботу OpenVPN GUI?"
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Відобразити це повідомлення.\n\
@@ -467,33 +445,6 @@ BEGIN
     IDS_ERR_BAD_OPTION "Помилка опцій: нерозпізнано опції або відсутні параметри: --%ls\n\
 Використувуйте openvpn-gui --help у пошуках дод. інформації."
 
-    /* passphrase - Resources */
-    IDS_ERR_CREATE_PASS_THREAD "Не вдалося виконати CreateThread для відображення діалогу ChangePassphrase."
-    IDS_NFO_CHANGE_PWD "Змена паролю (%ls)"
-    IDS_ERR_PWD_DONT_MATCH "Введені вами паролі не співпадають. Спробуйте знову."
-    IDS_ERR_PWD_TO_SHORT "Ваш новий пароль має бути довжиною не менш ніж %d символів."
-    IDS_NFO_EMPTY_PWD "Ви впевнені, що бажаєте встановити ПУСТИЙ пароль?"
-    IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Нерозпізнано формат у файлі із ключем."
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Помилка відкриття файлу із приватним ключем (%ls)."
-    IDS_ERR_OLD_PWD_INCORRECT "Старий пароль не вірний."
-    IDS_ERR_OPEN_WRITE_KEY "Помилка відкриття файла із приватним ключем для запису (%ls)."
-    IDS_ERR_WRITE_NEW_KEY "Помилка запису файла, що містить новий приватний ключ (%ls)."
-    IDS_NFO_PWD_CHANGED "Ваш пароль було змінено."
-    IDS_ERR_READ_PKCS12 "Помилка доступу до файла PKCS #12 (%ls)."
-    IDS_ERR_CREATE_PKCS12 "Помилка створення нового об'єкта PKCS #12. Пароль змінити не вдалося."
-    IDS_ERR_OPEN_CONFIG "Не вдалося відкрити файл конфигурації для читання: (%ls)"
-    IDS_ERR_ONLY_ONE_KEY_OPTION "У вашій конфігурації не має бути більше одної опції ""key""."
-    IDS_ERR_ONLY_KEY_OR_PKCS12 "У вашій конфігурації не має бути одночасно знайдено опції ""key"" и ""pkcs12""."
-    IDS_ERR_ONLY_ONE_PKCS12_OPTION "У вашій конфігурації не може бути більше однієї опції ""pkcs12""."
-    IDS_ERR_HAVE_KEY_OR_PKCS12 "У вашій конфігурації немає ні опції ""key"", ні опції ""pkcs12""."
-    IDS_ERR_KEY_FILENAME_TO_LONG "Назва файлу у ключі конфігурації задовга!"
-    IDS_ERR_PASSPHRASE2STDIN "Помилка передачі паролю до STDIN."
-    IDS_ERR_AUTH_USERNAME2STDIN "Помилка передачі імені користувача для авторізації до STDIN."
-    IDS_ERR_AUTH_PASSWORD2STDIN "Помилка передачі паролю для авторизації до STDIN."
-    IDS_ERR_CR2STDIN "Помилка передачі CR до STDIN."
-    IDS_ERR_INVALID_CHARS_IN_PSW "Ваш новий пароль має неприпустимі символи. \
-Будь-ласка, введіть інший."
-
     /* settings */
     IDS_SETTINGS_CAPTION "OpenVPN - Налаштування"
 
@@ -505,17 +456,9 @@ BEGIN
     IDS_ERR_SOCKS_PROXY_PORT "Ви повинні задати порт SOCKS-проксі."
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "Ви повинні задати порт SOCKS-прокси із діапозону 1-65535"
     IDS_ERR_CREATE_REG_HKCU_KEY "Помилка створення ключів ""HKEY_CURRENT_USER\\%ls""."
-    IDS_ERR_GET_TEMP_PATH "Помилка пошуку TempPath із використанням GetTempPath(). Замість цього программа використувує ""C:\\""."
 
     /* service */
-    IDS_ERR_OPEN_VPN_SERVICE "Не вдалося відкрити ""OpenVPNService"""
-    IDS_ERR_START_SERVICE "Не вдалося стартувати ""OpenVPNService"""
     IDS_ERR_QUERY_SERVICE "Не вдалося з'ясувати статус сервісу."
-    IDS_ERR_SERVICE_START_FAILED "Не вдалося стартувати сервіс OpenVPN."
-    IDS_ERR_OPEN_SCMGR "Не вдалося стартувати OpenSCManager (%d)"
-    IDS_ERR_STOP_SERVICE "Не вдалося зупинити сервіс OpenVPN"
-    IDS_NFO_RESTARTED "Сервіс OpenVPN знов стартував успішно."
-    IDS_ERR_ACCESS_SERVICE_PIPE "Спроба доступа до пайпу служби не вдалась."
     IDS_ERR_WRITE_SERVICE_PIPE "Спроба запису у пайп служби не вдалась."
     IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" не встановлен.\n\
 Функціональність, що потребує прав адміністратора, може не працювати."
@@ -526,26 +469,17 @@ Wintun драйвер не буде працювати."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Помилка отримання розташування ""Windows""."
-    IDS_ERR_GET_PROFILE_DIR "Помилка отримання каталогу користувачів."
-    IDS_ERR_GET_PROGRAM_DIR "Помилка отримання розташування ""Program Files""."
     IDS_ERR_OPEN_REGISTRY "Помилка перегляду реестру (HKLM\\SOFTWARE\\OpenVPN).\n \
 OpenVPN, можливо, не встановлений."
     IDS_ERR_READING_REGISTRY "Помилка перегляду із реестру (HKLM\\SOFTWARE\\OpenVPN)."
-    IDS_ERR_PASSPHRASE_ATTEMPTS "Задана перемінна реестру ""passphrase_attempts"" має бути числом із діапазону від 1 до 9."
-    IDS_ERR_CONN_SCRIPT_TIMEOUT "Задана перемінна реестру ""connectscript_timeout"" має бути числом із діапазону від 0 до 99."
     IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Задана перемінна реестру ""disconnectscript_timeout"" має бути числом із діапазону від 1 до 99."
     IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Задана перемінна реестру ""preconnectscript_timeout"" має бути числом із діапазону от 1 до 99."
-    IDS_ERR_CREATE_REG_KEY "Помилка створення ключів HKLM\\SOFTWARE\\OpenVPN-GUI."
-    IDS_ERR_OPEN_WRITE_REG "Не вдалося відкрити реєстр під запис. Вам необхідно стартувати цей сервіс \
- із правами адміністратора, щоб відновити реєстр."
-    IDS_ERR_READ_SET_KEY "Помилка читання і встановлення перемінної ""%ls""."
     IDS_ERR_WRITE_REGVALUE "Помилка запису перемінної реєстру до ""HKEY_CURRENT_USER\\%ls\\%ls""."
     IDS_ERR_PLAP_REG "Failed to enable Start Before Logon (error = %d)"
     IDS_ERR_PLAP_UNREG "Failed to disable Start Before Logon (error = %d)"
 
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS "Файл конфігурації ""%ls"" вже існує."
     IDS_ERR_IMPORT_FAILED "Помилка імпорту файла. Шлях %ls не може бути створений.\n\n\
 Перевірте, що в вас є необхідні права для цієї операції."
     IDS_NFO_IMPORT_SUCCESS "Імпорт файла успішно завершено."

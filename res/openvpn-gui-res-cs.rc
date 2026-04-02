@@ -325,7 +325,6 @@ BEGIN
     IDS_TIP_CONNECTING "\nPřipojování: "
     IDS_TIP_CONNECTED_SINCE "\nPřipojeno od: "
     IDS_TIP_ASSIGNED_IP "\nPřiřazená IP: %ls"
-    IDS_MENU_SERVICE "Služba OpenVPN"
     IDS_MENU_IMPORT "Import"
     IDS_MENU_IMPORT_AS "Import z Access Serveru…"
     IDS_MENU_IMPORT_URL "Import z URL…"
@@ -338,22 +337,13 @@ BEGIN
     IDS_MENU_STATUS "Zobrazit stav"
     IDS_MENU_VIEWLOG "Otevřít log"
     IDS_MENU_EDITCONFIG "Upravit konfiguraci"
-    IDS_MENU_PASSPHRASE "Změnit heslo"
     IDS_MENU_CLEARPASS "Odstranit uložená hesla"
-    IDS_MENU_SERVICE_START "Spustit"
-    IDS_MENU_SERVICE_STOP "Zastavit"
-    IDS_MENU_SERVICE_RESTART "Restartovat"
-    IDS_MENU_SERVICEONLY_START "Připojit"
-    IDS_MENU_SERVICEONLY_STOP "Odpojit"
-    IDS_MENU_SERVICEONLY_RESTART "Restartovat"
-    IDS_MENU_ASK_STOP_SERVICE "Opravdu se chcete odpojit (Zastavit službu OpenVPN)?"
 
     /* Logviewer - Resources */
     IDS_ERR_START_LOG_VIEWER "Došlo k chybě při spouštění nástroje pro zobrazení logu: %ls"
     IDS_ERR_START_CONF_EDITOR "Došlo k chybě při spouštění nástroje pro úpravu konfigurace: %ls"
 
     /* OpenVPN */
-    IDS_ERR_MANY_CONFIGS "OpenVPN GUI nepodporuje více než %d konfigurací. Prosím kontaktujte autora, pokud jich potřebujete více."
     IDS_NFO_NO_CONFIGS "Nebyly nalezeny žádné soubory konfigurací spojení.\n\
 Použijte volbu menu ""Import souboru konfigurace…"" nebo zkopírujte konfigurační soubory do ""%ls"" nebo ""%ls""."
     IDS_ERR_CONFIG_NOT_AUTHORIZED "Vytvoření tohoto spojení (%ls) vyžaduje členství ve skupině \
@@ -368,13 +358,8 @@ Prosím dokončete předchozí autorizační dialog."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Přidání uživatele do skupiny ""%ls"" nebylo úspěšné."
     IDS_ERR_CREATE_EVENT "Selhala akce CreateEvent při ukončení události: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Neznámý název priority: %ls"
-    IDS_ERR_LOG_APPEND_BOOL "Přepínač přidávání na konec logu (identifikovaný jako '%ls') musí nabývat hodnot '0' nebo '1'"
-    IDS_ERR_GET_MSIE_PROXY "Nepodařilo se načíst nastavení proxy z MSIE."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor selhal."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl selhal."
-    IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe na hOutputWrite selhal."
-    IDS_ERR_CREATE_PIPE_INPUT "CreatePipe na hInputRead selhal."
-    IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle na hOutputRead selhal."
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle na hInputWrite selhal."
     IDS_ERR_CREATE_PROCESS "CreateProcess selhal, exe='%ls' cmdline='%ls' dir='%ls'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread k zobrazení stavu selhal."
@@ -383,8 +368,6 @@ Prosím dokončete předchozí autorizační dialog."
     IDS_NFO_STATE_ONHOLD "Aktuální stav: Čekání (odpojeno)"
     IDS_NFO_NOW_CONNECTED "%ls je nyní připojeno."
     IDS_NFO_ASSIGN_IP "Přiřazená IP: %ls"
-    IDS_ERR_CERT_EXPIRED "Spojení nelze navázat, protože certifikát expiroval, nebo není správně nastaven systémový čas."
-    IDS_ERR_CERT_NOT_YET_VALID "Spojení nelze navázat, protože certifikát ještě není platný. Prosím zkontrolujte, že je správně nastaven systémový čas."
     IDS_NFO_STATE_RECONNECTING "Aktuální stav: Restartování"
     IDS_NFO_STATE_DISCONNECTED "Aktuální stav: Odpojeno"
     IDS_NFO_CONN_TERMINATED "Připojení k %ls bylo přerušeno."
@@ -416,14 +399,9 @@ Více informací najdete v logu (%ls)."
     IDS_ERR_CREATE_PATH "Nepodařilo se vytvořit %ls složku:\n%ls"
     IDS_ERR_LOAD_RICHED20 "Nepodařilo se načíst riched20.dll."
     IDS_ERR_SHELL_DLL_VERSION "Verze vaší knihovny shell32.dll je příliš nízká (0x%lx). Potřebujete verzi 5.0 nebo novější."
-    IDS_NFO_SERVICE_STARTED "Služba OpenVPN spuštěna."
-    IDS_NFO_SERVICE_STOPPED "Služba OpenVPN zastavena."
     IDS_NFO_ACTIVE_CONN_EXIT "Některá spojení jsou stále aktivní. Pokud OpenVPN GUI ukončíte, budou přerušena.\
 \n\nOpravdu chcete aplikaci ukončit?"
     IDS_ERR_PARSE_MGMT_OPTION "Nepodařilo se zpracovat parametr --management v <%ls%ls>."
-    IDS_NFO_SERVICE_ACTIVE_EXIT "Některá spojení jsou stále aktivní. Díky běžící službě OpenVPN \
-zůstanete připojeni, i když ukončíte OpenVPN GUI.\n\n\
-Chcete pokračovat a aplikaci ukončit?"
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Zobrazí tuto zprávu.\n\
@@ -468,33 +446,6 @@ zkuste před něj dát '--'."
     IDS_ERR_BAD_OPTION "Nepovolená hodnota: Neznámá volba nebo chybějící parametr: --%ls\n\
 Použijte openvpn-gui --help pro více informací."
 
-    /* passphrase - Resources */
-    IDS_ERR_CREATE_PASS_THREAD "Selhal CreateThread při vytváření dialogu Změna hesla privátního klíče."
-    IDS_NFO_CHANGE_PWD "Změna hesla privátního klíče (%ls)"
-    IDS_ERR_PWD_DONT_MATCH "Zadaná hesla se neshodují. Zkuste to prosím znovu."
-    IDS_ERR_PWD_TO_SHORT "Minimální délka hesla je %d znaků."
-    IDS_NFO_EMPTY_PWD "Opravdu chcete nastavit prázdné heslo?"
-    IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Neznámý formát souboru klíče."
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Došlo k chybě při načítání souboru privátního klíče (%ls)."
-    IDS_ERR_OLD_PWD_INCORRECT "Staré heslo není správné."
-    IDS_ERR_OPEN_WRITE_KEY "Nepodařilo se zapsat do souboru privátního klíče (%ls)."
-    IDS_ERR_WRITE_NEW_KEY "Nepodařilo se vytvořit nový soubor privátního klíče (%ls)."
-    IDS_NFO_PWD_CHANGED "Vaše heslo bylo změněno."
-    IDS_ERR_READ_PKCS12 "Došlo k chybě při načítání souboru PKCS #12 (%ls)."
-    IDS_ERR_CREATE_PKCS12 "Došlo k chybě při vytváření nového souboru PKCS #12. Změna hesla se nezdařila."
-    IDS_ERR_OPEN_CONFIG "Nepodařilo se otevřít konfigurační soubor ke čtení: (%ls)"
-    IDS_ERR_ONLY_ONE_KEY_OPTION "Není možné mít více než jednu definici ""key"" v konfiguračním souboru."
-    IDS_ERR_ONLY_KEY_OR_PKCS12 "Není možné mít definice ""key"" a ""pkcs12"" ve stejném konfiguračním souboru."
-    IDS_ERR_ONLY_ONE_PKCS12_OPTION "Není možné mít více než jednu definici ""pkcs12"" v konfiguračním souboru."
-    IDS_ERR_HAVE_KEY_OR_PKCS12 "V konfiguračním souboru chybí definice ""key"" nebo ""pkcs12""."
-    IDS_ERR_KEY_FILENAME_TO_LONG "Název souboru klíče v konfiguračním souboru je příliš dlouhý."
-    IDS_ERR_PASSPHRASE2STDIN "Došlo k chybě při předávání hesla privátního klíče do příkazové řádky."
-    IDS_ERR_AUTH_USERNAME2STDIN "Došlo k chybě při předávání uživatelského jména do příkazové řádky."
-    IDS_ERR_AUTH_PASSWORD2STDIN "Došlo k chybě při předávání hesla do příkazové řádky."
-    IDS_ERR_CR2STDIN "Došlo k chybě při předávání odpovědi na výzvu do příkazové řádky."
-    IDS_ERR_INVALID_CHARS_IN_PSW "Vaše nové heslo obsahuje neplatné znaky. \
-Prosím zadejte jiné."
-
     /* settings */
     IDS_SETTINGS_CAPTION "OpenVPN - Nastavení"
 
@@ -506,17 +457,9 @@ Prosím zadejte jiné."
     IDS_ERR_SOCKS_PROXY_PORT "Je nutné zadat port SOCKS proxy."
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "Port SOCKS proxy musí být v rozsahu 1-65535"
     IDS_ERR_CREATE_REG_HKCU_KEY "Došlo k chybě při vytváření klíče ""HKCU\\%ls"" v registru."
-    IDS_ERR_GET_TEMP_PATH "Došlo k chybě při zjišťování cesty ke složce Temp pomocí GetTempPath(). Bude použito ""C:\\""."
 
     /* service */
-    IDS_ERR_OPEN_VPN_SERVICE "Došlo k chybě při načítání služby ""OpenVPNService""."
-    IDS_ERR_START_SERVICE "Došlo k chybě při spouštění služby ""OpenVPNService""."
     IDS_ERR_QUERY_SERVICE "Došlo k chybě při zjištění stavu služby."
-    IDS_ERR_SERVICE_START_FAILED "Nepodařilo se spustit službu OpenVPN."
-    IDS_ERR_OPEN_SCMGR "OpenSCManager selhal (%d)"
-    IDS_ERR_STOP_SERVICE "Nepodařilo se zastavit službu OpenVPN."
-    IDS_NFO_RESTARTED "Služba OpenVPN byla restartována."
-    IDS_ERR_ACCESS_SERVICE_PIPE "Přístup k pipe služby selhal."
     IDS_ERR_WRITE_SERVICE_PIPE "Zápis do pipe služby selhal."
     IDS_ERR_INSTALL_ISERVICE     "Služba ""OpenVPNServiceInteractive"" není nainstalována.\n\
 Úlohy vyžadující oprávnění správce nemusí fungovat."
@@ -527,25 +470,16 @@ Wintun driver will not work."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Nepodařilo se získat umístění složky Windows."
-    IDS_ERR_GET_PROFILE_DIR "Nepodařilo se získat umístění složky uživatelského profilu."
-    IDS_ERR_GET_PROGRAM_DIR "Nepodařilo se získat umístění složky ""Program""."
     IDS_ERR_OPEN_REGISTRY "Nepodařilo se otevřít klíč registru ke čtení (HKLM\\SOFTWARE\\OpenVPN).\n \
 OpenVPN pravděpodobně není nainstalováno."
     IDS_ERR_READING_REGISTRY "Došlo k chybě při čtení hodnoty z registru (HKLM\\SOFTWARE\\OpenVPN)."
-    IDS_ERR_PASSPHRASE_ATTEMPTS "Hodnota ""passphrase_attempts"" v registru musí být číslo mezi 1 a 9."
-    IDS_ERR_CONN_SCRIPT_TIMEOUT "Hodnota ""connectscript_timeout"" v registru musí být číslo mezi 0 a 99."
     IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Hodnota ""disconnectscript_timeout"" v registru musí být číslo mezi 1 a 99."
     IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Hodnota ""preconnectscript_timeout"" v registru musí být číslo mezi 1 a 99."
-    IDS_ERR_CREATE_REG_KEY "Nepodařilo se vytvořit klíč HKLM\\SOFTWARE\\OpenVPN-GUI."
-    IDS_ERR_OPEN_WRITE_REG "Nepodařilo se otevřít registr pro zápis. Je nutné spustit aplikaci \
-jednou jako správce, aby se registr aktualizoval."
-    IDS_ERR_READ_SET_KEY "Došlo k chybě při čtení a zápisu klíče registru ""%ls""."
     IDS_ERR_WRITE_REGVALUE "Došlo k chybě při zápisu hodnoty registru ""HKCU\\%ls\\%ls""."
     IDS_ERR_PLAP_REG "Nepodařilo se povolit připojení před přihlášením (chyba = %d)"
     IDS_ERR_PLAP_UNREG "Nepodařilo se zakázat připojení před přihlášením (chyba = %d)"
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS "Konfigurace s názvem ""%ls"" již existuje."
     IDS_ERR_IMPORT_FAILED "Nepodařilo se importovat konfigurační soubor. Následující cestu se nepodařilo vytvořit.\n\n\
 %ls\n\nUjistěte se prosím, že máte potřebná oprávnění."
     IDS_NFO_IMPORT_SUCCESS "Konfigurace úspěšně importována."

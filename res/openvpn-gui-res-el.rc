@@ -326,7 +326,6 @@ BEGIN
     IDS_TIP_CONNECTING "\nΣύνδεση σε εξέλιξη: "
     IDS_TIP_CONNECTED_SINCE "\nΣυνδεδεμένος από: "
     IDS_TIP_ASSIGNED_IP "\nΑποδοθείσα IP: %ls"
-    IDS_MENU_SERVICE "Υπηρεσία OpenVPN"
     IDS_MENU_IMPORT "Εισαγωγή"
     IDS_MENU_IMPORT_AS "Εισαγωγή από Access Server…"
     IDS_MENU_IMPORT_URL "Εισαγωγή από URL…"
@@ -339,22 +338,13 @@ BEGIN
     IDS_MENU_STATUS "Εμφάνιση κατάστασης"
     IDS_MENU_VIEWLOG "Προβολή αρχείου καταγραφής"
     IDS_MENU_EDITCONFIG "Επεξεργασία παραμέτρων"
-    IDS_MENU_PASSPHRASE "Αλλαγή συνθήματος"
     IDS_MENU_CLEARPASS "Διαγραφή αποθηκευμένων συνθημάτων"
-    IDS_MENU_SERVICE_START "Εκκίνηση"
-    IDS_MENU_SERVICE_STOP "Διακοπή"
-    IDS_MENU_SERVICE_RESTART "Επανεκκίνηση"
-    IDS_MENU_SERVICEONLY_START "Σύνδεση"
-    IDS_MENU_SERVICEONLY_STOP "Αποσύνδεση"
-    IDS_MENU_SERVICEONLY_RESTART "Επανεκκίνηση"
-    IDS_MENU_ASK_STOP_SERVICE "Είστε σίγουροι ότι θέλετε να αποσυνδεθείτε (Διακοπή υπηρεσίας OpenVPN);"
 
     /* Logviewer - Resources */
     IDS_ERR_START_LOG_VIEWER "Σφάλμα κατά την εκκίνηση του προγράμματος προβολής log: %ls"
     IDS_ERR_START_CONF_EDITOR "Σφάλμα κατά την εκκίνηση του προγράμματος επεξεργασίας: %ls"
 
     /* OpenVPN */
-    IDS_ERR_MANY_CONFIGS "Το OpenVPN GUI δεν υποστηρίζει πάνω από %d αρχεία παραμέτρων. Επικοινωνήστε με τον δημιουργό αν χρειάζεστε περισσότερα."
     IDS_NFO_NO_CONFIGS "Δεν βρέθηκαν αρχεία παραμέτρων.\n\
 Χρησιμοποιήστε την επιλογή ""Εισαγωγή αρχείου παραμέτρων…"" ή αντιγράψτε τα αρχεία στο ""%ls"" ή ""%ls""."
     IDS_ERR_CONFIG_NOT_AUTHORIZED "Η δημιουργία αυτής της σύνδεσης (%ls) απαιτεί συμμετοχή στην ομάδα \
@@ -369,13 +359,8 @@ BEGIN
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Η προσθήκη του χρήστη στην ομάδα ""%ls"" απέτυχε."
     IDS_ERR_CREATE_EVENT "Η ενέργεια CreateEvent απέτυχε: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Άγνωστο όνομα προτεραιότητας: %ls"
-    IDS_ERR_LOG_APPEND_BOOL "Η επιλογή προσθήκης στο log (αναγνωρισμένη ως '%ls') πρέπει να είναι '0' ή '1'"
-    IDS_ERR_GET_MSIE_PROXY "Αποτυχία ανάκτησης ρυθμίσεων proxy από τον MSIE."
     IDS_ERR_INIT_SEC_DESC "Το InitializeSecurityDescriptor απέτυχε."
     IDS_ERR_SET_SEC_DESC_ACL "Το SetSecurityDescriptorDacl απέτυχε."
-    IDS_ERR_CREATE_PIPE_OUTPUT "Το CreatePipe στο hOutputWrite απέτυχε."
-    IDS_ERR_CREATE_PIPE_INPUT "Το CreatePipe στο hInputRead απέτυχε."
-    IDS_ERR_DUP_HANDLE_OUT_READ "Το DuplicateHandle στο hOutputRead απέτυχε."
     IDS_ERR_DUP_HANDLE_IN_WRITE "Το DuplicateHandle στο hInputWrite απέτυχε."
     IDS_ERR_CREATE_PROCESS "Το CreateProcess απέτυχε, exe='%ls' cmdline='%ls' dir='%ls'"
     IDS_ERR_CREATE_THREAD_STATUS "Το CreateThread για την προβολή κατάστασης απέτυχε."
@@ -384,8 +369,6 @@ BEGIN
     IDS_NFO_STATE_ONHOLD "Τρέχουσα κατάσταση: Σε αναμονή (αποσυνδεδεμένο)"
     IDS_NFO_NOW_CONNECTED "Το %ls είναι τώρα συνδεδεμένο."
     IDS_NFO_ASSIGN_IP "Αποδοθείσα IP: %ls"
-    IDS_ERR_CERT_EXPIRED "Η σύνδεση απέτυχε επειδή το πιστοποιητικό έληξε ή η ώρα συστήματος είναι λάθος."
-    IDS_ERR_CERT_NOT_YET_VALID "Το πιστοποιητικό δεν είναι ακόμα έγκυρο. Ελέγξτε την ώρα συστήματος."
     IDS_NFO_STATE_RECONNECTING "Τρέχουσα κατάσταση: Επανασύνδεση"
     IDS_NFO_STATE_DISCONNECTED "Τρέχουσα κατάσταση: Αποσυνδεδεμένο"
     IDS_NFO_CONN_TERMINATED "Η σύνδεση στο %ls τερματίστηκε."
@@ -416,14 +399,9 @@ BEGIN
     IDS_ERR_CREATE_PATH "Αποτυχία δημιουργίας φακέλου %ls:\n%ls"
     IDS_ERR_LOAD_RICHED20 "Αποτυχία φόρτωσης του riched20.dll."
     IDS_ERR_SHELL_DLL_VERSION "Η έκδοση του shell32.dll είναι παλιά (0x%lx). Απαιτείται έκδοση 5.0 ή νεότερη."
-    IDS_NFO_SERVICE_STARTED "Η υπηρεσία OpenVPN ξεκίνησε."
-    IDS_NFO_SERVICE_STOPPED "Η υπηρεσία OpenVPN διακόπηκε."
     IDS_NFO_ACTIVE_CONN_EXIT "Υπάρχουν ενεργές συνδέσεις. Αν κλείσετε το OpenVPN GUI, θα διακοπούν.\
 \n\nΘέλετε σίγουρα να κλείσετε την εφαρμογή;"
     IDS_ERR_PARSE_MGMT_OPTION "Αδυναμία ανάλυσης της επιλογής --management στο <%ls%ls>."
-    IDS_NFO_SERVICE_ACTIVE_EXIT "Υπάρχουν ενεργές συνδέσεις. Λόγω της υπηρεσίας OpenVPN, \
-θα παραμείνετε συνδεδεμένοι ακόμα και αν κλείσετε το OpenVPN GUI.\n\n\
-Θέλετε να συνεχίσετε;"
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Εμφάνιση αυτού του μηνύματος.\n\
@@ -444,32 +422,6 @@ BEGIN
     IDS_ERR_BAD_OPTION "Μη έγκυρη τιμή ή άγνωστη επιλογή: --%ls\n\
 Δείτε openvpn-gui --help για περισσότερα."
 
-    /* passphrase - Resources */
-    IDS_ERR_CREATE_PASS_THREAD "Αποτυχία CreateThread για τον διάλογο αλλαγής συνθήματος."
-    IDS_NFO_CHANGE_PWD "Αλλαγή συνθήματος ιδιωτικού κλειδιού (%ls)"
-    IDS_ERR_PWD_DONT_MATCH "Τα συνθήματα δεν ταιριάζουν. Δοκιμάστε ξανά."
-    IDS_ERR_PWD_TO_SHORT "Το ελάχιστο μήκος συνθήματος είναι %d χαρακτήρες."
-    IDS_NFO_EMPTY_PWD "Θέλετε σίγουρα να ορίσετε κενό σύνθημα;"
-    IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Άγνωστη μορφή αρχείου κλειδιού."
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Σφάλμα κατά τη φόρτωση του ιδιωτικού κλειδιού (%ls)."
-    IDS_ERR_OLD_PWD_INCORRECT "Το παλιό σύνθημα είναι λάθος."
-    IDS_ERR_OPEN_WRITE_KEY "Αποτυχία εγγραφής στο αρχείο ιδιωτικού κλειδιού (%ls)."
-    IDS_ERR_WRITE_NEW_KEY "Αποτυχία δημιουργίας νέου αρχείου ιδιωτικού κλειδιού (%ls)."
-    IDS_NFO_PWD_CHANGED "Το σύνθημα άλλαξε επιτυχώς."
-    IDS_ERR_READ_PKCS12 "Σφάλμα κατά τη φόρτωση του αρχείου PKCS #12 (%ls)."
-    IDS_ERR_CREATE_PKCS12 "Σφάλμα κατά τη δημιουργία νέου PKCS #12. Η αλλαγή απέτυχε."
-    IDS_ERR_OPEN_CONFIG "Αδυναμία ανοίγματος αρχείου παραμέτρων: (%ls)"
-    IDS_ERR_ONLY_ONE_KEY_OPTION "Δεν επιτρέπεται πάνω από ένας ορισμός ""key""."
-    IDS_ERR_ONLY_KEY_OR_PKCS12 "Δεν επιτρέπεται ""key"" και ""pkcs12"" στο ίδιο αρχείο."
-    IDS_ERR_ONLY_ONE_PKCS12_OPTION "Δεν επιτρέπεται πάνω από ένας ορισμός ""pkcs12""."
-    IDS_ERR_HAVE_KEY_OR_PKCS12 "Λείπει ο ορισμός ""key"" ή ""pkcs12""."
-    IDS_ERR_KEY_FILENAME_TO_LONG "Το όνομα του αρχείου κλειδιού είναι πολύ μεγάλο."
-    IDS_ERR_PASSPHRASE2STDIN "Σφάλμα κατά τη διαβίβαση του συνθήματος."
-    IDS_ERR_AUTH_USERNAME2STDIN "Σφάλμα κατά τη διαβίβαση του ονόματος χρήστη."
-    IDS_ERR_AUTH_PASSWORD2STDIN "Σφάλμα κατά τη διαβίβαση του συνθήματος πρόσβασης."
-    IDS_ERR_CR2STDIN "Σφάλμα κατά τη διαβίβαση της απάντησης στην πρόκληση."
-    IDS_ERR_INVALID_CHARS_IN_PSW "Το νέο σύνθημα περιέχει μη έγκυρους χαρακτήρες."
-
     /* settings */
     IDS_SETTINGS_CAPTION "OpenVPN - Ρυθμίσεις"
 
@@ -481,17 +433,9 @@ BEGIN
     IDS_ERR_SOCKS_PROXY_PORT "Πρέπει να ορίσετε θύρα SOCKS proxy."
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "Η θύρα SOCKS proxy πρέπει να είναι 1-65535"
     IDS_ERR_CREATE_REG_HKCU_KEY "Σφάλμα κατά τη δημιουργία του κλειδιού ""HKCU\\%ls"" στο μητρώο."
-    IDS_ERR_GET_TEMP_PATH "Σφάλμα κατά την εύρεση της διαδρομής Temp."
 
     /* service */
-    IDS_ERR_OPEN_VPN_SERVICE "Σφάλμα κατά τη φόρτωση της υπηρεσίας ""OpenVPNService""."
-    IDS_ERR_START_SERVICE "Σφάλμα κατά την εκκίνηση της υπηρεσίας ""OpenVPNService""."
     IDS_ERR_QUERY_SERVICE "Σφάλμα κατά τον έλεγχο κατάστασης της υπηρεσίας."
-    IDS_ERR_SERVICE_START_FAILED "Η εκκίνηση της υπηρεσίας OpenVPN απέτυχε."
-    IDS_ERR_OPEN_SCMGR "Το OpenSCManager απέτυχε (%d)"
-    IDS_ERR_STOP_SERVICE "Η διακοπή της υπηρεσίας OpenVPN απέτυχε."
-    IDS_NFO_RESTARTED "Η υπηρεσία OpenVPN επανεκκινήθηκε."
-    IDS_ERR_ACCESS_SERVICE_PIPE "Αποτυχία πρόσβασης στο pipe της υπηρεσίας."
     IDS_ERR_WRITE_SERVICE_PIPE "Αποτυχία εγγραφής στο pipe της υπηρεσίας."
     IDS_ERR_INSTALL_ISERVICE     "Η υπηρεσία ""OpenVPNServiceInteractive"" δεν είναι εγκατεστημένη."
     IDS_ERR_NOTSTARTED_ISERVICE  "Η υπηρεσία ""OpenVPNServiceInteractive"" δεν εκτελείται."
@@ -499,23 +443,15 @@ BEGIN
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Αποτυχία εντοπισμού του φακέλου Windows."
-    IDS_ERR_GET_PROFILE_DIR "Αποτυχία εντοπισμού του φακέλου προφίλ χρήστη."
-    IDS_ERR_GET_PROGRAM_DIR "Αποτυχία εντοπισμού του φακέλου ""Program Files""."
     IDS_ERR_OPEN_REGISTRY "Αποτυχία ανοίγματος του κλειδιού μητρώου (HKLM\\SOFTWARE\\OpenVPN)."
     IDS_ERR_READING_REGISTRY "Σφάλμα κατά την ανάγνωση από το μητρώο."
-    IDS_ERR_PASSPHRASE_ATTEMPTS "Η τιμή ""passphrase_attempts"" πρέπει να είναι μεταξύ 1 και 9."
-    IDS_ERR_CONN_SCRIPT_TIMEOUT "Η τιμή ""connectscript_timeout"" πρέπει να είναι μεταξύ 0 και 99."
     IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Η τιμή ""disconnectscript_timeout"" πρέπει να είναι μεταξύ 1 και 99."
     IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Η τιμή ""preconnectscript_timeout"" πρέπει να είναι μεταξύ 1 και 99."
-    IDS_ERR_CREATE_REG_KEY "Αποτυχία δημιουργίας κλειδιού HKLM\\SOFTWARE\\OpenVPN-GUI."
-    IDS_ERR_OPEN_WRITE_REG "Αποτυχία ανοίγματος μητρώου για εγγραφή. Εκτελέστε την εφαρμογή ως διαχειριστής μία φορά."
-    IDS_ERR_READ_SET_KEY "Σφάλμα κατά την ανάγνωση/εγγραφή του κλειδιού ""%ls""."
     IDS_ERR_WRITE_REGVALUE "Σφάλμα κατά την εγγραφή στο ""HKCU\\%ls\\%ls""."
     IDS_ERR_PLAP_REG "Αποτυχία ενεργοποίησης του Start Before Logon (error = %d)"
     IDS_ERR_PLAP_UNREG "Αποτυχία απενεργοποίησης του Start Before Logon (error = %d)"
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS "Το προφίλ με όνομα ""%ls"" υπάρχει ήδη."
     IDS_ERR_IMPORT_FAILED "Η εισαγωγή απέτυχε. Η διαδρομή δεν μπόρεσε να δημιουργηθεί:\n\n%ls"
     IDS_NFO_IMPORT_SUCCESS "Το προφίλ εισήχθη επιτυχώς."
     IDS_NFO_IMPORT_OVERWRITE "Το προφίλ ""%ls"" υπάρχει ήδη. Θέλετε να το αντικαταστήσετε;"
