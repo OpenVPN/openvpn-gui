@@ -325,7 +325,6 @@ BEGIN
     IDS_TIP_CONNECTING "\nVerbinden met: "
     IDS_TIP_CONNECTED_SINCE "\nVerbonden sinds: "
     IDS_TIP_ASSIGNED_IP "\nToegewezen IP: %ls"
-    IDS_MENU_SERVICE "OpenVPN Service"
     IDS_MENU_IMPORT "Import"
     IDS_MENU_IMPORT_AS "Import from Access Server…"
     IDS_MENU_IMPORT_URL "Import from URL…"
@@ -338,22 +337,13 @@ BEGIN
     IDS_MENU_STATUS "Status weergeven"
     IDS_MENU_VIEWLOG "Logbestand weergeven"
     IDS_MENU_EDITCONFIG "Configuratie bewerken"
-    IDS_MENU_PASSPHRASE "Wachtwoord wijzigen"
     IDS_MENU_CLEARPASS  "Opgeslagen wachtwoorden vergeten"
-    IDS_MENU_SERVICE_START "Starten"
-    IDS_MENU_SERVICE_STOP "Stoppen"
-    IDS_MENU_SERVICE_RESTART "Herstarten"
-    IDS_MENU_SERVICEONLY_START "Verbinden"
-    IDS_MENU_SERVICEONLY_STOP "Verbinding verbreken"
-    IDS_MENU_SERVICEONLY_RESTART "Verbinding herstellen"
-    IDS_MENU_ASK_STOP_SERVICE "De verbinding verbreken (Stop de OpenVPN Service)?"
 
     /* Logviewer – Resources */
     IDS_ERR_START_LOG_VIEWER "Fout tijdens starten logboek: %ls"
     IDS_ERR_START_CONF_EDITOR "Fout tijdens starten configurator: %ls"
 
     /* OpenVPN */
-    IDS_ERR_MANY_CONFIGS "OpenVPN GUI ondersteunt niet meer dan %d configuraties. Neem contact op met de auteur indien u er meer wenst."
     IDS_NFO_NO_CONFIGS "Geen leesbare verbindingsprofielen (config files) gevonden.\n\
 Gebruik het menu ""Bestand importeren…"" of kopieer uw configuratiebestanden naar ""%ls"" of ""%ls""."
     IDS_ERR_CONFIG_NOT_AUTHORIZED "Het maken van deze verbinding (%ls) vereist lidmaatschap van\n\
@@ -368,13 +358,8 @@ Vul het voorgaande autorisatiescherm volledig in."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Toevoegen van de gebruiker aan de groep ""%ls"" is mislukt."
     IDS_ERR_CREATE_EVENT "CreateEvent mislukt tijdens exit event: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Onbekende prioriteitsnaam: %ls"
-    IDS_ERR_LOG_APPEND_BOOL "Logbestand append flag (opgegeven als '%ls') moet '0' of '1' zijn"
-    IDS_ERR_GET_MSIE_PROXY "Kan MSIE proxyinstellingen niet ophalen."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor mislukt."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl mislukt."
-    IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe on hOutputWrite mislukt."
-    IDS_ERR_CREATE_PIPE_INPUT "CreatePipe on hInputRead mislukt."
-    IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle on hOutputRead mislukt."
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite mislukt."
     IDS_ERR_CREATE_PROCESS "CreateProcess mislukt, exe='%ls' cmdline='%ls' dir='%ls'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread om Statusvenster te tonen mislukt."
@@ -383,8 +368,6 @@ Vul het voorgaande autorisatiescherm volledig in."
     IDS_NFO_STATE_ONHOLD "Current State: On Hold (disconnected)"
     IDS_NFO_NOW_CONNECTED "%ls is nu verbonden."
     IDS_NFO_ASSIGN_IP "Toegewezen IP: %ls"
-    IDS_ERR_CERT_EXPIRED "Kan geen verbinding maken, het certificaat is vervallen. Controleer eventueel de systeemtijd."
-    IDS_ERR_CERT_NOT_YET_VALID "Kan geen verbinding maken, het certificaat is nog niet geldig. Controleer eventueel de systeemtijd."
     IDS_NFO_STATE_RECONNECTING "Huidige status: Opnieuw verbinden"
     IDS_NFO_STATE_DISCONNECTED "Huidige status: Niet verbonden"
     IDS_NFO_CONN_TERMINATED "Verbinding met %ls is verbroken."
@@ -416,14 +399,9 @@ Bekijk logbestand (%ls) voor meer informatie."
     IDS_ERR_CREATE_PATH "Kan het %ls pad niet aanmaken:\n%ls"
     IDS_ERR_LOAD_RICHED20 "Kan RICHED20.DLL niet laden."
     IDS_ERR_SHELL_DLL_VERSION "De shell32.dll versie is te oud (0x%lx). Minstens versie 5.0 is vereist."
-    IDS_NFO_SERVICE_STARTED "OpenVPN Service gestart."
-    IDS_NFO_SERVICE_STOPPED "OpenVPN Service gestopt."
     IDS_NFO_ACTIVE_CONN_EXIT "Er zijn nog actieve connecties die verbroken zullen worden indien OpenVPN GUI afgesloten wordt.\
 \n\nBent u zeker dan u wilt afsluiten?"
     IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
-    IDS_NFO_SERVICE_ACTIVE_EXIT "Er is momenteel een actieve verbinding (OpenVPN services is gestart). \
-De verbinding blijft actief ook als OpenVPN GUI afgesloten wordt.\n\n\
-OpenVPN GUI afsluiten?"
 
     /* options – Resources */
     IDS_NFO_USAGE "--help\t\t\t: Toon dit bericht.\n\
@@ -469,33 +447,6 @@ maar kan geen '--'-prefix vinden."
     IDS_ERR_BAD_OPTION "Fout in Opties: Onbekende optie of ontbrekende parameter: --%ls\n\
 Gebruik openvpn-gui --help voor meer informatie."
 
-    /* passphrase – Resources */
-    IDS_ERR_CREATE_PASS_THREAD "CreateThread om ChangePassphrase venster aan te maken is mislukt."
-    IDS_NFO_CHANGE_PWD "Wijzig wachtwoord (%ls)"
-    IDS_ERR_PWD_DONT_MATCH "De wachtwoorden die u heeft ingegeven komen niet overeen. Probeer opnieuw."
-    IDS_ERR_PWD_TO_SHORT "Het nieuwe wachtwoord moet minstens %d tekens bevatten."
-    IDS_NFO_EMPTY_PWD "Wilt u echt een LEEG wachtwoord instellen?"
-    IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Onbekend keyfile formaat."
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Fout tijdens openen van private key bestand (%ls)."
-    IDS_ERR_OLD_PWD_INCORRECT "Het oude wachtwoord is niet correct."
-    IDS_ERR_OPEN_WRITE_KEY "Fout tijdens schrijven naar private key bestand (%ls)."
-    IDS_ERR_WRITE_NEW_KEY "Fout tijdens schrijven naar nieuw private key bestand (%ls)."
-    IDS_NFO_PWD_CHANGED "Het wachtwoord is gewijzigd."
-    IDS_ERR_READ_PKCS12 "Fout tijdens lezen van PKCS #12 bestand (%ls)."
-    IDS_ERR_CREATE_PKCS12 "Fout tijdens aanmaken van PKCS #12 object. Wijzigen wachtwoord is mislukt."
-    IDS_ERR_OPEN_CONFIG "Kan configuratiebestand niet lezen: (%ls)"
-    IDS_ERR_ONLY_ONE_KEY_OPTION "Er mag slechts een enkele ""key"" optie voorkomen in een configuratie."
-    IDS_ERR_ONLY_KEY_OR_PKCS12 "De opties ""key"" en ""pkcs12"" mogen niet samen voorkomen in een configuratie."
-    IDS_ERR_ONLY_ONE_PKCS12_OPTION "Er mag slechts een enkele ""pkcs12"" optie voorkomen in een configuratie."
-    IDS_ERR_HAVE_KEY_OR_PKCS12 "Er moet of een ""key"" of een ""pkcs12"" optie in de configuratie voorkomen."
-    IDS_ERR_KEY_FILENAME_TO_LONG "Het keybestand in de configuratie is te lang!"
-    IDS_ERR_PASSPHRASE2STDIN "Fout bij doorgeven wachtwoord aan stdin."
-    IDS_ERR_AUTH_USERNAME2STDIN "Fout bij doorgeven gebruikersnaam aan stdin."
-    IDS_ERR_AUTH_PASSWORD2STDIN "Fout bij doorgeven wachtwoord aan stdin."
-    IDS_ERR_CR2STDIN "Fout bij doorgeven CR aan stdin."
-    IDS_ERR_INVALID_CHARS_IN_PSW "Het nieuwe wachtwoord bevat niet-toegestane tekens. \
-Kies een nieuw wachtwoord."
-
     /* settings */
     IDS_SETTINGS_CAPTION "OpenVPN - Instellingen"
 
@@ -507,17 +458,9 @@ Kies een nieuw wachtwoord."
     IDS_ERR_SOCKS_PROXY_PORT "Er moet een SOCKS proxypoort opgegeven worden."
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "Er moet een SOCKS proxypoort opgegeven worden tussen 1 en 65535."
     IDS_ERR_CREATE_REG_HKCU_KEY "Fout tijdens aanmaken ""HKEY_CURRENT_USER\\%ls"" sleutel."
-    IDS_ERR_GET_TEMP_PATH "Fout tijdens opvragen TempPath met GetTempPath(). Gebruikt ""C:\\"" als TempPath."
 
     /* service */
-    IDS_ERR_OPEN_VPN_SERVICE "Openen ""OpenVPNService"" mislukt"
-    IDS_ERR_START_SERVICE "Starten ""OpenVPNService"" mislukt"
     IDS_ERR_QUERY_SERVICE "Opvragen servicestatus mislukt."
-    IDS_ERR_SERVICE_START_FAILED "Starten van OpenVPN Service mislukt."
-    IDS_ERR_OPEN_SCMGR "Starten van OpenSCManager mislukt (%d)"
-    IDS_ERR_STOP_SERVICE "Stoppen van OpenVPN Service mislukt"
-    IDS_NFO_RESTARTED "OpenVPN Service Herstart."
-    IDS_ERR_ACCESS_SERVICE_PIPE "Toegang tot service pipe mislukt."
     IDS_ERR_WRITE_SERVICE_PIPE "Schrijven naar service pipe mislukt."
     IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is niet geinstalleerd.\n\
 Wintun driver en taken die administratieve rechten vereisen werken mogelijk niet."
@@ -528,25 +471,16 @@ Wintun driver wil niet werken."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Fout tijdens opvragen Windows-map."
-    IDS_ERR_GET_PROFILE_DIR "Fout tijdens opvragen Gebruikersprofiel-map."
-    IDS_ERR_GET_PROGRAM_DIR "Fout tijdens opvragen ""Program"" map naam."
     IDS_ERR_OPEN_REGISTRY "Fout tijdens lezen van register (HKLM\\SOFTWARE\\OpenVPN).\n \
 OpenVPN is waarschijnlijk niet geïnstalleerd"
     IDS_ERR_READING_REGISTRY "Fout tijdens lezen van registersleutel (HKLM\\SOFTWARE\\OpenVPN)."
-    IDS_ERR_PASSPHRASE_ATTEMPTS "Registersleutel ""passphrase_attempts"" moet een waarde tussen 1 en 9 bevatten."
-    IDS_ERR_CONN_SCRIPT_TIMEOUT "Registersleutel ""connectscript_timeout"" moet een waarde tussen 0 en 99 bevatten."
     IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Registersleutel ""disconnectscript_timeout"" moet een waarde tussen 1 en 99 bevatten."
     IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Registersleutel ""preconnectscript_timeout"" moet een waarde tussen 1 en 99 bevatten."
-    IDS_ERR_CREATE_REG_KEY "Fout tijdens aanmaken van HKLM\\SOFTWARE\\OpenVPN-GUI sleutel."
-    IDS_ERR_OPEN_WRITE_REG "Fout tijdens het schrijven naar het register. Voer deze applicatie één keer uit als Administrator \
-om de registerinstellingen te updaten."
-    IDS_ERR_READ_SET_KEY "Fout tijdens lezen en instellen van registersleutel ""%ls""."
     IDS_ERR_WRITE_REGVALUE "Fout tijdens schrijven van registersleutel ""HKEY_CURRENT_USER\\%ls\\%ls""."
     IDS_ERR_PLAP_REG "Failed to enable Start Before Logon (error = %d)"
     IDS_ERR_PLAP_UNREG "Failed to disable Start Before Logon (error = %d)"
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS "Een configuratie met de naam ""%ls"" bestaat al."
     IDS_ERR_IMPORT_FAILED "Importeren bestand is mislukt. De onderstaande bestandsnaam kon niet gemaakt worden.\n\n\
 %ls\n\nControleer of de juiste rechten gebruikt worden."
     IDS_NFO_IMPORT_SUCCESS "Importeren bestand gelukt."

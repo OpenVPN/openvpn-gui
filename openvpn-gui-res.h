@@ -105,7 +105,6 @@
 #define ID_CMB_LANGUAGE                 231
 #define ID_TXT_LANGUAGE                 232
 #define ID_CHK_STARTUP                  233
-/* historic: #define ID_CHK_SERVICE_ONLY              234 */
 #define ID_TXT_LOG_APPEND               235
 #define ID_CHK_LOG_APPEND               236
 #define ID_CHK_SILENT                   237
@@ -186,7 +185,6 @@
 #define IDS_TIP_ASSIGNED_IP             1005
 
 /* Tray Icon Context Menu */
-#define IDS_MENU_SERVICE                1006
 #define IDS_MENU_SETTINGS               1007
 #define IDS_MENU_CLOSE                  1009
 #define IDS_MENU_CONNECT                1010
@@ -194,14 +192,6 @@
 #define IDS_MENU_STATUS                 1012
 #define IDS_MENU_VIEWLOG                1013
 #define IDS_MENU_EDITCONFIG             1014
-#define IDS_MENU_PASSPHRASE             1015
-#define IDS_MENU_SERVICE_START          1016
-#define IDS_MENU_SERVICE_STOP           1017
-#define IDS_MENU_SERVICE_RESTART        1018
-#define IDS_MENU_SERVICEONLY_START      1019
-#define IDS_MENU_SERVICEONLY_STOP       1020
-#define IDS_MENU_SERVICEONLY_RESTART    1021
-#define IDS_MENU_ASK_STOP_SERVICE       1022
 #define IDS_MENU_IMPORT                 1023
 #define IDS_MENU_CLEARPASS              1024
 #define IDS_MENU_RECONNECT              1025
@@ -214,16 +204,10 @@
 #define IDS_ERR_START_CONF_EDITOR       1102
 
 /* OpenVpn Related */
-#define IDS_ERR_MANY_CONFIGS            1201
 #define IDS_ERR_CREATE_EVENT            1205
 #define IDS_ERR_UNKNOWN_PRIORITY        1206
-#define IDS_ERR_LOG_APPEND_BOOL         1207
-#define IDS_ERR_GET_MSIE_PROXY          1208
 #define IDS_ERR_INIT_SEC_DESC           1209
 #define IDS_ERR_SET_SEC_DESC_ACL        1210
-#define IDS_ERR_CREATE_PIPE_OUTPUT      1211
-#define IDS_ERR_CREATE_PIPE_INPUT       1213
-#define IDS_ERR_DUP_HANDLE_OUT_READ     1214
 #define IDS_ERR_DUP_HANDLE_IN_WRITE     1215
 #define IDS_ERR_CREATE_PROCESS          1217
 #define IDS_ERR_CREATE_THREAD_STATUS    1219
@@ -231,8 +215,6 @@
 #define IDS_NFO_STATE_CONNECTED         1222
 #define IDS_NFO_NOW_CONNECTED           1223
 #define IDS_NFO_ASSIGN_IP               1224
-#define IDS_ERR_CERT_EXPIRED            1225
-#define IDS_ERR_CERT_NOT_YET_VALID      1226
 #define IDS_NFO_STATE_RECONNECTING      1227
 #define IDS_NFO_STATE_DISCONNECTED      1228
 #define IDS_NFO_CONN_TERMINATED         1229
@@ -276,11 +258,7 @@
 #define IDS_ERR_OPEN_DEBUG_FILE         1301
 #define IDS_ERR_LOAD_RICHED20           1302
 #define IDS_ERR_SHELL_DLL_VERSION       1303
-/* historic: #define IDS_ERR_GUI_ALREADY_RUNNING     1304 */
-#define IDS_NFO_SERVICE_STARTED         1305
-#define IDS_NFO_SERVICE_STOPPED         1306
 #define IDS_NFO_ACTIVE_CONN_EXIT        1307
-#define IDS_NFO_SERVICE_ACTIVE_EXIT     1308
 #define IDS_ERR_CREATE_PATH             1309
 #define IDS_NFO_CLICK_HERE_TO_START     1310
 
@@ -289,32 +267,6 @@
 #define IDS_NFO_USAGECAPTION            1402
 #define IDS_ERR_BAD_PARAMETER           1403
 #define IDS_ERR_BAD_OPTION              1404
-
-/* Change Passphrase Dialog */
-#define IDS_ERR_CREATE_PASS_THREAD      1501
-#define IDS_NFO_CHANGE_PWD              1502
-#define IDS_ERR_PWD_DONT_MATCH          1503
-#define IDS_ERR_PWD_TO_SHORT            1504
-#define IDS_NFO_EMPTY_PWD               1505
-#define IDS_ERR_UNKNOWN_KEYFILE_FORMAT  1506
-#define IDS_ERR_OPEN_PRIVATE_KEY_FILE   1507
-#define IDS_ERR_OLD_PWD_INCORRECT       1508
-#define IDS_ERR_OPEN_WRITE_KEY          1509
-#define IDS_ERR_WRITE_NEW_KEY           1510
-#define IDS_NFO_PWD_CHANGED             1511
-#define IDS_ERR_READ_PKCS12             1512
-#define IDS_ERR_CREATE_PKCS12           1513
-#define IDS_ERR_OPEN_CONFIG             1514
-#define IDS_ERR_ONLY_ONE_KEY_OPTION     1515
-#define IDS_ERR_ONLY_KEY_OR_PKCS12      1516
-#define IDS_ERR_ONLY_ONE_PKCS12_OPTION  1517
-#define IDS_ERR_HAVE_KEY_OR_PKCS12      1518
-#define IDS_ERR_KEY_FILENAME_TO_LONG    1519
-#define IDS_ERR_PASSPHRASE2STDIN        1520
-#define IDS_ERR_CR2STDIN                1521
-#define IDS_ERR_AUTH_USERNAME2STDIN     1522
-#define IDS_ERR_AUTH_PASSWORD2STDIN     1523
-#define IDS_ERR_INVALID_CHARS_IN_PSW    1524
 
 /* Settings Dialog*/
 #define IDS_SETTINGS_CAPTION            1550
@@ -327,21 +279,12 @@
 #define IDS_ERR_SOCKS_PROXY_PORT        1605
 #define IDS_ERR_SOCKS_PROXY_PORT_RANGE  1606
 #define IDS_ERR_CREATE_REG_HKCU_KEY     1607
-#define IDS_ERR_GET_TEMP_PATH           1608
 
 /* General Settings Dialog */
 #define IDS_LANGUAGE_NAME               1650
 
 /* Win32 Service Related */
-/* historic: #define IDS_ERR_OPEN_SCMGR_ADMIN        1701 */
-#define IDS_ERR_OPEN_VPN_SERVICE        1702
-#define IDS_ERR_START_SERVICE           1703
 #define IDS_ERR_QUERY_SERVICE           1704
-#define IDS_ERR_SERVICE_START_FAILED    1705
-#define IDS_ERR_OPEN_SCMGR              1706
-#define IDS_ERR_STOP_SERVICE            1707
-#define IDS_NFO_RESTARTED               1708
-#define IDS_ERR_ACCESS_SERVICE_PIPE     1709
 #define IDS_ERR_WRITE_SERVICE_PIPE      1710
 #define IDS_ERR_NOTSTARTED_ISERVICE     1711
 #define IDS_ERR_INSTALL_ISERVICE        1712
@@ -349,24 +292,16 @@
 
 /* Registry Related */
 #define IDS_ERR_GET_WINDOWS_DIR         1801
-#define IDS_ERR_GET_PROGRAM_DIR         1802
 #define IDS_ERR_OPEN_REGISTRY           1803
 #define IDS_ERR_READING_REGISTRY        1804
-#define IDS_ERR_PASSPHRASE_ATTEMPTS     1805
-#define IDS_ERR_CONN_SCRIPT_TIMEOUT     1806
 #define IDS_ERR_DISCONN_SCRIPT_TIMEOUT  1807
 #define IDS_ERR_PRECONN_SCRIPT_TIMEOUT  1808
-#define IDS_ERR_CREATE_REG_KEY          1809
-#define IDS_ERR_OPEN_WRITE_REG          1810
-#define IDS_ERR_READ_SET_KEY            1811
 #define IDS_ERR_WRITE_REGVALUE          1812
-#define IDS_ERR_GET_PROFILE_DIR         1813
 #define IDS_ERR_PLAP_REG                1814
 #define IDS_ERR_PLAP_UNREG              1815
 
 /* Importation Related */
 
-#define IDS_ERR_IMPORT_EXISTS           1901
 #define IDS_ERR_IMPORT_FAILED           1902
 #define IDS_NFO_IMPORT_SUCCESS          1903
 #define IDS_NFO_IMPORT_OVERWRITE        1904
@@ -398,6 +333,7 @@
 #define IDS_CERT_NOTAFTER               2164
 
 /* openvpn daemon state descriptions */
+/* Needs to be kept in sync with daemon_states[] in openvpn.c */
 #define IDS_NFO_OVPN_STATE_INITIAL      2200
 #define IDS_NFO_OVPN_STATE_CONNECTING   2201
 #define IDS_NFO_OVPN_STATE_ASSIGN_IP    2202

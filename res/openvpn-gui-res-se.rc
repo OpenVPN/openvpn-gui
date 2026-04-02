@@ -323,7 +323,6 @@ BEGIN
     IDS_TIP_CONNECTING "\nAnsluter till: "
     IDS_TIP_CONNECTED_SINCE "\nAnsluten sedan: "
     IDS_TIP_ASSIGNED_IP "\nTilldelad IP: %ls"
-    IDS_MENU_SERVICE "OpenVPN Service"
     IDS_MENU_IMPORT "Import"
     IDS_MENU_IMPORT_AS "Import from Access Server…"
     IDS_MENU_IMPORT_URL "Import from URL…"
@@ -336,22 +335,13 @@ BEGIN
     IDS_MENU_STATUS "Visa Status"
     IDS_MENU_VIEWLOG "Visa Logg"
     IDS_MENU_EDITCONFIG "Editera konfig"
-    IDS_MENU_PASSPHRASE "Ändra Lösenord"
     IDS_MENU_CLEARPASS  "Clear Saved Passwords"
-    IDS_MENU_SERVICE_START "Starta"
-    IDS_MENU_SERVICE_STOP "Stoppa"
-    IDS_MENU_SERVICE_RESTART "Starta om"
-    IDS_MENU_SERVICEONLY_START "Anslut"
-    IDS_MENU_SERVICEONLY_STOP "Koppla ner"
-    IDS_MENU_SERVICEONLY_RESTART "Återanslut"
-    IDS_MENU_ASK_STOP_SERVICE "Vill du koppla ner? (Stoppa OpenVPN tjänsten)?"
 
     /* Logviewer - Resources */
     IDS_ERR_START_LOG_VIEWER "Fel vid start av logg viewer: %ls"
     IDS_ERR_START_CONF_EDITOR "Fel vid start av konfig editor: %ls"
 
     /* OpenVPN */
-    IDS_ERR_MANY_CONFIGS "Du kan inte ha fler än %d konfig-filer. Kontakta utvecklaren av OpenVPN GUI om du har behov av att hantera fler."
     IDS_NFO_NO_CONFIGS "No readable connection profiles (config files) found.\n\
 Use the ""Import File.."" menu or copy your config files to ""%ls"" or ""%ls""."
     IDS_ERR_CONFIG_NOT_AUTHORIZED "Starting this connection (%ls) requires membership in \
@@ -366,13 +356,8 @@ Please complete the previous authorization dialog."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Adding the user to ""%ls"" group failed."
     IDS_ERR_CREATE_EVENT "CreateEvent misslyckades med att skapa event: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Okänt prioritets namn: %ls"
-    IDS_ERR_LOG_APPEND_BOOL "Log file append flag (given as '%ls') must be '0' or '1'"
-    IDS_ERR_GET_MSIE_PROXY "Kunde inte hämta inställning för HTTP Proxy från Internet Explorer."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor misslyckades."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl misslyckades."
-    IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe på hOutputWrite misslyckades."
-    IDS_ERR_CREATE_PIPE_INPUT "CreatePipe på hInputRead misslyckades."
-    IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle på hOutputRead misslyckades."
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle på hInputWrite misslyckades."
     IDS_ERR_CREATE_PROCESS "CreateProcess misslyckades, exe='%ls' cmdline='%ls' dir='%ls'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread för att visa status fönstret misslyckades."
@@ -381,8 +366,6 @@ Please complete the previous authorization dialog."
     IDS_NFO_STATE_ONHOLD "Current State: On Hold (disconnected)"
     IDS_NFO_NOW_CONNECTED "%ls är nu ansluten."
     IDS_NFO_ASSIGN_IP "Tilldelad IP: %ls"
-    IDS_ERR_CERT_EXPIRED "Kunde inte ansluta för att ditt certifikat är för gammalt, eller för att klockan i din dator går fel."
-    IDS_ERR_CERT_NOT_YET_VALID "Kunde inte ansluta för att ditt certifikat ännu inte börjat gälla, eller för att klockan i din dator går fel."
     IDS_NFO_STATE_RECONNECTING "Status: ÅterAnsluter"
     IDS_NFO_STATE_DISCONNECTED "Status: Frånkopplad"
     IDS_NFO_CONN_TERMINATED "Du har kopplats ner från %ls."
@@ -412,13 +395,8 @@ konfigurations filer med samma namn, även om de ligger i olika kataloger."
     IDS_ERR_CREATE_PATH "Could not create %ls path:\n%ls"
     IDS_ERR_LOAD_RICHED20 "Kunde inte ladda RICHED20.DLL."
     IDS_ERR_SHELL_DLL_VERSION "Din shell32.dll version är för låg (0x%lx). Du böhöver minst version 5.0."
-    IDS_NFO_SERVICE_STARTED "OpenVPN Service startad."
-    IDS_NFO_SERVICE_STOPPED "OpenVPN Service stoppad."
     IDS_NFO_ACTIVE_CONN_EXIT "Du har aktiva uppkopplingar i gång som kommer kopplas ner om du avslutar OpenVPN GUI.\n\nÄr du säker på att du vill avsluta?"
     IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
-    IDS_NFO_SERVICE_ACTIVE_EXIT "Du är uppkopplad med OpenVPN (OpenVPN tjänsten är igång). \
-Du kommer att förbli uppkopplad även om du avslutar OpenVPN GUI.\n\n\
-Är du säker på att du vill avsluta OpenVPN GUI?"
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Visa detta meddelande.\n\
@@ -464,33 +442,6 @@ men kan inte hitta några inledande '--'"
     IDS_ERR_BAD_OPTION "Parameter fel: Okänd parameter eller saknat argument: --%ls\n\
 Kör openvpn-gui --help för mer hjälp."
 
-    /* passphrase - Resources */
-    IDS_ERR_CREATE_PASS_THREAD "CreateThread för att visa ChangePassphrase dialogen misslyckades."
-    IDS_NFO_CHANGE_PWD "Ändra Lösenord (%ls)"
-    IDS_ERR_PWD_DONT_MATCH "De angivna lösenorden matchar inte. Försök igen"
-    IDS_ERR_PWD_TO_SHORT "Ditt nya lösenord måste vara minst %d tecken långt."
-    IDS_NFO_EMPTY_PWD "Är du säker på att du vill använda ett BLANKT lösenord??"
-    IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Okänt format på nyckelfilen."
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "Ett fel uppstod vid öppnande av nyckel fil (%ls)."
-    IDS_ERR_OLD_PWD_INCORRECT "Du har angivit ett felaktigt nuvarande lösenord."
-    IDS_ERR_OPEN_WRITE_KEY "Ett fel uppstod vid öppnande av nyckel fil för skrivning (%ls)."
-    IDS_ERR_WRITE_NEW_KEY "Ett fel uppstod vid skapande av ny nyckel fil (%ls)."
-    IDS_NFO_PWD_CHANGED "Ditt lösenord har ändrats."
-    IDS_ERR_READ_PKCS12 "Fel vid läsning från pkcs #12 fil (%ls)."
-    IDS_ERR_CREATE_PKCS12 "Ett fel uppstod vid skapande av pkcs12 object."
-    IDS_ERR_OPEN_CONFIG "Ett fel uppstod vid öppnande av följande konfigurations fil: %ls."
-    IDS_ERR_ONLY_ONE_KEY_OPTION "Du kan inte ha mer än en ""key"" parameter i din konfigurations fil."
-    IDS_ERR_ONLY_KEY_OR_PKCS12 "Du kan inte ha både ""key"" och ""pkcs12"" parametetrar i din konfigurations fil."
-    IDS_ERR_ONLY_ONE_PKCS12_OPTION "Du kan inte ha mer än en ""pkcs12"" parameter i din konfigurations fil."
-    IDS_ERR_HAVE_KEY_OR_PKCS12 "Din konfigurationsfil verkar inte ha någon ""key"" eller ""pkcs12"" parameter."
-    IDS_ERR_KEY_FILENAME_TO_LONG "Den angivna pathen till din nyckel i din konfigurations fil är för lång!"
-    IDS_ERR_PASSPHRASE2STDIN "Ett fel uppstod då lösenordet skulle skickas till OpenVPN via stdin."
-    IDS_ERR_AUTH_USERNAME2STDIN "Ett fel uppstod då användarnamnet skulle skickas till OpenVPN via stdin."
-    IDS_ERR_AUTH_PASSWORD2STDIN "Ett fel uppstod då lösenordet skulle skickas till OpenVPN via stdin."
-    IDS_ERR_CR2STDIN "Ett fel uppstod då CR skulle skickas till OpenVPN via stdin."
-    IDS_ERR_INVALID_CHARS_IN_PSW "Ditt nya lösenord innehåller otillåtna tecken. \
-Välj ett nytt."
-
     /* settings */
     IDS_SETTINGS_CAPTION "OpenVPN - Inställningar"
 
@@ -502,17 +453,9 @@ Välj ett nytt."
     IDS_ERR_SOCKS_PROXY_PORT "Du måste ange en SOCKS proxy port."
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "Du måste ange en SOCKS proxy port mellan 1-65535"
     IDS_ERR_CREATE_REG_HKCU_KEY "Ett fel uppstod vid skapande av register nyckel ""HKEY_CURRENT_USER\\%ls"""
-    IDS_ERR_GET_TEMP_PATH "Ett fel uppstod när GetTempPath() anropades. Använder ""C:\\"" istället."
 
     /* service */
-    IDS_ERR_OPEN_VPN_SERVICE "Kunde inte öppna ""OpenVPNService"""
-    IDS_ERR_START_SERVICE "Ett fel uppstod vid startande av OpenVPN Service"
     IDS_ERR_QUERY_SERVICE "Ett fel uppstod när statusen på OpenVPN Service skulle kontrolleras."
-    IDS_ERR_SERVICE_START_FAILED "OpenVPN Service misslyckades att starta."
-    IDS_ERR_OPEN_SCMGR "OpenSCManager misslyckades (%d)"
-    IDS_ERR_STOP_SERVICE "Ett fel uppstod vid stoppande av OpenVPN Service"
-    IDS_NFO_RESTARTED "OpenVPN Service har startats om."
-    IDS_ERR_ACCESS_SERVICE_PIPE "Access to service pipe failed."
     IDS_ERR_WRITE_SERVICE_PIPE "Writing to service pipe failed."
     IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is not installed.\n\
 Tasks requiring administrative access may not work."
@@ -523,23 +466,15 @@ Wintun driver ska inte fungera."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Kunde inte hitta i vilken katalog Windows är installerat."
-    IDS_ERR_GET_PROFILE_DIR "Error getting User Profile Directory."
-    IDS_ERR_GET_PROGRAM_DIR "Kunde inte hitta pathen till din ""Program"" katalog."
     IDS_ERR_OPEN_REGISTRY "Fel vid öppnande av registret för läsning (HKLM\\SOFTWARE\\OpenVPN).\n OpenVPN är förmodligen inte installerat."
     IDS_ERR_READING_REGISTRY "Fel vid läsning av register nyckel (HKLM\\SOFTWARE\\OpenVPN)."
-    IDS_ERR_PASSPHRASE_ATTEMPTS "Register värdet ""passphrase_attempts"" måste vara ett tal mellan 1 och 9."
-    IDS_ERR_CONN_SCRIPT_TIMEOUT "Register värdet ""connectscript_timeout"" måste vara ett tal mellan 0 och 99."
     IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Register värdet ""disconnectscript_timeout"" måste vara ett tal mellan 1 och 99."
     IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Register värdet ""preconnectscript_timeout"" måste vara ett tal mellan 1 och 99."
-    IDS_ERR_CREATE_REG_KEY "Fel vid skapande av register nyckeln HKLM\\SOFTWARE\\OpenVPN-GUI."
-    IDS_ERR_OPEN_WRITE_REG "Fel vid öppnande av registret för skrivning. Du måste starta programmet en gång som administratör för att uppdatera registret."
-    IDS_ERR_READ_SET_KEY "Fel vid läsning och skrivning av register värde ""%ls""."
     IDS_ERR_WRITE_REGVALUE "Fel vid skrivning av register värdet ""HKEY_CURRENT_USER\\%ls\\%ls""."
     IDS_ERR_PLAP_REG "Failed to enable Start Before Logon (error = %d)"
     IDS_ERR_PLAP_UNREG "Failed to disable Start Before Logon (error = %d)"
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS "A config named ""%ls"" already exists."
     IDS_ERR_IMPORT_FAILED "Failed to import file. The following path could not be created.\n\n\
 %ls\n\nMake sure you have the right permissions."
     IDS_NFO_IMPORT_SUCCESS "File imported successfully."

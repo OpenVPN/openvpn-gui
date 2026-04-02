@@ -327,7 +327,6 @@ BEGIN
     IDS_TIP_CONNECTING "\n正在连接至: "
     IDS_TIP_CONNECTED_SINCE "\n连接自: "
     IDS_TIP_ASSIGNED_IP "\n分配 IP: %ls"
-    IDS_MENU_SERVICE "OpenVPN 服务"
     IDS_MENU_IMPORT "导入"
     IDS_MENU_IMPORT_AS "从Access Server导入…"
     IDS_MENU_IMPORT_URL "从URL导入…"
@@ -340,22 +339,13 @@ BEGIN
     IDS_MENU_STATUS "显示状态"
     IDS_MENU_VIEWLOG "显示日志"
     IDS_MENU_EDITCONFIG "编辑配置文件"
-    IDS_MENU_PASSPHRASE "更改密码"
     IDS_MENU_CLEARPASS "清除已保存的密码"
-    IDS_MENU_SERVICE_START "启动"
-    IDS_MENU_SERVICE_STOP "停止"
-    IDS_MENU_SERVICE_RESTART "重新启动"
-    IDS_MENU_SERVICEONLY_START "连接"
-    IDS_MENU_SERVICEONLY_STOP "断开连接"
-    IDS_MENU_SERVICEONLY_RESTART "重新连接"
-    IDS_MENU_ASK_STOP_SERVICE "您想要断开连接（停止 OpenVPN 服务）吗？"
 
     /* Logviewer - Resources */
     IDS_ERR_START_LOG_VIEWER "日志文件查看器启动失败: %ls"
     IDS_ERR_START_CONF_EDITOR "配置文件编辑器启动失败: %ls"
 
     /* OpenVPN */
-    IDS_ERR_MANY_CONFIGS "OpenVPN GUI 不支持超过 %d 组连接配置文件。若您有需要，请联系作者。"
     IDS_NFO_NO_CONFIGS "没有找到可读取的连接配置文件。\n\
 请使用「导入配置文件…」菜单，或将配置文件复制到「%ls」或「%ls」。"
     IDS_ERR_CONFIG_NOT_AUTHORIZED "启动此连接 (%ls) 必须要有「%ls」群组的成员资格。\
@@ -370,13 +360,8 @@ BEGIN
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "将用户加入至「%ls」群组失败。"
     IDS_ERR_CREATE_EVENT "CreateEvent在发生退出事件时失败: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "未知的优先权名称: %ls"
-    IDS_ERR_LOG_APPEND_BOOL "追加日志文件的标志（例如「%ls」）必须为「0」或「1」"
-    IDS_ERR_GET_MSIE_PROXY "无法获取 MSIE 的代理设置。"
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor 失败。"
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl 失败。"
-    IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe hOutputWrite 失败。"
-    IDS_ERR_CREATE_PIPE_INPUT "CreatePipe hInputRead 失败。"
-    IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle on hOutputRead 失败。"
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite 失败。"
     IDS_ERR_CREATE_PROCESS "CreateProcess 失败，exe=「%ls」 cmdline=「%ls」 dir=「%ls」"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread 显示状态窗口时失败。"
@@ -385,8 +370,6 @@ BEGIN
     IDS_NFO_STATE_ONHOLD "当前状态：保持（断开连接）"
     IDS_NFO_NOW_CONNECTED "已连接至 %ls。"
     IDS_NFO_ASSIGN_IP "分配 IP: %ls"
-    IDS_ERR_CERT_EXPIRED "您的证书已过期，或是系统时间不正确，无法连接。"
-    IDS_ERR_CERT_NOT_YET_VALID "您的证书尚未生效，无法连接。请检查您的系统时间是否正确。"
     IDS_NFO_STATE_RECONNECTING "当前状态: 重新连接中"
     IDS_NFO_STATE_DISCONNECTED "当前状态: 已断开连接"
     IDS_NFO_CONN_TERMINATED "%ls 连接已中断。"
@@ -417,14 +400,9 @@ BEGIN
     IDS_ERR_CREATE_PATH "无法建立 %ls 路径:\n%ls"
     IDS_ERR_LOAD_RICHED20 "无法加载 RICHED20.DLL。"
     IDS_ERR_SHELL_DLL_VERSION "您的 shell32.dll 版本太旧 (0x%lx)，需要至少 5.0 版本或更新版。"
-    IDS_NFO_SERVICE_STARTED "已启动 OpenVPN 服务。"
-    IDS_NFO_SERVICE_STOPPED "已停止 OpenVPN 服务。"
     IDS_NFO_ACTIVE_CONN_EXIT "当前还有活动的连接，您若退出 OpenVPN GUI 该连接将被中断。\
 \n\n您确定要退出吗？"
     IDS_ERR_PARSE_MGMT_OPTION "无法分析<%ls%ls>中的--management选项。"
-    IDS_NFO_SERVICE_ACTIVE_EXIT "您当前已连接（OpenVPN 服务正在运行中）。\
-退出 OpenVPN GUI 仍将保持连接。\n\n\
-您确定要退出吗？"
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: 显示此信息。\n\
@@ -470,33 +448,6 @@ BEGIN
     IDS_ERR_BAD_OPTION "选项错误: 无法识别选项，或缺少参数: --%ls\n\
 使用 openvpn-gui --help 获得更多信息。"
 
-    /* passphrase - Resources */
-    IDS_ERR_CREATE_PASS_THREAD "CreateThread 显示变更密码对话框失败。"
-    IDS_NFO_CHANGE_PWD "变更私钥密码 (%ls)"
-    IDS_ERR_PWD_DONT_MATCH "您输入的密码不相符，请再试一次。"
-    IDS_ERR_PWD_TO_SHORT "您的新密码必须要有至少 %d 字符长。"
-    IDS_NFO_EMPTY_PWD "您确定要使用空白密码吗？"
-    IDS_ERR_UNKNOWN_KEYFILE_FORMAT "未知格式的密钥文件。"
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "打开私钥文件 (%ls) 时发生错误。"
-    IDS_ERR_OLD_PWD_INCORRECT "旧密码不正确。"
-    IDS_ERR_OPEN_WRITE_KEY "无法打开私钥文件进行写入 (%ls)。"
-    IDS_ERR_WRITE_NEW_KEY "写入新私钥文件时发生错误 (%ls)。"
-    IDS_NFO_PWD_CHANGED "您的密码已经变更。"
-    IDS_ERR_READ_PKCS12 "读取 PKCS #12 文件时发生错误 (%ls)。"
-    IDS_ERR_CREATE_PKCS12 "无法建立新的 PKCS #12 对象，密码变更失败。"
-    IDS_ERR_OPEN_CONFIG "无法读取连接配置文件: (%ls)"
-    IDS_ERR_ONLY_ONE_KEY_OPTION "您的连接配置文件中不能包含超过一个「key」选项。"
-    IDS_ERR_ONLY_KEY_OR_PKCS12 "您的连接配置文件中不能同时包含「key」和「pkcs12」选项。"
-    IDS_ERR_ONLY_ONE_PKCS12_OPTION "您的连接配置文件中不能包含超过一个「pkcs12」选项。"
-    IDS_ERR_HAVE_KEY_OR_PKCS12 "您的连接配置文件中未包含任何「key」或「pkcs12」选项。"
-    IDS_ERR_KEY_FILENAME_TO_LONG "您的连接配置文件中的私钥文件名太长！"
-    IDS_ERR_PASSPHRASE2STDIN "传送密码至 stdin 时发生错误。"
-    IDS_ERR_AUTH_USERNAME2STDIN "传送验证用户名称至 stdin 时发生错误。"
-    IDS_ERR_AUTH_PASSWORD2STDIN "传送验证密码至 stdin 时发生错误。"
-    IDS_ERR_CR2STDIN "传送 CR 至 stdin 时发生错误。"
-    IDS_ERR_INVALID_CHARS_IN_PSW "您的新密码包含无效字符。\
-请使用其他密码。"
-
     /* settings */
     IDS_SETTINGS_CAPTION "OpenVPN - 设置"
 
@@ -508,17 +459,9 @@ BEGIN
     IDS_ERR_SOCKS_PROXY_PORT "您必须指定 SOCKS代理 端口。"
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "您必须指定在 1-65535 之间的 SOCKS代理 端口"
     IDS_ERR_CREATE_REG_HKCU_KEY "「HKEY_CURRENT_USER\\%ls」建立注册表项失败。"
-    IDS_ERR_GET_TEMP_PATH "使用 GetTempPath() 决定 TempPath 时发生错误。改用「C:\\」。"
 
     /* service */
-    IDS_ERR_OPEN_VPN_SERVICE "「OpenVPNService」打开失败"
-    IDS_ERR_START_SERVICE "「OpenVPNService」启动失败"
     IDS_ERR_QUERY_SERVICE "无法查询服务状态。"
-    IDS_ERR_SERVICE_START_FAILED "OpenVPN 服务启动失败。"
-    IDS_ERR_OPEN_SCMGR "OpenSCManager 失败 (%d)"
-    IDS_ERR_STOP_SERVICE "OpenVPN 服务停止失败"
-    IDS_NFO_RESTARTED "已重新启动 OpenVPN 服务。"
-    IDS_ERR_ACCESS_SERVICE_PIPE "服务管道存取失败。"
     IDS_ERR_WRITE_SERVICE_PIPE "服务管道写入失败。"
     IDS_ERR_INSTALL_ISERVICE     "未安装「OpenVPNServiceInteractive」。\n\
 需要管理员权限的任务可能无法正常执行。"
@@ -529,24 +472,16 @@ Wintun驱动程序将无法正常工作。"
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "获取 Windows 目录时发生错误。"
-    IDS_ERR_GET_PROFILE_DIR "获取用户配置文件目录时发生错误。"
-    IDS_ERR_GET_PROGRAM_DIR "获取「Program Files」文件夹名称时发生错误。"
     IDS_ERR_OPEN_REGISTRY "无法读取系统注册表 (HKLM\\SOFTWARE\\OpenVPN)。\n\
 可能尚未安装 OpenVPN"
     IDS_ERR_READING_REGISTRY "读取系统注册表值 (HKLM\\SOFTWARE\\OpenVPN) 时发生错误。"
-    IDS_ERR_PASSPHRASE_ATTEMPTS "系统注册表值「passphrase_attempts」必须为 1 到 9 之间的数字。"
-    IDS_ERR_CONN_SCRIPT_TIMEOUT "系统注册表值「connectscript_timeout」必须为 0 到 99 之间的数字。"
     IDS_ERR_DISCONN_SCRIPT_TIMEOUT "系统注册表值「disconnectscript_timeout」必须为 1 到 99 之间的数字。"
     IDS_ERR_PRECONN_SCRIPT_TIMEOUT "系统注册表值「preconnectscript_timeout」必须为 1 到 99 之间的数字。"
-    IDS_ERR_CREATE_REG_KEY "建立 HKLM\\SOFTWARE\\OpenVPN-GUI 注册表项时发生错误。"
-    IDS_ERR_OPEN_WRITE_REG "无法打开系统注册表进行写入，您必须以管理员身分执行此应用程序更新注册表。"
-    IDS_ERR_READ_SET_KEY "读取并设定系统注册表项「%ls」时发生错误。"
     IDS_ERR_WRITE_REGVALUE "读取系统注册表值「HKEY_CURRENT_USER\\%ls\\%ls」时发生错误。"
     IDS_ERR_PLAP_REG "无法启用登录前启动(error = %d)"
     IDS_ERR_PLAP_UNREG "无法禁用登录前启动(error = %d)"
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS "已有名为「%ls」的连接配置文件。"
     IDS_ERR_IMPORT_FAILED "文件导入失败。无法建立下列路径。\n\n\
 %ls\n\n请确定您有正确的系统权限。"
     IDS_NFO_IMPORT_SUCCESS "已成功导入文件。"

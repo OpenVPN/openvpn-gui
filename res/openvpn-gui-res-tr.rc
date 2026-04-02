@@ -325,7 +325,6 @@ BEGIN
     IDS_TIP_CONNECTING "\nBağlanılıyor: "
     IDS_TIP_CONNECTED_SINCE "\nBağlanıldı: "
     IDS_TIP_ASSIGNED_IP "\nBağlanılan IP: %ls"
-    IDS_MENU_SERVICE "OpenVPN Servisi"
     IDS_MENU_IMPORT "İçe Aktar"
     IDS_MENU_IMPORT_AS "Erişim Sunucusundan İçe Aktar…"
     IDS_MENU_IMPORT_URL "URL'den İçe Aktar…"
@@ -338,22 +337,13 @@ BEGIN
     IDS_MENU_STATUS "Durum"
     IDS_MENU_VIEWLOG "Günlüğe Bak"
     IDS_MENU_EDITCONFIG "Ayarlar"
-    IDS_MENU_PASSPHRASE "Şifreyi Değiştir"
     IDS_MENU_CLEARPASS  "Kayıtlı Şifreleri Temizle"
-    IDS_MENU_SERVICE_START "Başla"
-    IDS_MENU_SERVICE_STOP "Durdur"
-    IDS_MENU_SERVICE_RESTART "Yeniden Başlat"
-    IDS_MENU_SERVICEONLY_START "Bağlan"
-    IDS_MENU_SERVICEONLY_STOP "Bağlantıyı Kes"
-    IDS_MENU_SERVICEONLY_RESTART "Yeniden Bağlan"
-    IDS_MENU_ASK_STOP_SERVICE "Bağlantıyı koparmak istediğinize emin misiniz ? (OpenVPN Servisini Durdurur)?"
 
     /* Logviewer - Resources */
     IDS_ERR_START_LOG_VIEWER "Olay görüntüleyici başlarken hata oluştu: %ls"
     IDS_ERR_START_CONF_EDITOR "Ayar editörü başlarken hata oluştu: %ls"
 
     /* OpenVPN */
-    IDS_ERR_MANY_CONFIGS "OpenVPN GUI %d den fazla konfigürasyonu desteklemiyor. Eğer daha fazlasına ihtiyacınız varsa lütfen hak sahibi ile görüşün."
     IDS_NFO_NO_CONFIGS "Okunabilir bağlantı profilleri (yapılandırma dosyaları) bulunamadı.\n\
 ""Dosyadan İçe Aktar..."" menüsünü kullanın veya yapılandırma dosyalarınızı ""%ls"" veya ""%ls"" konumuna kopyalayın."
     IDS_ERR_CONFIG_NOT_AUTHORIZED "Bu bağlantıyı başlatmak (%ls) \
@@ -368,13 +358,8 @@ Please complete the previous authorization dialog."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Adding the user to ""%ls"" group failed."
     IDS_ERR_CREATE_EVENT "Çıkılırken hata oluştu: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Bilinmeyen öncelik ismi: %ls"
-    IDS_ERR_LOG_APPEND_BOOL "Günlük dosyası ekleme değeri('%ls') olarak verilmiş.'0' veya '1' olmalıdır."
-    IDS_ERR_GET_MSIE_PROXY "MSIE (Internet Explorer) proxy ayarlarına erişilemiyor."
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor hatası."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl hatası."
-    IDS_ERR_CREATE_PIPE_OUTPUT "CreatePipe on hOutputWrite hatası."
-    IDS_ERR_CREATE_PIPE_INPUT "CreatePipe on hInputRead hatası."
-    IDS_ERR_DUP_HANDLE_OUT_READ "DuplicateHandle on hOutputRead hatası."
     IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle on hInputWrite hatası."
     IDS_ERR_CREATE_PROCESS "CreateProcess hatası, exe='%ls' cmdline='%ls' dir='%ls'"
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread anında durum penceresi gösterilemedi hatası."
@@ -383,8 +368,6 @@ Please complete the previous authorization dialog."
     IDS_NFO_STATE_ONHOLD "Geçerli Durum: Beklemede (bağlantı kesildi)"
     IDS_NFO_NOW_CONNECTED "%ls şu an bağlı."
     IDS_NFO_ASSIGN_IP "Atanan IP: %ls"
-    IDS_ERR_CERT_EXPIRED "Sertifikanız veya sistem tarih/zaman ayarlarınız geçersiz olduğundan bağlantı sağlanamadı."
-    IDS_ERR_CERT_NOT_YET_VALID "Sertifikanız geçersiz olduğundan bağlantı sağlanamadı. Sistem zamanınızın doğruluğunu kontrol edin."
     IDS_NFO_STATE_RECONNECTING "Geçerli Durum: Yeniden Bağlanılıyor"
     IDS_NFO_STATE_DISCONNECTED "Geçerli Durum: Bağlantı Kesildi"
     IDS_NFO_CONN_TERMINATED "%ls ile olan bağlantı kesildi. "
@@ -414,14 +397,9 @@ kayıt edemezsiniz."
     IDS_ERR_CREATE_PATH "Could not create %ls path:\n%ls"
     IDS_ERR_LOAD_RICHED20 "RICHED20.DLL yüklenemedi."
     IDS_ERR_SHELL_DLL_VERSION "Sistemde bulunan shell32.dll verdsiyonu eski. (0x%lx). En az 5.0 versiyonuna sahip olmalısınız."
-    IDS_NFO_SERVICE_STARTED "OpenVPN Servisi başlatıldı."
-    IDS_NFO_SERVICE_STOPPED "OpenVPN Service durduruldu."
     IDS_NFO_ACTIVE_CONN_EXIT "OpenVPN GUI ' yi kapatırsanız, açık olan bağlantılarınız sonlandırılacaktır.\
 \n\nÇıkmak istediğinize emin misiniz?"
     IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
-    IDS_NFO_SERVICE_ACTIVE_EXIT "Şu an bağlısınız(OpenVPN Servisi çalışıyor). \
-OpenVPN GUI yi kapatsanız dahi bağlantı devam edecek.\n\n\
-OpenVPN GUI den çıkmak istiyor musunuz?"
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Yardım mesajını gözter.\n\
@@ -467,33 +445,6 @@ fakat şu ifadeleri göremedim '--'"
     IDS_ERR_BAD_OPTION "Seçenek hatası: Bilinmeyen bir parametre girişi yaptınız: --%ls\n\
 Daha fazla bilgi için komut satırında openvpn-gui --help ifadesini kullanın."
 
-    /* passphrase - Resources */
-    IDS_ERR_CREATE_PASS_THREAD "Şifre değiştirme diyaloğunu başlatma olayı başarısız oldu."
-    IDS_NFO_CHANGE_PWD "Şifre Değiştir (%ls)"
-    IDS_ERR_PWD_DONT_MATCH "Girdiğiniz şifreler eşleşmiyor."
-    IDS_ERR_PWD_TO_SHORT "yeni şifreniz en az %d karakter uzunluğunda olmalıdır."
-    IDS_NFO_EMPTY_PWD "Boş bir şifreyi kullanmak istediğinize gerçekten emin misiniz?"
-    IDS_ERR_UNKNOWN_KEYFILE_FORMAT "Bilinmeyen anahtar dosyası biçimi."
-    IDS_ERR_OPEN_PRIVATE_KEY_FILE "private key açılırken hata oluştu(%ls)."
-    IDS_ERR_OLD_PWD_INCORRECT "Yanlış şifre girdiniz."
-    IDS_ERR_OPEN_WRITE_KEY "private key dosyası yazılırken hata oluştu (%ls)."
-    IDS_ERR_WRITE_NEW_KEY "Yeni private key dosyası yazılırken hata oluştu (%ls)."
-    IDS_NFO_PWD_CHANGED "Şifreniz değiştirildi."
-    IDS_ERR_READ_PKCS12 "PKCS #12 dosyası okunurken hata oluştu (%ls)."
-    IDS_ERR_CREATE_PKCS12 "Yeni PKCS #12 oluşturulurken hata oluştu. Yeni şifre dosyası oluşturulamadı."
-    IDS_ERR_OPEN_CONFIG "Ayar dosyası okuma için açılamadı: (%ls)"
-    IDS_ERR_ONLY_ONE_KEY_OPTION "Ayar dosyasında birden fazla anahtar ""key"" belirtemezsiniz."
-    IDS_ERR_ONLY_KEY_OR_PKCS12 "Ayarlarınızda aynı anda anahtar ""key"" ve pkcs12 ""pkcs12"" seçimlerini kullanamazsınız."
-    IDS_ERR_ONLY_ONE_PKCS12_OPTION "Ayar dosyanızda birden fazla pkcs12 ""pkcs12"" seçimi bulunduramazsınız."
-    IDS_ERR_HAVE_KEY_OR_PKCS12 "Ayar dosyanızda herhangi bir ""key"" yada ""pkcs12"" seçeneği bulunamadı."
-    IDS_ERR_KEY_FILENAME_TO_LONG "Ayarlarınızda bulunan anahtar dosyasının adı çok uzun!"
-    IDS_ERR_PASSPHRASE2STDIN "Standart girişten şifreniz okunurken hata oluştu."
-    IDS_ERR_AUTH_USERNAME2STDIN "Standart girişten kullanıcı adınız okunurken hata oluştu."
-    IDS_ERR_AUTH_PASSWORD2STDIN "Standart girişten şifreniz ile giriş yapılırken hata oluştu."
-    IDS_ERR_CR2STDIN "Error passing CR to stdin."
-    IDS_ERR_INVALID_CHARS_IN_PSW "Yeni şifreniz geçersiz karakterler içeriyor. \
-Lütfen yeni bir tane seçiniz."
-
     /* settings */
     IDS_SETTINGS_CAPTION "OpenVPN - Ayarlar"
 
@@ -505,17 +456,9 @@ Lütfen yeni bir tane seçiniz."
     IDS_ERR_SOCKS_PROXY_PORT "Bir SOCKS proxy port u girmelisiniz."
     IDS_ERR_SOCKS_PROXY_PORT_RANGE "1 ila 65535 arasında bir SOCKS proxy port numarası girmelisiniz."
     IDS_ERR_CREATE_REG_HKCU_KEY """HKEY_CURRENT_USER\\%ls"" anahtarı oluşturulurken hata oluştu."
-    IDS_ERR_GET_TEMP_PATH "GetTempPath() ile TempPath aranırken hata oluştu. ""C:\\"" kullanılacak."
 
     /* service */
-    IDS_ERR_OPEN_VPN_SERVICE """OpenVPNService"" başlatımı başarısız oldu."
-    IDS_ERR_START_SERVICE """OpenVPNService"" başlatımı başarısız oldu."
     IDS_ERR_QUERY_SERVICE "Servis durumu sorgulaması başarısız oldu."
-    IDS_ERR_SERVICE_START_FAILED "OpenVPN Servisi başlatımı başarısız oldu."
-    IDS_ERR_OPEN_SCMGR "OpenSCManager başarısız oldu. (%d)"
-    IDS_ERR_STOP_SERVICE "OpenVPN Servisini durdurma girişimi başarısız oldu."
-    IDS_NFO_RESTARTED "OpenVPN Servisi başlatıldı."
-    IDS_ERR_ACCESS_SERVICE_PIPE "Access to service pipe failed."
     IDS_ERR_WRITE_SERVICE_PIPE "Writing to service pipe failed."
     IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is not installed.\n\
 Tasks requiring administrative access may not work."
@@ -526,25 +469,16 @@ Wintun driver will not work."
 
     /* registry */
     IDS_ERR_GET_WINDOWS_DIR "Windows dizinine erişim başarısız oldu."
-    IDS_ERR_GET_PROFILE_DIR "Error getting User Profile Directory."
-    IDS_ERR_GET_PROGRAM_DIR """Program"" dizine erişim başarısız oldu ."
     IDS_ERR_OPEN_REGISTRY "Registry açılamadı(HKLM\\SOFTWARE\\OpenVPN).\n \
 Muhtemelen OpenVPN yüklü değil."
     IDS_ERR_READING_REGISTRY "Registry anahtarı okunurken başarısız oldu (HKLM\\SOFTWARE\\OpenVPN)."
-    IDS_ERR_PASSPHRASE_ATTEMPTS "Registry anahtarı ""passphrase_attempts"" 1 ile 9 arasında bir değer almalı."
-    IDS_ERR_CONN_SCRIPT_TIMEOUT "Registry anahtarı ""connectscript_timeout"" 0 ile 99 arasında bir değer almalı."
     IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Registry anahtarı ""disconnectscript_timeout"" 1 ile 99 arasında bir değer almalı."
     IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Registry anahtarı ""preconnectscript_timeout"" 1 ile 99 arasında bir değer almalı."
-    IDS_ERR_CREATE_REG_KEY "HKLM\\SOFTWARE\\OpenVPN-GUI anahtarı oluşturulamadı."
-    IDS_ERR_OPEN_WRITE_REG "Windows Registry açılmadı. Registry' i açabilmek için \
-sistem yönetici haklarına sahip olmanız gerekmektedir.."
-    IDS_ERR_READ_SET_KEY """%ls"" anahtarı ayarlanırken hata oluştu."
     IDS_ERR_WRITE_REGVALUE """HKEY_CURRENT_USER\\%ls\\%ls"" anahtarı yazılırken hata oluştu."
     IDS_ERR_PLAP_REG "Failed to enable Start Before Logon (error = %d)"
     IDS_ERR_PLAP_UNREG "Failed to disable Start Before Logon (error = %d)"
 
     /* importation */
-    IDS_ERR_IMPORT_EXISTS "A config named ""%ls"" already exists."
     IDS_ERR_IMPORT_FAILED "Failed to import file. The following path could not be created.\n\n\
 %ls\n\nMake sure you have the right permissions."
     IDS_NFO_IMPORT_SUCCESS "File imported successfully."
