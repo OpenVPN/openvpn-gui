@@ -366,8 +366,6 @@ Quest'azione può richiedere privilegi amministrativi."
 gruppo ""%ls"".\n\n\
 Completa la richiesta di autorizzazione precedente."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Errore nell'aggiunta dell'utente al gruppo ""%ls""."
-    IDS_ERR_ONE_CONN_OLD_VER "Quando usi una versione di OpenVPN più vecchia della 2.0-beta6 puoi avere una sola connessione attiva alla volta."
-    IDS_ERR_STOP_SERV_OLD_VER "Con OpenVPN 1.5/1.6 non puoi usare OpenVPN GUI per far partire una connessione mentre il servizio di OpenVPN è in funzione.\nSe vuoi usare OpenVPN GUI arresta il servizio di OpenVPN ."
     IDS_ERR_CREATE_EVENT "Il creatore di eventi è fallito all'uscita dell'evento: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Nome priorità sconosciuto: %ls"
     IDS_ERR_LOG_APPEND_BOOL "Il file log ha aggiunto un puntatore (dato come '%ls') deve essere '0' o '1'"

@@ -366,8 +366,6 @@ Tato akce může vyžadovat svolení nebo heslo správce."
 ""%ls"".\n\n\
 Prosím dokončete předchozí autorizační dialog."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Přidání uživatele do skupiny ""%ls"" nebylo úspěšné."
-    IDS_ERR_ONE_CONN_OLD_VER "V případě, že používáte OpenVPN starší než verze 2.0-beta6, můžete mít aktivní pouze jedno spojení."
-    IDS_ERR_STOP_SERV_OLD_VER "Není možno použít OpenVPN GUI pro vytvoření spojení, pokud již běží služba OpenVPN (verze OpenVPN 1.5/1.6). Prosím zastavte nejprve službu OpenVPN."
     IDS_ERR_CREATE_EVENT "Selhala akce CreateEvent při ukončení události: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Neznámý název priority: %ls"
     IDS_ERR_LOG_APPEND_BOOL "Přepínač přidávání na konec logu (identifikovaný jako '%ls') musí nabývat hodnot '0' nebo '1'"

@@ -363,8 +363,6 @@ Du kan bli spurt om administrator-rettigheter for å utføre denne endringen."
 ""%ls"" group.\n\n\
 Please complete the previous authorization dialog."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Adding the user to ""%ls"" group failed."
-    IDS_ERR_ONE_CONN_OLD_VER "Du kan bare bruke én enkelt tilkobling av gangen med eldre versjoner av OpenVPN enn 2.0-beta6."
-    IDS_ERR_STOP_SERV_OLD_VER "Du kan ikke koble til med OpenVPN GUI når OpenVPN-tjenesten kjører. (kun OpenVPN 1.5/1.6). Stopp tjenesten først om du vil benytte OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "CreateEvent feilet med å opprette hendelsen: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Ukjent prioritet: %ls"
     IDS_ERR_LOG_APPEND_BOOL "Flagg for å overskrive eller beholde gammel loggfil ('%ls') må være '0' eller '1'."

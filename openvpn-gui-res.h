@@ -215,8 +215,6 @@
 
 /* OpenVpn Related */
 #define IDS_ERR_MANY_CONFIGS            1201
-#define IDS_ERR_ONE_CONN_OLD_VER        1203
-#define IDS_ERR_STOP_SERV_OLD_VER       1204
 #define IDS_ERR_CREATE_EVENT            1205
 #define IDS_ERR_UNKNOWN_PRIORITY        1206
 #define IDS_ERR_LOG_APPEND_BOOL         1207

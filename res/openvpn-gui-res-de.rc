@@ -367,8 +367,6 @@ Möglicherweise benötigen Sie hierfür das Passwort oder die Zustimmung eines A
 Gruppe ""%ls"" sein.\n\n\
 Bitte vervollständigen Sie den vorhergehenden Autorisierungsdialog."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Hinzufügen des Benutzers zur Gruppe ""%ls"" ist fehlgeschlagen."
-    IDS_ERR_ONE_CONN_OLD_VER "Sie können nur eine Verbindung zur gleichen Zeit aufbauen, wenn Sie einen ältere Version als 2.0-beta6 von OpenVPN verwenden."
-    IDS_ERR_STOP_SERV_OLD_VER "Sie können OpenVPN GUI nicht zum Starten einer Verbindung nutzen, während der OpenVPN-Dienst läuft (mit OpenVPN 1.5/1.6). Beenden Sie den OpenVPN-Dienst, bevor Sie OpenVPN GUI nutzen."
     IDS_ERR_CREATE_EVENT "CreateEvent fehlgeschlagen beim Beenden. Event: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Unbekannte Priorität: %ls"
     IDS_ERR_LOG_APPEND_BOOL "Logdatei-Anhängen-Flag (aktuell '%ls') muss '0' oder '1' sein."

@@ -365,8 +365,6 @@ Cette action peut demander un mot de passe administratif ou un consentement."
 ""%ls"".\n\n\
 Veuillez compléter la boîte de dialogue d'autorisation précédente."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Ajout de l'utilisateur au groupe ""%ls"" échoué."
-    IDS_ERR_ONE_CONN_OLD_VER "Vous ne pouvez avoir qu'une connexion en même temps si vous utilisez une version d'OpenVPN plus ancienne que la 2.0-beta6."
-    IDS_ERR_STOP_SERV_OLD_VER "Vous ne pouvez utiliser OpenVPN GUI pour ouvrir une connexion lorsque que le service OpenVPN est actif (avec OpenVPN 1.5/1.6). Arrêtez le service OpenVPN si vous voulez utiliser OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "CreateEvent échoué à la terminaison. Code d'événnement: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Nom de priorité inconnu: %ls"
     IDS_ERR_LOG_APPEND_BOOL "L'indicateur de log incrémenté (donné par '%ls') doit être '0' ou '1'"

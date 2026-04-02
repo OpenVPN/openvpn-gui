@@ -380,8 +380,6 @@ This action may prompt for administrative password or consent."
 ""%ls"" group.\n\n\
 Please complete the previous authorization dialog."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Adding the user to ""%ls"" group failed."
-    IDS_ERR_ONE_CONN_OLD_VER "You can only have one connection running at the same time when using an older version on OpenVPN than 2.0-beta6."
-    IDS_ERR_STOP_SERV_OLD_VER "You cannot use OpenVPN GUI to start a connection while the OpenVPN Service is running (with OpenVPN 1.5/1.6). Stop OpenVPN Service first if you want to use OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "CreateEvent failed on exit event: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Unknown priority name: %ls"
     IDS_ERR_LOG_APPEND_BOOL "Log file append flag (given as '%ls') must be '0' or '1'."

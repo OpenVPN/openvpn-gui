@@ -368,8 +368,6 @@ BEGIN
 \n\n\
 请完成先前的授权对话框。"
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "将用户加入至「%ls」群组失败。"
-    IDS_ERR_ONE_CONN_OLD_VER "若您使用 OpenVPN 2.0-beta6 以前的旧版本，同时仅能有一个连接。"
-    IDS_ERR_STOP_SERV_OLD_VER "OpenVPN 1.5/1.6 的服务启动时，将无法使用 OpenVPN GUI 进行连接。若您想使用 OpenVPN GUI，请先停止 OpenVPN 服务。"
     IDS_ERR_CREATE_EVENT "CreateEvent在发生退出事件时失败: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "未知的优先权名称: %ls"
     IDS_ERR_LOG_APPEND_BOOL "追加日志文件的标志（例如「%ls」）必须为「0」或「1」"

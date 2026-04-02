@@ -366,8 +366,6 @@ This action may prompt for administrative password or consent."
 ""%ls"" group.\n\n\
 Please complete the previous authorization dialog."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Adding the user to ""%ls"" group failed."
-    IDS_ERR_ONE_CONN_OLD_VER "OpenVPN 2.0-beta6 sürümünden daha eski bir versiyon açıkken, aynı anda sadece bir bağlantı açabilirsiniz!"
-    IDS_ERR_STOP_SERV_OLD_VER "OpenVPN servisi çalışırken (OpenVPN ver.1.5/1.6) OpenVPN GUI ile bağlantı yapamazsınız. OpenVPN GUI yi kullanacaksanız, öncelikle OpenVPN servisini durdurmanız gerekmektedir."
     IDS_ERR_CREATE_EVENT "Çıkılırken hata oluştu: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Bilinmeyen öncelik ismi: %ls"
     IDS_ERR_LOG_APPEND_BOOL "Günlük dosyası ekleme değeri('%ls') olarak verilmiş.'0' veya '1' olmalıdır."

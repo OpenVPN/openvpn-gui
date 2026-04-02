@@ -366,8 +366,6 @@ This action may prompt for administrative password or consent."
 ""%ls"" group.\n\n\
 Please complete the previous authorization dialog."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Adding the user to ""%ls"" group failed."
-    IDS_ERR_ONE_CONN_OLD_VER "Du kan kun have en forbindelse igang samtidig med ældre versioner af OpenVPN end 2.0-beta6."
-    IDS_ERR_STOP_SERV_OLD_VER "Du kan ikke tilslutte med OpenVPN GUI når OpenVPN Service kører. (kun OpenVPN 1.5/1.6). Stop tjenesten først hvis du vil bruge OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "CreateEvent fejlede ved exit event: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Ukendt prioritet: %ls"
     IDS_ERR_LOG_APPEND_BOOL "Log-filens tilføjelses-markering (brugt med '%ls') skal være '0' eller '1'"

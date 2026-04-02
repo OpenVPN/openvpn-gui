@@ -364,8 +364,6 @@ BEGIN
     IDS_NFO_CONFIG_AUTH_PENDING   "이 연결(%ls)을 시작하기 위하여 ""%ls"" 그룹 권한이 필요합니다.\n\n\
 이전의 인증 대화 상자를 완료 하십시오."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP """%ls"" group에 사용자 추가를 실패했습니다."
-    IDS_ERR_ONE_CONN_OLD_VER "OpenVPN 2.0-beta6 이전 버전에서는 2개 이상의 동시 연결을 지원하지 않습니다."
-    IDS_ERR_STOP_SERV_OLD_VER "OpenVPN 1.5/1.6을 사용할 경우, OpenVPN 서비스가 구동되고 있으면 OpenVPN GUI을 이용하여 연결을 할 수 없습니다. OpenVPN GUI를 사용하려면, 먼저 OpenVPN 서비스를 중지 시키십시오."
     IDS_ERR_CREATE_EVENT "CreateEvent failed on exit event: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Unknown priority name: %ls"
     IDS_ERR_LOG_APPEND_BOOL "로그 파일의 '%ls'로 지정된 추가 플래그는 '0'또는 '1'이어야합니다."

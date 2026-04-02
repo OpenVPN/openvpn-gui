@@ -365,8 +365,6 @@ Toiminto voi vaatia ylläpitäjän salasanan tai vahvistuksen."
 ""%ls"" kuulumisen.\n\n\
 Ole hyvä ja suorita aiempi varmennus loppuun."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Käyttäjän lisääminen ryhmään ""%ls"" epäonnistui."
-    IDS_ERR_ONE_CONN_OLD_VER "Jos käytössä on OpenVPN 2.0-beta6 tai vanhempi, käytössä voi olla kerrallaan vain yksi yhteys."
-    IDS_ERR_STOP_SERV_OLD_VER "OpenVPN GUI -sovelluksella ei voi hallita yhteyksiä, jos OpenVPN (versio 1.5/1.6) on käynnistetty palveluna. Pysäytä OpenVPN-palvelu ja yritä uudelleen."
     IDS_ERR_CREATE_EVENT "CreateEvent epäonnistui: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Tunnistamaton prioriteetti: %ls"
     IDS_ERR_LOG_APPEND_BOOL "Lokitiedostoon lisäämisasetuksen ('%ls') on oltava '0' tai '1'"

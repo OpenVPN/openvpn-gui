@@ -366,8 +366,6 @@ BEGIN
 ""%ls"" グループのメンバーである必要があります。\n\n\
 認証処理を完了してください。"
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "グループ ""%ls"" にユーザーを追加できませんでした。"
-    IDS_ERR_ONE_CONN_OLD_VER "OpenVPN 2.0-beta6 より古いバージョンでは、同時に使用できる接続は1つだけです。"
-    IDS_ERR_STOP_SERV_OLD_VER "OpenVPNサービスが実行されているときには、OpenVPN GUI で接続を開始できません（OpenVPN 1.5/1.6）。OpenVPN GUIを使用する場合には先にOpenVPNサービスを停止してください。"
     IDS_ERR_CREATE_EVENT "CreateEvent failed on exit event: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Unknown priority name: %ls"
     IDS_ERR_LOG_APPEND_BOOL "ログファイルの追加フラグ ('%ls' が指定されています) は'0'か'1'である必要があります。"
