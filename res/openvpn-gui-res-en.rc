@@ -242,7 +242,7 @@ BEGIN
 #if ENABLE_OVPN3
     GROUPBOX "OpenVPN Engine", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
     AUTORADIOBUTTON "OpenVPN2", ID_RB_ENGINE_OVPN2, 18, 296, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "OpenVPN3 (experimental)", ID_RB_ENGINE_OVPN3, 76, 296, 90, 10
+    AUTORADIOBUTTON "OpenVPN3 (experimental)", ID_RB_ENGINE_OVPN3, 76, 296, 100, 10
 #endif
 
 END
@@ -258,14 +258,14 @@ BEGIN
     LTEXT "OpenVPN GUI v%ls – A Windows GUI for OpenVPN\n\
 Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
-Copyright (C) 2012-2024 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
+Copyright (C) 2012-2025 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
     LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_LTEXT_ABOUT2, 36, 55, 206, 42
     LTEXT "OpenVPN – An application to securely tunnel IP networks \
 over a single TCP/UDP port, with support for SSL/TLS-based \
 session authentication and key exchange, packet \
 encryption, packet authentication, and packet compression.\n\
 \n", ID_LTEXT_ABOUT3, 8, 70, 240, 64
-    LTEXT "Copyright (C) 2002-2024 OpenVPN Technologies, Inc <info@openvpn.net>\n\
+    LTEXT "Copyright (C) 2002-2025 OpenVPN Technologies, Inc <info@openvpn.net>\n\
 https://openvpn.net/", ID_LTEXT_ABOUT4, 8, 106, 240, 64
 END
 
@@ -380,8 +380,6 @@ This action may prompt for administrative password or consent."
 ""%ls"" group.\n\n\
 Please complete the previous authorization dialog."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Adding the user to ""%ls"" group failed."
-    IDS_ERR_ONE_CONN_OLD_VER "You can only have one connection running at the same time when using an older version on OpenVPN than 2.0-beta6."
-    IDS_ERR_STOP_SERV_OLD_VER "You cannot use OpenVPN GUI to start a connection while the OpenVPN Service is running (with OpenVPN 1.5/1.6). Stop OpenVPN Service first if you want to use OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "CreateEvent failed on exit event: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Unknown priority name: %ls"
     IDS_ERR_LOG_APPEND_BOOL "Log file append flag (given as '%ls') must be '0' or '1'."
@@ -422,7 +420,7 @@ Please complete the previous authorization dialog."
     IDS_ERR_GET_EXIT_CODE "Failed to get ExitCode of Connect Script (%ls)"
     IDS_ERR_CONN_SCRIPT_FAILED "Connect Script failed. (exitcode=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Connect Script failed. TimeOut after %d sec."
-    IDS_ERR_CONFIG_EXIST "There already exist a config file named '%ls'. You cannot \
+    IDS_ERR_CONFIG_EXIST "There already exists a config file named '%ls'. You cannot \
 have multiple config files with the same name, even if \
 they reside in different folders."
     IDS_NFO_CONN_TIMEOUT "Connecting to management interface failed.\n\
@@ -437,7 +435,7 @@ View log file (%ls) for more details."
     IDS_NFO_ACTIVE_CONN_EXIT "There are still active connections that will be closed if you exit OpenVPN GUI.\
 \n\nAre you sure you want to exit?"
     IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>. \
-Attaching to auto-started connections require --management option in the config file."
+Attaching to auto-started connections requires --management option in the config file."
     IDS_NFO_SERVICE_ACTIVE_EXIT "You are currently connected (the OpenVPN Service is running). \
 You will stay connected even if you exit OpenVPN GUI.\n\n\
 Do you want to proceed and exit OpenVPN GUI?"

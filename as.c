@@ -39,19 +39,35 @@
 #define PROFILE_NAME_TOKEN  L"# OVPN_ACCESS_SERVER_PROFILE="
 #define FRIENDLY_NAME_TOKEN L"# OVPN_ACCESS_SERVER_FRIENDLY_NAME="
 
-/** Replace characters not allowed in Windows filenames with '_' */
+/** Replace characters not allowed in Windows filenames with '_'
+ *  and replace special names with "TMP"
+ */
 void
-SanitizeFilename(wchar_t *fname)
+SanitizeFilename(wchar_t *fname, size_t name_length)
 {
     const wchar_t *reserved = L"<>:\"/\\|?*;"; /* remap these and ascii 1 to 31 */
-    while (*fname)
+    wchar_t *p = fname;
+    while (*p)
     {
-        wchar_t c = *fname;
+        wchar_t c = *p;
         if (c < 32 || wcschr(reserved, c))
         {
-            *fname = L'_';
+            *p = L'_';
         }
-        ++fname;
+        ++p;
+    }
+    /* Also disallow reserved names */
+    const wchar_t *special[] = { L"CON",  L"PRN",  L"AUX",  L"NUL",  L"COM1", L"COM2",
+                                 L"COM3", L"COM4", L"COM5", L"COM6", L"COM7", L"COM8",
+                                 L"COM9", L"LPT1", L"LPT2", L"LPT3", L"LPT4", L"LPT5",
+                                 L"LPT6", L"LPT7", L"LPT8", L"LPT9" };
+
+    for (DWORD i = 0; i < _countof(special); i++)
+    {
+        if (wcscmp(fname, special[i]) == 0)
+        {
+            wcsncpy_s(fname, name_length, L"TMP", _TRUNCATE);
+        }
     }
 }
 
@@ -117,7 +133,7 @@ ExtractProfileName(const WCHAR *profile,
 
     out_name[out_name_length - 1] = L'\0';
 
-    SanitizeFilename(out_name);
+    SanitizeFilename(out_name, out_name_length);
 
     free(buf);
 }
@@ -133,8 +149,12 @@ ShowWinInetError(HANDLE hWnd)
                    err,
                    _countof(err),
                    NULL);
-    ShowLocalizedMsgEx(
-        MB_OK, hWnd, _T(PACKAGE_NAME), IDS_ERR_URL_IMPORT_PROFILE, GetLastError(), err);
+    ShowLocalizedMsgEx(MB_OK | MB_ICONERROR,
+                       hWnd,
+                       _T(PACKAGE_NAME),
+                       IDS_ERR_URL_IMPORT_PROFILE,
+                       GetLastError(),
+                       err);
 }
 
 struct UrlComponents
@@ -208,7 +228,7 @@ DownloadProfileContent(HANDLE hWnd, HINTERNET hRequest, char **pbuf, size_t *psi
     char *buf = *pbuf;
     if (buf == NULL)
     {
-        MessageBoxW(hWnd, L"Out of memory", _T(PACKAGE_NAME), MB_OK);
+        MessageBoxW(hWnd, L"Out of memory", _T(PACKAGE_NAME), MB_OK | MB_ICONERROR);
         return FALSE;
     }
     while (true)
@@ -235,7 +255,7 @@ DownloadProfileContent(HANDLE hWnd, HINTERNET hRequest, char **pbuf, size_t *psi
             if (!*pbuf)
             {
                 free(buf);
-                MessageBoxW(hWnd, L"Out of memory", _T(PACKAGE_NAME), MB_OK);
+                MessageBoxW(hWnd, L"Out of memory", _T(PACKAGE_NAME), MB_OK | MB_ICONERROR);
                 return FALSE;
             }
             buf = *pbuf;
@@ -287,7 +307,7 @@ CRDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_COMMAND:
-            param = (auth_param_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, param, FALSE);
 
             switch (LOWORD(wParam))
             {
@@ -420,7 +440,7 @@ ExtractFilenameFromHeader(HINTERNET hRequest, wchar_t *name, size_t len)
         }
     }
 
-    SanitizeFilename(name);
+    SanitizeFilename(name, len);
 
 done:
     free(buf);
@@ -614,8 +634,12 @@ again:
 
     if (status_code != 200)
     {
-        ShowLocalizedMsgEx(
-            MB_OK, hWnd, _T(PACKAGE_NAME), IDS_ERR_URL_IMPORT_PROFILE, status_code, L"HTTP error");
+        ShowLocalizedMsgEx(MB_OK | MB_ICONERROR,
+                           hWnd,
+                           _T(PACKAGE_NAME),
+                           IDS_ERR_URL_IMPORT_PROFILE,
+                           status_code,
+                           L"HTTP error");
         goto done;
     }
 
@@ -627,7 +651,7 @@ again:
         BOOL res = HttpQueryInfoA(hRequest, HTTP_QUERY_CONTENT_TYPE, tmp, &len, NULL);
         if (!res || stricmp(comps->content_type, tmp))
         {
-            ShowLocalizedMsgEx(MB_OK,
+            ShowLocalizedMsgEx(MB_OK | MB_ICONERROR,
                                hWnd,
                                _T(PACKAGE_NAME),
                                IDS_ERR_URL_IMPORT_PROFILE,
@@ -645,8 +669,10 @@ again:
         WCHAR *wbuf = Widen(buf);
         if (!wbuf)
         {
-            MessageBoxW(
-                hWnd, L"Failed to convert profile content to wchar", _T(PACKAGE_NAME), MB_OK);
+            MessageBoxW(hWnd,
+                        L"Failed to convert profile content to wchar",
+                        _T(PACKAGE_NAME),
+                        MB_OK | MB_ICONERROR);
             goto done;
         }
         ExtractProfileName(wbuf, comps->host, name, MAX_PATH);
@@ -657,7 +683,12 @@ again:
     DWORD res = GetTempPathW((DWORD)out_path_size, out_path);
     if (res == 0 || res > out_path_size)
     {
-        MessageBoxW(hWnd, L"Failed to get TMP path", _T(PACKAGE_NAME), MB_OK);
+        MessageBoxW(hWnd, L"Failed to get TMP path", _T(PACKAGE_NAME), MB_OK | MB_ICONERROR);
+        goto done;
+    }
+    if (out_path_size < (wcslen(out_path) + wcslen(name) + 1))
+    {
+        MessageBoxW(hWnd, L"Profile name is too long", _T(PACKAGE_NAME), MB_OK | MB_ICONERROR);
         goto done;
     }
     swprintf(out_path, out_path_size, L"%ls%ls", out_path, name);
@@ -665,7 +696,8 @@ again:
     FILE *f;
     if (_wfopen_s(&f, out_path, L"w"))
     {
-        MessageBoxW(hWnd, L"Unable to save downloaded profile", _T(PACKAGE_NAME), MB_OK);
+        MessageBoxW(
+            hWnd, L"Unable to save downloaded profile", _T(PACKAGE_NAME), MB_OK | MB_ICONERROR);
         goto done;
     }
     fwrite(buf, sizeof(char), size, f);
@@ -733,7 +765,7 @@ ImportProfileFromURLDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
             break;
 
         case WM_COMMAND:
-            type = (server_type_t)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, type, FALSE);
             switch (LOWORD(wParam))
             {
                 case ID_EDT_AUTH_PASS:

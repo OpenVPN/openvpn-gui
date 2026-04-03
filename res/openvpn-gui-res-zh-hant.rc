@@ -230,7 +230,7 @@ BEGIN
 #if ENABLE_OVPN3
     GROUPBOX "OpenVPN Engine", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
     AUTORADIOBUTTON "OpenVPN2", ID_RB_ENGINE_OVPN2, 18, 296, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "OpenVPN3 (experimental)", ID_RB_ENGINE_OVPN3, 76, 296, 90, 10
+    AUTORADIOBUTTON "OpenVPN3 (experimental)", ID_RB_ENGINE_OVPN3, 76, 296, 100, 10
 #endif
 
 END
@@ -246,14 +246,14 @@ BEGIN
     LTEXT "OpenVPN GUI v%ls - OpenVPN 的 Windows 圖形化介面\n\
 版權所有 (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 版權所有 (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
-版權所有 (C) 2012-2024 OpenVPN GUI 貢獻者\n", ID_TXT_VERSION, 36, 15, 206, 50
+版權所有 (C) 2012-2025 OpenVPN GUI 貢獻者\n", ID_TXT_VERSION, 36, 15, 206, 50
     LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_LTEXT_ABOUT2, 36, 55, 206, 42
     LTEXT "OpenVPN 是一套可安全地透過單一 TCP/UDP 通訊埠穿隧 IP 網路\
 的應用程式。支援以 SSL/TLS 為基礎的連線驗證與金鑰交換\
 、封包加密、封包驗證，以及封包壓縮。\
 \n\
 \n", ID_LTEXT_ABOUT3, 8, 70, 240, 64
-    LTEXT "版權所有 (C) 2002-2024 OpenVPN Technologies, Inc <info@openvpn.net>\n\
+    LTEXT "版權所有 (C) 2002-2025 OpenVPN Technologies, Inc <info@openvpn.net>\n\
 https://openvpn.net/", ID_LTEXT_ABOUT4, 8, 106, 234, 64
 END
 
@@ -368,8 +368,6 @@ BEGIN
 \n\n\
 請完成先前的授權對話窗。"
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "將使用者加入至「%ls」群組失敗。"
-    IDS_ERR_ONE_CONN_OLD_VER "若您使用 OpenVPN 2.0-beta6 以前的舊版本，同時僅能有一個連線。"
-    IDS_ERR_STOP_SERV_OLD_VER "OpenVPN 1.5/1.6 的服務執行中時，將無法使用 OpenVPN GUI 進行連線。若您想使用 OpenVPN GUI，請先停止 OpenVPN 服務。"
     IDS_ERR_CREATE_EVENT "發生結束事件時 CreateEvent 失敗: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "未知的優先權名稱: %ls"
     IDS_ERR_LOG_APPEND_BOOL "附加記錄檔的旗標（例如「%ls」）必須為「0」或「1」"

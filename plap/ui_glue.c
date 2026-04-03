@@ -194,13 +194,21 @@ InitializeUI(HINSTANCE hinstance)
     /* Initialize handlers for management interface notifications
      * Some handlers are replaced by local functions
      */
-    mgmt_rtmsg_handler handler[] = { { ready_, OnReady },         { hold_, OnHold },
-                                     { log_, OnLogLine },         { state_, OnStateChange_ },
-                                     { password_, OnPassword_ },  { proxy_, OnProxy_ },
-                                     { stop_, OnStop_ },          { needok_, OnNeedOk_ },
-                                     { needstr_, OnNeedStr_ },    { echo_, OnEcho },
-                                     { bytecount_, OnByteCount }, { infomsg_, OnInfoMsg_ },
-                                     { timeout_, OnTimeout },     { 0, NULL } };
+    mgmt_rtmsg_handler handler[] = { { ready_, OnReady },
+                                     { hold_, OnHold },
+                                     { log_, OnLogLine },
+                                     { state_, OnStateChange_ },
+                                     { password_, OnPassword_ },
+                                     { proxy_, OnProxy_ },
+                                     { stop_, OnStop_ },
+                                     { needok_, OnNeedOk_ },
+                                     { needstr_, OnNeedStr_ },
+                                     { echo_, OnEcho },
+                                     { bytecount_, OnByteCount },
+                                     { infomsg_, OnInfoMsg_ },
+                                     { timeout_, OnTimeout },
+                                     { validate_, OnMgmtValidate },
+                                     { 0, NULL } };
 
     InitManagement(handler);
     dmsg(L"Init Management done");

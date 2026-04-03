@@ -182,4 +182,25 @@ void ResetPasswordReveal(HWND edit, HWND btn, WPARAM wParam);
 
 void ChangePasswordVisibility(HWND edit, HWND btn, WPARAM wParam);
 
+/**
+ * Compare two paths by checking whether they point to the
+ * same object in the file system. Returns true if the paths
+ * are same, false otherwise.
+ * If the two paths are identical strings return true early.
+ * If any of the paths do not exist, are not accessible or
+ * fail to provide file information, we return false.
+ */
+bool IsSamePath(const wchar_t *path1, const wchar_t *path2);
+
+/**
+ * Check that the process listening at management port is
+ * openvpn.exe as defined in o.exe_path. Returns true on success.
+ */
+bool ValidateManagementDaemon(connection_t *c);
+
+/**
+ * Return -1, 0 or +1 for a < b, a = b and a > b
+ */
+int version_compare(const version_t *a, const version_t *b);
+
 #endif /* ifndef MISC_H */

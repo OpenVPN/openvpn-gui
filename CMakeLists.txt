@@ -70,12 +70,23 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Comdlg32.lib
     Ole32.lib
     Cryptui.lib
-    Wininet.lib)
+    Wininet.lib
+    Iphlpapi.lib
+    Ntdll.lib)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /MANIFEST:NO")
 set(CMAKE_RC_FLAGS "/D \"HAVE_CONFIG_H\" /D \"_MSC_VER\"")
+
+add_custom_command(
+    OUTPUT  eventmsg.h
+    COMMAND mc.exe ${CMAKE_CURRENT_SOURCE_DIR}/eventmsg.mc -r ${CMAKE_CURRENT_BINARY_DIR}
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/eventmsg.mc
+    VERBATIM
+    )
+add_custom_target(msg_header_gen ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/eventmsg.h)
+add_dependencies(${PROJECT_NAME} msg_header_gen)
 
 function(get_version_from_configure regex_arg ret)
     file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/configure.ac" VERSION_STR REGEX ${regex_arg})
@@ -141,7 +152,11 @@ target_link_libraries(${PROJECT_NAME_PLAP} PRIVATE
     Secur32.lib
     Gdi32.lib
     Cryptui.lib
-    Rpcrt4.lib)
+    Rpcrt4.lib
+    Iphlpapi.lib
+    Ntdll.lib)
+
+add_dependencies(${PROJECT_NAME_PLAP} msg_header_gen)
 
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /MANIFEST:NO")
 target_include_directories(${PROJECT_NAME_PLAP} PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR})
@@ -162,6 +177,7 @@ add_executable(${TEST_PLAP_EXE}
 target_link_libraries(${TEST_PLAP_EXE} PRIVATE
     Rpcrt4
     Ole32
+    Shlwapi
     Gdi32)
 
 target_include_directories(${TEST_PLAP_EXE} PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR})

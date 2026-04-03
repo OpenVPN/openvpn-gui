@@ -227,7 +227,7 @@ BEGIN
 #if ENABLE_OVPN3
     GROUPBOX "OpenVPN Engine", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
     AUTORADIOBUTTON "OpenVPN2", ID_RB_ENGINE_OVPN2, 18, 296, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "OpenVPN3 (experimental)", ID_RB_ENGINE_OVPN3, 76, 296, 90, 10
+    AUTORADIOBUTTON "OpenVPN3 (experimental)", ID_RB_ENGINE_OVPN3, 76, 296, 100, 10
 #endif
 
 END
@@ -243,14 +243,14 @@ BEGIN
     LTEXT "OpenVPN GUI v%ls - графічний інтерфейс Windows для OpenVPN\n\
 Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
-Copyright (C) 2012-2024 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
+Copyright (C) 2012-2025 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
     LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_LTEXT_ABOUT2, 36, 55, 206, 42
     LTEXT "OpenVPN - программне забеспечення, для безпечного тунелювання IP-мереж \
 через єдиний UDP або TCP-порт із підтримкою підтверження достовірності сесій \
 і пересилання(обміном) ключів SSL/TLS, шифруванням, аутентіфікацієй \
 і з компрессією пакетів.\n\
 \n", ID_LTEXT_ABOUT3, 8, 70, 240, 64
-    LTEXT "Copyright (C) 2002-2024 OpenVPN Technologies, Inc <info@openvpn.net>\n\
+    LTEXT "Copyright (C) 2002-2025 OpenVPN Technologies, Inc <info@openvpn.net>\n\
 With support from - За підтримки - При подддержке http://picku.pp.ua/\n\
 https://openvpn.net/", ID_LTEXT_ABOUT4, 8, 106, 240, 64
 END
@@ -366,8 +366,6 @@ BEGIN
 ""%ls"".\n\n\
 Будь ласка, заповніть попереднє діалогове вікно авторизації."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Неможливо додати користувача до групи ""%ls""."
-    IDS_ERR_ONE_CONN_OLD_VER "Одночасно ви маєте можливість використовувати тільки одне з'єднання, у версіях OpenVPN 2.0-beta6, або найновіших"
-    IDS_ERR_STOP_SERV_OLD_VER "Ви не маєте можливості використовувати OpenVPN GUI, щоб стартувати з'єднання, поки запущений процес OpenVPN (с OpenVPN 1.5/1.6). Спочатку зупиніть процес OpenVPN, у випадку, якщо ви бажаєте використати OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "Робоча помилка CreateEvent під час завершення %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Не задане найменування пріорітету: %ls"
     IDS_ERR_LOG_APPEND_BOOL "Опція додання до файлу журналу (заданий як'%ls') має бути '0' або '1'"

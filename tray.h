@@ -49,7 +49,7 @@ void RecreatePopupMenus(void);
 
 void CreatePopupMenus();
 
-void OnNotifyTray(LPARAM);
+void OnNotifyTray(WPARAM, LPARAM);
 
 void OnDestroyTray(void);
 

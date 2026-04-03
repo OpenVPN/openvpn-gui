@@ -230,7 +230,7 @@ BEGIN
 #if ENABLE_OVPN3
     GROUPBOX "OpenVPN Engine", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
     AUTORADIOBUTTON "OpenVPN2", ID_RB_ENGINE_OVPN2, 18, 296, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "OpenVPN3 (实验性的)", ID_RB_ENGINE_OVPN3, 76, 296, 90, 10
+    AUTORADIOBUTTON "OpenVPN3 (实验性的)", ID_RB_ENGINE_OVPN3, 76, 296, 100, 10
 #endif
 
 END
@@ -246,14 +246,14 @@ BEGIN
     LTEXT "OpenVPN GUI v%ls - OpenVPN 的 Windows 图形化界面\n\
 版权所有 (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 版权所有 (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
-版权所有 (C) 2012-2024 OpenVPN GUI 贡献者\n", ID_TXT_VERSION, 36, 15, 206, 50
+版权所有 (C) 2012-2025 OpenVPN GUI 贡献者\n", ID_TXT_VERSION, 36, 15, 206, 50
     LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_LTEXT_ABOUT2, 36, 55, 206, 42
     LTEXT "OpenVPN 是一套可以安全地通过单一 TCP/UDP 端口在 IP 网络建立隧道\
 的应用程序。它支持 SSL/TLS 为基础的连接验证与密钥交换、封包加密、\
 封包验证，以及封包压缩。\
 \n\
 \n", ID_LTEXT_ABOUT3, 8, 70, 240, 64
-    LTEXT "版权所有 (C) 2002-2024 OpenVPN Technologies, Inc <info@openvpn.net>\n\
+    LTEXT "版权所有 (C) 2002-2025 OpenVPN Technologies, Inc <info@openvpn.net>\n\
 https://openvpn.net/", ID_LTEXT_ABOUT4, 8, 106, 234, 64
 END
 
@@ -314,7 +314,7 @@ FONT 8, "Segoe UI"
 LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 BEGIN
     CONTROL "", ID_STATIC_QR, "Static", SS_BITMAP | WS_VISIBLE | SS_CENTERIMAGE, 0, 0, 10, 10
-    LTEXT "Scan this QR code on your mobile to proceed with authentication.", ID_TXT_QR, 0, 0, 10, 10, SS_CENTER | WS_VISIBLE | SS_EDITCONTROL
+    LTEXT "在您的手机上扫描这个二维码以进行身份验证。", ID_TXT_QR, 0, 0, 10, 10, SS_CENTER | WS_VISIBLE | SS_EDITCONTROL
 END
 
 STRINGTABLE
@@ -368,8 +368,6 @@ BEGIN
 \n\n\
 请完成先前的授权对话框。"
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "将用户加入至「%ls」群组失败。"
-    IDS_ERR_ONE_CONN_OLD_VER "若您使用 OpenVPN 2.0-beta6 以前的旧版本，同时仅能有一个连接。"
-    IDS_ERR_STOP_SERV_OLD_VER "OpenVPN 1.5/1.6 的服务启动时，将无法使用 OpenVPN GUI 进行连接。若您想使用 OpenVPN GUI，请先停止 OpenVPN 服务。"
     IDS_ERR_CREATE_EVENT "CreateEvent在发生退出事件时失败: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "未知的优先权名称: %ls"
     IDS_ERR_LOG_APPEND_BOOL "追加日志文件的标志（例如「%ls」）必须为「0」或「1」"

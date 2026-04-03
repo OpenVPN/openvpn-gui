@@ -427,17 +427,20 @@ PositionTrayToolTip(LONG x, LONG y)
  * Handle mouse clicks on tray icon
  */
 void
-OnNotifyTray(LPARAM lParam)
+OnNotifyTray(WPARAM wParam, LPARAM lParam)
 {
     POINT pt;
 
     /* Use LOWORD(lParam)  as HIWORD() contains the icon id if uVersion >= 4 */
     switch (LOWORD(lParam))
     {
-        case WM_RBUTTONUP:
+        case WM_CONTEXTMENU:
             RecreatePopupMenus();
+            /* wParam contains the upper left corner of the anchor point */
 
-            GetCursorPos(&pt);
+            pt.x = (int)LOWORD(wParam);
+            pt.y = (int)HIWORD(wParam);
+
             SetForegroundWindow(o.hWnd);
             TrackPopupMenu(hMenu, TPM_RIGHTALIGN, pt.x, pt.y, 0, o.hWnd, NULL);
             PostMessage(o.hWnd, WM_NULL, 0, 0);
@@ -708,14 +711,18 @@ CheckAndSetTrayIcon()
 void
 ShowTrayBalloon(TCHAR *infotitle_msg, TCHAR *info_msg)
 {
+    if (!info_msg && !infotitle_msg)
+    {
+        return;
+    }
     ni.cbSize = sizeof(ni);
     ni.uID = 0;
     ni.hWnd = o.hWnd;
     ni.uFlags = NIF_INFO;
     ni.uTimeout = 5000;
     ni.dwInfoFlags = NIIF_INFO;
-    _tcsncpy(ni.szInfo, info_msg, _countof(ni.szInfo));
-    _tcsncpy(ni.szInfoTitle, infotitle_msg, _countof(ni.szInfoTitle));
+    wcsncpy(ni.szInfo, info_msg ? info_msg : L" ", _countof(ni.szInfo));
+    wcsncpy(ni.szInfoTitle, infotitle_msg ? infotitle_msg : L"", _countof(ni.szInfoTitle));
 
     Shell_NotifyIcon(NIM_MODIFY, &ni);
 }

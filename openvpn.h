@@ -30,10 +30,29 @@
     {                                                                                            \
         if (SetPropW(hwnd, name, p))                                                             \
             break;                                                                               \
-        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs:%d GetProp returned null", __func__, __LINE__); \
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"%hs:%d SetProp returned null", __func__, __LINE__); \
         EndDialog(hwnd, IDABORT);                                                                \
         return false;                                                                            \
     } while (0)
+
+/* A macro to set lval = GetProp(hwnd, name) or log and execute on_fail statement on error */
+#define TRY_GETPROP_IMPL(hwnd, name, lval, on_fail)                                        \
+    do                                                                                     \
+    {                                                                                      \
+        HANDLE handle_##lval = GetProp(hwnd, name);                                        \
+        if (!handle_##lval)                                                                \
+        {                                                                                  \
+            MsgToEventLog(                                                                 \
+                EVENTLOG_ERROR_TYPE, L"%hs:%d GetProp returned null", __func__, __LINE__); \
+            on_fail;                                                                       \
+        }                                                                                  \
+        lval = (__typeof__(lval))handle_##lval;                                            \
+    } while (0)
+
+#define TRY_GETPROP(hwnd, name, lval, err_return) \
+    TRY_GETPROP_IMPL(hwnd, name, lval, return err_return)
+
+#define TRY_GETPROP_VOID(hwnd, name, lval) TRY_GETPROP_IMPL(hwnd, name, lval, return)
 
 BOOL StartOpenVPN(connection_t *);
 
@@ -75,6 +94,8 @@ void OnInfoMsg(connection_t *, char *);
 
 void OnTimeout(connection_t *, char *);
 
+void OnMgmtValidate(connection_t *, char *);
+
 void ResetSavePasswords(connection_t *);
 
 extern const TCHAR *cfgProp;
@@ -97,6 +118,7 @@ void WriteStatusLog(connection_t *c, const WCHAR *prefix, const WCHAR *line, BOO
 #define FLAG_PASS_PKEY      0x40  /* Private key password needed */
 #define FLAG_CR_TYPE_CRTEXT 0x80  /* crtext */
 #define FLAG_CR_TYPE_CONCAT 0x100 /* concatenate otp with password */
+#define FLAG_USERNAME_ONLY  0x200 /* only auth username needed, no password */
 
 typedef struct
 {

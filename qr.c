@@ -97,6 +97,8 @@ INT_PTR CALLBACK
 QrDialogProc(HWND hwnd, UINT msg, UNUSED WPARAM wp, LPARAM lp)
 {
     static HBITMAP hQRBitmap = NULL;
+    static UINT_PTR timerId = 1;
+    static UINT timerElapse = 20000; /* must be less than 30 sec pre-logon timeout */
 
     switch (msg)
     {
@@ -172,6 +174,8 @@ QrDialogProc(HWND hwnd, UINT msg, UNUSED WPARAM wp, LPARAM lp)
             SetWindowText(hwnd, uc->config_name);
 
             g_hwndQR = hwnd;
+
+            SetTimer(hwnd, timerId, timerElapse, NULL);
         }
             return TRUE;
 
@@ -179,10 +183,25 @@ QrDialogProc(HWND hwnd, UINT msg, UNUSED WPARAM wp, LPARAM lp)
             EndDialog(hwnd, 0);
             return TRUE;
 
+        case WM_TIMER:
+            if (wp == timerId)
+            {
+                /* Simulate mouse movement to keep Winlogon from dismissing the PLAP dialog */
+                INPUT input = { 0 };
+                input.type = INPUT_MOUSE;
+                input.mi.dwFlags = MOUSEEVENTF_MOVE;
+                input.mi.dx = 0;
+                input.mi.dy = 0;
+                SendInput(1, &input, sizeof(INPUT));
+            }
+            return TRUE;
+
         case WM_DESTROY:
             if (hQRBitmap)
                 DeleteObject(hQRBitmap);
             g_hwndQR = NULL;
+
+            KillTimer(hwnd, timerId);
             return TRUE;
     }
     return FALSE;

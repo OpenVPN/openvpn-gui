@@ -228,7 +228,7 @@ BEGIN
 #if ENABLE_OVPN3
     GROUPBOX "OpenVPN Engine", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
     AUTORADIOBUTTON "OpenVPN2", ID_RB_ENGINE_OVPN2, 18, 296, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "OpenVPN3 (experimental)", ID_RB_ENGINE_OVPN3, 76, 296, 90, 10
+    AUTORADIOBUTTON "OpenVPN3 (experimental)", ID_RB_ENGINE_OVPN3, 76, 296, 100, 10
 #endif
 
 END
@@ -244,14 +244,14 @@ BEGIN
     LTEXT "OpenVPN GUI v%ls - Windows GUI dla OpenVPN-a\n\
 Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
-Copyright (C) 2012-2024 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
+Copyright (C) 2012-2025 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
     LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_LTEXT_ABOUT2, 36, 55, 206, 42
     LTEXT "OpenVPN - Aplikacja do bezpiecznego tunelowania sieci IP\
 przy pomocy pojedynczego portu TCP/UDP, z autentykacją sesji,\
 wymianą klucza, szyfrowaniem, kompresją i autentykacją\
 pakietów opartą na protokole SSL/TLS\n\
 \n", ID_LTEXT_ABOUT3, 8, 70, 240, 64
-    LTEXT "Copyright (C) 2002-2024 OpenVPN Technologies, Inc <info@openvpn.net>\n\
+    LTEXT "Copyright (C) 2002-2025 OpenVPN Technologies, Inc <info@openvpn.net>\n\
 https://openvpn.net/", ID_LTEXT_ABOUT4, 8, 106, 240, 64
 END
 
@@ -366,8 +366,6 @@ Ta czynność może wymagać hasła administratora lub jego zgody."
 grupy ""%ls"".\n\n\
 Proszę uzupełnić poprzednie okno autoryzacji."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Dodawanie użytkownika do grupy ""%ls"" zakończone niepowodzeniem."
-    IDS_ERR_ONE_CONN_OLD_VER "Możesz mieć jednocześnie tylko jedno aktywne połączenie kiedy używasz OpenVPN-a w wersji starszej niż 2.0-beta6."
-    IDS_ERR_STOP_SERV_OLD_VER "Nie możesz nawiązać połączenia za pomocą OpenVPN GUI gdy uruchomiona jest usługa OpenVPN (dla OpenVPN-a 1.5/1.6). Zatrzymaj usługę OpenVPN jeśli chcesz użyć OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "Błąd podczas tworzenia zdarzenia wyjścia: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Nieznana nazwa priorytetu: %ls"
     IDS_ERR_LOG_APPEND_BOOL "Flaga dopisywania zdarzeń do pliku dziennika (podana jako '%ls') musi mieć postać '0' lub '1'"

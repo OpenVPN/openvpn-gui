@@ -28,12 +28,16 @@
 #include <windows.h>
 #include <tchar.h>
 #include <shlobj.h>
+#include <shlwapi.h>
+#include <assert.h>
 
 #include "main.h"
 #include "options.h"
 #include "openvpn-gui-res.h"
 #include "registry.h"
 #include "localization.h"
+#include "save_pass.h"
+#include "misc.h"
 
 extern options_t o;
 
@@ -103,8 +107,9 @@ GetGlobalRegistryKeys()
         regkey = NULL;
         ShowLocalizedMsg(IDS_ERR_OPEN_REGISTRY);
     }
+    static_assert(_countof(o.install_path) >= MAX_PATH); /* PathAddBackslash assumes this */
     if (!regkey || !GetRegistryValue(regkey, _T(""), o.install_path, _countof(o.install_path))
-        || _tcslen(o.install_path) == 0)
+        || _tcslen(o.install_path) == 0 || PathAddBackslashW(o.install_path) == NULL)
     {
         /* error reading registry value */
         if (regkey)
@@ -114,33 +119,35 @@ GetGlobalRegistryKeys()
         /* Use a sane default value */
         _sntprintf_0(o.install_path, _T("%ls"), _T("C:\\Program Files\\OpenVPN\\"));
     }
-    if (o.install_path[_tcslen(o.install_path) - 1] != _T('\\'))
-    {
-        _tcscat(o.install_path, _T("\\"));
-    }
 
     /* an admin-defined global config dir defined in HKLM\OpenVPN\config_dir */
+    static_assert(_countof(o.global_config_dir) >= MAX_PATH); /* PathAddBackslash assumes this */
     if (!regkey
         || !GetRegistryValue(
-            regkey, _T("config_dir"), o.global_config_dir, _countof(o.global_config_dir)))
+            regkey, _T("config_dir"), o.global_config_dir, _countof(o.global_config_dir))
+        || PathAddBackslashW(o.global_config_dir) == NULL)
     {
         /* use default = openvpnpath\config */
-        _sntprintf_0(o.global_config_dir, _T("%lsconfig"), o.install_path);
+        _sntprintf_0(o.global_config_dir, _T("%lsconfig\\"), o.install_path);
     }
 
+    static_assert(_countof(o.config_auto_dir) >= MAX_PATH); /* PathAddBackslash assumes this */
     if (!regkey
         || !GetRegistryValue(
-            regkey, _T("autostart_config_dir"), o.config_auto_dir, _countof(o.config_auto_dir)))
+            regkey, _T("autostart_config_dir"), o.config_auto_dir, _countof(o.config_auto_dir))
+        || PathAddBackslashW(o.config_auto_dir) == NULL)
     {
         /* use default = openvpnpath\config-auto */
-        _sntprintf_0(o.config_auto_dir, L"%lsconfig-auto", o.install_path);
+        _sntprintf_0(o.config_auto_dir, L"%lsconfig-auto\\", o.install_path);
     }
 
+    static_assert(_countof(o.global_log_dir) >= MAX_PATH); /* PathAddBackslash assumes this */
     if (!regkey
-        || !GetRegistryValue(regkey, _T("log_dir"), o.global_log_dir, _countof(o.global_log_dir)))
+        || !GetRegistryValue(regkey, _T("log_dir"), o.global_log_dir, _countof(o.global_log_dir))
+        || PathAddBackslashW(o.global_log_dir) == NULL)
     {
         /* use default = openvpnpath\log */
-        _sntprintf_0(o.global_log_dir, L"%lslog", o.install_path);
+        _sntprintf_0(o.global_log_dir, L"%lslog\\", o.install_path);
     }
 
     if (!regkey
@@ -154,6 +161,14 @@ GetGlobalRegistryKeys()
     {
         _sntprintf_0(o.exe_path, _T("%lsbin\\openvpn.exe"), o.install_path);
     }
+
+#ifdef ENABLE_OVPN3
+    /* for OVPN3, always expect the value to be set in the registry */
+    if (regkey)
+    {
+        GetRegistryValue(regkey, _T("omi_exe_path"), o.omi_exe_path, _countof(o.omi_exe_path));
+    }
+#endif
 
     if (!regkey
         || !GetRegistryValue(
@@ -435,6 +450,45 @@ MigrateNilingsKeys()
     return ret;
 }
 
+/*
+ * Enumerate subkeys under config registry and
+ * migrate any saved usernames under those subkeys.
+ */
+static void
+UpgradeUsernames(void)
+{
+    HKEY regkey;
+    DWORD status = RegOpenKeyEx(
+        HKEY_CURRENT_USER, L"SOFTWARE\\OpenVPN-GUI\\configs", 0, KEY_ENUMERATE_SUB_KEYS, &regkey);
+    if (status != ERROR_SUCCESS)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                      L"Error opening config registry key (error = %lu)",
+                      GetLastError());
+        return;
+    }
+
+    WCHAR config_name[MAX_PATH];
+    DWORD keylen = _countof(config_name);
+
+    int i = 0;
+    status = RegEnumKeyEx(regkey, i, config_name, &keylen, NULL, NULL, NULL, NULL);
+    while (status == ERROR_SUCCESS)
+    {
+        MigrateUsername(config_name);
+        keylen = _countof(config_name);
+        status = RegEnumKeyEx(regkey, ++i, config_name, &keylen, NULL, NULL, NULL, NULL);
+    }
+    if (status != ERROR_NO_MORE_ITEMS)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                      L"Migrating username failed for index = %d with error = %lu",
+                      i,
+                      status);
+    }
+    RegCloseKey(regkey);
+}
+
 int
 UpdateRegistry(void)
 {
@@ -457,10 +511,14 @@ UpdateRegistry(void)
             {
                 return false;
             }
+            /* fall through */
 
-        /* fall through to handle further updates */
         case 11:
-            /* current version -- nothing to do */
+            /* Upgrade any usernames saved as plain text */
+            if (v.major < 11 || v.minor <= 57)
+            {
+                UpgradeUsernames();
+            }
             break;
 
         default:

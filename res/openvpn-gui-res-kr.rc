@@ -229,7 +229,7 @@ BEGIN
 #if ENABLE_OVPN3
     GROUPBOX "OpenVPN Engine", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
     AUTORADIOBUTTON "OpenVPN2", ID_RB_ENGINE_OVPN2, 18, 296, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "OpenVPN3 (experimental)", ID_RB_ENGINE_OVPN3, 76, 296, 90, 10
+    AUTORADIOBUTTON "OpenVPN3 (experimental)", ID_RB_ENGINE_OVPN3, 76, 296, 100, 10
 #endif
 
 END
@@ -245,13 +245,13 @@ BEGIN
     LTEXT "OpenVPN GUI v%ls - A Windows GUI for OpenVPN\n\
 Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
-Copyright (C) 2012-2024 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
+Copyright (C) 2012-2025 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
     LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_LTEXT_ABOUT2, 36, 55, 206, 42
     LTEXT "OpenVPN - SSL/TLS 기반의 세션 인증, 키 교환, 패킷 암호화, \
 패킷 인증 및 패킷 압축을 지원하여 단일 TCP/UDP 포트를 통해 \
 IP 네트워크를 안전하게 터널링하는 응용 프로그램 입니다.\n\
 \n", ID_LTEXT_ABOUT3, 8, 70, 240, 64
-    LTEXT "Copyright (C) 2002-2024 OpenVPN Technologies, Inc <info@openvpn.net>\n\
+    LTEXT "Copyright (C) 2002-2025 OpenVPN Technologies, Inc <info@openvpn.net>\n\
 https://openvpn.net/", ID_LTEXT_ABOUT4, 8, 106, 240, 64
 END
 
@@ -364,8 +364,6 @@ BEGIN
     IDS_NFO_CONFIG_AUTH_PENDING   "이 연결(%ls)을 시작하기 위하여 ""%ls"" 그룹 권한이 필요합니다.\n\n\
 이전의 인증 대화 상자를 완료 하십시오."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP """%ls"" group에 사용자 추가를 실패했습니다."
-    IDS_ERR_ONE_CONN_OLD_VER "OpenVPN 2.0-beta6 이전 버전에서는 2개 이상의 동시 연결을 지원하지 않습니다."
-    IDS_ERR_STOP_SERV_OLD_VER "OpenVPN 1.5/1.6을 사용할 경우, OpenVPN 서비스가 구동되고 있으면 OpenVPN GUI을 이용하여 연결을 할 수 없습니다. OpenVPN GUI를 사용하려면, 먼저 OpenVPN 서비스를 중지 시키십시오."
     IDS_ERR_CREATE_EVENT "CreateEvent failed on exit event: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Unknown priority name: %ls"
     IDS_ERR_LOG_APPEND_BOOL "로그 파일의 '%ls'로 지정된 추가 플래그는 '0'또는 '1'이어야합니다."

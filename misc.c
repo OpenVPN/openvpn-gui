@@ -32,6 +32,8 @@
 #include <shellapi.h>
 #include <ws2tcpip.h>
 #include <shlwapi.h>
+#include <iphlpapi.h>
+#include <winternl.h>
 
 #include "localization.h"
 #include "options.h"
@@ -43,6 +45,7 @@
 #include "openvpn-gui-res.h"
 #include "tray.h"
 #include "config_parser.h"
+#include "eventmsg.h"
 
 /*
  * Helper function to do base64 conversion through CryptoAPI
@@ -743,7 +746,7 @@ md_final(md_ctx *ctx, BYTE *md)
 BOOL
 open_url(const wchar_t *url)
 {
-    if (!url || !wcsbegins(url, L"http"))
+    if (!url || (!wcsbegins(url, L"http://") && !wcsbegins(url, L"https://")))
     {
         return false;
     }
@@ -1008,7 +1011,7 @@ MsgToEventLog(WORD type, wchar_t *format, ...)
 
     msg[0] = TEXT(PACKAGE_NAME);
     msg[1] = buf;
-    ReportEventW(o.event_log, type, 0, 0, NULL, 2, 0, msg, NULL);
+    ReportEventW(o.event_log, type, 0, EVT_TEXT_2, NULL, 2, 0, msg, NULL);
 }
 
 /*
@@ -1265,4 +1268,232 @@ ChangePasswordVisibility(HWND edit, HWND btn, WPARAM wParam)
         InvalidateRect(
             edit, NULL, TRUE); /* without this the control doesn't seem to get redrawn promptly */
     }
+}
+
+/*
+ * Open a path and get its file information structure.
+ * Returns true on success, false on error.
+ */
+static bool
+GetFileInfo(const wchar_t *path, BY_HANDLE_FILE_INFORMATION *info)
+{
+    bool ret = false;
+
+    /* FILE_FLAG_BACKUP_SEMANTICS required to open directories */
+    HANDLE fd = CreateFileW(path,
+                            0,
+                            FILE_SHARE_READ | FILE_SHARE_WRITE,
+                            NULL,
+                            OPEN_EXISTING,
+                            FILE_FLAG_BACKUP_SEMANTICS,
+                            NULL);
+
+    if (fd == INVALID_HANDLE_VALUE)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                      L"GetFileInfo: Error opening path <%ls> (status = %lu)",
+                      path,
+                      GetLastError());
+        return ret;
+    }
+
+    ret = GetFileInformationByHandle(fd, info);
+    if (!ret)
+    {
+        MsgToEventLog(
+            EVENTLOG_ERROR_TYPE,
+            L"GetFileInfo: Error accessing file information for path <%ls> (status = %lu)",
+            path,
+            GetLastError());
+    }
+    else
+    {
+        PrintDebug(L"path = <%ls> volumeid = %lu file index = (%lu,%lu)",
+                   path,
+                   info->dwVolumeSerialNumber,
+                   info->nFileIndexLow,
+                   info->nFileIndexHigh);
+    }
+    CloseHandle(fd);
+
+    return ret;
+}
+
+bool
+IsSamePath(const wchar_t *path1, const wchar_t *path2)
+{
+    BOOL ret = false;
+    BY_HANDLE_FILE_INFORMATION info1, info2;
+
+    if (_wcsicmp(path1, path2) == 0)
+    {
+        return true;
+    }
+
+    if (GetFileInfo(path1, &info1) && GetFileInfo(path2, &info2))
+    {
+        ret = (info1.dwVolumeSerialNumber == info2.dwVolumeSerialNumber
+               && info1.nFileIndexLow == info2.nFileIndexLow
+               && info1.nFileIndexHigh == info2.nFileIndexHigh);
+    }
+
+    return ret;
+}
+
+/* Find pid of process listening on a TCP port. Returns 0 on error */
+static DWORD
+find_listening_pid(DWORD port)
+{
+    PMIB_TCPTABLE_OWNER_PID pTable = NULL;
+    DWORD size = 0;
+    DWORD result =
+        GetExtendedTcpTable(NULL, &size, FALSE, AF_INET, TCP_TABLE_OWNER_PID_LISTENER, 0);
+
+    if (result != ERROR_INSUFFICIENT_BUFFER)
+    {
+        return 0;
+    }
+
+    pTable = (PMIB_TCPTABLE_OWNER_PID)malloc(size);
+    if (!pTable)
+    {
+        return 0;
+    }
+    if (GetExtendedTcpTable(pTable, &size, FALSE, AF_INET, TCP_TABLE_OWNER_PID_LISTENER, 0)
+        != NO_ERROR)
+    {
+        free(pTable);
+        return 0;
+    }
+
+    DWORD pid = 0;
+    for (DWORD i = 0; i < pTable->dwNumEntries; i++)
+    {
+        DWORD localPort = ntohs((u_short)pTable->table[i].dwLocalPort);
+        if (localPort == port)
+        {
+            pid = pTable->table[i].dwOwningPid;
+            break;
+        }
+    }
+
+    free(pTable);
+    return pid;
+}
+
+/* Find the process image name given pid. name should have space
+ * for max_chars wide characters.
+ */
+static bool
+imagename_from_pid(DWORD pid, wchar_t *name, DWORD max_chars)
+{
+    /* Using undocumented API (vista and later).
+     * See https://www.geoffchappell.com/studies/windows/km/ntoskrnl/api/ex/sysinfo/query.htm
+     */
+    struct SYSTEM_PROCESS_ID_INFORMATION
+    {
+        PVOID ProcessId;
+        UNICODE_STRING ImageName;
+    } pinfo;
+
+    SYSTEM_INFORMATION_CLASS pinfo_class = 0x58; /* for querying SYSTEM_PROCESS_ID_INFORMATION */
+
+    pinfo.ProcessId = (PVOID)(UINT_PTR)pid;
+    pinfo.ImageName.Length = 0;
+    pinfo.ImageName.MaximumLength = (USHORT)max_chars;
+    pinfo.ImageName.Buffer = name;
+
+    NTSTATUS res = NtQuerySystemInformation(pinfo_class, &pinfo, sizeof(pinfo), NULL);
+
+    if (!NT_SUCCESS(res))
+    {
+        MsgToEventLog(EVENTLOG_WARNING_TYPE,
+                      L"Error querying process information for pid = %lu (error = %lu)",
+                      pid,
+                      RtlNtStatusToDosError(res));
+        return false;
+    }
+    /* Null terminate the result */
+    if (pinfo.ImageName.Length < (USHORT)max_chars)
+    {
+        name[pinfo.ImageName.Length] = L'\0';
+    }
+    else if (max_chars > 0)
+    {
+        name[max_chars - 1] = L'\0';
+    }
+    return true;
+}
+
+/* check the process listening on management port is legit openvpn.exe */
+bool
+ValidateManagementDaemon(connection_t *c)
+{
+    wchar_t nt_path[MAX_PATH];
+
+    DWORD port = ntohs(c->manage.skaddr.sin_port);
+    DWORD pid = find_listening_pid(port);
+
+    if (pid == 0)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                      L"Failed to get pid of process listening on management port <%lu>",
+                      port);
+        return false;
+    }
+
+    BOOL res = imagename_from_pid(pid, nt_path, _countof(nt_path));
+    if (!res)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                      L"Failed to get management daemon image name (error = %lu)",
+                      GetLastError());
+        return res;
+    }
+
+    /* imagename_from_pid() uses NtQuery.. which returns an NT path of the form
+     * \Device\HardDisk\Volume2... instead of a drive letter or UNC path.
+     * Convert this nt_path to a form that could be passed to win32 API
+     */
+    wchar_t win32_path[MAX_PATH];
+    swprintf(win32_path, _countof(win32_path), L"%ls%ls", L"\\\\?\\GLOBALROOT", nt_path);
+
+#ifdef ENABLE_OVPN3
+    TCHAR *exe_path = o.ovpn_engine == OPENVPN_ENGINE_OVPN3 ? o.omi_exe_path : o.exe_path;
+    res = IsSamePath(win32_path, exe_path);
+#else
+    res = IsSamePath(win32_path, o.exe_path);
+#endif
+    if (!res)
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                      L"Unknown process listening on management port (<%ls>)",
+                      win32_path);
+    }
+    return res;
+}
+
+/* Return -1, 0 or +1 respectively for a < b, a = b, a > b */
+static int
+intcmp(int a, int b)
+{
+    return (a > b) - (a < b);
+}
+
+int
+version_compare(const version_t *a, const version_t *b)
+{
+    if (a->major != b->major)
+    {
+        return intcmp(a->major, b->major);
+    }
+    if (a->minor != b->minor)
+    {
+        return intcmp(a->minor, b->minor);
+    }
+    if (a->release != b->release)
+    {
+        return intcmp(a->release, b->release);
+    }
+    return intcmp(a->stage, b->stage);
 }

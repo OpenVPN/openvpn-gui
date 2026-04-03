@@ -228,7 +228,7 @@ BEGIN
 #if ENABLE_OVPN3
     GROUPBOX "OpenVPN Engine", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
     AUTORADIOBUTTON "OpenVPN2", ID_RB_ENGINE_OVPN2, 18, 296, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "OpenVPN3 (experimental)", ID_RB_ENGINE_OVPN3, 76, 296, 90, 10
+    AUTORADIOBUTTON "OpenVPN3 (experimental)", ID_RB_ENGINE_OVPN3, 76, 296, 100, 10
 #endif
 
 END
@@ -244,7 +244,7 @@ BEGIN
     LTEXT "OpenVPN GUI v%ls – Eine grafische Benutzeroberfläche für OpenVPN\n\
 Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
-Copyright (C) 2012-2024 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
+Copyright (C) 2012-2025 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
     LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_LTEXT_ABOUT2, 36, 55, 206, 50
     LTEXT "OpenVPN – Eine Applikation zum sicheren Tunneln eines IP-\
 Netzwerks über einen einzelnen TCP/UDP-Port, mit Unterstützung \
@@ -252,7 +252,7 @@ von SSL/TLS-basierter Session-Authentisierung, Schlüssel-\
 austausch, Paketverschlüsselung, Paket-Authentisierung und \
 Paket-Kompression.\n\
 \n", ID_LTEXT_ABOUT3, 8, 70, 240, 64
-    LTEXT "Copyright (C) 2002-2024 OpenVPN Technologies, Inc <info@openvpn.net>\n\
+    LTEXT "Copyright (C) 2002-2025 OpenVPN Technologies, Inc <info@openvpn.net>\n\
 https://openvpn.net/", ID_LTEXT_ABOUT4, 8, 106, 240, 64
 END
 
@@ -367,8 +367,6 @@ Möglicherweise benötigen Sie hierfür das Passwort oder die Zustimmung eines A
 Gruppe ""%ls"" sein.\n\n\
 Bitte vervollständigen Sie den vorhergehenden Autorisierungsdialog."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Hinzufügen des Benutzers zur Gruppe ""%ls"" ist fehlgeschlagen."
-    IDS_ERR_ONE_CONN_OLD_VER "Sie können nur eine Verbindung zur gleichen Zeit aufbauen, wenn Sie einen ältere Version als 2.0-beta6 von OpenVPN verwenden."
-    IDS_ERR_STOP_SERV_OLD_VER "Sie können OpenVPN GUI nicht zum Starten einer Verbindung nutzen, während der OpenVPN-Dienst läuft (mit OpenVPN 1.5/1.6). Beenden Sie den OpenVPN-Dienst, bevor Sie OpenVPN GUI nutzen."
     IDS_ERR_CREATE_EVENT "CreateEvent fehlgeschlagen beim Beenden. Event: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Unbekannte Priorität: %ls"
     IDS_ERR_LOG_APPEND_BOOL "Logdatei-Anhängen-Flag (aktuell '%ls') muss '0' oder '1' sein."

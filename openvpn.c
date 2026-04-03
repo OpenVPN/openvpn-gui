@@ -75,6 +75,20 @@ static BOOL LaunchOpenVPN(connection_t *c);
 
 const TCHAR *cfgProp = _T("conn");
 
+/* Replace excluded characters by specified one */
+static void
+string_mod(char *in, const char *exclude, char replace)
+{
+    while (*in)
+    {
+        if (strchr(exclude, *in))
+        {
+            *in = replace;
+        }
+        in++;
+    }
+}
+
 void
 free_auth_param(auth_param_t *param)
 {
@@ -122,6 +136,12 @@ show_error_tip(HWND editbox, const WCHAR *msg)
 void
 OnReady(connection_t *c, UNUSED char *msg)
 {
+    /* client version command is correctly supported only in 2.7.1 and above */
+    version_t version_2_7_1 = { 2, 7, 1, 0 };
+    if (version_compare(&o.ovpn_version, &version_2_7_1) >= 0)
+    {
+        ManagementCommand(c, "version 4", NULL, regular);
+    }
     ManagementCommand(c, "state on", NULL, regular);
     ManagementCommand(c, "log on all", OnLogLine, combined);
     ManagementCommand(c, "echo on all", OnEcho, combined);
@@ -670,6 +690,14 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             }
             ResetPasswordReveal(
                 GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS), GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), 0);
+
+            if (param->flags & FLAG_USERNAME_ONLY)
+            {
+                ShowWindow(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS), SW_HIDE);
+                ShowWindow(GetDlgItem(hwndDlg, ID_LTEXT_PASSWORD), SW_HIDE);
+                ShowWindow(GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), SW_HIDE);
+                ShowWindow(GetDlgItem(hwndDlg, ID_CHK_SAVE_PASS), SW_HIDE);
+            }
             break;
 
         case WM_LBUTTONDOWN:
@@ -681,7 +709,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_COMMAND:
-            param = (auth_param_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, param, FALSE);
             switch (LOWORD(wParam))
             {
                 case ID_EDT_AUTH_PASS:
@@ -695,10 +723,11 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                     if (HIWORD(wParam) == EN_UPDATE)
                     {
                         /* enable OK button only if username and either password or response are
-                         * filled */
+                         * filled or only username is required */
                         BOOL enableOK =
                             GetWindowTextLength(GetDlgItem(hwndDlg, ID_EDT_AUTH_USER))
                             && (GetWindowTextLength(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS))
+                                || param->flags & FLAG_USERNAME_ONLY
                                 || ((param->flags & (FLAG_CR_TYPE_SCRV1 | FLAG_CR_TYPE_CONCAT))
                                     && GetWindowTextLength(
                                         GetDlgItem(hwndDlg, ID_EDT_AUTH_CHALLENGE))));
@@ -732,7 +761,8 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                         }
                         SaveUsername(param->c->config_name, username);
                     }
-                    if (GetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password, _countof(password)))
+                    if (!(param->flags & FLAG_USERNAME_ONLY)
+                        && GetDlgItemTextW(hwndDlg, ID_EDT_AUTH_PASS, password, _countof(password)))
                     {
                         if (!validate_input(password, L"\n"))
                         {
@@ -770,7 +800,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                                                              ID_EDT_AUTH_PASS,
                                                              ID_EDT_AUTH_CHALLENGE);
                     }
-                    else
+                    else if (!(param->flags & FLAG_USERNAME_ONLY))
                     {
                         ManagementCommandFromInput(
                             param->c, "password \"Auth\" \"%s\"", hwndDlg, ID_EDT_AUTH_PASS);
@@ -814,7 +844,7 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
         case WM_CLOSE:
             EndDialog(hwndDlg, LOWORD(wParam));
-            param = (auth_param_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, param, TRUE);
             StopOpenVPN(param->c);
             return TRUE;
 
@@ -911,19 +941,21 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             {
                 ShowWindow(GetDlgItem(hwndDlg, ID_LTEXT_RESPONSE), SW_HIDE);
                 ShowWindow(GetDlgItem(hwndDlg, ID_EDT_RESPONSE), SW_HIDE);
+                ShowWindow(GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), SW_HIDE);
             }
             else
             {
                 /* disable OK button until response is filled-in */
                 EnableWindow(GetDlgItem(hwndDlg, IDOK), FALSE);
+                ResetPasswordReveal(GetDlgItem(hwndDlg, ID_EDT_RESPONSE),
+                                    GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL),
+                                    0);
             }
-            ResetPasswordReveal(
-                GetDlgItem(hwndDlg, ID_EDT_RESPONSE), GetDlgItem(hwndDlg, ID_PASSWORD_REVEAL), 0);
 
             break;
 
         case WM_COMMAND:
-            param = (auth_param_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, param, FALSE);
             const char *template;
             char *fmt;
             switch (LOWORD(wParam))
@@ -992,13 +1024,14 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                         template = "password \"%s\" \"%%s\"";
                     }
 
-                    fmt = malloc(strlen(template) + strlen(param->id));
-                    if (fmt)
+                    char *escaped_id = escape_string(param->id);
+                    fmt = malloc(strlen(template) + (escaped_id ? strlen(escaped_id) : 0));
+                    if (fmt && escaped_id)
                     {
-                        sprintf(fmt, template, param->id);
+                        string_mod(param->id, "%", '_');
+                        sprintf(fmt, template, escaped_id);
                         PrintDebug(L"Send passwd to mgmt with format: '%hs'", fmt);
                         ManagementCommandFromInput(param->c, fmt, hwndDlg, ID_EDT_RESPONSE);
-                        free(fmt);
                     }
                     else /* no memory? send stop signal */
                     {
@@ -1008,6 +1041,8 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
                                        false);
                         StopOpenVPN(param->c);
                     }
+                    free(fmt);
+                    free(escaped_id);
 
                     EndDialog(hwndDlg, LOWORD(wParam));
                     return TRUE;
@@ -1033,7 +1068,7 @@ GenericPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
              * other than GET_CONFIG. The state is in lParam.
              * For other auth dialogs any state change signals a restart: end the dialog
              */
-            param = (auth_param_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, param, TRUE);
             if (!(param->flags & FLAG_CR_TYPE_CRTEXT) || strcmp((const char *)lParam, "GET_CONFIG"))
             {
                 EndDialog(hwndDlg, LOWORD(wParam));
@@ -1110,7 +1145,7 @@ PrivKeyPassDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_COMMAND:
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, c, FALSE);
             switch (LOWORD(wParam))
             {
                 case ID_CHK_SAVE_PASS:
@@ -1482,6 +1517,11 @@ OnPassword(connection_t *c, char *msg)
             return;
         }
         param->c = c;
+        /* If 'Auth' msg ends with "username", we prompt for username only */
+        if (!strcmp(msg, "Need 'Auth' username"))
+        {
+            param->flags |= FLAG_USERNAME_ONLY;
+        }
 
         if (c->dynamic_cr)
         {
@@ -1581,6 +1621,21 @@ OnTimeout(connection_t *c, UNUSED char *msg)
     }
     return;
 }
+
+/* Handle daemon validation request from manage.c -- called after FD_CONNECT */
+void
+OnMgmtValidate(connection_t *c, UNUSED char *msg)
+{
+    /* check the process we have connected to via the management port*/
+    if (!ValidateManagementDaemon(c))
+    {
+        /* clear sensitive data and close the management port right away */
+        SecureZeroMemory(c->manage.password, sizeof(c->manage.password));
+        CloseManagement(c);
+        StopOpenVPN(c);
+    }
+}
+
 
 /*
  * Handle exit of the OpenVPN process
@@ -2432,9 +2487,12 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
             /* display version string as "OpenVPN GUI gui_version/core_version" */
             wchar_t version[256];
-            _sntprintf_0(
-                version, L"%hs %hs/%hs", PACKAGE_NAME, PACKAGE_VERSION_RESOURCE_STR, o.ovpn_version)
-                SetDlgItemText(hwndDlg, ID_TXT_VERSION, version);
+            _sntprintf_0(version,
+                         L"%hs %hs/%hs",
+                         PACKAGE_NAME,
+                         PACKAGE_VERSION_RESOURCE_STR,
+                         o.ovpn_version_str);
+            SetDlgItemText(hwndDlg, ID_TXT_VERSION, version);
 
             /* Set size and position of controls */
             RECT rect;
@@ -2476,7 +2534,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             return TRUE;
 
         case WM_COMMAND:
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, c, FALSE);
             switch (LOWORD(wParam))
             {
                 case ID_DISCONNECT:
@@ -2515,7 +2573,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             return FALSE;
 
         case WM_CLOSE:
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, c, TRUE);
             if (c->state != disconnected && c->state != detached)
             {
                 ShowWindow(hwndDlg, SW_HIDE);
@@ -2536,7 +2594,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_OVPN_RELEASE:
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, c, FALSE);
             c->state = reconnecting;
             SetDlgItemText(
                 c->hwndStatus, ID_TXT_STATUS, LoadLocalizedString(IDS_NFO_STATE_RECONNECTING));
@@ -2546,7 +2604,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_OVPN_STOP:
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, c, FALSE);
             /* external messages can trigger when we are not ready -- check the state */
             if (!IsWindowEnabled(GetDlgItem(c->hwndStatus, ID_DISCONNECT)) || c->state == onhold)
             {
@@ -2566,7 +2624,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_OVPN_DETACH:
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, c, FALSE);
             /* just stop the thread keeping openvpn.exe running */
             c->state = detaching;
             EnableWindow(GetDlgItem(c->hwndStatus, ID_DISCONNECT), FALSE);
@@ -2575,7 +2633,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_OVPN_SUSPEND:
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, c, FALSE);
             c->state = suspending;
             EnableWindow(GetDlgItem(c->hwndStatus, ID_DISCONNECT), FALSE);
             EnableWindow(GetDlgItem(c->hwndStatus, ID_RESTART), FALSE);
@@ -2588,7 +2646,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
         case WM_TIMER:
             PrintDebug(L"WM_TIMER message with wParam = %lu", wParam);
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, c, FALSE);
             if (wParam == IDT_STOP_TIMER)
             {
                 /* openvpn failed to respond to stop signal -- terminate */
@@ -2599,7 +2657,7 @@ StatusDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_OVPN_RESTART:
-            c = (connection_t *)GetProp(hwndDlg, cfgProp);
+            TRY_GETPROP(hwndDlg, cfgProp, c, FALSE);
             /* external messages can trigger when we are not ready -- check the state */
             if (IsWindowEnabled(GetDlgItem(c->hwndStatus, ID_RESTART)))
             {
@@ -2988,8 +3046,15 @@ LaunchOpenVPN(connection_t *c)
         (o.proxy_source != config ? _T("--management-query-proxy ") : _T("")));
 
     BOOL use_iservice = (o.iservice_admin && IsWindows7OrGreater()) || !IsUserAdmin();
+
+    BOOL config_authorized = TRUE;
+    if (use_iservice && o.ovpn_engine == OPENVPN_ENGINE_OVPN2)
+    {
+        config_authorized = AuthorizeConfig(c);
+    }
+
     /* Try to open the service pipe */
-    if (use_iservice && InitServiceIO(&c->iserv))
+    if (use_iservice && config_authorized && InitServiceIO(&c->iserv))
     {
         BOOL res = FALSE;
 
@@ -3013,13 +3078,6 @@ LaunchOpenVPN(connection_t *c)
         {
             DWORD size = _tcslen(c->config_dir) + _tcslen(options) + passwd_len + 3;
             TCHAR startup_info[1024];
-
-            if (!AuthorizeConfig(c))
-            {
-                CloseHandle(c->exit_event);
-                CloseServiceIO(&c->iserv);
-                goto out;
-            }
 
             c->hProcess = NULL;
             c->manage.password[passwd_len - 1] = '\n';
@@ -3328,6 +3386,64 @@ ReadLineFromStdOut(HANDLE hStdOut, char *line, DWORD size)
 }
 
 
+/* Save p = "major.minor.release[_suffix]" as o.ovpn_version_str and
+ * fill version_t o.ovpn_version as {major, minor, release, stage}.
+ */
+static void
+parse_ovpn_version(const char *p)
+{
+    if (!p)
+    {
+        return;
+    }
+    strncpy(o.ovpn_version_str, p, _countof(o.ovpn_version_str) - 1);
+    o.ovpn_version_str[_countof(o.ovpn_version_str) - 1] = '\0';
+
+    o.ovpn_version = (version_t){ 0 };
+    version_t *v = &o.ovpn_version;
+    char *end;
+
+    if (!isdigit(*p))
+    {
+        return;
+    }
+    v->major = strtol(p, &end, 10);
+    p = end;
+
+    if (*p++ != '.' || !isdigit(*p))
+    {
+        return;
+    }
+    v->minor = strtol(p, &end, 10);
+    p = end;
+
+    /* optional .release */
+    if (*p == '.')
+    {
+        p++;
+        if (isdigit(*p))
+        {
+            v->release = strtol(p, &end, 10);
+            p = end;
+        }
+    }
+
+    /* detect development suffix and set stage such that
+       stable > rcX > betaX > alphaX > git */
+    if (*p)
+    {
+        if (strstr(p, "git"))
+            v->stage = -4;
+        else if (strstr(p, "alpha"))
+            v->stage = -3;
+        else if (strstr(p, "beta"))
+            v->stage = -2;
+        else if (strstr(p, "rc"))
+            v->stage = -1;
+        /* defaults to 0 = stable */
+    }
+}
+
 BOOL
 CheckVersion()
 {
@@ -3412,8 +3528,7 @@ CheckVersion()
         {
             retval = TRUE;
             p = strtok(p + 8, " ");
-            strncpy(o.ovpn_version, p, _countof(o.ovpn_version) - 1);
-            o.ovpn_version[_countof(o.ovpn_version) - 1] = '\0';
+            parse_ovpn_version(p);
         }
     }
 

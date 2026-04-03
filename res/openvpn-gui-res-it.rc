@@ -228,7 +228,7 @@ BEGIN
 #if ENABLE_OVPN3
     GROUPBOX "Engine OpenVPN", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
     AUTORADIOBUTTON "OpenVPN2", ID_RB_ENGINE_OVPN2, 18, 296, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "OpenVPN3 (sperimentale)", ID_RB_ENGINE_OVPN3, 76, 296, 90, 10
+    AUTORADIOBUTTON "OpenVPN3 (sperimentale)", ID_RB_ENGINE_OVPN3, 76, 296, 100, 10
 #endif
 
 END
@@ -244,14 +244,14 @@ BEGIN
     LTEXT "OpenVPN GUI v%ls - Interfaccia OpenVPN per Windows\n\
 Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
-Copyright (C) 2012-2024 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
+Copyright (C) 2012-2025 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
     LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_LTEXT_ABOUT2, 36, 55, 206, 50
     LTEXT "OpenVPN - Un'applicazione che permette di creare tunnel sicuri \
 in reti IP  con una singola porta TCP/UDP, con il supporto basato \
 sull'autenticazione e lo scambio di chiavi SSL/TLS, cifratura, \
 autenticazione e compressione dei pacchetti.\n\
 \n", ID_LTEXT_ABOUT3, 8, 70, 240, 64
-    LTEXT "Copyright (C) 2002-2024 OpenVPN Technologies, Inc <info@openvpn.net>\n\
+    LTEXT "Copyright (C) 2002-2025 OpenVPN Technologies, Inc <info@openvpn.net>\n\
 https://openvpn.net/", ID_LTEXT_ABOUT4, 8, 106, 240, 64
 END
 
@@ -366,8 +366,6 @@ Quest'azione può richiedere privilegi amministrativi."
 gruppo ""%ls"".\n\n\
 Completa la richiesta di autorizzazione precedente."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Errore nell'aggiunta dell'utente al gruppo ""%ls""."
-    IDS_ERR_ONE_CONN_OLD_VER "Quando usi una versione di OpenVPN più vecchia della 2.0-beta6 puoi avere una sola connessione attiva alla volta."
-    IDS_ERR_STOP_SERV_OLD_VER "Con OpenVPN 1.5/1.6 non puoi usare OpenVPN GUI per far partire una connessione mentre il servizio di OpenVPN è in funzione.\nSe vuoi usare OpenVPN GUI arresta il servizio di OpenVPN ."
     IDS_ERR_CREATE_EVENT "Il creatore di eventi è fallito all'uscita dell'evento: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Nome priorità sconosciuto: %ls"
     IDS_ERR_LOG_APPEND_BOOL "Il file log ha aggiunto un puntatore (dato come '%ls') deve essere '0' o '1'"

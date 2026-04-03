@@ -23,7 +23,9 @@
     "customManagers": [
         {
             "customType": "regex",
-            "fileMatch": ["^\\.github/workflows/.+\\.yml$"],
+            "managerFilePatterns": [
+                "/^\\.github/workflows/.+\\.yml$/"
+            ],
             "matchStrings": ["vcpkgGitCommitId:\\s*(?<currentDigest>.*?)\\n"],
             "currentValueTemplate": "master",
             "depNameTemplate": "vcpkg",

@@ -103,8 +103,8 @@ BEGIN
     LTEXT "", ID_TXT_BYTECOUNT, 20, 175, 200, 10
     LTEXT "OpenVPN GUI 11.y.0.0/2.4.x", ID_TXT_VERSION, 220, 175, 150, 10
     LTEXT "", ID_TXT_IP, 20, 160, 300, 10
-    PUSHBUTTON "Déconnecter", ID_DISCONNECT, 50, 190, 50, 14
-    PUSHBUTTON "Reprendre", ID_RESTART, 150, 190, 50, 14
+    PUSHBUTTON "Se déconnecter", ID_DISCONNECT, 50, 190, 50, 14
+    PUSHBUTTON "Reconnexion", ID_RESTART, 150, 190, 50, 14
     PUSHBUTTON "Séparer", ID_DETACH, 180, 190, 50, 14, WS_DISABLED
     PUSHBUTTON "Fermer", ID_HIDE, 100, 190, 50, 14
 END
@@ -178,7 +178,7 @@ BEGIN
     AUTORADIOBUTTON "&Inactif", ID_RB_BALLOON5, 181, 200, 40, 10
     AUTOCHECKBOX "Activer le fournisseur d'&accès à la pré-ouverture de session", ID_CHK_PLAP_REG, 17, 215, 200, 10
     AUTOCHECKBOX "Activer le redémarrage auto des connexions activées", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
-    AUTOCHECKBOX "Prompt for &OTP and combine with password", ID_CHK_CONCAT_OTP, 17, 245, 200, 10
+    AUTOCHECKBOX "Demande d'OTP et combinaison avec le mot de passe", ID_CHK_CONCAT_OTP, 17, 245, 200, 10
 END
 
 /* Advanced Dialog */
@@ -227,7 +227,7 @@ BEGIN
 #if ENABLE_OVPN3
     GROUPBOX "Moteur OpenVPN", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
     AUTORADIOBUTTON "OpenVPN2", ID_RB_ENGINE_OVPN2, 18, 296, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "OpenVPN3 (expérimental)", ID_RB_ENGINE_OVPN3, 76, 296, 90, 10
+    AUTORADIOBUTTON "OpenVPN3 (expérimental)", ID_RB_ENGINE_OVPN3, 76, 296, 100, 10
 #endif
 
 END
@@ -243,14 +243,14 @@ BEGIN
     LTEXT "OpenVPN GUI v%ls - Une interface graphique Windows pour OpenVPN\n\
 Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
-Copyright (C) 2012-2024 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
+Copyright (C) 2012-2025 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
     LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_LTEXT_ABOUT2, 36, 55, 206, 42
     LTEXT "OpenVPN - Une application permettant d'ouvrir un tunnel IP sécurisé \
 sur un simple port TCP/UDP avec un support SSL/TLS pour l'authentification de \
 session, échange de clés, cryptage de paquets, authentification des \
 paquets, et compression de paquets.\n\
 \n", ID_LTEXT_ABOUT3, 8, 70, 240, 64
-    LTEXT "Copyright (C) 2002-2024 OpenVPN Technologies, Inc <info@openvpn.net>\n\
+    LTEXT "Copyright (C) 2002-2025 OpenVPN Technologies, Inc <info@openvpn.net>\n\
 https://openvpn.net/", ID_LTEXT_ABOUT4, 8, 106, 240, 64
 END
 
@@ -300,7 +300,7 @@ BEGIN
     CONTROL "", ID_LVW_PKCS11, "SysListView32", LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP, 17, 25, 171,150
     PUSHBUTTON "&OK", IDOK, 20, 200, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP
     PUSHBUTTON "&Annuler", IDCANCEL, 90, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
-    PUSHBUTTON "&Recommencer", IDRETRY, 160, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "&Relancer", IDRETRY, 160, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
     LTEXT "", ID_TXT_WARNING, 6, 222, 190, 10
 END
 
@@ -311,7 +311,7 @@ FONT 8, "Segoe UI"
 LANGUAGE LANG_FRENCH, SUBLANG_DEFAULT
 BEGIN
     CONTROL "", ID_STATIC_QR, "Static", SS_BITMAP | WS_VISIBLE | SS_CENTERIMAGE, 0, 0, 10, 10
-    LTEXT "Scan this QR code on your mobile to proceed with authentication.", ID_TXT_QR, 0, 0, 10, 10, SS_CENTER | WS_VISIBLE | SS_EDITCONTROL
+    LTEXT "Scannez ce code QR sur votre téléphone portable pour procéder à l'authentification.", ID_TXT_QR, 0, 0, 10, 10, SS_CENTER | WS_VISIBLE | SS_EDITCONTROL
 END
 
 STRINGTABLE
@@ -331,9 +331,9 @@ BEGIN
     IDS_MENU_IMPORT_FILE "Importer fichier…"
     IDS_MENU_SETTINGS "Configuration…"
     IDS_MENU_CLOSE "Quitter"
-    IDS_MENU_CONNECT "Connecter"
-    IDS_MENU_DISCONNECT "Déconnecter"
-    IDS_MENU_RECONNECT "Reprendre"
+    IDS_MENU_CONNECT "Se connecter"
+    IDS_MENU_DISCONNECT "Se déconnecter"
+    IDS_MENU_RECONNECT "Reconnexion"
     IDS_MENU_STATUS "Afficher le statut"
     IDS_MENU_VIEWLOG "Voir le log"
     IDS_MENU_EDITCONFIG "Editer la configuration"
@@ -342,9 +342,9 @@ BEGIN
     IDS_MENU_SERVICE_START "Démarrer"
     IDS_MENU_SERVICE_STOP "Arrêter"
     IDS_MENU_SERVICE_RESTART "Redémarrer"
-    IDS_MENU_SERVICEONLY_START "Connecter"
-    IDS_MENU_SERVICEONLY_STOP "Déconnecter"
-    IDS_MENU_SERVICEONLY_RESTART "Reprendre"
+    IDS_MENU_SERVICEONLY_START "Se connecter"
+    IDS_MENU_SERVICEONLY_STOP "Se déconnecter"
+    IDS_MENU_SERVICEONLY_RESTART "Reconnexion"
     IDS_MENU_ASK_STOP_SERVICE "Voulez-vous vous déconnecter (arrêter le service OpenVPN) ?"
 
     /* Logviewer - Resources */
@@ -365,8 +365,6 @@ Cette action peut demander un mot de passe administratif ou un consentement."
 ""%ls"".\n\n\
 Veuillez compléter la boîte de dialogue d'autorisation précédente."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Ajout de l'utilisateur au groupe ""%ls"" échoué."
-    IDS_ERR_ONE_CONN_OLD_VER "Vous ne pouvez avoir qu'une connexion en même temps si vous utilisez une version d'OpenVPN plus ancienne que la 2.0-beta6."
-    IDS_ERR_STOP_SERV_OLD_VER "Vous ne pouvez utiliser OpenVPN GUI pour ouvrir une connexion lorsque que le service OpenVPN est actif (avec OpenVPN 1.5/1.6). Arrêtez le service OpenVPN si vous voulez utiliser OpenVPN GUI."
     IDS_ERR_CREATE_EVENT "CreateEvent échoué à la terminaison. Code d'événnement: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Nom de priorité inconnu: %ls"
     IDS_ERR_LOG_APPEND_BOOL "L'indicateur de log incrémenté (donné par '%ls') doit être '0' ou '1'"
@@ -387,12 +385,12 @@ Veuillez compléter la boîte de dialogue d'autorisation précédente."
     IDS_ERR_CERT_EXPIRED "Connexion impossible car votre certificat a expiré ou la date de votre système est incorrecte."
     IDS_ERR_CERT_NOT_YET_VALID "Connexion impossible car votre certificat n'est plus valide. Véfifiez que la date de votre système est correcte."
     IDS_NFO_STATE_RECONNECTING "Etat actuel: Reconnexion"
-    IDS_NFO_STATE_DISCONNECTED "Etat actuel: Deconnecté"
-    IDS_NFO_CONN_TERMINATED "La Connexion à %ls était terminée."
+    IDS_NFO_STATE_DISCONNECTED "Etat actuel: Déconnecté"
+    IDS_NFO_CONN_TERMINATED "La connexion à %ls était terminée."
     IDS_NFO_STATE_FAILED "Etat actuel: connexion échouée"
-    IDS_NFO_CONN_FAILED "La connexion à %ls a échouée."
+    IDS_NFO_CONN_FAILED "La connexion à %ls a échoué."
     IDS_NFO_STATE_FAILED_RECONN "Etat actuel: Reconnexion échouée"
-    IDS_NFO_RECONN_FAILED "La reconnexion à %ls a échouée."
+    IDS_NFO_RECONN_FAILED "La reconnexion à %ls a échoué."
     IDS_NFO_STATE_SUSPENDED "Etat actuel: Suspendu"
     IDS_ERR_READ_STDOUT_PIPE "Erreur lors de la lecture d'OpenVPN StdOut Pipe."
     IDS_ERR_CREATE_EDIT_LOGWINDOW "Creating RichEdit LogWindow échoué !"
@@ -407,7 +405,7 @@ Veuillez compléter la boîte de dialogue d'autorisation précédente."
     IDS_ERR_GET_EXIT_CODE "Impossible d'obtenir l'ExitCode du script de connexion (%ls)"
     IDS_ERR_CONN_SCRIPT_FAILED "Le script de connexion à échoué. (code de sortie=%ld)"
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Le script de connexion à échoué. TimeOut après %d sec."
-    IDS_ERR_CONFIG_EXIST "Il éxiste déjà un fichier de configuration nommé '%ls'. Vous ne pouvez \
+    IDS_ERR_CONFIG_EXIST "Il existe déjà un fichier de configuration nommé '%ls'. Vous ne pouvez \
 pas avoir différentes configurations avec le même nom même s'ils \
 ont placés dans un répertoire différent."
     IDS_NFO_CONN_TIMEOUT "La connexion à l'interface de gestion a échoué.\n\
@@ -483,7 +481,7 @@ Utiliser openvpn-gui --help pour plus d'informations."
     IDS_ERR_WRITE_NEW_KEY "Erreur d'écriture du fichier de clé privé (%ls)."
     IDS_NFO_PWD_CHANGED "Votre mot de passe a été modifié."
     IDS_ERR_READ_PKCS12 "Erreur de lecture du fichier PKCS #12 X509 (%ls)."
-    IDS_ERR_CREATE_PKCS12 "Erreur de création du nouveau fichier PKCS #12 X509. La modification du mot de passe a échouée."
+    IDS_ERR_CREATE_PKCS12 "Erreur de création du nouveau fichier PKCS #12 X509. La modification du mot de passe a échoué."
     IDS_ERR_OPEN_CONFIG "Impossible d'ouvrir le fichier de la configuration en mode de lecture: (%ls)"
     IDS_ERR_ONLY_ONE_KEY_OPTION "Vous ne pouvez pas avoir plus d'une option ""key"" dans votre fichier de configuration."
     IDS_ERR_ONLY_KEY_OR_PKCS12 "Vous ne pouvez pas avoir à la fois les options ""key"" et ""pkcs12"" dans votre configuration."
@@ -570,7 +568,7 @@ en tant qu'Administrator pour mettre à jour la base de registre."
     IDS_NFO_AUTO_CONNECT    "Connecter automatiquement dans %u secondes…"
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI est déjà en cours d'exécution. Faites un clic droit sur l'icône de la barre d'état pour commencer."
     IDS_NFO_BYTECOUNT "Octets entrants : %ls sortants : %ls"
-    IDS_NFO_OTP_PROMPT "Input OTP or passcode"
+    IDS_NFO_OTP_PROMPT "Saisir l'OTP ou le code d'accès"
 
     /* AS profile import */
     IDS_ERR_URL_IMPORT_PROFILE "Erreur lors de la récupération du profil à partir de l'URL: [%d] %ls"

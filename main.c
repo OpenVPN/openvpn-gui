@@ -184,13 +184,21 @@ _tWinMain(HINSTANCE hThisInstance,
     }
 
     /* Initialize handlers for manangement interface notifications */
-    mgmt_rtmsg_handler handler[] = { { ready_, OnReady },         { hold_, OnHold },
-                                     { log_, OnLogLine },         { state_, OnStateChange },
-                                     { password_, OnPassword },   { proxy_, OnProxy },
-                                     { stop_, OnStop },           { needok_, OnNeedOk },
-                                     { needstr_, OnNeedStr },     { echo_, OnEcho },
-                                     { bytecount_, OnByteCount }, { infomsg_, OnInfoMsg },
-                                     { timeout_, OnTimeout },     { 0, NULL } };
+    mgmt_rtmsg_handler handler[] = { { ready_, OnReady },
+                                     { hold_, OnHold },
+                                     { log_, OnLogLine },
+                                     { state_, OnStateChange },
+                                     { password_, OnPassword },
+                                     { proxy_, OnProxy },
+                                     { stop_, OnStop },
+                                     { needok_, OnNeedOk },
+                                     { needstr_, OnNeedStr },
+                                     { echo_, OnEcho },
+                                     { bytecount_, OnByteCount },
+                                     { infomsg_, OnInfoMsg },
+                                     { timeout_, OnTimeout },
+                                     { validate_, OnMgmtValidate },
+                                     { 0, NULL } };
     InitManagement(handler);
 
     /* initialize options to default state */
@@ -296,7 +304,8 @@ _tWinMain(HINSTANCE hThisInstance,
     }
 
     BOOL use_iservice = (o.iservice_admin && IsWindows7OrGreater()) || !IsUserAdmin();
-    if (use_iservice && strtod(o.ovpn_version, NULL) > 2.3 && !o.silent_connection)
+    version_t version_2_3 = { 2, 3, 0, 0 };
+    if (use_iservice && version_compare(&o.ovpn_version, &version_2_3) > 0 && !o.silent_connection)
     {
         CheckIServiceStatus(TRUE);
     }
@@ -513,7 +522,7 @@ HandleCopyDataMessage(const COPYDATASTRUCT *copy_data)
     }
     else if (copy_data->dwData == WM_OVPN_RESCAN)
     {
-        OnNotifyTray(WM_OVPN_RESCAN);
+        OnNotifyTray(0, WM_OVPN_RESCAN);
     }
     else
     {
@@ -653,7 +662,7 @@ WindowProcedure(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
 
         case WM_NOTIFYICONTRAY:
-            OnNotifyTray(lParam); /* Manages message from tray */
+            OnNotifyTray(wParam, lParam); /* Manages message from tray */
             break;
 
         case WM_COPYDATA: /* custom messages with data from other processes */
@@ -817,7 +826,8 @@ AboutDialogFunc(UNUSED HWND hDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lParam)
             if (GetDlgItemText(hDlg, ID_LTEXT_ABOUT3, tmp1, _countof(tmp1))
                 && wcsbegins(tmp1, prefix))
             {
-                _sntprintf_0(tmp2, L"%lsv%hs %ls", prefix, o.ovpn_version, tmp1 + wcslen(prefix));
+                _sntprintf_0(
+                    tmp2, L"%lsv%hs %ls", prefix, o.ovpn_version_str, tmp1 + wcslen(prefix));
                 SetDlgItemText(hDlg, ID_LTEXT_ABOUT3, tmp2);
             }
             break;
