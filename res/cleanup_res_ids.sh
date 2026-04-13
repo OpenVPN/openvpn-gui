@@ -15,7 +15,7 @@ for def in $(grep "^#define IDS_" openvpn-gui-res.h \
                  | grep -v IDS_NFO_OVPN_STATE_ \
                  | cut -d' ' -f2 )
 do
-    git grep -q $def *.c plap/*.c || error "Didn't find usage of $def"
+    git grep -q "\b$def\b" *.c plap/*.c || error "Didn't find usage of $def"
     # Note that ids should be checked manually before removal
     #sed -i -e "/$def/d" openvpn-gui-res.h res/openvpn-gui-res*.rc
 done
@@ -25,7 +25,7 @@ do
     echo "Checking for obsolete translations in $trans"
     for def in $(grep "^ *IDS_" $trans | sed -e 's/^ *//' | cut -d' ' -f1)
     do
-        git grep -q $def openvpn-gui-res.h \
+        git grep -q "#define $def " openvpn-gui-res.h \
             || error "$trans: Obsolete translation for $def"
     done
 done
