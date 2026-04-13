@@ -23,6 +23,8 @@ jobs:
           path: cf-changes.patch
       - name: Set job status
         run: test ! -s cf-changes.patch
+      - name: Check translations
+        run: ./res/cleanup_res_ids.sh
 
   msvc:
     strategy:
