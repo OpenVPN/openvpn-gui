@@ -1,3 +1,38 @@
+Version 11.63.0
+===============
+
+* GHA: execute cleanup_res_ids.sh
+* res: Major cleanup - remove unused resource strings
+* Do not delete entropy data when clearing passwords
+* Italian language update
+* res: Remove obsolete strings related to support for OpenVPN < 2.0
+* res: Fix some errors in English GUI texts
+* Typo in french error message
+* small fix to some grammar errors in the French translations
+* Suppport for auth-user-pass prompt with username-only
+* Use a proper version comparison for openvpn version
+* Remove trailing semicolon from some macros
+* Update github actions
+* Migrate config renovate.json
+* Update github actions
+* GHA: clean up the action pinning
+
+Version 11.62.0
+===============
+
+* Add Greek translation
+* Update Czech translation
+
+Version 11.61.0
+===============
+
+* Update Russian translation
+
+Version 11.60.0
+===============
+
+* Update copyright year in About dialog
+
 Version 11.59.0
 ===============
 
