@@ -166,7 +166,7 @@ BEGIN
     GROUPBOX "启动", 202, 6, 47, 235, 30
     AUTOCHECKBOX "在 Windows 开机时启动", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "偏好设置", ID_GROUPBOX3, 6, 82, 235, 180
+    GROUPBOX "偏好设置", ID_GROUPBOX3, 6, 82, 235, 195
     AUTOCHECKBOX "追加日志文件", ID_CHK_LOG_APPEND, 17, 95, 60, 10
     AUTOCHECKBOX "显示脚本窗口", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "静默连接", ID_CHK_SILENT, 17, 125, 200, 10
@@ -182,6 +182,7 @@ BEGIN
     AUTOCHECKBOX "启用预登录访问提供程序（需要管理员访问权限）", ID_CHK_PLAP_REG, 17, 215, 200, 10
     AUTOCHECKBOX "启用活动连接的自动重新启动", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
     AUTOCHECKBOX "提示输入&OTP并与密码结合", ID_CHK_CONCAT_OTP, 17, 245, 200, 10
+    AUTOCHECKBOX "&Sort configurations alphabetically", ID_CHK_SORT_CONFIGS, 17, 260, 200, 10
 END
 
 /* Advanced Dialog */

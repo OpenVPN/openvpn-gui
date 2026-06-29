@@ -237,6 +237,7 @@ typedef struct
     DWORD disconnectscript_timeout; /* Disconnect Script execution timeout (sec) */
     DWORD preconnectscript_timeout; /* Preconnect Script execution timeout (sec) */
     DWORD config_menu_view;         /* 0 for auto, 1 for original flat menu, 2 for hierarchical */
+    DWORD sort_configs;             /* nonzero to sort configs alphabetically in the menu */
     DWORD disable_popup_messages;   /* set nonzero to suppress all echo msg messages */
     DWORD popup_mute_interval;      /* Interval in hours to suppress repeated echo messages */
     DWORD mgmt_port_offset; /* management interface port = this offset + index of connection profile

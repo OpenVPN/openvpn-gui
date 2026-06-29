@@ -164,7 +164,7 @@ BEGIN
     GROUPBOX "Başlangıç", 202, 6, 47, 235, 30
     AUTOCHECKBOX "Windows başlangıcında çalıştır", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "Tercihler", ID_GROUPBOX3, 6, 82, 235, 180
+    GROUPBOX "Tercihler", ID_GROUPBOX3, 6, 82, 235, 195
     AUTOCHECKBOX "Günlüğe ekle", ID_CHK_LOG_APPEND, 17, 95, 60, 10
     AUTOCHECKBOX "Betik penceresini göster", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "Sessiz bağlantı", ID_CHK_SILENT, 17, 125, 200, 10
@@ -180,6 +180,7 @@ BEGIN
     AUTOCHECKBOX "Oturum Açma Öncesi &Erişim Sağlayıcıyı Etkinleştir (yönetici erişimi gerektirir)", ID_CHK_PLAP_REG, 17, 215, 200, 10
     AUTOCHECKBOX "Aktif bağlantıların otomatik yeniden başlatılmasını etkinleştir", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
     AUTOCHECKBOX "OTP sorgusu yap ve şifreyle birleştir", ID_CHK_CONCAT_OTP, 17, 245, 200, 10
+    AUTOCHECKBOX "&Sort configurations alphabetically", ID_CHK_SORT_CONFIGS, 17, 260, 200, 10
 END
 
 /* Advanced Dialog */
