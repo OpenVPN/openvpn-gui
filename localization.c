@@ -655,6 +655,10 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
             {
                 Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_CONCAT_OTP), BST_CHECKED);
             }
+            if (o.sort_configs)
+            {
+                Button_SetCheck(GetDlgItem(hwndDlg, ID_CHK_SORT_CONFIGS), BST_CHECKED);
+            }
 
             break;
 
@@ -723,6 +727,8 @@ GeneralSettingsDlgProc(HWND hwndDlg, UINT msg, UNUSED WPARAM wParam, LPARAM lPar
                     (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_AUTO_RESTART)) == BST_CHECKED);
                 o.auth_pass_concat_otp =
                     (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_CONCAT_OTP)) == BST_CHECKED);
+                o.sort_configs =
+                    (Button_GetCheck(GetDlgItem(hwndDlg, ID_CHK_SORT_CONFIGS)) == BST_CHECKED);
 
                 SaveRegistryKeys();
 
