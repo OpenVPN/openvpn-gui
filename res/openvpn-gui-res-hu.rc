@@ -1,0 +1,532 @@
+﻿/*
+ *  OpenVPN-GUI -- A Windows GUI for OpenVPN.
+ *
+ *  Copyright (C) 2004 Mathias Sundman <mathias@nilings.se>
+ *                2009 Heiko Hund <heikoh@users.sf.net>
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program (see the file COPYING included with this
+ *  distribution); if not, write to the Free Software Foundation, Inc.,
+ *  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+/* Passphrase Dialog */
+ID_DLG_PASSPHRASE DIALOGEX 6, 18, 160, 83
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+EXSTYLE WS_EX_TOPMOST
+CAPTION "OpenVPN – Privát kulcs jelszava"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_HUNGARIAN, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Add meg a &jelszót:", 201, 6, 6, 100, 10
+    EDITTEXT ID_EDT_PASSPHRASE, 6, 17, 107, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 126, 18, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
+    CHECKBOX "Jelszó &mentése", ID_CHK_SAVE_PASS, 6, 33, 100, 10
+    PUSHBUTTON "&OK", IDOK, 20, 49, 50, 14
+    PUSHBUTTON "&Mégse", IDCANCEL, 90, 49, 50, 14
+    LTEXT "", ID_TXT_WARNING, 6, 65, 100, 10
+END
+
+/* Auth Username/Password Dialog */
+ID_DLG_AUTH DIALOGEX 6, 18, 180, 95
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFOREGROUND
+EXSTYLE WS_EX_TOPMOST
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_HUNGARIAN, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "&Felhasználónév:", ID_LTEXT_USERNAME, 6, 9, 50, 10
+    EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
+    LTEXT "&Jelszó:", ID_LTEXT_PASSWORD, 6, 26, 50, 10
+    EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 24, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
+    CHECKBOX "Jelszó &mentése", ID_CHK_SAVE_PASS, 6, 42, 100, 10
+    PUSHBUTTON "&OK", IDOK, 20, 58, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "&Mégse", IDCANCEL, 90, 58, 52, 14
+    LTEXT "", ID_TXT_WARNING, 6, 80, 150, 10
+END
+
+/* Auth Username/Password/Challenge Dialog */
+ID_DLG_AUTH_CHALLENGE DIALOGEX 6, 18, 180, 129
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+EXSTYLE WS_EX_TOPMOST
+CAPTION "OpenVPN – Felhasználói hitelesítés"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_HUNGARIAN, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "&Felhasználónév:", ID_LTEXT_USERNAME, 6, 9, 50, 10
+    EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
+    LTEXT "&Jelszó:", ID_LTEXT_PASSWORD, 6, 26, 50, 10
+    EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 24, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
+    LTEXT "&Válasz:", ID_LTEXT_RESPONSE, 6, 60, 50, 10
+    LTEXT "", ID_TXT_AUTH_CHALLENGE, 6, 43, 148, 10
+    EDITTEXT ID_EDT_AUTH_CHALLENGE, 60, 57, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    CHECKBOX "Jelszó &mentése", ID_CHK_SAVE_PASS, 6, 76, 100, 10
+    PUSHBUTTON "&OK", IDOK, 20, 92, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "&Mégse", IDCANCEL, 90, 92, 52, 14
+    LTEXT "", ID_TXT_WARNING, 6, 108, 150, 10
+END
+
+/* Challenge Response Dialog */
+ID_DLG_CHALLENGE_RESPONSE DIALOGEX 6, 18, 212, 72
+STYLE WS_SIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
+EXSTYLE WS_EX_TOPMOST
+CAPTION "OpenVPN – Kihívás válasz (Challenge Response)"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_HUNGARIAN, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "", ID_TXT_DESCRIPTION, 6, 9, 400, 20
+    LTEXT "&Válasz:", ID_LTEXT_RESPONSE, 6, 30, 50, 10
+    EDITTEXT ID_EDT_RESPONSE, 60, 27, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 28, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
+    PUSHBUTTON "&OK", IDOK, 20, 51, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "&Mégse", IDCANCEL, 90, 51, 52, 14
+END
+
+/* Status Dialog */
+ID_DLG_STATUS DIALOG 6, 18, 380, 210
+STYLE WS_SIZEBOX | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | DS_CENTER
+CAPTION "OpenVPN"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_HUNGARIAN, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Kapcsolódás...", ID_TXT_STATUS, 20, 5, 200, 10
+    LTEXT "", ID_TXT_BYTECOUNT, 20, 175, 200, 10
+    LTEXT "OpenVPN GUI 11.y.0.0/2.4.x", ID_TXT_VERSION, 220, 175, 150, 10
+    LTEXT "", ID_TXT_IP, 20, 160, 300, 10
+    PUSHBUTTON "&Szétkapcsolás", ID_DISCONNECT, 50, 190, 50, 14
+    PUSHBUTTON "&Újrakapcsolás", ID_RESTART, 150, 190, 50, 14
+    PUSHBUTTON "&Leválasztás", ID_DETACH, 180, 190, 50, 14, WS_DISABLED
+    PUSHBUTTON "&Elrejtés", ID_HIDE, 100, 190, 50, 14
+END
+
+/* Message Window. */
+ID_DLG_MESSAGE DIALOG 6, 18, 278, 210
+STYLE WS_SIZEBOX | WS_SYSMENU | WS_POPUP | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND | DS_SETFONT
+CAPTION "OpenVPN Üzenet"
+FONT 9, "Segoe UI"
+LANGUAGE LANG_HUNGARIAN, SUBLANG_DEFAULT
+BEGIN
+    CONTROL "", ID_TXT_MESSAGE, RICHEDIT_CLASSW, ES_MULTILINE | WS_VSCROLL | ES_AUTOVSCROLL |  NOT WS_BORDER | ES_READONLY | NOT WS_TABSTOP, 10, 10, 260, 190
+END
+
+/* Change Passphrase Dialog */
+ID_DLG_CHGPASS DIALOG 6, 18, 193, 82
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "OpenVPN – Privát kulcs jelszavának megváltoztatása"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_HUNGARIAN, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "&Régi jelszó:", 171, 6, 9, 85, 10
+    EDITTEXT ID_EDT_PASS_CUR, 95, 6, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    LTEXT "&Új jelszó:", 172, 6, 26, 85, 10
+    EDITTEXT ID_EDT_PASS_NEW, 95, 23, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    LTEXT "Új jelszó m&egerősítése:", 173, 6, 42, 85, 10
+    EDITTEXT ID_EDT_PASS_NEW2, 95, 39, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON "&OK", IDOK, 40, 59, 50, 14
+    PUSHBUTTON "&Mégse", IDCANCEL, 103, 59, 50, 14
+    LTEXT "", ID_TXT_KEYFORMAT, 0, 0, 0, 0
+    LTEXT "", ID_TXT_KEYFILE, 0, 0, 0, 0
+END
+
+/* Proxy Settings Dialog */
+ID_DLG_PROXY DIALOG 6, 18, 249, 104
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Proxy"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_HUNGARIAN, SUBLANG_DEFAULT
+BEGIN
+    GROUPBOX "   ", 201, 6, 46, 235, 52
+    AUTORADIOBUTTON "OpenVPN &konfigurációs fájl beállításainak használata", ID_RB_PROXY_OPENVPN,
+                    13, 16, 200, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Rendszer &proxy beállításainak használata",
+                    ID_RB_PROXY_MSIE, 13, 31, 200, 10
+    AUTORADIOBUTTON "&Kézi konfiguráció", ID_RB_PROXY_MANUAL, 13, 46, 79, 10
+    AUTORADIOBUTTON "&HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "&SOCKS Proxy", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
+    LTEXT "&Cím:", ID_TXT_PROXY_ADDRESS, 20, 77, 32, 10
+    EDITTEXT ID_EDT_PROXY_ADDRESS, 53, 75, 117, 12, ES_AUTOHSCROLL
+    RTEXT "&Port:", ID_TXT_PROXY_PORT, 171, 77, 20, 10
+    EDITTEXT ID_EDT_PROXY_PORT, 196, 75, 30, 12, ES_AUTOHSCROLL
+END
+
+/* General Settings Dialog */
+ID_DLG_GENERAL DIALOGEX 6, 18, 249, 104
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Általános"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_HUNGARIAN, SUBLANG_DEFAULT
+BEGIN
+    GROUPBOX "Felhasználói felület", 201, 6, 12, 235, 30
+    LTEXT "&Nyelv:", ID_TXT_LANGUAGE, 17, 25, 52, 12
+    COMBOBOX ID_CMB_LANGUAGE, 57, 23, 171, 400, CBS_DROPDOWNLIST | WS_TABSTOP
+
+    GROUPBOX "Indítás", 202, 6, 47, 235, 30
+    AUTOCHECKBOX "Indítás Windows be&lépéskor", ID_CHK_STARTUP, 17, 59, 120, 12
+
+    GROUPBOX "Beállítások", ID_GROUPBOX3, 6, 82, 235, 180
+    AUTOCHECKBOX "Hozzáadás a &naplófájlhoz", ID_CHK_LOG_APPEND, 17, 95, 100, 10
+    AUTOCHECKBOX "Szkript &ablak megjelenítése", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
+    AUTOCHECKBOX "&Csendes kapcsolódás", ID_CHK_SILENT, 17, 125, 200, 10
+    AUTOCHECKBOX "&Interaktív szolgáltatás használata mindig", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
+    LTEXT "Buborékértesítés", ID_TXT_BALLOON, 17, 155, 100, 10
+    AUTORADIOBUTTON "Kapcsolódáskor", ID_RB_BALLOON1, 28, 170, 70, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Kapcsolódáskor/&újrakapcsolódáskor", ID_RB_BALLOON2, 100, 170, 120, 10
+    AUTORADIOBUTTON "&Soha", ID_RB_BALLOON0, 221, 170, 40, 10
+    LTEXT "Állandó kapcsolatok", ID_TXT_PERSISTENT, 17, 185, 100, 10
+    AUTORADIOBUTTON "A&utomatikus", ID_RB_BALLOON3, 28, 200, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "&Kézi", ID_RB_BALLOON4, 86, 200, 90, 10
+    AUTORADIOBUTTON "&Letiltva", ID_RB_BALLOON5, 181, 200, 50, 10
+    AUTOCHECKBOX "Bejelentkezés előtti hozzáférés engedélyezése (admin jog kell)", ID_CHK_PLAP_REG, 17, 215, 220, 10
+    AUTOCHECKBOX "Aktív kapcsolatok automatikus újraindítása", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
+    AUTOCHECKBOX "OTP kérése és egyesítése a jelszóval", ID_CHK_CONCAT_OTP, 17, 245, 200, 10
+END
+
+/* Advanced Dialog */
+ID_DLG_ADVANCED DIALOGEX 6, 18, 252, ADVANCED_DIALOG_HEIGHT
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Speciális"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_HUNGARIAN, SUBLANG_DEFAULT
+BEGIN
+    GROUPBOX "Konfigurációs fájlok", 201, 6, 12, 235, 45
+    LTEXT "&Mappa:", ID_TXT_FOLDER, 17, 25, 32, 10
+    EDITTEXT ID_EDT_CONFIG_DIR, 53, 23, 150, 12, ES_AUTOHSCROLL
+    LTEXT "&Kiterjesztés:", ID_TXT_EXTENSION, 17, 40, 52, 10
+    EDITTEXT ID_EDT_CONFIG_EXT, 53, 38, 25, 12, ES_AUTOHSCROLL
+    PUSHBUTTON "…", ID_BTN_CONFIG_DIR, 208, 23, 25, 12
+
+    GROUPBOX "Naplófájlok", 202, 6, 62, 235, 30
+    LTEXT "M&appa:", ID_TXT_FOLDER1, 17, 74, 32, 10
+    EDITTEXT ID_EDT_LOG_DIR, 53, 72, 150, 12, ES_AUTOHSCROLL
+    PUSHBUTTON "…", ID_BTN_LOG_DIR, 208, 72, 25, 12
+
+    GROUPBOX "Szkript időtúllépés", 203, 6, 97, 235, 60
+    LTEXT "&Kapcsolódás előtti szkript időtúllépése:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 130, 10
+    EDITTEXT ID_EDT_PRECONNECT_TIMEOUT, 150, 108, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
+    LTEXT "&Kapcsolódási szkript időtúllépése:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 130, 10
+    EDITTEXT ID_EDT_CONNECT_TIMEOUT, 150, 123, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
+    LTEXT "&Szétkapcsolási szkript időtúllépése:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 130, 10
+    EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 150, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
+
+    GROUPBOX "Felügyeleti (Management) interfész", 204, 6, 163, 235, 30
+    LTEXT "Port eltolás (offset):", 205, 17, 175, 75, 10
+    EDITTEXT ID_EDT_MGMT_PORT, 103, 173, 30, 12, ES_AUTOHSCROLL
+
+    GROUPBOX "Konfigurációs menü nézet", 206, 6, 198, 235, 30
+    AUTORADIOBUTTON "&Auto", ID_RB_BALLOON0, 28, 210, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "&Lapos", ID_RB_BALLOON1, 88, 210, 50, 10
+    AUTORADIOBUTTON "&Beágyazott", ID_RB_BALLOON2, 148, 210, 50, 10
+
+    GROUPBOX "Visszhangüzenet megjelenítése", 207, 6, 233, 235, 45
+    AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 245, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "S&oha", ID_RB_BALLOON4, 88, 245, 50, 10
+    LTEXT "Az ismétlődő üzenetek némítva:", 208, 17, 260, 125, 10
+    EDITTEXT ID_EDT_POPUP_MUTE, 150, 258, 30, 12, ES_AUTOHSCROLL
+    LTEXT "óra", 209, 190, 260, 40, 10
+
+#if ENABLE_OVPN3
+    GROUPBOX "OpenVPN Motor", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
+    AUTORADIOBUTTON "OpenVPN2", ID_RB_ENGINE_OVPN2, 18, 296, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "OpenVPN3 (kísérleti)", ID_RB_ENGINE_OVPN3, 76, 296, 100, 10
+#endif
+
+END
+
+/* About Dialog */
+ID_DLG_ABOUT DIALOG 6, 18, 249, 104
+STYLE WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Névjegy"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_HUNGARIAN, SUBLANG_DEFAULT
+BEGIN
+    ICON ID_ICO_APP, ID_ICON_ABOUT, 8, 16, 21, 20
+    LTEXT "OpenVPN GUI v%ls – Windows GUI az OpenVPN-hez\n\
+Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
+Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
+Copyright (C) 2012-2026 OpenVPN GUI közreműködők\n", ID_TXT_VERSION, 36, 15, 206, 50
+    LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_LTEXT_ABOUT2, 36, 55, 206, 42
+    LTEXT "OpenVPN – Alkalmazás biztonságos IP hálózati alagutak létesítésére \
+egyetlen TCP/UDP porton keresztül, SSL/TLS alapú munkamenet-hitelesítéssel, \
+kulcscserével, csomagtitkosítással, csomaghitelesítéssel és tömörítéssel.\n\
+\n", ID_LTEXT_ABOUT3, 8, 70, 240, 64
+    LTEXT "Copyright (C) 2002-2026 OpenVPN Technologies, Inc <info@openvpn.net>\n\
+https://openvpn.net/", ID_LTEXT_ABOUT4, 8, 106, 240, 64
+END
+
+/* Proxy Authentication Dialog */
+ID_DLG_PROXY_AUTH DIALOGEX 29, 23, 170, 65
+STYLE DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER
+EXSTYLE WS_EX_TOPMOST
+CAPTION "OpenVPN – Proxy hitelesítés"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_HUNGARIAN, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "&Felhasználónév:", 201, 9, 8, 50, 10
+    EDITTEXT ID_EDT_PROXY_USER, 60, 5, 94, 12, ES_AUTOHSCROLL
+    LTEXT "&Jelszó:", 202, 9, 26, 50, 10
+    EDITTEXT ID_EDT_PROXY_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 24, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
+    PUSHBUTTON "&OK", IDOK, 58, 43, 40, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+END
+
+/* URL Profile Import Dialog */
+ID_DLG_URL_PROFILE_IMPORT DIALOGEX 6, 18, 249, 95
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFOREGROUND
+CAPTION "Profil importálása az Access Serverről"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_HUNGARIAN, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "U&RL:", 201, 6, 9, 50, 10
+    EDITTEXT ID_EDT_URL, 60, 6, 183, 12, ES_AUTOHSCROLL
+    LTEXT "&Felhasználónév:", 202, 6, 26, 50, 10
+    EDITTEXT ID_EDT_AUTH_USER, 60, 23, 94, 12, ES_AUTOHSCROLL
+    LTEXT "&Jelszó:", ID_LTEXT_PASSWORD, 6, 42, 50, 10
+    EDITTEXT ID_EDT_AUTH_PASS, 60, 40, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 41, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
+    AUTOCHECKBOX "&Automatikus bejelentkezés", ID_CHK_AUTOLOGIN, 6, 59, 140, 10
+    PUSHBUTTON "&OK", IDOK, 20, 76, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
+    PUSHBUTTON "&Mégse", IDCANCEL, 90, 76, 52, 14
+END
+
+/* Query PKCS11-ID Dialog */
+ID_DLG_PKCS11_QUERY DIALOGEX 6, 18, 340, 242
+STYLE WS_SIZEBOX| WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFONT
+CAPTION "Tanúsítvány kiválasztása"
+FONT 8, "Segoe UI"
+LANGUAGE LANG_HUNGARIAN, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Elérhető PKCS11 tanúsítványok:", ID_TXT_PKCS11, 17, 12, 171, 12
+    CONTROL "", ID_LVW_PKCS11, "SysListView32", LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP, 17, 25, 171, 150
+    PUSHBUTTON "&OK", IDOK, 20, 200, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "&Mégse", IDCANCEL, 90, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "&Újra", IDRETRY, 160, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    LTEXT "", ID_TXT_WARNING, 6, 222, 190, 10
+END
+
+/* QR code dialog */
+ID_DLG_QR DIALOGEX 0, 0, 10, 10
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "Segoe UI"
+LANGUAGE LANG_HUNGARIAN, SUBLANG_DEFAULT
+BEGIN
+    CONTROL "", ID_STATIC_QR, "Static", SS_BITMAP | WS_VISIBLE | SS_CENTERIMAGE, 0, 0, 10, 10
+    LTEXT " Olvasd be ezt a QR-kódot a mobilodon a hitelesítés folytatásához.", ID_TXT_QR, 0, 0, 10, 10, SS_CENTER | WS_VISIBLE | SS_EDITCONTROL
+END
+
+STRINGTABLE
+LANGUAGE LANG_HUNGARIAN, SUBLANG_DEFAULT
+BEGIN
+    IDS_LANGUAGE_NAME "Hungarian"
+
+    /* Tray – Resources */
+    IDS_TIP_CONNECTED "\nKapcsolódva: "
+    IDS_TIP_CONNECTING "\nKapcsolódás ide: "
+    IDS_TIP_CONNECTED_SINCE "\nKapcsolódva ekkor óta: "
+    IDS_TIP_ASSIGNED_IP "\nKiosztott IP: %ls"
+    IDS_MENU_IMPORT "Importálás"
+    IDS_MENU_IMPORT_AS "Importálás Access Serverről…"
+    IDS_MENU_IMPORT_URL "Importálás URL-ről…"
+    IDS_MENU_IMPORT_FILE "Fájl importálása…"
+    IDS_MENU_SETTINGS "Beállítások…"
+    IDS_MENU_CLOSE "Kilépés"
+    IDS_MENU_CONNECT "Kapcsolódás"
+    IDS_MENU_DISCONNECT "Szétkapcsolás"
+    IDS_MENU_RECONNECT "Újrakapcsolás"
+    IDS_MENU_STATUS "Állapot megjelenítése"
+    IDS_MENU_VIEWLOG "Napló megtekintése"
+    IDS_MENU_EDITCONFIG "Konfig szerkesztése"
+    IDS_MENU_CLEARPASS  "Mentett jelszavak törlése"
+
+    /* Logviewer – Resources */
+    IDS_ERR_START_LOG_VIEWER "Hiba a naplómegjelenítő indításakor: %ls"
+    IDS_ERR_START_CONF_EDITOR "Hiba a konfig-szerkesztő indításakor: %ls"
+
+    /* OpenVPN */
+    IDS_NFO_NO_CONFIGS "Nem található olvasható kapcsolatprofil (konfigurációs fájl).\n\
+Használd a ""Fájl importálása..."" menüt, vagy másold a konfig fájlokat ide: ""%ls"" vagy ""%ls""."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "A kapcsolat (%ls) indításához tagság szükséges a következő csoportban: \
+""%ls"". Lépj kapcsolatba a rendszergazdával.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "A kapcsolat (%ls) indításához tagság szükséges a következő csoportban: \
+""%ls"".\n\n\
+Szeretnéd hozzáadni magad ehhez a csoporthoz?\n\
+Ez a művelet rendszergazdai jelszót vagy jóváhagyást kérhet."
+    IDS_NFO_CONFIG_AUTH_PENDING   "A kapcsolat (%ls) indításához tagság szükséges a következő csoportban: \
+""%ls"".\n\n\
+Kérlek, fejezd be az előző engedélyezési ablakot."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "A felhasználó hozzáadása a(z) ""%ls"" csoporthoz sikertelen."
+    IDS_ERR_CREATE_EVENT "A CreateEvent sikertelen a kilépési eseménynél: %ls"
+    IDS_ERR_UNKNOWN_PRIORITY "Ismeretlen prioritásnév: %ls"
+    IDS_ERR_INIT_SEC_DESC "A InitializeSecurityDescriptor sikertelen."
+    IDS_ERR_SET_SEC_DESC_ACL "A SetSecurityDescriptorDacl sikertelen."
+    IDS_ERR_DUP_HANDLE_IN_WRITE "A DuplicateHandle az hInputWrite-on sikertelen."
+    IDS_ERR_CREATE_PROCESS "A CreateProcess sikertelen, exe='%ls' cmdline='%ls' dir='%ls'"
+    IDS_ERR_CREATE_THREAD_STATUS "Az Állapot ablak megjelenítésére szolgáló CreateThread sikertelen."
+    IDS_NFO_STATE_WAIT_TERM "Aktuális állapot: Várakozás az OpenVPN leállására…"
+    IDS_NFO_STATE_CONNECTED "Aktuális állapot: Kapcsolódva"
+    IDS_NFO_STATE_ONHOLD "Aktuális állapot: Tartva (szétkapcsolva)"
+    IDS_NFO_NOW_CONNECTED "%ls most kapcsolódott."
+    IDS_NFO_ASSIGN_IP "Kiosztott IP: %ls"
+    IDS_NFO_STATE_RECONNECTING "Aktuális állapot: Újrakapcsolódás"
+    IDS_NFO_STATE_DISCONNECTED "Aktuális állapot: Szétkapcsolva"
+    IDS_NFO_CONN_TERMINATED "A kapcsolat megszakadt ezzel: %ls."
+    IDS_NFO_STATE_FAILED "Aktuális állapot: A kapcsolódás sikertelen"
+    IDS_NFO_CONN_FAILED "A kapcsolódás sikertelen ehhez: %ls."
+    IDS_NFO_STATE_FAILED_RECONN "Aktuális állapot: Az újrakapcsolódás sikertelen"
+    IDS_NFO_RECONN_FAILED "Az újrakapcsolódás sikertelen ehhez: %ls."
+    IDS_NFO_STATE_SUSPENDED "Aktuális állapot: Felfüggesztve"
+    IDS_ERR_READ_STDOUT_PIPE "Hiba az OpenVPN StdOut csővezetéken (pipe) való olvasáskor."
+    IDS_ERR_CREATE_EDIT_LOGWINDOW "A RichEdit naplóablak létrehozása sikertelen!!"
+    IDS_ERR_SET_SIZE "A méret beállítása sikertelen!"
+    IDS_ERR_AUTOSTART_CONF "Nem található a kért konfig az automatikus indításhoz: %ls"
+    IDS_ERR_CREATE_PIPE_IN_READ "A CreatePipe az hInputRead-en sikertelen."
+    IDS_NFO_STATE_CONNECTING "Aktuális állapot: Kapcsolódás"
+    IDS_NFO_CONNECTION_XXX "OpenVPN kapcsolat (%ls)"
+    IDS_NFO_STATE_CONN_SCRIPT "Aktuális állapot: Kapcsolódási szkript futtatása"
+    IDS_NFO_STATE_DISCONN_SCRIPT "Aktuális állapot: Szétkapcsolási szkript futtatása"
+    IDS_ERR_RUN_CONN_SCRIPT "Hiba a kapcsolódási szkript futtatásakor: %ls"
+    IDS_ERR_GET_EXIT_CODE "Nem sikerült lekérni a kapcsolódási szkript kilépési kódját (%ls)"
+    IDS_ERR_CONN_SCRIPT_FAILED "A kapcsolódási szkript sikertelen. (kilépési kód=%ld)"
+    IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "A kapcsolódási szkript sikertelen. Időtúllépés %d mp után."
+    IDS_ERR_CONFIG_EXIST "Mlétezik már '%ls' nevű konfig fájl. Nem lehet \
+több azonos nevű konfig fájlod, még akkor sem, \
+ha különböző mappákban vannak."
+    IDS_NFO_CONN_TIMEOUT "A felügyeleti interfészhez való kapcsolódás sikertelen.\n\
+Nézd meg a naplófájlt (%ls) a részletekért."
+    
+    /* main – Resources */
+    IDS_ERR_OPEN_DEBUG_FILE "Hiba a hibakeresési fájl (%ls) megnyitásakor kimenethez."
+    IDS_ERR_CREATE_PATH "Nem sikerült létrehozni a(z) %ls útvonalat:\n%ls"
+    IDS_ERR_LOAD_RICHED20 "Nem sikerült betölteni a RICHED20.DLL-t."
+    IDS_ERR_SHELL_DLL_VERSION "A shell32.dll verziója túl alacsony (0x%lx). Legalább 5.0-s verzió szükséges."
+    IDS_NFO_ACTIVE_CONN_EXIT "Még vannak aktív kapcsolatok, amelyek bezáródnak, ha kilépsz az OpenVPN GUI-ból.\
+\n\nBiztosan ki akarsz lépni?"
+    IDS_ERR_PARSE_MGMT_OPTION "Nem sikerült elemezni a --management opciót itt: <%ls%ls>. \
+Az automatikusan induló kapcsolatokhoz csatlakozáshoz --management opció szükséges a konfig fájlban."
+    IDS_NFO_STATE_ROUTE_ERROR "Aktuális állapot: Kapcsolódva útvonal-hibákkal"
+    IDS_NFO_NOTIFY_ROUTE_ERROR "%ls kapcsolódva útvonal-hibákkal"
+
+    /* options – Resources */
+    IDS_NFO_USAGE "--help\t\t\t: Üzenet megjelenítése.\n\
+--connect cnn \t\t: Kapcsolódás a ""cnn""-hez indításkor.\n\
+\t\t\t   Példa: openvpn-gui --connect office.ovpn\n\
+--command cmd [args]\t: Parancs küldése a futó GUI példánynak\n\
+Támogatott parancsok:\n\
+    connect cnn            \t: a ""cnn"" nevű konfig kapcsolása\n\
+    disconnect cnn         \t: a ""cnn"" nevű konfig szétkapcsolása\n\
+    reconnect cnn          \t: a ""cnn"" nevű konfig újrakapcsolása\n\
+    disconnect_all         \t: az összes kapcsolódott konfig szétkapcsolása\n\
+    exit                 \t\t: futó GUI példány leállítása (kérhet jóváhagyást)\n\
+    status cnn             \t: a ""cnn"" konfig státuszablakának megjelenítése, ha csatlakozva van\n\
+    silent_connection [0|1]\t: csendes kapcsolat jelző be (1) vagy ki (0)\n\
+    import path          \t\t: Az útvonal által megjelölt konfig fájl importálása\n\
+\t\t\tPélda: openvpn-gui.exe --command disconnect myconfig\n\
+\n\n"
+
+    IDS_NFO_USAGECAPTION "OpenVPN GUI Használat"
+    IDS_ERR_BAD_PARAMETER "Megpróbálom értelmezni a ""%ls"" értéket --option paraméterként, \
+de nem látok előtte '--'-t"
+    IDS_ERR_BAD_OPTION "Opció hiba: Ismeretlen opció vagy hiányzó paraméter(ek): --%ls\n\
+Használd az openvpn-gui --help parancsot a részletekért."
+
+    /* settings */
+    IDS_SETTINGS_CAPTION "OpenVPN – Beállítások"
+
+    /* proxy */
+    IDS_ERR_HTTP_PROXY_ADDRESS "Meg kell adnod egy HTTP proxy címet."
+    IDS_ERR_HTTP_PROXY_PORT "Meg kell adnod egy HTTP proxy portot."
+    IDS_ERR_HTTP_PROXY_PORT_RANGE "Meg kell adnod egy HTTP proxy portot 1 és 65535 között."
+    IDS_ERR_SOCKS_PROXY_ADDRESS "Meg kell adnod egy SOCKS proxy címet."
+    IDS_ERR_SOCKS_PROXY_PORT "Meg kell adnod egy SOCKS proxy portot."
+    IDS_ERR_SOCKS_PROXY_PORT_RANGE "Meg kell adnod egy SOCKS proxy portot 1 és 65535 között."
+    IDS_ERR_CREATE_REG_HKCU_KEY "Hiba a ""HKEY_CURRENT_USER\\%ls"" kulcs létrehozásakor."
+
+    /* service */
+    IDS_ERR_QUERY_SERVICE "Nem sikerült lekérdezni a szolgáltatás állapotát."
+    IDS_ERR_WRITE_SERVICE_PIPE "A szolgáltatás csővezetékére való írás sikertelen."
+    IDS_ERR_INSTALL_ISERVICE     "Az ""OpenVPNServiceInteractive"" nincs telepítve.\n\
+A Wintun illesztőprogram és a rendszergazdai jogosultságot igénylő feladatok nem működhetnek."
+    IDS_ERR_NOTSTARTED_ISERVICE  "Az ""OpenVPNServiceInteractive"" nincs elindítva.\n\
+A Wintun illesztőprogram és a rendszergazdai jogosultságot igénylő feladatok nem működhetnek."
+    IDS_ERR_NOTSTARTED_ISERVICE_ADM  "Az ""OpenVPNServiceInteractive"" nincs elindítva.\n\
+A Wintun illesztőprogram nem fog működni."
+
+    /* registry */
+    IDS_ERR_GET_WINDOWS_DIR "Hiba a Windows mappa lekérdezésekor."
+    IDS_ERR_OPEN_REGISTRY "Hiba a beállításjegyzék (Registry) olvasásra megnyitásakor (HKLM\\SOFTWARE\\OpenVPN).\n \
+Az OpenVPN valószínűleg nincs telepítve"
+    IDS_ERR_READING_REGISTRY "Hiba a beállításjegyzék érték olvasásakor (HKLM\\SOFTWARE\\OpenVPN)."
+    IDS_ERR_DISCONN_SCRIPT_TIMEOUT "A ""disconnectscript_timeout"" beállításjegyzék értéknek 1 és 99 közötti számnak kell lennie."
+    IDS_ERR_PRECONN_SCRIPT_TIMEOUT "A ""preconnectscript_timeout"" beállításjegyzék értéknek 1 és 99 közötti számnak kell lennie."
+    IDS_ERR_WRITE_REGVALUE "Hiba a(z) ""HKEY_CURRENT_USER\\%ls\\%ls"" beállításjegyzék érték írásakor."
+    IDS_ERR_PLAP_REG "Nem sikerült engedélyezni a Bejelentkezés előtti indítást (hiba = %d)"
+    IDS_ERR_PLAP_UNREG "Nem sikerült letiltani a Bejelentkezés előtti indítást (hiba = %d)"
+
+    /* importation */
+    IDS_ERR_IMPORT_FAILED "A fájl importálása sikertelen. A következő útvonalat nem sikerült létrehozni.\n\n\
+%ls\n\nGyőződj meg arról, hogy megfelelő jogosultságaid vannak."
+    IDS_NFO_IMPORT_SUCCESS "A fájl sikeresen importálva."
+    IDS_NFO_IMPORT_OVERWRITE "Mlétezik már ""%ls"" nevű konfig. Lecseréled?"
+    IDS_NFO_IMPORT_SOURCE "Szeretnéd importálni a(z) <%ls> profilt?"
+    IDS_ERR_IMPORT_SOURCE "A(z) <%ls> fájl nem importálható, mert már a globális vagy helyi konfig mappában van"
+    IDS_ERR_IMPORT_ACCESS "A(z) <%ls> nem importálható, mert hiányzik vagy nem olvasható"
+
+    /* save/delete password */
+    IDS_NFO_DELETE_PASS "Nyomj OK-t a mentett jelszavak törléséhez ehhez a konfighoz: ""%ls"""
+
+    /* Token password related */
+    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – Token Jelszó"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "Add meg a jelszót/PIN-t a(z) '%hs' tokenhez"
+
+    IDS_NFO_AUTH_PASS_RETRY "Hibás adatok. Próbáld újra…"
+    IDS_NFO_KEY_PASS_RETRY  "Hibás jelszó. Próbáld újra…"
+    IDS_ERR_INVALID_PASSWORD_INPUT "Érvénytelen karakter a jelszóban"
+    IDS_ERR_INVALID_USERNAME_INPUT "Érvénytelen karakter a felhasználónévben"
+    IDS_NFO_AUTO_CONNECT    "Automatikus kapcsolódás %u másodperc múlva…"
+    IDS_NFO_CLICK_HERE_TO_START "Az OpenVPN GUI már fut. Kattints a jobb gombbal a tálcaikonra az indításhoz."
+    IDS_NFO_BYTECOUNT "Bejövő bájt: %ls  kimenő: %ls"
+    IDS_NFO_OTP_PROMPT "Add meg az OTP-t vagy a belépőkódot"
+
+    /* AS profile import */
+    IDS_ERR_URL_IMPORT_PROFILE "Hiba a profil letöltésekor az URL-ről: [%d] %ls"
+
+    IDS_ERR_NO_PKCS11 "Nem találhatók tanúsítványok. Ha van tokened, helyezd be és nyomj az újrára."
+    IDS_ERR_SELECT_PKCS11 "Nincs kiválasztva tanúsítvány."
+    /* column headers for pkcs11 certificate list */
+    IDS_CERT_DISPLAYNAME "Kiadva neki"
+    IDS_CERT_ISSUER "Kiadó"
+    IDS_CERT_NOTAFTER "Érvényes eddig"
+
+    /* PLAP related */
+    IDS_NFO_STATE_RETRYING "Újrapróbálás"
+    IDS_NFO_STATE_CANCELLING "Megszakítás"
+    IDS_NFO_STATE_DISCONNECTING "Szétkapcsolás"
+    IDS_NFO_CONN_CANCELLED "A felhasználó megszakította a kapcsolatot"
+
+    /* openvpn daemon state names -- these are shown on progress dialog in PLAP */
+    IDS_NFO_OVPN_STATE_INITIAL      "Inicializálás"
+    IDS_NFO_OVPN_STATE_CONNECTING   "Kapcsolódás"
+    IDS_NFO_OVPN_STATE_ASSIGN_IP    "IP-cím kiosztása"
+    IDS_NFO_OVPN_STATE_ADD_ROUTES   "Útvonalak hozzáadása"
+    IDS_NFO_OVPN_STATE_CONNECTED    "Kapcsolódva"
+    IDS_NFO_OVPN_STATE_RECONNECTING "Újrakapcsolódás"
+    IDS_NFO_OVPN_STATE_EXITING      "Kilépés"
+    IDS_NFO_OVPN_STATE_WAIT         "Várakozás"
+    IDS_NFO_OVPN_STATE_AUTH         "Hitelesítés"
+    IDS_NFO_OVPN_STATE_GET_CONFIG   "Konfiguráció letöltése a szerverről"
+    IDS_NFO_OVPN_STATE_RESOLVE      "Távoli gép feloldása"
+    IDS_NFO_OVPN_STATE_TCP_CONNECT  "TCP kapcsolat létesítése"
+    IDS_NFO_OVPN_STATE_AUTH_PENDING "Hitelesítés folyamatban"
+    IDS_NFO_OVPN_STATE_UNKNOWN      "?"
+
+END
