@@ -26,6 +26,7 @@
 #endif
 
 #include <windows.h>
+#include <shlwapi.h>
 #include <windowsx.h>
 #include <versionhelpers.h>
 #include <tchar.h>
@@ -2953,12 +2954,18 @@ StartOpenVPN(connection_t *c)
             /* Show an error if manually connecting */
             if (c->state == disconnected)
             {
+                WCHAR config_path[MAX_PATH];
+
+                if (PathCombineW(config_path, c->config_dir, c->config_file) == NULL)
+                {
+                    wcsncpy_s(config_path, _countof(config_path), c->config_file, _TRUNCATE);
+                }
+
                 ShowLocalizedMsgEx(MB_OK | MB_ICONERROR,
                                    o.hWnd,
                                    TEXT(PACKAGE_NAME),
                                    IDS_ERR_PARSE_MGMT_OPTION,
-                                   c->config_dir,
-                                   c->config_file);
+                                   config_path);
             }
             else
             {

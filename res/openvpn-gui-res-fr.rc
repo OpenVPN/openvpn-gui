@@ -400,7 +400,7 @@ Afficher le fichier journal (%ls) pour plus de détails."
     IDS_ERR_SHELL_DLL_VERSION "La version de votre shell32.dll est trop basse (0x%lx). Vous devez avoir au moins la version 5.0."
     IDS_NFO_ACTIVE_CONN_EXIT "Les connexions en cours seront interrompues si vous fermez OpenVPN GUI.\
 \n\nVous êtes sûr de vouloir fermer l'application ?"
-    IDS_ERR_PARSE_MGMT_OPTION "Impossible d'analyser l'option de gestion --dans <%ls%ls>."
+    IDS_ERR_PARSE_MGMT_OPTION "Impossible d'analyser l'option de gestion --dans <%ls>."
 
     /* options - Resources */
     IDS_NFO_USAGE "--aide\t\t\t: Afficher ce message.\n\

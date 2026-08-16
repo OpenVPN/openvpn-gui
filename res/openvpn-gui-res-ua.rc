@@ -399,7 +399,7 @@ BEGIN
     IDS_ERR_SHELL_DLL_VERSION "Ваша версія shell32.dll занадто стара (0x%lx). Вам необхідно використовувати, як мінімум, версію файлів 5.0."
     IDS_NFO_ACTIVE_CONN_EXIT "Ще є активні з'єднання, які будуть зупинені, якщо ви завершите роботу OpenVPN GUI.\
 \n\nВи впевнені, що бажаєте завершити?"
-    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls>."
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Відобразити це повідомлення.\n\

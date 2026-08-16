@@ -400,7 +400,7 @@ ligger i forskellige kataloger."
     IDS_NFO_ACTIVE_CONN_EXIT "Aktive forbindelser vil blive afbrudt hvis du afslutter OpenVPN GUI. \
  \n\nVil du afslutte?"
 
-    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls>."
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Vis denne meddelelse.\n\

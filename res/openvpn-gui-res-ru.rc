@@ -400,7 +400,7 @@ BEGIN
     IDS_ERR_SHELL_DLL_VERSION "Ваша версия shell32.dll слишком старая (0x%lx). Вам необходима как минимум версия 5.0."
     IDS_NFO_ACTIVE_CONN_EXIT "Ещё присутствуют активные соединения, которые будут закрыты, если вы выйдите из OpenVPN GUI.\
 \n\nВы уверены, что хотите выйти?"
-    IDS_ERR_PARSE_MGMT_OPTION "Опция --management не распознана в <%ls%ls>."
+    IDS_ERR_PARSE_MGMT_OPTION "Опция --management не распознана в <%ls>."
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Отобразить это сообщение.\n\

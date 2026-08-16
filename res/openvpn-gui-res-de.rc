@@ -402,7 +402,7 @@ Konsultieren Sie die Log-Datei (%ls) für weitere Informationen."
     IDS_ERR_SHELL_DLL_VERSION "Die shell32.dll Versionsnummer ist zu niedrig (0x%lx). Es muss mindestens Version 5.0 installiert sein."
     IDS_NFO_ACTIVE_CONN_EXIT "Es exisiert noch eine aktive Verbindung, welche geschlossen wird, wenn Sie OpenVPN GUI beenden.\
 \n\nSind Sie sicher, dass Sie das Programm beenden möchten?"
-    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls>."
 
     /* options – Resources */
     IDS_NFO_USAGE "--help\t\t\t: Zeigt diese Informationen.\n\
