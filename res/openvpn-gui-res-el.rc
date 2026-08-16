@@ -401,7 +401,7 @@ BEGIN
     IDS_ERR_SHELL_DLL_VERSION "Η έκδοση του shell32.dll είναι παλιά (0x%lx). Απαιτείται έκδοση 5.0 ή νεότερη."
     IDS_NFO_ACTIVE_CONN_EXIT "Υπάρχουν ενεργές συνδέσεις. Αν κλείσετε το OpenVPN GUI, θα διακοπούν.\
 \n\nΘέλετε σίγουρα να κλείσετε την εφαρμογή;"
-    IDS_ERR_PARSE_MGMT_OPTION "Αδυναμία ανάλυσης της επιλογής --management στο <%ls%ls>."
+    IDS_ERR_PARSE_MGMT_OPTION "Αδυναμία ανάλυσης της επιλογής --management στο <%ls>."
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Εμφάνιση αυτού του μηνύματος.\n\

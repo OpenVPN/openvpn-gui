@@ -415,7 +415,7 @@ View log file (%ls) for more details."
     IDS_ERR_SHELL_DLL_VERSION "Your shell32.dll version is to low (0x%lx). You need at least version 5.0."
     IDS_NFO_ACTIVE_CONN_EXIT "There are still active connections that will be closed if you exit OpenVPN GUI.\
 \n\nAre you sure you want to exit?"
-    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>. \
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls>. \
 Attaching to auto-started connections requires --management option in the config file."
     IDS_NFO_STATE_ROUTE_ERROR "Current State: Connected with route errors"
     IDS_NFO_NOTIFY_ROUTE_ERROR "%ls connected with route errors"

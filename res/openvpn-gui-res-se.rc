@@ -396,7 +396,7 @@ konfigurations filer med samma namn, även om de ligger i olika kataloger."
     IDS_ERR_LOAD_RICHED20 "Kunde inte ladda RICHED20.DLL."
     IDS_ERR_SHELL_DLL_VERSION "Din shell32.dll version är för låg (0x%lx). Du böhöver minst version 5.0."
     IDS_NFO_ACTIVE_CONN_EXIT "Du har aktiva uppkopplingar i gång som kommer kopplas ner om du avslutar OpenVPN GUI.\n\nÄr du säker på att du vill avsluta?"
-    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls>."
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Visa detta meddelande.\n\

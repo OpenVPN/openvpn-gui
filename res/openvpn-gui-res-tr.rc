@@ -399,7 +399,7 @@ kayıt edemezsiniz."
     IDS_ERR_SHELL_DLL_VERSION "Sistemde bulunan shell32.dll verdsiyonu eski. (0x%lx). En az 5.0 versiyonuna sahip olmalısınız."
     IDS_NFO_ACTIVE_CONN_EXIT "OpenVPN GUI ' yi kapatırsanız, açık olan bağlantılarınız sonlandırılacaktır.\
 \n\nÇıkmak istediğinize emin misiniz?"
-    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls>."
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Yardım mesajını gözter.\n\
