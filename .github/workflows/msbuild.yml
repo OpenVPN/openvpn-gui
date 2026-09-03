@@ -10,7 +10,7 @@ jobs:
       - name: Install pre-commit
         run: pip3 install pre-commit
       - name: Checkout OpenVPN-GUI
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Run pre-commit
         run: pre-commit run -a || true
       - name: Check for changes
@@ -49,8 +49,8 @@ jobs:
     name: 'msvc - ${{matrix.arch}} ${{ matrix.ovpn3.name }}${{ matrix.conf.name }}'
     runs-on: windows-2022
     steps:
-    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-    - uses: lukka/get-cmake@f5b8fbb4d77cec1acc5a5f9f0df4beffaf5d98d9 # v4.3.4
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+    - uses: lukka/get-cmake@fffaaafeea488556c2c12dad60690008bc1caacb # v4.4.2
 
     - name: Restore artifacts, or setup vcpkg (do not install any package)
       uses: lukka/run-vcpkg@b1a0dd252f06b9e25b3c022a9a03bd7a427fb6a2 # v11.6
@@ -92,7 +92,7 @@ jobs:
       - name: Install dependencies
         run: sudo apt update && sudo apt install -y mingw-w64 libtool automake autoconf
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: autoconf
         run: autoreconf -fvi
