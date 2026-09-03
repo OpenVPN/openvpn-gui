@@ -372,6 +372,82 @@ BuildFileList0(const TCHAR *config_dir, int recurse_depth, int group, int flags)
     FindClose(find_handle);
 }
 
+/* qsort comparator: alphabetical by config_name, locale-aware and case
+ * insensitive. Ties are broken by load order (c->id) to keep the sort stable.
+ */
+static int
+ConfigCompareName(const void *a, const void *b)
+{
+    const connection_t *c1 = *(connection_t *const *)a;
+    const connection_t *c2 = *(connection_t *const *)b;
+
+    int cmp = CompareStringW(LOCALE_USER_DEFAULT, NORM_IGNORECASE, c1->config_name, -1,
+                             c2->config_name, -1)
+              - 2; /* -2 to match strcmp semantics (CSTR_LESS_THAN == 1) */
+    if (cmp == 0)
+    {
+        cmp = (c1->id > c2->id) - (c1->id < c2->id);
+    }
+    return cmp;
+}
+
+/* qsort comparator: by load order (c->id), i.e. filesystem enumeration order */
+static int
+ConfigCompareId(const void *a, const void *b)
+{
+    const connection_t *c1 = *(connection_t *const *)a;
+    const connection_t *c2 = *(connection_t *const *)b;
+
+    return (c1->id > c2->id) - (c1->id < c2->id);
+}
+
+/*
+ * Reorder the connection list used to build the tray menu. When o.sort_configs
+ * is set the configs are sorted alphabetically by name; otherwise they are
+ * restored to their original load order (c->id), so toggling the option off
+ * fully reverts to the filesystem enumeration order. c->id is never modified,
+ * so the management port mapping and per-config menu handles stay intact.
+ */
+static void
+SortConfigList(void)
+{
+    int n = o.num_configs;
+    if (n < 2)
+    {
+        return;
+    }
+
+    connection_t **arr = malloc(n * sizeof(connection_t *));
+    if (!arr)
+    {
+        return; /* leave the list unchanged on allocation failure */
+    }
+
+    int i = 0;
+    for (connection_t *c = o.chead; c && i < n; c = c->next)
+    {
+        arr[i++] = c;
+    }
+    n = i;
+    if (n < 2)
+    {
+        free(arr);
+        return;
+    }
+
+    qsort(arr, n, sizeof(connection_t *), o.sort_configs ? ConfigCompareName : ConfigCompareId);
+
+    for (i = 0; i < n - 1; ++i)
+    {
+        arr[i]->next = arr[i + 1];
+    }
+    arr[n - 1]->next = NULL;
+    o.chead = arr[0];
+    o.ctail = arr[n - 1];
+
+    free(arr);
+}
+
 void
 BuildFileList()
 {
@@ -432,6 +508,8 @@ BuildFileList()
     }
 
     ActivateConfigGroups();
+
+    SortConfigList();
 
     issue_warnings = false;
 }

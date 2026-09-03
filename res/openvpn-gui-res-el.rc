@@ -165,7 +165,7 @@ BEGIN
     GROUPBOX "Εκκίνηση", 202, 6, 47, 235, 30
     AUTOCHECKBOX "Εκκίνηση μαζί με τα Windows", ID_CHK_STARTUP, 17, 59, 150, 12
 
-    GROUPBOX "Επιλογές", ID_GROUPBOX3, 6, 82, 235, 180
+    GROUPBOX "Επιλογές", ID_GROUPBOX3, 6, 82, 235, 195
     AUTOCHECKBOX "Προσθήκη εγγραφών στο τέλος του log", ID_CHK_LOG_APPEND, 17, 95, 200, 10
     AUTOCHECKBOX "Εμφάνιση παραθύρου σεναρίου (script)", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
     AUTOCHECKBOX "Αθόρυβη σύνδεση", ID_CHK_SILENT, 17, 125, 200, 10
@@ -181,6 +181,7 @@ BEGIN
     AUTOCHECKBOX "Ενεργοποίηση Pre-Logon Access Provider (απαιτεί admin)", ID_CHK_PLAP_REG, 17, 215, 220, 10
     AUTOCHECKBOX "Ενεργοποίηση αυτόματης επανεκκίνησης ενεργών συνδέσεων", ID_CHK_AUTO_RESTART, 17, 230, 220, 10
     AUTOCHECKBOX "Ερώτηση για OTP και συνδυασμός με σύνθημα", ID_CHK_CONCAT_OTP, 17, 245, 220, 10
+    AUTOCHECKBOX "&Sort configurations alphabetically", ID_CHK_SORT_CONFIGS, 17, 260, 220, 10
 END
 
 /* Advanced Dialog */

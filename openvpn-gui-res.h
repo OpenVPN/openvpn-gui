@@ -173,6 +173,7 @@
 /* General settings contd.. */
 
 #define ID_CHK_CONCAT_OTP               470
+#define ID_CHK_SORT_CONFIGS             471
 
 /*
  * String Table Resources
