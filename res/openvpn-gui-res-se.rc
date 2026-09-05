@@ -173,11 +173,11 @@ BEGIN
     AUTORADIOBUTTON "Aldrig", ID_RB_BALLOON0, 181, 170, 40, 10
     LTEXT "Beständiga anslutningar", ID_TXT_PERSISTENT, 17, 185, 100, 10
     AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 200, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "&Manual", ID_RB_BALLOON4, 86, 200, 90, 10
-    AUTORADIOBUTTON "&Disable", ID_RB_BALLOON5, 181, 200, 40, 10
-    AUTOCHECKBOX "Enable Pre-Logon A&ccess Provider (requires admin access)", ID_CHK_PLAP_REG, 17, 215, 200, 10
-    AUTOCHECKBOX "Enable auto restart of active connections", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
-    AUTOCHECKBOX "Prompt for &OTP and combine with password", ID_CHK_CONCAT_OTP, 17, 245, 200, 10
+    AUTORADIOBUTTON "&Manuellt", ID_RB_BALLOON4, 86, 200, 90, 10
+    AUTORADIOBUTTON "&Inaktivera", ID_RB_BALLOON5, 181, 200, 40, 10
+    AUTOCHECKBOX "Aktivera åtkomstleverantör före &inloggning (kräver administratörsbehörighet)", ID_CHK_PLAP_REG, 17, 215, 200, 10
+    AUTOCHECKBOX "Aktivera automatisk återstart av aktiva anslutningar", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
+    AUTOCHECKBOX "Fråga efter &engångslösenord och kombinera det med lösenordet", ID_CHK_CONCAT_OTP, 17, 245, 200, 10
 END
 
 /* Advanced Dialog */
@@ -212,21 +212,21 @@ BEGIN
     EDITTEXT ID_EDT_MGMT_PORT, 103, 173, 30, 12, ES_AUTOHSCROLL
 
     GROUPBOX "Visning av konfigurationsmeny", 206, 6, 198, 235, 30
-    AUTORADIOBUTTON "&Auto", ID_RB_BALLOON0, 28, 210, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "&Flat", ID_RB_BALLOON1, 88, 210, 50, 10
-    AUTORADIOBUTTON "&Nested", ID_RB_BALLOON2, 148, 210, 50, 10
+    AUTORADIOBUTTON "&Automatisk", ID_RB_BALLOON0, 28, 210, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "&Platt", ID_RB_BALLOON1, 88, 210, 50, 10
+    AUTORADIOBUTTON "&Nästad", ID_RB_BALLOON2, 148, 210, 50, 10
 
     GROUPBOX "Visning av ekomeddelanden", 207, 6, 233, 235, 45
-    AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 245, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Ne&ver", ID_RB_BALLOON4, 88, 245, 50, 10
+    AUTORADIOBUTTON "A&utomatiskt", ID_RB_BALLOON3, 28, 245, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "A&ldrig", ID_RB_BALLOON4, 88, 245, 50, 10
     LTEXT "Upprepade meddelanden tystas i: ", 208, 17, 260, 125, 10
     EDITTEXT ID_EDT_POPUP_MUTE, 150, 258, 30, 12, ES_AUTOHSCROLL
     LTEXT "timmar", 209, 190, 260, 40, 10
 
 #if ENABLE_OVPN3
-    GROUPBOX "OpenVPN Engine", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
+    GROUPBOX "OpenVPN-motor", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
     AUTORADIOBUTTON "OpenVPN2", ID_RB_ENGINE_OVPN2, 18, 296, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "OpenVPN3 (experimental)", ID_RB_ENGINE_OVPN3, 76, 296, 100, 10
+    AUTORADIOBUTTON "OpenVPN3 (experimentell)", ID_RB_ENGINE_OVPN3, 76, 296, 100, 10
 #endif
 
 END
@@ -285,7 +285,7 @@ BEGIN
     ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 41, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
     AUTOCHECKBOX "&Automatisk inloggning", ID_CHK_AUTOLOGIN, 6, 59, 100, 10
     PUSHBUTTON "&OK", IDOK, 20, 76, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
-    PUSHBUTTON "&Cancel", IDCANCEL, 90, 76, 52, 14
+    PUSHBUTTON "&Avbryt", IDCANCEL, 90, 76, 52, 14
 END
 
 /* Query PKCS11-ID Dialog */
@@ -298,8 +298,8 @@ BEGIN
     LTEXT "Tillgängliga PKCS11-certifikat:", ID_TXT_PKCS11, 17, 12, 171, 12
     CONTROL "", ID_LVW_PKCS11, "SysListView32", LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP, 17, 25, 171,150
     PUSHBUTTON "&OK", IDOK, 20, 200, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP
-    PUSHBUTTON "&Cancel", IDCANCEL, 90, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
-    PUSHBUTTON "&Retry", IDRETRY, 160, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "&Avbryt", IDCANCEL, 90, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "&Försök igen", IDRETRY, 160, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
     LTEXT "", ID_TXT_WARNING, 6, 222, 190, 10
 END
 
@@ -323,10 +323,10 @@ BEGIN
     IDS_TIP_CONNECTING "\nAnsluter till: "
     IDS_TIP_CONNECTED_SINCE "\nAnsluten sedan: "
     IDS_TIP_ASSIGNED_IP "\nTilldelad IP: %ls"
-    IDS_MENU_IMPORT "Import"
-    IDS_MENU_IMPORT_AS "Import from Access Server…"
-    IDS_MENU_IMPORT_URL "Import from URL…"
-    IDS_MENU_IMPORT_FILE "Import file…"
+    IDS_MENU_IMPORT "Importera"
+    IDS_MENU_IMPORT_AS "Importera från Access Server…"
+    IDS_MENU_IMPORT_URL "Importera från URL…"
+    IDS_MENU_IMPORT_FILE "Importera fil…"
     IDS_MENU_SETTINGS "Inställningar…"
     IDS_MENU_CLOSE "Avsluta"
     IDS_MENU_CONNECT "Anslut"
@@ -342,18 +342,18 @@ BEGIN
     IDS_ERR_START_CONF_EDITOR "Fel vid start av konfig editor: %ls"
 
     /* OpenVPN */
-    IDS_NFO_NO_CONFIGS "No readable connection profiles (config files) found.\n\
-Use the ""Import File.."" menu or copy your config files to ""%ls"" or ""%ls""."
-    IDS_ERR_CONFIG_NOT_AUTHORIZED "Starting this connection (%ls) requires membership in \
-""%ls"" group. Contact your system administrator.\n"
-    IDS_ERR_CONFIG_TRY_AUTHORIZE  "Starting this connection (%ls) requires membership in \
-""%ls"" group.\n\n\
-Do you want to add yourself to this group?\n\
-This action may prompt for administrative password or consent."
-    IDS_NFO_CONFIG_AUTH_PENDING   "Starting this connection (%ls) requires membership in \
-""%ls"" group.\n\n\
-Please complete the previous authorization dialog."
-    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Adding the user to ""%ls"" group failed."
+    IDS_NFO_NO_CONFIGS "Inga läsbara anslutningsprofiler (konfigurationsfiler) hittades.\n\
+Använd menyn ”Importera fil…” eller kopiera konfigurationsfilerna till ”%ls” eller ”%ls”."
+    IDS_ERR_CONFIG_NOT_AUTHORIZED "För att starta anslutningen (%ls) måste du vara medlem i gruppen \
+”%ls”. Kontakta systemadministratören.\n"
+    IDS_ERR_CONFIG_TRY_AUTHORIZE  "För att starta anslutningen (%ls) måste du vara medlem i gruppen \
+”%ls”.\n\n\
+Vill du lägga till dig själv i gruppen?\n\
+Åtgärden kan begära administratörslösenord eller godkännande."
+    IDS_NFO_CONFIG_AUTH_PENDING   "För att starta anslutningen (%ls) måste du vara medlem i gruppen \
+”%ls”.\n\n\
+Slutför föregående behörighetsdialog."
+    IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Det gick inte att lägga till användaren i gruppen ”%ls”."
     IDS_ERR_CREATE_EVENT "CreateEvent misslyckades med att skapa event: %ls"
     IDS_ERR_UNKNOWN_PRIORITY "Okänt prioritets namn: %ls"
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor misslyckades."
@@ -461,10 +461,10 @@ Kör openvpn-gui --help för mer hjälp."
     /* service */
     IDS_ERR_QUERY_SERVICE "Ett fel uppstod när statusen på OpenVPN Service skulle kontrolleras."
     IDS_ERR_WRITE_SERVICE_PIPE "Det gick inte att skriva till tjänstens pipe."
-    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is not installed.\n\
-Tasks requiring administrative access may not work."
-    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" is not started.\n\
-Tasks requiring administrative access may not work."
+    IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" är inte installerad.\n\
+Uppgifter som kräver administratörsbehörighet kanske inte fungerar."
+    IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" har inte startats.\n\
+Uppgifter som kräver administratörsbehörighet kanske inte fungerar."
     IDS_ERR_NOTSTARTED_ISERVICE_ADM  """OpenVPNServiceInteractive"" inte startad.\n\
 Wintun driver ska inte fungera."
 
@@ -475,65 +475,65 @@ Wintun driver ska inte fungera."
     IDS_ERR_DISCONN_SCRIPT_TIMEOUT "Register värdet ""disconnectscript_timeout"" måste vara ett tal mellan 1 och 99."
     IDS_ERR_PRECONN_SCRIPT_TIMEOUT "Register värdet ""preconnectscript_timeout"" måste vara ett tal mellan 1 och 99."
     IDS_ERR_WRITE_REGVALUE "Fel vid skrivning av register värdet ""HKEY_CURRENT_USER\\%ls\\%ls""."
-    IDS_ERR_PLAP_REG "Failed to enable Start Before Logon (error = %d)"
-    IDS_ERR_PLAP_UNREG "Failed to disable Start Before Logon (error = %d)"
+    IDS_ERR_PLAP_REG "Det gick inte att aktivera Starta före inloggning (fel = %d)"
+    IDS_ERR_PLAP_UNREG "Det gick inte att inaktivera Starta före inloggning (fel = %d)"
 
     /* importation */
-    IDS_ERR_IMPORT_FAILED "Failed to import file. The following path could not be created.\n\n\
-%ls\n\nMake sure you have the right permissions."
-    IDS_NFO_IMPORT_SUCCESS "File imported successfully."
-    IDS_NFO_IMPORT_OVERWRITE "A config named ""%ls"" already exists. Do you want to replace it?"
-    IDS_NFO_IMPORT_SOURCE "Do you want to import the profile <%ls>?"
-    IDS_ERR_IMPORT_SOURCE "Cannot import file <%ls> as it is already in the global or local config directory"
-    IDS_ERR_IMPORT_ACCESS "Cannot import <%ls> as it is missing or not readable"
+    IDS_ERR_IMPORT_FAILED "Det gick inte att importera filen. Följande sökväg kunde inte skapas.\n\n\
+%ls\n\nKontrollera att du har rätt behörighet."
+    IDS_NFO_IMPORT_SUCCESS "Filen har importerats."
+    IDS_NFO_IMPORT_OVERWRITE "Det finns redan en konfiguration med namnet ”%ls”. Vill du ersätta den?"
+    IDS_NFO_IMPORT_SOURCE "Vill du importera profilen <%ls>?"
+    IDS_ERR_IMPORT_SOURCE "Det går inte att importera filen <%ls> eftersom den redan finns i den globala eller lokala konfigurationskatalogen"
+    IDS_ERR_IMPORT_ACCESS "Det går inte att importera <%ls> eftersom den saknas eller inte är läsbar"
 
     /* save/delete password */
     IDS_NFO_DELETE_PASS "Press OK to delete saved passwords for config ""%ls"""
 
     /* Token password related */
-    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – Token Password"
-    IDS_NFO_TOKEN_PASSWORD_REQUEST "Input Password/PIN for Token '%hs'"
+    IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – tokenlösenord"
+    IDS_NFO_TOKEN_PASSWORD_REQUEST "Ange lösenord/PIN för token ”%hs”"
 
     IDS_NFO_AUTH_PASS_RETRY "Felaktiga autentiseringsuppgifter. Försök igen…"
     IDS_NFO_KEY_PASS_RETRY  "Fel lösenord. Försök igen…"
     IDS_ERR_INVALID_PASSWORD_INPUT "Ogiltigt tecken i lösenordet"
     IDS_ERR_INVALID_USERNAME_INPUT "Ogiltigt tecken i användarnamnet"
     IDS_NFO_AUTO_CONNECT    "Ansluter automatiskt om %u sekunder…"
-    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
-    IDS_NFO_BYTECOUNT "Bytes in: %ls  out: %ls"
-    IDS_NFO_OTP_PROMPT "Input OTP or passcode"
+    IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI körs redan. Högerklicka på ikonen i meddelandefältet för att starta."
+    IDS_NFO_BYTECOUNT "Byte in: %ls  ut: %ls"
+    IDS_NFO_OTP_PROMPT "Ange engångslösenord eller lösenkod"
 
     /* AS profile import */
-    IDS_ERR_URL_IMPORT_PROFILE "Error fetching profile from URL: [%d] %ls"
+    IDS_ERR_URL_IMPORT_PROFILE "Fel när profilen skulle hämtas från URL: [%d] %ls"
 
-    IDS_ERR_NO_PKCS11 "No certificates found. If you have a token insert it and press retry."
-    IDS_ERR_SELECT_PKCS11 "No certificates selected."
+    IDS_ERR_NO_PKCS11 "Inga certifikat hittades. Sätt i token om du har en och välj Försök igen."
+    IDS_ERR_SELECT_PKCS11 "Inga certifikat har valts."
     /* column headers for pkcs11 certificate list */
-    IDS_CERT_DISPLAYNAME "Issued to"
-    IDS_CERT_ISSUER "Issued by"
-    IDS_CERT_NOTAFTER "Valid until"
+    IDS_CERT_DISPLAYNAME "Utfärdat till"
+    IDS_CERT_ISSUER "Utfärdat av"
+    IDS_CERT_NOTAFTER "Giltigt till"
 
 
     /* PLAP related */
-    IDS_NFO_STATE_RETRYING "Retrying"
-    IDS_NFO_STATE_CANCELLING "Cancelling"
-    IDS_NFO_STATE_DISCONNECTING "Disconnecting"
-    IDS_NFO_CONN_CANCELLED "Connection cancelled by user"
+    IDS_NFO_STATE_RETRYING "Försöker igen"
+    IDS_NFO_STATE_CANCELLING "Avbryter"
+    IDS_NFO_STATE_DISCONNECTING "Kopplar ner"
+    IDS_NFO_CONN_CANCELLED "Anslutningen avbröts av användaren"
 
     /* openvpn daemon state names -- these are shown on progress dialog in PLAP */
-    IDS_NFO_OVPN_STATE_INITIAL      "Initializing"
-    IDS_NFO_OVPN_STATE_CONNECTING   "Connecting"
-    IDS_NFO_OVPN_STATE_ASSIGN_IP    "Assigning IP address"
-    IDS_NFO_OVPN_STATE_ADD_ROUTES   "Adding routes"
-    IDS_NFO_OVPN_STATE_CONNECTED    "Connected"
-    IDS_NFO_OVPN_STATE_RECONNECTING "Reconnecting"
-    IDS_NFO_OVPN_STATE_EXITING      "Exiting"
-    IDS_NFO_OVPN_STATE_WAIT         "Waiting"
-    IDS_NFO_OVPN_STATE_AUTH         "Authenticating"
-    IDS_NFO_OVPN_STATE_GET_CONFIG   "Pulling configuration from server"
-    IDS_NFO_OVPN_STATE_RESOLVE      "Resolving remote host"
-    IDS_NFO_OVPN_STATE_TCP_CONNECT  "Establishing TCP connection"
-    IDS_NFO_OVPN_STATE_AUTH_PENDING "Authentication pending"
+    IDS_NFO_OVPN_STATE_INITIAL      "Initierar"
+    IDS_NFO_OVPN_STATE_CONNECTING   "Ansluter"
+    IDS_NFO_OVPN_STATE_ASSIGN_IP    "Tilldelar IP-adress"
+    IDS_NFO_OVPN_STATE_ADD_ROUTES   "Lägger till rutter"
+    IDS_NFO_OVPN_STATE_CONNECTED    "Ansluten"
+    IDS_NFO_OVPN_STATE_RECONNECTING "Återansluter"
+    IDS_NFO_OVPN_STATE_EXITING      "Avslutar"
+    IDS_NFO_OVPN_STATE_WAIT         "Väntar"
+    IDS_NFO_OVPN_STATE_AUTH         "Autentiserar"
+    IDS_NFO_OVPN_STATE_GET_CONFIG   "Hämtar konfiguration från servern"
+    IDS_NFO_OVPN_STATE_RESOLVE      "Slår upp fjärrvärd"
+    IDS_NFO_OVPN_STATE_TCP_CONNECT  "Upprättar TCP-anslutning"
+    IDS_NFO_OVPN_STATE_AUTH_PENDING "Väntar på autentisering"
     IDS_NFO_OVPN_STATE_UNKNOWN      "?"
 
 END
