@@ -488,7 +488,7 @@ Wintun driver ska inte fungera."
     IDS_ERR_IMPORT_ACCESS "Det går inte att importera <%ls> eftersom den saknas eller inte är läsbar"
 
     /* save/delete password */
-    IDS_NFO_DELETE_PASS "Press OK to delete saved passwords for config ""%ls"""
+    IDS_NFO_DELETE_PASS "Klicka på OK för att ta bort sparade lösenord för konfigurationen ”%ls”"
 
     /* Token password related */
     IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – tokenlösenord"
