@@ -23,14 +23,14 @@
 ID_DLG_PASSPHRASE DIALOGEX 6, 18, 160, 83
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
 EXSTYLE WS_EX_TOPMOST
-CAPTION "OpenVPN"
+CAPTION "OpenVPN – lösenord för privat nyckel"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "Ange Lösenord:", 201, 6, 6, 100, 10
+    LTEXT "Ange &lösenord:", 201, 6, 6, 100, 10
     EDITTEXT ID_EDT_PASSPHRASE, 6, 17, 107, 12, ES_PASSWORD | ES_AUTOHSCROLL
     ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 126, 18, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 33, 100, 10
+    CHECKBOX "&Spara lösenord", ID_CHK_SAVE_PASS, 6, 33, 100, 10
     PUSHBUTTON "OK", IDOK, 20, 49, 50, 14
     PUSHBUTTON "Avbryt", IDCANCEL, 90, 49, 50, 14
     LTEXT "", ID_TXT_WARNING, 6, 65, 100, 10
@@ -48,7 +48,7 @@ BEGIN
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 24, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 42, 100, 10
+    CHECKBOX "&Spara lösenord", ID_CHK_SAVE_PASS, 6, 42, 100, 10
     PUSHBUTTON "OK", IDOK, 20, 58, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP | WS_DISABLED
     PUSHBUTTON "Avbryt", IDCANCEL, 90, 58, 52, 14
     LTEXT "", ID_TXT_WARNING, 6, 80, 150, 10
@@ -58,19 +58,19 @@ END
 ID_DLG_AUTH_CHALLENGE DIALOGEX 6, 18, 180, 129
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
 EXSTYLE WS_EX_TOPMOST
-CAPTION "OpenVPN - User Authentication"
+CAPTION "OpenVPN – användarautentisering"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
 BEGIN
     LTEXT "Användarnamn:", ID_LTEXT_USERNAME, 6, 9, 50, 10
     LTEXT "Lösenord:", ID_LTEXT_PASSWORD, 6, 26, 50, 10
-    LTEXT "Response:", ID_LTEXT_RESPONSE, 6, 60, 50, 10
+    LTEXT "&Svar:", ID_LTEXT_RESPONSE, 6, 60, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 24, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
     LTEXT "", ID_TXT_AUTH_CHALLENGE, 6, 43, 148, 10
     EDITTEXT ID_EDT_AUTH_CHALLENGE, 60, 57, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
-    CHECKBOX "Save password", ID_CHK_SAVE_PASS, 6, 76, 100, 10
+    CHECKBOX "&Spara lösenord", ID_CHK_SAVE_PASS, 6, 76, 100, 10
     PUSHBUTTON "OK", IDOK, 20, 92, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
     PUSHBUTTON "Avbryt", IDCANCEL, 90, 92, 52, 14
     LTEXT "", ID_TXT_WARNING, 6, 108, 150, 10
@@ -80,12 +80,12 @@ END
 ID_DLG_CHALLENGE_RESPONSE DIALOGEX 6, 18, 212, 72
 STYLE WS_SIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER | DS_SETFOREGROUND
 EXSTYLE WS_EX_TOPMOST
-CAPTION "OpenVPN - Challenge Response"
+CAPTION "OpenVPN – utmaningssvar"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
 BEGIN
     LTEXT "", ID_TXT_DESCRIPTION, 6, 9, 400, 20
-    LTEXT "Response:", ID_LTEXT_RESPONSE, 6, 30, 50, 10
+    LTEXT "&Svar:", ID_LTEXT_RESPONSE, 6, 30, 50, 10
     EDITTEXT ID_EDT_RESPONSE, 60, 27, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 28, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
     PUSHBUTTON "OK", IDOK, 20, 51, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
@@ -105,20 +105,20 @@ BEGIN
     LTEXT "", ID_TXT_IP, 20, 160, 300, 10
     PUSHBUTTON "Koppla ner", ID_DISCONNECT, 50, 190, 50, 14
     PUSHBUTTON "Återanslut", ID_RESTART, 150, 190, 40, 14
-    PUSHBUTTON "De&tach", ID_DETACH, 180, 190, 50, 14, WS_DISABLED
+    PUSHBUTTON "&Koppla från", ID_DETACH, 180, 190, 50, 14, WS_DISABLED
     PUSHBUTTON "Göm", ID_HIDE, 100, 190, 40, 14
 END
 
 /* Change Passphrase Dialog */
 ID_DLG_CHGPASS DIALOG 6, 18, 193, 82
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "OpenVPN - Ändra Lösenord"
+CAPTION "OpenVPN – ändra lösenord"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "Nuvarande Lösenord:", 171, 6, 9, 85, 10
-    LTEXT "Nytt Lösenord:", 172, 6, 26, 85, 10
-    LTEXT "Bekräfta Nytt Lösenord:", 173, 6, 42, 85, 10
+    LTEXT "&Nuvarande lösenord:", 171, 6, 9, 85, 10
+    LTEXT "&Nytt lösenord:", 172, 6, 26, 85, 10
+    LTEXT "Be&kräfta nytt lösenord:", 173, 6, 42, 85, 10
     EDITTEXT ID_EDT_PASS_CUR, 95, 6, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
     EDITTEXT ID_EDT_PASS_NEW, 95, 23, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
     EDITTEXT ID_EDT_PASS_NEW2, 95, 39, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
@@ -136,11 +136,11 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
 BEGIN
     GROUPBOX "   ", 201, 6, 46, 235, 52
-    AUTORADIOBUTTON "Använd inställningar från OpenVPNs konfigurations fil", ID_RB_PROXY_OPENVPN,
+    AUTORADIOBUTTON "Använd inställningar från OpenVPN:s konfigurationsfil", ID_RB_PROXY_OPENVPN,
                     13, 16, 200, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Använd systemets proxyinställningar",
                     ID_RB_PROXY_MSIE, 13, 31, 200, 10
-    AUTORADIOBUTTON "Manuell Konfigurering", ID_RB_PROXY_MANUAL, 13, 46, 81, 10
+    AUTORADIOBUTTON "Manuell konfigurering", ID_RB_PROXY_MANUAL, 13, 46, 81, 10
     AUTORADIOBUTTON "HTTP Proxy", ID_RB_PROXY_HTTP, 20, 62, 90, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "SOCKS Proxy", ID_RB_PROXY_SOCKS, 120, 62, 90, 10
     LTEXT "Adress:", ID_TXT_PROXY_ADDRESS, 20, 77, 28, 10
@@ -159,19 +159,19 @@ BEGIN
     GROUPBOX "Användargränssnitt", 201, 6, 12, 235, 30
     LTEXT "Språk:", ID_TXT_LANGUAGE, 17, 25, 52, 12
     COMBOBOX ID_CMB_LANGUAGE, 42, 23, 186, 400, CBS_DROPDOWNLIST | WS_TABSTOP
-    GROUPBOX "Startup", 202, 6, 47, 235, 30
-    AUTOCHECKBOX "Launch on Windows startup", ID_CHK_STARTUP, 17, 59, 200, 12
+    GROUPBOX "Start", 202, 6, 47, 235, 30
+    AUTOCHECKBOX "Starta när Windows startar", ID_CHK_STARTUP, 17, 59, 200, 12
 
-    GROUPBOX "Preferences", ID_GROUPBOX3, 6, 82, 235, 180
-    AUTOCHECKBOX "Append to log", ID_CHK_LOG_APPEND, 17, 95, 60, 10
-    AUTOCHECKBOX "Show script window", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
-    AUTOCHECKBOX "Silent connection", ID_CHK_SILENT, 17, 125, 200, 10
-    AUTOCHECKBOX "Always use interactive service", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
-    LTEXT "Show Balloon", ID_TXT_BALLOON, 17, 155, 100, 10
-    AUTORADIOBUTTON "On connect", ID_RB_BALLOON1, 28, 170, 50, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "On connect/reconnect", ID_RB_BALLOON2, 86, 170, 90, 10
-    AUTORADIOBUTTON "Never", ID_RB_BALLOON0, 181, 170, 40, 10
-    LTEXT "Persistent Connections", ID_TXT_PERSISTENT, 17, 185, 100, 10
+    GROUPBOX "Inställningar", ID_GROUPBOX3, 6, 82, 235, 180
+    AUTOCHECKBOX "Lägg till i loggen", ID_CHK_LOG_APPEND, 17, 95, 60, 10
+    AUTOCHECKBOX "Visa skriptfönster", ID_CHK_SHOW_SCRIPT_WIN, 17, 110, 200, 10
+    AUTOCHECKBOX "Tyst anslutning", ID_CHK_SILENT, 17, 125, 200, 10
+    AUTOCHECKBOX "Använd alltid den interaktiva tjänsten", ID_CHK_ALWAYS_USE_ISERVICE, 17, 140, 200, 10
+    LTEXT "Visa ballong", ID_TXT_BALLOON, 17, 155, 100, 10
+    AUTORADIOBUTTON "Vid anslutning", ID_RB_BALLOON1, 28, 170, 50, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Vid anslutning/återanslutning", ID_RB_BALLOON2, 86, 170, 90, 10
+    AUTORADIOBUTTON "Aldrig", ID_RB_BALLOON0, 181, 170, 40, 10
+    LTEXT "Beständiga anslutningar", ID_TXT_PERSISTENT, 17, 185, 100, 10
     AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 200, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "&Manual", ID_RB_BALLOON4, 86, 200, 90, 10
     AUTORADIOBUTTON "&Disable", ID_RB_BALLOON5, 181, 200, 40, 10
@@ -183,45 +183,45 @@ END
 /* Advanced Dialog */
 ID_DLG_ADVANCED DIALOGEX 6, 18, 252, ADVANCED_DIALOG_HEIGHT
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
-CAPTION "Advanced"
+CAPTION "Avancerat"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
 BEGIN
-    GROUPBOX "Configuration Files", 201, 6, 12, 235, 45
-    LTEXT "Folder:", ID_TXT_FOLDER, 17, 25, 32, 10
-    LTEXT "Extension:", ID_TXT_EXTENSION, 17, 40, 52, 10
+    GROUPBOX "Konfigurationsfiler", 201, 6, 12, 235, 45
+    LTEXT "Mapp:", ID_TXT_FOLDER, 17, 25, 32, 10
+    LTEXT "Filändelse:", ID_TXT_EXTENSION, 17, 40, 52, 10
     EDITTEXT ID_EDT_CONFIG_DIR, 53, 23, 150, 12, ES_AUTOHSCROLL
     EDITTEXT ID_EDT_CONFIG_EXT, 53, 38, 25, 12, ES_AUTOHSCROLL
     PUSHBUTTON "…", ID_BTN_CONFIG_DIR, 208, 23, 25, 12
 
-    GROUPBOX "Log Files", 202, 6, 62, 235, 30
-    LTEXT "Folder:", ID_TXT_FOLDER1, 17, 74, 32, 10
+    GROUPBOX "Loggfiler", 202, 6, 62, 235, 30
+    LTEXT "Mapp:", ID_TXT_FOLDER1, 17, 74, 32, 10
     EDITTEXT ID_EDT_LOG_DIR, 53, 72, 150, 12, ES_AUTOHSCROLL
     PUSHBUTTON "…", ID_BTN_LOG_DIR, 208, 72, 25, 12
 
-    GROUPBOX "Script Timeout", 203, 6, 97, 235, 60
-    LTEXT "Preconnect script timeout:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
-    LTEXT "Connect script timeout:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
-    LTEXT "Disconnect script timeout:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
+    GROUPBOX "Tidsgräns för skript", 203, 6, 97, 235, 60
+    LTEXT "Tidsgräns för skript före anslutning:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
+    LTEXT "Tidsgräns för anslutningsskript:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
+    LTEXT "Tidsgräns för frånkopplingsskript:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
     EDITTEXT ID_EDT_PRECONNECT_TIMEOUT, 103, 108, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_CONNECT_TIMEOUT, 103, 123, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 103, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
 
-    GROUPBOX "Management interface", 204, 6, 163, 235, 30
-    LTEXT "Port offset:", 205, 17, 175, 75, 10
+    GROUPBOX "Hanteringsgränssnitt", 204, 6, 163, 235, 30
+    LTEXT "Portförskjutning:", 205, 17, 175, 75, 10
     EDITTEXT ID_EDT_MGMT_PORT, 103, 173, 30, 12, ES_AUTOHSCROLL
 
-    GROUPBOX "Config menu view", 206, 6, 198, 235, 30
+    GROUPBOX "Visning av konfigurationsmeny", 206, 6, 198, 235, 30
     AUTORADIOBUTTON "&Auto", ID_RB_BALLOON0, 28, 210, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "&Flat", ID_RB_BALLOON1, 88, 210, 50, 10
     AUTORADIOBUTTON "&Nested", ID_RB_BALLOON2, 148, 210, 50, 10
 
-    GROUPBOX "Echo message display", 207, 6, 233, 235, 45
+    GROUPBOX "Visning av ekomeddelanden", 207, 6, 233, 235, 45
     AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 245, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "Ne&ver", ID_RB_BALLOON4, 88, 245, 50, 10
-    LTEXT "Repeated messages are muted for: ", 208, 17, 260, 125, 10
+    LTEXT "Upprepade meddelanden tystas i: ", 208, 17, 260, 125, 10
     EDITTEXT ID_EDT_POPUP_MUTE, 150, 258, 30, 12, ES_AUTOHSCROLL
-    LTEXT "hours", 209, 190, 260, 40, 10
+    LTEXT "timmar", 209, 190, 260, 40, 10
 
 #if ENABLE_OVPN3
     GROUPBOX "OpenVPN Engine", ID_RB_ENGINE_SELECTION, 6, 283, 235, 30
@@ -257,7 +257,7 @@ END
 ID_DLG_PROXY_AUTH DIALOGEX 29, 23, 185, 65
 STYLE DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | DS_CENTER
 EXSTYLE WS_EX_TOPMOST
-CAPTION "OpenVPN - Proxy Autentisering"
+CAPTION "OpenVPN – proxyautentisering"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
 BEGIN
@@ -272,18 +272,18 @@ END
 /* URL Profile Import Dialog */
 ID_DLG_URL_PROFILE_IMPORT DIALOGEX 6, 18, 249, 95
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFOREGROUND
-CAPTION "Import Profile from Access Server"
+CAPTION "Importera profil från Access Server"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
 BEGIN
     LTEXT "U&RL:", 201, 6, 9, 50, 10
     EDITTEXT ID_EDT_URL, 60, 6, 183, 12, ES_AUTOHSCROLL
-    LTEXT "&Username:", 202, 6, 26, 50, 10
+    LTEXT "&Användarnamn:", 202, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 23, 94, 12, ES_AUTOHSCROLL
-    LTEXT "&Password:", ID_LTEXT_PASSWORD, 6, 42, 50, 10
+    LTEXT "&Lösenord:", ID_LTEXT_PASSWORD, 6, 42, 50, 10
     EDITTEXT ID_EDT_AUTH_PASS, 60, 40, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 41, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
-    AUTOCHECKBOX "&Autologin", ID_CHK_AUTOLOGIN, 6, 59, 100, 10
+    AUTOCHECKBOX "&Automatisk inloggning", ID_CHK_AUTOLOGIN, 6, 59, 100, 10
     PUSHBUTTON "&OK", IDOK, 20, 76, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
     PUSHBUTTON "&Cancel", IDCANCEL, 90, 76, 52, 14
 END
@@ -291,11 +291,11 @@ END
 /* Query PKCS11-ID Dialog */
 ID_DLG_PKCS11_QUERY DIALOGEX 6, 18, 340, 242
 STYLE WS_SIZEBOX| WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFONT
-CAPTION "Select Certificate"
+CAPTION "Välj certifikat"
 FONT 8, "Segoe UI"
 LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "PKCS11 Certificates available:", ID_TXT_PKCS11, 17, 12, 171, 12
+    LTEXT "Tillgängliga PKCS11-certifikat:", ID_TXT_PKCS11, 17, 12, 171, 12
     CONTROL "", ID_LVW_PKCS11, "SysListView32", LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP, 17, 25, 171,150
     PUSHBUTTON "&OK", IDOK, 20, 200, 50, 14, BS_DEFPUSHBUTTON | WS_TABSTOP
     PUSHBUTTON "&Cancel", IDCANCEL, 90, 200, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
@@ -310,7 +310,7 @@ FONT 8, "Segoe UI"
 LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
 BEGIN
     CONTROL "", ID_STATIC_QR, "Static", SS_BITMAP | WS_VISIBLE | SS_CENTERIMAGE, 0, 0, 10, 10
-    LTEXT "Scan this QR code on your mobile to proceed with authentication.", ID_TXT_QR, 0, 0, 10, 10, SS_CENTER | WS_VISIBLE | SS_EDITCONTROL
+    LTEXT "Skanna denna QR-kod med mobilen för att fortsätta med autentiseringen.", ID_TXT_QR, 0, 0, 10, 10, SS_CENTER | WS_VISIBLE | SS_EDITCONTROL
 END
 
 STRINGTABLE
@@ -331,11 +331,11 @@ BEGIN
     IDS_MENU_CLOSE "Avsluta"
     IDS_MENU_CONNECT "Anslut"
     IDS_MENU_DISCONNECT "Koppla ner"
-    IDS_MENU_RECONNECT "Reconnect"
-    IDS_MENU_STATUS "Visa Status"
-    IDS_MENU_VIEWLOG "Visa Logg"
+    IDS_MENU_RECONNECT "Återanslut"
+    IDS_MENU_STATUS "Visa status"
+    IDS_MENU_VIEWLOG "Visa logg"
     IDS_MENU_EDITCONFIG "Editera konfig"
-    IDS_MENU_CLEARPASS  "Clear Saved Passwords"
+    IDS_MENU_CLEARPASS  "Rensa sparade lösenord"
 
     /* Logviewer - Resources */
     IDS_ERR_START_LOG_VIEWER "Fel vid start av logg viewer: %ls"
@@ -363,7 +363,7 @@ Please complete the previous authorization dialog."
     IDS_ERR_CREATE_THREAD_STATUS "CreateThread för att visa status fönstret misslyckades."
     IDS_NFO_STATE_WAIT_TERM "Status: Väntar på att OpenVPN skall avslutas…"
     IDS_NFO_STATE_CONNECTED "Status: Ansluten"
-    IDS_NFO_STATE_ONHOLD "Current State: On Hold (disconnected)"
+    IDS_NFO_STATE_ONHOLD "Aktuellt tillstånd: vänteläge (frånkopplad)"
     IDS_NFO_NOW_CONNECTED "%ls är nu ansluten."
     IDS_NFO_ASSIGN_IP "Tilldelad IP: %ls"
     IDS_NFO_STATE_RECONNECTING "Status: ÅterAnsluter"
@@ -389,14 +389,18 @@ Please complete the previous authorization dialog."
     IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Uppkopplingsskriptet gjorde TimeOut efter %d sek."
     IDS_ERR_CONFIG_EXIST "Det finns redan en konfig fil vid namn '%ls'. Du kan inte ha flera \
 konfigurations filer med samma namn, även om de ligger i olika kataloger."
+    IDS_NFO_CONN_TIMEOUT "Anslutningen till hanteringsgränssnittet misslyckades.\n\
+Se loggfilen (%ls) för mer information."
 
     /* main - Resources */
     IDS_ERR_OPEN_DEBUG_FILE "Fel vid öppnande av debug fil. (%ls)"
-    IDS_ERR_CREATE_PATH "Could not create %ls path:\n%ls"
+    IDS_ERR_CREATE_PATH "Kunde inte skapa sökvägen %ls:\n%ls"
     IDS_ERR_LOAD_RICHED20 "Kunde inte ladda RICHED20.DLL."
     IDS_ERR_SHELL_DLL_VERSION "Din shell32.dll version är för låg (0x%lx). Du böhöver minst version 5.0."
     IDS_NFO_ACTIVE_CONN_EXIT "Du har aktiva uppkopplingar i gång som kommer kopplas ner om du avslutar OpenVPN GUI.\n\nÄr du säker på att du vill avsluta?"
-    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
+    IDS_ERR_PARSE_MGMT_OPTION "Kunde inte tolka alternativet --management i <%ls%ls>."
+    IDS_NFO_STATE_ROUTE_ERROR "Aktuellt tillstånd: ansluten med routningsfel"
+    IDS_NFO_NOTIFY_ROUTE_ERROR "%ls ansluten med routningsfel"
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Visa detta meddelande.\n\
@@ -456,7 +460,7 @@ Kör openvpn-gui --help för mer hjälp."
 
     /* service */
     IDS_ERR_QUERY_SERVICE "Ett fel uppstod när statusen på OpenVPN Service skulle kontrolleras."
-    IDS_ERR_WRITE_SERVICE_PIPE "Writing to service pipe failed."
+    IDS_ERR_WRITE_SERVICE_PIPE "Det gick inte att skriva till tjänstens pipe."
     IDS_ERR_INSTALL_ISERVICE     """OpenVPNServiceInteractive"" is not installed.\n\
 Tasks requiring administrative access may not work."
     IDS_ERR_NOTSTARTED_ISERVICE  """OpenVPNServiceInteractive"" is not started.\n\
@@ -490,11 +494,11 @@ Wintun driver ska inte fungera."
     IDS_NFO_TOKEN_PASSWORD_CAPTION "OpenVPN – Token Password"
     IDS_NFO_TOKEN_PASSWORD_REQUEST "Input Password/PIN for Token '%hs'"
 
-    IDS_NFO_AUTH_PASS_RETRY "Wrong credentials. Try again…"
-    IDS_NFO_KEY_PASS_RETRY  "Wrong password. Try again…"
-    IDS_ERR_INVALID_PASSWORD_INPUT "Invalid character in password"
-    IDS_ERR_INVALID_USERNAME_INPUT "Invalid character in username"
-    IDS_NFO_AUTO_CONNECT    "Connecting automatically in %u seconds…"
+    IDS_NFO_AUTH_PASS_RETRY "Felaktiga autentiseringsuppgifter. Försök igen…"
+    IDS_NFO_KEY_PASS_RETRY  "Fel lösenord. Försök igen…"
+    IDS_ERR_INVALID_PASSWORD_INPUT "Ogiltigt tecken i lösenordet"
+    IDS_ERR_INVALID_USERNAME_INPUT "Ogiltigt tecken i användarnamnet"
+    IDS_NFO_AUTO_CONNECT    "Ansluter automatiskt om %u sekunder…"
     IDS_NFO_CLICK_HERE_TO_START "OpenVPN GUI is already running. Right click on the tray icon to start."
     IDS_NFO_BYTECOUNT "Bytes in: %ls  out: %ls"
     IDS_NFO_OTP_PROMPT "Input OTP or passcode"
