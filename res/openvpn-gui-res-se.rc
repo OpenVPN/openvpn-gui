@@ -244,10 +244,10 @@ Copyright (C) 2004-2005 Mathias Sundman <info@openvpn.se>\n\
 Copyright (C) 2008-2014 Heiko Hund <heikoh@users.sf.net>\n\
 Copyright (C) 2012-2026 OpenVPN GUI contributors\n", ID_TXT_VERSION, 36, 15, 206, 50
     LTEXT "https://github.com/OpenVPN/openvpn-gui/", ID_LTEXT_ABOUT2, 36, 55, 206, 42
-    LTEXT "OpenVPN - En applikation för säker överföring av IP nät \
-över en enda TCP/UDP port, med support för SSL/TLS-baserad \
-session autentisering och nyckel hantering, paket \
-kryptering, paket autentisering, and paket komprimering.\n\
+    LTEXT "OpenVPN – ett program för säker överföring av IP-nät \
+över en enda TCP/UDP-port, med stöd för SSL/TLS-baserad \
+sessionsautentisering och nyckelhantering, paket-\
+kryptering, paketautentisering och paketkomprimering.\n\
 \n", ID_LTEXT_ABOUT3, 8, 70, 240, 64
     LTEXT "Copyright (C) 2002-2026 OpenVPN Technologies, Inc <info@openvpn.net>\n\
 https://openvpn.net/", ID_LTEXT_ABOUT4, 8, 106, 240, 64
@@ -316,7 +316,7 @@ END
 STRINGTABLE
 LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
 BEGIN
-    IDS_LANGUAGE_NAME "Svenska - Swedish"
+    IDS_LANGUAGE_NAME "Svenska"
 
     /* Tray - Resources */
     IDS_TIP_CONNECTED "\nAnsluten till: "
@@ -334,12 +334,12 @@ BEGIN
     IDS_MENU_RECONNECT "Återanslut"
     IDS_MENU_STATUS "Visa status"
     IDS_MENU_VIEWLOG "Visa logg"
-    IDS_MENU_EDITCONFIG "Editera konfig"
+    IDS_MENU_EDITCONFIG "Redigera konfiguration"
     IDS_MENU_CLEARPASS  "Rensa sparade lösenord"
 
     /* Logviewer - Resources */
-    IDS_ERR_START_LOG_VIEWER "Fel vid start av logg viewer: %ls"
-    IDS_ERR_START_CONF_EDITOR "Fel vid start av konfig editor: %ls"
+    IDS_ERR_START_LOG_VIEWER "Fel när loggvisaren skulle startas: %ls"
+    IDS_ERR_START_CONF_EDITOR "Fel när konfigurationsredigeraren skulle startas: %ls"
 
     /* OpenVPN */
     IDS_NFO_NO_CONFIGS "Inga läsbara anslutningsprofiler (konfigurationsfiler) hittades.\n\
@@ -354,19 +354,19 @@ Vill du lägga till dig själv i gruppen?\n\
 ”%ls”.\n\n\
 Slutför föregående behörighetsdialog."
     IDS_ERR_ADD_USER_TO_ADMIN_GROUP "Det gick inte att lägga till användaren i gruppen ”%ls”."
-    IDS_ERR_CREATE_EVENT "CreateEvent misslyckades med att skapa event: %ls"
-    IDS_ERR_UNKNOWN_PRIORITY "Okänt prioritets namn: %ls"
+    IDS_ERR_CREATE_EVENT "CreateEvent kunde inte skapa händelsen: %ls"
+    IDS_ERR_UNKNOWN_PRIORITY "Okänt prioritetsnamn: %ls"
     IDS_ERR_INIT_SEC_DESC "InitializeSecurityDescriptor misslyckades."
     IDS_ERR_SET_SEC_DESC_ACL "SetSecurityDescriptorDacl misslyckades."
-    IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle på hInputWrite misslyckades."
-    IDS_ERR_CREATE_PROCESS "CreateProcess misslyckades, exe='%ls' cmdline='%ls' dir='%ls'"
-    IDS_ERR_CREATE_THREAD_STATUS "CreateThread för att visa status fönstret misslyckades."
+    IDS_ERR_DUP_HANDLE_IN_WRITE "DuplicateHandle för hInputWrite misslyckades."
+    IDS_ERR_CREATE_PROCESS "CreateProcess misslyckades, exe='%ls' kommandorad='%ls' katalog='%ls'"
+    IDS_ERR_CREATE_THREAD_STATUS "CreateThread för statusfönstret misslyckades."
     IDS_NFO_STATE_WAIT_TERM "Status: Väntar på att OpenVPN skall avslutas…"
     IDS_NFO_STATE_CONNECTED "Status: Ansluten"
     IDS_NFO_STATE_ONHOLD "Aktuellt tillstånd: vänteläge (frånkopplad)"
     IDS_NFO_NOW_CONNECTED "%ls är nu ansluten."
     IDS_NFO_ASSIGN_IP "Tilldelad IP: %ls"
-    IDS_NFO_STATE_RECONNECTING "Status: ÅterAnsluter"
+    IDS_NFO_STATE_RECONNECTING "Status: Återansluter"
     IDS_NFO_STATE_DISCONNECTED "Status: Frånkopplad"
     IDS_NFO_CONN_TERMINATED "Du har kopplats ner från %ls."
     IDS_NFO_STATE_FAILED "Status: Anslutningen misslyckades"
@@ -374,21 +374,21 @@ Slutför föregående behörighetsdialog."
     IDS_NFO_STATE_FAILED_RECONN "Status: Misslyckades att återansluta"
     IDS_NFO_RECONN_FAILED "Återanslutning till %ls misslyckades."
     IDS_NFO_STATE_SUSPENDED "Status: Viloläge"
-    IDS_ERR_READ_STDOUT_PIPE "Fel vid läsning från OpenVPN StdOut pipe."
-    IDS_ERR_CREATE_EDIT_LOGWINDOW "Skapande av RichEdit LogWindow misslyckades!!"
-    IDS_ERR_SET_SIZE "Set Size misslyckades!"
-    IDS_ERR_AUTOSTART_CONF "Följande konfig gick inte att automatiskt starta: %ls"
-    IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe på hInputRead misslyckades."
+    IDS_ERR_READ_STDOUT_PIPE "Fel vid läsning från OpenVPN:s standardutdatakanal."
+    IDS_ERR_CREATE_EDIT_LOGWINDOW "Det gick inte att skapa RichEdit-loggfönstret."
+    IDS_ERR_SET_SIZE "Det gick inte att ange storleken."
+    IDS_ERR_AUTOSTART_CONF "Följande konfiguration kunde inte startas automatiskt: %ls"
+    IDS_ERR_CREATE_PIPE_IN_READ "CreatePipe för hInputRead misslyckades."
     IDS_NFO_STATE_CONNECTING "Status: Ansluter"
-    IDS_NFO_CONNECTION_XXX "OpenVPN Anslutning (%ls)"
+    IDS_NFO_CONNECTION_XXX "OpenVPN-anslutning (%ls)"
     IDS_NFO_STATE_CONN_SCRIPT "Status: Kör anslutnings-skript"
     IDS_NFO_STATE_DISCONN_SCRIPT "Status: Kör frånkopplings-skript"
     IDS_ERR_RUN_CONN_SCRIPT "Ett fel uppstod vid körning av följande skript: %ls"
-    IDS_ERR_GET_EXIT_CODE "Ett fel uppstod när exitcode från följande skript skulle erhållas: %ls"
-    IDS_ERR_CONN_SCRIPT_FAILED "Uppkopplingsskriptet misslyckades. (exitcode=%ld)"
-    IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Uppkopplingsskriptet gjorde TimeOut efter %d sek."
-    IDS_ERR_CONFIG_EXIST "Det finns redan en konfig fil vid namn '%ls'. Du kan inte ha flera \
-konfigurations filer med samma namn, även om de ligger i olika kataloger."
+    IDS_ERR_GET_EXIT_CODE "Ett fel uppstod när slutkoden från följande skript skulle hämtas: %ls"
+    IDS_ERR_CONN_SCRIPT_FAILED "Anslutningsskriptet misslyckades. (slutkod=%ld)"
+    IDS_ERR_RUN_CONN_SCRIPT_TIMEOUT "Anslutningsskriptet överskred tidsgränsen efter %d sekunder."
+    IDS_ERR_CONFIG_EXIST "Det finns redan en konfigurationsfil med namnet ”%ls”. Du kan inte ha flera \
+konfigurationsfiler med samma namn, även om de ligger i olika kataloger."
     IDS_NFO_CONN_TIMEOUT "Anslutningen till hanteringsgränssnittet misslyckades.\n\
 Se loggfilen (%ls) för mer information."
 
