@@ -399,7 +399,7 @@ Consulte o arquivo de log (%ls) para mais detalhes."
     IDS_ERR_SHELL_DLL_VERSION "Sua versão do shell32.dll é antiga (0x%lx). Você precisa de no mínimo da versão 5.0."
     IDS_NFO_ACTIVE_CONN_EXIT "Ainda existem conexões ativas. Estas conexões serão encerradas se você sair do OpenVPN GUI.\
 \n\nVocê tem certeza de que deseja sair?"
-    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls>."
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Mostra esta mensagem.\n\

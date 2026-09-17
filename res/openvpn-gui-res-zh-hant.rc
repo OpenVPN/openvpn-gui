@@ -402,7 +402,7 @@ BEGIN
     IDS_ERR_SHELL_DLL_VERSION "您的 shell32.dll 版本太舊 (0x%lx)，需要至少 5.0 版本或更新版。"
     IDS_NFO_ACTIVE_CONN_EXIT "目前還有進行中的連線，若您結束 OpenVPN GUI 該連線將被中斷。\
 \n\n您確定要離開嗎？"
-    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls%ls>."
+    IDS_ERR_PARSE_MGMT_OPTION "Could not parse --management option in <%ls>."
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: 顯示此訊息。\n\

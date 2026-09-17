@@ -26,6 +26,7 @@
 #endif
 
 #include <windows.h>
+#include <shlwapi.h>
 
 #include "main.h"
 #include "openvpn-gui-res.h"
@@ -361,7 +362,11 @@ BuildFileList0(const TCHAR *config_dir, int recurse_depth, int group, int flags)
             if (wcscmp(find_obj.cFileName, _T(".")) && wcscmp(find_obj.cFileName, _T("..")))
             {
                 /* recurse into subdirectory */
-                _sntprintf_0(subdir_name, _T("%ls\\%ls"), config_dir, find_obj.cFileName);
+                if (PathCombineW(subdir_name, config_dir, find_obj.cFileName) == NULL)
+                {
+                    continue;
+                }
+
                 int sub_group = NewConfigGroup(find_obj.cFileName, group, flags);
 
                 BuildFileList0(subdir_name, recurse_depth - 1, sub_group, flags);

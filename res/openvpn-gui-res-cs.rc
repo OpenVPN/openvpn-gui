@@ -401,7 +401,7 @@ Více informací najdete v logu (%ls)."
     IDS_ERR_SHELL_DLL_VERSION "Verze vaší knihovny shell32.dll je příliš nízká (0x%lx). Potřebujete verzi 5.0 nebo novější."
     IDS_NFO_ACTIVE_CONN_EXIT "Některá spojení jsou stále aktivní. Pokud OpenVPN GUI ukončíte, budou přerušena.\
 \n\nOpravdu chcete aplikaci ukončit?"
-    IDS_ERR_PARSE_MGMT_OPTION "Nepodařilo se zpracovat parametr --management v <%ls%ls>."
+    IDS_ERR_PARSE_MGMT_OPTION "Nepodařilo se zpracovat parametr --management v <%ls>."
 
     /* options - Resources */
     IDS_NFO_USAGE "--help\t\t\t: Zobrazí tuto zprávu.\n\

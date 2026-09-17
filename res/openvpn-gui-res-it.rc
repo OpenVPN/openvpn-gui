@@ -401,7 +401,7 @@ Per maggiori dettagli consulta il file log (%ls) ."
     IDS_ERR_SHELL_DLL_VERSION "La versione di shell32.dll è troppo vecchia (0x%lx).\nÈ necessaria almeno la versione 5.0."
     IDS_NFO_ACTIVE_CONN_EXIT "Ci sono ancora connessioni attive che verranno chiuse se esci dall'interfaccia di OpenVPN.\
 \n\nSei sicuro di voler uscire?"
-    IDS_ERR_PARSE_MGMT_OPTION "Impossibile analizzare l'opzione --management in <%ls%ls>. \
+    IDS_ERR_PARSE_MGMT_OPTION "Impossibile analizzare l'opzione --management in <%ls>. \
 Il collegamento a connessioni avviate automaticamente richiede l'opzione --management nel file di configurazione."
     IDS_NFO_STATE_ROUTE_ERROR "Stato attuale: connesso con errori nelle rotte"
     IDS_NFO_NOTIFY_ROUTE_ERROR "%ls connesso con errori nelle rotte"
