@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   checkformat:
     name: "Check code style with clang-format"
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Install pre-commit
         run: pip3 install pre-commit
@@ -83,7 +83,7 @@ jobs:
             chost: i686-w64-mingw32
 
     name: "gcc-mingw - ${{matrix.target}}"
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     env:
       MAKEFLAGS: -j3
