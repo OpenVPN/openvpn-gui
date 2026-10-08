@@ -71,6 +71,8 @@ extern options_t o;
 
 static BOOL TerminateOpenVPN(connection_t *c);
 
+static void DisconnectDaemon(connection_t *c);
+
 static BOOL LaunchOpenVPN(connection_t *c);
 
 const TCHAR *cfgProp = _T("conn");
@@ -1644,7 +1646,26 @@ void
 OnStop(connection_t *c, UNUSED char *msg)
 {
     UINT txt_id, msg_id;
+    DWORD exit_code;
     SetMenuStatus(c, disconnected);
+
+    /* Closing of the management connection normally means that the daemon has
+     * exited. If it is still running and we have not asked it to stop, only
+     * the management channel was lost: stop the daemon instead of leaving it
+     * behind with the tunnel up. We get called again when it exits.
+     */
+    if (!(c->flags & FLAG_DAEMON_PERSISTENT) && c->hProcess && c->exit_event
+        && GetExitCodeProcess(c->hProcess, &exit_code) && exit_code == STILL_ACTIVE
+        && WaitForSingleObject(c->exit_event, 0) == WAIT_TIMEOUT)
+    {
+        WriteStatusLog(c, L"GUI> ", L"Lost the management connection, stopping OpenVPN", false);
+        MsgToEventLog(EVENTLOG_WARNING_TYPE,
+                      L"%ls: lost the management connection, stopping OpenVPN",
+                      c->config_name);
+        SetMenuStatus(c, disconnecting);
+        DisconnectDaemon(c);
+        return;
+    }
 
     switch (c->state)
     {
