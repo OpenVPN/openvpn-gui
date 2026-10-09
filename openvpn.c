@@ -63,6 +63,7 @@
 #include "pkcs11.h"
 #include "service.h"
 #include "qr.h"
+#include "country_routing.h"
 
 #define OPENVPN_SERVICE_PIPE_NAME_OVPN2 L"\\\\.\\pipe\\openvpn\\service"
 #define OPENVPN_SERVICE_PIPE_NAME_OVPN3 L"\\\\.\\pipe\\ovpnagent"
@@ -2345,6 +2346,7 @@ DisconnectDaemon(connection_t *c)
 static void
 Cleanup(connection_t *c)
 {
+    CleanupCountryRouting(c);
     CloseManagement(c);
 
     free_dynamic_cr(c);
@@ -3015,7 +3017,7 @@ StartOpenVPN(connection_t *c)
 static BOOL
 LaunchOpenVPN(connection_t *c)
 {
-    TCHAR cmdline[1024];
+    TCHAR cmdline[2048];
     TCHAR *options = cmdline + 8;
     TCHAR exit_event_name[17];
     HANDLE hStdInRead = NULL, hStdInWrite = NULL;
@@ -3030,6 +3032,11 @@ LaunchOpenVPN(connection_t *c)
     }
 
     RunPreconnectScript(c);
+
+    if (!PrepareCountryRouting(c))
+    {
+        return FALSE;
+    }
 
     /* Create an event object to signal OpenVPN to exit */
     _sntprintf_0(exit_event_name, _T("%x%08x"), GetCurrentProcessId(), c->threadId);
@@ -3066,12 +3073,37 @@ LaunchOpenVPN(connection_t *c)
         ntohs(c->manage.skaddr.sin_port),
         (o.proxy_source != config ? _T("--management-query-proxy ") : _T("")));
 
+    if (c->country_route_file[0])
+    {
+        size_t length = wcslen(cmdline);
+        if (swprintf_s(cmdline + length,
+                       _countof(cmdline) - length,
+                       L" --config \"%ls\"",
+                       c->country_route_file)
+            < 0)
+        {
+            goto out;
+        }
+    }
+
     BOOL use_iservice = (o.iservice_admin && IsWindows7OrGreater()) || !IsUserAdmin();
 
     BOOL config_authorized = TRUE;
     if (use_iservice && o.ovpn_engine == OPENVPN_ENGINE_OVPN2)
     {
         config_authorized = AuthorizeConfig(c);
+        if (config_authorized && c->country_route_file[0])
+        {
+            /* The generated user-owned config needs the same authorization as
+             * any other config outside the administrator's global config dir. */
+            connection_t routes_config = { 0 };
+            wcscpy_s(routes_config.config_file,
+                     _countof(routes_config.config_file),
+                     c->country_route_file);
+            wcscpy_s(
+                routes_config.config_name, _countof(routes_config.config_name), c->config_name);
+            config_authorized = AuthorizeConfig(&routes_config);
+        }
     }
 
     /* Try to open the service pipe */
@@ -3098,7 +3130,7 @@ LaunchOpenVPN(connection_t *c)
         else
         {
             DWORD size = _tcslen(c->config_dir) + _tcslen(options) + passwd_len + 3;
-            TCHAR startup_info[1024];
+            TCHAR startup_info[4096];
 
             c->hProcess = NULL;
             c->manage.password[passwd_len - 1] = '\n';
@@ -3158,21 +3190,21 @@ LaunchOpenVPN(connection_t *c)
             ShowLocalizedMsgEx(
                 MB_OK | MB_ICONERROR, o.hWnd, TEXT(PACKAGE_NAME), IDS_ERR_INIT_SEC_DESC);
             CloseHandle(c->exit_event);
-            return FALSE;
+            goto out;
         }
         if (!SetSecurityDescriptorDacl(&sd, TRUE, NULL, FALSE))
         {
             ShowLocalizedMsgEx(
                 MB_OK | MB_ICONERROR, o.hWnd, TEXT(PACKAGE_NAME), IDS_ERR_SET_SEC_DESC_ACL);
             CloseHandle(c->exit_event);
-            return FALSE;
+            goto out;
         }
 
         /* Set process priority */
         if (!SetProcessPriority(&priority))
         {
             CloseHandle(c->exit_event);
-            return FALSE;
+            goto out;
         }
 
         /* Get a handle of the NUL device */
@@ -3180,7 +3212,7 @@ LaunchOpenVPN(connection_t *c)
         if (hNul == INVALID_HANDLE_VALUE)
         {
             CloseHandle(c->exit_event);
-            return FALSE;
+            goto out;
         }
 
         /* Create the pipe for STDIN with only the read end inheritable */
@@ -3245,6 +3277,10 @@ LaunchOpenVPN(connection_t *c)
     retval = TRUE;
 
 out:
+    if (!retval)
+    {
+        CleanupCountryRouting(c);
+    }
     if (hStdInWrite && hStdInWrite != INVALID_HANDLE_VALUE)
     {
         CloseHandle(hStdInWrite);

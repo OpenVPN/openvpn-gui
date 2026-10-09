@@ -101,6 +101,11 @@ libopenvpn_plap_la_SOURCES = \
 	$(top_srcdir)/misc.c \
 	$(top_srcdir)/openvpn_config.c \
 	$(top_srcdir)/config_parser.c \
+	$(top_srcdir)/country_routes.c \
+	$(top_srcdir)/country_routes.h \
+	$(top_srcdir)/country_routing.c \
+	$(top_srcdir)/country_routing.h \
+	$(top_srcdir)/country_list.h \
 	$(top_srcdir)/pkcs11.c \
 	$(top_srcdir)/service.c \
 	$(top_srcdir)/qr.c \

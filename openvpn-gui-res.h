@@ -349,6 +349,26 @@
 #define IDS_NFO_OVPN_STATE_AUTH_PENDING 2212
 #define IDS_NFO_OVPN_STATE_UNKNOWN      2220
 
+/* Country routing settings (English fallback until translated) */
+#define ID_DLG_COUNTRY_ROUTING          2600
+#define ID_CHK_COUNTRY_BYPASS           2602
+#define ID_LST_COUNTRIES                2603
+#define ID_BTN_COUNTRY_UPDATE           2604
+#define ID_TXT_COUNTRY_CACHE            2605
+#define ID_EDT_COUNTRY_SEARCH           2606
+#define ID_BTN_COUNTRY_SEARCH           2607
+#define IDS_COUNTRY_CACHE_DATE          2610
+#define IDS_COUNTRY_CACHE_EMPTY         2611
+#define IDS_COUNTRY_SELECT              2612
+#define IDS_COUNTRY_UPDATING            2613
+#define IDS_COUNTRY_UPDATE_ERROR        2614
+#define IDS_COUNTRY_UPDATE_START_ERROR  2615
+#define IDS_COUNTRY_SAVE_ERROR          2616
+#define IDS_COUNTRY_PREPARE_ERROR       2617
+#define IDS_COUNTRY_ENGINE_ERROR        2618
+#define IDS_COUNTRY_MULTIPLE_ERROR      2619
+#define IDS_COUNTRY_SEARCH_NOT_FOUND    2620
+
 /* Timer IDs */
 #define IDT_STOP_TIMER                  2500 /* Timer used to trigger force termination */
 

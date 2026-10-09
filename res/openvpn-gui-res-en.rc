@@ -164,6 +164,41 @@ BEGIN
     EDITTEXT ID_EDT_PROXY_PORT, 196, 75, 30, 12, ES_AUTOHSCROLL
 END
 
+/* Country routing settings */
+ID_DLG_COUNTRY_ROUTING DIALOGEX 6, 18, 249, 280
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER
+CAPTION "Routing"
+FONT 8, "Microsoft Sans Serif"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+BEGIN
+    AUTOCHECKBOX "&Bypass VPN for selected countries (IPv4)", ID_CHK_COUNTRY_BYPASS, 10, 12, 230, 12
+    LTEXT "Applies to all connections started by this app. Selected traffic uses your normal internet connection.", -1, 10, 30, 230, 28
+    LTEXT "Country name or code:", -1, 10, 61, 160, 10
+    EDITTEXT ID_EDT_COUNTRY_SEARCH, 10, 73, 168, 14, ES_AUTOHSCROLL
+    PUSHBUTTON "&Search", ID_BTN_COUNTRY_SEARCH, 183, 72, 56, 16
+    CONTROL "", ID_LST_COUNTRIES, "SysListView32", LVS_REPORT | LVS_NOCOLUMNHEADER | LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP, 10, 94, 229, 94
+    PUSHBUTTON "&Update selected ranges", ID_BTN_COUNTRY_UPDATE, 10, 196, 114, 16
+    LTEXT "", ID_TXT_COUNTRY_CACHE, 10, 218, 229, 20
+    LTEXT "Country data: IPdeny.com. Country allocation is approximate. IPv6 and DNS settings are unchanged.", -1, 10, 242, 229, 22
+    LTEXT "Disconnect, then connect to apply changes. One active VPN at a time.", -1, 10, 264, 229, 16
+END
+
+STRINGTABLE
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+BEGIN
+    IDS_COUNTRY_CACHE_DATE "%u of %u selected countries cached. Oldest update: %ls"
+    IDS_COUNTRY_CACHE_EMPTY "0 of %u selected countries cached. Update before connecting."
+    IDS_COUNTRY_SELECT "Select at least one country to bypass."
+    IDS_COUNTRY_UPDATING "Downloading and validating country ranges…"
+    IDS_COUNTRY_UPDATE_ERROR "Could not update country %ls (error %lu). Existing cached ranges have been kept. Check your connection and try again."
+    IDS_COUNTRY_UPDATE_START_ERROR "Could not start the country range download."
+    IDS_COUNTRY_SAVE_ERROR "Could not save country routing settings."
+    IDS_COUNTRY_PREPARE_ERROR "Country bypass is enabled, but the cached ranges are missing or invalid, or the route file could not be created. Open Settings → Routing and update the selected ranges before connecting."
+    IDS_COUNTRY_ENGINE_ERROR "Country bypass currently requires the OpenVPN 2 engine. Select it in Advanced settings, or disable country bypass."
+    IDS_COUNTRY_MULTIPLE_ERROR "Country bypass requires a single active VPN connection. Disconnect other VPN connections before connecting."
+    IDS_COUNTRY_SEARCH_NOT_FOUND "No country matches your search. Enter a country name or a two-letter country code."
+END
+
 /* General Settings Dialog */
 ID_DLG_GENERAL DIALOGEX 6, 18, 249, 104
 STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER

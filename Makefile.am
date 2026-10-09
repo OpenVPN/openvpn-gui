@@ -39,6 +39,7 @@ bin_PROGRAMS = openvpn-gui
 
 dist_doc_DATA = \
 	BUILD.rst \
+	COUNTRY_ROUTING.rst \
 	CHANGES.rst \
 	COPYRIGHT.GPL \
 	COPYING \
@@ -81,6 +82,9 @@ openvpn_gui_RESOURCES = \
 	res/tileimage.bmp
 
 EXTRA_DIST = $(openvpn_gui_RESOURCES) \
+	tests/test_country_routes.c \
+	tests/test_country_routing_win.c \
+	tests/test_country_routes_property.py \
 	CMakeLists.txt \
 	CMakePresets.json \
 	config-msvc.h.in \
@@ -110,12 +114,22 @@ openvpn_gui_SOURCES = \
 	as.c as.h \
 	pkcs11.c pkcs11.h \
 	config_parser.c config_parser.h \
+	country_routes.c country_routes.h \
+	country_routing.c country_routing.h country_list.h \
 	qr.c qr.h \
 	qrcodegen/qrcodegen.c qrcodegen/qrcodegen.h \
 	openvpn-gui-res.h \
 	eventmsg.mc
 
 openvpn_gui_LDFLAGS = -mwindows
+
+check_PROGRAMS = test_country_routes
+test_country_routes_SOURCES = country_routes.c country_routes.h tests/test_country_routes.c
+test_country_routes_CPPFLAGS = -I$(srcdir)
+test_country_routes_CFLAGS =
+test_country_routes_LDFLAGS =
+TESTS = test_country_routes.exe
+
 openvpn_gui_LDADD = \
 	openvpn-gui-res.o \
 	-lws2_32 \

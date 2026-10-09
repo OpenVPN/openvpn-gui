@@ -25,6 +25,7 @@
 
 #include <winresrc.h>
 #include <richedit.h>
+#include <commctrl.h>
 #include "../openvpn-gui-res.h"
 
 /* Language resource files are UTF-8 encoded */

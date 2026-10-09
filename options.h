@@ -164,7 +164,9 @@ struct connection
         DWORD connected; /* 1: management interface connected, 2: connected and ready */
     } manage;
 
-    HANDLE hProcess; /* Handle of openvpn process if directly started */
+    HANDLE hProcess;                    /* Handle of openvpn process if directly started */
+    HANDLE country_route_lock;          /* Read-only sharing of supplemental country routes */
+    WCHAR country_route_file[MAX_PATH]; /* Generated routes, never the user's profile */
     service_io_t iserv;
 
     HANDLE exit_event;

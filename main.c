@@ -50,6 +50,7 @@
 #include "save_pass.h"
 #include "echo.h"
 #include "as.h"
+#include "country_routing.h"
 
 #define OVPN_EXITCODE_ERROR    1
 #define OVPN_EXITCODE_TIMEOUT  2
@@ -858,7 +859,7 @@ SettingsPsCallback(HWND hwnd, UINT msg, UNUSED LPARAM lParam)
 static void
 ShowSettingsDialog()
 {
-    PROPSHEETPAGE psp[4];
+    PROPSHEETPAGE psp[5];
     int page_number = 0;
 
     if (settings_window && IsWindow(settings_window))
@@ -894,6 +895,16 @@ ShowSettingsDialog()
     psp[page_number].hInstance = o.hInstance;
     psp[page_number].pResource = LocalizedDialogResource(ID_DLG_ADVANCED);
     psp[page_number].pfnDlgProc = AdvancedSettingsDlgProc;
+    psp[page_number].lParam = 0;
+    psp[page_number].pfnCallback = NULL;
+    ++page_number;
+
+    /* App-wide country routing tab */
+    psp[page_number].dwSize = sizeof(PROPSHEETPAGE);
+    psp[page_number].dwFlags = PSP_DLGINDIRECT;
+    psp[page_number].hInstance = o.hInstance;
+    psp[page_number].pResource = LocalizedDialogResource(ID_DLG_COUNTRY_ROUTING);
+    psp[page_number].pfnDlgProc = CountryRoutingDlgProc;
     psp[page_number].lParam = 0;
     psp[page_number].pfnCallback = NULL;
     ++page_number;

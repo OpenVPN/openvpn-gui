@@ -64,6 +64,10 @@ jobs:
         configurePreset: '${{ matrix.arch }}${{ matrix.ovpn3.preset }}'
         buildPreset: '${{ matrix.arch }}-${{ matrix.conf.value }}${{ matrix.ovpn3.preset }}'
 
+    - name: Run country routing tests
+      if: matrix.arch != 'arm64'
+      run: ctest --test-dir out/build/${{ matrix.arch }}${{ matrix.ovpn3.preset }} -C ${{ matrix.conf.value }} --output-on-failure
+
     - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: openvpn-gui_${{ matrix.arch }}_${{ matrix.conf.value }}${{ matrix.ovpn3.upload_name }}

@@ -7,6 +7,13 @@ OpenVPN GUI
   :target: https://ci.appveyor.com/project/mattock/openvpn-gui
   :alt: AppVeyor status
 
+Country routing
+#####################################################
+
+An optional app-wide country IPv4 bypass is available in Settings -> Routing.
+It supports multiple countries and keeps connection profiles unchanged.
+See ``COUNTRY_ROUTING.rst`` for data sources, setup, and current limitations.
+
 Installation Instructions for OpenVPN GUI for Windows
 #####################################################
 

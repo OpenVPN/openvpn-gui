@@ -25,6 +25,8 @@ add_executable(${PROJECT_NAME} WIN32
     as.c
     pkcs11.c
     config_parser.c
+    country_routes.c
+    country_routing.c
     qr.c
     qrcodegen/qrcodegen.c
     res/openvpn-gui-res.rc
@@ -130,6 +132,8 @@ add_library(${PROJECT_NAME_PLAP} SHARED
     pkcs11.c
     registry.c
     config_parser.c
+    country_routes.c
+    country_routing.c
     service.c
     qr.c
     qrcodegen/qrcodegen.c
@@ -196,3 +200,25 @@ target_link_options(${PROJECT_NAME} PRIVATE
 target_link_options(${TEST_PLAP_EXE} PRIVATE
     "/MANIFEST:EMBED"
     "/MANIFESTINPUT:${CMAKE_SOURCE_DIR}/plap/test-plap.manifest")
+
+include(CTest)
+if(BUILD_TESTING)
+    add_executable(test_country_routes country_routes.c tests/test_country_routes.c)
+    target_include_directories(test_country_routes PRIVATE ${CMAKE_SOURCE_DIR})
+    add_test(NAME country_routes COMMAND test_country_routes)
+    add_executable(test_country_routing_win
+        country_routes.c tests/test_country_routing_win.c res/openvpn-gui-res.rc)
+    target_include_directories(test_country_routing_win PRIVATE
+        ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+    target_compile_definitions(test_country_routing_win PRIVATE
+        _UNICODE UNICODE WIN32_LEAN_AND_MEAN HAVE_CONFIG_H)
+    target_link_libraries(test_country_routing_win PRIVATE
+        ws2_32 comctl32 shell32 winhttp advapi32)
+    add_test(NAME country_routing_win COMMAND test_country_routing_win)
+    find_package(Python3 COMPONENTS Interpreter QUIET)
+    if(Python3_Interpreter_FOUND)
+        add_test(NAME country_routes_property
+            COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tests/test_country_routes_property.py
+                    $<TARGET_FILE:test_country_routes>)
+    endif()
+endif()
