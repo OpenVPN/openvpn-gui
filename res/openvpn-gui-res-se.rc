@@ -62,12 +62,12 @@ CAPTION "OpenVPN – användarautentisering"
 FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
 BEGIN
-    LTEXT "Användarnamn:", ID_LTEXT_USERNAME, 6, 9, 50, 10
-    LTEXT "Lösenord:", ID_LTEXT_PASSWORD, 6, 26, 50, 10
-    LTEXT "&Svar:", ID_LTEXT_RESPONSE, 6, 60, 50, 10
+    LTEXT "&Användarnamn:", ID_LTEXT_USERNAME, 6, 9, 50, 10
     EDITTEXT ID_EDT_AUTH_USER, 60, 6, 94, 12, ES_AUTOHSCROLL
+    LTEXT "&Lösenord:", ID_LTEXT_PASSWORD, 6, 26, 50, 10
     EDITTEXT ID_EDT_AUTH_PASS, 60, 23, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 24, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
+    LTEXT "S&var:", ID_LTEXT_RESPONSE, 6, 60, 50, 10
     LTEXT "", ID_TXT_AUTH_CHALLENGE, 6, 43, 148, 10
     EDITTEXT ID_EDT_AUTH_CHALLENGE, 60, 57, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     CHECKBOX "&Spara lösenord", ID_CHK_SAVE_PASS, 6, 76, 100, 10
@@ -117,10 +117,10 @@ FONT 8, "Microsoft Sans Serif"
 LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
 BEGIN
     LTEXT "&Nuvarande lösenord:", 171, 6, 9, 85, 10
-    LTEXT "&Nytt lösenord:", 172, 6, 26, 85, 10
-    LTEXT "Be&kräfta nytt lösenord:", 173, 6, 42, 85, 10
     EDITTEXT ID_EDT_PASS_CUR, 95, 6, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    LTEXT "Nytt &lösenord:", 172, 6, 26, 85, 10
     EDITTEXT ID_EDT_PASS_NEW, 95, 23, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
+    LTEXT "Be&kräfta nytt lösenord:", 173, 6, 42, 85, 10
     EDITTEXT ID_EDT_PASS_NEW2, 95, 39, 90, 12, ES_PASSWORD | ES_AUTOHSCROLL
     PUSHBUTTON "OK", IDOK, 40, 59, 50, 14
     PUSHBUTTON "Avbryt", IDCANCEL, 103, 59, 50, 14
@@ -175,9 +175,9 @@ BEGIN
     AUTORADIOBUTTON "A&uto", ID_RB_BALLOON3, 28, 200, 50, 10, WS_GROUP | WS_TABSTOP
     AUTORADIOBUTTON "&Manuellt", ID_RB_BALLOON4, 86, 200, 90, 10
     AUTORADIOBUTTON "&Inaktivera", ID_RB_BALLOON5, 181, 200, 40, 10
-    AUTOCHECKBOX "Aktivera åtkomstleverantör före &inloggning (kräver administratörsbehörighet)", ID_CHK_PLAP_REG, 17, 215, 200, 10
+    AUTOCHECKBOX "Åtkomst &före inloggning (adminbehörighet krävs)", ID_CHK_PLAP_REG, 17, 215, 200, 10
     AUTOCHECKBOX "Aktivera automatisk återstart av aktiva anslutningar", ID_CHK_AUTO_RESTART, 17, 230, 200, 10
-    AUTOCHECKBOX "Fråga efter &engångslösenord och kombinera det med lösenordet", ID_CHK_CONCAT_OTP, 17, 245, 200, 10
+    AUTOCHECKBOX "Begär &engångskod och lägg till i lösenordet", ID_CHK_CONCAT_OTP, 17, 245, 200, 10
 END
 
 /* Advanced Dialog */
@@ -200,9 +200,9 @@ BEGIN
     PUSHBUTTON "…", ID_BTN_LOG_DIR, 208, 72, 25, 12
 
     GROUPBOX "Tidsgräns för skript", 203, 6, 97, 235, 60
-    LTEXT "Tidsgräns för skript före anslutning:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
-    LTEXT "Tidsgräns för anslutningsskript:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
-    LTEXT "Tidsgräns för frånkopplingsskript:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
+    LTEXT "Före anslutning:", ID_TXT_PRECONNECT_TIMEOUT, 17, 110, 100, 10
+    LTEXT "Vid anslutning:", ID_TXT_CONNECT_TIMEOUT, 17, 125, 90, 10
+    LTEXT "Vid frånkoppling:", ID_TXT_DISCONNECT_TIMEOUT, 17, 140, 90, 10
     EDITTEXT ID_EDT_PRECONNECT_TIMEOUT, 103, 108, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_CONNECT_TIMEOUT, 103, 123, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
     EDITTEXT ID_EDT_DISCONNECT_TIMEOUT, 103, 138, 20, 12, ES_AUTOHSCROLL|ES_NUMBER
@@ -283,9 +283,9 @@ BEGIN
     LTEXT "&Lösenord:", ID_LTEXT_PASSWORD, 6, 42, 50, 10
     EDITTEXT ID_EDT_AUTH_PASS, 60, 40, 94, 12, ES_PASSWORD | ES_AUTOHSCROLL
     ICON ID_ICO_EYE, ID_PASSWORD_REVEAL, 156, 41, 14, 14, SS_ICON|SS_NOTIFY|SS_REALSIZEIMAGE
-    AUTOCHECKBOX "&Automatisk inloggning", ID_CHK_AUTOLOGIN, 6, 59, 100, 10
+    AUTOCHECKBOX "Automatisk &inloggning", ID_CHK_AUTOLOGIN, 6, 59, 100, 10
     PUSHBUTTON "&OK", IDOK, 20, 76, 50, 14, BS_PUSHBUTTON | WS_TABSTOP | WS_DISABLED
-    PUSHBUTTON "&Avbryt", IDCANCEL, 90, 76, 52, 14
+    PUSHBUTTON "Av&bryt", IDCANCEL, 90, 76, 52, 14
 END
 
 /* Query PKCS11-ID Dialog */
@@ -316,7 +316,7 @@ END
 STRINGTABLE
 LANGUAGE LANG_SWEDISH, SUBLANG_DEFAULT
 BEGIN
-    IDS_LANGUAGE_NAME "Svenska"
+    IDS_LANGUAGE_NAME "Svenska - Swedish"
 
     /* Tray - Resources */
     IDS_TIP_CONNECTED "\nAnsluten till: "
