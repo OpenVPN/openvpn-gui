@@ -29,6 +29,7 @@
 #include <tchar.h>
 #include <time.h>
 #include <commctrl.h>
+#include <windowsx.h>
 
 #include "tray.h"
 #include "main.h"
@@ -391,36 +392,35 @@ RecreatePopupMenus(void)
  * Position tool tip window so that it does not overlap with the mouse position
  * and does not spill out of the screen. If mouse location overlaps, NIM_POPUPCLOSE
  * and NIM_POPUPOPEN will trigger continuously.
- * Account for the possibility that the taskbar could be at the bottom, right, top
- * or left edge of the screen.
  *
- * On input (x, y) is the mouse position that triggered the display of tooltip
+ * To corectly handle multi-monitor setups and various locations of the taskbar,
+ * use CalculatePopupWindowPosition()
+ *
+ * On input icon_rc is the rectangle of the tray icon that triggered the display of tooltip.
  */
 static void
-PositionTrayToolTip(LONG x, LONG y)
+PositionTrayToolTip(RECT *icon_rc)
 {
     RECT r;
-    LONG cxmax = GetSystemMetrics(SM_CXSCREEN);
-    LONG cymax = GetSystemMetrics(SM_CYSCREEN);
-    APPBARDATA abd = { .cbSize = sizeof(APPBARDATA) };
     GetWindowRect(traytip, &r);
     LONG w = r.right - r.left;
     LONG h = r.bottom - r.top;
-    /* - vertically, position the bottom of the window 10 pixels above y or top of the window
-     *   10 pixels below y depending on whether we are closer to the bottom or top of the screen.
-     * - horizontally, try to centre around x adjusting for overflow to the right or left
-     */
-    r.left = (x < w / 2) ? 0 : ((x + w / 2 < cxmax) ? x - w / 2 : cxmax - w);
-    r.top = (y > h + 10) ? y - (h + 10) : y + 10;
 
-    /* If taskbar is at top, move the top of the window to the bottom of the taskbar */
-    if (SHAppBarMessage(ABM_GETTASKBARPOS, &abd) && (abd.rc.bottom < cymax / 2))
+    POINT pt = { (icon_rc->left + icon_rc->right) / 2, icon_rc->top };
+    SIZE popupSize = { w, h };
+
+    /*
+     * If the icon is in the overflow area we should exclude the icon rectangle
+     * to avoid flicker. TPM_WORKAREA does not protect against this.
+     */
+    if (!CalculatePopupWindowPosition(
+            &pt, &popupSize, TPM_CENTERALIGN | TPM_VERTICAL | TPM_WORKAREA, icon_rc, &r))
     {
-        r.top = abd.rc.bottom;
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"CalculatePopupWindowPosition Failed.");
+        return;
     }
 
     SendMessageW(traytip, TTM_TRACKPOSITION, 0, MAKELONG(r.left, r.top));
-    SetWindowPos(traytip, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
 }
 
 /*
@@ -438,8 +438,8 @@ OnNotifyTray(WPARAM wParam, LPARAM lParam)
             RecreatePopupMenus();
             /* wParam contains the upper left corner of the anchor point */
 
-            pt.x = (int)LOWORD(wParam);
-            pt.y = (int)HIWORD(wParam);
+            pt.x = GET_X_LPARAM(wParam);
+            pt.y = GET_Y_LPARAM(wParam);
 
             SetForegroundWindow(o.hWnd);
             TrackPopupMenu(hMenu, TPM_RIGHTALIGN, pt.x, pt.y, 0, o.hWnd, NULL);
@@ -489,7 +489,7 @@ OnNotifyTray(WPARAM wParam, LPARAM lParam)
                 RECT r = { 0 };
                 Shell_NotifyIconGetRect(&nid, &r);
                 SendMessageW(traytip, TTM_TRACKACTIVATE, (WPARAM)TRUE, (LPARAM)&ti);
-                PositionTrayToolTip((r.left + r.right) / 2, r.top);
+                PositionTrayToolTip(&r);
             }
             break;
 
@@ -547,7 +547,7 @@ ShowTrayIcon()
     if (Shell_NotifyIcon(NIM_SETVERSION, &ni))
     {
         /* create a custom tooltip for the tray */
-        traytip = CreateWindowEx(0,
+        traytip = CreateWindowEx(WS_EX_TOPMOST | WS_EX_TOOLWINDOW,
                                  TOOLTIPS_CLASS,
                                  NULL,
                                  WS_POPUP | TTS_ALWAYSTIP,
