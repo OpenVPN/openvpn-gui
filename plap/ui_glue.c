@@ -243,6 +243,12 @@ InitializeUI(HINSTANCE hinstance)
 
     o.hInstance = hinstance;
 
+    /* OnReady() needs the daemon version to announce the management client version. */
+    if (!CheckVersion())
+    {
+        return 1;
+    }
+
     DWORD status = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (status)
     {

@@ -142,7 +142,7 @@ OnReady(connection_t *c, UNUSED char *msg)
     version_t version_2_7_1 = { 2, 7, 1, 0 };
     if (version_compare(&o.ovpn_version, &version_2_7_1) >= 0)
     {
-        ManagementCommand(c, "version 4", NULL, regular);
+        ManagementCommand(c, "version 6", NULL, regular);
     }
     ManagementCommand(c, "state on", NULL, regular);
     ManagementCommand(c, "log on all", OnLogLine, combined);
@@ -636,6 +636,12 @@ UserAuthDialogFunc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
             }
             if (RecallUsername(param->c->config_name, username))
             {
+                SetDlgItemTextW(hwndDlg, ID_EDT_AUTH_USER, username);
+                SetFocus(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS));
+            }
+            else if (param->c->username)
+            {
+                wcsncpy_s(username, _countof(username), param->c->username, _TRUNCATE);
                 SetDlgItemTextW(hwndDlg, ID_EDT_AUTH_USER, username);
                 SetFocus(GetDlgItem(hwndDlg, ID_EDT_AUTH_PASS));
             }
@@ -1241,6 +1247,13 @@ free_dynamic_cr(connection_t *c)
     c->dynamic_cr = NULL;
 }
 
+static void
+free_username(connection_t *c)
+{
+    free(c->username);
+    c->username = NULL;
+}
+
 /*
  * Parse dynamic challenge string received from the server. Returns
  * true on success. The caller must free param->str and param->id
@@ -1525,6 +1538,26 @@ OnPassword(connection_t *c, char *msg)
             param->flags |= FLAG_USERNAME_ONLY;
         }
 
+        /* Everything from SC: onward is challenge text, not optional fields. */
+        const char *sc = strstr(msg, "SC:");
+        if ((chstr = strstr(msg, " UN:")) && (!sc || chstr < sc) && strlen(chstr) > 4)
+        {
+            char *tmpstr = strdup(chstr + 4);
+            const char *un64;
+            const char *delim = " ";
+            if (tmpstr && !strchr(delim, tmpstr[0]) && (un64 = strtok(tmpstr, " ")))
+            {
+                char *decoded = NULL;
+                free_username(c);
+                if (Base64Decode(un64, &decoded) >= 0)
+                {
+                    c->username = Widen(decoded);
+                }
+                free(decoded);
+            }
+            free(tmpstr);
+        }
+
         if (c->dynamic_cr)
         {
             if (!parse_dynamic_cr(c->dynamic_cr, param))
@@ -1538,12 +1571,12 @@ OnPassword(connection_t *c, char *msg)
                 ID_DLG_CHALLENGE_RESPONSE, c->hwndStatus, GenericPassDialogFunc, (LPARAM)param);
             free_dynamic_cr(c);
         }
-        else if ((chstr = strstr(msg, "SC:")) && strlen(chstr) > 5)
+        else if (sc && strlen(sc) > 5)
         {
-            ULONG flags = strtoul(chstr + 3, NULL, 10);
+            ULONG flags = strtoul(sc + 3, NULL, 10);
             param->flags |= (flags & 0x2) ? FLAG_CR_TYPE_CONCAT : FLAG_CR_TYPE_SCRV1;
             param->flags |= (flags & 0x1) ? FLAG_CR_ECHO : 0;
-            param->str = strdup(chstr + 5);
+            param->str = strdup(sc + 5);
             LocalizedDialogBoxParamEx(
                 ID_DLG_AUTH_CHALLENGE, c->hwndStatus, UserAuthDialogFunc, (LPARAM)param);
         }

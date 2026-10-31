@@ -180,6 +180,7 @@ struct connection
     char daemon_state[20];    /* state of openvpn.ex: WAIT, AUTH, GET_CONFIG etc.. */
     int id;                   /* index of config -- treat as immutable once assigned */
     connection_t *next;
+    wchar_t *username;
 };
 
 /* All options used within OpenVPN GUI */
