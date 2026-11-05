@@ -66,7 +66,14 @@ void RestartOpenVPN(connection_t *);
 
 void ReleaseOpenVPN(connection_t *);
 
-BOOL CheckVersion();
+/**
+ * Determine the version of the openvpn daemon.
+ * @param quiet  if true, report errors only to the event log instead of
+ *               showing a message box -- required in contexts with no
+ *               interactive desktop, such as PLAP running under LogonUI.
+ * @returns      true on success
+ */
+BOOL CheckVersion(BOOL quiet);
 
 void SetStatusWinIcon(HWND hwndDlg, int IconID);
 

@@ -292,7 +292,7 @@ _tWinMain(HINSTANCE hThisInstance,
         exit(OVPN_EXITCODE_ERROR);
     }
 
-    if (!CheckVersion())
+    if (!CheckVersion(FALSE))
     {
         exit(1);
     }
