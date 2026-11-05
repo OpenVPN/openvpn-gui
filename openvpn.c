@@ -1538,6 +1538,10 @@ OnPassword(connection_t *c, char *msg)
             param->flags |= FLAG_USERNAME_ONLY;
         }
 
+        /* The username hint applies to this prompt only -- drop any earlier one
+         * so that a prompt without UN: does not reuse a stale username. */
+        free_username(c);
+
         /* Everything from SC: onward is challenge text, not optional fields. */
         const char *sc = strstr(msg, "SC:");
         if ((chstr = strstr(msg, " UN:")) && (!sc || chstr < sc) && strlen(chstr) > 4)
@@ -1548,7 +1552,6 @@ OnPassword(connection_t *c, char *msg)
             if (tmpstr && !strchr(delim, tmpstr[0]) && (un64 = strtok(tmpstr, " ")))
             {
                 char *decoded = NULL;
-                free_username(c);
                 if (Base64Decode(un64, &decoded) >= 0)
                 {
                     c->username = Widen(decoded);
@@ -2381,6 +2384,7 @@ Cleanup(connection_t *c)
     CloseManagement(c);
 
     free_dynamic_cr(c);
+    free_username(c);
     env_item_del_all(c->es);
     c->es = NULL;
     echo_msg_clear(c, true); /* clear history */
