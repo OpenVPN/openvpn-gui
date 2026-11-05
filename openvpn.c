@@ -3498,8 +3498,20 @@ parse_ovpn_version(const char *p)
     }
 }
 
+/* Report a CheckVersion() failure: always to the event log, and to the user
+ * only when not running quiet (see CheckVersion). */
+static void
+version_error(BOOL quiet, UINT msg_id, const WCHAR *log_msg)
+{
+    MsgToEventLog(EVENTLOG_ERROR_TYPE, L"CheckVersion: %ls", log_msg);
+    if (!quiet)
+    {
+        ShowLocalizedMsg(msg_id);
+    }
+}
+
 BOOL
-CheckVersion()
+CheckVersion(BOOL quiet)
 {
     HANDLE hStdOutRead = NULL;
     HANDLE hStdOutWrite = NULL;
@@ -3522,24 +3534,24 @@ CheckVersion()
                                .bInheritHandle = TRUE };
     if (!InitializeSecurityDescriptor(&sd, SECURITY_DESCRIPTOR_REVISION))
     {
-        ShowLocalizedMsg(IDS_ERR_INIT_SEC_DESC);
+        version_error(quiet, IDS_ERR_INIT_SEC_DESC, L"InitializeSecurityDescriptor failed");
         return FALSE;
     }
     if (!SetSecurityDescriptorDacl(&sd, TRUE, NULL, FALSE))
     {
-        ShowLocalizedMsg(IDS_ERR_SET_SEC_DESC_ACL);
+        version_error(quiet, IDS_ERR_SET_SEC_DESC_ACL, L"SetSecurityDescriptorDacl failed");
         return FALSE;
     }
 
     /* Create the pipe for STDOUT with inheritable write end */
     if (!CreatePipe(&hStdOutRead, &hStdOutWrite, &sa, 0))
     {
-        ShowLocalizedMsg(IDS_ERR_CREATE_PIPE_IN_READ);
+        version_error(quiet, IDS_ERR_CREATE_PIPE_IN_READ, L"CreatePipe failed");
         return FALSE;
     }
     if (!SetHandleInformation(hStdOutRead, HANDLE_FLAG_INHERIT, 0))
     {
-        ShowLocalizedMsg(IDS_ERR_DUP_HANDLE_IN_WRITE);
+        version_error(quiet, IDS_ERR_DUP_HANDLE_IN_WRITE, L"SetHandleInformation failed");
         goto out;
     }
 
@@ -3563,7 +3575,11 @@ CheckVersion()
         CreateProcess(o.exe_path, cmdline, NULL, NULL, TRUE, CREATE_NO_WINDOW, NULL, pwd, &si, &pi);
     if (!success)
     {
-        ShowLocalizedMsg(IDS_ERR_CREATE_PROCESS, o.exe_path, cmdline, pwd);
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"CheckVersion: CreateProcess failed");
+        if (!quiet)
+        {
+            ShowLocalizedMsg(IDS_ERR_CREATE_PROCESS, o.exe_path, cmdline, pwd);
+        }
         goto out;
     }
 
@@ -3584,6 +3600,16 @@ CheckVersion()
             p = strtok(p + 8, " ");
             parse_ovpn_version(p);
         }
+        else
+        {
+            MsgToEventLog(EVENTLOG_ERROR_TYPE,
+                          L"CheckVersion: unrecognized version string from openvpn: <%hs>",
+                          line);
+        }
+    }
+    else
+    {
+        MsgToEventLog(EVENTLOG_ERROR_TYPE, L"CheckVersion: could not read openvpn version output");
     }
 
 out:

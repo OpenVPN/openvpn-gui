@@ -243,10 +243,16 @@ InitializeUI(HINSTANCE hinstance)
 
     o.hInstance = hinstance;
 
-    /* OnReady() needs the daemon version to announce the management client version. */
-    if (!CheckVersion())
+    /* OnReady() needs the daemon version to announce the management client version.
+     * A failure here is not fatal: without a known version we simply skip the
+     * "version" command and fall back to the default management client version.
+     * Failing init instead would make LogonUI drop the whole PLAP provider.
+     * Run quiet -- there is no interactive desktop to show a message box on. */
+    if (!CheckVersion(TRUE))
     {
-        return 1;
+        MsgToEventLog(EVENTLOG_WARNING_TYPE,
+                      L"Could not determine the openvpn version -- continuing without announcing "
+                      L"the management client version.");
     }
 
     DWORD status = WSAStartup(MAKEWORD(2, 2), &wsaData);
