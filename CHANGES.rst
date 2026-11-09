@@ -1,3 +1,10 @@
+Version 11.67.0
+===============
+* Feature: Fill username in dialogs with one provided in config file if any
+* Bugfix: Tray tooltip and popup positioning on non-primary monitors
+* Improve Swedish translation
+* Bugfix: Stop the daemon when the management connection is lost
+
 Version 11.63.0
 ===============
 
