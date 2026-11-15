@@ -50,6 +50,7 @@
 #include "save_pass.h"
 #include "echo.h"
 #include "as.h"
+#include "remote.h"
 
 #define OVPN_EXITCODE_ERROR    1
 #define OVPN_EXITCODE_TIMEOUT  2
@@ -184,6 +185,7 @@ _tWinMain(HINSTANCE hThisInstance,
     }
 
     /* Initialize handlers for manangement interface notifications */
+    /* clang-format off */
     mgmt_rtmsg_handler handler[] = { { ready_, OnReady },
                                      { hold_, OnHold },
                                      { log_, OnLogLine },
@@ -198,7 +200,9 @@ _tWinMain(HINSTANCE hThisInstance,
                                      { infomsg_, OnInfoMsg },
                                      { timeout_, OnTimeout },
                                      { validate_, OnMgmtValidate },
+                                     { remote_,   OnRemote },
                                      { 0, NULL } };
+    /* clang-format on */
     InitManagement(handler);
 
     /* initialize options to default state */

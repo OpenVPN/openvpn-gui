@@ -41,13 +41,15 @@ typedef enum
     infomsg_,
     timeout_,
     validate_,
+    remote_,
     mgmt_rtmsg_type_max
 } mgmt_rtmsg_type;
 
 typedef enum
 {
     regular,
-    combined
+    combined,
+    multiline /* Deliver the terminating END line to the handler, NULL on error. */
 } mgmt_cmd_type;
 
 typedef void (*mgmt_msg_func)(connection_t *, char *);

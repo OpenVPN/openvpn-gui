@@ -41,6 +41,7 @@
 #include "misc.h"
 #include "tray.h"
 #include "service.h"
+#include "remote.h"
 
 /* Global options structure */
 options_t o;
@@ -152,6 +153,19 @@ OnStateChange_(connection_t *c, char *msg)
     }
 }
 
+void
+OnRemote_(connection_t *c, char *msg)
+{
+    if (c == active_profile)
+    {
+        OnRemote(c, msg);
+    }
+    else
+    {
+        DetachOpenVPN(c); /* next attach will handle it */
+    }
+}
+
 /* Initialize GUI data structures. Returns 0 on success */
 DWORD
 InitializeUI(HINSTANCE hinstance)
@@ -194,6 +208,7 @@ InitializeUI(HINSTANCE hinstance)
     /* Initialize handlers for management interface notifications
      * Some handlers are replaced by local functions
      */
+    /* clang-format off */
     mgmt_rtmsg_handler handler[] = { { ready_, OnReady },
                                      { hold_, OnHold },
                                      { log_, OnLogLine },
@@ -208,7 +223,9 @@ InitializeUI(HINSTANCE hinstance)
                                      { infomsg_, OnInfoMsg_ },
                                      { timeout_, OnTimeout },
                                      { validate_, OnMgmtValidate },
+                                     { remote_,   OnRemote_ },
                                      { 0, NULL } };
+    /* clang-format on */
 
     InitManagement(handler);
     dmsg(L"Init Management done");

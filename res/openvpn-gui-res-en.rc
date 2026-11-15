@@ -329,6 +329,20 @@ BEGIN
     LTEXT "Scan this QR code on your mobile to proceed with authentication.", ID_TXT_QR, 0, 0, 10, 10, SS_CENTER | WS_VISIBLE | SS_EDITCONTROL
 END
 
+/* Query Remote Dialog */
+ID_DLG_REMOTE_QUERY DIALOGEX 6, 18, 209, 240
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFONT
+CAPTION "Select VPN Server Address"
+FONT 8, "Segoe UI"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+BEGIN
+    LTEXT "Servers available:", ID_TXT_REMOTE, 17, 12, 171, 12
+    CONTROL "", ID_LVW_REMOTE, "SysListView32", LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP, 17, 25, 171,170
+    PUSHBUTTON "&OK", IDOK, 20, 220, 50, 14, BS_PUSHBUTTON | WS_TABSTOP
+    PUSHBUTTON "&Cancel", IDCANCEL, 90, 220, 52, 14
+    LTEXT "", ID_TXT_WARNING, 17, 196, 175, 20
+END
+
 STRINGTABLE
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 BEGIN
@@ -530,6 +544,15 @@ OpenVPN is probably not installed"
     IDS_CERT_DISPLAYNAME "Issued to"
     IDS_CERT_ISSUER "Issued by"
     IDS_CERT_NOTAFTER "Valid until"
+
+    /* column headers for remote list */
+    IDS_HOSTNAME "Hostname"
+    IDS_PORT     "Port"
+    IDS_PROTOCOL "Protocol"
+    IDS_ERR_REMOTE_LIST "Unable to retrieve the complete server list. Reconnect to try again."
+    IDS_REMOTE_LIST_PARTIAL "Server list incomplete. Only received servers are shown."
+    IDS_REMOTE_LIST_EMPTY "No servers available. Cancel and reconnect to try again."
+    IDS_NFO_AUTO_REMOTE "Connecting in %u seconds. Click or scroll to stop countdown."
 
     /* PLAP related */
     IDS_NFO_STATE_RETRYING "Retrying"

@@ -77,6 +77,26 @@ BOOL CheckVersion(BOOL quiet);
 
 void SetStatusWinIcon(HWND hwndDlg, int IconID);
 
+/**
+ * Activate a dialog button after a delay, using window timer 1.
+ * The caller must call AutoCloseCancel on user interaction and destruction
+ * of the dialog.
+ * @param hwnd     handle of the dialog window
+ * @param btn      control ID of the button to activate
+ * @param timeout  delay in seconds; zero activates the button immediately
+ * @param txtid    control ID for countdown text, or zero to omit the text
+ * @param txtres   localized countdown string ID, with %u for seconds remaining,
+ *                 or zero to omit the text
+ */
+void AutoCloseSetup(HWND hwnd, UINT btn, UINT timeout, UINT txtid, UINT txtres);
+
+/**
+ * Cancel a scheduled button activation and clear its countdown text.
+ * Does nothing if no activation is scheduled.
+ * @param hwnd  handle of the dialog window
+ */
+void AutoCloseCancel(HWND hwnd);
+
 void OnReady(connection_t *, char *);
 
 void OnHold(connection_t *, char *);

@@ -63,6 +63,7 @@
 #include "pkcs11.h"
 #include "service.h"
 #include "qr.h"
+#include "remote.h"
 
 #define OPENVPN_SERVICE_PIPE_NAME_OVPN2 L"\\\\.\\pipe\\openvpn\\service"
 #define OPENVPN_SERVICE_PIPE_NAME_OVPN3 L"\\\\.\\pipe\\ovpnagent"
@@ -136,8 +137,13 @@ show_error_tip(HWND editbox, const WCHAR *msg)
  * Format: <BANNER>
  */
 void
-OnReady(connection_t *c, UNUSED char *msg)
+OnReady(connection_t *c, char *msg)
 {
+    if (sscanf(msg, "OpenVPN Management Interface Version %u", &c->management_version) != 1)
+    {
+        WriteStatusLog(c, L"GUI> ", L"Error parsing management interface version", false);
+        c->management_version = 2;
+    }
     /* client version command is correctly supported only in 2.7.1 and above */
     version_t version_2_7_1 = { 2, 7, 1, 0 };
     if (version_compare(&o.ovpn_version, &version_2_7_1) >= 0)
@@ -443,6 +449,10 @@ OnStateChange(connection_t *c, char *data)
     }
     else if (strcmp(state, "RECONNECTING") == 0)
     {
+        if (strcmp(message, "SIGHUP") == 0)
+        {
+            remote_list_clear(&c->remote_list);
+        }
         if (!c->dynamic_cr)
         {
             if (strcmp(message, "auth-failure") == 0)
@@ -505,7 +515,7 @@ typedef struct autoclose
 } autoclose;
 
 /* Cancel scheduled auto close of a dialog */
-static void
+void
 AutoCloseCancel(HWND hwnd)
 {
     autoclose *ac = (autoclose *)GetProp(hwnd, L"AutoClose");
@@ -554,7 +564,7 @@ AutoCloseHandler(HWND hwnd, UINT UNUSED msg, UINT_PTR id, DWORD now)
  * Call AutoCloseCancel to cancel the scheduled event and clear the displayed
  * text.
  */
-static void
+void
 AutoCloseSetup(HWND hwnd, UINT btn, UINT timeout, UINT txtid, UINT txtres)
 {
     if (timeout == 0)
@@ -2389,6 +2399,7 @@ Cleanup(connection_t *c)
     c->es = NULL;
     echo_msg_clear(c, true); /* clear history */
     pkcs11_list_clear(&c->pkcs11_list);
+    remote_list_clear(&c->remote_list);
 
     if (c->hProcess)
     {

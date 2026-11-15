@@ -430,6 +430,13 @@ OnManagement(SOCKET sk, LPARAM lParam)
                             rtmsg_handler[infomsg_](c, pos + 8);
                         }
                     }
+                    else if (strncmp(pos, "REMOTE:", 7) == 0)
+                    {
+                        if (rtmsg_handler[remote_])
+                        {
+                            rtmsg_handler[remote_](c, pos + 7);
+                        }
+                    }
                     else if (strncmp(pos, "PKCS11ID", 8) == 0 && c->manage.cmd_queue)
                     {
                         /* This is not a real-time message, but unfortunately implemented
@@ -474,6 +481,10 @@ OnManagement(SOCKET sk, LPARAM lParam)
                     }
                     else if (strcmp(line, "END") == 0)
                     {
+                        if (cmd->type == multiline && cmd->handler)
+                        {
+                            cmd->handler(c, line);
+                        }
                         UnqueueCommand(c);
                     }
                     else if (cmd->handler)

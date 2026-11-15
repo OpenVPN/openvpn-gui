@@ -25,6 +25,7 @@ add_executable(${PROJECT_NAME} WIN32
     as.c
     pkcs11.c
     config_parser.c
+    remote.c
     qr.c
     qrcodegen/qrcodegen.c
     res/openvpn-gui-res.rc
@@ -131,6 +132,7 @@ add_library(${PROJECT_NAME_PLAP} SHARED
     registry.c
     config_parser.c
     service.c
+    remote.c
     qr.c
     qrcodegen/qrcodegen.c
     plap/ui_glue.c

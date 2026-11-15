@@ -103,6 +103,7 @@ libopenvpn_plap_la_SOURCES = \
 	$(top_srcdir)/config_parser.c \
 	$(top_srcdir)/pkcs11.c \
 	$(top_srcdir)/service.c \
+	$(top_srcdir)/remote.c \
 	$(top_srcdir)/qr.c \
 	$(top_srcdir)/qr.h \
 	$(top_srcdir)/qrcodegen/qrcodegen.c \

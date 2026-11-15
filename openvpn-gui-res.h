@@ -174,6 +174,11 @@
 
 #define ID_CHK_CONCAT_OTP               470
 
+/* remote-query dialog */
+#define ID_DLG_REMOTE_QUERY             460
+#define ID_LVW_REMOTE                   461
+#define ID_TXT_REMOTE                   462
+
 /*
  * String Table Resources
  */
@@ -331,6 +336,15 @@
 #define IDS_CERT_DISPLAYNAME            2162
 #define IDS_CERT_ISSUER                 2163
 #define IDS_CERT_NOTAFTER               2164
+
+/* remote query related */
+#define IDS_HOSTNAME                    2170
+#define IDS_PORT                        2171
+#define IDS_PROTOCOL                    2172
+#define IDS_ERR_REMOTE_LIST             2173
+#define IDS_REMOTE_LIST_PARTIAL         2174
+#define IDS_REMOTE_LIST_EMPTY           2175
+#define IDS_NFO_AUTO_REMOTE             2176
 
 /* openvpn daemon state descriptions */
 /* Needs to be kept in sync with daemon_states[] in openvpn.c */
